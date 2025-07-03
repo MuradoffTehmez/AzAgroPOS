@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// Fayl: AzAgroPOS.Entities/Rol.cs
+using System;
 
 namespace AzAgroPOS.Entities
 {
-    internal class Rol
+    public class Rol
     {
+        public int Id { get; set; }
+        public string Ad { get; set; }
+        public string Tesvir { get; set; }
+        public DateTime YaradilmaTarixi { get; set; }
+        public DateTime? SonDeyisiklik { get; set; } // Nullable DateTime
     }
 }
