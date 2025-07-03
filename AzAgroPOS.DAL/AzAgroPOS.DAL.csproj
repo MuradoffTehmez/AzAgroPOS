@@ -47,6 +47,7 @@
     <Compile Include="Helpers\DatabaseHelper.cs" />
     <Compile Include="IstifadeciDAL.cs" />
     <Compile Include="KateqoriyaDAL.cs" />
+    <Compile Include="MehsulDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VahidDAL.cs" />
   </ItemGroup>
