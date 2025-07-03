@@ -13,7 +13,7 @@ namespace AzAgroPOS.DAL
         public IstifadeciDAL()
         {
             // App.config faylından bağlantı sətrini oxuyuruq
-            _connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            using (SqlConnection connection = new SqlConnection(_connectionString));
         }
 
         public object ConfigurationManager { get; }
