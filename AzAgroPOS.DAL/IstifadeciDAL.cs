@@ -1,22 +1,28 @@
 ﻿// Fayl: AzAgroPOS.DAL/IstifadeciDAL.cs
+
 using AzAgroPOS.Entities;
 using System;
-using System.Configuration;
 using System.Data.SqlClient;
+using System.IO;
+using System.Xml;
 
 namespace AzAgroPOS.DAL
 {
+    /// <summary>
+    /// İstifadəçilərlə bağlı bütün verilənlər bazası əməliyyatlarını həyata keçirir.
+    /// </summary>
     public class IstifadeciDAL
     {
         private readonly string _connectionString;
 
+        /// <summary>
+        /// Constructor: DAL obyekti yaranan kimi App.config-dən bağlantı sətrini oxuyur.
+        /// </summary>
         public IstifadeciDAL()
         {
-            // App.config faylından bağlantı sətrini oxuyuruq
-            using (SqlConnection connection = new SqlConnection(_connectionString));
+            // Alternativ üsul: App.config faylını birbaşa XML kimi oxuyuruq
+            _connectionString = GetConnectionStringFromAppConfig();
         }
-
-        public object ConfigurationManager { get; }
 
         /// <summary>
         /// Verilmiş istifadəçi adına görə verilənlər bazasından istifadəçini tapır.
@@ -27,7 +33,7 @@ namespace AzAgroPOS.DAL
         {
             Istifadeci istifadeci = null;
 
-            // 'using' bloku bağlantının avtomatik bağlanmasını təmin edir.
+            // 'using' bloku bağlantının hər zaman düzgün bağlanmasını təmin edir.
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 // SQL Injection hücumlarına qarşı parametrləşdirilmiş sorğu istifadə edirik.
@@ -42,8 +48,7 @@ namespace AzAgroPOS.DAL
                     connection.Open();
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
-                        // Əgər nəticə varsa (istifadəçi tapılıbsa)
-                        if (reader.Read())
+                        if (reader.Read()) // Əgər nəticə varsa (istifadəçi tapılıbsa)
                         {
                             // Reader-dən gələn məlumatları Istifadeci obyektinə doldururuq.
                             istifadeci = new Istifadeci
@@ -67,15 +72,59 @@ namespace AzAgroPOS.DAL
                 catch (Exception ex)
                 {
                     // Real tətbiqdə burada xətaları log faylına yazmaq vacibdir.
-                    Console.WriteLine(ex.Message);
+                    // Hələlik sadəcə xətanı yenidən yuxarıya ötürürük.
+                    throw new Exception("An error occurred while getting user by username.", ex);
                 }
             }
 
             return istifadeci;
         }
 
-        // Gələcəkdə istifadəçiləri əlavə etmək, redaktə etmək və silmək üçün metodlar da bura yazılacaq.
-        // public void Add(Istifadeci istifadeci) { ... }
-        // public void Update(Istifadeci istifadeci) { ... }
+        // --- Gələcək Metodlar Üçün Yer ---
+        // public void Add(Istifadeci istifadeci) { /* Yeni istifadəçi əlavə etmək üçün kod */ }
+        // public void Update(Istifadeci istifadeci) { /* İstifadəçini yeniləmək üçün kod */ }
+        // public void UpdateLastLogin(int istifadeciId) { /* Son giriş tarixini yeniləmək üçün kod */ }
+
+
+        /// <summary>
+        /// App.config faylını manual olaraq XML kimi oxuyur və bağlantı sətrini tapır.
+        /// </summary>
+        /// <returns>Bağlantı sətrini qaytarır.</returns>
+        private string GetConnectionStringFromAppConfig()
+        {
+            try
+            {
+                XmlDocument doc = new XmlDocument();
+
+                // İşə düşən proqramın (PL layihəsinin) config faylının tam yolunu tapır
+                string configFile = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
+
+                if (!File.Exists(configFile))
+                {
+                    throw new FileNotFoundException("Configuration file not found: " + configFile);
+                }
+
+                doc.Load(configFile);
+
+                // XPath istifadə edərək adı "DefaultConnection" olan elementi axtarırıq
+                XmlNode node = doc.SelectSingleNode("/configuration/connectionStrings/add[@name='DefaultConnection']");
+
+                if (node != null)
+                {
+                    // Elementin 'connectionString' atributunun dəyərini götürürük
+                    string connStr = node.Attributes["connectionString"].Value;
+                    return connStr;
+                }
+                else
+                {
+                    throw new Exception("The 'DefaultConnection' connection string was not found in the App.config file.");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Hər hansı bir xəta baş verərsə, daha aydın məlumatla proqramı dayandırırıq
+                throw new Exception("Failed to read connection string from App.config. Error: " + ex.Message, ex);
+            }
+        }
     }
 }
