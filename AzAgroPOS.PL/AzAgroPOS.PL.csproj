@@ -76,5 +76,15 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AzAgroPOS.BLL\AzAgroPOS.BLL.csproj">
+      <Project>{7d9c40ce-5d16-4637-9a29-d8b002ef570c}</Project>
+      <Name>AzAgroPOS.BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AzAgroPOS.Entities\AzAgroPOS.Entities.csproj">
+      <Project>{21c6f220-c858-4436-89c4-5c0ab8e05893}</Project>
+      <Name>AzAgroPOS.Entities</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
