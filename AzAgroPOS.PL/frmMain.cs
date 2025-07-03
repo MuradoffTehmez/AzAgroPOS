@@ -35,5 +35,18 @@ namespace AzAgroPOS.PL
         {
             Application.Exit();
         }
+        private void anbarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //frmProducts productsForm = new frmProducts();
+            //productsForm.ShowDialog(); // Formanı dialoq kimi açırıq
+
+            //MessageBox.Show("Məhsul idarəçiliyi pəncərəsi burada açılacaq.");
+        }
+
+        private void anbarToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            frmProducts productsForm = new frmProducts();
+            productsForm.ShowDialog(); // Formanı dialoq kimi açırıq
+        }
     }
 }

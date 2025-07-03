@@ -74,12 +74,12 @@
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(95, 6);
             // 
             // çıxışToolStripMenuItem
             // 
             this.çıxışToolStripMenuItem.Name = "çıxışToolStripMenuItem";
-            this.çıxışToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.çıxışToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
             this.çıxışToolStripMenuItem.Text = "Çıxış";
             this.çıxışToolStripMenuItem.Click += new System.EventHandler(this.çıxışToolStripMenuItem_Click);
             // 
@@ -94,6 +94,7 @@
             this.anbarToolStripMenuItem.Name = "anbarToolStripMenuItem";
             this.anbarToolStripMenuItem.Size = new System.Drawing.Size(51, 20);
             this.anbarToolStripMenuItem.Text = "Anbar";
+            this.anbarToolStripMenuItem.Click += new System.EventHandler(this.anbarToolStripMenuItem_Click_1);
             // 
             // təmirToolStripMenuItem
             // 
@@ -145,7 +146,7 @@
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "AzAgroPOS - Ana Pəncərə";
