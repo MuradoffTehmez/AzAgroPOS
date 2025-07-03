@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AzAgroPOS.DAL
+namespace AzAgroPOS.Entities
 {
-    public class Class1
+    internal class Rol
     {
     }
 }
