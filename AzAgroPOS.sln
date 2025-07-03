@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzAgroPOS.BLL", "AzAgroPOS.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzAgroPOS.PL", "AzAgroPOS.PL\AzAgroPOS.PL.csproj", "{BB8C8822-1261-42E5-A7BB-21644F1B9091}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzAgroPOS.Entities", "AzAgroPOS.Entities\AzAgroPOS.Entities.csproj", "{21C6F220-C858-4436-89C4-5C0AB8E05893}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{BB8C8822-1261-42E5-A7BB-21644F1B9091}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB8C8822-1261-42E5-A7BB-21644F1B9091}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB8C8822-1261-42E5-A7BB-21644F1B9091}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21C6F220-C858-4436-89C4-5C0AB8E05893}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21C6F220-C858-4436-89C4-5C0AB8E05893}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21C6F220-C858-4436-89C4-5C0AB8E05893}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21C6F220-C858-4436-89C4-5C0AB8E05893}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
