@@ -134,32 +134,44 @@ namespace AzAgroPOS.PL
                 return;
             }
 
-            var satis = new Satis
-            {
-                IstifadeciId = _currentUser.Id,
-                MusteriId = _currentCustomer?.Id,
-                YekunMebleg = _cartItems.Sum(item => item.YekunMebleg),
-                OdenmisMebleg = _cartItems.Sum(item => item.YekunMebleg)
-            };
+            decimal totalAmount = _cartItems.Sum(item => item.YekunMebleg);
 
-            foreach (var item in _cartItems)
+            // Yeni ödəniş pəncərəsini açırıq və yekun məbləği ötürürük
+            using (var paymentForm = new frmPayment(totalAmount))
             {
-                satis.SatisMehsullari.Add(new SatisMehsulu
+                // Əgər istifadəçi ödənişi təsdiqləyərsə (OK basarsa)
+                if (paymentForm.ShowDialog() == DialogResult.OK)
                 {
-                    MehsulId = item.ProductId,
-                    Miqdar = item.Miqdar,
-                    QiymetBirEdede = item.VahidQiymet,
-                    EndirimMeblegi = 0
-                });
-            }
+                    // Ödəniş pəncərəsindən ödəniş məlumatlarını alırıq
+                    var satis = new Satis
+                    {
+                        IstifadeciId = _currentUser.Id,
+                        MusteriId = _currentCustomer?.Id,
+                        YekunMebleg = totalAmount,
+                        OdenmisMebleg = paymentForm.Odenisler.Sum(o => o.OdenisMeblegi),
+                        Odenisler = paymentForm.Odenisler
+                    };
 
-            bool result = _satisBll.Add(satis, out string message);
-            MessageBox.Show(message, result ? "Uğurlu" : "Xəta", MessageBoxButtons.OK, result ? MessageBoxIcon.Information : MessageBoxIcon.Error);
+                    foreach (var item in _cartItems)
+                    {
+                        satis.SatisMehsullari.Add(new SatisMehsulu
+                        {
+                            MehsulId = item.ProductId,
+                            Miqdar = item.Miqdar,
+                            QiymetBirEdede = item.VahidQiymet,
+                            EndirimMeblegi = 0
+                        });
+                    }
 
-            if (result)
-            {
-                _cartItems.Clear();
-                RefreshCartDisplay();
+                    bool result = _satisBll.Add(satis, out string message);
+                    MessageBox.Show(message, result ? "Uğurlu" : "Xəta", MessageBoxButtons.OK, result ? MessageBoxIcon.Information : MessageBoxIcon.Error);
+
+                    if (result)
+                    {
+                        _cartItems.Clear();
+                        RefreshCartDisplay();
+                    }
+                }
             }
         }
 

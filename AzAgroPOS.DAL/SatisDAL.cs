@@ -16,9 +16,7 @@ namespace AzAgroPOS.DAL
             using (var connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
-                // Tranzaksiyanı başladırıq
                 SqlTransaction transaction = connection.BeginTransaction();
-
                 try
                 {
                     // 1. Əsas satış məlumatını "satislar" cədvəlinə yazırıq
@@ -29,13 +27,11 @@ namespace AzAgroPOS.DAL
                     satisCommand.Parameters.Add("@istifadeci_id", SqlDbType.Int).Value = satis.IstifadeciId;
                     satisCommand.Parameters.Add("@yekun_mebleg", SqlDbType.Decimal).Value = satis.YekunMebleg;
                     satisCommand.Parameters.Add("@odenmis_mebleg", SqlDbType.Decimal).Value = satis.OdenmisMebleg;
-
                     int yeniSatisId = Convert.ToInt32(satisCommand.ExecuteScalar());
 
                     // 2. Hər bir məhsulu "satis_mehsullari" cədvəlinə yazırıq və anbarı yeniləyirik
                     foreach (var mehsul in satis.SatisMehsullari)
                     {
-                        // Satılan məhsulu əlavə edirik
                         var mehsulQuery = "INSERT INTO satis_mehsullari (satis_id, mehsul_id, miqdar, qiymet_bir_edede, endirim_meblegi) " +
                                           "VALUES (@satis_id, @mehsul_id, @miqdar, @qiymet_bir_edede, @endirim_meblegi);";
                         var mehsulCommand = new SqlCommand(mehsulQuery, connection, transaction);
@@ -46,7 +42,6 @@ namespace AzAgroPOS.DAL
                         mehsulCommand.Parameters.AddWithValue("@endirim_meblegi", mehsul.EndirimMeblegi);
                         mehsulCommand.ExecuteNonQuery();
 
-                        // Anbar qalığını azaldırıq
                         var stokQuery = "UPDATE mehsullar SET cari_stok = cari_stok - @miqdar WHERE id = @mehsul_id;";
                         var stokCommand = new SqlCommand(stokQuery, connection, transaction);
                         stokCommand.Parameters.AddWithValue("@miqdar", mehsul.Miqdar);
@@ -54,15 +49,26 @@ namespace AzAgroPOS.DAL
                         stokCommand.ExecuteNonQuery();
                     }
 
-                    // Bütün əməliyyatlar uğurlu olarsa, tranzaksiyanı təsdiqləyirik
+                    // 3. Hər bir ödənişi "odenisler" cədvəlinə yazırıq
+                    foreach (var odenis in satis.Odenisler)
+                    {
+                        var odenisQuery = "INSERT INTO odenisler (satis_id, odenis_nov_id, odenis_meblegi, kart_son_dord_reqem) " +
+                                          "VALUES (@satis_id, @odenis_nov_id, @odenis_meblegi, @kart_son_dord_reqem);";
+                        var odenisCommand = new SqlCommand(odenisQuery, connection, transaction);
+                        odenisCommand.Parameters.AddWithValue("@satis_id", yeniSatisId);
+                        odenisCommand.Parameters.AddWithValue("@odenis_nov_id", odenis.OdenisNovId);
+                        odenisCommand.Parameters.AddWithValue("@odenis_meblegi", odenis.OdenisMeblegi);
+                        odenisCommand.Parameters.AddWithValue("@kart_son_dord_reqem", (object)odenis.KartSonDordReqem ?? DBNull.Value);
+                        odenisCommand.ExecuteNonQuery();
+                    }
+
                     transaction.Commit();
                     return yeniSatisId;
                 }
                 catch (Exception)
                 {
-                    // Hər hansı bir xəta baş verərsə, bütün dəyişiklikləri ləğv edirik
                     transaction.Rollback();
-                    throw; // Xətanı yuxarıya ötürürük
+                    throw;
                 }
             }
         }
