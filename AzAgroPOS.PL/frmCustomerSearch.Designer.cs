@@ -63,6 +63,7 @@
             this.btnSelect.TabIndex = 3;
             this.btnSelect.Text = "Seç";
             this.btnSelect.UseVisualStyleBackColor = true;
+            this.btnSelect.Click += new System.EventHandler(this.btnSelect_Click_1);
             // 
             // frmCustomerSearch
             // 
@@ -77,6 +78,7 @@
             this.Name = "frmCustomerSearch";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Müştəri Axtarışı";
+            this.Load += new System.EventHandler(this.frmCustomerSearch_Load_1);
             ((System.ComponentModel.ISupportInitialize)(this.dgvCustomers)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

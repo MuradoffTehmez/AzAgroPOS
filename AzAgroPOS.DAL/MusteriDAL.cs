@@ -16,9 +16,9 @@ namespace AzAgroPOS.DAL
             var musteriler = new List<Musteri>();
             using (var connection = new SqlConnection(_connectionString))
             {
-                // Axtarış sözünü həm ad, həm soyad, həm də telefonda axtarırıq
+                // DÜZƏLİŞ: Axtarış sorğusunu daha etibarlı edirik.
                 var query = "SELECT id, ad, soyad, telefon, cari_nisye_borcu FROM musteriler " +
-                            "WHERE (ad + ' ' + soyad LIKE @term) OR (telefon LIKE @term)";
+                            "WHERE ad LIKE @term OR soyad LIKE @term OR telefon LIKE @term";
                 var command = new SqlCommand(query, connection);
                 command.Parameters.AddWithValue("@term", "%" + searchTerm + "%");
                 try

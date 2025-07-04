@@ -45,6 +45,7 @@
     <Compile Include="Kateqoriya.cs" />
     <Compile Include="Mehsul.cs" />
     <Compile Include="Musteri.cs" />
+    <Compile Include="Odenis.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rol.cs" />
     <Compile Include="SalesCartItem.cs" />
