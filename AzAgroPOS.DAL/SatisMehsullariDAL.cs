@@ -1,4 +1,5 @@
-﻿using AzAgroPOS.DAL.Helpers;
+﻿// Fayl: AzAgroPOS.DAL/SatisMehsullariDAL.cs
+using AzAgroPOS.DAL.Helpers;
 using AzAgroPOS.Entities;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,6 @@ namespace AzAgroPOS.DAL
             var mehsullar = new List<SatisMehsulu>();
             using (var connection = new SqlConnection(_connectionString))
             {
-                // Məhsulun adını da gətirmək üçün JOIN istifadə edirik
                 var query = "SELECT sm.*, m.ad as MehsulAdi FROM satis_mehsullari sm JOIN mehsullar m ON sm.mehsul_id = m.id WHERE sm.satis_id = @satis_id";
                 var command = new SqlCommand(query, connection);
                 command.Parameters.AddWithValue("@satis_id", satisId);
@@ -31,11 +31,10 @@ namespace AzAgroPOS.DAL
                                 Id = (int)reader["id"],
                                 SatisId = (int)reader["satis_id"],
                                 MehsulId = (int)reader["mehsul_id"],
+                                MehsulAdi = reader["MehsulAdi"].ToString(),
                                 Miqdar = (int)reader["miqdar"],
                                 QiymetBirEdede = (decimal)reader["qiymet_bir_edede"],
                                 EndirimMeblegi = (decimal)reader["endirim_meblegi"]
-                                // MehsulAdi xüsusiyyəti SatisMehsulu entity-sində yoxdur, onu SatisCartItem-ə bənzər ayrı bir modeldə saxlamaq olar
-                                // Hələlik sadə saxlayırıq.
                             };
                             mehsullar.Add(satisMehsulu);
                         }
