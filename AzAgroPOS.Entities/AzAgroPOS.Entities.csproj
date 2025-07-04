@@ -52,6 +52,8 @@
     <Compile Include="SalesCartItem.cs" />
     <Compile Include="Satis.cs" />
     <Compile Include="SatisMehsulu.cs" />
+    <Compile Include="Temir.cs" />
+    <Compile Include="TemirStatusu.cs" />
     <Compile Include="Vahid.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

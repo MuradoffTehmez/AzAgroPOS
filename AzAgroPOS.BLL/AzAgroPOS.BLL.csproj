@@ -49,6 +49,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SatisBLL.cs" />
     <Compile Include="SatisMehsullariBLL.cs" />
+    <Compile Include="TemirBLL.cs" />
+    <Compile Include="TemirStatusuBLL.cs" />
     <Compile Include="VahidBLL.cs" />
   </ItemGroup>
   <ItemGroup>

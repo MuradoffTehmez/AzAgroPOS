@@ -102,6 +102,7 @@
             this.təmirToolStripMenuItem.Name = "təmirToolStripMenuItem";
             this.təmirToolStripMenuItem.Size = new System.Drawing.Size(50, 20);
             this.təmirToolStripMenuItem.Text = "Təmir";
+            this.təmirToolStripMenuItem.Click += new System.EventHandler(this.təmirToolStripMenuItem_Click);
             // 
             // müştərilərToolStripMenuItem
             // 
