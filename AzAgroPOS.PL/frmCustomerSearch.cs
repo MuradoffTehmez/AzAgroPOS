@@ -83,15 +83,21 @@ namespace AzAgroPOS.PL
             SelectAndClose();
         }
 
-        private void btnSelect_Click_1(object sender, EventArgs e)
-        {
-            SelectAndClose();
-        }
-
         private void frmCustomerSearch_Load_1(object sender, EventArgs e)
         {
             dgvCustomers.AutoGenerateColumns = true;
             PerformSearch();
+        }
+
+        private void btnSelect_Click(object sender, EventArgs e)
+        {
+            SelectAndClose();
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.Cancel;
+            this.Close();
         }
     }
 }

@@ -180,5 +180,20 @@ namespace AzAgroPOS.PL
                 }
             }
         }
+
+        private void btnIncreaseQty_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnDecreaseQty_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnRemoveItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
