@@ -39,6 +39,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.dgvSaleDetails = new System.Windows.Forms.DataGridView();
             this.label4 = new System.Windows.Forms.Label();
+            this.btnExportToPdf = new System.Windows.Forms.Button();
+            this.btnExportToExcel = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -50,6 +52,8 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btnExportToExcel);
+            this.panel1.Controls.Add(this.btnExportToPdf);
             this.panel1.Controls.Add(this.btnShowReport);
             this.panel1.Controls.Add(this.dtpEndDate);
             this.panel1.Controls.Add(this.label2);
@@ -57,7 +61,7 @@
             this.panel1.Controls.Add(this.label1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1299, 53);
             this.panel1.TabIndex = 0;
@@ -66,7 +70,7 @@
             // 
             this.btnShowReport.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnShowReport.Location = new System.Drawing.Point(467, 12);
-            this.btnShowReport.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnShowReport.Margin = new System.Windows.Forms.Padding(2);
             this.btnShowReport.Name = "btnShowReport";
             this.btnShowReport.Size = new System.Drawing.Size(136, 28);
             this.btnShowReport.TabIndex = 4;
@@ -78,7 +82,7 @@
             // 
             this.dtpEndDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtpEndDate.Location = new System.Drawing.Point(305, 17);
-            this.dtpEndDate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dtpEndDate.Margin = new System.Windows.Forms.Padding(2);
             this.dtpEndDate.Name = "dtpEndDate";
             this.dtpEndDate.Size = new System.Drawing.Size(151, 21);
             this.dtpEndDate.TabIndex = 3;
@@ -98,7 +102,7 @@
             // 
             this.dtpStartDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtpStartDate.Location = new System.Drawing.Point(88, 17);
-            this.dtpStartDate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dtpStartDate.Margin = new System.Windows.Forms.Padding(2);
             this.dtpStartDate.Name = "dtpStartDate";
             this.dtpStartDate.Size = new System.Drawing.Size(151, 21);
             this.dtpStartDate.TabIndex = 1;
@@ -118,7 +122,7 @@
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.Location = new System.Drawing.Point(0, 53);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(2);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -144,7 +148,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvSales.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvSales.Location = new System.Drawing.Point(9, 27);
-            this.dgvSales.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dgvSales.Margin = new System.Windows.Forms.Padding(2);
             this.dgvSales.MultiSelect = false;
             this.dgvSales.Name = "dgvSales";
             this.dgvSales.ReadOnly = true;
@@ -175,7 +179,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvSaleDetails.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvSaleDetails.Location = new System.Drawing.Point(9, 29);
-            this.dgvSaleDetails.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dgvSaleDetails.Margin = new System.Windows.Forms.Padding(2);
             this.dgvSaleDetails.MultiSelect = false;
             this.dgvSaleDetails.Name = "dgvSaleDetails";
             this.dgvSaleDetails.ReadOnly = true;
@@ -196,6 +200,32 @@
             this.label4.TabIndex = 1;
             this.label4.Text = "Seçilmiş Satışın Məhsulları";
             // 
+            // btnExportToPdf
+            // 
+            this.btnExportToPdf.BackColor = System.Drawing.Color.Red;
+            this.btnExportToPdf.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnExportToPdf.Location = new System.Drawing.Point(1160, 5);
+            this.btnExportToPdf.Margin = new System.Windows.Forms.Padding(2);
+            this.btnExportToPdf.Name = "btnExportToPdf";
+            this.btnExportToPdf.Size = new System.Drawing.Size(130, 42);
+            this.btnExportToPdf.TabIndex = 5;
+            this.btnExportToPdf.Text = "PDF-ə İxrac";
+            this.btnExportToPdf.UseVisualStyleBackColor = false;
+            this.btnExportToPdf.Click += new System.EventHandler(this.btnExportToPdf_Click);
+            // 
+            // btnExportToExcel
+            // 
+            this.btnExportToExcel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.btnExportToExcel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnExportToExcel.Location = new System.Drawing.Point(1026, 6);
+            this.btnExportToExcel.Margin = new System.Windows.Forms.Padding(2);
+            this.btnExportToExcel.Name = "btnExportToExcel";
+            this.btnExportToExcel.Size = new System.Drawing.Size(130, 42);
+            this.btnExportToExcel.TabIndex = 6;
+            this.btnExportToExcel.Text = "Excel-ə İxrac";
+            this.btnExportToExcel.UseVisualStyleBackColor = false;
+            this.btnExportToExcel.Click += new System.EventHandler(this.btnExportToExcel_Click);
+            // 
             // frmSalesReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -203,7 +233,7 @@
             this.ClientSize = new System.Drawing.Size(1299, 711);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.panel1);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "frmSalesReport";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Satış Hesabatları";
@@ -235,5 +265,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.DataGridView dgvSaleDetails;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button btnExportToExcel;
+        private System.Windows.Forms.Button btnExportToPdf;
     }
 }
