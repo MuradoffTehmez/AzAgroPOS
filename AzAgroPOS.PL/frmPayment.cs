@@ -49,7 +49,8 @@ namespace AzAgroPOS.PL
             lblChange.ForeColor = (change < 0) ? System.Drawing.Color.Red : System.Drawing.Color.Green;
         }
 
-        private void btnConfirmPayment_Click(object sender, EventArgs e)
+       
+        private void btnConfirmPayment_Click_1(object sender, EventArgs e)
         {
             decimal.TryParse(txtCash.Text, out decimal cashAmount);
             decimal.TryParse(txtCard.Text, out decimal cardAmount);
@@ -63,7 +64,7 @@ namespace AzAgroPOS.PL
                 return;
             }
 
-            // Nisyə limitini yoxlayırıq
+
             if (nisyeAmount > 0 && _currentCustomer != null)
             {
                 decimal newDebt = _currentCustomer.CariNisyeBorcu + nisyeAmount;
@@ -80,6 +81,12 @@ namespace AzAgroPOS.PL
             if (nisyeAmount > 0) Odenisler.Add(new Odenis { OdenisNovId = 3, OdenisMeblegi = nisyeAmount });
 
             this.DialogResult = DialogResult.OK;
+            this.Close();
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
     }

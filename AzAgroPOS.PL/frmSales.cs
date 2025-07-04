@@ -151,7 +151,7 @@ namespace AzAgroPOS.PL
                         IstifadeciId = _currentUser.Id,
                         MusteriId = _currentCustomer?.Id,
                         YekunMebleg = totalAmount,
-                        // DÜZƏLİŞ BURADADIR: Ödənilən məbləğ yekun məbləğdən çox ola bilməz.
+                        
                         OdenmisMebleg = Math.Min(totalAmount, actualPaidAmount),
                         Odenisler = paymentForm.Odenisler
                     };
