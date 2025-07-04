@@ -115,6 +115,7 @@
             this.hesabatlarToolStripMenuItem.Name = "hesabatlarToolStripMenuItem";
             this.hesabatlarToolStripMenuItem.Size = new System.Drawing.Size(75, 20);
             this.hesabatlarToolStripMenuItem.Text = "Hesabatlar";
+            this.hesabatlarToolStripMenuItem.Click += new System.EventHandler(this.hesabatlarToolStripMenuItem_Click);
             // 
             // tənzimləmələrToolStripMenuItem
             // 

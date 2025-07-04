@@ -1,6 +1,8 @@
 ﻿// Fayl: AzAgroPOS.BLL/SatisBLL.cs
 using AzAgroPOS.DAL;
 using AzAgroPOS.Entities;
+using System;
+using System.Collections.Generic;
 
 namespace AzAgroPOS.BLL
 {
@@ -25,6 +27,11 @@ namespace AzAgroPOS.BLL
 
             message = "Satış zamanı xəta baş verdi.";
             return false;
+        }
+        
+        public List<Satis> GetByDateRange(DateTime startDate, DateTime endDate)
+        {
+            return _dal.GetByDateRange(startDate, endDate);
         }
     }
 }

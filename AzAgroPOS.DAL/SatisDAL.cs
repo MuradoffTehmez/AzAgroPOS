@@ -1,9 +1,10 @@
 ﻿using AzAgroPOS.DAL.Helpers;
 using AzAgroPOS.Entities;
 using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace AzAgroPOS.DAL
 {
@@ -94,5 +95,50 @@ namespace AzAgroPOS.DAL
                 }
             }
         }
+        
+        public List<Satis> GetByDateRange(DateTime startDate, DateTime endDate)
+        {
+            var satislar = new List<Satis>();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var query = @"SELECT 
+                        s.*, 
+                        ISNULL(m.ad + ' ' + m.soyad, 'Qeydiyyatsız') as MusteriAdi, 
+                        i.ad + ' ' + i.soyad as IstifadeciAdi 
+                      FROM satislar s
+                      LEFT JOIN musteriler m ON s.musteri_id = m.id
+                      JOIN istifadeciler i ON s.istifadeci_id = i.id
+                      WHERE s.satis_tarixi BETWEEN @start_date AND @end_date
+                      ORDER BY s.satis_tarixi DESC";
+                var command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@start_date", startDate);
+                command.Parameters.AddWithValue("@end_date", endDate);
+                try
+                {
+                    connection.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            satislar.Add(new Satis
+                            {
+                                Id = (int)reader["id"],
+                                SatisTarixi = (DateTime)reader["satis_tarixi"],
+                                MusteriId = reader["musteri_id"] as int?,
+                                IstifadeciId = (int)reader["istifadeci_id"],
+                                EndirimMeblegi = (decimal)reader["endirim_meblegi"],
+                                YekunMebleg = (decimal)reader["yekun_mebleg"],
+                                OdenmisMebleg = (decimal)reader["odenmis_mebleg"],
+                                MusteriAdi = reader["MusteriAdi"].ToString(),
+                                IstifadeciAdi = reader["IstifadeciAdi"].ToString()
+                            });
+                        }
+                    }
+                }
+                catch (Exception ex) { throw; }
+            }
+            return satislar;
+        }
     }
+
 }

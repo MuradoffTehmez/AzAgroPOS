@@ -12,6 +12,8 @@ namespace AzAgroPOS.Entities
         public decimal EndirimMeblegi { get; set; }
         public decimal YekunMebleg { get; set; }
         public decimal OdenmisMebleg { get; set; }
+        public string MusteriAdi { get; set; }
+        public string IstifadeciAdi { get; set; }
         public List<SatisMehsulu> SatisMehsullari { get; set; } = new List<SatisMehsulu>();
         public List<Odenis> Odenisler { get; set; } = new List<Odenis>();
     }

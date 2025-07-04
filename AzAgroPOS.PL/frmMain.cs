@@ -53,5 +53,11 @@ namespace AzAgroPOS.PL
             frmCustomers customersForm = new frmCustomers();
             customersForm.ShowDialog();
         }
+
+        private void hesabatlarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmSalesReport reportForm = new frmSalesReport();
+            reportForm.ShowDialog();
+        }
     }
 }
