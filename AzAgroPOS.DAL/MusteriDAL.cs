@@ -109,7 +109,17 @@ namespace AzAgroPOS.DAL
             }
         }
 
-        // Köməkçi metodlar
+        
+        public void UpdateNisyeBorcu(int musteriId, decimal elaveOlunanBorc, SqlConnection connection, SqlTransaction transaction)
+        {
+            var query = "UPDATE musteriler SET cari_nisye_borcu = cari_nisye_borcu + @elave_olunan_borc WHERE id = @id;";
+            var command = new SqlCommand(query, connection, transaction);
+            command.Parameters.AddWithValue("@elave_olunan_borc", elaveOlunanBorc);
+            command.Parameters.AddWithValue("@id", musteriId);
+            command.ExecuteNonQuery();
+        }
+       
+
         private void AddParameters(SqlCommand command, Musteri musteri)
         {
             command.Parameters.Add("@ad", SqlDbType.NVarChar).Value = musteri.Ad;
