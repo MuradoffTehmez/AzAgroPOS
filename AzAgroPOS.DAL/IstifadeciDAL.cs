@@ -1,6 +1,8 @@
 ﻿using AzAgroPOS.DAL.Helpers;
 using AzAgroPOS.Entities;
 using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace AzAgroPOS.DAL
@@ -53,6 +55,36 @@ namespace AzAgroPOS.DAL
                 }
             }
             return istifadeci;
+        }
+        public List<Istifadeci> GetAllByRole(string roleName)
+        {
+            var istifadeciler = new List<Istifadeci>();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var query = @"SELECT i.id, i.ad, i.soyad FROM istifadeciler i 
+                      JOIN rollar r ON i.rol_id = r.id 
+                      WHERE r.ad = @roleName AND i.aktivdir = 1";
+                var command = new SqlCommand(query, connection);
+                command.Parameters.Add("@roleName", SqlDbType.NVarChar).Value = roleName;
+                try
+                {
+                    connection.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            istifadeciler.Add(new Istifadeci
+                            {
+                                Id = (int)reader["id"],
+                                Ad = reader["ad"].ToString(),
+                                Soyad = reader["soyad"].ToString()
+                            });
+                        }
+                    }
+                }
+                catch (Exception ex) { throw; }
+            }
+            return istifadeciler;
         }
     }
 }

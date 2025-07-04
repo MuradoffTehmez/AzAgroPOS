@@ -2,6 +2,7 @@
 using AzAgroPOS.BLL.Helpers;
 using AzAgroPOS.DAL;
 using AzAgroPOS.Entities;
+using System.Collections.Generic;
 
 namespace AzAgroPOS.BLL
 {
@@ -13,7 +14,7 @@ namespace AzAgroPOS.BLL
         {
             _istifadeciDal = new IstifadeciDAL();
         }
-
+        public List<Istifadeci> GetAllByRole(string roleName) => _istifadeciDal.GetAllByRole(roleName);
         /// <summary>
         /// İstifadəçi adı və parolu yoxlayaraq sistemə girişi təmin edir.
         /// </summary>
@@ -53,7 +54,7 @@ namespace AzAgroPOS.BLL
                 return null;
             }
         }
+        
 
-        // Digər biznes məntiqləri (məsələn, yeni istifadəçi yaradarkən yoxlamalar) bura əlavə olunacaq
     }
 }
