@@ -68,7 +68,7 @@
             this.dgvProducts.RowHeadersWidth = 51;
             this.dgvProducts.RowTemplate.Height = 24;
             this.dgvProducts.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvProducts.Size = new System.Drawing.Size(614, 470);
+            this.dgvProducts.Size = new System.Drawing.Size(1078, 619);
             this.dgvProducts.TabIndex = 0;
             this.dgvProducts.SelectionChanged += new System.EventHandler(this.dgvProducts_SelectionChanged);
             // 
@@ -94,11 +94,11 @@
             this.gbProductDetails.Controls.Add(this.label3);
             this.gbProductDetails.Controls.Add(this.label2);
             this.gbProductDetails.Controls.Add(this.label1);
-            this.gbProductDetails.Location = new System.Drawing.Point(627, 10);
+            this.gbProductDetails.Location = new System.Drawing.Point(1091, 10);
             this.gbProductDetails.Margin = new System.Windows.Forms.Padding(2);
             this.gbProductDetails.Name = "gbProductDetails";
             this.gbProductDetails.Padding = new System.Windows.Forms.Padding(2);
-            this.gbProductDetails.Size = new System.Drawing.Size(252, 470);
+            this.gbProductDetails.Size = new System.Drawing.Size(252, 619);
             this.gbProductDetails.TabIndex = 1;
             this.gbProductDetails.TabStop = false;
             this.gbProductDetails.Text = "Məhsul Məlumatları";
@@ -281,7 +281,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(888, 490);
+            this.ClientSize = new System.Drawing.Size(1352, 639);
             this.Controls.Add(this.gbProductDetails);
             this.Controls.Add(this.dgvProducts);
             this.Margin = new System.Windows.Forms.Padding(2);

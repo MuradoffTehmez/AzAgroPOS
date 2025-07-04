@@ -131,6 +131,38 @@ namespace AzAgroPOS.DAL
         }
 
         /// <summary>
+        /// Barkoda görə tək bir aktiv məhsulu tapır.
+        /// </summary>
+        public Mehsul GetByBarcode(string barkod)
+        {
+            Mehsul mehsul = null;
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var query = "SELECT id, ad, satis_qiymeti FROM mehsullar WHERE barkod = @barkod AND aktivdir = 1 AND silinib = 0";
+                var command = new SqlCommand(query, connection);
+                command.Parameters.Add("@barkod", SqlDbType.NVarChar).Value = barkod;
+                try
+                {
+                    connection.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            mehsul = new Mehsul
+                            {
+                                Id = (int)reader["id"],
+                                Ad = reader["ad"].ToString(),
+                                SatisQiymeti = (decimal)reader["satis_qiymeti"]
+                            };
+                        }
+                    }
+                }
+                catch (Exception ex) { throw; }
+            }
+            return mehsul;
+        }
+
+        /// <summary>
         /// Məhsulu verilənlər bazasından fiziki olaraq silmir,
         /// sadəcə "silinib" statusunu 1 olaraq təyin edir (Soft Delete).
         /// </summary>
