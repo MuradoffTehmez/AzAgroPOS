@@ -44,5 +44,23 @@ namespace AzAgroPOS.BLL
             message = result ? "Sifariş uğurla silindi." : "Sifariş silinərkən xəta baş verdi.";
             return result;
         }
+        
+        public bool CompleteRepair(int temirId, decimal yekunXerc, out string message)
+        {
+            if (temirId == 0)
+            {
+                message = "Sifariş seçilməyib.";
+                return false;
+            }
+
+            if (_dal.CompleteRepair(temirId, yekunXerc))
+            {
+                message = "Təmir sifarişi uğurla tamamlandı.";
+                return true;
+            }
+
+            message = "Sifariş tamamlanarkən xəta baş verdi.";
+            return false;
+        }
     }
 }

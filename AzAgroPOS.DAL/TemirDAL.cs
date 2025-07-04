@@ -136,5 +136,92 @@ namespace AzAgroPOS.DAL
                 TemirciAdi = reader["TemirciAdi"].ToString()
             };
         }
+
+        public bool CompleteRepair(int temirId, decimal yekunXerc)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                // Təmiri tamamlanmış statusuna keçiririk (Məsələn, status ID=6 "Təhvil verildi")
+                // və yekun qiyməti, faktiki tamamlama tarixini qeyd edirik.
+                var query = "UPDATE temirler SET yekun_baxim_xerci = @yekun_xerc, status_id = 6, faktiki_tamamlama_tarixi = GETDATE() WHERE id = @id";
+                var command = new SqlCommand(query, connection);
+
+                command.Parameters.AddWithValue("@yekun_xerc", yekunXerc);
+                command.Parameters.AddWithValue("@id", temirId);
+
+                try
+                {
+                    connection.Open();
+                    return command.ExecuteNonQuery() > 0;
+                }
+                catch (Exception ex)
+                {
+                    throw;
+                }
+            }
+        }
+        /*
+        public Temir GetById(int temirId)
+
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var query = "SELECT * FROM temirler WHERE id = @id";
+                var command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@id", temirId);
+                try
+                {
+                    connection.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return MapTemir(reader);
+                        }
+                    }
+                }
+                catch (Exception ex) { throw; }
+            }
+            return null; // Əgər tapılmadısa, null qaytarırıq
+        }
+        */
+
+
+        /*
+        public List<Temir> GetByMusteriId(int musteriId)
+        {
+            var temirler = new List<Temir>();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var query = @"SELECT 
+                                t.*,
+                                m.ad + ' ' + m.soyad as MusteriAdi,
+                                ts.ad as StatusAdi,
+                                ISNULL(i.ad + ' ' + i.soyad, 'Təyin edilməyib') as TemirciAdi
+                              FROM temirler t
+                              JOIN musteriler m ON t.musteri_id = m.id
+                              JOIN temir_statuslari ts ON t.status_id = ts.id
+                              LEFT JOIN istifadeciler i ON t.temirci_id = i.id
+                              WHERE t.musteri_id = @musteri_id
+                              ORDER BY t.qebul_tarixi DESC";
+                var command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@musteri_id", musteriId);
+                try
+                {
+                    connection.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            temirler.Add(MapTemir(reader));
+                        }
+                    }
+                }
+                catch (Exception ex) { throw; }
+            }
+            return temirler;
+        }
+        */
+
     }
 }
