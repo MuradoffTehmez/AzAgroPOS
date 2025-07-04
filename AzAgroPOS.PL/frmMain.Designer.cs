@@ -88,6 +88,7 @@
             this.satışToolStripMenuItem.Name = "satışToolStripMenuItem";
             this.satışToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
             this.satışToolStripMenuItem.Text = "Satış";
+            this.satışToolStripMenuItem.Click += new System.EventHandler(this.satışToolStripMenuItem_Click);
             // 
             // anbarToolStripMenuItem
             // 
