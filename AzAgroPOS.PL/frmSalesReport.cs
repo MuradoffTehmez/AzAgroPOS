@@ -3,10 +3,9 @@ using ClosedXML.Excel;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System;
-using System.Data;
 using System.IO;
 using System.Windows.Forms;
-
+using iTextFont = iTextSharp.text.Font; // Ad konfliktini həll etmək üçün alias
 
 namespace AzAgroPOS.PL
 {
@@ -24,7 +23,7 @@ namespace AzAgroPOS.PL
         {
             dtpStartDate.Value = DateTime.Today;
             dtpEndDate.Value = DateTime.Today;
-            btnShowReport_Click(null, null);
+            btnShowReport_Click(null, null); 
         }
 
         private void btnShowReport_Click(object sender, EventArgs e)
@@ -32,11 +31,11 @@ namespace AzAgroPOS.PL
             try
             {
                 var startDate = dtpStartDate.Value.Date;
-                var endDate = dtpEndDate.Value.Date.AddDays(1).AddTicks(-1);
+                var endDate = dtpEndDate.Value.Date.AddDays(1).AddTicks(-1); // Günün son anı
 
                 dgvSales.DataSource = _satisBll.GetByDateRange(startDate, endDate);
                 SetupSalesGrid();
-                dgvSaleDetails.DataSource = null;
+                dgvSaleDetails.DataSource = null; // Üst cədvəl yenilənəndə alt cədvəli təmizləyirik
             }
             catch (Exception ex)
             {
@@ -47,18 +46,22 @@ namespace AzAgroPOS.PL
         private void SetupSalesGrid()
         {
             if (dgvSales.Columns.Count == 0) return;
+
             dgvSales.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
+            // Görünən sütunların başlıqlarını və formatlarını dəyişirik
             dgvSales.Columns["Id"].HeaderText = "Satış ID";
             dgvSales.Columns["SatisTarixi"].HeaderText = "Tarix və Vaxt";
             dgvSales.Columns["MusteriAdi"].HeaderText = "Müştəri";
             dgvSales.Columns["IstifadeciAdi"].HeaderText = "Kassir";
             dgvSales.Columns["EndirimMeblegi"].HeaderText = "Endirim (₼)";
             dgvSales.Columns["YekunMebleg"].HeaderText = "Yekun Məbləğ (₼)";
+
             dgvSales.Columns["EndirimMeblegi"].DefaultCellStyle.Format = "F2";
             dgvSales.Columns["YekunMebleg"].DefaultCellStyle.Format = "F2";
             dgvSales.Columns["SatisTarixi"].DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
 
+            // Lazımsız sütunları gizlədirik
             string[] hiddenColumns = { "MusteriId", "IstifadeciId", "OdenmisMebleg", "SatisMehsullari", "Odenisler" };
             foreach (var colName in hiddenColumns)
             {
@@ -84,6 +87,7 @@ namespace AzAgroPOS.PL
         private void SetupDetailsGrid()
         {
             if (dgvSaleDetails.Columns.Count == 0) return;
+
             dgvSaleDetails.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
             if (dgvSaleDetails.Columns["MehsulAdi"] != null) dgvSaleDetails.Columns["MehsulAdi"].HeaderText = "Məhsul Adı";
@@ -101,7 +105,6 @@ namespace AzAgroPOS.PL
             }
         }
 
-        
         private void btnExportToExcel_Click(object sender, EventArgs e)
         {
             if (dgvSales.Rows.Count == 0)
@@ -109,21 +112,17 @@ namespace AzAgroPOS.PL
                 MessageBox.Show("İxrac etmək üçün məlumat yoxdur.", "Məlumat", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-
             try
             {
                 SaveFileDialog saveFileDialog = new SaveFileDialog();
                 saveFileDialog.Filter = "Excel Workbook|*.xlsx";
                 saveFileDialog.Title = "Excel faylı olaraq yadda saxla";
                 saveFileDialog.FileName = $"Satış Hesabatı_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
-
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     using (var workbook = new XLWorkbook())
                     {
                         var worksheet = workbook.Worksheets.Add("Satış Hesabatı");
-
-                        // Başlıqları yazırıq
                         int cellIndex = 1;
                         foreach (DataGridViewColumn column in dgvSales.Columns)
                         {
@@ -132,8 +131,6 @@ namespace AzAgroPOS.PL
                                 worksheet.Cell(1, cellIndex++).Value = column.HeaderText;
                             }
                         }
-
-                        // Məlumatları yazırıq
                         int rowIndex = 2;
                         foreach (DataGridViewRow row in dgvSales.Rows)
                         {
@@ -147,7 +144,6 @@ namespace AzAgroPOS.PL
                             }
                             rowIndex++;
                         }
-
                         worksheet.Columns().AdjustToContents();
                         workbook.SaveAs(saveFileDialog.FileName);
                         MessageBox.Show("Hesabat uğurla Excel faylına ixrac edildi!", "Uğurlu", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -179,11 +175,11 @@ namespace AzAgroPOS.PL
                 {
                     string fontPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Fonts), "ARIAL.TTF");
                     BaseFont baseFont = BaseFont.CreateFont(fontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-                    Font fontHeader = new Font(baseFont, 10, Font.BOLD);
-                    Font fontBody = new Font(baseFont, 9, Font.NORMAL);
 
-                    // Sənəd və cədvəl yaratmaq
-                    Document document = new Document(PageSize.A4.Rotate(), 20, 20, 20, 20); // Landscape
+                    iTextFont fontHeader = new iTextFont(baseFont, 10, iTextFont.BOLD);
+                    iTextFont fontBody = new iTextFont(baseFont, 9, iTextFont.NORMAL);
+
+                    Document document = new Document(PageSize.A4.Rotate(), 20, 20, 20, 20);
                     PdfWriter.GetInstance(document, new FileStream(saveFileDialog.FileName, FileMode.Create));
 
                     int visibleColumnCount = 0;
@@ -193,7 +189,6 @@ namespace AzAgroPOS.PL
                     PdfPTable table = new PdfPTable(visibleColumnCount);
                     table.WidthPercentage = 100;
 
-                    // Başlıqları əlavə etmək
                     foreach (DataGridViewColumn column in dgvSales.Columns)
                     {
                         if (column.Visible)
@@ -204,7 +199,6 @@ namespace AzAgroPOS.PL
                         }
                     }
 
-                    // Məlumatları əlavə etmək
                     foreach (DataGridViewRow row in dgvSales.Rows)
                     {
                         foreach (DataGridViewCell cell in row.Cells)
@@ -217,7 +211,7 @@ namespace AzAgroPOS.PL
                     }
 
                     document.Open();
-                    document.Add(new Phrase("Satış Hesabatı", new Font(baseFont, 16, Font.BOLD)));
+                    document.Add(new Phrase("Satış Hesabatı", new iTextFont(baseFont, 16, iTextFont.BOLD)));
                     document.Add(new Paragraph($"Tarix Aralığı: {dtpStartDate.Value:dd.MM.yyyy} - {dtpEndDate.Value:dd.MM.yyyy}\n\n"));
                     document.Add(table);
                     document.Close();
