@@ -24,7 +24,8 @@
             this.btnCompleteSale = new System.Windows.Forms.Button();
             this.lblTotalPrice = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.lblCustomerName = new System.Windows.Forms.Label();
+            this.btnSelectCustomer = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSalesCart)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -74,7 +75,8 @@
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.panel1.Controls.Add(this.label2);
+            this.panel1.Controls.Add(this.btnSelectCustomer);
+            this.panel1.Controls.Add(this.lblCustomerName);
             this.panel1.Controls.Add(this.btnCompleteSale);
             this.panel1.Controls.Add(this.lblTotalPrice);
             this.panel1.Controls.Add(this.label3);
@@ -120,14 +122,29 @@
             this.label3.TabIndex = 0;
             this.label3.Text = "Yekun Məbləğ:";
             // 
-            // label2
+            // lblCustomerName
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(754, 54);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(35, 13);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "label2";
+            this.lblCustomerName.AutoSize = true;
+            this.lblCustomerName.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCustomerName.Location = new System.Drawing.Point(746, 36);
+            this.lblCustomerName.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblCustomerName.Name = "lblCustomerName";
+            this.lblCustomerName.Size = new System.Drawing.Size(308, 37);
+            this.lblCustomerName.TabIndex = 3;
+            this.lblCustomerName.Text = "Qeydiyyatsız Müştəri";
+            // 
+            // btnSelectCustomer
+            // 
+            this.btnSelectCustomer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSelectCustomer.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSelectCustomer.Location = new System.Drawing.Point(1058, 18);
+            this.btnSelectCustomer.Margin = new System.Windows.Forms.Padding(2);
+            this.btnSelectCustomer.Name = "btnSelectCustomer";
+            this.btnSelectCustomer.Size = new System.Drawing.Size(163, 74);
+            this.btnSelectCustomer.TabIndex = 4;
+            this.btnSelectCustomer.Text = "Müştəri Seç";
+            this.btnSelectCustomer.UseVisualStyleBackColor = true;
+            this.btnSelectCustomer.Click += new System.EventHandler(this.btnSelectCustomer_Click);
             // 
             // frmSales
             // 
@@ -161,6 +178,7 @@
         private System.Windows.Forms.Label lblTotalPrice;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnCompleteSale;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblCustomerName;
+        private System.Windows.Forms.Button btnSelectCustomer;
     }
 }

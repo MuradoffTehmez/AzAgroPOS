@@ -13,6 +13,7 @@ namespace AzAgroPOS.PL
         private readonly MehsulBLL _mehsulBll = new MehsulBLL();
         private readonly SatisBLL _satisBll = new SatisBLL();
         private readonly Istifadeci _currentUser;
+        private Musteri _currentCustomer = null;
 
         // Satış səbətini yadda saxlamaq üçün List
         private readonly BindingList<SalesCartItem> _cartItems = new BindingList<SalesCartItem>();
@@ -136,6 +137,7 @@ namespace AzAgroPOS.PL
             var satis = new Satis
             {
                 IstifadeciId = _currentUser.Id,
+                MusteriId = _currentCustomer?.Id,
                 YekunMebleg = _cartItems.Sum(item => item.YekunMebleg),
                 OdenmisMebleg = _cartItems.Sum(item => item.YekunMebleg)
             };
@@ -158,6 +160,18 @@ namespace AzAgroPOS.PL
             {
                 _cartItems.Clear();
                 RefreshCartDisplay();
+            }
+        }
+
+        private void btnSelectCustomer_Click(object sender, EventArgs e)
+        {
+            using (frmCustomerSearch searchForm = new frmCustomerSearch())
+            {
+                if (searchForm.ShowDialog() == DialogResult.OK)
+                {
+                    _currentCustomer = searchForm.SelectedCustomer;
+                    lblCustomerName.Text = $"Müştəri: {_currentCustomer.Ad} {_currentCustomer.Soyad}";
+                }
             }
         }
     }
