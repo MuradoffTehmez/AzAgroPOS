@@ -16,7 +16,6 @@ namespace AzAgroPOS.DAL
             var musteriler = new List<Musteri>();
             using (var connection = new SqlConnection(_connectionString))
             {
-                // DÜZƏLİŞ: Axtarış sorğusunu daha etibarlı edirik.
                 var query = "SELECT id, ad, soyad, telefon, cari_nisye_borcu FROM musteriler " +
                             "WHERE ad LIKE @term OR soyad LIKE @term OR telefon LIKE @term";
                 var command = new SqlCommand(query, connection);
@@ -43,5 +42,14 @@ namespace AzAgroPOS.DAL
             }
             return musteriler;
         }
+        public void UpdateNisyeBorcu(int musteriId, decimal elaveOlunanBorc, SqlConnection connection, SqlTransaction transaction)
+        {
+            var query = "UPDATE musteriler SET cari_nisye_borcu = cari_nisye_borcu + @elave_olunan_borc WHERE id = @id;";
+            var command = new SqlCommand(query, connection, transaction);
+            command.Parameters.AddWithValue("@elave_olunan_borc", elaveOlunanBorc);
+            command.Parameters.AddWithValue("@id", musteriId);
+            command.ExecuteNonQuery();
+        }
+
     }
 }

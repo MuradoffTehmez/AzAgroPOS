@@ -140,7 +140,7 @@ namespace AzAgroPOS.PL
 
             decimal totalAmount = _cartItems.Sum(item => item.YekunMebleg);
 
-            using (var paymentForm = new frmPayment(totalAmount))
+            using (var paymentForm = new frmPayment(totalAmount, _currentCustomer))
             {
                 if (paymentForm.ShowDialog() == DialogResult.OK)
                 {
