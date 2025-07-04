@@ -47,7 +47,9 @@ namespace AzAgroPOS.PL
             }
         }
 
-        private void btnConfirmPayment_Click(object sender, EventArgs e)
+      
+
+        private void btnConfirmPayment_Click_1(object sender, EventArgs e)
         {
             decimal.TryParse(txtCash.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal cashAmount);
             decimal.TryParse(txtCard.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal cardAmount);

@@ -1,4 +1,5 @@
-﻿using AzAgroPOS.BLL;
+﻿// Fayl: AzAgroPOS.PL/frmSales.cs
+using AzAgroPOS.BLL;
 using AzAgroPOS.Entities;
 using System;
 using System.ComponentModel;
@@ -9,20 +10,15 @@ namespace AzAgroPOS.PL
 {
     public partial class frmSales : Form
     {
-        // BLL sinifləri və daxil olan istifadəçi üçün sahələr
+        private readonly Istifadeci _currentUser;
         private readonly MehsulBLL _mehsulBll = new MehsulBLL();
         private readonly SatisBLL _satisBll = new SatisBLL();
-        private readonly Istifadeci _currentUser;
+        private readonly BindingList<SalesCartItem> _cartItems = new BindingList<SalesCartItem>();
         private Musteri _currentCustomer = null;
 
-        // Satış səbətini yadda saxlamaq üçün List
-        private readonly BindingList<SalesCartItem> _cartItems = new BindingList<SalesCartItem>();
-
-        // DÜZƏLİŞ BURADADIR: Constructor, Istifadeci tipindən bir "user" parametri qəbul edir
         public frmSales(Istifadeci user)
         {
             InitializeComponent();
-            // Qəbul edilən parametr, class-ın daxili sahəsinə mənimsədilir
             _currentUser = user;
         }
 
@@ -30,6 +26,8 @@ namespace AzAgroPOS.PL
         {
             dgvSalesCart.DataSource = _cartItems;
             SetupDataGrid();
+            // Müştəri üçün label-i ilkin vəziyyətə gətiririk
+            lblCustomerName.Text = "Qeydiyyatsız Müştəri";
         }
 
         private void SetupDataGrid()
@@ -39,7 +37,6 @@ namespace AzAgroPOS.PL
             dgvSalesCart.Columns["Miqdar"].HeaderText = "Miqdar";
             dgvSalesCart.Columns["VahidQiymet"].HeaderText = "Vahid Qiyməti";
             dgvSalesCart.Columns["YekunMebleg"].HeaderText = "Yekun Məbləğ";
-
             dgvSalesCart.Columns["Ad"].ReadOnly = true;
             dgvSalesCart.Columns["VahidQiymet"].ReadOnly = true;
             dgvSalesCart.Columns["YekunMebleg"].ReadOnly = true;
@@ -52,9 +49,7 @@ namespace AzAgroPOS.PL
             {
                 string barcode = txtBarcodeSearch.Text.Trim();
                 if (string.IsNullOrEmpty(barcode)) return;
-
                 var product = _mehsulBll.GetByBarcode(barcode);
-
                 if (product != null)
                 {
                     AddToCart(product);
@@ -63,7 +58,6 @@ namespace AzAgroPOS.PL
                 {
                     MessageBox.Show("Bu barkoda uyğun məhsul tapılmadı.", "Məlumat", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
-
                 txtBarcodeSearch.Clear();
                 txtBarcodeSearch.Focus();
             }
@@ -91,9 +85,7 @@ namespace AzAgroPOS.PL
 
         private void RefreshCartDisplay()
         {
-            // BindingList istifadə etdiyimiz üçün cədvəl avtomatik yenilənir.
-            // Sadəcə yekunları yenidən hesablamaq kifayətdir.
-            dgvSalesCart.Invalidate(); // Cədvəli vizual olaraq yeniləyir
+            dgvSalesCart.Invalidate();
             UpdateTotals();
         }
 
@@ -126,6 +118,18 @@ namespace AzAgroPOS.PL
             }
         }
 
+        private void btnSelectCustomer_Click(object sender, EventArgs e)
+        {
+            using (frmCustomerSearch searchForm = new frmCustomerSearch())
+            {
+                if (searchForm.ShowDialog() == DialogResult.OK)
+                {
+                    _currentCustomer = searchForm.SelectedCustomer;
+                    lblCustomerName.Text = $"Müştəri: {_currentCustomer.Ad} {_currentCustomer.Soyad}";
+                }
+            }
+        }
+
         private void btnCompleteSale_Click(object sender, EventArgs e)
         {
             if (_cartItems.Count == 0)
@@ -136,19 +140,19 @@ namespace AzAgroPOS.PL
 
             decimal totalAmount = _cartItems.Sum(item => item.YekunMebleg);
 
-            // Yeni ödəniş pəncərəsini açırıq və yekun məbləği ötürürük
             using (var paymentForm = new frmPayment(totalAmount))
             {
-                // Əgər istifadəçi ödənişi təsdiqləyərsə (OK basarsa)
                 if (paymentForm.ShowDialog() == DialogResult.OK)
                 {
-                    // Ödəniş pəncərəsindən ödəniş məlumatlarını alırıq
+                    decimal actualPaidAmount = paymentForm.Odenisler.Sum(o => o.OdenisMeblegi);
+
                     var satis = new Satis
                     {
                         IstifadeciId = _currentUser.Id,
                         MusteriId = _currentCustomer?.Id,
                         YekunMebleg = totalAmount,
-                        OdenmisMebleg = paymentForm.Odenisler.Sum(o => o.OdenisMeblegi),
+                        // DÜZƏLİŞ BURADADIR: Ödənilən məbləğ yekun məbləğdən çox ola bilməz.
+                        OdenmisMebleg = Math.Min(totalAmount, actualPaidAmount),
                         Odenisler = paymentForm.Odenisler
                     };
 
@@ -170,19 +174,9 @@ namespace AzAgroPOS.PL
                     {
                         _cartItems.Clear();
                         RefreshCartDisplay();
+                        _currentCustomer = null;
+                        lblCustomerName.Text = "Qeydiyyatsız Müştəri";
                     }
-                }
-            }
-        }
-
-        private void btnSelectCustomer_Click(object sender, EventArgs e)
-        {
-            using (frmCustomerSearch searchForm = new frmCustomerSearch())
-            {
-                if (searchForm.ShowDialog() == DialogResult.OK)
-                {
-                    _currentCustomer = searchForm.SelectedCustomer;
-                    lblCustomerName.Text = $"Müştəri: {_currentCustomer.Ad} {_currentCustomer.Soyad}";
                 }
             }
         }

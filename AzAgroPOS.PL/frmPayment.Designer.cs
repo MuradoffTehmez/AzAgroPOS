@@ -93,6 +93,7 @@
             this.btnConfirmPayment.TabIndex = 2;
             this.btnConfirmPayment.Text = "Ödənişi Təsdiqlə";
             this.btnConfirmPayment.UseVisualStyleBackColor = true;
+            this.btnConfirmPayment.Click += new System.EventHandler(this.btnConfirmPayment_Click_1);
             // 
             // btnCancel
             // 
