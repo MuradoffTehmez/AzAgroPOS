@@ -36,7 +36,7 @@ namespace AzAgroPOS.PL
             }
         }
 
-        // DÜZƏLİŞ: Sütunları səliqəyə salan daha detallı metod
+        
         private void SetupDataGrid()
         {
             // Cədvəlin bütün sütunları əhatə etməsini təmin edirik

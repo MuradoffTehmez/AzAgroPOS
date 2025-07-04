@@ -1,5 +1,4 @@
-﻿// Fayl: AzAgroPOS.PL/frmPayment.cs (Tam Yenilənmiş Versiya)
-using AzAgroPOS.Entities;
+﻿using AzAgroPOS.Entities;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -10,67 +9,78 @@ namespace AzAgroPOS.PL
 {
     public partial class frmPayment : Form
     {
-        private readonly decimal _totalAmount;
+        private readonly decimal _subTotal;
         private readonly Musteri _currentCustomer;
         public List<Odenis> Odenisler { get; private set; }
+        public decimal DiscountAmount { get; private set; }
 
         public frmPayment(decimal totalAmount, Musteri customer)
         {
             InitializeComponent();
-            _totalAmount = totalAmount;
+            _subTotal = totalAmount;
             _currentCustomer = customer;
-            lblTotalAmount.Text = _totalAmount.ToString("F2") + " ₼";
-            txtCash.Text = _totalAmount.ToString("F2");
 
-            // Əgər müştəri seçilməyibsə, nisyə xanasını deaktiv edirik
+            lblSubTotal.Text = _subTotal.ToString("F2") + " ₼";
+
             if (_currentCustomer == null)
             {
                 txtNisye.Enabled = false;
                 txtNisye.Text = "0.00";
             }
+            // İlkin olaraq bütün hesablamaları yeniləyirik
+            UpdateTotals();
         }
 
-        private void txtPayment_TextChanged(object sender, EventArgs e)
+        private void AnyTextChanged(object sender, EventArgs e)
         {
             UpdateTotals();
         }
 
         private void UpdateTotals()
         {
+            decimal.TryParse(txtDiscount.Text, out decimal discountValue);
             decimal.TryParse(txtCash.Text, out decimal cashAmount);
             decimal.TryParse(txtCard.Text, out decimal cardAmount);
             decimal.TryParse(txtNisye.Text, out decimal nisyeAmount);
 
-            decimal paidAmount = cashAmount + cardAmount + nisyeAmount;
-            decimal change = paidAmount - _totalAmount;
+            // Endirim məbləğini hesabla
+            this.DiscountAmount = discountValue; // Sabit məbləğ kimi
 
+            decimal finalTotal = _subTotal - this.DiscountAmount;
+            if (finalTotal < 0) finalTotal = 0; // Yekun mənfi ola bilməz
+
+            decimal paidAmount = cashAmount + cardAmount + nisyeAmount;
+            decimal change = paidAmount - finalTotal;
+
+            lblTotalAmount.Text = finalTotal.ToString("F2") + " ₼";
             lblPaidAmount.Text = paidAmount.ToString("F2") + " ₼";
             lblChange.Text = change.ToString("F2") + " ₼";
             lblChange.ForeColor = (change < 0) ? System.Drawing.Color.Red : System.Drawing.Color.Green;
         }
 
-       
         private void btnConfirmPayment_Click_1(object sender, EventArgs e)
         {
-            decimal.TryParse(txtCash.Text, out decimal cashAmount);
-            decimal.TryParse(txtCard.Text, out decimal cardAmount);
-            decimal.TryParse(txtNisye.Text, out decimal nisyeAmount);
+            decimal finalTotal = _subTotal - this.DiscountAmount;
+            if (finalTotal < 0) finalTotal = 0;
 
+            decimal cashAmount, cardAmount, nisyeAmount;
+            decimal.TryParse(txtCash.Text, out cashAmount);
+            decimal.TryParse(txtCard.Text, out cardAmount);
+            decimal.TryParse(txtNisye.Text, out nisyeAmount);
             decimal paidAmount = cashAmount + cardAmount + nisyeAmount;
 
-            if (paidAmount < _totalAmount)
+            if (paidAmount < finalTotal)
             {
-                MessageBox.Show("Ödənilən məbləğ yekun məbləğdən az ola bilməz (nisyə istisna olmaqla).", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Ödənilən məbləğ yekun məbləğdən az ola bilməz.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-
 
             if (nisyeAmount > 0 && _currentCustomer != null)
             {
                 decimal newDebt = _currentCustomer.CariNisyeBorcu + nisyeAmount;
                 if (newDebt > _currentCustomer.NisyeLimiti)
                 {
-                    MessageBox.Show($"Nisyə limiti keçildi! Mövcud limit: {_currentCustomer.NisyeLimiti} ₼, Cari borc: {_currentCustomer.CariNisyeBorcu} ₼", "Limit Xətası", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Nisyə limiti keçildi!", "Limit Xətası", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
             }

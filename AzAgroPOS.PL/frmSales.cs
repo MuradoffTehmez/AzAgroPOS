@@ -150,9 +150,9 @@ namespace AzAgroPOS.PL
                     {
                         IstifadeciId = _currentUser.Id,
                         MusteriId = _currentCustomer?.Id,
-                        YekunMebleg = totalAmount,
-                        
-                        OdenmisMebleg = Math.Min(totalAmount, actualPaidAmount),
+                        YekunMebleg = totalAmount - paymentForm.DiscountAmount, // YEKUN MƏBLƏĞ DƏYİŞDİ
+                        EndirimMeblegi = paymentForm.DiscountAmount,
+                        OdenmisMebleg = Math.Min(totalAmount - paymentForm.DiscountAmount, paymentForm.Odenisler.Sum(o => o.OdenisMeblegi)),
                         Odenisler = paymentForm.Odenisler
                     };
 
