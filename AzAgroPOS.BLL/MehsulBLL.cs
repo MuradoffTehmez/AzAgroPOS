@@ -58,6 +58,22 @@ namespace AzAgroPOS.BLL
             return false;
         }
 
-        // public bool Delete(int mehsulId, out string message) { /* Növbəti addımda yazılacaq */ }
+        public bool Delete(int mehsulId, out string message)
+        {
+            if (mehsulId <= 0)
+            {
+                message = "Silmək üçün məhsul seçilməyib.";
+                return false;
+            }
+
+            if (_dal.Delete(mehsulId))
+            {
+                message = "Məhsul uğurla silindi.";
+                return true;
+            }
+
+            message = "Məhsul silinərkən xəta baş verdi.";
+            return false;
+        }
     }
 }

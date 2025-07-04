@@ -62,7 +62,7 @@
             this.dgvProducts.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvProducts.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvProducts.Location = new System.Drawing.Point(9, 10);
-            this.dgvProducts.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dgvProducts.Margin = new System.Windows.Forms.Padding(2);
             this.dgvProducts.Name = "dgvProducts";
             this.dgvProducts.ReadOnly = true;
             this.dgvProducts.RowHeadersWidth = 51;
@@ -70,6 +70,7 @@
             this.dgvProducts.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvProducts.Size = new System.Drawing.Size(614, 470);
             this.dgvProducts.TabIndex = 0;
+            this.dgvProducts.SelectionChanged += new System.EventHandler(this.dgvProducts_SelectionChanged);
             // 
             // gbProductDetails
             // 
@@ -94,19 +95,18 @@
             this.gbProductDetails.Controls.Add(this.label2);
             this.gbProductDetails.Controls.Add(this.label1);
             this.gbProductDetails.Location = new System.Drawing.Point(627, 10);
-            this.gbProductDetails.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gbProductDetails.Margin = new System.Windows.Forms.Padding(2);
             this.gbProductDetails.Name = "gbProductDetails";
-            this.gbProductDetails.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gbProductDetails.Padding = new System.Windows.Forms.Padding(2);
             this.gbProductDetails.Size = new System.Drawing.Size(252, 470);
             this.gbProductDetails.TabIndex = 1;
             this.gbProductDetails.TabStop = false;
             this.gbProductDetails.Text = "Məhsul Məlumatları";
-            this.gbProductDetails.Enter += new System.EventHandler(this.gbProductDetails_Enter);
             // 
             // btnClear
             // 
             this.btnClear.Location = new System.Drawing.Point(14, 292);
-            this.btnClear.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnClear.Margin = new System.Windows.Forms.Padding(2);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(226, 28);
             this.btnClear.TabIndex = 10;
@@ -117,27 +117,29 @@
             // btnDelete
             // 
             this.btnDelete.Location = new System.Drawing.Point(174, 259);
-            this.btnDelete.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnDelete.Margin = new System.Windows.Forms.Padding(2);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(66, 28);
             this.btnDelete.TabIndex = 9;
             this.btnDelete.Text = "Sil";
             this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // btnUpdate
             // 
             this.btnUpdate.Location = new System.Drawing.Point(94, 259);
-            this.btnUpdate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnUpdate.Margin = new System.Windows.Forms.Padding(2);
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new System.Drawing.Size(66, 28);
             this.btnUpdate.TabIndex = 8;
             this.btnUpdate.Text = "Yenilə";
             this.btnUpdate.UseVisualStyleBackColor = true;
+            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
             // 
             // btnAdd
             // 
             this.btnAdd.Location = new System.Drawing.Point(14, 259);
-            this.btnAdd.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnAdd.Margin = new System.Windows.Forms.Padding(2);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(66, 28);
             this.btnAdd.TabIndex = 7;
@@ -150,7 +152,7 @@
             this.cmbVahid.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbVahid.FormattingEnabled = true;
             this.cmbVahid.Location = new System.Drawing.Point(101, 111);
-            this.cmbVahid.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cmbVahid.Margin = new System.Windows.Forms.Padding(2);
             this.cmbVahid.Name = "cmbVahid";
             this.cmbVahid.Size = new System.Drawing.Size(140, 21);
             this.cmbVahid.TabIndex = 4;
@@ -160,7 +162,7 @@
             this.cmbKateqoriya.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbKateqoriya.FormattingEnabled = true;
             this.cmbKateqoriya.Location = new System.Drawing.Point(101, 83);
-            this.cmbKateqoriya.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cmbKateqoriya.Margin = new System.Windows.Forms.Padding(2);
             this.cmbKateqoriya.Name = "cmbKateqoriya";
             this.cmbKateqoriya.Size = new System.Drawing.Size(140, 21);
             this.cmbKateqoriya.TabIndex = 3;
@@ -168,7 +170,7 @@
             // txtMinimumStok
             // 
             this.txtMinimumStok.Location = new System.Drawing.Point(101, 197);
-            this.txtMinimumStok.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtMinimumStok.Margin = new System.Windows.Forms.Padding(2);
             this.txtMinimumStok.Name = "txtMinimumStok";
             this.txtMinimumStok.Size = new System.Drawing.Size(140, 20);
             this.txtMinimumStok.TabIndex = 6;
@@ -176,7 +178,7 @@
             // txtSatisQiymeti
             // 
             this.txtSatisQiymeti.Location = new System.Drawing.Point(101, 168);
-            this.txtSatisQiymeti.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtSatisQiymeti.Margin = new System.Windows.Forms.Padding(2);
             this.txtSatisQiymeti.Name = "txtSatisQiymeti";
             this.txtSatisQiymeti.Size = new System.Drawing.Size(140, 20);
             this.txtSatisQiymeti.TabIndex = 5;
@@ -184,7 +186,7 @@
             // txtAlisQiymeti
             // 
             this.txtAlisQiymeti.Location = new System.Drawing.Point(101, 140);
-            this.txtAlisQiymeti.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtAlisQiymeti.Margin = new System.Windows.Forms.Padding(2);
             this.txtAlisQiymeti.Name = "txtAlisQiymeti";
             this.txtAlisQiymeti.Size = new System.Drawing.Size(140, 20);
             this.txtAlisQiymeti.TabIndex = 4;
@@ -192,7 +194,7 @@
             // txtBarkod
             // 
             this.txtBarkod.Location = new System.Drawing.Point(101, 54);
-            this.txtBarkod.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtBarkod.Margin = new System.Windows.Forms.Padding(2);
             this.txtBarkod.Name = "txtBarkod";
             this.txtBarkod.Size = new System.Drawing.Size(140, 20);
             this.txtBarkod.TabIndex = 2;
@@ -200,7 +202,7 @@
             // txtAd
             // 
             this.txtAd.Location = new System.Drawing.Point(101, 26);
-            this.txtAd.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtAd.Margin = new System.Windows.Forms.Padding(2);
             this.txtAd.Name = "txtAd";
             this.txtAd.Size = new System.Drawing.Size(140, 20);
             this.txtAd.TabIndex = 1;
@@ -282,7 +284,7 @@
             this.ClientSize = new System.Drawing.Size(888, 490);
             this.Controls.Add(this.gbProductDetails);
             this.Controls.Add(this.dgvProducts);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MinimumSize = new System.Drawing.Size(679, 414);
             this.Name = "frmProducts";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;

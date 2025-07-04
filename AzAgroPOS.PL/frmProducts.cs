@@ -186,5 +186,35 @@ namespace AzAgroPOS.PL
             ClearForm();
         }
         #endregion
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            if (dgvProducts.CurrentRow == null)
+            {
+                MessageBox.Show("Zəhmət olmasa, silmək üçün cədvəldən bir məhsul seçin.", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // İstifadəçidən təsdiq alırıq
+            var selectedProduct = (Mehsul)dgvProducts.CurrentRow.DataBoundItem;
+            var confirmationResult = MessageBox.Show($"'{selectedProduct.Ad}' adlı məhsulu silmək istədiyinizə əminsinizmi? Bu əməliyyat geri qaytarıla bilməz.",
+                                                     "Silməyi Təsdiqlə",
+                                                     MessageBoxButtons.YesNo,
+                                                     MessageBoxIcon.Question);
+
+            if (confirmationResult == DialogResult.Yes)
+            {
+                // BLL vasitəsilə silmə əməliyyatını yerinə yetiririk
+                bool result = _mehsulBll.Delete(selectedProduct.Id, out string message);
+
+                MessageBox.Show(message, result ? "Uğurlu" : "Xəta", MessageBoxButtons.OK, result ? MessageBoxIcon.Information : MessageBoxIcon.Error);
+
+                if (result)
+                {
+                    LoadProducts(); // Cədvəli yeniləyirik
+                    ClearForm();
+                }
+            }
+        }
     }
 }

@@ -130,6 +130,31 @@ namespace AzAgroPOS.DAL
             }
         }
 
-        // public bool Delete(int mehsulId) { /* Növbəti addımda yazılacaq */ }
+        /// <summary>
+        /// Məhsulu verilənlər bazasından fiziki olaraq silmir,
+        /// sadəcə "silinib" statusunu 1 olaraq təyin edir (Soft Delete).
+        /// </summary>
+        public bool Delete(int mehsulId)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                // Məhsulu həm silinmiş işarələyirik, həm də deaktiv edirik.
+                var query = "UPDATE mehsullar SET silinib = 1, aktivdir = 0, son_deyisiklik=GETDATE() WHERE id=@id";
+                var command = new SqlCommand(query, connection);
+
+                command.Parameters.AddWithValue("@id", mehsulId);
+
+                try
+                {
+                    connection.Open();
+                    // Dəyişdirilmiş sətir sayı 0-dan böyükdürsə, deməli uğurludur.
+                    return command.ExecuteNonQuery() > 0;
+                }
+                catch (Exception ex)
+                {
+                    throw;
+                }
+            }
+        }
     }
 }
