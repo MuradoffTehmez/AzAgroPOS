@@ -46,6 +46,7 @@
     <Compile Include="Mehsul.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rol.cs" />
+    <Compile Include="SalesCartItem.cs" />
     <Compile Include="Vahid.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
