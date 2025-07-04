@@ -75,5 +75,13 @@ namespace AzAgroPOS.BLL
             message = "Məhsul silinərkən xəta baş verdi.";
             return false;
         }
+        public Mehsul GetByBarcode(string barkod)
+        {
+            if (string.IsNullOrWhiteSpace(barkod))
+            {
+                return null;
+            }
+            return _dal.GetByBarcode(barkod);
+        }
     }
 }
