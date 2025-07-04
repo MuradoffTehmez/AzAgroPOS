@@ -352,5 +352,20 @@ namespace AzAgroPOS.PL
             }
 
         }
+
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            ClearForm();
+        }
+
+        private void btnAddPart_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnCompleteRepair_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
