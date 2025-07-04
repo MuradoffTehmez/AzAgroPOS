@@ -13,7 +13,6 @@ namespace AzAgroPOS.BLL
 
         public bool Add(Mehsul mehsul, out string message)
         {
-            // Gələcəkdə burada yoxlamalar ola bilər. Məsələn:
             if (string.IsNullOrWhiteSpace(mehsul.Ad))
             {
                 message = "Məhsul adı boş ola bilməz.";
@@ -35,5 +34,30 @@ namespace AzAgroPOS.BLL
             message = "Məhsul əlavə edilərkən xəta baş verdi.";
             return false;
         }
+
+        public bool Update(Mehsul mehsul, out string message)
+        {
+            if (mehsul.Id <= 0)
+            {
+                message = "Yeniləmək üçün məhsul seçilməyib.";
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(mehsul.Ad))
+            {
+                message = "Məhsul adı boş ola bilməz.";
+                return false;
+            }
+
+            if (_dal.Update(mehsul))
+            {
+                message = "Məhsul uğurla yeniləndi.";
+                return true;
+            }
+
+            message = "Məhsul yenilənərkən xəta baş verdi.";
+            return false;
+        }
+
+        // public bool Delete(int mehsulId, out string message) { /* Növbəti addımda yazılacaq */ }
     }
 }
