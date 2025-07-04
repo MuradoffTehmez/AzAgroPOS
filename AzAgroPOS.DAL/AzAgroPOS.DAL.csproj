@@ -54,6 +54,7 @@
     <Compile Include="SatisDAL.cs" />
     <Compile Include="SatisMehsullariDAL.cs" />
     <Compile Include="TemirDAL.cs" />
+    <Compile Include="TemirHisseleriDAL.cs" />
     <Compile Include="TemirStatusuDAL.cs" />
     <Compile Include="VahidDAL.cs" />
   </ItemGroup>

@@ -8,12 +8,17 @@ namespace AzAgroPOS.PL
 {
     public partial class frmRepairs : Form
     {
-        private Musteri _selectedCustomer;
-        private int _selectedRepairId = 0;
-
+        // BLL sinifləri
         private readonly TemirBLL _temirBll = new TemirBLL();
         private readonly TemirStatusuBLL _temirStatusuBll = new TemirStatusuBLL();
         private readonly IstifadeciBLL _istifadeciBll = new IstifadeciBLL();
+        private readonly MehsulBLL _mehsulBll = new MehsulBLL();
+        private readonly TemirHisseleriBLL _temirHisseleriBll = new TemirHisseleriBLL();
+
+        // Vəziyyəti izləyən sahələr
+        private Musteri _selectedCustomer;
+        private int _selectedRepairId = 0;
+        private Mehsul _foundPart; // Axtarışdan tapılan ehtiyat hissəsi
 
         public frmRepairs()
         {
@@ -22,13 +27,18 @@ namespace AzAgroPOS.PL
 
         private void frmRepairs_Load(object sender, EventArgs e)
         {
-            LoadStatuses();
-            LoadTechnicians();
-            LoadRepairs();
-            ClearForm();
+            LoadInitialData();
+            ClearForm(); 
         }
 
         #region Köməkçi Metodlar
+
+        private void LoadInitialData()
+        {
+            LoadStatuses();
+            LoadTechnicians();
+            LoadRepairs();
+        }
 
         private void LoadStatuses()
         {
@@ -50,7 +60,6 @@ namespace AzAgroPOS.PL
             {
                 var technicians = _istifadeciBll.GetAllByRole("Təmirçi");
                 var displayList = technicians.Select(t => new { Id = t.Id, FullName = t.Ad + " " + t.Soyad }).ToList();
-
                 cmbTechnician.DataSource = displayList;
                 cmbTechnician.DisplayMember = "FullName";
                 cmbTechnician.ValueMember = "Id";
@@ -78,7 +87,7 @@ namespace AzAgroPOS.PL
         {
             if (dgvRepairs.Columns.Count == 0) return;
             dgvRepairs.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-
+            
             string[] hiddenColumns = { "MusteriId", "TemirciId", "StatusId", "Marka", "Model", "SeriyaNomresi", "ProblemTesviri" };
             foreach (var colName in hiddenColumns)
             {
@@ -92,25 +101,62 @@ namespace AzAgroPOS.PL
             if (dgvRepairs.Columns["StatusAdi"] != null) dgvRepairs.Columns["StatusAdi"].HeaderText = "Status";
             if (dgvRepairs.Columns["TemirciAdi"] != null) dgvRepairs.Columns["TemirciAdi"].HeaderText = "Təmirçi";
         }
+        
+        private void LoadSpareParts(int repairId)
+        {
+            try
+            {
+                dgvSpareParts.DataSource = _temirHisseleriBll.GetByTemirId(repairId);
+                SetupSparePartsGrid();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ehtiyat hissələri yüklənərkən xəta baş verdi: " + ex.Message);
+            }
+        }
+        
+        private void SetupSparePartsGrid()
+        {
+            if (dgvSpareParts.Columns.Count == 0) return;
+            dgvSpareParts.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            
+            if (dgvSpareParts.Columns["MehsulAdi"] != null) dgvSpareParts.Columns["MehsulAdi"].HeaderText = "Hissənin Adı";
+            if (dgvSpareParts.Columns["Miqdar"] != null) dgvSpareParts.Columns["Miqdar"].HeaderText = "Miqdar";
+            if (dgvSpareParts.Columns["QiymetBirEdede"] != null) dgvSpareParts.Columns["QiymetBirEdede"].HeaderText = "Vahid Qiyməti";
+            if (dgvSpareParts.Columns["TotalQiymet"] != null) dgvSpareParts.Columns["TotalQiymet"].HeaderText = "Yekun Qiymət";
+
+            string[] hiddenColumns = { "Id", "TemirId", "MehsulId", "EndirimMeblegi" }; // Endirimi gələcəkdə əlavə edə bilərik
+            foreach (var colName in hiddenColumns)
+            {
+                if (dgvSpareParts.Columns[colName] != null) dgvSpareParts.Columns[colName].Visible = false;
+            }
+        }
 
         private void ClearForm()
         {
             _selectedCustomer = null;
             _selectedRepairId = 0;
+            _foundPart = null;
+            
             lblSelectedCustomer.Text = "Müştəri seçilməyib";
             txtCihazAdi.Clear();
             txtMarka.Clear();
             txtModel.Clear();
             txtSeriyaNomresi.Clear();
             txtProblem.Clear();
+            txtPartSearch.Clear();
+            numPartQuantity.Value = 1;
+
             if (cmbStatus.Items.Count > 0) cmbStatus.SelectedIndex = 0;
             cmbTechnician.SelectedItem = null;
+            
             dgvRepairs.ClearSelection();
-
-            // Düymələrin vəziyyətini tənzimləyirik
+            dgvSpareParts.DataSource = null;
+            
             btnAdd.Enabled = true;
             btnUpdate.Enabled = false;
             btnDelete.Enabled = false;
+            tabControl1.TabPages[1].Enabled = false; // Ehtiyat hissələri tabını passiv edirik
         }
         #endregion
 
@@ -152,10 +198,11 @@ namespace AzAgroPOS.PL
                 cmbTechnician.SelectedItem = null;
             }
 
-            // Düymələrin vəziyyətini tənzimləyirik
             btnAdd.Enabled = false;
             btnUpdate.Enabled = true;
             btnDelete.Enabled = true;
+            tabControl1.TabPages[1].Enabled = true; // Ehtiyat hissələri tabını aktiv edirik
+            LoadSpareParts(temir.Id);
         }
 
         private void btnNew_Click(object sender, EventArgs e)
@@ -244,6 +291,66 @@ namespace AzAgroPOS.PL
                 }
             }
         }
+
+        private void txtPartSearch_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter && !string.IsNullOrWhiteSpace(txtPartSearch.Text))
+            {
+                _foundPart = _mehsulBll.GetByBarcode(txtPartSearch.Text);
+                if (_foundPart != null)
+                {
+                    txtPartSearch.Text = $"{_foundPart.Ad} (Stokda: {_foundPart.CariStok})";
+                    numPartQuantity.Focus();
+                }
+                else
+                {
+                    MessageBox.Show("Bu barkoda uyğun məhsul (ehtiyat hissəsi) tapılmadı.");
+                    _foundPart = null;
+                }
+            }
+        }
+
+       
         #endregion
+
+        private void btnAddPart_Click_1(object sender, EventArgs e)
+        {
+
+            if (_selectedRepairId == 0)
+            {
+                MessageBox.Show("Əvvəlcə təmir sifarişini seçin.");
+                return;
+            }
+            if (_foundPart == null)
+            {
+                MessageBox.Show("Əlavə etmək üçün ehtiyat hissəsi axtarıb tapın.");
+                return;
+            }
+            if (numPartQuantity.Value <= 0)
+            {
+                MessageBox.Show("Miqdar 0-dan böyük olmalıdır.");
+                return;
+            }
+
+            var yeniHisse = new TemirHissesi
+            {
+                TemirId = _selectedRepairId,
+                MehsulId = _foundPart.Id,
+                Miqdar = (int)numPartQuantity.Value,
+                QiymetBirEdede = _foundPart.SatisQiymeti
+            };
+
+            bool result = _temirHisseleriBll.Add(yeniHisse, out string message);
+            MessageBox.Show(message);
+
+            if (result)
+            {
+                LoadSpareParts(_selectedRepairId);
+                txtPartSearch.Clear();
+                numPartQuantity.Value = 1;
+                _foundPart = null;
+            }
+
+        }
     }
 }

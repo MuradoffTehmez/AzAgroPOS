@@ -53,6 +53,7 @@
     <Compile Include="Satis.cs" />
     <Compile Include="SatisMehsulu.cs" />
     <Compile Include="Temir.cs" />
+    <Compile Include="TemirHissesi.cs" />
     <Compile Include="TemirStatusu.cs" />
     <Compile Include="Vahid.cs" />
   </ItemGroup>
