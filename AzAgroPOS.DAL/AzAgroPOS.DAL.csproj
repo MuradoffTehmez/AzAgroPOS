@@ -48,6 +48,7 @@
     <Compile Include="IstifadeciDAL.cs" />
     <Compile Include="KateqoriyaDAL.cs" />
     <Compile Include="MehsulDAL.cs" />
+    <Compile Include="MusteriDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SatisDAL.cs" />
     <Compile Include="VahidDAL.cs" />

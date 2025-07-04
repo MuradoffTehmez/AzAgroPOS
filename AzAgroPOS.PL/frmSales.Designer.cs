@@ -24,6 +24,7 @@
             this.btnCompleteSale = new System.Windows.Forms.Button();
             this.lblTotalPrice = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSalesCart)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -45,9 +46,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtBarcodeSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtBarcodeSearch.Location = new System.Drawing.Point(218, 14);
-            this.txtBarcodeSearch.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtBarcodeSearch.Margin = new System.Windows.Forms.Padding(2);
             this.txtBarcodeSearch.Name = "txtBarcodeSearch";
-            this.txtBarcodeSearch.Size = new System.Drawing.Size(662, 26);
+            this.txtBarcodeSearch.Size = new System.Drawing.Size(1195, 26);
             this.txtBarcodeSearch.TabIndex = 0;
             this.txtBarcodeSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtBarcodeSearch_KeyDown);
             // 
@@ -61,11 +62,11 @@
             this.dgvSalesCart.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvSalesCart.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvSalesCart.Location = new System.Drawing.Point(9, 51);
-            this.dgvSalesCart.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dgvSalesCart.Margin = new System.Windows.Forms.Padding(2);
             this.dgvSalesCart.Name = "dgvSalesCart";
             this.dgvSalesCart.RowHeadersWidth = 51;
             this.dgvSalesCart.RowTemplate.Height = 24;
-            this.dgvSalesCart.Size = new System.Drawing.Size(870, 396);
+            this.dgvSalesCart.Size = new System.Drawing.Size(1403, 450);
             this.dgvSalesCart.TabIndex = 2;
             // 
             // panel1
@@ -73,21 +74,22 @@
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.btnCompleteSale);
             this.panel1.Controls.Add(this.lblTotalPrice);
             this.panel1.Controls.Add(this.label3);
-            this.panel1.Location = new System.Drawing.Point(9, 453);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel1.Location = new System.Drawing.Point(9, 507);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(870, 109);
+            this.panel1.Size = new System.Drawing.Size(1403, 109);
             this.panel1.TabIndex = 3;
             // 
             // btnCompleteSale
             // 
             this.btnCompleteSale.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCompleteSale.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCompleteSale.Location = new System.Drawing.Point(692, 18);
-            this.btnCompleteSale.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnCompleteSale.Location = new System.Drawing.Point(1225, 18);
+            this.btnCompleteSale.Margin = new System.Windows.Forms.Padding(2);
             this.btnCompleteSale.Name = "btnCompleteSale";
             this.btnCompleteSale.Size = new System.Drawing.Size(163, 74);
             this.btnCompleteSale.TabIndex = 2;
@@ -118,16 +120,25 @@
             this.label3.TabIndex = 0;
             this.label3.Text = "Yekun Məbləğ:";
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(754, 54);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(35, 13);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "label2";
+            // 
             // frmSales
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(888, 571);
+            this.ClientSize = new System.Drawing.Size(1421, 625);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.dgvSalesCart);
             this.Controls.Add(this.txtBarcodeSearch);
             this.Controls.Add(this.label1);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "frmSales";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Satış Əməliyyatı";
@@ -150,5 +161,6 @@
         private System.Windows.Forms.Label lblTotalPrice;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnCompleteSale;
+        private System.Windows.Forms.Label label2;
     }
 }
