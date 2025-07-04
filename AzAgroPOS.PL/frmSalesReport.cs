@@ -1,7 +1,10 @@
 ﻿using AzAgroPOS.BLL;
 using ClosedXML.Excel;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 using System;
 using System.Data;
+using System.IO;
 using System.Windows.Forms;
 
 
@@ -159,7 +162,73 @@ namespace AzAgroPOS.PL
 
         private void btnExportToPdf_Click(object sender, EventArgs e)
         {
+            if (dgvSales.Rows.Count == 0)
+            {
+                MessageBox.Show("İxrac etmək üçün məlumat yoxdur.", "Məlumat", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
 
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "PDF Faylı|*.pdf";
+            saveFileDialog.Title = "PDF faylı olaraq yadda saxla";
+            saveFileDialog.FileName = $"Satış Hesabatı_{DateTime.Now:yyyyMMdd_HHmmss}.pdf";
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    string fontPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Fonts), "ARIAL.TTF");
+                    BaseFont baseFont = BaseFont.CreateFont(fontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+                    Font fontHeader = new Font(baseFont, 10, Font.BOLD);
+                    Font fontBody = new Font(baseFont, 9, Font.NORMAL);
+
+                    // Sənəd və cədvəl yaratmaq
+                    Document document = new Document(PageSize.A4.Rotate(), 20, 20, 20, 20); // Landscape
+                    PdfWriter.GetInstance(document, new FileStream(saveFileDialog.FileName, FileMode.Create));
+
+                    int visibleColumnCount = 0;
+                    foreach (DataGridViewColumn column in dgvSales.Columns)
+                        if (column.Visible) visibleColumnCount++;
+
+                    PdfPTable table = new PdfPTable(visibleColumnCount);
+                    table.WidthPercentage = 100;
+
+                    // Başlıqları əlavə etmək
+                    foreach (DataGridViewColumn column in dgvSales.Columns)
+                    {
+                        if (column.Visible)
+                        {
+                            PdfPCell cell = new PdfPCell(new Phrase(column.HeaderText, fontHeader));
+                            cell.BackgroundColor = BaseColor.LIGHT_GRAY;
+                            table.AddCell(cell);
+                        }
+                    }
+
+                    // Məlumatları əlavə etmək
+                    foreach (DataGridViewRow row in dgvSales.Rows)
+                    {
+                        foreach (DataGridViewCell cell in row.Cells)
+                        {
+                            if (cell.OwningColumn.Visible)
+                            {
+                                table.AddCell(new Phrase(cell.Value?.ToString(), fontBody));
+                            }
+                        }
+                    }
+
+                    document.Open();
+                    document.Add(new Phrase("Satış Hesabatı", new Font(baseFont, 16, Font.BOLD)));
+                    document.Add(new Paragraph($"Tarix Aralığı: {dtpStartDate.Value:dd.MM.yyyy} - {dtpEndDate.Value:dd.MM.yyyy}\n\n"));
+                    document.Add(table);
+                    document.Close();
+
+                    MessageBox.Show("Hesabat uğurla PDF faylına ixrac edildi!", "Uğurlu", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("PDF-ə ixrac zamanı xəta baş verdi: " + ex.Message, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
     }
 }
