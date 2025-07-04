@@ -51,7 +51,7 @@ namespace AzAgroPOS.PL
 
         private void satışToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmSales salesForm = new frmSales();
+            frmSales salesForm = new frmSales(_currentUser);
             salesForm.ShowDialog();
         }
     }

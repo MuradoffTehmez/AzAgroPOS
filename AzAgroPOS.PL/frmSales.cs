@@ -1,60 +1,61 @@
-﻿// Fayl: AzAgroPOS.PL/frmSales.cs
-using AzAgroPOS.BLL;
+﻿using AzAgroPOS.BLL;
 using AzAgroPOS.Entities;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AzAgroPOS.PL
 {
-       public partial class frmSales : Form
+    public partial class frmSales : Form
     {
+        // BLL sinifləri və daxil olan istifadəçi üçün sahələr
         private readonly MehsulBLL _mehsulBll = new MehsulBLL();
-        // Səbətdəki məhsulları yadda saxlamaq üçün List
-        private BindingList<SalesCartItem> _cartItems = new BindingList<SalesCartItem>();
+        private readonly SatisBLL _satisBll = new SatisBLL();
+        private readonly Istifadeci _currentUser;
 
-        public frmSales()
+        // Satış səbətini yadda saxlamaq üçün List
+        private readonly BindingList<SalesCartItem> _cartItems = new BindingList<SalesCartItem>();
+
+        // DÜZƏLİŞ BURADADIR: Constructor, Istifadeci tipindən bir "user" parametri qəbul edir
+        public frmSales(Istifadeci user)
         {
             InitializeComponent();
+            // Qəbul edilən parametr, class-ın daxili sahəsinə mənimsədilir
+            _currentUser = user;
         }
 
         private void frmSales_Load(object sender, EventArgs e)
         {
-            // Cədvəli (DataGridView) səbətimizə bağlayırıq
             dgvSalesCart.DataSource = _cartItems;
             SetupDataGrid();
         }
 
         private void SetupDataGrid()
         {
-            // Sütunların adlarını və görünüşünü dəyişirik
             dgvSalesCart.Columns["ProductId"].Visible = false;
             dgvSalesCart.Columns["Ad"].HeaderText = "Məhsul Adı";
             dgvSalesCart.Columns["Miqdar"].HeaderText = "Miqdar";
             dgvSalesCart.Columns["VahidQiymet"].HeaderText = "Vahid Qiyməti";
             dgvSalesCart.Columns["YekunMebleg"].HeaderText = "Yekun Məbləğ";
+
+            dgvSalesCart.Columns["Ad"].ReadOnly = true;
+            dgvSalesCart.Columns["VahidQiymet"].ReadOnly = true;
+            dgvSalesCart.Columns["YekunMebleg"].ReadOnly = true;
+            dgvSalesCart.Columns["Miqdar"].ReadOnly = false;
         }
 
         private void txtBarcodeSearch_KeyDown(object sender, KeyEventArgs e)
         {
-            // Yalnız Enter düyməsinə basıldıqda işləsin
             if (e.KeyCode == Keys.Enter)
             {
                 string barcode = txtBarcodeSearch.Text.Trim();
                 if (string.IsNullOrEmpty(barcode)) return;
 
-                // Barkoda görə məhsulu axtarırıq
                 var product = _mehsulBll.GetByBarcode(barcode);
 
                 if (product != null)
                 {
-                    // Məhsul tapılıbsa, səbətə əlavə edirik
                     AddToCart(product);
                 }
                 else
@@ -62,7 +63,6 @@ namespace AzAgroPOS.PL
                     MessageBox.Show("Bu barkoda uyğun məhsul tapılmadı.", "Məlumat", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
 
-                // Axtarış xanasını təmizləyirik və fokusu qaytarırıq
                 txtBarcodeSearch.Clear();
                 txtBarcodeSearch.Focus();
             }
@@ -70,17 +70,13 @@ namespace AzAgroPOS.PL
 
         private void AddToCart(Mehsul product)
         {
-            // Məhsulun səbətdə olub-olmadığını yoxlayırıq
             var existingItem = _cartItems.FirstOrDefault(item => item.ProductId == product.Id);
-
             if (existingItem != null)
             {
-                // Əgər varsa, sayını bir artırırıq
                 existingItem.Miqdar++;
             }
             else
             {
-                // Yoxdursa, yeni bir sətir olaraq əlavə edirik
                 _cartItems.Add(new SalesCartItem
                 {
                     ProductId = product.Id,
@@ -89,14 +85,14 @@ namespace AzAgroPOS.PL
                     VahidQiymet = product.SatisQiymeti
                 });
             }
-
-            // Cədvəli və yekun məbləği yeniləyirik
             RefreshCartDisplay();
         }
 
         private void RefreshCartDisplay()
         {
-            dgvSalesCart.Refresh();
+            // BindingList istifadə etdiyimiz üçün cədvəl avtomatik yenilənir.
+            // Sadəcə yekunları yenidən hesablamaq kifayətdir.
+            dgvSalesCart.Invalidate(); // Cədvəli vizual olaraq yeniləyir
             UpdateTotals();
         }
 
@@ -106,9 +102,63 @@ namespace AzAgroPOS.PL
             lblTotalPrice.Text = total.ToString("F2") + " ₼";
         }
 
+        private void dgvSalesCart_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
+            RefreshCartDisplay();
+        }
+
+        private void dgvSalesCart_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete && dgvSalesCart.CurrentRow != null)
+            {
+                var itemToRemove = (SalesCartItem)dgvSalesCart.CurrentRow.DataBoundItem;
+                if (itemToRemove != null)
+                {
+                    var result = MessageBox.Show($"'{itemToRemove.Ad}' adlı məhsulu səbətdən silmək istədiyinizə əminsinizmi?", "Silməyi Təsdiqlə", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (result == DialogResult.Yes)
+                    {
+                        _cartItems.Remove(itemToRemove);
+                        UpdateTotals();
+                    }
+                }
+            }
+        }
+
         private void btnCompleteSale_Click(object sender, EventArgs e)
         {
+            if (_cartItems.Count == 0)
+            {
+                MessageBox.Show("Satışı tamamlamaq üçün səbətə məhsul əlavə edin.", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
+            var satis = new Satis
+            {
+                IstifadeciId = _currentUser.Id,
+                YekunMebleg = _cartItems.Sum(item => item.YekunMebleg),
+                OdenmisMebleg = _cartItems.Sum(item => item.YekunMebleg)
+            };
+
+            foreach (var item in _cartItems)
+            {
+                satis.SatisMehsullari.Add(new SatisMehsulu
+                {
+                    MehsulId = item.ProductId,
+                    Miqdar = item.Miqdar,
+                    QiymetBirEdede = item.VahidQiymet,
+                    EndirimMeblegi = 0
+                });
+            }
+
+            bool result = _satisBll.Add(satis, out string message);
+            MessageBox.Show(message, result ? "Uğurlu" : "Xəta", MessageBoxButtons.OK, result ? MessageBoxIcon.Information : MessageBoxIcon.Error);
+
+            if (result)
+            {
+                _cartItems.Clear();
+                RefreshCartDisplay();
+            }
         }
     }
 }
