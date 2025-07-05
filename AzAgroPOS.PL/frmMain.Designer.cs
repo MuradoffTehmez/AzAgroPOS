@@ -13,219 +13,286 @@
             base.Dispose(disposing);
         }
 
+        #region Windows Form Designer generated code
+
         private void InitializeComponent()
         {
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.faylToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.çıxışToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.satışToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.satışıQaytarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.anbarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.təmirToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.müştərilərToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.hesabatlarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tənzimləmələrToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.əməliyyatJurnalıToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.lblCurrentUser = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusSeparator = new System.Windows.Forms.ToolStripStatusLabel();
-            this.lblDateTime = new System.Windows.Forms.ToolStripStatusLabel();
-            this.panelMain = new System.Windows.Forms.Panel();
-            this.menuStrip1.SuspendLayout();
-            this.statusStrip1.SuspendLayout();
+            this.panelSidebar = new System.Windows.Forms.Panel();
+            this.btnSettings = new System.Windows.Forms.Button();
+            this.btnReports = new System.Windows.Forms.Button();
+            this.btnRepairs = new System.Windows.Forms.Button();
+            this.btnCustomers = new System.Windows.Forms.Button();
+            this.btnProducts = new System.Windows.Forms.Button();
+            this.btnSales = new System.Windows.Forms.Button();
+            this.btnDashboard = new System.Windows.Forms.Button();
+            this.panelLogo = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.panelTopBar = new System.Windows.Forms.Panel();
+            this.lblCurrentUser = new System.Windows.Forms.Label();
+            this.lblTitle = new System.Windows.Forms.Label();
+            this.panelMainContent = new System.Windows.Forms.Panel();
+            this.panelSidebar.SuspendLayout();
+            this.panelLogo.SuspendLayout();
+            this.panelTopBar.SuspendLayout();
             this.SuspendLayout();
             // 
-            // menuStrip1
+            // panelSidebar
             // 
-            this.menuStrip1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(70)))), ((int)(((byte)(120)))));
-            this.menuStrip1.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.faylToolStripMenuItem,
-            this.satışToolStripMenuItem,
-            this.anbarToolStripMenuItem,
-            this.təmirToolStripMenuItem,
-            this.müştərilərToolStripMenuItem,
-            this.hesabatlarToolStripMenuItem,
-            this.tənzimləmələrToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1000, 27);
-            this.menuStrip1.TabIndex = 0;
-            this.menuStrip1.Text = "menuStrip1";
+            this.panelSidebar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(53)))), ((int)(((byte)(65)))));
+            this.panelSidebar.Controls.Add(this.btnSettings);
+            this.panelSidebar.Controls.Add(this.btnReports);
+            this.panelSidebar.Controls.Add(this.btnRepairs);
+            this.panelSidebar.Controls.Add(this.btnCustomers);
+            this.panelSidebar.Controls.Add(this.btnProducts);
+            this.panelSidebar.Controls.Add(this.btnSales);
+            this.panelSidebar.Controls.Add(this.btnDashboard);
+            this.panelSidebar.Controls.Add(this.panelLogo);
+            this.panelSidebar.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panelSidebar.Location = new System.Drawing.Point(0, 0);
+            this.panelSidebar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panelSidebar.Name = "panelSidebar";
+            this.panelSidebar.Size = new System.Drawing.Size(165, 612);
+            this.panelSidebar.TabIndex = 0;
             // 
-            // faylToolStripMenuItem
+            // btnSettings
             // 
-            this.faylToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripSeparator1,
-            this.çıxışToolStripMenuItem});
-            this.faylToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.faylToolStripMenuItem.Name = "faylToolStripMenuItem";
-            this.faylToolStripMenuItem.Size = new System.Drawing.Size(45, 23);
-            this.faylToolStripMenuItem.Text = "Fayl";
+            this.btnSettings.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnSettings.FlatAppearance.BorderSize = 0;
+            this.btnSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSettings.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSettings.ForeColor = System.Drawing.Color.White;
+            this.btnSettings.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSettings.Location = new System.Drawing.Point(0, 359);
+            this.btnSettings.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnSettings.Name = "btnSettings";
+            this.btnSettings.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
+            this.btnSettings.Size = new System.Drawing.Size(165, 49);
+            this.btnSettings.TabIndex = 7;
+            this.btnSettings.Text = "   Tənzimləmələr";
+            this.btnSettings.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSettings.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnSettings.UseVisualStyleBackColor = true;
             // 
-            // toolStripSeparator1
+            // btnReports
             // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(102, 6);
+            this.btnReports.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnReports.FlatAppearance.BorderSize = 0;
+            this.btnReports.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnReports.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnReports.ForeColor = System.Drawing.Color.White;
+            this.btnReports.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnReports.Location = new System.Drawing.Point(0, 310);
+            this.btnReports.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnReports.Name = "btnReports";
+            this.btnReports.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
+            this.btnReports.Size = new System.Drawing.Size(165, 49);
+            this.btnReports.TabIndex = 6;
+            this.btnReports.Text = "   Hesabatlar";
+            this.btnReports.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnReports.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnReports.UseVisualStyleBackColor = true;
             // 
-            // çıxışToolStripMenuItem
+            // btnRepairs
             // 
-            this.çıxışToolStripMenuItem.Name = "çıxışToolStripMenuItem";
-            this.çıxışToolStripMenuItem.Size = new System.Drawing.Size(105, 24);
-            this.çıxışToolStripMenuItem.Text = "Çıxış";
-            this.çıxışToolStripMenuItem.Click += new System.EventHandler(this.çıxışToolStripMenuItem_Click);
+            this.btnRepairs.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnRepairs.FlatAppearance.BorderSize = 0;
+            this.btnRepairs.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRepairs.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnRepairs.ForeColor = System.Drawing.Color.White;
+            this.btnRepairs.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnRepairs.Location = new System.Drawing.Point(0, 261);
+            this.btnRepairs.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnRepairs.Name = "btnRepairs";
+            this.btnRepairs.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
+            this.btnRepairs.Size = new System.Drawing.Size(165, 49);
+            this.btnRepairs.TabIndex = 5;
+            this.btnRepairs.Text = "   Təmir";
+            this.btnRepairs.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnRepairs.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnRepairs.UseVisualStyleBackColor = true;
             // 
-            // satışToolStripMenuItem
+            // btnCustomers
             // 
-            this.satışToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.satışıQaytarToolStripMenuItem});
-            this.satışToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.satışToolStripMenuItem.Name = "satışToolStripMenuItem";
-            this.satışToolStripMenuItem.Size = new System.Drawing.Size(49, 23);
-            this.satışToolStripMenuItem.Text = "Satış";
-            this.satışToolStripMenuItem.DoubleClick += new System.EventHandler(this.satışToolStripMenuItem_DoubleClick);
+            this.btnCustomers.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnCustomers.FlatAppearance.BorderSize = 0;
+            this.btnCustomers.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCustomers.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCustomers.ForeColor = System.Drawing.Color.White;
+            this.btnCustomers.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnCustomers.Location = new System.Drawing.Point(0, 212);
+            this.btnCustomers.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnCustomers.Name = "btnCustomers";
+            this.btnCustomers.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
+            this.btnCustomers.Size = new System.Drawing.Size(165, 49);
+            this.btnCustomers.TabIndex = 4;
+            this.btnCustomers.Text = "   Müştərilər";
+            this.btnCustomers.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnCustomers.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnCustomers.UseVisualStyleBackColor = true;
             // 
-            // satışıQaytarToolStripMenuItem
+            // btnProducts
             // 
-            this.satışıQaytarToolStripMenuItem.Name = "satışıQaytarToolStripMenuItem";
-            this.satışıQaytarToolStripMenuItem.Size = new System.Drawing.Size(155, 24);
-            this.satışıQaytarToolStripMenuItem.Text = "Satışı Qaytar";
-            this.satışıQaytarToolStripMenuItem.Click += new System.EventHandler(this.satışıQaytarToolStripMenuItem_Click);
+            this.btnProducts.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnProducts.FlatAppearance.BorderSize = 0;
+            this.btnProducts.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnProducts.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnProducts.ForeColor = System.Drawing.Color.White;
+            this.btnProducts.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnProducts.Location = new System.Drawing.Point(0, 163);
+            this.btnProducts.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnProducts.Name = "btnProducts";
+            this.btnProducts.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
+            this.btnProducts.Size = new System.Drawing.Size(165, 49);
+            this.btnProducts.TabIndex = 3;
+            this.btnProducts.Text = "   Anbar";
+            this.btnProducts.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnProducts.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnProducts.UseVisualStyleBackColor = true;
             // 
-            // anbarToolStripMenuItem
+            // btnSales
             // 
-            this.anbarToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.anbarToolStripMenuItem.Name = "anbarToolStripMenuItem";
-            this.anbarToolStripMenuItem.Size = new System.Drawing.Size(58, 23);
-            this.anbarToolStripMenuItem.Text = "Anbar";
-            this.anbarToolStripMenuItem.DoubleClick += new System.EventHandler(this.anbarToolStripMenuItem_DoubleClick);
+            this.btnSales.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnSales.FlatAppearance.BorderSize = 0;
+            this.btnSales.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSales.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSales.ForeColor = System.Drawing.Color.White;
+            this.btnSales.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSales.Location = new System.Drawing.Point(0, 114);
+            this.btnSales.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnSales.Name = "btnSales";
+            this.btnSales.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
+            this.btnSales.Size = new System.Drawing.Size(165, 49);
+            this.btnSales.TabIndex = 2;
+            this.btnSales.Text = "   Satış";
+            this.btnSales.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSales.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnSales.UseVisualStyleBackColor = true;
             // 
-            // təmirToolStripMenuItem
+            // btnDashboard
             // 
-            this.təmirToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.təmirToolStripMenuItem.Name = "təmirToolStripMenuItem";
-            this.təmirToolStripMenuItem.Size = new System.Drawing.Size(55, 23);
-            this.təmirToolStripMenuItem.Text = "Təmir";
-            this.təmirToolStripMenuItem.DoubleClick += new System.EventHandler(this.təmirToolStripMenuItem_DoubleClick);
+            this.btnDashboard.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnDashboard.FlatAppearance.BorderSize = 0;
+            this.btnDashboard.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDashboard.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDashboard.ForeColor = System.Drawing.Color.White;
+            this.btnDashboard.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnDashboard.Location = new System.Drawing.Point(0, 65);
+            this.btnDashboard.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnDashboard.Name = "btnDashboard";
+            this.btnDashboard.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
+            this.btnDashboard.Size = new System.Drawing.Size(165, 49);
+            this.btnDashboard.TabIndex = 1;
+            this.btnDashboard.Text = "   Ana Səhifə";
+            this.btnDashboard.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnDashboard.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnDashboard.UseVisualStyleBackColor = true;
             // 
-            // müştərilərToolStripMenuItem
+            // panelLogo
             // 
-            this.müştərilərToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.müştərilərToolStripMenuItem.Name = "müştərilərToolStripMenuItem";
-            this.müştərilərToolStripMenuItem.Size = new System.Drawing.Size(83, 23);
-            this.müştərilərToolStripMenuItem.Text = "Müştərilər";
-            this.müştərilərToolStripMenuItem.DoubleClick += new System.EventHandler(this.müştərilərToolStripMenuItem_DoubleClick);
+            this.panelLogo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(229)))), ((int)(((byte)(126)))), ((int)(((byte)(49)))));
+            this.panelLogo.Controls.Add(this.label1);
+            this.panelLogo.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelLogo.Location = new System.Drawing.Point(0, 0);
+            this.panelLogo.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panelLogo.Name = "panelLogo";
+            this.panelLogo.Size = new System.Drawing.Size(165, 65);
+            this.panelLogo.TabIndex = 0;
             // 
-            // hesabatlarToolStripMenuItem
+            // label1
             // 
-            this.hesabatlarToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.hesabatlarToolStripMenuItem.Name = "hesabatlarToolStripMenuItem";
-            this.hesabatlarToolStripMenuItem.Size = new System.Drawing.Size(86, 23);
-            this.hesabatlarToolStripMenuItem.Text = "Hesabatlar";
-            this.hesabatlarToolStripMenuItem.DoubleClick += new System.EventHandler(this.hesabatlarToolStripMenuItem_DoubleClick);
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(28, 20);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(121, 24);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "AzAgroPOS";
             // 
-            // tənzimləmələrToolStripMenuItem
+            // panelTopBar
             // 
-            this.tənzimləmələrToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.əməliyyatJurnalıToolStripMenuItem});
-            this.tənzimləmələrToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.tənzimləmələrToolStripMenuItem.Name = "tənzimləmələrToolStripMenuItem";
-            this.tənzimləmələrToolStripMenuItem.Size = new System.Drawing.Size(108, 23);
-            this.tənzimləmələrToolStripMenuItem.Text = "Tənzimləmələr";
-            //this.tənzimləmələrToolStripMenuItem.Click += new System.EventHandler(this.tənzimləmələrToolStripMenuItem_Click);
-            this.tənzimləmələrToolStripMenuItem.DoubleClick += new System.EventHandler(this.tənzimləmələrToolStripMenuItem_DoubleClick);
-            // 
-            // əməliyyatJurnalıToolStripMenuItem
-            // 
-            this.əməliyyatJurnalıToolStripMenuItem.Name = "əməliyyatJurnalıToolStripMenuItem";
-            this.əməliyyatJurnalıToolStripMenuItem.Size = new System.Drawing.Size(182, 24);
-            this.əməliyyatJurnalıToolStripMenuItem.Text = "Əməliyyat Jurnalı";
-            this.əməliyyatJurnalıToolStripMenuItem.Click += new System.EventHandler(this.əməliyyatJurnalıToolStripMenuItem_Click);
-            // 
-            // statusStrip1
-            // 
-            this.statusStrip1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(70)))), ((int)(((byte)(120)))));
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.lblCurrentUser,
-            this.toolStripStatusSeparator,
-            this.lblDateTime});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 650);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 10, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(1000, 22);
-            this.statusStrip1.TabIndex = 1;
-            this.statusStrip1.Text = "statusStrip1";
+            this.panelTopBar.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.panelTopBar.Controls.Add(this.lblCurrentUser);
+            this.panelTopBar.Controls.Add(this.lblTitle);
+            this.panelTopBar.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelTopBar.Location = new System.Drawing.Point(165, 0);
+            this.panelTopBar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panelTopBar.Name = "panelTopBar";
+            this.panelTopBar.Size = new System.Drawing.Size(781, 65);
+            this.panelTopBar.TabIndex = 1;
             // 
             // lblCurrentUser
             // 
-            this.lblCurrentUser.ForeColor = System.Drawing.Color.White;
+            this.lblCurrentUser.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblCurrentUser.AutoSize = true;
+            this.lblCurrentUser.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCurrentUser.Location = new System.Drawing.Point(578, 27);
+            this.lblCurrentUser.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblCurrentUser.Name = "lblCurrentUser";
-            this.lblCurrentUser.Size = new System.Drawing.Size(66, 17);
-            this.lblCurrentUser.Text = "Hazırlanır...";
+            this.lblCurrentUser.Size = new System.Drawing.Size(143, 17);
+            this.lblCurrentUser.TabIndex = 1;
+            this.lblCurrentUser.Text = "İstifadəçi: Hazırlanır...";
             // 
-            // toolStripStatusSeparator
+            // lblTitle
             // 
-            this.toolStripStatusSeparator.ForeColor = System.Drawing.Color.White;
-            this.toolStripStatusSeparator.Name = "toolStripStatusSeparator";
-            this.toolStripStatusSeparator.Size = new System.Drawing.Size(10, 17);
-            this.toolStripStatusSeparator.Text = "|";
+            this.lblTitle.AutoSize = true;
+            this.lblTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTitle.Location = new System.Drawing.Point(15, 24);
+            this.lblTitle.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblTitle.Name = "lblTitle";
+            this.lblTitle.Size = new System.Drawing.Size(95, 20);
+            this.lblTitle.TabIndex = 0;
+            this.lblTitle.Text = "Ana səhifə";
             // 
-            // lblDateTime
+            // panelMainContent
             // 
-            this.lblDateTime.ForeColor = System.Drawing.Color.White;
-            this.lblDateTime.Name = "lblDateTime";
-            this.lblDateTime.Size = new System.Drawing.Size(0, 17);
-            // 
-            // panelMain
-            // 
-            this.panelMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelMain.Location = new System.Drawing.Point(0, 27);
-            this.panelMain.Name = "panelMain";
-            this.panelMain.Size = new System.Drawing.Size(1000, 623);
-            this.panelMain.TabIndex = 2;
+            this.panelMainContent.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelMainContent.Location = new System.Drawing.Point(165, 65);
+            this.panelMainContent.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panelMainContent.Name = "panelMainContent";
+            this.panelMainContent.Size = new System.Drawing.Size(781, 547);
+            this.panelMainContent.TabIndex = 2;
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1000, 672);
-            this.Controls.Add(this.panelMain);
-            this.Controls.Add(this.statusStrip1);
-            this.Controls.Add(this.menuStrip1);
-            this.MainMenuStrip = this.menuStrip1;
+            this.ClientSize = new System.Drawing.Size(946, 612);
+            this.Controls.Add(this.panelMainContent);
+            this.Controls.Add(this.panelTopBar);
+            this.Controls.Add(this.panelSidebar);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.MinimumSize = new System.Drawing.Size(754, 576);
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "AzAgroPOS - Ana Pəncərə";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.frmMain_Load);
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
+            this.panelSidebar.ResumeLayout(false);
+            this.panelLogo.ResumeLayout(false);
+            this.panelLogo.PerformLayout();
+            this.panelTopBar.ResumeLayout(false);
+            this.panelTopBar.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
-        private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.StatusStrip statusStrip1;
-        private System.Windows.Forms.ToolStripMenuItem faylToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem çıxışToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem satışToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem anbarToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem təmirToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem müştərilərToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem hesabatlarToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem tənzimləmələrToolStripMenuItem;
-        private System.Windows.Forms.ToolStripStatusLabel lblCurrentUser;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripStatusLabel lblDateTime;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusSeparator;
-        private System.Windows.Forms.Panel panelMain;
-        private System.Windows.Forms.ToolStripMenuItem əməliyyatJurnalıToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem satışıQaytarToolStripMenuItem;
+        #endregion
+
+        private System.Windows.Forms.Panel panelSidebar;
+        private System.Windows.Forms.Panel panelLogo;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btnDashboard;
+        private System.Windows.Forms.Button btnSales;
+        private System.Windows.Forms.Panel panelTopBar;
+        private System.Windows.Forms.Panel panelMainContent;
+        private System.Windows.Forms.Button btnSettings;
+        private System.Windows.Forms.Button btnReports;
+        private System.Windows.Forms.Button btnRepairs;
+        private System.Windows.Forms.Button btnCustomers;
+        private System.Windows.Forms.Button btnProducts;
+        private System.Windows.Forms.Label lblTitle;
+        private System.Windows.Forms.Label lblCurrentUser;
     }
 }
