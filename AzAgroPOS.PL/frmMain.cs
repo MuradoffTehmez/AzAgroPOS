@@ -45,66 +45,76 @@ namespace AzAgroPOS.PL
         {
             Application.Exit();
         }
-            
-        /// <summary>
-        /// Təmir menyu elementinə klik üçün hadisə handleri. Təmir formunu açar.
-        /// </summary>
-        private void təmirToolStripMenuItem_Click(object sender, EventArgs e)
+        
+        private void əməliyyatJurnalıToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmRepairs repairForm = new frmRepairs(_currentUser);
-            repairForm.ShowDialog();
-        }
-
-        /// <summary>
-        /// Tənzimləmələr menyu elementinə klik üçün hadisə handleri. İstifadəçilər formunu açar.
-        /// </summary>
-        private void tənzimləmələrToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            frmUsers usersForm = new frmUsers(_currentUser);
-            usersForm.ShowDialog();
+            frmAuditLog logForm = new frmAuditLog();
+            logForm.ShowDialog();
         }
 
         /// <summary>
         /// Satış menyu elementinə klik üçün hadisə handleri. Satış formunu açar.
         /// </summary>
-        private void satışToolStripMenuItem_Click(object sender, EventArgs e)
+        
+        private void satışToolStripMenuItem_DoubleClick(object sender, EventArgs e)
         {
             frmSales salesForm = new frmSales(_currentUser);
             salesForm.ShowDialog();
         }
 
         /// <summary>
+        /// Anbar menyu elementinə klik üçün hadisə handleri. Məhsullar formunu açar.
+        /// </summary>
+
+        private void anbarToolStripMenuItem_DoubleClick(object sender, EventArgs e)
+        {
+            frmProducts productsForm = new frmProducts(_currentUser);
+            productsForm.ShowDialog();
+        }
+        /// <summary>
+        /// Təmir menyu elementinə klik üçün hadisə handleri. Təmir formunu açar.
+        /// </summary>
+       
+        private void təmirToolStripMenuItem_DoubleClick(object sender, EventArgs e)
+        {
+            frmRepairs repairForm = new frmRepairs(_currentUser);
+            repairForm.ShowDialog();
+        }
+
+        /// <summary>
+        /// Müştərilər menyu elementinə klik üçün hadisə handleri. Müştərilər formunu açar.
+        /// </summary>
+       
+        private void müştərilərToolStripMenuItem_DoubleClick(object sender, EventArgs e)
+        {
+            frmCustomers customersForm = new frmCustomers(_currentUser);
+            customersForm.ShowDialog();
+        }
+
+        private void satışıQaytarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmReturn returnForm = new frmReturn(_currentUser);
+            returnForm.ShowDialog();
+        }
+
+        /// <summary>
         /// Hesabatlar menyu elementinə klik üçün hadisə handleri. Satış hesabatları formunu açar.
         /// </summary>
-        private void hesabatlarToolStripMenuItem_Click(object sender, EventArgs e)
+        
+        private void hesabatlarToolStripMenuItem_DoubleClick(object sender, EventArgs e)
         {
             frmSalesReport reportForm = new frmSalesReport();
             reportForm.ShowDialog();
         }
 
         /// <summary>
-        /// Müştərilər menyu elementinə klik üçün hadisə handleri. Müştərilər formunu açar.
+        /// Tənzimləmələr menyu elementinə klik üçün hadisə handleri. İstifadəçilər formunu açar.
         /// </summary>
-        private void müştərilərToolStripMenuItem_Click(object sender, EventArgs e)
+       
+        private void tənzimləmələrToolStripMenuItem_DoubleClick(object sender, EventArgs e)
         {
-            frmCustomers customersForm = new frmCustomers(_currentUser);
-            customersForm.ShowDialog();
-        }
-
-        /// <summary>
-        /// Anbar menyu elementinə klik üçün hadisə handleri. Məhsullar formunu açar.
-        /// </summary>
-
-        private void anbarToolStripMenuItem_Click_1(object sender, EventArgs e)
-        {
-            frmProducts productsForm = new frmProducts(_currentUser);
-            productsForm.ShowDialog();
-        }
-
-        private void əməliyyatJurnalıToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            frmAuditLog logForm = new frmAuditLog();
-            logForm.ShowDialog();
+            frmUsers usersForm = new frmUsers(_currentUser);
+            usersForm.ShowDialog();
         }
     }
 }

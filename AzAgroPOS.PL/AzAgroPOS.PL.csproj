@@ -159,6 +159,12 @@
     <Compile Include="frmRepairs.Designer.cs">
       <DependentUpon>frmRepairs.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmReturn.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmReturn.Designer.cs">
+      <DependentUpon>frmReturn.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmSales.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -20,17 +20,18 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.çıxışToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.satışToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.satışıQaytarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.anbarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.təmirToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.müştərilərToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hesabatlarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tənzimləmələrToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.əməliyyatJurnalıToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.lblCurrentUser = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusSeparator = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblDateTime = new System.Windows.Forms.ToolStripStatusLabel();
             this.panelMain = new System.Windows.Forms.Panel();
-            this.əməliyyatJurnalıToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -78,11 +79,20 @@
             // 
             // satışToolStripMenuItem
             // 
+            this.satışToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.satışıQaytarToolStripMenuItem});
             this.satışToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.satışToolStripMenuItem.Name = "satışToolStripMenuItem";
             this.satışToolStripMenuItem.Size = new System.Drawing.Size(49, 23);
             this.satışToolStripMenuItem.Text = "Satış";
-            this.satışToolStripMenuItem.Click += new System.EventHandler(this.satışToolStripMenuItem_Click);
+            this.satışToolStripMenuItem.DoubleClick += new System.EventHandler(this.satışToolStripMenuItem_DoubleClick);
+            // 
+            // satışıQaytarToolStripMenuItem
+            // 
+            this.satışıQaytarToolStripMenuItem.Name = "satışıQaytarToolStripMenuItem";
+            this.satışıQaytarToolStripMenuItem.Size = new System.Drawing.Size(155, 24);
+            this.satışıQaytarToolStripMenuItem.Text = "Satışı Qaytar";
+            this.satışıQaytarToolStripMenuItem.Click += new System.EventHandler(this.satışıQaytarToolStripMenuItem_Click);
             // 
             // anbarToolStripMenuItem
             // 
@@ -90,7 +100,7 @@
             this.anbarToolStripMenuItem.Name = "anbarToolStripMenuItem";
             this.anbarToolStripMenuItem.Size = new System.Drawing.Size(58, 23);
             this.anbarToolStripMenuItem.Text = "Anbar";
-            this.anbarToolStripMenuItem.Click += new System.EventHandler(this.anbarToolStripMenuItem_Click_1);
+            this.anbarToolStripMenuItem.DoubleClick += new System.EventHandler(this.anbarToolStripMenuItem_DoubleClick);
             // 
             // təmirToolStripMenuItem
             // 
@@ -98,7 +108,7 @@
             this.təmirToolStripMenuItem.Name = "təmirToolStripMenuItem";
             this.təmirToolStripMenuItem.Size = new System.Drawing.Size(55, 23);
             this.təmirToolStripMenuItem.Text = "Təmir";
-            this.təmirToolStripMenuItem.Click += new System.EventHandler(this.təmirToolStripMenuItem_Click);
+            this.təmirToolStripMenuItem.DoubleClick += new System.EventHandler(this.təmirToolStripMenuItem_DoubleClick);
             // 
             // müştərilərToolStripMenuItem
             // 
@@ -106,7 +116,7 @@
             this.müştərilərToolStripMenuItem.Name = "müştərilərToolStripMenuItem";
             this.müştərilərToolStripMenuItem.Size = new System.Drawing.Size(83, 23);
             this.müştərilərToolStripMenuItem.Text = "Müştərilər";
-            this.müştərilərToolStripMenuItem.Click += new System.EventHandler(this.müştərilərToolStripMenuItem_Click);
+            this.müştərilərToolStripMenuItem.DoubleClick += new System.EventHandler(this.müştərilərToolStripMenuItem_DoubleClick);
             // 
             // hesabatlarToolStripMenuItem
             // 
@@ -114,7 +124,7 @@
             this.hesabatlarToolStripMenuItem.Name = "hesabatlarToolStripMenuItem";
             this.hesabatlarToolStripMenuItem.Size = new System.Drawing.Size(86, 23);
             this.hesabatlarToolStripMenuItem.Text = "Hesabatlar";
-            this.hesabatlarToolStripMenuItem.Click += new System.EventHandler(this.hesabatlarToolStripMenuItem_Click);
+            this.hesabatlarToolStripMenuItem.DoubleClick += new System.EventHandler(this.hesabatlarToolStripMenuItem_DoubleClick);
             // 
             // tənzimləmələrToolStripMenuItem
             // 
@@ -124,7 +134,15 @@
             this.tənzimləmələrToolStripMenuItem.Name = "tənzimləmələrToolStripMenuItem";
             this.tənzimləmələrToolStripMenuItem.Size = new System.Drawing.Size(108, 23);
             this.tənzimləmələrToolStripMenuItem.Text = "Tənzimləmələr";
-            this.tənzimləmələrToolStripMenuItem.Click += new System.EventHandler(this.tənzimləmələrToolStripMenuItem_Click);
+            //this.tənzimləmələrToolStripMenuItem.Click += new System.EventHandler(this.tənzimləmələrToolStripMenuItem_Click);
+            this.tənzimləmələrToolStripMenuItem.DoubleClick += new System.EventHandler(this.tənzimləmələrToolStripMenuItem_DoubleClick);
+            // 
+            // əməliyyatJurnalıToolStripMenuItem
+            // 
+            this.əməliyyatJurnalıToolStripMenuItem.Name = "əməliyyatJurnalıToolStripMenuItem";
+            this.əməliyyatJurnalıToolStripMenuItem.Size = new System.Drawing.Size(182, 24);
+            this.əməliyyatJurnalıToolStripMenuItem.Text = "Əməliyyat Jurnalı";
+            this.əməliyyatJurnalıToolStripMenuItem.Click += new System.EventHandler(this.əməliyyatJurnalıToolStripMenuItem_Click);
             // 
             // statusStrip1
             // 
@@ -168,13 +186,6 @@
             this.panelMain.Size = new System.Drawing.Size(1000, 623);
             this.panelMain.TabIndex = 2;
             // 
-            // əməliyyatJurnalıToolStripMenuItem
-            // 
-            this.əməliyyatJurnalıToolStripMenuItem.Name = "əməliyyatJurnalıToolStripMenuItem";
-            this.əməliyyatJurnalıToolStripMenuItem.Size = new System.Drawing.Size(182, 24);
-            this.əməliyyatJurnalıToolStripMenuItem.Text = "Əməliyyat Jurnalı";
-            this.əməliyyatJurnalıToolStripMenuItem.Click += new System.EventHandler(this.əməliyyatJurnalıToolStripMenuItem_Click);
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -215,5 +226,6 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusSeparator;
         private System.Windows.Forms.Panel panelMain;
         private System.Windows.Forms.ToolStripMenuItem əməliyyatJurnalıToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem satışıQaytarToolStripMenuItem;
     }
 }
