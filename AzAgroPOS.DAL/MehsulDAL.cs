@@ -84,6 +84,29 @@ namespace AzAgroPOS.DAL
         }
 
         /// <summary>
+        /// Verilmiş barkodun verilənlər bazasında mövcud olub-olmadığını yoxlayır.
+        /// </summary>
+        public bool BarcodeExists(string barcode)
+        {
+            using (var conn = new SqlConnection(_connectionString))
+            {
+                var query = "SELECT COUNT(1) FROM mehsullar WHERE barkod = @barcode";
+                var command = new SqlCommand(query, conn);
+                command.Parameters.Add("@barcode", SqlDbType.NVarChar).Value = barcode;
+                try
+                {
+                    conn.Open();
+                    return (int)command.ExecuteScalar() > 0;
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(ex.Message);
+                    return true;
+                }
+            }
+        }
+
+        /// <summary>
         /// Verilənlər bazasına yeni məhsul əlavə edir.
         /// </summary>
         public int Add(Mehsul mehsul)

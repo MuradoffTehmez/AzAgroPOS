@@ -260,5 +260,12 @@ namespace AzAgroPOS.PL
         }
 
         #endregion
+
+        private void btnGenerateBarcode_Click(object sender, EventArgs e)
+        {
+            // BLL-dəki yeni public metodu çağırırıq
+            string newBarcode = _mehsulBll.GenerateNewUniqueBarcode();
+            txtBarkod.Text = newBarcode;
+        }
     }
 }
