@@ -61,6 +61,29 @@ namespace AzAgroPOS.DAL
         }
 
         /// <summary>
+        /// Verilənlər bazasındakı sonuncu məhsulun ID-sini tapır.
+        /// </summary>
+        /// <returns>Sonuncu məhsulun ID-si.</returns>
+        public int GetLastProductId()
+        {
+            using (var conn = new SqlConnection(_connectionString))
+            {
+                
+                var query = "SELECT ISNULL(IDENT_CURRENT('mehsullar'), 0);";
+                var command = new SqlCommand(query, conn);
+                try
+                {
+                    conn.Open();
+                    return Convert.ToInt32(command.ExecuteScalar());
+                }
+                catch (Exception)
+                {
+                    return 0;
+                }
+            }
+        }
+
+        /// <summary>
         /// Verilənlər bazasına yeni məhsul əlavə edir.
         /// </summary>
         public int Add(Mehsul mehsul)
