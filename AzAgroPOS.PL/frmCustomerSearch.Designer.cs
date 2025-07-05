@@ -39,7 +39,7 @@
             this.panelHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelHeader.Location = new System.Drawing.Point(0, 0);
             this.panelHeader.Name = "panelHeader";
-            this.panelHeader.Size = new System.Drawing.Size(800, 50);
+            this.panelHeader.Size = new System.Drawing.Size(822, 50);
             this.panelHeader.TabIndex = 0;
             // 
             // lblTitle
@@ -62,7 +62,7 @@
             this.panelSearch.Location = new System.Drawing.Point(0, 50);
             this.panelSearch.Name = "panelSearch";
             this.panelSearch.Padding = new System.Windows.Forms.Padding(10);
-            this.panelSearch.Size = new System.Drawing.Size(800, 60);
+            this.panelSearch.Size = new System.Drawing.Size(822, 60);
             this.panelSearch.TabIndex = 1;
             // 
             // txtSearch
@@ -73,7 +73,7 @@
             this.txtSearch.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.txtSearch.Location = new System.Drawing.Point(180, 15);
             this.txtSearch.Name = "txtSearch";
-            this.txtSearch.Size = new System.Drawing.Size(600, 29);
+            this.txtSearch.Size = new System.Drawing.Size(622, 29);
             this.txtSearch.TabIndex = 1;
             this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
             // 
@@ -102,7 +102,7 @@
             this.dgvCustomers.RowHeadersWidth = 30;
             this.dgvCustomers.RowTemplate.Height = 28;
             this.dgvCustomers.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvCustomers.Size = new System.Drawing.Size(800, 390);
+            this.dgvCustomers.Size = new System.Drawing.Size(822, 438);
             this.dgvCustomers.TabIndex = 2;
             // 
             // panelButtons
@@ -111,10 +111,10 @@
             this.panelButtons.Controls.Add(this.btnCancel);
             this.panelButtons.Controls.Add(this.btnSelect);
             this.panelButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelButtons.Location = new System.Drawing.Point(0, 500);
+            this.panelButtons.Location = new System.Drawing.Point(0, 548);
             this.panelButtons.Name = "panelButtons";
             this.panelButtons.Padding = new System.Windows.Forms.Padding(10);
-            this.panelButtons.Size = new System.Drawing.Size(800, 60);
+            this.panelButtons.Size = new System.Drawing.Size(822, 60);
             this.panelButtons.TabIndex = 3;
             // 
             // btnCancel
@@ -125,7 +125,7 @@
             this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancel.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.btnCancel.ForeColor = System.Drawing.Color.White;
-            this.btnCancel.Location = new System.Drawing.Point(690, 10);
+            this.btnCancel.Location = new System.Drawing.Point(712, 10);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(100, 40);
             this.btnCancel.TabIndex = 1;
@@ -141,7 +141,7 @@
             this.btnSelect.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSelect.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.btnSelect.ForeColor = System.Drawing.Color.White;
-            this.btnSelect.Location = new System.Drawing.Point(580, 10);
+            this.btnSelect.Location = new System.Drawing.Point(602, 10);
             this.btnSelect.Name = "btnSelect";
             this.btnSelect.Size = new System.Drawing.Size(100, 40);
             this.btnSelect.TabIndex = 0;
@@ -154,7 +154,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(800, 560);
+            this.ClientSize = new System.Drawing.Size(822, 608);
             this.Controls.Add(this.dgvCustomers);
             this.Controls.Add(this.panelButtons);
             this.Controls.Add(this.panelSearch);
