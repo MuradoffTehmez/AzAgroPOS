@@ -10,7 +10,7 @@ namespace AzAgroPOS.Entities
         public DateTime EmeliyyatTarixi { get; set; }
         public string EmeliyyatNovu { get; set; }
         public string Tesvir { get; set; }
-        // Hesabatda göstərmək üçün əlavə xüsusiyyətlər
         public string IstifadeciAdi { get; set; }
+        public DateTime Tarix { get; set; }
     }
 }

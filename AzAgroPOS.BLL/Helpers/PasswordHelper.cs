@@ -5,6 +5,9 @@ using System.Text;
 
 namespace AzAgroPOS.BLL.Helpers
 {
+    /// <summary>
+    /// Parolların təhlükəsiz şəkildə hash-lənməsi və yoxlanılması üçün köməkçi sinif.
+    /// </summary>
     public static class PasswordHelper
     {
         private const int SaltSize = 16; // 128 bit

@@ -1,17 +1,46 @@
-﻿using AzAgroPOS.DAL;
+﻿using AzAgroPOS.BLL.Helpers;
+using AzAgroPOS.DAL;
 using AzAgroPOS.Entities;
 using System;
 using System.Collections.Generic;
 
 namespace AzAgroPOS.BLL
 {
+    /// <summary>
+    /// Məhsullarla bağlı biznes məntiqini həyata keçirən sinif.
+    /// </summary>
     public class MehsulBLL
     {
         private readonly MehsulDAL _dal = new MehsulDAL();
 
+        /// <summary>
+        /// Bütün aktiv məhsulların siyahısını qaytarır.
+        /// </summary>
+        /// <returns>Məhsullar siyahısı.</returns>
         public List<Mehsul> GetAll() => _dal.GetAll();
 
-        public bool Add(Mehsul mehsul, out string message)
+        /// <summary>
+        /// Barkod üzrə məhsul məlumatını qaytarır.
+        /// </summary>
+        /// <param name="barkod">Axtarılacaq barkod.</param>
+        /// <returns>Tapılsa Mehsul obyekti, əks halda null.</returns>
+        public Mehsul GetByBarcode(string barkod)
+        {
+            if (string.IsNullOrWhiteSpace(barkod))
+            {
+                return null;
+            }
+            return _dal.GetByBarcode(barkod);
+        }
+
+        /// <summary>
+        /// Yeni məhsul yaradır və əməliyyatı jurnala yazır.
+        /// </summary>
+        /// <param name="mehsul">Əlavə ediləcək məhsul obyekti.</param>
+        /// <param name="emeliyyatiEden">Əməliyyatı icra edən istifadəçi.</param>
+        /// <param name="message">Nəticə mesajı.</param>
+        /// <returns>Əməliyyatın uğurlu olub-olmadığı.</returns>
+        public bool Add(Mehsul mehsul, Istifadeci emeliyyatiEden, out string message)
         {
             if (string.IsNullOrWhiteSpace(mehsul.Ad))
             {
@@ -28,6 +57,7 @@ namespace AzAgroPOS.BLL
             if (newId > 0)
             {
                 message = "Məhsul uğurla əlavə edildi.";
+                AuditLogger.Log(emeliyyatiEden.Id, "Məhsul Əlavə Etdi", $"Yeni məhsul: {mehsul.Ad} (ID: {newId}, Barkod: {mehsul.Barkod})");
                 return true;
             }
 
@@ -35,7 +65,14 @@ namespace AzAgroPOS.BLL
             return false;
         }
 
-        public bool Update(Mehsul mehsul, out string message)
+        /// <summary>
+        /// Mövcud məhsulun məlumatlarını yeniləyir və əməliyyatı jurnala yazır.
+        /// </summary>
+        /// <param name="mehsul">Yenilənəcək məhsul obyekti.</param>
+        /// <param name="emeliyyatiEden">Əməliyyatı icra edən istifadəçi.</param>
+        /// <param name="message">Nəticə mesajı.</param>
+        /// <returns>Əməliyyatın uğurlu olub-olmadığı.</returns>
+        public bool Update(Mehsul mehsul, Istifadeci emeliyyatiEden, out string message)
         {
             if (mehsul.Id <= 0)
             {
@@ -51,6 +88,9 @@ namespace AzAgroPOS.BLL
             if (_dal.Update(mehsul))
             {
                 message = "Məhsul uğurla yeniləndi.";
+                AuditLogger.Log(emeliyyatiEden.Id, "Məhsul Yenilədi",
+                    $"Məhsul: {mehsul.Ad} (ID: {mehsul.Id}). " +
+                    $"Yeni qiymətlər: Alış={mehsul.AlisQiymeti}, Satış={mehsul.SatisQiymeti}");
                 return true;
             }
 
@@ -58,7 +98,14 @@ namespace AzAgroPOS.BLL
             return false;
         }
 
-        public bool Delete(int mehsulId, out string message)
+        /// <summary>
+        /// Məhsulu sistemdən silir (deaktiv edir) və əməliyyatı jurnala yazır.
+        /// </summary>
+        /// <param name="mehsulId">Silinəcək məhsulun ID-si.</param>
+        /// <param name="emeliyyatiEden">Əməliyyatı icra edən istifadəçi.</param>
+        /// <param name="message">Nəticə mesajı.</param>
+        /// <returns>Əməliyyatın uğurlu olub-olmadığı.</returns>
+        public bool Delete(int mehsulId, Istifadeci emeliyyatiEden, out string message)
         {
             if (mehsulId <= 0)
             {
@@ -66,22 +113,31 @@ namespace AzAgroPOS.BLL
                 return false;
             }
 
+            // Əvvəlcə məhsul məlumatlarını alırıq ki, jurnalda istifadə edək
+            var mehsul = _dal.GetById(mehsulId);
+            string mehsulAdi = mehsul?.Ad ?? "Naməlum";
+
             if (_dal.Delete(mehsulId))
             {
                 message = "Məhsul uğurla silindi.";
+                AuditLogger.Log(emeliyyatiEden.Id, "Məhsul Silindi",
+                    $"Məhsul: {mehsulAdi} (ID: {mehsulId})");
                 return true;
             }
 
             message = "Məhsul silinərkən xəta baş verdi.";
             return false;
         }
-        public Mehsul GetByBarcode(string barkod)
+  
+        /// <summary>
+        /// ID üzrə məhsul məlumatını qaytarır.
+        /// </summary>
+        /// <param name="id">Axtarılan məhsulun ID-si.</param>
+        /// <returns>Tapılsa Mehsul obyekti, əks halda null.</returns>
+        public Mehsul GetById(int id)
         {
-            if (string.IsNullOrWhiteSpace(barkod))
-            {
-                return null;
-            }
-            return _dal.GetByBarcode(barkod);
+            if (id <= 0) return null;
+            return _dal.GetById(id);
         }
     }
 }

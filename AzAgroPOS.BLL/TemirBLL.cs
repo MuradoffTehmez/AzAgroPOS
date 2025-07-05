@@ -1,38 +1,108 @@
-﻿using AzAgroPOS.DAL;
+﻿using AzAgroPOS.BLL.Helpers;
+using AzAgroPOS.DAL;
 using AzAgroPOS.Entities;
 using System.Collections.Generic;
 
 namespace AzAgroPOS.BLL
 {
+    /// <summary>
+    /// Təmir sifarişləri ilə bağlı biznes məntiqini həyata keçirən sinif.
+    /// </summary>
     public class TemirBLL
     {
         private readonly TemirDAL _dal = new TemirDAL();
 
+        /// <summary>
+        /// Bütün aktiv təmir sifarişlərinin siyahısını qaytarır.
+        /// </summary>
+        /// <returns>Təmir sifarişləri siyahısı.</returns>
         public List<Temir> GetAll() => _dal.GetAll();
 
-        public bool Add(Temir temir, out string message)
+        /// <summary>
+        /// Yeni təmir sifarişi yaradır və əməliyyatı jurnala yazır.
+        /// </summary>
+        /// <param name="temir">Əlavə ediləcək təmir sifarişi obyekti.</param>
+        /// <param name="emeliyyatiEden">Əməliyyatı icra edən istifadəçi.</param>
+        /// <param name="message">Nəticə mesajı.</param>
+        /// <returns>Əməliyyatın uğurlu olub-olmadığı.</returns>
+        public bool Add(Temir temir, Istifadeci emeliyyatiEden, out string message)
         {
-            if (temir.MusteriId == 0) { message = "Müştəri seçilməlidir."; return false; }
-            if (string.IsNullOrWhiteSpace(temir.CihazAdi)) { message = "Cihazın adı boş ola bilməz."; return false; }
-            if (string.IsNullOrWhiteSpace(temir.ProblemTesviri)) { message = "Problem təsviri boş ola bilməz."; return false; }
+            if (temir.MusteriId == 0) 
+            { 
+                message = "Müştəri seçilməlidir."; 
+                return false; 
+            }
+            if (string.IsNullOrWhiteSpace(temir.CihazAdi)) 
+            { 
+                message = "Cihazın adı boş ola bilməz."; 
+                return false; 
+            }
+            if (string.IsNullOrWhiteSpace(temir.ProblemTesviri)) 
+            { 
+                message = "Problem təsviri boş ola bilməz."; 
+                return false; 
+            }
 
             int newId = _dal.Add(temir);
-            message = newId > 0 ? $"Yeni təmir sifarişi uğurla yaradıldı. Qeydiyyat Nömrəsi: {newId}" : "Sifariş yaradılarkən xəta baş verdi.";
-            return newId > 0;
+            if (newId > 0)
+            {
+                message = $"Yeni təmir sifarişi uğurla yaradıldı. Qeydiyyat Nömrəsi: {newId}";
+                AuditLogger.Log(emeliyyatiEden.Id, "Təmir Sifarişi Əlavə Etdi", 
+                    $"Yeni təmir sifarişi: {temir.CihazAdi} (ID: {newId}, Müştəri ID: {temir.MusteriId})");
+                return true;
+            }
+
+            message = "Sifariş yaradılarkən xəta baş verdi.";
+            return false;
         }
 
-        public bool Update(Temir temir, out string message)
+        /// <summary>
+        /// Mövcud təmir sifarişini yeniləyir və əməliyyatı jurnala yazır.
+        /// </summary>
+        /// <param name="temir">Yenilənəcək təmir sifarişi obyekti.</param>
+        /// <param name="emeliyyatiEden">Əməliyyatı icra edən istifadəçi.</param>
+        /// <param name="message">Nəticə mesajı.</param>
+        /// <returns>Əməliyyatın uğurlu olub-olmadığı.</returns>
+        public bool Update(Temir temir, Istifadeci emeliyyatiEden, out string message)
         {
-            if (temir.Id == 0) { message = "Yeniləmək üçün sifariş seçilməyib."; return false; }
-            if (temir.MusteriId == 0) { message = "Müştəri seçilməlidir."; return false; }
-            if (string.IsNullOrWhiteSpace(temir.CihazAdi)) { message = "Cihazın adı boş ola bilməz."; return false; }
+            if (temir.Id == 0) 
+            { 
+                message = "Yeniləmək üçün sifariş seçilməyib."; 
+                return false; 
+            }
+            if (temir.MusteriId == 0) 
+            { 
+                message = "Müştəri seçilməlidir."; 
+                return false; 
+            }
+            if (string.IsNullOrWhiteSpace(temir.CihazAdi)) 
+            { 
+                message = "Cihazın adı boş ola bilməz."; 
+                return false; 
+            }
 
             bool result = _dal.Update(temir);
-            message = result ? "Sifariş uğurla yeniləndi." : "Sifariş yenilənərkən xəta baş verdi.";
-            return result;
+            if (result)
+            {
+                message = "Sifariş uğurla yeniləndi.";
+                AuditLogger.Log(emeliyyatiEden.Id, "Təmir Sifarişi Yenilədi", 
+                    $"Təmir sifarişi: {temir.CihazAdi} (ID: {temir.Id}). " +
+                    $"Status: {temir.StatusAdi}, Problem: {temir.ProblemTesviri}");
+                return true;
+            }
+
+            message = "Sifariş yenilənərkən xəta baş verdi.";
+            return false;
         }
 
-        public bool Delete(int temirId, out string message)
+        /// <summary>
+        /// Təmir sifarişini sistemdən silir və əməliyyatı jurnala yazır.
+        /// </summary>
+        /// <param name="temirId">Silinəcək təmir sifarişinin ID-si.</param>
+        /// <param name="emeliyyatiEden">Əməliyyatı icra edən istifadəçi.</param>
+        /// <param name="message">Nəticə mesajı.</param>
+        /// <returns>Əməliyyatın uğurlu olub-olmadığı.</returns>
+        public bool Delete(int temirId, Istifadeci emeliyyatiEden, out string message)
         {
             if (temirId == 0)
             {
@@ -40,12 +110,32 @@ namespace AzAgroPOS.BLL
                 return false;
             }
 
+            // Əvvəlcə təmir məlumatlarını alırıq ki, jurnalda istifadə edək
+            var temir = _dal.GetById(temirId);
+            string cihazAdi = temir?.CihazAdi ?? "Naməlum cihaz";
+
             bool result = _dal.Delete(temirId);
-            message = result ? "Sifariş uğurla silindi." : "Sifariş silinərkən xəta baş verdi.";
-            return result;
+            if (result)
+            {
+                message = "Sifariş uğurla silindi.";
+                AuditLogger.Log(emeliyyatiEden.Id, "Təmir Sifarişi Silindi", 
+                    $"Təmir sifarişi: {cihazAdi} (ID: {temirId})");
+                return true;
+            }
+
+            message = "Sifariş silinərkən xəta baş verdi.";
+            return false;
         }
-        
-        public bool CompleteRepair(int temirId, decimal yekunXerc, out string message)
+
+        /// <summary>
+        /// Təmir sifarişini tamamlandı olaraq qeyd edir və əməliyyatı jurnala yazır.
+        /// </summary>
+        /// <param name="temirId">Tamamlanacaq təmir sifarişinin ID-si.</param>
+        /// <param name="yekunXerc">Yekun xərci.</param>
+        /// <param name="emeliyyatiEden">Əməliyyatı icra edən istifadəçi.</param>
+        /// <param name="message">Nəticə mesajı.</param>
+        /// <returns>Əməliyyatın uğurlu olub-olmadığı.</returns>
+        public bool CompleteRepair(int temirId, decimal yekunXerc, Istifadeci emeliyyatiEden, out string message)
         {
             if (temirId == 0)
             {
@@ -53,9 +143,16 @@ namespace AzAgroPOS.BLL
                 return false;
             }
 
+            // Əvvəlcə təmir məlumatlarını alırıq ki, jurnalda istifadə edək
+            var temir = _dal.GetById(temirId);
+            string cihazAdi = temir?.CihazAdi ?? "Naməlum cihaz";
+
             if (_dal.CompleteRepair(temirId, yekunXerc))
             {
                 message = "Təmir sifarişi uğurla tamamlandı.";
+                AuditLogger.Log(emeliyyatiEden.Id, "Təmir Tamamlandı", 
+                    $"Təmir sifarişi: {cihazAdi} (ID: {temirId}). " +
+                    $"Yekun xərc: {yekunXerc} AZN");
                 return true;
             }
 

@@ -102,9 +102,6 @@ namespace AzAgroPOS.DAL
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                // Qeyd: Bu, "hard delete"-dir, yəni məlumatı bazadan tamamilə silir.
-                // Əgər gələcəkdə təmir tarixçəsini saxlamaq lazım olarsa,
-                // `temirler` cədvəlinə `silinib BIT` sütunu əlavə edib "soft delete" etmək daha yaxşıdır.
                 var query = "DELETE FROM temirler WHERE id=@id";
                 var command = new SqlCommand(query, connection);
                 command.Parameters.AddWithValue("@id", temirId);
@@ -160,18 +157,31 @@ namespace AzAgroPOS.DAL
                 }
             }
         }
-        /*
-        public Temir GetById(int temirId)
+        // TemirDAL.cs sinifinin içinə əlavə edin
 
+        /// <summary>
+        /// Verilmiş ID-yə görə tək bir təmiri tapır.
+        /// </summary>
+        public Temir GetById(int id)
         {
-            using (var connection = new SqlConnection(_connectionString))
+            using (var conn = new SqlConnection(_connectionString))
             {
-                var query = "SELECT * FROM temirler WHERE id = @id";
-                var command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@id", temirId);
+                // GetAll metodundakı kimi JOIN-li sorğu istifadə edirik ki, bütün adlar gəlsin
+                var query = @"SELECT 
+                        t.*,
+                        m.ad + ' ' + m.soyad as MusteriAdi,
+                        ts.ad as StatusAdi,
+                        ISNULL(i.ad + ' ' + i.soyad, 'Təyin edilməyib') as TemirciAdi
+                      FROM temirler t
+                      JOIN musteriler m ON t.musteri_id = m.id
+                      JOIN temir_statuslari ts ON t.status_id = ts.id
+                      LEFT JOIN istifadeciler i ON t.temirci_id = i.id
+                      WHERE t.id = @id";
+                var command = new SqlCommand(query, conn);
+                command.Parameters.AddWithValue("@id", id);
                 try
                 {
-                    connection.Open();
+                    conn.Open();
                     using (var reader = command.ExecuteReader())
                     {
                         if (reader.Read())
@@ -182,46 +192,8 @@ namespace AzAgroPOS.DAL
                 }
                 catch (Exception ex) { throw; }
             }
-            return null; // Əgər tapılmadısa, null qaytarırıq
+            return null;
         }
-        */
-
-
-        /*
-        public List<Temir> GetByMusteriId(int musteriId)
-        {
-            var temirler = new List<Temir>();
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                var query = @"SELECT 
-                                t.*,
-                                m.ad + ' ' + m.soyad as MusteriAdi,
-                                ts.ad as StatusAdi,
-                                ISNULL(i.ad + ' ' + i.soyad, 'Təyin edilməyib') as TemirciAdi
-                              FROM temirler t
-                              JOIN musteriler m ON t.musteri_id = m.id
-                              JOIN temir_statuslari ts ON t.status_id = ts.id
-                              LEFT JOIN istifadeciler i ON t.temirci_id = i.id
-                              WHERE t.musteri_id = @musteri_id
-                              ORDER BY t.qebul_tarixi DESC";
-                var command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@musteri_id", musteriId);
-                try
-                {
-                    connection.Open();
-                    using (var reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            temirler.Add(MapTemir(reader));
-                        }
-                    }
-                }
-                catch (Exception ex) { throw; }
-            }
-            return temirler;
-        }
-        */
 
     }
 }

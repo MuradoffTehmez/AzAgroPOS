@@ -120,7 +120,6 @@ namespace AzAgroPOS.PL
                 MessageBox.Show("Daxil edilən parollar eyni deyil!", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-
             var user = new Istifadeci
             {
                 Ad = txtFirstName.Text,
@@ -130,13 +129,10 @@ namespace AzAgroPOS.PL
                 Aktivdir = chkIsActive.Checked
             };
 
-            bool result = _istifadeciBll.Add(user, txtPassword.Text, out string message);
+            
+            bool result = _istifadeciBll.Add(user, txtPassword.Text, _activeUser, out string message);
             MessageBox.Show(message, result ? "Uğurlu" : "Xəta", MessageBoxButtons.OK, result ? MessageBoxIcon.Information : MessageBoxIcon.Error);
-
-            if (result)
-            {
-                LoadUsers();
-            }
+            if (result) { LoadUsers(); }
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
@@ -159,10 +155,10 @@ namespace AzAgroPOS.PL
                 Aktivdir = chkIsActive.Checked
             };
 
-            bool result = _istifadeciBll.Update(user, txtPassword.Text, out string message);
+            bool result = _istifadeciBll.Update(user, txtPassword.Text, _activeUser, out string message);
             MessageBox.Show(message, result ? "Uğurlu" : "Xəta", MessageBoxButtons.OK, result ? MessageBoxIcon.Information : MessageBoxIcon.Error);
-
-            if (result)
+           
+            if (result) 
             {
                 LoadUsers();
             }
@@ -185,11 +181,11 @@ namespace AzAgroPOS.PL
             var result = MessageBox.Show($"Seçilmiş istifadəçini deaktiv etmək istədiyinizə əminsinizmi?", "Təsdiq", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (result == DialogResult.Yes)
             {
-                bool opResult = _istifadeciBll.Delete(_selectedUserId, out string message);
+                bool opResult = _istifadeciBll.Delete(_selectedUserId, _activeUser, out string message);
                 MessageBox.Show(message);
                 if (opResult)
-                {
-                    LoadUsers();
+                { 
+                    LoadUsers(); 
                 }
             }
         }

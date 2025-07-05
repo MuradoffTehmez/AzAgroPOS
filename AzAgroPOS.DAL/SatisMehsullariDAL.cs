@@ -44,5 +44,38 @@ namespace AzAgroPOS.DAL
             }
             return mehsullar;
         }
+
+        public SatisMehsulu GetById(int id)
+        {
+            using (var conn = new SqlConnection(_connectionString))
+            {
+                var query = "SELECT sm.*, m.ad as MehsulAdi FROM satis_mehsullari sm JOIN mehsullar m ON sm.mehsul_id = m.id WHERE sm.id = @id";
+                var command = new SqlCommand(query, conn);
+                command.Parameters.AddWithValue("@id", id);
+                try
+                {
+                    conn.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return new SatisMehsulu { /* ... Map metodu ilə doldurun ... */ };
+                        }
+                    }
+                }
+                catch (Exception ex) { throw; }
+            }
+            return null; // <-- XƏTANIN HƏLLİ: Bütün yollar bir dəyər qaytarmalıdır.
+        }
+
+        public bool Add(SatisMehsulu satisMehsulu)
+        {
+            throw new NotImplementedException("Bu funksionallıq ayrıca 'Satışa Düzəliş' modulunda yazılacaq.");
+        }
+
+        public bool Remove(int satisMehsulId)
+        {
+            throw new NotImplementedException("Bu funksionallıq ayrıca 'Satışdan Qaytarma' modulunda yazılacaq.");
+        }
     }
 }

@@ -8,18 +8,27 @@ using System.Linq;
 
 namespace AzAgroPOS.DAL
 {
+    /// <summary>
+    /// İstifadəçilərlə bağlı verilənlər bazası əməliyyatlarını həyata keçirir.
+    /// </summary>
     public class IstifadeciDAL
     {
         private readonly string _connectionString = DatabaseHelper.GetConnectionString();
 
+        /// <summary>
+        /// İstifadəçi adına görə istifadəçi məlumatlarını gətirir.
+        /// </summary>
+        /// <param name="istifadeciAdi">İstifadəçi adı</param>
+        /// <returns>İstifadəçi obyekti</returns>
         public Istifadeci GetByUsername(string istifadeciAdi)
         {
             Istifadeci istifadeci = null;
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 string query = @"SELECT i.*, r.ad as RolAdi 
-                                 FROM istifadeciler i JOIN rollar r ON i.rol_id = r.id 
-                                 WHERE i.istifadeci_adi = @istifadeci_adi";
+                               FROM istifadeciler i 
+                               JOIN rollar r ON i.rol_id = r.id 
+                               WHERE i.istifadeci_adi = @istifadeci_adi";
 
                 SqlCommand command = new SqlCommand(query, connection);
                 command.Parameters.AddWithValue("@istifadeci_adi", istifadeciAdi);
@@ -39,6 +48,10 @@ namespace AzAgroPOS.DAL
             return istifadeci;
         }
 
+        /// <summary>
+        /// Bütün istifadəçilərin siyahısını gətirir.
+        /// </summary>
+        /// <returns>İstifadəçilər siyahısı</returns>
         public List<Istifadeci> GetAll()
         {
             var istifadeciler = new List<Istifadeci>();
@@ -62,14 +75,19 @@ namespace AzAgroPOS.DAL
             return istifadeciler;
         }
 
+        /// <summary>
+        /// Müəyyən rola malik istifadəçiləri gətirir.
+        /// </summary>
+        /// <param name="roleName">Rol adı</param>
+        /// <returns>İstifadəçilər siyahısı</returns>
         public List<Istifadeci> GetAllByRole(string roleName)
         {
             var istifadeciler = new List<Istifadeci>();
             using (var connection = new SqlConnection(_connectionString))
             {
                 var query = @"SELECT i.id, i.ad, i.soyad FROM istifadeciler i 
-                              JOIN rollar r ON i.rol_id = r.id 
-                              WHERE r.ad = @roleName AND i.aktivdir = 1";
+                            JOIN rollar r ON i.rol_id = r.id 
+                            WHERE r.ad = @roleName AND i.aktivdir = 1";
                 var command = new SqlCommand(query, connection);
                 command.Parameters.Add("@roleName", SqlDbType.NVarChar).Value = roleName;
                 try
@@ -93,12 +111,19 @@ namespace AzAgroPOS.DAL
             return istifadeciler;
         }
 
+        /// <summary>
+        /// Yeni istifadəçi əlavə edir.
+        /// </summary>
+        /// <param name="istifadeci">Əlavə ediləcək istifadəçi</param>
+        /// <returns>Yaradılan istifadəçinin ID-si</returns>
         public int Add(Istifadeci istifadeci)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                var query = "INSERT INTO istifadeciler (ad, soyad, istifadeci_adi, parol_hash, parol_salt, rol_id, aktivdir) " +
-                            "VALUES (@ad, @soyad, @istifadeci_adi, @parol_hash, @parol_salt, @rol_id, @aktivdir); SELECT SCOPE_IDENTITY();";
+                var query = @"INSERT INTO istifadeciler 
+                            (ad, soyad, istifadeci_adi, parol_hash, parol_salt, rol_id, aktivdir) 
+                            VALUES (@ad, @soyad, @istifadeci_adi, @parol_hash, @parol_salt, @rol_id, @aktivdir); 
+                            SELECT SCOPE_IDENTITY();";
                 var command = new SqlCommand(query, connection);
                 AddParameters(command, istifadeci);
                 try
@@ -110,13 +135,25 @@ namespace AzAgroPOS.DAL
             }
         }
 
+        /// <summary>
+        /// Mövcud istifadəçinin məlumatlarını yeniləyir.
+        /// </summary>
+        /// <param name="istifadeci">Yenilənəcək istifadəçi</param>
+        /// <returns>Yeniləmənin uğurlu olub-olmadığı</returns>
         public bool Update(Istifadeci istifadeci)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
                 var query = string.IsNullOrWhiteSpace(istifadeci.ParolHash)
-                    ? "UPDATE istifadeciler SET ad=@ad, soyad=@soyad, istifadeci_adi=@istifadeci_adi, rol_id=@rol_id, aktivdir=@aktivdir WHERE id=@id"
-                    : "UPDATE istifadeciler SET ad=@ad, soyad=@soyad, istifadeci_adi=@istifadeci_adi, parol_hash=@parol_hash, parol_salt=@parol_salt, rol_id=@rol_id, aktivdir=@aktivdir WHERE id=@id";
+                    ? @"UPDATE istifadeciler SET 
+                        ad=@ad, soyad=@soyad, istifadeci_adi=@istifadeci_adi, 
+                        rol_id=@rol_id, aktivdir=@aktivdir 
+                        WHERE id=@id"
+                    : @"UPDATE istifadeciler SET 
+                        ad=@ad, soyad=@soyad, istifadeci_adi=@istifadeci_adi, 
+                        parol_hash=@parol_hash, parol_salt=@parol_salt, 
+                        rol_id=@rol_id, aktivdir=@aktivdir 
+                        WHERE id=@id";
 
                 var command = new SqlCommand(query, connection);
                 command.Parameters.AddWithValue("@id", istifadeci.Id);
@@ -130,11 +167,18 @@ namespace AzAgroPOS.DAL
             }
         }
 
+        /// <summary>
+        /// İstifadəçini deaktiv edir (silir).
+        /// </summary>
+        /// <param name="istifadeciId">Deaktiv ediləcək istifadəçi ID-si</param>
+        /// <returns>Əməliyyatın uğurlu olub-olmadığı</returns>
         public bool Delete(int istifadeciId)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                var query = "UPDATE istifadeciler SET aktivdir = 0, deaktivasiya_tarixi = GETDATE() WHERE id=@id";
+                var query = @"UPDATE istifadeciler SET 
+                            aktivdir = 0, deaktivasiya_tarixi = GETDATE() 
+                            WHERE id=@id";
                 var command = new SqlCommand(query, connection);
                 command.Parameters.AddWithValue("@id", istifadeciId);
                 try
@@ -146,6 +190,51 @@ namespace AzAgroPOS.DAL
             }
         }
 
+        /// <summary>
+        /// İstifadəçi adının artıq mövcud olub-olmadığını yoxlayır.
+        /// </summary>
+        /// <param name="istifadeciAdi">Yoxlanılacaq istifadəçi adı</param>
+        /// <returns>Mövcud olub-olmadığı</returns>
+        public bool Exists(string istifadeciAdi)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var query = "SELECT COUNT(1) FROM istifadeciler WHERE istifadeci_adi = @istifadeci_adi";
+                var command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@istifadeci_adi", istifadeciAdi);
+
+                try
+                {
+                    connection.Open();
+                    return (int)command.ExecuteScalar() > 0;
+                }
+                catch (Exception ex) { throw; }
+            }
+        }
+
+        /// <summary>
+        /// Rolun istifadəçilərə təyin edilib-edilmədiyini yoxlayır.
+        /// </summary>
+        /// <param name="rolId">Yoxlanılacaq rol ID-si</param>
+        /// <returns>Təyin edilib-edilmədiyi</returns>
+        public bool IsRoleAssignedToUsers(int rolId)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var query = "SELECT COUNT(1) FROM istifadeciler WHERE rol_id = @rol_id AND aktivdir = 1";
+                var command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@rol_id", rolId);
+
+                try
+                {
+                    connection.Open();
+                    return (int)command.ExecuteScalar() > 0;
+                }
+                catch (Exception ex) { throw; }
+            }
+        }
+
+        #region Köməkçi metodlar
         private void AddParameters(SqlCommand command, Istifadeci istifadeci)
         {
             command.Parameters.Add("@ad", SqlDbType.NVarChar).Value = istifadeci.Ad;
@@ -161,9 +250,6 @@ namespace AzAgroPOS.DAL
             }
         }
 
-        /// <summary>
-        /// SqlDataReader-dən gələn məlumatı Istifadeci obyektinə çevirən köməkçi metod.
-        /// </summary>
         private Istifadeci MapIstifadeci(SqlDataReader reader)
         {
             return new Istifadeci
@@ -175,7 +261,6 @@ namespace AzAgroPOS.DAL
                 ParolHash = reader["parol_hash"].ToString(),
                 ParolSalt = reader["parol_salt"].ToString(),
                 RolId = (int)reader["rol_id"],
-                // Bəzi sorğular RolAdi qaytarmadığı üçün xətanın qarşısını alır
                 RolAdi = ColumnExists(reader, "RolAdi") ? reader["RolAdi"].ToString() : string.Empty,
                 Aktivdir = (bool)reader["aktivdir"],
                 SonGirisTarixi = reader["son_giris_tarixi"] == DBNull.Value ? (DateTime?)null : (DateTime)reader["son_giris_tarixi"],
@@ -184,9 +269,6 @@ namespace AzAgroPOS.DAL
             };
         }
 
-        /// <summary>
-        /// SqlDataReader-də müəyyən bir sütunun olub-olmadığını yoxlayır.
-        /// </summary>
         private bool ColumnExists(SqlDataReader reader, string columnName)
         {
             for (int i = 0; i < reader.FieldCount; i++)
@@ -198,5 +280,6 @@ namespace AzAgroPOS.DAL
             }
             return false;
         }
+        #endregion
     }
 }

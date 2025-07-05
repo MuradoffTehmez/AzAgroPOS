@@ -188,5 +188,55 @@ namespace AzAgroPOS.DAL
                 }
             }
         }
+
+        /// <summary>
+        /// Verilmiş ID-yə görə tək bir məhsulu tapır.
+        /// </summary>
+        public Mehsul GetById(int id)
+        {
+            using (var conn = new SqlConnection(_connectionString))
+            {
+                var query = "SELECT * FROM mehsullar WHERE id = @id";
+                var command = new SqlCommand(query, conn);
+                command.Parameters.AddWithValue("@id", id);
+                try
+                {
+                    conn.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return MapMehsul(reader);
+                        }
+                    }
+                }
+                catch (Exception ex) { throw; }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// SqlDataReader-dən gələn məlumatı Mehsul obyektinə çevirir.
+        /// </summary>
+        private Mehsul MapMehsul(SqlDataReader reader)
+        {
+            return new Mehsul
+            {
+                Id = (int)reader["id"],
+                Ad = reader["ad"].ToString(),
+                Barkod = reader["barkod"]?.ToString(),
+                KateqoriyaId = (int)reader["kateqoriya_id"],
+                VahidId = (int)reader["vahid_id"],
+                AlisQiymeti = (decimal)reader["alis_qiymeti"],
+                SatisQiymeti = (decimal)reader["satis_qiymeti"],
+                MinimumStok = (int)reader["minimum_stok"],
+                CariStok = (int)reader["cari_stok"],
+                TedarukcuId = reader["tedarukcu_id"] as int?,
+                Tesvir = reader["tesvir"]?.ToString(),
+                Aktivdir = (bool)reader["aktivdir"],
+                Silinib = (bool)reader["silinib"]
+            };
+        }
     }
+
 }

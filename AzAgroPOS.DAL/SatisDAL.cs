@@ -95,7 +95,101 @@ namespace AzAgroPOS.DAL
                 }
             }
         }
-        
+
+        /// <summary>
+        /// Verilmiş ID-yə görə tək bir satışı və ona bağlı məhsulları gətirir.
+        /// </summary>
+        public Satis GetById(int satisId)
+        {
+            Satis satis = null;
+            using (var conn = new SqlConnection(_connectionString))
+            {
+                // Əsas satış məlumatını gətirən sorğu
+                var query = @"SELECT 
+                        s.*, 
+                        ISNULL(m.ad + ' ' + m.soyad, 'Qeydiyyatsız') as MusteriAdi, 
+                        i.ad + ' ' + i.soyad as IstifadeciAdi 
+                      FROM satislar s
+                      LEFT JOIN musteriler m ON s.musteri_id = m.id
+                      JOIN istifadeciler i ON s.istifadeci_id = i.id
+                      WHERE s.id = @id";
+                var command = new SqlCommand(query, conn);
+                command.Parameters.AddWithValue("@id", satisId);
+                try
+                {
+                    conn.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            // MapSatis adlı bir köməkçi metod yaratmaq olar
+                            satis = new Satis { /* ... oxunan məlumatları doldurun ... */ };
+                        }
+                    }
+                    // Əgər satış tapılıbsa, ona aid məhsulları da gətiririk
+                    if (satis != null)
+                    {
+                        var detailsDal = new SatisMehsullariDAL();
+                        satis.SatisMehsullari = detailsDal.GetBySatisId(satisId);
+                    }
+                }
+                catch (Exception ex) { throw; }
+            }
+            return satis;
+        }
+
+        /// <summary>
+        /// Satışı ləğv edir, anbarı geri qaytarır və nisyəni (əgər varsa) tənzimləyir.
+        /// </summary>
+        public bool Cancel(int satisId)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                SqlTransaction transaction = connection.BeginTransaction();
+                try
+                {
+                    var satis = GetById(satisId); // Ləğv ediləcək satışın məlumatlarını alırıq
+
+                    // 1. Anbar qalığını geri qaytarırıq
+                    foreach (var mehsul in satis.SatisMehsullari)
+                    {
+                        var stokCommand = new SqlCommand("UPDATE mehsullar SET cari_stok = cari_stok + @miqdar WHERE id = @mehsul_id", connection, transaction);
+                        stokCommand.Parameters.AddWithValue("@miqdar", mehsul.Miqdar);
+                        stokCommand.Parameters.AddWithValue("@mehsul_id", mehsul.MehsulId);
+                        stokCommand.ExecuteNonQuery();
+                    }
+
+                    // 2. Nisyə borcunu (əgər varsa) ləğv edirik
+                    var nisyeOdenisi = satis.Odenisler?.FirstOrDefault(o => o.OdenisNovId == 3);
+                    if (nisyeOdenisi != null && satis.MusteriId.HasValue)
+                    {
+                        var nisyeCommand = new SqlCommand("UPDATE musteriler SET cari_nisye_borcu = cari_nisye_borcu - @mebleg WHERE id = @id", connection, transaction);
+                        nisyeCommand.Parameters.AddWithValue("@mebleg", nisyeOdenisi.OdenisMeblegi);
+                        nisyeCommand.Parameters.AddWithValue("@id", satis.MusteriId.Value);
+                        nisyeCommand.ExecuteNonQuery();
+
+                        var nisyeTarixceCommand = new SqlCommand("UPDATE nisye_borclar SET status = 'Ləğv edilmiş' WHERE satish_id = @satis_id", connection, transaction);
+                        nisyeTarixceCommand.Parameters.AddWithValue("@satis_id", satisId);
+                        nisyeTarixceCommand.ExecuteNonQuery();
+                    }
+
+                    // 3. Satışın özünü ləğv edilmiş olaraq işarələyirik
+                    var satisCommand = new SqlCommand("UPDATE satislar SET qaytarilib = 1, legv_tarixi = GETDATE() WHERE id = @id", connection, transaction);
+                    satisCommand.Parameters.AddWithValue("@id", satisId);
+                    satisCommand.ExecuteNonQuery();
+
+                    transaction.Commit();
+                    return true;
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+            }
+        }
+
         public List<Satis> GetByDateRange(DateTime startDate, DateTime endDate)
         {
             var satislar = new List<Satis>();

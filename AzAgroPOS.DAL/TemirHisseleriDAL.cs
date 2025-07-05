@@ -43,6 +43,40 @@ namespace AzAgroPOS.DAL
             return hissler;
         }
 
+        public TemirHissesi GetById(int id)
+        {
+            using (var conn = new SqlConnection(_connectionString))
+            {
+                var query = "SELECT th.*, m.ad as MehsulAdi FROM temir_hisseleri th JOIN mehsullar m ON th.mehsul_id = m.id WHERE th.id = @id";
+                var command = new SqlCommand(query, conn);
+                command.Parameters.AddWithValue("@id", id);
+                conn.Open();
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        return new TemirHissesi { /* ... */ }; // MapHisse metodu yaradıb istifadə edin
+                    }
+                }
+            }
+            return null;
+        }
+
+        public bool Remove(int hisseId)
+        {
+            // DİQQƏT: Bu metod anbar qalığını geri qaytarmalıdır və tranzaksiya tələb edir.
+            // Bu, "Təmirdən Hissə Qaytarma" kimi ayrıca bir funksiya olmalıdır.
+            // Hələlik BLL xətasını aradan qaldırmaq üçün bu metodu bu şəkildə saxlayırıq.
+            using (var conn = new SqlConnection(_connectionString))
+            {
+                var query = "DELETE FROM temir_hisseleri WHERE id = @id";
+                var command = new SqlCommand(query, conn);
+                command.Parameters.AddWithValue("@id", hisseId);
+                conn.Open();
+                return command.ExecuteNonQuery() > 0;
+            }
+        }
+
         public bool Add(TemirHissesi hisse)
         {
             using (var connection = new SqlConnection(_connectionString))

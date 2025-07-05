@@ -133,6 +133,34 @@ namespace AzAgroPOS.DAL
             command.Parameters.Add("@aktivdir", SqlDbType.Bit).Value = musteri.Aktivdir;
         }
 
+        
+
+        /// <summary>
+        /// Verilmiş ID-yə görə tək bir müştərini tapır.
+        /// </summary>
+        public Musteri GetById(int id)
+        {
+            using (var conn = new SqlConnection(_connectionString))
+            {
+                var query = "SELECT * FROM musteriler WHERE id = @id";
+                var command = new SqlCommand(query, conn);
+                command.Parameters.AddWithValue("@id", id);
+                try
+                {
+                    conn.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return MapMusteri(reader);
+                        }
+                    }
+                }
+                catch (Exception ex) { throw; }
+            }
+            return null;
+        }
+
         private Musteri MapMusteri(SqlDataReader reader)
         {
             return new Musteri
