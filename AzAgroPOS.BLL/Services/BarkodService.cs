@@ -1,6 +1,5 @@
 ﻿using AzAgroPOS.BLL.Helpers;
 using AzAgroPOS.Entities;
-using AzAgroPOS.PL.Printing;
 using System;
 using System.Collections.Generic;
 using System.Text;
