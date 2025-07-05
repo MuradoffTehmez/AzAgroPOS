@@ -2,6 +2,7 @@
 using AzAgroPOS.Entities;
 using System;
 using System.Windows.Forms;
+using AzAgroPOS.BLL.Services;
 
 namespace AzAgroPOS.PL
 {
@@ -266,6 +267,50 @@ namespace AzAgroPOS.PL
             // BLL-dəki yeni public metodu çağırırıq
             string newBarcode = _mehsulBll.GenerateNewUniqueBarcode();
             txtBarkod.Text = newBarcode;
+        }
+
+        private void btnPrintBarcode_Click(object sender, EventArgs e)
+        {
+            if (_selectedProductId == 0)
+            {
+                MessageBox.Show("Zəhmət olmasa, barkodunu çap etmək üçün cədvəldən bir məhsul seçin.", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Seçilmiş məhsulu tapırıq
+            var product = _mehsulBll.GetById(_selectedProductId);
+            if (product == null)
+            {
+                MessageBox.Show("Məhsul tapılmadı.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // Printer seçimi üçün dialoq pəncərəsi açırıq
+            PrintDialog printDialog = new PrintDialog();
+            if (printDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    var barcodeService = new BarkodService();
+                    
+                    string zpl = barcodeService.GenerateZplForProduct(product);
+                    
+                    bool success = barcodeService.PrintZpl(zpl, printDialog.PrinterSettings.PrinterName);
+
+                    if (success)
+                    {
+                        MessageBox.Show("Barkod uğurla printerə göndərildi.", "Uğurlu", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Barkod printerə göndərilərkən xəta baş verdi.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Çap zamanı xəta: " + ex.Message, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
     }
 }
