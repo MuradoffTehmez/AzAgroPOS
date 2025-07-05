@@ -159,5 +159,22 @@ namespace AzAgroPOS.BLL
             message = "Sifariş tamamlanarkən xəta baş verdi.";
             return false;
         }
+
+        /// <summary>
+        /// Verilmiş ID-yə görə tək bir təmiri və ona aid bütün hissələri gətirir.
+        /// </summary>
+        public Temir GetById(int temirId)
+        {
+            if (temirId <= 0) return null;
+
+            var temir = _dal.GetById(temirId);
+            if (temir != null)
+            {
+                // Təmir tapılıbsa, ona aid ehtiyat hissələrini də gətirib obyektə əlavə edirik
+                var hisselerBll = new TemirHisseleriBLL();
+                temir.Hisseler = hisselerBll.GetByTemirId(temirId);
+            }
+            return temir;
+        }
     }
 }

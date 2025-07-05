@@ -184,6 +184,7 @@
       <DependentUpon>frmUsers.cs</DependentUpon>
     </Compile>
     <Compile Include="Printing\ChequePrinterService.cs" />
+    <Compile Include="Printing\RepairChequePrinterService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="frmAuditLog.resx">

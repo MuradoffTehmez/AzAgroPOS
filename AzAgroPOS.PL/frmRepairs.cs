@@ -461,5 +461,33 @@ namespace AzAgroPOS.PL
             ClearForm();
         }
         #endregion
+
+        private void btnPrintReceipt_Click(object sender, EventArgs e)
+        {
+            if (_selectedRepairId == 0)
+            {
+                MessageBox.Show("Zəhmət olmasa, qəbzini çap etmək üçün cədvəldən bir sifariş seçin.", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            { 
+                var fullTemirInfo = _temirBll.GetById(_selectedRepairId);
+
+                if (fullTemirInfo != null)
+                {
+                    var printer = new PL.Printing.RepairChequePrinterService(fullTemirInfo);
+                    printer.Print();
+                }
+                else
+                {
+                    MessageBox.Show("Təmir məlumatları tapılmadı.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Çap zamanı xəta baş verdi: " + ex.Message, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }
