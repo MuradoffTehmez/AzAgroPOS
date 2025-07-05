@@ -32,6 +32,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.dgvSaleDetails = new System.Windows.Forms.DataGridView();
             this.label4 = new System.Windows.Forms.Label();
+            this.btnPrintReceipt = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -43,6 +44,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btnPrintReceipt);
             this.panel1.Controls.Add(this.btnExportToExcel);
             this.panel1.Controls.Add(this.btnExportToPdf);
             this.panel1.Controls.Add(this.btnShowReport);
@@ -64,7 +66,7 @@
             this.btnExportToExcel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnExportToExcel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnExportToExcel.ForeColor = System.Drawing.Color.White;
-            this.btnExportToExcel.Location = new System.Drawing.Point(950, 10);
+            this.btnExportToExcel.Location = new System.Drawing.Point(1070, 10);
             this.btnExportToExcel.Name = "btnExportToExcel";
             this.btnExportToExcel.Size = new System.Drawing.Size(120, 40);
             this.btnExportToExcel.TabIndex = 6;
@@ -80,7 +82,7 @@
             this.btnExportToPdf.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnExportToPdf.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnExportToPdf.ForeColor = System.Drawing.Color.White;
-            this.btnExportToPdf.Location = new System.Drawing.Point(1075, 10);
+            this.btnExportToPdf.Location = new System.Drawing.Point(944, 10);
             this.btnExportToPdf.Name = "btnExportToPdf";
             this.btnExportToPdf.Size = new System.Drawing.Size(120, 40);
             this.btnExportToPdf.TabIndex = 5;
@@ -90,7 +92,7 @@
             // 
             // btnShowReport
             // 
-            this.btnShowReport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(13)))), ((int)(((byte)(110)))), ((int)(((byte)(253)))));
+            this.btnShowReport.BackColor = System.Drawing.Color.DarkCyan;
             this.btnShowReport.FlatAppearance.BorderSize = 0;
             this.btnShowReport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnShowReport.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -270,6 +272,22 @@
             this.label4.TabIndex = 1;
             this.label4.Text = "Seçilmiş Satışın Məhsulları";
             // 
+            // btnPrintReceipt
+            // 
+            this.btnPrintReceipt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnPrintReceipt.BackColor = System.Drawing.Color.DodgerBlue;
+            this.btnPrintReceipt.FlatAppearance.BorderSize = 0;
+            this.btnPrintReceipt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPrintReceipt.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnPrintReceipt.ForeColor = System.Drawing.Color.White;
+            this.btnPrintReceipt.Location = new System.Drawing.Point(766, 10);
+            this.btnPrintReceipt.Name = "btnPrintReceipt";
+            this.btnPrintReceipt.Size = new System.Drawing.Size(172, 40);
+            this.btnPrintReceipt.TabIndex = 7;
+            this.btnPrintReceipt.Text = "Çeki Yenidən Çap Et";
+            this.btnPrintReceipt.UseVisualStyleBackColor = false;
+            this.btnPrintReceipt.Click += new System.EventHandler(this.btnPrintReceipt_Click);
+            // 
             // frmSalesReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -310,5 +328,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.DataGridView dgvSaleDetails;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button btnPrintReceipt;
     }
 }

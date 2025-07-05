@@ -1,4 +1,6 @@
 ﻿using AzAgroPOS.BLL;
+using AzAgroPOS.Entities;
+using AzAgroPOS.PL.Printing;
 using ClosedXML.Excel;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
@@ -316,5 +318,35 @@ namespace AzAgroPOS.PL
             }
         }
         #endregion
+
+        private void btnPrintReceipt_Click(object sender, EventArgs e)
+        {
+            if (dgvSales.CurrentRow == null)
+            {
+                MessageBox.Show("Zəhmət olmasa, çap etmək üçün cədvəldən bir satış seçin.", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                var satisInfo = (Satis)dgvSales.CurrentRow.DataBoundItem;
+                // Satışın detallı məlumatlarını (məhsullar və s.) gətiririk
+                var fullSatisInfo = new SatisBLL().GetById(satisInfo.Id);
+
+                if (fullSatisInfo != null)
+                {
+                    var printer = new ChequePrinterService(fullSatisInfo);
+                    printer.Print();
+                }
+                else
+                {
+                    MessageBox.Show("Satış məlumatları tapılmadı.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Çap zamanı xəta baş verdi: " + ex.Message, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }
