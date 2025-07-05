@@ -12,6 +12,7 @@ namespace AzAgroPOS.Entities
         public string ParolHash { get; set; }
         public string ParolSalt { get; set; }
         public int RolId { get; set; }
+        public string RolAdi { get; set; }
         public bool Aktivdir { get; set; }
         public DateTime? SonGirisTarixi { get; set; }
         public DateTime YaradilmaTarixi { get; set; }
