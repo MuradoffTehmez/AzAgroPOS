@@ -10,10 +10,12 @@ namespace AzAgroPOS.PL
         private readonly IstifadeciBLL _istifadeciBll = new IstifadeciBLL();
         private readonly RolBLL _rolBll = new RolBLL();
         private int _selectedUserId = 0;
+        private readonly Istifadeci _activeUser; // Pəncərəni açan istifadəçi
 
-        public frmUsers()
+        public frmUsers(Istifadeci activeUser)
         {
             InitializeComponent();
+            _activeUser = activeUser;
         }
 
         private void frmUsers_Load(object sender, EventArgs e)
@@ -42,6 +44,7 @@ namespace AzAgroPOS.PL
         {
             dgvUsers.DataSource = _istifadeciBll.GetAll();
             SetupUsersGrid();
+            ClearForm();
         }
 
         private void SetupUsersGrid()
@@ -49,14 +52,12 @@ namespace AzAgroPOS.PL
             if (dgvUsers.Columns.Count == 0) return;
             dgvUsers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-            // Lazımsız və təhlükəli sütunları gizlədirik
             string[] hiddenColumns = { "Id", "RolId", "ParolHash", "ParolSalt", "SonGirisTarixi", "DeaktivasiyaTarixi" };
             foreach (var colName in hiddenColumns)
             {
                 if (dgvUsers.Columns[colName] != null) dgvUsers.Columns[colName].Visible = false;
             }
 
-            // Sütun başlıqlarını dəyişirik
             if (dgvUsers.Columns["Ad"] != null) dgvUsers.Columns["Ad"].HeaderText = "Ad";
             if (dgvUsers.Columns["Soyad"] != null) dgvUsers.Columns["Soyad"].HeaderText = "Soyad";
             if (dgvUsers.Columns["IstifadeciAdi"] != null) dgvUsers.Columns["IstifadeciAdi"].HeaderText = "İstifadəçi Adı";
@@ -77,7 +78,6 @@ namespace AzAgroPOS.PL
             chkIsActive.Checked = true;
             dgvUsers.ClearSelection();
 
-            // Düymələrin vəziyyətini tənzimləyirik
             btnAdd.Enabled = true;
             btnUpdate.Enabled = false;
             btnDelete.Enabled = false;
@@ -100,11 +100,9 @@ namespace AzAgroPOS.PL
             cmbRole.SelectedValue = user.RolId;
             chkIsActive.Checked = user.Aktivdir;
 
-            // Təhlükəsizlik üçün parol xanaları həmişə boş saxlanılır
             txtPassword.Clear();
             txtPasswordConfirm.Clear();
 
-            // Düymələrin vəziyyətini tənzimləyirik
             btnAdd.Enabled = false;
             btnUpdate.Enabled = true;
             btnDelete.Enabled = true;
@@ -138,7 +136,6 @@ namespace AzAgroPOS.PL
             if (result)
             {
                 LoadUsers();
-                ClearForm();
             }
         }
 
@@ -146,7 +143,6 @@ namespace AzAgroPOS.PL
         {
             if (_selectedUserId == 0) return;
 
-            // Əgər parol xanaları boş deyilsə, onların eyni olmasını yoxlayırıq
             if (!string.IsNullOrWhiteSpace(txtPassword.Text) && txtPassword.Text != txtPasswordConfirm.Text)
             {
                 MessageBox.Show("Daxil edilən yeni parollar eyni deyil!", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -163,25 +159,26 @@ namespace AzAgroPOS.PL
                 Aktivdir = chkIsActive.Checked
             };
 
-            // Əgər parol xanası boşdursa, BLL tərəfindən parol yenilənməyəcək
             bool result = _istifadeciBll.Update(user, txtPassword.Text, out string message);
             MessageBox.Show(message, result ? "Uğurlu" : "Xəta", MessageBoxButtons.OK, result ? MessageBoxIcon.Information : MessageBoxIcon.Error);
 
             if (result)
             {
                 LoadUsers();
-                ClearForm();
             }
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            if (_selectedUserId == 0) return;
-
-            // İstifadəçinin özünü silməsinin qarşısını alırıq
-            if (Program.CurrentUser != null && Program.CurrentUser.Id == _selectedUserId)
+            if (_selectedUserId == 0)
             {
-                MessageBox.Show("Sistemə daxil olan istifadəçi özünü silə bilməz.", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Silmək üçün cədvəldən istifadəçi seçin.", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (_activeUser != null && _activeUser.Id == _selectedUserId)
+            {
+                MessageBox.Show("Sistemə daxil olan istifadəçi özünü silə (deaktiv edə) bilməz.", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -193,7 +190,6 @@ namespace AzAgroPOS.PL
                 if (opResult)
                 {
                     LoadUsers();
-                    ClearForm();
                 }
             }
         }

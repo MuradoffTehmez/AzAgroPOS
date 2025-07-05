@@ -15,7 +15,6 @@
 
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.faylToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -28,8 +27,8 @@
             this.tənzimləmələrToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.lblCurrentUser = new System.Windows.Forms.ToolStripStatusLabel();
-            this.lblDateTime = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusSeparator = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lblDateTime = new System.Windows.Forms.ToolStripStatusLabel();
             this.panelMain = new System.Windows.Forms.Panel();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -50,7 +49,6 @@
             this.tənzimləmələrToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Padding = new System.Windows.Forms.Padding(6, 2, 0, 2);
             this.menuStrip1.Size = new System.Drawing.Size(1000, 27);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
@@ -62,19 +60,18 @@
             this.çıxışToolStripMenuItem});
             this.faylToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.faylToolStripMenuItem.Name = "faylToolStripMenuItem";
-            this.faylToolStripMenuItem.Size = new System.Drawing.Size(44, 23);
+            this.faylToolStripMenuItem.Size = new System.Drawing.Size(45, 23);
             this.faylToolStripMenuItem.Text = "Fayl";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(104, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(102, 6);
             // 
             // çıxışToolStripMenuItem
             // 
-            this.çıxışToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("çıxışToolStripMenuItem.Image")));
             this.çıxışToolStripMenuItem.Name = "çıxışToolStripMenuItem";
-            this.çıxışToolStripMenuItem.Size = new System.Drawing.Size(107, 24);
+            this.çıxışToolStripMenuItem.Size = new System.Drawing.Size(105, 24);
             this.çıxışToolStripMenuItem.Text = "Çıxış";
             this.çıxışToolStripMenuItem.Click += new System.EventHandler(this.çıxışToolStripMenuItem_Click);
             // 
@@ -82,7 +79,7 @@
             // 
             this.satışToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.satışToolStripMenuItem.Name = "satışToolStripMenuItem";
-            this.satışToolStripMenuItem.Size = new System.Drawing.Size(47, 23);
+            this.satışToolStripMenuItem.Size = new System.Drawing.Size(49, 23);
             this.satışToolStripMenuItem.Text = "Satış";
             this.satışToolStripMenuItem.Click += new System.EventHandler(this.satışToolStripMenuItem_Click);
             // 
@@ -90,7 +87,7 @@
             // 
             this.anbarToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.anbarToolStripMenuItem.Name = "anbarToolStripMenuItem";
-            this.anbarToolStripMenuItem.Size = new System.Drawing.Size(55, 23);
+            this.anbarToolStripMenuItem.Size = new System.Drawing.Size(58, 23);
             this.anbarToolStripMenuItem.Text = "Anbar";
             this.anbarToolStripMenuItem.Click += new System.EventHandler(this.anbarToolStripMenuItem_Click_1);
             // 
@@ -98,7 +95,7 @@
             // 
             this.təmirToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.təmirToolStripMenuItem.Name = "təmirToolStripMenuItem";
-            this.təmirToolStripMenuItem.Size = new System.Drawing.Size(54, 23);
+            this.təmirToolStripMenuItem.Size = new System.Drawing.Size(55, 23);
             this.təmirToolStripMenuItem.Text = "Təmir";
             this.təmirToolStripMenuItem.Click += new System.EventHandler(this.təmirToolStripMenuItem_Click);
             // 
@@ -106,7 +103,7 @@
             // 
             this.müştərilərToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.müştərilərToolStripMenuItem.Name = "müştərilərToolStripMenuItem";
-            this.müştərilərToolStripMenuItem.Size = new System.Drawing.Size(76, 23);
+            this.müştərilərToolStripMenuItem.Size = new System.Drawing.Size(83, 23);
             this.müştərilərToolStripMenuItem.Text = "Müştərilər";
             this.müştərilərToolStripMenuItem.Click += new System.EventHandler(this.müştərilərToolStripMenuItem_Click);
             // 
@@ -114,7 +111,7 @@
             // 
             this.hesabatlarToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.hesabatlarToolStripMenuItem.Name = "hesabatlarToolStripMenuItem";
-            this.hesabatlarToolStripMenuItem.Size = new System.Drawing.Size(79, 23);
+            this.hesabatlarToolStripMenuItem.Size = new System.Drawing.Size(86, 23);
             this.hesabatlarToolStripMenuItem.Text = "Hesabatlar";
             this.hesabatlarToolStripMenuItem.Click += new System.EventHandler(this.hesabatlarToolStripMenuItem_Click);
             // 
@@ -122,8 +119,9 @@
             // 
             this.tənzimləmələrToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.tənzimləmələrToolStripMenuItem.Name = "tənzimləmələrToolStripMenuItem";
-            this.tənzimləmələrToolStripMenuItem.Size = new System.Drawing.Size(101, 23);
+            this.tənzimləmələrToolStripMenuItem.Size = new System.Drawing.Size(108, 23);
             this.tənzimləmələrToolStripMenuItem.Text = "Tənzimləmələr";
+            this.tənzimləmələrToolStripMenuItem.Click += new System.EventHandler(this.tənzimləmələrToolStripMenuItem_Click);
             // 
             // statusStrip1
             // 
@@ -146,18 +144,18 @@
             this.lblCurrentUser.Size = new System.Drawing.Size(66, 17);
             this.lblCurrentUser.Text = "Hazırlanır...";
             // 
-            // lblDateTime
-            // 
-            this.lblDateTime.ForeColor = System.Drawing.Color.White;
-            this.lblDateTime.Name = "lblDateTime";
-            this.lblDateTime.Size = new System.Drawing.Size(0, 17);
-            // 
             // toolStripStatusSeparator
             // 
             this.toolStripStatusSeparator.ForeColor = System.Drawing.Color.White;
             this.toolStripStatusSeparator.Name = "toolStripStatusSeparator";
             this.toolStripStatusSeparator.Size = new System.Drawing.Size(10, 17);
             this.toolStripStatusSeparator.Text = "|";
+            // 
+            // lblDateTime
+            // 
+            this.lblDateTime.ForeColor = System.Drawing.Color.White;
+            this.lblDateTime.Name = "lblDateTime";
+            this.lblDateTime.Size = new System.Drawing.Size(0, 17);
             // 
             // panelMain
             // 
@@ -176,7 +174,6 @@
             this.Controls.Add(this.panelMain);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -189,6 +186,7 @@
             this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         private System.Windows.Forms.MenuStrip menuStrip1;

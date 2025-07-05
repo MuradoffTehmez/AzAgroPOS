@@ -65,5 +65,11 @@ namespace AzAgroPOS.PL
             frmRepairs repairForm = new frmRepairs();
             repairForm.ShowDialog();
         }
+
+        private void tənzimləmələrToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmUsers usersForm = new frmUsers(_currentUser);
+            usersForm.ShowDialog();
+        }
     }
 }
