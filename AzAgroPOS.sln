@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36221.1 d17.14
+VisualStudioVersion = 17.14.36221.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzAgroPOS.DAL", "AzAgroPOS.DAL\AzAgroPOS.DAL.csproj", "{B3A51984-3724-48F9-A582-4E8D9D6955F0}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzAgroPOS.PL", "AzAgroPOS.PL\AzAgroPOS.PL.csproj", "{BB8C8822-1261-42E5-A7BB-21644F1B9091}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzAgroPOS.Entities", "AzAgroPOS.Entities\AzAgroPOS.Entities.csproj", "{21C6F220-C858-4436-89C4-5C0AB8E05893}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzAgroPOS.Tests", "AzAgroPOS.Tests\AzAgroPOS.Tests.csproj", "{F69EC723-CEC9-4F70-821C-18A5E9263B12}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{21C6F220-C858-4436-89C4-5C0AB8E05893}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{21C6F220-C858-4436-89C4-5C0AB8E05893}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{21C6F220-C858-4436-89C4-5C0AB8E05893}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F69EC723-CEC9-4F70-821C-18A5E9263B12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F69EC723-CEC9-4F70-821C-18A5E9263B12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F69EC723-CEC9-4F70-821C-18A5E9263B12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F69EC723-CEC9-4F70-821C-18A5E9263B12}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
