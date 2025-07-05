@@ -2,7 +2,7 @@
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace AzAgroPOS.PL.Printing
+namespace AzAgroPOS.BLL.Helpers
 {
     public class RawPrinterHelper
     {

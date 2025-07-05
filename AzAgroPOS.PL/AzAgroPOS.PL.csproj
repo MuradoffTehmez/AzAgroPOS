@@ -171,7 +171,6 @@
     <Compile Include="frmUsers.Designer.cs">
       <DependentUpon>frmUsers.cs</DependentUpon>
     </Compile>
-    <Compile Include="Printing\RawPrinterHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="frmAuditLog.resx">
@@ -249,6 +248,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\LOGOTAM.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Printing\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

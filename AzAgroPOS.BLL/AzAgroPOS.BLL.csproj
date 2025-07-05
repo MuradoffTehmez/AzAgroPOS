@@ -44,6 +44,7 @@
     <Compile Include="EmeliyyatJurnaliBLL.cs" />
     <Compile Include="Helpers\AuditLogger.cs" />
     <Compile Include="Helpers\PasswordHelper.cs" />
+    <Compile Include="Helpers\RawPrinterHelper.cs" />
     <Compile Include="IstifadeciBLL.cs" />
     <Compile Include="KateqoriyaBLL.cs" />
     <Compile Include="MehsulBLL.cs" />

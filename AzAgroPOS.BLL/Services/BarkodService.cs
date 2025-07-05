@@ -1,5 +1,5 @@
 ﻿using AzAgroPOS.Entities;
-using AzAgroPOS.PL.Printing;
+using AzAgroPOS.BLL.Helpers;
 
 namespace AzAgroPOS.BLL.Services
 {
