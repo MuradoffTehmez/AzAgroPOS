@@ -100,5 +100,11 @@ namespace AzAgroPOS.PL
             frmProducts productsForm = new frmProducts(_currentUser);
             productsForm.ShowDialog();
         }
+
+        private void əməliyyatJurnalıToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmAuditLog logForm = new frmAuditLog();
+            logForm.ShowDialog();
+        }
     }
 }

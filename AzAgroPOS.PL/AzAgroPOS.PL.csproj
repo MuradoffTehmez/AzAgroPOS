@@ -105,6 +105,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="frmAuditLog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAuditLog.Designer.cs">
+      <DependentUpon>frmAuditLog.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmCustomers.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -167,6 +173,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="frmAuditLog.resx">
+      <DependentUpon>frmAuditLog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmCustomerSearch.resx">
       <DependentUpon>frmCustomerSearch.cs</DependentUpon>
     </EmbeddedResource>

@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EmeliyyatJurnaliBLL.cs" />
     <Compile Include="Helpers\AuditLogger.cs" />
     <Compile Include="Helpers\PasswordHelper.cs" />
     <Compile Include="IstifadeciBLL.cs" />

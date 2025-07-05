@@ -30,6 +30,7 @@
             this.toolStripStatusSeparator = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblDateTime = new System.Windows.Forms.ToolStripStatusLabel();
             this.panelMain = new System.Windows.Forms.Panel();
+            this.əməliyyatJurnalıToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -117,6 +118,8 @@
             // 
             // tənzimləmələrToolStripMenuItem
             // 
+            this.tənzimləmələrToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.əməliyyatJurnalıToolStripMenuItem});
             this.tənzimləmələrToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.tənzimləmələrToolStripMenuItem.Name = "tənzimləmələrToolStripMenuItem";
             this.tənzimləmələrToolStripMenuItem.Size = new System.Drawing.Size(108, 23);
@@ -165,6 +168,13 @@
             this.panelMain.Size = new System.Drawing.Size(1000, 623);
             this.panelMain.TabIndex = 2;
             // 
+            // əməliyyatJurnalıToolStripMenuItem
+            // 
+            this.əməliyyatJurnalıToolStripMenuItem.Name = "əməliyyatJurnalıToolStripMenuItem";
+            this.əməliyyatJurnalıToolStripMenuItem.Size = new System.Drawing.Size(182, 24);
+            this.əməliyyatJurnalıToolStripMenuItem.Text = "Əməliyyat Jurnalı";
+            this.əməliyyatJurnalıToolStripMenuItem.Click += new System.EventHandler(this.əməliyyatJurnalıToolStripMenuItem_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -204,5 +214,6 @@
         private System.Windows.Forms.ToolStripStatusLabel lblDateTime;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusSeparator;
         private System.Windows.Forms.Panel panelMain;
+        private System.Windows.Forms.ToolStripMenuItem əməliyyatJurnalıToolStripMenuItem;
     }
 }

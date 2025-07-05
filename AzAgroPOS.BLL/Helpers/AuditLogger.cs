@@ -1,5 +1,9 @@
 ﻿using AzAgroPOS.DAL;
 using AzAgroPOS.Entities;
+using System;
+using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 
 namespace AzAgroPOS.BLL.Helpers
 {
@@ -11,7 +15,7 @@ namespace AzAgroPOS.BLL.Helpers
         private static readonly EmeliyyatJurnaliDAL _logDal = new EmeliyyatJurnaliDAL();
 
         /// <summary>
-        /// Jurnala yeni bir qeyd əlavə edir.
+        /// Jurnala yeni bir qeyd əlavə edir. IP ünvanı avtomatik olaraq təyin edilir.
         /// </summary>
         /// <param name="istifadeciId">Əməliyyatı edən istifadəçinin ID-si.</param>
         /// <param name="emeliyyatNovu">Əməliyyatın növü (məs. "Yeni Satış").</param>
@@ -22,9 +26,34 @@ namespace AzAgroPOS.BLL.Helpers
             {
                 IstifadeciId = istifadeciId,
                 EmeliyyatNovu = emeliyyatNovu,
-                Tesvir = tesvir
+                Tesvir = tesvir,
+                IpAdresi = GetLocalIPAddress() // IP ünvanını avtomatik alırıq
             };
             _logDal.Add(logEntry);
+        }
+
+        /// <summary>
+        /// Proqramın işlədiyi kompüterin lokal IPv4 ünvanını tapır.
+        /// </summary>
+        /// <returns>Lokal IP ünvanı.</returns>
+        private static string GetLocalIPAddress()
+        {
+            try
+            {
+                var host = Dns.GetHostEntry(Dns.GetHostName());
+                foreach (var ip in host.AddressList)
+                {
+                    if (ip.AddressFamily == AddressFamily.InterNetwork)
+                    {
+                        return ip.ToString();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return "IP Tapılmadı";
+            }
+            return "IP Tapılmadı";
         }
     }
 }

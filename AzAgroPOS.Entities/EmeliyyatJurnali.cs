@@ -12,5 +12,6 @@ namespace AzAgroPOS.Entities
         public string Tesvir { get; set; }
         public string IstifadeciAdi { get; set; }
         public DateTime Tarix { get; set; }
+        public object IpAdresi { get; set; }
     }
 }

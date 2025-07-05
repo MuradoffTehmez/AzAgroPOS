@@ -4,11 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Text;
 
 namespace AzAgroPOS.DAL
 {
     /// <summary>
     /// Əməliyyat jurnalı ilə bağlı verilənlər bazası əməliyyatlarını həyata keçirir.
+    /// Bu sinif audit log qeydlərinin yaradılması və sorğulanması üçün metodlar təqdim edir.
     /// </summary>
     public class EmeliyyatJurnaliDAL
     {
@@ -18,6 +20,8 @@ namespace AzAgroPOS.DAL
         /// Əməliyyat jurnalına yeni qeyd əlavə edir.
         /// </summary>
         /// <param name="log">Əlavə ediləcək jurnal qeydi</param>
+        /// <exception cref="SqlException">Verilənlər bazası əməliyyatı zamanı xəta baş verərsə</exception>
+        /// <exception cref="Exception">Ümumi xəta baş verərsə</exception>
         public void Add(EmeliyyatJurnali log)
         {
             try
@@ -25,13 +29,14 @@ namespace AzAgroPOS.DAL
                 using (var connection = new SqlConnection(_connectionString))
                 {
                     var query = @"INSERT INTO emeliyyat_jurnali 
-                                (istifadeci_id, emeliyyat_novu, tesvir, tarix) 
-                                VALUES (@istifadeci_id, @emeliyyat_novu, @tesvir, GETDATE())";
+                                (istifadeci_id, emeliyyat_novu, tesvir, tarix, ip_adresi) 
+                                VALUES (@istifadeci_id, @emeliyyat_novu, @tesvir, GETDATE(), @ip_adresi)";
                     var command = new SqlCommand(query, connection);
 
                     command.Parameters.Add("@istifadeci_id", SqlDbType.Int).Value = log.IstifadeciId;
                     command.Parameters.Add("@emeliyyat_novu", SqlDbType.NVarChar).Value = log.EmeliyyatNovu;
                     command.Parameters.Add("@tesvir", SqlDbType.NVarChar).Value = log.Tesvir;
+                    command.Parameters.Add("@ip_adresi", SqlDbType.NVarChar).Value = (object)log.IpAdresi ?? DBNull.Value;
 
                     connection.Open();
                     command.ExecuteNonQuery();
@@ -39,8 +44,7 @@ namespace AzAgroPOS.DAL
             }
             catch (Exception ex)
             {
-                // Xətanı loglamaq üçün əlavə edilə bilər
-                System.Diagnostics.Debug.WriteLine("Audit Log Xətası: " + ex.Message);
+                System.Diagnostics.Debug.WriteLine($"Audit Log Xətası: {ex.Message}");
                 throw;
             }
         }
@@ -48,87 +52,156 @@ namespace AzAgroPOS.DAL
         /// <summary>
         /// İstifadəçi ID-sinə görə əməliyyat jurnalını gətirir.
         /// </summary>
-        /// <param name="istifadeciId">İstifadəçi ID-si</param>
-        /// <returns>Əməliyyat jurnalı siyahısı</returns>
+        /// <param name="istifadeciId">Jurnal qeydləri axtarılacaq istifadəçinin ID-si</param>
+        /// <returns>Əməliyyat jurnalı qeydlərinin siyahısı</returns>
+        /// <exception cref="SqlException">Verilənlər bazası əməliyyatı zamanı xəta baş verərsə</exception>
         public List<EmeliyyatJurnali> GetByIstifadeciId(int istifadeciId)
         {
             var loglar = new List<EmeliyyatJurnali>();
+
             using (var connection = new SqlConnection(_connectionString))
             {
-                var query = @"SELECT ej.*, i.ad + ' ' + i.soyad as IstifadeciAdi 
+                var query = @"SELECT ej.*, CONCAT(i.ad, ' ', i.soyad) as IstifadeciAdi 
                             FROM emeliyyat_jurnali ej
                             JOIN istifadeciler i ON ej.istifadeci_id = i.id
                             WHERE ej.istifadeci_id = @istifadeci_id
                             ORDER BY ej.tarix DESC";
+
                 var command = new SqlCommand(query, connection);
                 command.Parameters.AddWithValue("@istifadeci_id", istifadeciId);
 
-                try
+                connection.Open();
+                using (var reader = command.ExecuteReader())
                 {
-                    connection.Open();
-                    using (var reader = command.ExecuteReader())
+                    while (reader.Read())
                     {
-                        while (reader.Read())
+                        loglar.Add(new EmeliyyatJurnali
                         {
-                            loglar.Add(new EmeliyyatJurnali
-                            {
-                                Id = (int)reader["id"],
-                                IstifadeciId = (int)reader["istifadeci_id"],
-                                IstifadeciAdi = reader["IstifadeciAdi"].ToString(),
-                                EmeliyyatNovu = reader["emeliyyat_novu"].ToString(),
-                                Tesvir = reader["tesvir"].ToString(),
-                                Tarix = (DateTime)reader["tarix"]
-                            });
-                        }
+                            Id = (int)reader["id"],
+                            IstifadeciId = (int)reader["istifadeci_id"],
+                            IstifadeciAdi = reader["IstifadeciAdi"].ToString(),
+                            EmeliyyatNovu = reader["emeliyyat_novu"].ToString(),
+                            Tesvir = reader["tesvir"].ToString(),
+                            Tarix = (DateTime)reader["tarix"],
+                            IpAdresi = reader["ip_adresi"] != DBNull.Value ? reader["ip_adresi"].ToString() : null
+                        });
                     }
                 }
-                catch (Exception ex) { throw; }
             }
+
             return loglar;
         }
 
         /// <summary>
         /// Tarix aralığına görə əməliyyat jurnalını gətirir.
         /// </summary>
-        /// <param name="startDate">Başlanğıc tarixi</param>
-        /// <param name="endDate">Bitmə tarixi</param>
-        /// <returns>Əməliyyat jurnalı siyahısı</returns>
+        /// <param name="startDate">Axtarışın başlanğıc tarixi</param>
+        /// <param name="endDate">Axtarışın bitmə tarixi</param>
+        /// <returns>Əməliyyat jurnalı qeydlərinin siyahısı</returns>
+        /// <exception cref="SqlException">Verilənlər bazası əməliyyatı zamanı xəta baş verərsə</exception>
         public List<EmeliyyatJurnali> GetByDateRange(DateTime startDate, DateTime endDate)
         {
             var loglar = new List<EmeliyyatJurnali>();
+
             using (var connection = new SqlConnection(_connectionString))
             {
-                var query = @"SELECT ej.*, i.ad + ' ' + i.soyad as IstifadeciAdi 
+                var query = @"SELECT ej.*, CONCAT(i.ad, ' ', i.soyad) as IstifadeciAdi 
                             FROM emeliyyat_jurnali ej
                             JOIN istifadeciler i ON ej.istifadeci_id = i.id
                             WHERE ej.tarix BETWEEN @start_date AND @end_date
                             ORDER BY ej.tarix DESC";
+
                 var command = new SqlCommand(query, connection);
                 command.Parameters.AddWithValue("@start_date", startDate);
                 command.Parameters.AddWithValue("@end_date", endDate);
 
-                try
+                connection.Open();
+                using (var reader = command.ExecuteReader())
                 {
-                    connection.Open();
-                    using (var reader = command.ExecuteReader())
+                    while (reader.Read())
                     {
-                        while (reader.Read())
+                        loglar.Add(new EmeliyyatJurnali
                         {
-                            loglar.Add(new EmeliyyatJurnali
-                            {
-                                Id = (int)reader["id"],
-                                IstifadeciId = (int)reader["istifadeci_id"],
-                                IstifadeciAdi = reader["IstifadeciAdi"].ToString(),
-                                EmeliyyatNovu = reader["emeliyyat_novu"].ToString(),
-                                Tesvir = reader["tesvir"].ToString(),
-                                Tarix = (DateTime)reader["tarix"]
-                            });
-                        }
+                            Id = (int)reader["id"],
+                            IstifadeciId = (int)reader["istifadeci_id"],
+                            IstifadeciAdi = reader["IstifadeciAdi"].ToString(),
+                            EmeliyyatNovu = reader["emeliyyat_novu"].ToString(),
+                            Tesvir = reader["tesvir"].ToString(),
+                            Tarix = (DateTime)reader["tarix"],
+                            IpAdresi = reader["ip_adresi"] != DBNull.Value ? reader["ip_adresi"].ToString() : null
+                        });
                     }
                 }
-                catch (Exception ex) { throw; }
             }
+
             return loglar;
+        }
+
+        /// <summary>
+        /// Əməliyyat jurnalında çoxşaxəli axtarış edir.
+        /// </summary>
+        /// <param name="startDate">Axtarışın başlanğıc tarixi</param>
+        /// <param name="endDate">Axtarışın bitmə tarixi</param>
+        /// <param name="userId">Axtarılacaq istifadəçi ID-si (null və ya 0 olarsa, nəzərə alınmır)</param>
+        /// <param name="keyword">Axtarış ifadəsi (əməliyyat növü və ya təsvirdə axtarılır)</param>
+        /// <returns>Əməliyyat jurnalı qeydlərinin siyahısı</returns>
+        /// <exception cref="SqlException">Verilənlər bazası əməliyyatı zamanı xəta baş verərsə</exception>
+        /// <exception cref="Exception">Ümumi xəta baş verərsə</exception>
+        public List<EmeliyyatJurnali> Search(DateTime startDate, DateTime endDate, int? userId = null, string keyword = null)
+        {
+            var logs = new List<EmeliyyatJurnali>();
+            var queryBuilder = new StringBuilder(@"SELECT j.*, CONCAT(i.ad, ' ', i.soyad) as IstifadeciAdi 
+                                               FROM emeliyyat_jurnali j 
+                                               JOIN istifadeciler i ON j.istifadeci_id = i.id 
+                                               WHERE j.tarix BETWEEN @startDate AND @endDate");
+
+            // Şərti parametrlərin əlavə edilməsi
+            if (userId.HasValue && userId > 0)
+            {
+                queryBuilder.Append(" AND j.istifadeci_id = @userId");
+            }
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                queryBuilder.Append(" AND (j.emeliyyat_novu LIKE @keyword OR j.tesvir LIKE @keyword)");
+            }
+            queryBuilder.Append(" ORDER BY j.tarix DESC");
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var command = new SqlCommand(queryBuilder.ToString(), connection);
+                command.Parameters.AddWithValue("@startDate", startDate);
+                command.Parameters.AddWithValue("@endDate", endDate);
+
+                // Şərti parametrlərin doldurulması
+                if (userId.HasValue && userId > 0)
+                {
+                    command.Parameters.AddWithValue("@userId", userId.Value);
+                }
+                if (!string.IsNullOrWhiteSpace(keyword))
+                {
+                    command.Parameters.AddWithValue("@keyword", "%" + keyword + "%");
+                }
+
+                connection.Open();
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        logs.Add(new EmeliyyatJurnali
+                        {
+                            Id = (int)reader["id"],
+                            IstifadeciId = (int)reader["istifadeci_id"],
+                            IstifadeciAdi = reader["IstifadeciAdi"].ToString(),
+                            EmeliyyatNovu = reader["emeliyyat_novu"].ToString(),
+                            Tesvir = reader["tesvir"].ToString(),
+                            Tarix = (DateTime)reader["tarix"],
+                            IpAdresi = reader["ip_adresi"] != DBNull.Value ? reader["ip_adresi"].ToString() : null
+                        });
+                    }
+                }
+            }
+
+            return logs;
         }
     }
 }
