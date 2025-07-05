@@ -2,6 +2,7 @@
 using AzAgroPOS.BLL.Services;
 using AzAgroPOS.Entities;
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using ZXing;
 using ZXing.Common;
@@ -522,5 +523,59 @@ namespace AzAgroPOS.PL
         }
 
         #endregion
+
+        private void btnPrintSelectedBarcodes_Click(object sender, EventArgs e)
+        {
+            if (dgvProducts.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Zəhmət olmasa, barkodunu çap etmək üçün cədvəldən bir və ya bir neçə məhsul seçin.", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Seçilmiş sətirlərin sayını göstərərək təsdiq istəyirik
+            var confirmation = MessageBox.Show($"{dgvProducts.SelectedRows.Count} ədəd barkod çapa göndəriləcək. Davam etmək istəyirsinizmi?",
+                                               "Toplu Çap Təsdiqi", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (confirmation == DialogResult.No) return;
+
+
+            // Printer seçimi üçün dialoq pəncərəsini yalnız bir dəfə açırıq
+            PrintDialog printDialog = new PrintDialog();
+            if (printDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    var barcodeService = new BarkodService();
+                    var zplList = new List<string>();
+
+                    // Bütün seçilmiş sətirləri dövrə alırıq
+                    foreach (DataGridViewRow row in dgvProducts.SelectedRows)
+                    {
+                        var product = (Mehsul)row.DataBoundItem;
+                        if (product != null)
+                        {
+                            // Hər məhsul üçün ZPL kodunu yaradıb siyahıya əlavə edirik
+                            zplList.Add(barcodeService.GenerateZplForProduct(product));
+                        }
+                    }
+
+                    // Bütün ZPL kodlarını ehtiva edən siyahını çapa göndəririk
+                    bool success = barcodeService.Print(zplList, printDialog.PrinterSettings.PrinterName);
+
+                    if (success)
+                    {
+                        MessageBox.Show($"{zplList.Count} ədəd barkod uğurla printerə göndərildi.", "Uğurlu", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Barkodlar printerə göndərilərkən xəta baş verdi.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Çap zamanı xəta: " + ex.Message, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
     }
 }
