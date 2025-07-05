@@ -1,5 +1,4 @@
-﻿// Fayl: AzAgroPOS.PL/frmSales.cs
-using AzAgroPOS.BLL;
+﻿using AzAgroPOS.BLL;
 using AzAgroPOS.Entities;
 using System;
 using System.ComponentModel;
@@ -8,28 +7,44 @@ using System.Windows.Forms;
 
 namespace AzAgroPOS.PL
 {
+    /// <summary>
+    /// Satış əməliyyatlarının idarə edilməsi üçün form. Məhsulların satışı, müştəri seçimi və ödəniş prosesini təmin edir.
+    /// </summary>
     public partial class frmSales : Form
     {
+        #region Private Fields
         private readonly Istifadeci _currentUser;
         private readonly MehsulBLL _mehsulBll = new MehsulBLL();
         private readonly SatisBLL _satisBll = new SatisBLL();
         private readonly BindingList<SalesCartItem> _cartItems = new BindingList<SalesCartItem>();
         private Musteri _currentCustomer = null;
+        #endregion
 
-        public frmSales(Istifadeci user)
+        /// <summary>
+        /// frmSales konstruktoru. Daxil olmuş istifadəçi məlumatlarını qəbul edir.
+        /// </summary>
+        /// <param name="currentUser">Daxil olmuş istifadəçi obyekti</param>
+        public frmSales(Istifadeci currentUser)
         {
             InitializeComponent();
-            _currentUser = user;
+            _currentUser = currentUser;
         }
 
+        /// <summary>
+        /// Form yüklənərkən işə düşən metod. İlkin tənzimləmələri edir.
+        /// </summary>
         private void frmSales_Load(object sender, EventArgs e)
         {
             dgvSalesCart.DataSource = _cartItems;
             SetupDataGrid();
-            // Müştəri üçün label-i ilkin vəziyyətə gətiririk
             lblCustomerName.Text = "Qeydiyyatsız Müştəri";
         }
 
+        #region Helper Methods
+
+        /// <summary>
+        /// DataGridView sütunlarını tənzimləyir. Gizlədilməsi lazım olan sütunları gizlədir.
+        /// </summary>
         private void SetupDataGrid()
         {
             dgvSalesCart.Columns["ProductId"].Visible = false;
@@ -43,26 +58,10 @@ namespace AzAgroPOS.PL
             dgvSalesCart.Columns["Miqdar"].ReadOnly = false;
         }
 
-        private void txtBarcodeSearch_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                string barcode = txtBarcodeSearch.Text.Trim();
-                if (string.IsNullOrEmpty(barcode)) return;
-                var product = _mehsulBll.GetByBarcode(barcode);
-                if (product != null)
-                {
-                    AddToCart(product);
-                }
-                else
-                {
-                    MessageBox.Show("Bu barkoda uyğun məhsul tapılmadı.", "Məlumat", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-                txtBarcodeSearch.Clear();
-                txtBarcodeSearch.Focus();
-            }
-        }
-
+        /// <summary>
+        /// Məhsulu səbətə əlavə edir. Əgər məhsul artıq səbətdədirsə, miqdarını artırır.
+        /// </summary>
+        /// <param name="product">Əlavə ediləcək məhsul</param>
         private void AddToCart(Mehsul product)
         {
             var existingItem = _cartItems.FirstOrDefault(item => item.ProductId == product.Id);
@@ -83,24 +82,70 @@ namespace AzAgroPOS.PL
             RefreshCartDisplay();
         }
 
+        /// <summary>
+        /// Səbətin görüntüsünü yeniləyir.
+        /// </summary>
         private void RefreshCartDisplay()
         {
             dgvSalesCart.Invalidate();
             UpdateTotals();
         }
 
+        /// <summary>
+        /// Ümumi məbləği hesablayır və göstərir.
+        /// </summary>
         private void UpdateTotals()
         {
             decimal total = _cartItems.Sum(item => item.YekunMebleg);
             lblTotalPrice.Text = total.ToString("F2") + " ₼";
         }
+        #endregion
 
+        #region Event Handlers
+
+        /// <summary>
+        /// Barkod axtarış sahəsində Enter düyməsinə basıldıqda işə düşən metod.
+        /// </summary>
+        private void txtBarcodeSearch_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                string barcode = txtBarcodeSearch.Text.Trim();
+                if (string.IsNullOrEmpty(barcode)) return;
+
+                try
+                {
+                    var product = _mehsulBll.GetByBarcode(barcode);
+                    if (product != null)
+                    {
+                        AddToCart(product);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Bu barkoda uyğun məhsul tapılmadı.", "Məlumat", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                    txtBarcodeSearch.Clear();
+                    txtBarcodeSearch.Focus();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Axtarış zamanı xəta baş verdi: " + ex.Message, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Səbət cədvəlində dəyər dəyişdikdə işə düşən metod.
+        /// </summary>
         private void dgvSalesCart_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
             RefreshCartDisplay();
         }
 
+        /// <summary>
+        /// Səbət cədvəlində Delete düyməsinə basıldıqda işə düşən metod.
+        /// </summary>
         private void dgvSalesCart_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Delete && dgvSalesCart.CurrentRow != null)
@@ -108,7 +153,10 @@ namespace AzAgroPOS.PL
                 var itemToRemove = (SalesCartItem)dgvSalesCart.CurrentRow.DataBoundItem;
                 if (itemToRemove != null)
                 {
-                    var result = MessageBox.Show($"'{itemToRemove.Ad}' adlı məhsulu səbətdən silmək istədiyinizə əminsinizmi?", "Silməyi Təsdiqlə", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    var result = MessageBox.Show($"'{itemToRemove.Ad}' adlı məhsulu səbətdən silmək istədiyinizə əminsinizmi?",
+                                              "Silməyi Təsdiqlə",
+                                              MessageBoxButtons.YesNo,
+                                              MessageBoxIcon.Question);
                     if (result == DialogResult.Yes)
                     {
                         _cartItems.Remove(itemToRemove);
@@ -118,6 +166,9 @@ namespace AzAgroPOS.PL
             }
         }
 
+        /// <summary>
+        /// Müştəri seçmək üçün düymə klik hadisəsi.
+        /// </summary>
         private void btnSelectCustomer_Click(object sender, EventArgs e)
         {
             using (frmCustomerSearch searchForm = new frmCustomerSearch())
@@ -130,6 +181,9 @@ namespace AzAgroPOS.PL
             }
         }
 
+        /// <summary>
+        /// Satışı tamamlamaq üçün düymə klik hadisəsi.
+        /// </summary>
         private void btnCompleteSale_Click(object sender, EventArgs e)
         {
             if (_cartItems.Count == 0)
@@ -144,56 +198,106 @@ namespace AzAgroPOS.PL
             {
                 if (paymentForm.ShowDialog() == DialogResult.OK)
                 {
-                    decimal actualPaidAmount = paymentForm.Odenisler.Sum(o => o.OdenisMeblegi);
-
-                    var satis = new Satis
+                    try
                     {
-                        IstifadeciId = _currentUser.Id,
-                        MusteriId = _currentCustomer?.Id,
-                        YekunMebleg = totalAmount - paymentForm.DiscountAmount, // YEKUN MƏBLƏĞ DƏYİŞDİ
-                        EndirimMeblegi = paymentForm.DiscountAmount,
-                        OdenmisMebleg = Math.Min(totalAmount - paymentForm.DiscountAmount, paymentForm.Odenisler.Sum(o => o.OdenisMeblegi)),
-                        Odenisler = paymentForm.Odenisler
-                    };
+                        decimal actualPaidAmount = paymentForm.Odenisler.Sum(o => o.OdenisMeblegi);
+                        decimal discountAmount = paymentForm.DiscountAmount;
+                        decimal finalAmount = totalAmount - discountAmount;
 
-                    foreach (var item in _cartItems)
-                    {
-                        satis.SatisMehsullari.Add(new SatisMehsulu
+                        var satis = new Satis
                         {
-                            MehsulId = item.ProductId,
-                            Miqdar = item.Miqdar,
-                            QiymetBirEdede = item.VahidQiymet,
-                            EndirimMeblegi = 0
-                        });
+                            IstifadeciId = _currentUser.Id,
+                            MusteriId = _currentCustomer?.Id,
+                            EndirimMeblegi = discountAmount,
+                            YekunMebleg = finalAmount,
+                            OdenmisMebleg = Math.Min(finalAmount, actualPaidAmount),
+                            Odenisler = paymentForm.Odenisler
+                        };
+
+                        foreach (var item in _cartItems)
+                        {
+                            satis.SatisMehsullari.Add(new SatisMehsulu
+                            {
+                                MehsulId = item.ProductId,
+                                Miqdar = item.Miqdar,
+                                QiymetBirEdede = item.VahidQiymet,
+                                EndirimMeblegi = 0
+                            });
+                        }
+
+                        bool result = _satisBll.Add(satis, _currentUser, out string message);
+                        MessageBox.Show(message, result ? "Uğurlu" : "Xəta", MessageBoxButtons.OK, result ? MessageBoxIcon.Information : MessageBoxIcon.Error);
+
+                        if (result)
+                        {
+                            _cartItems.Clear();
+                            RefreshCartDisplay();
+                            _currentCustomer = null;
+                            lblCustomerName.Text = "Qeydiyyatsız Müştəri";
+                        }
                     }
-
-                    bool result = _satisBll.Add(satis, out string message);
-                    MessageBox.Show(message, result ? "Uğurlu" : "Xəta", MessageBoxButtons.OK, result ? MessageBoxIcon.Information : MessageBoxIcon.Error);
-
-                    if (result)
+                    catch (Exception ex)
                     {
-                        _cartItems.Clear();
-                        RefreshCartDisplay();
-                        _currentCustomer = null;
-                        lblCustomerName.Text = "Qeydiyyatsız Müştəri";
+                        MessageBox.Show("Satış zamanı xəta baş verdi: " + ex.Message, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
         }
 
+        /// <summary>
+        /// Məhsul miqdarını artırmaq üçün düymə klik hadisəsi.
+        /// </summary>
         private void btnIncreaseQty_Click(object sender, EventArgs e)
         {
-
+            if (dgvSalesCart.CurrentRow != null)
+            {
+                var item = (SalesCartItem)dgvSalesCart.CurrentRow.DataBoundItem;
+                if (item != null)
+                {
+                    item.Miqdar++;
+                    RefreshCartDisplay();
+                }
+            }
         }
 
+        /// <summary>
+        /// Məhsul miqdarını azaltmaq üçün düymə klik hadisəsi.
+        /// </summary>
         private void btnDecreaseQty_Click(object sender, EventArgs e)
         {
-
+            if (dgvSalesCart.CurrentRow != null)
+            {
+                var item = (SalesCartItem)dgvSalesCart.CurrentRow.DataBoundItem;
+                if (item != null && item.Miqdar > 1)
+                {
+                    item.Miqdar--;
+                    RefreshCartDisplay();
+                }
+            }
         }
 
+        /// <summary>
+        /// Məhsulu səbətdən silmək üçün düymə klik hadisəsi.
+        /// </summary>
         private void btnRemoveItem_Click(object sender, EventArgs e)
         {
-
+            if (dgvSalesCart.CurrentRow != null)
+            {
+                var itemToRemove = (SalesCartItem)dgvSalesCart.CurrentRow.DataBoundItem;
+                if (itemToRemove != null)
+                {
+                    var result = MessageBox.Show($"'{itemToRemove.Ad}' adlı məhsulu səbətdən silmək istədiyinizə əminsinizmi?",
+                                              "Silməyi Təsdiqlə",
+                                              MessageBoxButtons.YesNo,
+                                              MessageBoxIcon.Question);
+                    if (result == DialogResult.Yes)
+                    {
+                        _cartItems.Remove(itemToRemove);
+                        UpdateTotals();
+                    }
+                }
+            }
         }
+        #endregion
     }
 }

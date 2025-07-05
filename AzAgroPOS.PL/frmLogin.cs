@@ -1,62 +1,102 @@
-﻿// Fayl: AzAgroPOS.PL/frmLogin.cs
-
-using AzAgroPOS.BLL;
+﻿using AzAgroPOS.BLL;
 using AzAgroPOS.Entities;
 using System;
 using System.Windows.Forms;
 
 namespace AzAgroPOS.PL
 {
+    /// <summary>
+    /// İstifadəçi girişi üçün login forması. İstifadəçilərin sistemə daxil olmasını təmin edir.
+    /// </summary>
     public partial class frmLogin : Form
     {
         private readonly IstifadeciBLL _istifadeciBll;
 
         /// <summary>
-        /// Uğurla daxil olan istifadəçini yadda saxlamaq üçün public xüsusiyyət.
-        /// Program.cs bu xüsusiyyətdən istifadə edəcək.
+        /// Uğurla daxil olan istifadəçini saxlayan xüsusiyyət.
+        /// Program.cs bu xüsusiyyətdən istifadə edərək əsas formaya ötürür.
         /// </summary>
         public Istifadeci LoggedInUser { get; private set; }
 
+        /// <summary>
+        /// frmLogin konstruktoru. İstifadəçi BLL sinifini işə salır.
+        /// </summary>
         public frmLogin()
         {
             InitializeComponent();
             _istifadeciBll = new IstifadeciBLL();
         }
 
+        #region Event Handlers
+
+        /// <summary>
+        /// Daxil ol düyməsinə klik edildikdə işə düşən metod.
+        /// İstifadəçi məlumatlarını yoxlayır və sistemə girişi təmin edir.
+        /// </summary>
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            string username = txtUsername.Text.Trim();
-            string password = txtPassword.Text;
-
-            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+            try
             {
-                MessageBox.Show("İstifadəçi adı və parol boş ola bilməz.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
+                string username = txtUsername.Text.Trim();
+                string password = txtPassword.Text;
+
+                // Validasiya
+                if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+                {
+                    MessageBox.Show("İstifadəçi adı və parol boş ola bilməz.",
+                                  "Xəta",
+                                  MessageBoxButtons.OK,
+                                  MessageBoxIcon.Error);
+                    return;
+                }
+
+                // İstifadəçi yoxlanışı
+                Istifadeci user = _istifadeciBll.Login(username, password);
+
+                if (user != null)
+                {
+                    // Uğurlu giriş
+                    this.LoggedInUser = user;
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("İstifadəçi adı və ya parol yanlışdır.",
+                                  "Xəta",
+                                  MessageBoxButtons.OK,
+                                  MessageBoxIcon.Error);
+                }
             }
-
-            // BLL vasitəsilə istifadəçini yoxlayırıq
-            Istifadeci user = _istifadeciBll.Login(username, password);
-
-            if (user != null)
+            catch (Exception ex)
             {
-                // İstifadəçi tapılıbsa, onu public xüsusiyyətə mənimsədirik
-                this.LoggedInUser = user;
-                // Formanın nəticəsini OK olaraq təyin edirik ki, Program.cs bunu bilsin
-                this.DialogResult = DialogResult.OK;
-                // Və login formasını bağlayırıq
-                this.Close();
-            }
-            else
-            {
-                MessageBox.Show("İstifadəçi adı və ya parol yanlışdır.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Giriş zamanı xəta baş verdi: {ex.Message}",
+                              "Xəta",
+                              MessageBoxButtons.OK,
+                              MessageBoxIcon.Error);
             }
         }
 
+        /// <summary>
+        /// Ləğv et düyməsinə klik edildikdə işə düşən metod.
+        /// Proqramı bağlamaq üçün istifadə olunur.
+        /// </summary>
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            // Formanın nəticəsini Cancel olaraq təyin edirik
             this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
+
+        /// <summary>
+        /// Enter düyməsinə basıldıqda girişi aktivləşdirir.
+        /// </summary>
+        private void txtPassword_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                btnLogin_Click(sender, e);
+            }
+        }
+        #endregion
     }
 }

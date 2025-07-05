@@ -434,7 +434,7 @@
             this.btnCompleteRepair.TabIndex = 10;
             this.btnCompleteRepair.Text = "Təmiri Tamamla";
             this.btnCompleteRepair.UseVisualStyleBackColor = false;
-            this.btnCompleteRepair.Click += new System.EventHandler(this.btnCompleteRepair_Click);
+            //this.btnCompleteRepair.Click += new System.EventHandler(this.btnCompleteRepair_Click);
             // 
             // lblGrandTotal
             // 

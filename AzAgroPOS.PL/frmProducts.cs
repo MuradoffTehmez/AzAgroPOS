@@ -5,17 +5,30 @@ using System.Windows.Forms;
 
 namespace AzAgroPOS.PL
 {
+    /// <summary>
+    /// Məhsulların idarə edilməsi üçün form. Məhsulların əlavə edilməsi, redaktə edilməsi, silinməsi və görüntülənməsi funksionallığını təmin edir.
+    /// </summary>
     public partial class frmProducts : Form
     {
+        private readonly Istifadeci _currentUser;
         private readonly MehsulBLL _mehsulBll = new MehsulBLL();
         private readonly KateqoriyaBLL _kateqoriyaBll = new KateqoriyaBLL();
         private readonly VahidBLL _vahidBll = new VahidBLL();
+        private int _selectedProductId = 0;
 
-        public frmProducts()
+        /// <summary>
+        /// frmProducts konstruktoru. Daxil olmuş istifadəçi məlumatlarını qəbul edir.
+        /// </summary>
+        /// <param name="currentUser">Daxil olmuş istifadəçi obyekti</param>
+        public frmProducts(Istifadeci currentUser)
         {
             InitializeComponent();
+            _currentUser = currentUser;
         }
 
+        /// <summary>
+        /// Form yüklənərkən işə düşən metod. Kateqoriyaları, vahidləri və məhsulları yükləyir.
+        /// </summary>
         private void frmProducts_Load(object sender, EventArgs e)
         {
             LoadCategories();
@@ -24,6 +37,10 @@ namespace AzAgroPOS.PL
         }
 
         #region Helper Methods
+
+        /// <summary>
+        /// Kateqoriyaları yükləyir və comboBox-a doldurur.
+        /// </summary>
         private void LoadCategories()
         {
             try
@@ -34,10 +51,13 @@ namespace AzAgroPOS.PL
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Kateqoriyalar yüklənərkən xəta baş verdi: " + ex.Message);
+                MessageBox.Show("Kateqoriyalar yüklənərkən xəta baş verdi: " + ex.Message, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
+        /// <summary>
+        /// Vahidləri yükləyir və comboBox-a doldurur.
+        /// </summary>
         private void LoadUnits()
         {
             try
@@ -48,10 +68,13 @@ namespace AzAgroPOS.PL
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Vahidlər yüklənərkən xəta baş verdi: " + ex.Message);
+                MessageBox.Show("Vahidlər yüklənərkən xəta baş verdi: " + ex.Message, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
+        /// <summary>
+        /// Məhsulları yükləyir və DataGridView-a doldurur.
+        /// </summary>
         private void LoadProducts()
         {
             try
@@ -61,18 +84,24 @@ namespace AzAgroPOS.PL
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Məhsullar yüklənərkən xəta baş verdi: " + ex.Message);
+                MessageBox.Show("Məhsullar yüklənərkən xəta baş verdi: " + ex.Message, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
+        /// <summary>
+        /// DataGridView sütunlarını tənzimləyir. Gizlədilməsi lazım olan sütunları gizlədir.
+        /// </summary>
         private void SetupDataGridColumns()
         {
             if (dgvProducts.Columns["Id"] != null) dgvProducts.Columns["Id"].Visible = false;
             if (dgvProducts.Columns["KateqoriyaId"] != null) dgvProducts.Columns["KateqoriyaId"].Visible = false;
             if (dgvProducts.Columns["VahidId"] != null) dgvProducts.Columns["VahidId"].Visible = false;
-            // ... digər gizlədilməli sütunlar
+            // Digər gizlədilməli sütunlar burada əlavə edilə bilər
         }
 
+        /// <summary>
+        /// Form sahələrini təmizləyir və seçimləri sıfırlayır.
+        /// </summary>
         private void ClearForm()
         {
             txtAd.Clear();
@@ -83,10 +112,16 @@ namespace AzAgroPOS.PL
             if (cmbKateqoriya.Items.Count > 0) cmbKateqoriya.SelectedIndex = 0;
             if (cmbVahid.Items.Count > 0) cmbVahid.SelectedIndex = 0;
             dgvProducts.ClearSelection();
+            _selectedProductId = 0;
         }
+
         #endregion
 
         #region Event Handlers
+
+        /// <summary>
+        /// DataGridView-də seçim dəyişdikdə işə düşən metod. Seçilmiş məhsulun məlumatlarını form sahələrinə doldurur.
+        /// </summary>
         private void dgvProducts_SelectionChanged(object sender, EventArgs e)
         {
             if (dgvProducts.CurrentRow == null) return;
@@ -94,6 +129,7 @@ namespace AzAgroPOS.PL
             Mehsul selectedProduct = (Mehsul)dgvProducts.CurrentRow.DataBoundItem;
             if (selectedProduct == null) return;
 
+            _selectedProductId = selectedProduct.Id;
             txtAd.Text = selectedProduct.Ad;
             txtBarkod.Text = selectedProduct.Barkod;
             txtAlisQiymeti.Text = selectedProduct.AlisQiymeti.ToString("F2");
@@ -103,6 +139,9 @@ namespace AzAgroPOS.PL
             cmbVahid.SelectedValue = selectedProduct.VahidId;
         }
 
+        /// <summary>
+        /// Yeni məhsul əlavə etmək üçün düymə klik hadisəsi.
+        /// </summary>
         private void btnAdd_Click(object sender, EventArgs e)
         {
             try
@@ -119,7 +158,7 @@ namespace AzAgroPOS.PL
                     Aktivdir = true
                 };
 
-                bool result = _mehsulBll.Add(mehsul, out string message);
+                bool result = _mehsulBll.Add(mehsul, _currentUser, out string message);
                 MessageBox.Show(message, result ? "Uğurlu" : "Xəta", MessageBoxButtons.OK, result ? MessageBoxIcon.Information : MessageBoxIcon.Error);
 
                 if (result)
@@ -138,9 +177,12 @@ namespace AzAgroPOS.PL
             }
         }
 
+        /// <summary>
+        /// Mövcud məhsulu yeniləmək üçün düymə klik hadisəsi.
+        /// </summary>
         private void btnUpdate_Click(object sender, EventArgs e)
         {
-            if (dgvProducts.CurrentRow == null)
+            if (_selectedProductId == 0)
             {
                 MessageBox.Show("Zəhmət olmasa, yeniləmək üçün cədvəldən bir məhsul seçin.", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -148,10 +190,9 @@ namespace AzAgroPOS.PL
 
             try
             {
-                int selectedProductId = ((Mehsul)dgvProducts.CurrentRow.DataBoundItem).Id;
                 var mehsul = new Mehsul
                 {
-                    Id = selectedProductId,
+                    Id = _selectedProductId,
                     Ad = txtAd.Text,
                     Barkod = txtBarkod.Text,
                     KateqoriyaId = (int)cmbKateqoriya.SelectedValue,
@@ -162,7 +203,7 @@ namespace AzAgroPOS.PL
                     Aktivdir = true
                 };
 
-                bool result = _mehsulBll.Update(mehsul, out string message);
+                bool result = _mehsulBll.Update(mehsul, _currentUser, out string message);
                 MessageBox.Show(message, result ? "Uğurlu" : "Xəta", MessageBoxButtons.OK, result ? MessageBoxIcon.Information : MessageBoxIcon.Error);
 
                 if (result)
@@ -181,40 +222,43 @@ namespace AzAgroPOS.PL
             }
         }
 
-        private void btnClear_Click(object sender, EventArgs e)
-        {
-            ClearForm();
-        }
-        #endregion
-
+        /// <summary>
+        /// Məhsulu silmək üçün düymə klik hadisəsi.
+        /// </summary>
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            if (dgvProducts.CurrentRow == null)
+            if (_selectedProductId == 0)
             {
                 MessageBox.Show("Zəhmət olmasa, silmək üçün cədvəldən bir məhsul seçin.", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // İstifadəçidən təsdiq alırıq
-            var selectedProduct = (Mehsul)dgvProducts.CurrentRow.DataBoundItem;
-            var confirmationResult = MessageBox.Show($"'{selectedProduct.Ad}' adlı məhsulu silmək istədiyinizə əminsinizmi? Bu əməliyyat geri qaytarıla bilməz.",
-                                                     "Silməyi Təsdiqlə",
-                                                     MessageBoxButtons.YesNo,
-                                                     MessageBoxIcon.Question);
+            var confirmationResult = MessageBox.Show($"Seçilmiş məhsulu silmək istədiyinizə əminsinizmi? Bu əməliyyat geri qaytarıla bilməz.",
+                                                 "Silməyi Təsdiqlə",
+                                                 MessageBoxButtons.YesNo,
+                                                 MessageBoxIcon.Question);
 
             if (confirmationResult == DialogResult.Yes)
             {
-                // BLL vasitəsilə silmə əməliyyatını yerinə yetiririk
-                bool result = _mehsulBll.Delete(selectedProduct.Id, out string message);
-
+                bool result = _mehsulBll.Delete(_selectedProductId, _currentUser, out string message);
                 MessageBox.Show(message, result ? "Uğurlu" : "Xəta", MessageBoxButtons.OK, result ? MessageBoxIcon.Information : MessageBoxIcon.Error);
 
                 if (result)
                 {
-                    LoadProducts(); // Cədvəli yeniləyirik
+                    LoadProducts();
                     ClearForm();
                 }
             }
         }
+
+        /// <summary>
+        /// Form sahələrini təmizləmək üçün düymə klik hadisəsi.
+        /// </summary>
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            ClearForm();
+        }
+
+        #endregion
     }
 }

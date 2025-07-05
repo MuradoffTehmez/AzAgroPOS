@@ -5,19 +5,29 @@ using System.Windows.Forms;
 
 namespace AzAgroPOS.PL
 {
+    /// <summary>
+    /// İstifadəçilərin idarə edilməsi üçün form. İstifadəçilərin əlavə edilməsi, redaktə edilməsi və deaktiv edilməsi funksionallığını təmin edir.
+    /// </summary>
     public partial class frmUsers : Form
     {
         private readonly IstifadeciBLL _istifadeciBll = new IstifadeciBLL();
         private readonly RolBLL _rolBll = new RolBLL();
         private int _selectedUserId = 0;
-        private readonly Istifadeci _activeUser; // Pəncərəni açan istifadəçi
+        private readonly Istifadeci _activeUser;
 
+        /// <summary>
+        /// frmUsers konstruktoru. Daxil olmuş istifadəçi məlumatlarını qəbul edir.
+        /// </summary>
+        /// <param name="activeUser">Daxil olmuş istifadəçi obyekti</param>
         public frmUsers(Istifadeci activeUser)
         {
             InitializeComponent();
             _activeUser = activeUser;
         }
 
+        /// <summary>
+        /// Form yüklənərkən işə düşən metod. İlkin məlumatları yükləyir.
+        /// </summary>
         private void frmUsers_Load(object sender, EventArgs e)
         {
             try
@@ -27,12 +37,18 @@ namespace AzAgroPOS.PL
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Məlumatlar yüklənərkən xəta baş verdi: " + ex.Message, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Məlumatlar yüklənərkən xəta baş verdi: " + ex.Message,
+                              "Xəta",
+                              MessageBoxButtons.OK,
+                              MessageBoxIcon.Error);
             }
         }
 
-        #region Köməkçi Metodlar
+        #region Helper Methods
 
+        /// <summary>
+        /// Rolları yükləyir və comboBox-a doldurur.
+        /// </summary>
         private void LoadRoles()
         {
             cmbRole.DataSource = _rolBll.GetAll();
@@ -40,6 +56,9 @@ namespace AzAgroPOS.PL
             cmbRole.ValueMember = "Id";
         }
 
+        /// <summary>
+        /// İstifadəçiləri yükləyir və DataGridView-a doldurur.
+        /// </summary>
         private void LoadUsers()
         {
             dgvUsers.DataSource = _istifadeciBll.GetAll();
@@ -47,6 +66,9 @@ namespace AzAgroPOS.PL
             ClearForm();
         }
 
+        /// <summary>
+        /// İstifadəçilər cədvəlinin sütunlarını tənzimləyir.
+        /// </summary>
         private void SetupUsersGrid()
         {
             if (dgvUsers.Columns.Count == 0) return;
@@ -66,6 +88,9 @@ namespace AzAgroPOS.PL
             if (dgvUsers.Columns["YaradilmaTarixi"] != null) dgvUsers.Columns["YaradilmaTarixi"].HeaderText = "Yaradılma Tarixi";
         }
 
+        /// <summary>
+        /// Form sahələrini təmizləyir və dəyişənləri sıfırlayır.
+        /// </summary>
         private void ClearForm()
         {
             _selectedUserId = 0;
@@ -82,11 +107,13 @@ namespace AzAgroPOS.PL
             btnUpdate.Enabled = false;
             btnDelete.Enabled = false;
         }
-
         #endregion
 
-        #region Hadisə Metodları (Event Handlers)
+        #region Event Handlers
 
+        /// <summary>
+        /// İstifadəçi cədvəlində seçim dəyişdikdə işə düşən metod.
+        /// </summary>
         private void dgvUsers_SelectionChanged(object sender, EventArgs e)
         {
             if (dgvUsers.CurrentRow == null) return;
@@ -108,88 +135,158 @@ namespace AzAgroPOS.PL
             btnDelete.Enabled = true;
         }
 
+        /// <summary>
+        /// Formu təmizləmək üçün düymə klik hadisəsi.
+        /// </summary>
         private void btnClear_Click(object sender, EventArgs e)
         {
             ClearForm();
         }
 
+        /// <summary>
+        /// Yeni istifadəçi əlavə etmək üçün düymə klik hadisəsi.
+        /// </summary>
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            if (txtPassword.Text != txtPasswordConfirm.Text)
+            try
             {
-                MessageBox.Show("Daxil edilən parollar eyni deyil!", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            var user = new Istifadeci
-            {
-                Ad = txtFirstName.Text,
-                Soyad = txtLastName.Text,
-                IstifadeciAdi = txtUsername.Text,
-                RolId = (int)cmbRole.SelectedValue,
-                Aktivdir = chkIsActive.Checked
-            };
+                if (txtPassword.Text != txtPasswordConfirm.Text)
+                {
+                    MessageBox.Show("Daxil edilən parollar eyni deyil!",
+                                  "Xəta",
+                                  MessageBoxButtons.OK,
+                                  MessageBoxIcon.Error);
+                    return;
+                }
 
-            
-            bool result = _istifadeciBll.Add(user, txtPassword.Text, _activeUser, out string message);
-            MessageBox.Show(message, result ? "Uğurlu" : "Xəta", MessageBoxButtons.OK, result ? MessageBoxIcon.Information : MessageBoxIcon.Error);
-            if (result) { LoadUsers(); }
-        }
+                var user = new Istifadeci
+                {
+                    Ad = txtFirstName.Text,
+                    Soyad = txtLastName.Text,
+                    IstifadeciAdi = txtUsername.Text,
+                    RolId = (int)cmbRole.SelectedValue,
+                    Aktivdir = chkIsActive.Checked
+                };
 
-        private void btnUpdate_Click(object sender, EventArgs e)
-        {
-            if (_selectedUserId == 0) return;
+                bool result = _istifadeciBll.Add(user, txtPassword.Text, _activeUser, out string message);
+                MessageBox.Show(message,
+                              result ? "Uğurlu" : "Xəta",
+                              MessageBoxButtons.OK,
+                              result ? MessageBoxIcon.Information : MessageBoxIcon.Error);
 
-            if (!string.IsNullOrWhiteSpace(txtPassword.Text) && txtPassword.Text != txtPasswordConfirm.Text)
-            {
-                MessageBox.Show("Daxil edilən yeni parollar eyni deyil!", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            var user = new Istifadeci
-            {
-                Id = _selectedUserId,
-                Ad = txtFirstName.Text,
-                Soyad = txtLastName.Text,
-                IstifadeciAdi = txtUsername.Text,
-                RolId = (int)cmbRole.SelectedValue,
-                Aktivdir = chkIsActive.Checked
-            };
-
-            bool result = _istifadeciBll.Update(user, txtPassword.Text, _activeUser, out string message);
-            MessageBox.Show(message, result ? "Uğurlu" : "Xəta", MessageBoxButtons.OK, result ? MessageBoxIcon.Information : MessageBoxIcon.Error);
-           
-            if (result) 
-            {
-                LoadUsers();
-            }
-        }
-
-        private void btnDelete_Click(object sender, EventArgs e)
-        {
-            if (_selectedUserId == 0)
-            {
-                MessageBox.Show("Silmək üçün cədvəldən istifadəçi seçin.", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            if (_activeUser != null && _activeUser.Id == _selectedUserId)
-            {
-                MessageBox.Show("Sistemə daxil olan istifadəçi özünü silə (deaktiv edə) bilməz.", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            var result = MessageBox.Show($"Seçilmiş istifadəçini deaktiv etmək istədiyinizə əminsinizmi?", "Təsdiq", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-            if (result == DialogResult.Yes)
-            {
-                bool opResult = _istifadeciBll.Delete(_selectedUserId, _activeUser, out string message);
-                MessageBox.Show(message);
-                if (opResult)
-                { 
-                    LoadUsers(); 
+                if (result)
+                {
+                    LoadUsers();
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Xəta baş verdi: " + ex.Message,
+                              "Xəta",
+                              MessageBoxButtons.OK,
+                              MessageBoxIcon.Error);
+            }
         }
 
+        /// <summary>
+        /// İstifadəçi məlumatlarını yeniləmək üçün düymə klik hadisəsi.
+        /// </summary>
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (_selectedUserId == 0) return;
+
+                if (!string.IsNullOrWhiteSpace(txtPassword.Text) && txtPassword.Text != txtPasswordConfirm.Text)
+                {
+                    MessageBox.Show("Daxil edilən yeni parollar eyni deyil!",
+                                  "Xəta",
+                                  MessageBoxButtons.OK,
+                                  MessageBoxIcon.Error);
+                    return;
+                }
+
+                var user = new Istifadeci
+                {
+                    Id = _selectedUserId,
+                    Ad = txtFirstName.Text,
+                    Soyad = txtLastName.Text,
+                    IstifadeciAdi = txtUsername.Text,
+                    RolId = (int)cmbRole.SelectedValue,
+                    Aktivdir = chkIsActive.Checked
+                };
+
+                bool result = _istifadeciBll.Update(user, txtPassword.Text, _activeUser, out string message);
+                MessageBox.Show(message,
+                              result ? "Uğurlu" : "Xəta",
+                              MessageBoxButtons.OK,
+                              result ? MessageBoxIcon.Information : MessageBoxIcon.Error);
+
+                if (result)
+                {
+                    LoadUsers();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Xəta baş verdi: " + ex.Message,
+                              "Xəta",
+                              MessageBoxButtons.OK,
+                              MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// İstifadəçini deaktiv etmək üçün düymə klik hadisəsi.
+        /// </summary>
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (_selectedUserId == 0)
+                {
+                    MessageBox.Show("Silmək üçün cədvəldən istifadəçi seçin.",
+                                  "Xəbərdarlıq",
+                                  MessageBoxButtons.OK,
+                                  MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (_activeUser != null && _activeUser.Id == _selectedUserId)
+                {
+                    MessageBox.Show("Sistemə daxil olan istifadəçi özünü silə (deaktiv edə) bilməz.",
+                                  "Xəbərdarlıq",
+                                  MessageBoxButtons.OK,
+                                  MessageBoxIcon.Warning);
+                    return;
+                }
+
+                var result = MessageBox.Show($"Seçilmiş istifadəçini deaktiv etmək istədiyinizə əminsinizmi?",
+                                          "Təsdiq",
+                                          MessageBoxButtons.YesNo,
+                                          MessageBoxIcon.Warning);
+                if (result == DialogResult.Yes)
+                {
+                    bool opResult = _istifadeciBll.Delete(_selectedUserId, _activeUser, out string message);
+                    MessageBox.Show(message,
+                                  opResult ? "Uğurlu" : "Xəta",
+                                  MessageBoxButtons.OK,
+                                  opResult ? MessageBoxIcon.Information : MessageBoxIcon.Error);
+
+                    if (opResult)
+                    {
+                        LoadUsers();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Xəta baş verdi: " + ex.Message,
+                              "Xəta",
+                              MessageBoxButtons.OK,
+                              MessageBoxIcon.Error);
+            }
+        }
         #endregion
     }
 }
