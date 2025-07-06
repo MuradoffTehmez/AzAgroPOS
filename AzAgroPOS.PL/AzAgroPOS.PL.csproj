@@ -201,6 +201,7 @@
     </Compile>
     <Compile Include="Themes\ColorPalette.cs" />
     <Compile Include="Themes\FontStyles.cs" />
+    <Compile Include="Themes\ThemeManager.cs" />
     <EmbeddedResource Include="frmAuditLog.resx">
       <DependentUpon>frmAuditLog.cs</DependentUpon>
     </EmbeddedResource>

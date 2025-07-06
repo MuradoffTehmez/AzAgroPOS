@@ -1,6 +1,7 @@
 ﻿using AzAgroPOS.BLL;
 using AzAgroPOS.BLL.Services;
 using AzAgroPOS.Entities;
+using AzAgroPOS.PL.Themes;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -13,7 +14,7 @@ namespace AzAgroPOS.PL
     /// Məhsulların idarə edilməsi üçün Windows Form. Bu form vasitəsilə məhsulların əlavə edilməsi,
     /// redaktə edilməsi, silinməsi, barkod generasiyası və çapı kimi əməliyyatlar həyata keçirilir.
     /// </summary>
-    public partial class frmProducts : Form
+    public partial class frmProducts : BaseForm
     {
         private readonly Istifadeci _currentUser;
         private readonly MehsulBLL _mehsulBll = new MehsulBLL();
