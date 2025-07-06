@@ -98,5 +98,10 @@ namespace AzAgroPOS.PL
                 }
             }
         }
+
+        private void frmReturn_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
