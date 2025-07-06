@@ -34,5 +34,29 @@ namespace AzAgroPOS.PL.Properties {
                 this["UserTheme"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("az-Latn-AZ")]
+        public string UserLanguage {
+            get {
+                return ((string)(this["UserLanguage"]));
+            }
+            set {
+                this["UserLanguage"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string frmLogin_Title {
+            get {
+                return ((string)(this["frmLogin_Title"]));
+            }
+            set {
+                this["frmLogin_Title"] = value;
+            }
+        }
     }
 }

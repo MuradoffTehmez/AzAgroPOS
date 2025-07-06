@@ -5,5 +5,8 @@
     <Setting Name="UserTheme" Type="System.String" Scope="User">
       <Value Profile="(Default)">Light</Value>
     </Setting>
+    <Setting Name="UserLanguage" Type="System.String" Scope="User">
+      <Value Profile="(Default)">az-Latn-AZ</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

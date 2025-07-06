@@ -188,7 +188,7 @@ namespace AzAgroPOS.PL
                     AltMenyuYarat(basilanDuyume, new (string, EventHandler)[]
                     {
                         ("İstifadəçilər", (s, args) => PaneldəFormAç(new frmUsers(_currentUser))),
-                        ("Parametrlər", (s, args) => PaneldəFormAç(new frmSettings())),
+                        ("Parametrlər", (s, args) => PaneldəFormAç(new frmSettings(_currentUser))),
                         ("Əməliyyat Jurnalı", (s, args) => AuditJurnalınıAç())
                     });
                     break;

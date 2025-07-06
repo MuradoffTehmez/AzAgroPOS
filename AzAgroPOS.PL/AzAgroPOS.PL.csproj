@@ -198,6 +198,12 @@
     <Compile Include="frmUsers.Designer.cs">
       <DependentUpon>frmUsers.cs</DependentUpon>
     </Compile>
+    <Compile Include="Localization\Lang.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Lang.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Localization\LocalizationManager.cs" />
     <Compile Include="Printing\ChequePrinterService.cs" />
     <Compile Include="Printing\RepairChequePrinterService.cs" />
     <Compile Include="Program.cs" />
@@ -253,6 +259,11 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmUsers.resx">
       <DependentUpon>frmUsers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Localization\Lang.en.resx" />
+    <EmbeddedResource Include="Localization\Lang.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Lang.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

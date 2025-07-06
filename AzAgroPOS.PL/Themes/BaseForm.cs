@@ -1,16 +1,35 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
+using AzAgroPOS.Entities;
+using AzAgroPOS.PL.Localization;
+using AzAgroPOS.PL.Themes;
+
 
 namespace AzAgroPOS.PL.Themes
 {
     public partial class BaseForm : Form
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public BaseForm()
         {
             InitializeComponent();
             ApplyBaseStyles();
+            LocalizationManager.LanguageChanged += ApplyLocalization;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        protected virtual void ApplyLocalization()
+        {
+            // Bu metodun məzmunu hər bir formanın özündə yazılacaq.
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         private void ApplyBaseStyles()
         {
             this.Font = ThemeManager.BodyFont;
@@ -21,7 +40,10 @@ namespace AzAgroPOS.PL.Themes
             // Formun daha axıcı görünməsi üçün
             this.DoubleBuffered = true;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnLoad(System.EventArgs e)
         {
             base.OnLoad(e);
@@ -30,7 +52,11 @@ namespace AzAgroPOS.PL.Themes
                 ApplyThemeToControls(this.Controls);
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="controls"></param>
+        
         private void ApplyThemeToControls(Control.ControlCollection controls)
         {
             foreach (Control control in controls)
