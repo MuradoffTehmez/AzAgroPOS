@@ -1,4 +1,5 @@
 ﻿using AzAgroPOS.Entities;
+using AzAgroPOS.PL.Themes;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -9,7 +10,7 @@ namespace AzAgroPOS.PL
     /// Əsas proqram pəncərəsi. Bütün digər formlar bu pəncərədən idarə olunur.
     /// İndi sol tərəfdə genişlənə bilən alt menyular dəstəklənir.
     /// </summary>
-    public partial class frmMain : Form
+    public partial class frmMain : BaseForm
     {
         private readonly Istifadeci _currentUser;
         private Form _activeForm = null;

@@ -8,7 +8,7 @@ namespace AzAgroPOS.PL
     /// <summary>
     /// İstifadəçi girişi üçün login forması. İstifadəçilərin sistemə daxil olmasını təmin edir.
     /// </summary>
-    public partial class frmLogin : Form
+    public partial class frmLogin : AzAgroPOS.PL.Themes.BaseForm
     {
         private readonly IstifadeciBLL _istifadeciBll;
 
@@ -24,6 +24,8 @@ namespace AzAgroPOS.PL
         public frmLogin()
         {
             InitializeComponent();
+            btnLogin.Tag = "Success";
+            btnCancel.Tag = "Secondary"; 
             _istifadeciBll = new IstifadeciBLL();
         }
 

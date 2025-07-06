@@ -1,6 +1,8 @@
-﻿namespace AzAgroPOS.PL
+﻿using AzAgroPOS.PL.Themes;
+
+namespace AzAgroPOS.PL
 {
-    partial class frmLogin
+    partial class frmLogin : BaseForm
     {
         private System.ComponentModel.IContainer components = null;
 
