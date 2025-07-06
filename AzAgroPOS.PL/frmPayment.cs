@@ -1,4 +1,5 @@
 ﻿using AzAgroPOS.Entities;
+using AzAgroPOS.PL.Themes;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -10,7 +11,7 @@ namespace AzAgroPOS.PL
     /// <summary>
     /// Ödəniş prosesinin idarə edilməsi üçün form. Nağd, kart və nisyə ödənişlərinin qəbulunu təmin edir.
     /// </summary>
-    public partial class frmPayment : Form
+    public partial class frmPayment : BaseForm
     {
         private readonly decimal _subTotal;
         private readonly Musteri _currentCustomer;

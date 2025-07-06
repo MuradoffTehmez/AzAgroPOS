@@ -1,18 +1,19 @@
 ﻿using AzAgroPOS.BLL;
 using AzAgroPOS.Entities;
+using AzAgroPOS.PL.Printing;
+using AzAgroPOS.PL.Themes;
 using System;
 using System.ComponentModel;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Windows.Forms;
-using System.Drawing.Printing;
-using AzAgroPOS.PL.Printing;
 
 namespace AzAgroPOS.PL
 {
     /// <summary>
     /// Satış əməliyyatlarının idarə edilməsi üçün form. Məhsulların satışı, müştəri seçimi və ödəniş prosesini təmin edir.
     /// </summary>
-    public partial class frmSales : Form
+    public partial class frmSales : BaseForm
     {
         #region Private Fields
         private readonly Istifadeci _currentUser;

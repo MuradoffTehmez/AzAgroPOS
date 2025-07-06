@@ -1,5 +1,6 @@
 ﻿using AzAgroPOS.BLL;
 using AzAgroPOS.Entities;
+using AzAgroPOS.PL.Themes;
 using System;
 using System.Windows.Forms;
 
@@ -8,7 +9,7 @@ namespace AzAgroPOS.PL
     /// <summary>
     /// Müştəri axtarışı və seçimi üçün form. Müştəriləri ad, soyad və ya telefon nömrəsinə görə axtarmaq və seçmək imkanı verir.
     /// </summary>
-    public partial class frmCustomerSearch : Form
+    public partial class frmCustomerSearch : BaseForm
     {
         private readonly MusteriBLL _musteriBll = new MusteriBLL();
 

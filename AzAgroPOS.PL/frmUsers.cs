@@ -1,5 +1,6 @@
 ﻿using AzAgroPOS.BLL;
 using AzAgroPOS.Entities;
+using AzAgroPOS.PL.Themes;
 using System;
 using System.Windows.Forms;
 
@@ -8,7 +9,7 @@ namespace AzAgroPOS.PL
     /// <summary>
     /// İstifadəçilərin idarə edilməsi üçün form. İstifadəçilərin əlavə edilməsi, redaktə edilməsi və deaktiv edilməsi funksionallığını təmin edir.
     /// </summary>
-    public partial class frmUsers : Form
+    public partial class frmUsers : BaseForm
     {
         private readonly IstifadeciBLL _istifadeciBll = new IstifadeciBLL();
         private readonly RolBLL _rolBll = new RolBLL();

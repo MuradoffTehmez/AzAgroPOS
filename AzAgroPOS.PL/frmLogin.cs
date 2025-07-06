@@ -1,5 +1,6 @@
 ﻿using AzAgroPOS.BLL;
 using AzAgroPOS.Entities;
+using AzAgroPOS.PL.Themes;
 using System;
 using System.Windows.Forms;
 
@@ -8,7 +9,7 @@ namespace AzAgroPOS.PL
     /// <summary>
     /// İstifadəçi girişi üçün login forması. İstifadəçilərin sistemə daxil olmasını təmin edir.
     /// </summary>
-    public partial class frmLogin : AzAgroPOS.PL.Themes.BaseForm
+    public partial class frmLogin : BaseForm
     {
         private readonly IstifadeciBLL _istifadeciBll;
 

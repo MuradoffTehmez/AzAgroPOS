@@ -1,5 +1,6 @@
 ﻿using AzAgroPOS.BLL;
 using AzAgroPOS.Entities;
+using AzAgroPOS.PL.Themes;
 using System;
 using System.Linq;
 using System.Windows.Forms;
@@ -10,7 +11,7 @@ namespace AzAgroPOS.PL
     /// Təmir sifarişlərinin idarə edilməsi üçün form. Təmir sifarişlərinin əlavə edilməsi, redaktə edilməsi, 
     /// silinməsi və ehtiyat hissələrinin idarə edilməsi funksionallığını təmin edir.
     /// </summary>
-    public partial class frmRepairs : Form
+    public partial class frmRepairs : BaseForm
     {
         #region BLL Nümunələri
         private readonly TemirBLL _temirBll = new TemirBLL();

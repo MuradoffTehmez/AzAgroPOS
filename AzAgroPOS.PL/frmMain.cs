@@ -188,7 +188,7 @@ namespace AzAgroPOS.PL
                     AltMenyuYarat(basilanDuyume, new (string, EventHandler)[]
                     {
                         ("İstifadəçilər", (s, args) => PaneldəFormAç(new frmUsers(_currentUser))),
-                        //("Parametrlər", (s, args) => PaneldəFormAç(new frmSettings())),
+                        ("Parametrlər", (s, args) => PaneldəFormAç(new frmSettings())),
                         ("Əməliyyat Jurnalı", (s, args) => AuditJurnalınıAç())
                     });
                     break;
@@ -375,17 +375,17 @@ namespace AzAgroPOS.PL
 
         #endregion
 
-        private void btnToggleTheme_Click(object sender, EventArgs e)
-        {
-            // Temanı dəyişirik
-            ThemeManager.CurrentTheme = (ThemeManager.CurrentTheme == AppTheme.Light) ? AppTheme.Dark : AppTheme.Light;
+        //private void btnToggleTheme_Click(object sender, EventArgs e)
+        //{
+        //    // Temanı dəyişirik
+        //    ThemeManager.CurrentTheme = (ThemeManager.CurrentTheme == AppTheme.Light) ? AppTheme.Dark : AppTheme.Light;
 
-            // Proqramı yenidən başlatmaq yerinə, sadəcə ana pəncərəni yenidən yaradırıq
-            // Bu, bütün stillərin yenidən tətbiq olunmasını təmin edəcək
-            this.Hide();
-            var newMainForm = new frmMain(_currentUser); // _currentUser sahəsinin mövcud olduğundan əmin olun
-            newMainForm.FormClosed += (s, args) => this.Close();
-            newMainForm.Show();
-        }
+        //    // Proqramı yenidən başlatmaq yerinə, sadəcə ana pəncərəni yenidən yaradırıq
+        //    // Bu, bütün stillərin yenidən tətbiq olunmasını təmin edəcək
+        //    this.Hide();
+        //    var newMainForm = new frmMain(_currentUser); // _currentUser sahəsinin mövcud olduğundan əmin olun
+        //    newMainForm.FormClosed += (s, args) => this.Close();
+        //    newMainForm.Show();
+        //}
     }
 }

@@ -31,7 +31,6 @@
             this.lblCurrentUser = new System.Windows.Forms.Label();
             this.lblTitle = new System.Windows.Forms.Label();
             this.panelMainContent = new System.Windows.Forms.Panel();
-            this.btnToggleTheme = new System.Windows.Forms.Button();
             this.panelYanMenu.SuspendLayout();
             this.panelLogo.SuspendLayout();
             this.panelTopBar.SuspendLayout();
@@ -40,7 +39,6 @@
             // panelYanMenu
             // 
             this.panelYanMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(76)))));
-            this.panelYanMenu.Controls.Add(this.btnToggleTheme);
             this.panelYanMenu.Controls.Add(this.btnSettings);
             this.panelYanMenu.Controls.Add(this.btnReports);
             this.panelYanMenu.Controls.Add(this.btnRepairs);
@@ -51,7 +49,7 @@
             this.panelYanMenu.Controls.Add(this.panelLogo);
             this.panelYanMenu.Dock = System.Windows.Forms.DockStyle.Left;
             this.panelYanMenu.Location = new System.Drawing.Point(23, 26);
-            this.panelYanMenu.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panelYanMenu.Margin = new System.Windows.Forms.Padding(4);
             this.panelYanMenu.Name = "panelYanMenu";
             this.panelYanMenu.Size = new System.Drawing.Size(233, 798);
             this.panelYanMenu.TabIndex = 0;
@@ -65,7 +63,7 @@
             this.btnSettings.ForeColor = System.Drawing.Color.White;
             this.btnSettings.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnSettings.Location = new System.Drawing.Point(0, 455);
-            this.btnSettings.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnSettings.Margin = new System.Windows.Forms.Padding(4);
             this.btnSettings.Name = "btnSettings";
             this.btnSettings.Padding = new System.Windows.Forms.Padding(12, 0, 0, 0);
             this.btnSettings.Size = new System.Drawing.Size(233, 65);
@@ -84,7 +82,7 @@
             this.btnReports.ForeColor = System.Drawing.Color.White;
             this.btnReports.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnReports.Location = new System.Drawing.Point(0, 390);
-            this.btnReports.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnReports.Margin = new System.Windows.Forms.Padding(4);
             this.btnReports.Name = "btnReports";
             this.btnReports.Padding = new System.Windows.Forms.Padding(12, 0, 0, 0);
             this.btnReports.Size = new System.Drawing.Size(233, 65);
@@ -103,7 +101,7 @@
             this.btnRepairs.ForeColor = System.Drawing.Color.White;
             this.btnRepairs.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnRepairs.Location = new System.Drawing.Point(0, 325);
-            this.btnRepairs.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnRepairs.Margin = new System.Windows.Forms.Padding(4);
             this.btnRepairs.Name = "btnRepairs";
             this.btnRepairs.Padding = new System.Windows.Forms.Padding(12, 0, 0, 0);
             this.btnRepairs.Size = new System.Drawing.Size(233, 65);
@@ -122,7 +120,7 @@
             this.btnCustomers.ForeColor = System.Drawing.Color.White;
             this.btnCustomers.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnCustomers.Location = new System.Drawing.Point(0, 260);
-            this.btnCustomers.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnCustomers.Margin = new System.Windows.Forms.Padding(4);
             this.btnCustomers.Name = "btnCustomers";
             this.btnCustomers.Padding = new System.Windows.Forms.Padding(12, 0, 0, 0);
             this.btnCustomers.Size = new System.Drawing.Size(233, 65);
@@ -141,7 +139,7 @@
             this.btnProducts.ForeColor = System.Drawing.Color.White;
             this.btnProducts.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnProducts.Location = new System.Drawing.Point(0, 195);
-            this.btnProducts.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnProducts.Margin = new System.Windows.Forms.Padding(4);
             this.btnProducts.Name = "btnProducts";
             this.btnProducts.Padding = new System.Windows.Forms.Padding(12, 0, 0, 0);
             this.btnProducts.Size = new System.Drawing.Size(233, 65);
@@ -160,7 +158,7 @@
             this.btnSales.ForeColor = System.Drawing.Color.White;
             this.btnSales.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnSales.Location = new System.Drawing.Point(0, 130);
-            this.btnSales.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnSales.Margin = new System.Windows.Forms.Padding(4);
             this.btnSales.Name = "btnSales";
             this.btnSales.Padding = new System.Windows.Forms.Padding(12, 0, 0, 0);
             this.btnSales.Size = new System.Drawing.Size(233, 65);
@@ -179,7 +177,7 @@
             this.btnDashboard.ForeColor = System.Drawing.Color.White;
             this.btnDashboard.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnDashboard.Location = new System.Drawing.Point(0, 65);
-            this.btnDashboard.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnDashboard.Margin = new System.Windows.Forms.Padding(4);
             this.btnDashboard.Name = "btnDashboard";
             this.btnDashboard.Padding = new System.Windows.Forms.Padding(12, 0, 0, 0);
             this.btnDashboard.Size = new System.Drawing.Size(233, 65);
@@ -195,7 +193,7 @@
             this.panelLogo.Controls.Add(this.label1);
             this.panelLogo.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelLogo.Location = new System.Drawing.Point(0, 0);
-            this.panelLogo.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panelLogo.Margin = new System.Windows.Forms.Padding(4);
             this.panelLogo.Name = "panelLogo";
             this.panelLogo.Size = new System.Drawing.Size(233, 65);
             this.panelLogo.TabIndex = 0;
@@ -219,7 +217,7 @@
             this.panelTopBar.Controls.Add(this.lblTitle);
             this.panelTopBar.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelTopBar.Location = new System.Drawing.Point(256, 26);
-            this.panelTopBar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panelTopBar.Margin = new System.Windows.Forms.Padding(4);
             this.panelTopBar.Name = "panelTopBar";
             this.panelTopBar.Size = new System.Drawing.Size(1172, 65);
             this.panelTopBar.TabIndex = 1;
@@ -251,20 +249,10 @@
             // 
             this.panelMainContent.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelMainContent.Location = new System.Drawing.Point(256, 91);
-            this.panelMainContent.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panelMainContent.Margin = new System.Windows.Forms.Padding(4);
             this.panelMainContent.Name = "panelMainContent";
             this.panelMainContent.Size = new System.Drawing.Size(1172, 733);
             this.panelMainContent.TabIndex = 2;
-            // 
-            // btnToggleTheme
-            // 
-            this.btnToggleTheme.Location = new System.Drawing.Point(13, 611);
-            this.btnToggleTheme.Name = "btnToggleTheme";
-            this.btnToggleTheme.Size = new System.Drawing.Size(213, 54);
-            this.btnToggleTheme.TabIndex = 0;
-            this.btnToggleTheme.Text = "button1";
-            this.btnToggleTheme.UseVisualStyleBackColor = true;
-            this.btnToggleTheme.Click += new System.EventHandler(this.btnToggleTheme_Click);
             // 
             // frmMain
             // 
@@ -275,7 +263,7 @@
             this.Controls.Add(this.panelMainContent);
             this.Controls.Add(this.panelTopBar);
             this.Controls.Add(this.panelYanMenu);
-            this.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.Margin = new System.Windows.Forms.Padding(5);
             this.MinimumSize = new System.Drawing.Size(931, 773);
             this.Name = "frmMain";
             this.Padding = new System.Windows.Forms.Padding(23, 26, 23, 26);
@@ -306,6 +294,5 @@
         private System.Windows.Forms.Label lblCurrentUser;
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.Panel panelMainContent;
-        private System.Windows.Forms.Button btnToggleTheme;
     }
 }

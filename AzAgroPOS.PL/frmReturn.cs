@@ -1,12 +1,13 @@
 ﻿using AzAgroPOS.BLL;
 using AzAgroPOS.Entities;
+using AzAgroPOS.PL.Themes;
 using System;
 using System.Globalization;
 using System.Windows.Forms;
 
 namespace AzAgroPOS.PL
 {
-    public partial class frmReturn : Form
+    public partial class frmReturn : BaseForm
     {
         private readonly Istifadeci _currentUser;
         private readonly SatisBLL _satisBll = new SatisBLL();

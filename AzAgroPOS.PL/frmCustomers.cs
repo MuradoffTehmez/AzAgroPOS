@@ -1,5 +1,6 @@
 ﻿using AzAgroPOS.BLL;
 using AzAgroPOS.Entities;
+using AzAgroPOS.PL.Themes;
 using System;
 using System.Windows.Forms;
 
@@ -8,7 +9,7 @@ namespace AzAgroPOS.PL
     /// <summary>
     /// Müştərilərin idarə edilməsi üçün form. Müştərilərin əlavə edilməsi, redaktə edilməsi, silinməsi və görüntülənməsi funksionallığını təmin edir.
     /// </summary>
-    public partial class frmCustomers : Form
+    public partial class frmCustomers : BaseForm
     {
         private readonly Istifadeci _currentUser;
         private readonly MusteriBLL _musteriBll = new MusteriBLL();

@@ -1,6 +1,7 @@
 ﻿using AzAgroPOS.BLL;
 using AzAgroPOS.Entities;
 using AzAgroPOS.PL.Printing;
+using AzAgroPOS.PL.Themes;
 using ClosedXML.Excel;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
@@ -14,7 +15,7 @@ namespace AzAgroPOS.PL
     /// <summary>
     /// Satış hesabatlarının görüntülənməsi və ixracı üçün form. Tarix aralığına görə satış məlumatlarını göstərir və Excel/PDF formatlarında ixrac edir.
     /// </summary>
-    public partial class frmSalesReport : Form
+    public partial class frmSalesReport : BaseForm
     {
         private readonly SatisBLL _satisBll = new SatisBLL();
         private readonly SatisMehsullariBLL _satisMehsullariBll = new SatisMehsullariBLL();

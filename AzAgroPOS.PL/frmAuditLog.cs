@@ -1,11 +1,12 @@
 ﻿using AzAgroPOS.BLL;
+using AzAgroPOS.PL.Themes;
 using System;
 using System.Linq;
 using System.Windows.Forms;
 
 namespace AzAgroPOS.PL
 {
-    public partial class frmAuditLog : Form
+    public partial class frmAuditLog : BaseForm
     {
         private readonly EmeliyyatJurnaliBLL _logBll = new EmeliyyatJurnaliBLL();
         private readonly IstifadeciBLL _userBll = new IstifadeciBLL();
