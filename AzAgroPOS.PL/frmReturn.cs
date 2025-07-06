@@ -2,7 +2,6 @@
 using AzAgroPOS.Entities;
 using AzAgroPOS.PL.Themes;
 using System;
-using System.Globalization;
 using System.Windows.Forms;
 
 namespace AzAgroPOS.PL
@@ -17,15 +16,18 @@ namespace AzAgroPOS.PL
         {
             InitializeComponent();
             _currentUser = currentUser;
+
+            // Düymələrə stil üçün Tag veririk
+            btnFindSale.Tag = "Primary";
+            btnProcessReturn.Tag = "Danger";
         }
 
         private void btnFindSale_Click(object sender, EventArgs e)
         {
             ClearForm();
-            string chequeNumber = txtChequeNumber.Text.Trim();
+            string chequeNumber = txtChequeNumber.Text.Trim().ToUpper(); // Hərfləri böyük edirik
             if (string.IsNullOrWhiteSpace(chequeNumber)) return;
 
-            // Çek nömrəsindən ID-ni çıxarırıq (məs: CHK-20250705-000012 -> 12)
             try
             {
                 int saleId = int.Parse(chequeNumber.Split('-')[2]);
@@ -57,7 +59,6 @@ namespace AzAgroPOS.PL
             lblTarix.Text = "Tarix: " + _foundSale.SatisTarixi.ToString("dd.MM.yyyy HH:mm");
             lblMusteri.Text = "Müştəri: " + _foundSale.MusteriAdi;
             lblKassir.Text = "Kassir: " + _foundSale.IstifadeciAdi;
-
             dgvReturnedItems.DataSource = _foundSale.SatisMehsullari;
             SetupGrid();
             btnProcessReturn.Enabled = true;
@@ -65,7 +66,55 @@ namespace AzAgroPOS.PL
 
         private void SetupGrid()
         {
-            // ... Sütunları səliqəyə salmaq üçün kod ...
+            // Cədvəldə göstərməyə məlumat yoxdursa, metodu dayandırırıq
+            if (dgvReturnedItems.Columns.Count == 0) return;
+
+            // Sütunların pəncərənin enini avtomatik olaraq doldurmasını təmin edirik
+            dgvReturnedItems.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            // Gizlədiləcək texniki sütunların siyahısı
+            string[] hiddenColumns = { "Id", "SatisId", "MehsulId" };
+            foreach (var colName in hiddenColumns)
+            {
+                if (dgvReturnedItems.Columns[colName] != null)
+                {
+                    dgvReturnedItems.Columns[colName].Visible = false;
+                }
+            }
+
+            // Görünən sütunların başlıqlarını və formatlarını təyin edirik
+            if (dgvReturnedItems.Columns["MehsulAdi"] != null)
+            {
+                dgvReturnedItems.Columns["MehsulAdi"].HeaderText = "Məhsul Adı";
+                dgvReturnedItems.Columns["MehsulAdi"].FillWeight = 200; // Ad sütunu daha geniş olsun
+            }
+
+            if (dgvReturnedItems.Columns["Miqdar"] != null)
+            {
+                dgvReturnedItems.Columns["Miqdar"].HeaderText = "Miqdar";
+                dgvReturnedItems.Columns["Miqdar"].FillWeight = 70;
+            }
+
+            if (dgvReturnedItems.Columns["QiymetBirEdede"] != null)
+            {
+                dgvReturnedItems.Columns["QiymetBirEdede"].HeaderText = "Vahid Qiyməti (₼)";
+                dgvReturnedItems.Columns["QiymetBirEdede"].DefaultCellStyle.Format = "F2"; // İki onluq kəsr
+                dgvReturnedItems.Columns["QiymetBirEdede"].FillWeight = 100;
+            }
+
+            if (dgvReturnedItems.Columns["EndirimMeblegi"] != null)
+            {
+                dgvReturnedItems.Columns["EndirimMeblegi"].HeaderText = "Endirim (₼)";
+                dgvReturnedItems.Columns["EndirimMeblegi"].DefaultCellStyle.Format = "F2";
+                dgvReturnedItems.Columns["EndirimMeblegi"].FillWeight = 80;
+            }
+
+            if (dgvReturnedItems.Columns["YekunMebleg"] != null)
+            {
+                dgvReturnedItems.Columns["YekunMebleg"].HeaderText = "Yekun Məbləğ (₼)";
+                dgvReturnedItems.Columns["YekunMebleg"].DefaultCellStyle.Format = "F2";
+                dgvReturnedItems.Columns["YekunMebleg"].FillWeight = 110;
+            }
         }
 
         private void ClearForm()
@@ -82,7 +131,7 @@ namespace AzAgroPOS.PL
         {
             if (_foundSale == null) return;
 
-            var result = MessageBox.Show($"ID: {_foundSale.Id} olan satışı ləğv etmək istədiyinizə əminsinizmi? Bu əməliyyat anbar qalığını geri qaytaracaq.",
+            var result = MessageBox.Show($"ID: {_foundSale.Id} olan satışı ləğv etmək istədiyinizə əminsinizmi?\nBu əməliyyat anbar qalığını geri qaytaracaq.",
                                          "Qaytarmanı Təsdiqlə",
                                          MessageBoxButtons.YesNo,
                                          MessageBoxIcon.Warning);
@@ -98,11 +147,6 @@ namespace AzAgroPOS.PL
                     txtChequeNumber.Clear();
                 }
             }
-        }
-
-        private void frmReturn_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }
