@@ -374,5 +374,18 @@ namespace AzAgroPOS.PL
         }
 
         #endregion
+
+        private void btnToggleTheme_Click(object sender, EventArgs e)
+        {
+            // Temanı dəyişirik
+            ThemeManager.CurrentTheme = (ThemeManager.CurrentTheme == AppTheme.Light) ? AppTheme.Dark : AppTheme.Light;
+
+            // Proqramı yenidən başlatmaq yerinə, sadəcə ana pəncərəni yenidən yaradırıq
+            // Bu, bütün stillərin yenidən tətbiq olunmasını təmin edəcək
+            this.Hide();
+            var newMainForm = new frmMain(_currentUser); // _currentUser sahəsinin mövcud olduğundan əmin olun
+            newMainForm.FormClosed += (s, args) => this.Close();
+            newMainForm.Show();
+        }
     }
 }

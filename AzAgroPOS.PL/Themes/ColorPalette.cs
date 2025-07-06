@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿/*
+
+using System.Drawing;
 
 namespace AzAgroPOS.PL.Themes
 {
@@ -38,3 +40,6 @@ namespace AzAgroPOS.PL.Themes
         public static readonly Color DarkTextPrimary = Color.FromArgb(248, 249, 250);
     }
 }
+
+
+*/

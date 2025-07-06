@@ -193,6 +193,7 @@
     <Compile Include="Printing\RepairChequePrinterService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Themes\AppTheme.cs" />
     <Compile Include="Themes\BaseForm.cs">
       <SubType>Form</SubType>
     </Compile>

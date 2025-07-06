@@ -1,44 +1,25 @@
-﻿//using System.Drawing;
-//using System.Windows.Forms;
+﻿using System.Drawing;
 
-//namespace AzAgroPOS.PL.Themes
-//{
-//    public static class ThemeManager
-//    {
-//        public static bool IsDarkMode { get; private set; } = false;
+namespace AzAgroPOS.PL.Themes
+{
+    public static class ThemeManager
+    {
+        // Başlanğıc temasını təyin edirik
+        public static AppTheme CurrentTheme { get; set; } = AppTheme.Light;
 
-//        public static void ToggleTheme()
-//        {
-//            IsDarkMode = !IsDarkMode;
-//            ApplyTheme();
-//        }
+        // Rəngləri hazırkı temaya uyğun olaraq qaytarır
+        public static Color Background => CurrentTheme == AppTheme.Light ? ColorTranslator.FromHtml("#f5f7fa") : ColorTranslator.FromHtml("#1e1e2f");
+        public static Color BackgroundSecondary => CurrentTheme == AppTheme.Light ? ColorTranslator.FromHtml("#ffffff") : ColorTranslator.FromHtml("#2c2f4a");
+        public static Color TextColor => CurrentTheme == AppTheme.Light ? ColorTranslator.FromHtml("#212529") : ColorTranslator.FromHtml("#f8f9fa");
 
-//        public static void ApplyTheme()
-//        {
-//            if (IsDarkMode)
-//            {
-//                ModernColorPalette.Background = ModernColorPalette.DarkBackground;
-//                ModernColorPalette.SurfaceLevel1 = ModernColorPalette.DarkSurface;
-//                ModernColorPalette.SurfaceLevel2 = Color.FromArgb(60, 60, 60);
-//                ModernColorPalette.SurfaceLevel3 = Color.FromArgb(70, 70, 70);
-//                ModernColorPalette.TextPrimary = ModernColorPalette.DarkTextPrimary;
-//                ModernColorPalette.TextSecondary = ModernColorPalette.DarkTextSecondary;
-//                ModernColorPalette.Border = ModernColorPalette.DarkBorder;
-//                ModernColorPalette.InputBackground = Color.FromArgb(60, 60, 60);
-//                ModernColorPalette.InputBorder = Color.FromArgb(90, 90, 90);
-//            }
-//            else
-//            {
-//                ModernColorPalette.Background = Color.FromArgb(250, 250, 250);
-//                ModernColorPalette.SurfaceLevel1 = Color.White;
-//                ModernColorPalette.SurfaceLevel2 = Color.FromArgb(248, 249, 250);
-//                ModernColorPalette.SurfaceLevel3 = Color.FromArgb(241, 243, 245);
-//                ModernColorPalette.TextPrimary = Color.FromArgb(33, 33, 33);
-//                ModernColorPalette.TextSecondary = Color.FromArgb(117, 117, 117);
-//                ModernColorPalette.Border = Color.FromArgb(224, 224, 224);
-//                ModernColorPalette.InputBackground = Color.WhiteSmoke;
-//                ModernColorPalette.InputBorder = Color.FromArgb(189, 189, 189);
-//            }
-//        }
-//    }
-//}
+        public static Color Primary => CurrentTheme == AppTheme.Light ? ColorTranslator.FromHtml("#0d6efd") : ColorTranslator.FromHtml("#3399ff");
+        public static Color Success => CurrentTheme == AppTheme.Light ? ColorTranslator.FromHtml("#28a745") : ColorTranslator.FromHtml("#00c16e");
+        public static readonly Color Danger = ColorTranslator.FromHtml("#dc3545"); // Bu rəng hər iki temada eyni qala bilər
+        public static readonly Color Secondary = ColorTranslator.FromHtml("#6c757d");
+
+        // Stili olan kontrollerlər üçün şriftlər
+        public static readonly Font HeaderFont = new Font("Segoe UI", 14F, FontStyle.Bold);
+        public static readonly Font BodyFont = new Font("Segoe UI", 10F, FontStyle.Regular);
+        public static readonly Font ButtonFont = new Font("Segoe UI", 10F, FontStyle.Bold);
+    }
+}
