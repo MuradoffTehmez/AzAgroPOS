@@ -60,7 +60,7 @@
             this.dgvProducts.BackgroundColor = System.Drawing.Color.White;
             this.dgvProducts.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvProducts.Location = new System.Drawing.Point(14, 52);
-            this.dgvProducts.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dgvProducts.Margin = new System.Windows.Forms.Padding(4);
             this.dgvProducts.Name = "dgvProducts";
             this.dgvProducts.ReadOnly = true;
             this.dgvProducts.RowHeadersWidth = 51;
@@ -98,9 +98,9 @@
             this.gbProductDetails.Controls.Add(this.label1);
             this.gbProductDetails.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbProductDetails.Location = new System.Drawing.Point(1191, 52);
-            this.gbProductDetails.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gbProductDetails.Margin = new System.Windows.Forms.Padding(4);
             this.gbProductDetails.Name = "gbProductDetails";
-            this.gbProductDetails.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gbProductDetails.Padding = new System.Windows.Forms.Padding(4);
             this.gbProductDetails.Size = new System.Drawing.Size(350, 768);
             this.gbProductDetails.TabIndex = 2;
             this.gbProductDetails.TabStop = false;
@@ -110,7 +110,7 @@
             // 
             this.btnPrintSelectedBarcodes.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnPrintSelectedBarcodes.Location = new System.Drawing.Point(27, 522);
-            this.btnPrintSelectedBarcodes.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnPrintSelectedBarcodes.Margin = new System.Windows.Forms.Padding(4);
             this.btnPrintSelectedBarcodes.Name = "btnPrintSelectedBarcodes";
             this.btnPrintSelectedBarcodes.Size = new System.Drawing.Size(303, 34);
             this.btnPrintSelectedBarcodes.TabIndex = 14;
@@ -121,7 +121,7 @@
             // pictureBoxBarcode
             // 
             this.pictureBoxBarcode.Location = new System.Drawing.Point(27, 566);
-            this.pictureBoxBarcode.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pictureBoxBarcode.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBoxBarcode.Name = "pictureBoxBarcode";
             this.pictureBoxBarcode.Size = new System.Drawing.Size(300, 194);
             this.pictureBoxBarcode.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
@@ -132,7 +132,7 @@
             // 
             this.btnPrintBarcode.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnPrintBarcode.Location = new System.Drawing.Point(27, 466);
-            this.btnPrintBarcode.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnPrintBarcode.Margin = new System.Windows.Forms.Padding(4);
             this.btnPrintBarcode.Name = "btnPrintBarcode";
             this.btnPrintBarcode.Size = new System.Drawing.Size(303, 48);
             this.btnPrintBarcode.TabIndex = 12;
@@ -143,7 +143,7 @@
             // btnGenerateBarcode
             // 
             this.btnGenerateBarcode.Location = new System.Drawing.Point(284, 103);
-            this.btnGenerateBarcode.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnGenerateBarcode.Margin = new System.Windows.Forms.Padding(4);
             this.btnGenerateBarcode.Name = "btnGenerateBarcode";
             this.btnGenerateBarcode.Size = new System.Drawing.Size(47, 30);
             this.btnGenerateBarcode.TabIndex = 3;
@@ -155,7 +155,7 @@
             // 
             this.btnClear.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnClear.Location = new System.Drawing.Point(23, 418);
-            this.btnClear.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnClear.Margin = new System.Windows.Forms.Padding(4);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(303, 39);
             this.btnClear.TabIndex = 11;
@@ -167,7 +167,7 @@
             // 
             this.btnDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnDelete.Location = new System.Drawing.Point(222, 366);
-            this.btnDelete.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnDelete.Margin = new System.Windows.Forms.Padding(4);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(105, 39);
             this.btnDelete.TabIndex = 10;
@@ -179,7 +179,7 @@
             // 
             this.btnUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnUpdate.Location = new System.Drawing.Point(117, 366);
-            this.btnUpdate.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnUpdate.Margin = new System.Windows.Forms.Padding(4);
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new System.Drawing.Size(105, 39);
             this.btnUpdate.TabIndex = 9;
@@ -191,7 +191,7 @@
             // 
             this.btnAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAdd.Location = new System.Drawing.Point(23, 366);
-            this.btnAdd.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnAdd.Margin = new System.Windows.Forms.Padding(4);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(93, 39);
             this.btnAdd.TabIndex = 8;
@@ -205,7 +205,7 @@
             this.cmbVahid.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbVahid.FormattingEnabled = true;
             this.cmbVahid.Location = new System.Drawing.Point(140, 183);
-            this.cmbVahid.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cmbVahid.Margin = new System.Windows.Forms.Padding(4);
             this.cmbVahid.Name = "cmbVahid";
             this.cmbVahid.Size = new System.Drawing.Size(186, 23);
             this.cmbVahid.TabIndex = 5;
@@ -216,7 +216,7 @@
             this.cmbKateqoriya.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbKateqoriya.FormattingEnabled = true;
             this.cmbKateqoriya.Location = new System.Drawing.Point(140, 144);
-            this.cmbKateqoriya.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cmbKateqoriya.Margin = new System.Windows.Forms.Padding(4);
             this.cmbKateqoriya.Name = "cmbKateqoriya";
             this.cmbKateqoriya.Size = new System.Drawing.Size(186, 23);
             this.cmbKateqoriya.TabIndex = 4;
@@ -225,7 +225,7 @@
             // 
             this.txtMinimumStok.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtMinimumStok.Location = new System.Drawing.Point(140, 301);
-            this.txtMinimumStok.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtMinimumStok.Margin = new System.Windows.Forms.Padding(4);
             this.txtMinimumStok.Name = "txtMinimumStok";
             this.txtMinimumStok.Size = new System.Drawing.Size(186, 21);
             this.txtMinimumStok.TabIndex = 7;
@@ -234,7 +234,7 @@
             // 
             this.txtSatisQiymeti.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtSatisQiymeti.Location = new System.Drawing.Point(140, 262);
-            this.txtSatisQiymeti.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtSatisQiymeti.Margin = new System.Windows.Forms.Padding(4);
             this.txtSatisQiymeti.Name = "txtSatisQiymeti";
             this.txtSatisQiymeti.Size = new System.Drawing.Size(186, 21);
             this.txtSatisQiymeti.TabIndex = 6;
@@ -243,7 +243,7 @@
             // 
             this.txtAlisQiymeti.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtAlisQiymeti.Location = new System.Drawing.Point(140, 222);
-            this.txtAlisQiymeti.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtAlisQiymeti.Margin = new System.Windows.Forms.Padding(4);
             this.txtAlisQiymeti.Name = "txtAlisQiymeti";
             this.txtAlisQiymeti.Size = new System.Drawing.Size(186, 21);
             this.txtAlisQiymeti.TabIndex = 5;
@@ -252,7 +252,7 @@
             // 
             this.txtBarkod.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtBarkod.Location = new System.Drawing.Point(140, 105);
-            this.txtBarkod.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtBarkod.Margin = new System.Windows.Forms.Padding(4);
             this.txtBarkod.Name = "txtBarkod";
             this.txtBarkod.Size = new System.Drawing.Size(139, 21);
             this.txtBarkod.TabIndex = 2;
@@ -261,7 +261,7 @@
             // 
             this.txtAd.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtAd.Location = new System.Drawing.Point(140, 65);
-            this.txtAd.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtAd.Margin = new System.Windows.Forms.Padding(4);
             this.txtAd.Name = "txtAd";
             this.txtAd.Size = new System.Drawing.Size(186, 21);
             this.txtAd.TabIndex = 1;
@@ -347,7 +347,7 @@
             // 
             this.txtSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtSearch.Location = new System.Drawing.Point(93, 16);
-            this.txtSearch.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtSearch.Margin = new System.Windows.Forms.Padding(4);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Size = new System.Drawing.Size(349, 21);
             this.txtSearch.TabIndex = 0;
@@ -377,7 +377,7 @@
             this.Controls.Add(this.txtSearch);
             this.Controls.Add(this.gbProductDetails);
             this.Controls.Add(this.dgvProducts);
-            this.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.Margin = new System.Windows.Forms.Padding(5);
             this.MinimumSize = new System.Drawing.Size(1047, 773);
             this.Name = "frmProducts";
             this.Padding = new System.Windows.Forms.Padding(23, 26, 23, 26);

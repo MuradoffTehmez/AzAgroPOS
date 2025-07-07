@@ -6,6 +6,21 @@ using System.Windows.Forms;
 
 namespace AzAgroPOS.PL
 {
+    /// <summary>
+    /// Dil seçimlərini ComboBox-da saxlamaq üçün köməkçi sinif
+    /// </summary>
+    public class LanguageItem
+    {
+        public string Text { get; set; }
+        public string Value { get; set; }
+
+        // ComboBox-da düzgün görünməsi üçün
+        public override string ToString()
+        {
+            return Text;
+        }
+    }
+
     public partial class frmSettings : BaseForm
     {
         private readonly Istifadeci _currentUser;
@@ -40,15 +55,15 @@ namespace AzAgroPOS.PL
 
         private void LoadLanguages()
         {
-            cmbLanguage.Items.Add(new { Text = "Azərbaycan", Value = "az-Latn-AZ" });
-            cmbLanguage.Items.Add(new { Text = "English", Value = "en" });
-            cmbLanguage.DisplayMember = "Text";
-            cmbLanguage.ValueMember = "Value";
+            cmbLanguage.Items.Clear();
+            // DÜZƏLİŞ: Artıq xüsusi LanguageItem sinifindən istifadə edirik
+            cmbLanguage.Items.Add(new LanguageItem { Text = "Azərbaycan", Value = "az-Latn-AZ" });
+            cmbLanguage.Items.Add(new LanguageItem { Text = "English", Value = "en" });
 
             string currentLang = Properties.Settings.Default.UserLanguage;
-            foreach (var item in cmbLanguage.Items)
+            foreach (LanguageItem item in cmbLanguage.Items)
             {
-                if ((item as dynamic).Value == currentLang)
+                if (item.Value == currentLang)
                 {
                     cmbLanguage.SelectedItem = item;
                     break;
@@ -61,23 +76,25 @@ namespace AzAgroPOS.PL
             // Tema seçimini yadda saxla və tətbiq et
             var selectedTheme = rbDarkTheme.Checked ? AppTheme.Dark : AppTheme.Light;
             Properties.Settings.Default.UserTheme = selectedTheme.ToString();
-            ThemeManager.CurrentTheme = selectedTheme; // Bu, canlı dəyişikliyi təmin edir
+            ThemeManager.CurrentTheme = selectedTheme;
 
-            // Dil seçimini yadda saxla
-            string selectedCulture = (cmbLanguage.SelectedItem as dynamic).Value;
-            Properties.Settings.Default.UserLanguage = selectedCulture;
+            // Dil seçimini yadda saxlayırıq
+            if (cmbLanguage.SelectedItem is LanguageItem selectedLang)
+            {
+                Properties.Settings.Default.UserLanguage = selectedLang.Value;
+            }
 
             Properties.Settings.Default.Save();
 
-            MessageBox.Show("Ayarlar yadda saxlanıldı. Dil dəyişikliklərinin tam tətbiq olunması üçün proqramı yenidən başladın.", "Məlumat", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            // Dili dinamik olaraq dəyişirik
+            LocalizationManager.SetLanguage(Properties.Settings.Default.UserLanguage);
+
+            MessageBox.Show("Ayarlar yadda saxlanıldı. Bəzi dəyişikliklər üçün proqramı yenidən başlatmaq lazım ola bilər.", "Məlumat", MessageBoxButtons.OK, MessageBoxIcon.Information);
             this.Close();
         }
 
         private void btnUsers_Click(object sender, EventArgs e)
         {
-            // Bu pəncərə başqa bir pəncərənin içində açıla bilmədiyi üçün
-            // ana pəncərədən (frmMain) açılmalıdır. Bu düyməni gələcəkdə
-            // daha mürəkkəb bir məntiqlə işlədə bilərik. Hələlik bu şəkildə saxlayaq.
             using (var userForm = new frmUsers(_currentUser))
             {
                 userForm.ShowDialog();

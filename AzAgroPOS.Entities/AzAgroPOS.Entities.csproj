@@ -59,8 +59,5 @@
     <Compile Include="TemirStatusu.cs" />
     <Compile Include="Vahid.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="baza kodu.sql" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
