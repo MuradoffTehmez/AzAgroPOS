@@ -58,8 +58,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.gbUserDetails);
-            this.splitContainer1.Size = new System.Drawing.Size(1262, 673);
-            this.splitContainer1.SplitterDistance = 830;
+            this.splitContainer1.Size = new System.Drawing.Size(1104, 715);
+            this.splitContainer1.SplitterDistance = 726;
             this.splitContainer1.TabIndex = 0;
             // 
             // dgvUsers
@@ -74,8 +74,9 @@
             this.dgvUsers.RowHeadersWidth = 51;
             this.dgvUsers.RowTemplate.Height = 24;
             this.dgvUsers.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvUsers.Size = new System.Drawing.Size(830, 673);
+            this.dgvUsers.Size = new System.Drawing.Size(726, 715);
             this.dgvUsers.TabIndex = 0;
+            this.dgvUsers.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvUsers_CellContentClick);
             this.dgvUsers.SelectionChanged += new System.EventHandler(this.dgvUsers_SelectionChanged);
             // 
             // gbUserDetails
@@ -100,7 +101,7 @@
             this.gbUserDetails.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gbUserDetails.Location = new System.Drawing.Point(0, 0);
             this.gbUserDetails.Name = "gbUserDetails";
-            this.gbUserDetails.Size = new System.Drawing.Size(428, 673);
+            this.gbUserDetails.Size = new System.Drawing.Size(374, 715);
             this.gbUserDetails.TabIndex = 0;
             this.gbUserDetails.TabStop = false;
             this.gbUserDetails.Text = "İstifadəçi Məlumatları";
@@ -108,9 +109,9 @@
             // chkIsActive
             // 
             this.chkIsActive.AutoSize = true;
-            this.chkIsActive.Location = new System.Drawing.Point(145, 276);
+            this.chkIsActive.Location = new System.Drawing.Point(127, 293);
             this.chkIsActive.Name = "chkIsActive";
-            this.chkIsActive.Size = new System.Drawing.Size(73, 20);
+            this.chkIsActive.Size = new System.Drawing.Size(75, 23);
             this.chkIsActive.TabIndex = 6;
             this.chkIsActive.Text = "Aktivdir";
             this.chkIsActive.UseVisualStyleBackColor = true;
@@ -119,107 +120,107 @@
             // 
             this.cmbRole.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbRole.FormattingEnabled = true;
-            this.cmbRole.Location = new System.Drawing.Point(145, 237);
+            this.cmbRole.Location = new System.Drawing.Point(127, 252);
             this.cmbRole.Name = "cmbRole";
-            this.cmbRole.Size = new System.Drawing.Size(248, 24);
+            this.cmbRole.Size = new System.Drawing.Size(218, 25);
             this.cmbRole.TabIndex = 5;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(26, 240);
+            this.label6.Location = new System.Drawing.Point(23, 255);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(31, 16);
+            this.label6.Size = new System.Drawing.Size(31, 19);
             this.label6.TabIndex = 11;
             this.label6.Text = "Rol:";
             // 
             // txtPasswordConfirm
             // 
-            this.txtPasswordConfirm.Location = new System.Drawing.Point(145, 199);
+            this.txtPasswordConfirm.Location = new System.Drawing.Point(127, 211);
             this.txtPasswordConfirm.Name = "txtPasswordConfirm";
             this.txtPasswordConfirm.PasswordChar = '*';
-            this.txtPasswordConfirm.Size = new System.Drawing.Size(248, 22);
+            this.txtPasswordConfirm.Size = new System.Drawing.Size(218, 25);
             this.txtPasswordConfirm.TabIndex = 4;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(26, 202);
+            this.label5.Location = new System.Drawing.Point(23, 215);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(82, 16);
+            this.label5.Size = new System.Drawing.Size(85, 19);
             this.label5.TabIndex = 9;
             this.label5.Text = "Parol Təkrar:";
             // 
             // txtPassword
             // 
-            this.txtPassword.Location = new System.Drawing.Point(145, 161);
+            this.txtPassword.Location = new System.Drawing.Point(127, 171);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '*';
-            this.txtPassword.Size = new System.Drawing.Size(248, 22);
+            this.txtPassword.Size = new System.Drawing.Size(218, 25);
             this.txtPassword.TabIndex = 3;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(26, 164);
+            this.label4.Location = new System.Drawing.Point(23, 174);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(43, 16);
+            this.label4.Size = new System.Drawing.Size(43, 19);
             this.label4.TabIndex = 7;
             this.label4.Text = "Parol:";
             // 
             // txtUsername
             // 
-            this.txtUsername.Location = new System.Drawing.Point(145, 123);
+            this.txtUsername.Location = new System.Drawing.Point(127, 131);
             this.txtUsername.Name = "txtUsername";
-            this.txtUsername.Size = new System.Drawing.Size(248, 22);
+            this.txtUsername.Size = new System.Drawing.Size(218, 25);
             this.txtUsername.TabIndex = 2;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(26, 126);
+            this.label3.Location = new System.Drawing.Point(23, 134);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(82, 16);
+            this.label3.Size = new System.Drawing.Size(89, 19);
             this.label3.TabIndex = 5;
             this.label3.Text = "İstifadəçi Adı:";
             // 
             // txtLastName
             // 
-            this.txtLastName.Location = new System.Drawing.Point(145, 85);
+            this.txtLastName.Location = new System.Drawing.Point(127, 90);
             this.txtLastName.Name = "txtLastName";
-            this.txtLastName.Size = new System.Drawing.Size(248, 22);
+            this.txtLastName.Size = new System.Drawing.Size(218, 25);
             this.txtLastName.TabIndex = 1;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(26, 88);
+            this.label2.Location = new System.Drawing.Point(23, 94);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(50, 16);
+            this.label2.Size = new System.Drawing.Size(49, 19);
             this.label2.TabIndex = 3;
             this.label2.Text = "Soyad:";
             // 
             // txtFirstName
             // 
-            this.txtFirstName.Location = new System.Drawing.Point(145, 47);
+            this.txtFirstName.Location = new System.Drawing.Point(127, 50);
             this.txtFirstName.Name = "txtFirstName";
-            this.txtFirstName.Size = new System.Drawing.Size(248, 22);
+            this.txtFirstName.Size = new System.Drawing.Size(218, 25);
             this.txtFirstName.TabIndex = 0;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(26, 50);
+            this.label1.Location = new System.Drawing.Point(23, 53);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(27, 16);
+            this.label1.Size = new System.Drawing.Size(29, 19);
             this.label1.TabIndex = 1;
             this.label1.Text = "Ad:";
             // 
             // btnClear
             // 
-            this.btnClear.Location = new System.Drawing.Point(29, 396);
+            this.btnClear.Location = new System.Drawing.Point(25, 421);
             this.btnClear.Name = "btnClear";
-            this.btnClear.Size = new System.Drawing.Size(364, 35);
+            this.btnClear.Size = new System.Drawing.Size(318, 37);
             this.btnClear.TabIndex = 10;
             this.btnClear.Text = "Təmizlə / Yeni";
             this.btnClear.UseVisualStyleBackColor = true;
@@ -227,9 +228,9 @@
             // 
             // btnDelete
             // 
-            this.btnDelete.Location = new System.Drawing.Point(283, 344);
+            this.btnDelete.Location = new System.Drawing.Point(248, 366);
             this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(110, 35);
+            this.btnDelete.Size = new System.Drawing.Size(96, 37);
             this.btnDelete.TabIndex = 9;
             this.btnDelete.Text = "Sil";
             this.btnDelete.UseVisualStyleBackColor = true;
@@ -237,9 +238,9 @@
             // 
             // btnUpdate
             // 
-            this.btnUpdate.Location = new System.Drawing.Point(157, 344);
+            this.btnUpdate.Location = new System.Drawing.Point(137, 366);
             this.btnUpdate.Name = "btnUpdate";
-            this.btnUpdate.Size = new System.Drawing.Size(110, 35);
+            this.btnUpdate.Size = new System.Drawing.Size(96, 37);
             this.btnUpdate.TabIndex = 8;
             this.btnUpdate.Text = "Yenilə";
             this.btnUpdate.UseVisualStyleBackColor = true;
@@ -247,9 +248,9 @@
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(29, 344);
+            this.btnAdd.Location = new System.Drawing.Point(25, 366);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(110, 35);
+            this.btnAdd.Size = new System.Drawing.Size(96, 37);
             this.btnAdd.TabIndex = 7;
             this.btnAdd.Text = "Əlavə Et";
             this.btnAdd.UseVisualStyleBackColor = true;
@@ -257,9 +258,9 @@
             // 
             // frmUsers
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1262, 673);
+            this.ClientSize = new System.Drawing.Size(1104, 715);
             this.Controls.Add(this.splitContainer1);
             this.Name = "frmUsers";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
@@ -273,6 +274,7 @@
             this.gbUserDetails.ResumeLayout(false);
             this.gbUserDetails.PerformLayout();
             this.ResumeLayout(false);
+
         }
         #endregion
 

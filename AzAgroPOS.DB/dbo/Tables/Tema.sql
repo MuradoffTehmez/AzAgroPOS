@@ -1,0 +1,8 @@
+﻿CREATE TABLE [dbo].[Tema]
+(
+    [Id] INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    [Ad] NVARCHAR(50) NOT NULL,
+    [ArxaplanRengi] NVARCHAR(20) NULL,
+    [MetinRengi] NVARCHAR(20) NULL,
+    [Icon] NVARCHAR(50) NULL
+)

@@ -578,5 +578,10 @@ namespace AzAgroPOS.PL
                 }
             }
         }
+
+        private void dgvProducts_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }
