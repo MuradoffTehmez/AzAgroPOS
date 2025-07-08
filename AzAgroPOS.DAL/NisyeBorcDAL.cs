@@ -1,7 +1,5 @@
 ﻿// Fayl: AzAgroPOS.DAL/NisyeBorcDAL.cs
 using AzAgroPOS.Entities;
-using System;
-using System.Data;
 using System.Data.SqlClient;
 
 namespace AzAgroPOS.DAL

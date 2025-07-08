@@ -4,7 +4,6 @@ using AzAgroPOS.PL.Printing;
 using AzAgroPOS.PL.Themes;
 using System;
 using System.ComponentModel;
-using System.Drawing.Printing;
 using System.Linq;
 using System.Windows.Forms;
 

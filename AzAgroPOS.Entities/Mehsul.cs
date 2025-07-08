@@ -1,7 +1,5 @@
 ﻿// Fayl: AzAgroPOS.Entities/Mehsul.cs
 
-using System;
-
 namespace AzAgroPOS.Entities
 {
     public class Mehsul

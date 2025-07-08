@@ -1,7 +1,6 @@
 ﻿using AzAgroPOS.BLL;
 using AzAgroPOS.BLL.Services;
 using AzAgroPOS.Entities;
-using AzAgroPOS.PL.Localization;
 using AzAgroPOS.PL.Themes;
 using System;
 using System.Windows.Forms;

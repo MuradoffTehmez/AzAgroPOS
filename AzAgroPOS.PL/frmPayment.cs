@@ -2,8 +2,6 @@
 using AzAgroPOS.PL.Themes;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace AzAgroPOS.PL
@@ -92,8 +90,8 @@ namespace AzAgroPOS.PL
             UpdateTotals();
         }
 
-        
-       
+
+
 
         /// <summary>
         /// Ödənişi ləğv etmək üçün düymə klik hadisəsi.

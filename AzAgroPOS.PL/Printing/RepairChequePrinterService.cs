@@ -1,11 +1,7 @@
 ﻿using AzAgroPOS.Entities;
-using System;
 using System.Drawing;
 using System.Drawing.Printing;
-using System.IO;
 using System.Windows.Forms;
-using iTextSharp.text;
-using iTextSharp.text.pdf;
 using Font = System.Drawing.Font;
 
 namespace AzAgroPOS.PL.Printing

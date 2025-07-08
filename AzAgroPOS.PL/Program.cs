@@ -2,10 +2,7 @@
 using AzAgroPOS.PL.Localization;
 using AzAgroPOS.PL.Themes;
 using System;
-using System.Globalization;
-using System.Threading;
 using System.Windows.Forms;
-using System.Linq;
 
 
 namespace AzAgroPOS.PL

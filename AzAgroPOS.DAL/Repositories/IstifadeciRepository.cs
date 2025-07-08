@@ -20,7 +20,7 @@ namespace AzAgroPOS.DAL.Repositories
 
             using (var connection = new SqlConnection(_connectionString))
             {
-                
+
                 var command = new SqlCommand("SELECT * FROM dbo.Istifadeci WHERE Email = @Email", connection);
                 command.Parameters.AddWithValue("@Email", email);
 

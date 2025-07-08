@@ -109,7 +109,7 @@ namespace AzAgroPOS.DAL
             }
         }
 
-        
+
         public void UpdateNisyeBorcu(int musteriId, decimal elaveOlunanBorc, SqlConnection connection, SqlTransaction transaction)
         {
             var query = "UPDATE musteriler SET cari_nisye_borcu = cari_nisye_borcu + @elave_olunan_borc WHERE id = @id;";
@@ -118,7 +118,7 @@ namespace AzAgroPOS.DAL
             command.Parameters.AddWithValue("@id", musteriId);
             command.ExecuteNonQuery();
         }
-       
+
 
         private void AddParameters(SqlCommand command, Musteri musteri)
         {
@@ -133,7 +133,7 @@ namespace AzAgroPOS.DAL
             command.Parameters.Add("@aktivdir", SqlDbType.Bit).Value = musteri.Aktivdir;
         }
 
-        
+
 
         /// <summary>
         /// Verilmiş ID-yə görə tək bir müştərini tapır.

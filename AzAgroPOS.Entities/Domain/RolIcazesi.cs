@@ -6,6 +6,6 @@
         public int RolId { get; set; }
         public string Modul { get; set; }
         public string Emeliyyat { get; set; }
-        public bool IcazeVerilib { get; set; } 
+        public bool IcazeVerilib { get; set; }
     }
 }

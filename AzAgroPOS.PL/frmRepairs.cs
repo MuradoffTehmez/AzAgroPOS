@@ -472,7 +472,7 @@ namespace AzAgroPOS.PL
             }
 
             try
-            { 
+            {
                 var fullTemirInfo = _temirBll.GetById(_selectedRepairId);
 
                 if (fullTemirInfo != null)

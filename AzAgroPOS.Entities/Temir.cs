@@ -32,7 +32,7 @@ namespace AzAgroPOS.Entities
         //public string QaytarilmaSebepleriTesviri4 { get; set; }
         //public string QaytarilmaSebepleriTesviri5 { get; set; }
 
-        public System.Collections.Generic.List<TemirHissesi> Hisseler 
+        public System.Collections.Generic.List<TemirHissesi> Hisseler
         { get; set; } = new System.Collections.Generic.List<TemirHissesi>();
     }
 }

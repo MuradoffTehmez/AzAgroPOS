@@ -1,8 +1,6 @@
-﻿using System.Drawing;
+﻿using AzAgroPOS.PL.Localization;
+using System.Drawing;
 using System.Windows.Forms;
-using AzAgroPOS.Entities;
-using AzAgroPOS.PL.Localization;
-using AzAgroPOS.PL.Themes;
 
 
 namespace AzAgroPOS.PL.Themes
@@ -56,7 +54,7 @@ namespace AzAgroPOS.PL.Themes
         /// 
         /// </summary>
         /// <param name="controls"></param>
-        
+
         private void ApplyThemeToControls(Control.ControlCollection controls)
         {
             foreach (Control control in controls)

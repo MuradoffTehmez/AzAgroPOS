@@ -27,27 +27,27 @@ namespace AzAgroPOS.BLL
         /// <returns>Əməliyyatın uğurlu olub-olmadığı.</returns>
         public bool Add(Temir temir, Istifadeci emeliyyatiEden, out string message)
         {
-            if (temir.MusteriId == 0) 
-            { 
-                message = "Müştəri seçilməlidir."; 
-                return false; 
+            if (temir.MusteriId == 0)
+            {
+                message = "Müştəri seçilməlidir.";
+                return false;
             }
-            if (string.IsNullOrWhiteSpace(temir.CihazAdi)) 
-            { 
-                message = "Cihazın adı boş ola bilməz."; 
-                return false; 
+            if (string.IsNullOrWhiteSpace(temir.CihazAdi))
+            {
+                message = "Cihazın adı boş ola bilməz.";
+                return false;
             }
-            if (string.IsNullOrWhiteSpace(temir.ProblemTesviri)) 
-            { 
-                message = "Problem təsviri boş ola bilməz."; 
-                return false; 
+            if (string.IsNullOrWhiteSpace(temir.ProblemTesviri))
+            {
+                message = "Problem təsviri boş ola bilməz.";
+                return false;
             }
 
             int newId = _dal.Add(temir);
             if (newId > 0)
             {
                 message = $"Yeni təmir sifarişi uğurla yaradıldı. Qeydiyyat Nömrəsi: {newId}";
-                AuditLogger.Log(emeliyyatiEden.Id, "Təmir Sifarişi Əlavə Etdi", 
+                AuditLogger.Log(emeliyyatiEden.Id, "Təmir Sifarişi Əlavə Etdi",
                     $"Yeni təmir sifarişi: {temir.CihazAdi} (ID: {newId}, Müştəri ID: {temir.MusteriId})");
                 return true;
             }
@@ -65,27 +65,27 @@ namespace AzAgroPOS.BLL
         /// <returns>Əməliyyatın uğurlu olub-olmadığı.</returns>
         public bool Update(Temir temir, Istifadeci emeliyyatiEden, out string message)
         {
-            if (temir.Id == 0) 
-            { 
-                message = "Yeniləmək üçün sifariş seçilməyib."; 
-                return false; 
+            if (temir.Id == 0)
+            {
+                message = "Yeniləmək üçün sifariş seçilməyib.";
+                return false;
             }
-            if (temir.MusteriId == 0) 
-            { 
-                message = "Müştəri seçilməlidir."; 
-                return false; 
+            if (temir.MusteriId == 0)
+            {
+                message = "Müştəri seçilməlidir.";
+                return false;
             }
-            if (string.IsNullOrWhiteSpace(temir.CihazAdi)) 
-            { 
-                message = "Cihazın adı boş ola bilməz."; 
-                return false; 
+            if (string.IsNullOrWhiteSpace(temir.CihazAdi))
+            {
+                message = "Cihazın adı boş ola bilməz.";
+                return false;
             }
 
             bool result = _dal.Update(temir);
             if (result)
             {
                 message = "Sifariş uğurla yeniləndi.";
-                AuditLogger.Log(emeliyyatiEden.Id, "Təmir Sifarişi Yenilədi", 
+                AuditLogger.Log(emeliyyatiEden.Id, "Təmir Sifarişi Yenilədi",
                     $"Təmir sifarişi: {temir.CihazAdi} (ID: {temir.Id}). " +
                     $"Status: {temir.StatusAdi}, Problem: {temir.ProblemTesviri}");
                 return true;
@@ -118,7 +118,7 @@ namespace AzAgroPOS.BLL
             if (result)
             {
                 message = "Sifariş uğurla silindi.";
-                AuditLogger.Log(emeliyyatiEden.Id, "Təmir Sifarişi Silindi", 
+                AuditLogger.Log(emeliyyatiEden.Id, "Təmir Sifarişi Silindi",
                     $"Təmir sifarişi: {cihazAdi} (ID: {temirId})");
                 return true;
             }
@@ -150,7 +150,7 @@ namespace AzAgroPOS.BLL
             if (_dal.CompleteRepair(temirId, yekunXerc))
             {
                 message = "Təmir sifarişi uğurla tamamlandı.";
-                AuditLogger.Log(emeliyyatiEden.Id, "Təmir Tamamlandı", 
+                AuditLogger.Log(emeliyyatiEden.Id, "Təmir Tamamlandı",
                     $"Təmir sifarişi: {cihazAdi} (ID: {temirId}). " +
                     $"Yekun xərc: {yekunXerc} AZN");
                 return true;

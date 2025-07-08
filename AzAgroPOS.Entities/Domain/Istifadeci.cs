@@ -7,7 +7,7 @@
         public string Soyad { get; set; }
         public string Email { get; set; }
         public string ParolHash { get; set; }
-        public int? RolId { get; set; } 
+        public int? RolId { get; set; }
         public int? TemaId { get; set; }
         public string Status { get; set; }
     }

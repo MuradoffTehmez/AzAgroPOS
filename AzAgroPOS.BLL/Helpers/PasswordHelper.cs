@@ -1,7 +1,6 @@
 ﻿// Fayl: AzAgroPOS.BLL/Helpers/PasswordHelper.cs
 using System;
 using System.Security.Cryptography;
-using System.Text;
 
 namespace AzAgroPOS.BLL.Helpers
 {

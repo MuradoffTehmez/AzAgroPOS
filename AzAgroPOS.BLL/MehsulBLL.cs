@@ -1,7 +1,6 @@
 ﻿using AzAgroPOS.BLL.Helpers;
 using AzAgroPOS.DAL;
 using AzAgroPOS.Entities;
-using System;
 using System.Collections.Generic;
 
 namespace AzAgroPOS.BLL
@@ -179,7 +178,7 @@ namespace AzAgroPOS.BLL
             message = "Məhsul silinərkən xəta baş verdi.";
             return false;
         }
-  
+
         /// <summary>
         /// ID üzrə məhsul məlumatını qaytarır.
         /// </summary>
