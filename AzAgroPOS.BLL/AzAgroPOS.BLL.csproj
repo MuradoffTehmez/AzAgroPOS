@@ -54,6 +54,7 @@
     <Compile Include="RolBLL.cs" />
     <Compile Include="SatisBLL.cs" />
     <Compile Include="SatisMehsullariBLL.cs" />
+    <Compile Include="Services\AuthService.cs" />
     <Compile Include="Services\BarkodService.cs" />
     <Compile Include="TemirBLL.cs" />
     <Compile Include="TemirHisseleriBLL.cs" />

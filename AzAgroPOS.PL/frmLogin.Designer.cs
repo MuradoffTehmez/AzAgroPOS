@@ -24,7 +24,7 @@ namespace AzAgroPOS.PL
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnLogin = new System.Windows.Forms.Button();
             this.txtPassword = new System.Windows.Forms.TextBox();
-            this.txtUsername = new System.Windows.Forms.TextBox();
+            this.txtEmail = new System.Windows.Forms.TextBox();
             this.lblPassword = new System.Windows.Forms.Label();
             this.lblUsername = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
@@ -41,7 +41,7 @@ namespace AzAgroPOS.PL
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(453, 105);
+            this.panel1.Size = new System.Drawing.Size(437, 97);
             this.panel1.TabIndex = 0;
             // 
             // label3
@@ -71,15 +71,15 @@ namespace AzAgroPOS.PL
             this.panel2.Controls.Add(this.btnCancel);
             this.panel2.Controls.Add(this.btnLogin);
             this.panel2.Controls.Add(this.txtPassword);
-            this.panel2.Controls.Add(this.txtUsername);
+            this.panel2.Controls.Add(this.txtEmail);
             this.panel2.Controls.Add(this.lblPassword);
             this.panel2.Controls.Add(this.lblUsername);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 105);
+            this.panel2.Location = new System.Drawing.Point(0, 97);
             this.panel2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.panel2.Name = "panel2";
             this.panel2.Padding = new System.Windows.Forms.Padding(23, 26, 23, 26);
-            this.panel2.Size = new System.Drawing.Size(453, 278);
+            this.panel2.Size = new System.Drawing.Size(437, 267);
             this.panel2.TabIndex = 1;
             // 
             // btnCancel
@@ -124,14 +124,14 @@ namespace AzAgroPOS.PL
             this.txtPassword.Size = new System.Drawing.Size(233, 23);
             this.txtPassword.TabIndex = 3;
             // 
-            // txtUsername
+            // txtEmail
             // 
-            this.txtUsername.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtUsername.Location = new System.Drawing.Point(175, 39);
-            this.txtUsername.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.txtUsername.Name = "txtUsername";
-            this.txtUsername.Size = new System.Drawing.Size(233, 23);
-            this.txtUsername.TabIndex = 2;
+            this.txtEmail.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtEmail.Location = new System.Drawing.Point(175, 39);
+            this.txtEmail.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.txtEmail.Name = "txtEmail";
+            this.txtEmail.Size = new System.Drawing.Size(233, 23);
+            this.txtEmail.TabIndex = 2;
             // 
             // lblPassword
             // 
@@ -158,13 +158,13 @@ namespace AzAgroPOS.PL
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(453, 383);
+            this.ClientSize = new System.Drawing.Size(437, 364);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.Name = "frmLogin";
-            this.Text = "Daxil Ol";
+            this.Text = "Sistemə Giriş";
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -178,7 +178,7 @@ namespace AzAgroPOS.PL
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label lblUsername;
         private System.Windows.Forms.Label lblPassword;
-        private System.Windows.Forms.TextBox txtUsername;
+        private System.Windows.Forms.TextBox txtEmail;
         private System.Windows.Forms.TextBox txtPassword;
         private System.Windows.Forms.Button btnLogin;
         private System.Windows.Forms.Button btnCancel;
