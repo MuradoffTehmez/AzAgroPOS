@@ -53,6 +53,7 @@
     <Compile Include="MusteriDAL.cs" />
     <Compile Include="NisyeBorcDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\RolRepository.cs" />
     <Compile Include="RolDAL.cs" />
     <Compile Include="SatisDAL.cs" />
     <Compile Include="SatisMehsullariDAL.cs" />

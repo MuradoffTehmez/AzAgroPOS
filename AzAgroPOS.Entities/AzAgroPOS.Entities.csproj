@@ -42,6 +42,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DashboardStats.cs" />
+    <Compile Include="Domain\AuditLog.cs" />
+    <Compile Include="Domain\Istifadeci.cs" />
+    <Compile Include="Domain\Rol.cs" />
+    <Compile Include="Domain\RolIcazesi.cs" />
+    <Compile Include="Domain\Tema.cs" />
     <Compile Include="EmeliyyatJurnali.cs" />
     <Compile Include="Istifadeci.cs" />
     <Compile Include="Kateqoriya.cs" />
