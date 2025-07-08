@@ -64,5 +64,8 @@
     <Compile Include="TemirStatusu.cs" />
     <Compile Include="Vahid.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DTO\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
