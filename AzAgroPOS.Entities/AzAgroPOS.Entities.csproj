@@ -42,10 +42,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="Domain\AuditLog.cs" />
+    <Compile Include="Domain\Istifadeci.cs" />
+    <Compile Include="Domain\Rol.cs" />
+    <Compile Include="Domain\RolIcazesi.cs" />
+    <Compile Include="Domain\Tema.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Domain\" />
     <Folder Include="DTO\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
