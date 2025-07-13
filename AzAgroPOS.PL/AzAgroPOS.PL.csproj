@@ -11,4 +11,8 @@
     <ProjectReference Include="..\AzAgroPOS.BLL\AzAgroPOS.BLL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="packages.config" />
+  </ItemGroup>
+
 </Project>
