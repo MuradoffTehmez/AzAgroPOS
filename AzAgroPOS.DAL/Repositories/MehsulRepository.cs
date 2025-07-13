@@ -34,6 +34,19 @@ namespace AzAgroPOS.DAL.Repositories
             }
         }
 
+        public List<Mehsul> GetAllActive()
+        {
+            using (var context = new AzAgroDbContext())
+            {
+                return context.Mehsullar
+                    .Include(m => m.Kateqoriya)
+                    .Include(m => m.Vahid)
+                    .Where(m => m.Status == "Aktiv")
+                    .OrderBy(m => m.Ad)
+                    .ToList();
+            }
+        }
+
         public async Task<Mehsul> GetByIdAsync(int id)
         {
             using (var context = new AzAgroDbContext())
@@ -42,6 +55,17 @@ namespace AzAgroPOS.DAL.Repositories
                     .Include(m => m.Kateqoriya)
                     .Include(m => m.Vahid)
                     .FirstOrDefaultAsync(m => m.Id == id);
+            }
+        }
+
+        public Mehsul GetById(int id)
+        {
+            using (var context = new AzAgroDbContext())
+            {
+                return context.Mehsullar
+                    .Include(m => m.Kateqoriya)
+                    .Include(m => m.Vahid)
+                    .FirstOrDefault(m => m.Id == id);
             }
         }
 
@@ -154,6 +178,16 @@ namespace AzAgroPOS.DAL.Repositories
                 mehsul.YenilenmeTarixi = DateTime.Now;
                 context.Mehsullar.Update(mehsul);
                 await context.SaveChangesAsync();
+            }
+        }
+
+        public void Update(Mehsul mehsul)
+        {
+            using (var context = new AzAgroDbContext())
+            {
+                mehsul.YenilenmeTarixi = DateTime.Now;
+                context.Mehsullar.Update(mehsul);
+                context.SaveChanges();
             }
         }
 

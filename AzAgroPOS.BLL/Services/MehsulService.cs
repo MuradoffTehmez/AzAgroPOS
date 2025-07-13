@@ -307,5 +307,10 @@ namespace AzAgroPOS.BLL.Services
 
             return mehsullar;
         }
+
+        public List<Mehsul> GetAllActive()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
