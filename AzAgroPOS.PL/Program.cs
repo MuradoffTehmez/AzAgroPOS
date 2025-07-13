@@ -21,12 +21,9 @@ namespace AzAgroPOS.PL
             {
                 var dbInitService = new DatabaseInitializationService();
                 
-                // Debug məqsədi ilə database-i təmizlə və yenidən yarat
-                var initTask = dbInitService.ClearAndInitializeDatabaseAsync();
+                // Database mövcud deyilsə yaradın, mövcuddursa toxunmayın
+                var initTask = dbInitService.InitializeDatabaseAsync();
                 initTask.Wait();
-                
-                MessageBox.Show("Database uğurla hazırlandı!\n\nTest məlumatları:\nEmail: admin@azagropos.az\nŞifrə: admin123", 
-                    "Sistem Hazır", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {

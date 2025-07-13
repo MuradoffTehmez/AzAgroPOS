@@ -1,6 +1,7 @@
 ﻿using AzAgroPOS.BLL.Services;
 using AzAgroPOS.DAL.Repositories;
 using AzAgroPOS.PL.Forms;
+using Microsoft.Win32;
 using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -18,6 +19,7 @@ namespace AzAgroPOS.PL
             InitializeComponent();
             _authService = new AuthService();
             _istifadeciRepository = new IstifadeciRepository();
+            LoadSavedCredentials();
         }
 
         private async void btnLogin_Click(object sender, System.EventArgs e)
@@ -45,6 +47,16 @@ namespace AzAgroPOS.PL
                     if (istifadeci != null)
                     {
                         MessageBox.Show(netice, "Uğurlu Giriş", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        
+                        // Remember Me funksiyasını yoxla
+                        if (chkRememberMe.Checked)
+                        {
+                            SaveCredentials(email, password);
+                        }
+                        else
+                        {
+                            ClearSavedCredentials();
+                        }
                         
                         // Ana forma keç
                         this.Hide();
@@ -127,9 +139,137 @@ namespace AzAgroPOS.PL
 
         private void ClearForm()
         {
-            txtEmail.Clear();
-            txtPassword.Clear();
+            if (!chkRememberMe.Checked)
+            {
+                txtEmail.Clear();
+                txtPassword.Clear();
+            }
+            else
+            {
+                txtPassword.Clear();
+            }
             txtEmail.Focus();
+        }
+        
+        private async void lnkForgotPassword_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            try
+            {
+                string email = Microsoft.VisualBasic.Interaction.InputBox(
+                    "Şifrəni sıfırlamaq üçün email ünvanınızı daxil edin:",
+                    "Şifrəni Unutmusan?",
+                    txtEmail.Text);
+
+                if (string.IsNullOrWhiteSpace(email))
+                    return;
+
+                if (!IsValidEmail(email))
+                {
+                    MessageBox.Show("Email ünvanının formatı düzgün deyil.", "Xəta", 
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                var user = await _istifadeciRepository.GetByEmailAsync(email);
+                if (user == null)
+                {
+                    MessageBox.Show("Bu email ünvanı ilə istifadəçi tapılmadı.", "Xəta", 
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                var resetForm = new PasswordResetForm(user);
+                if (resetForm.ShowDialog() == DialogResult.OK)
+                {
+                    MessageBox.Show("Şifrəniz uğurla sıfırlandı. Yeni şifrə ilə daxil ola bilərsiniz.", 
+                        "Uğurlu", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Xəta baş verdi: {ex.Message}", "Xəta", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        
+        private void lnkRegister_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            var registerForm = new UserAddForm();
+            if (registerForm.ShowDialog() == DialogResult.OK)
+            {
+                MessageBox.Show("Qeydiyyat uğurla tamamlandı. İndi daxil ola bilərsiniz.", 
+                    "Uğurlu Qeydiyyat", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+        
+        private void SaveCredentials(string email, string password)
+        {
+            try
+            {
+                using (RegistryKey key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\AzAgroPOS"))
+                {
+                    key.SetValue("SavedEmail", email);
+                    key.SetValue("SavedPassword", Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(password)));
+                    key.SetValue("RememberMe", true);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Registry xətası olsa da davam et
+                System.Diagnostics.Debug.WriteLine($"Registry xətası: {ex.Message}");
+            }
+        }
+        
+        private void LoadSavedCredentials()
+        {
+            try
+            {
+                using (RegistryKey key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\AzAgroPOS"))
+                {
+                    if (key != null)
+                    {
+                        var savedEmail = key.GetValue("SavedEmail") as string;
+                        var savedPasswordBase64 = key.GetValue("SavedPassword") as string;
+                        var rememberMe = key.GetValue("RememberMe") as bool? ?? false;
+                        
+                        if (rememberMe && !string.IsNullOrEmpty(savedEmail) && !string.IsNullOrEmpty(savedPasswordBase64))
+                        {
+                            txtEmail.Text = savedEmail;
+                            txtPassword.Text = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(savedPasswordBase64));
+                            chkRememberMe.Checked = true;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Registry xətası olsa da davam et
+                System.Diagnostics.Debug.WriteLine($"Registry xətası: {ex.Message}");
+                // Default məlumatları təyin et
+                txtEmail.Text = "admin@azagropos.az";
+                txtPassword.Text = "admin123";
+            }
+        }
+        
+        private void ClearSavedCredentials()
+        {
+            try
+            {
+                using (RegistryKey key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\AzAgroPOS", true))
+                {
+                    if (key != null)
+                    {
+                        key.DeleteValue("SavedEmail", false);
+                        key.DeleteValue("SavedPassword", false);
+                        key.SetValue("RememberMe", false);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Registry xətası olsa da davam et
+                System.Diagnostics.Debug.WriteLine($"Registry xətası: {ex.Message}");
+            }
         }
     }
 }

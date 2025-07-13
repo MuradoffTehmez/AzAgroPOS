@@ -153,6 +153,12 @@ namespace AzAgroPOS.PL.Forms
         {
             dgvProducts.Rows.Clear();
 
+            if (_filteredProducts == null || !_filteredProducts.Any())
+            {
+                // Boş məhsul siyahısı halında xəta göstərməyin, sadəcə boş grid-i göstərin
+                return;
+            }
+
             foreach (var product in _filteredProducts)
             {
                 var row = new DataGridViewRow();
