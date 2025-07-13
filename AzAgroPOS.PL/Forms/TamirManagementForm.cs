@@ -172,10 +172,11 @@ namespace AzAgroPOS.PL.Forms
             {
                 var summary = _tamirService.GetRepairStatusSummary();
                 
-                lblActiveRepairs.Text = (summary.ContainsKey("İşlənir") ? summary["İşlənir"] : 0) +
-                                       (summary.ContainsKey("Təşxis") ? summary["Təşxis"] : 0) +
-                                       (summary.ContainsKey("Gözləyir") ? summary["Gözləyir"] : 0) +
-                                       (summary.ContainsKey("Qəbul Edildi") ? summary["Qəbul Edildi"] : 0);
+                var activeCount = (summary.ContainsKey("İşlənir") ? summary["İşlənir"] : 0) +
+                                 (summary.ContainsKey("Təşxis") ? summary["Təşxis"] : 0) +
+                                 (summary.ContainsKey("Gözləyir") ? summary["Gözləyir"] : 0) +
+                                 (summary.ContainsKey("Qəbul Edildi") ? summary["Qəbul Edildi"] : 0);
+                lblActiveRepairs.Text = activeCount.ToString();
                 
                 lblReadyForDelivery.Text = summary.ContainsKey("Hazır") ? summary["Hazır"].ToString() : "0";
                 lblCompletedRepairs.Text = summary.ContainsKey("Təhvil Verildi") ? summary["Təhvil Verildi"].ToString() : "0";
@@ -317,7 +318,7 @@ namespace AzAgroPOS.PL.Forms
                 if (endDate.HasValue)
                     repairs = repairs.Where(r => r.QebulTarixi <= endDate.Value);
 
-                var filteredRepairs = repairs.Select(r => new
+                var filteredRepairs = repairs.ToList().Select(r => new
                 {
                     r.Id,
                     TamirNomresi = r.TamirNomresiFormatli,
