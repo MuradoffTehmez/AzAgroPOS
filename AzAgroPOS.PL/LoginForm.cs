@@ -1,5 +1,6 @@
 ﻿using AzAgroPOS.BLL.Services;
 using System;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace AzAgroPOS.PL
@@ -15,40 +16,83 @@ namespace AzAgroPOS.PL
         {
             try
             {
-                // BLL-dəki AuthService-dən bir nümunə yaradırıq
-                var authService = new AuthService();
-
-                // TextBox-lardan dəyərləri götürürük
-                string email = txtEmail.Text;
+                string email = txtEmail.Text.Trim();
                 string password = txtPassword.Text;
 
-                // Login metodunu çağırıb nəticəni alırıq
+                if (!ValidateInput(email, password))
+                {
+                    return;
+                }
+
+                var authService = new AuthService();
                 string netice = authService.Login(email, password);
 
-                // Nəticəni istifadəçiyə göstəririk
-                MessageBox.Show(netice, "Məlumat", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                // Əgər giriş uğurludursa, bu pəncərəni bağlayıb ana pəncərəni aça bilərik
-                // Bu hissəni gələcəkdə əlavə edəcəyik.
+                if (netice.Contains("Uğurlu"))
+                {
+                    MessageBox.Show(netice, "Uğurlu Giriş", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show(netice, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtPassword.Clear();
+                    txtPassword.Focus();
+                }
             }
             catch (Exception ex)
             {
-                // Gözlənilməyən bir xəta baş verərsə
                 MessageBox.Show($"Xəta baş verdi: {ex.Message}", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        //private string ComputeSha256Hash(string rawData)
-        //{
-        //    using (System.Security.Cryptography.SHA256 sha256Hash = System.Security.Cryptography.SHA256.Create())
-        //    {
-        //        byte[] bytes = sha256Hash.ComputeHash(System.Text.Encoding.UTF8.GetBytes(rawData));
-        //        System.Text.StringBuilder builder = new System.Text.StringBuilder();
-        //        for (int i = 0; i < bytes.Length; i++)
-        //        {
-        //            builder.Append(bytes[i].ToString("x2"));
-        //        }
-        //        return builder.ToString();
-        //    }
-        //}
+
+        private bool ValidateInput(string email, string password)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                MessageBox.Show("Email ünvanını daxil edin.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtEmail.Focus();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                MessageBox.Show("Şifrəni daxil edin.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtPassword.Focus();
+                return false;
+            }
+
+            if (!IsValidEmail(email))
+            {
+                MessageBox.Show("Email ünvanının formatı düzgün deyil.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtEmail.Focus();
+                txtEmail.SelectAll();
+                return false;
+            }
+
+            if (password.Length < 6)
+            {
+                MessageBox.Show("Şifrə ən azı 6 simvoldan ibarət olmalıdır.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtPassword.Focus();
+                txtPassword.SelectAll();
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool IsValidEmail(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+                return false;
+
+            try
+            {
+                string pattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+                return Regex.IsMatch(email, pattern, RegexOptions.IgnoreCase);
+            }
+            catch (RegexMatchTimeoutException)
+            {
+                return false;
+            }
+        }
     }
 }

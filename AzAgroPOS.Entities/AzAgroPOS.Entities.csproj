@@ -2,6 +2,20 @@
 
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.32" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.32" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Class1.cs" />
+    <None Remove="packages.config" />
+    <None Remove="app.config" />
+    <Compile Remove="Class1.cs" />
+  </ItemGroup>
 
 </Project>
