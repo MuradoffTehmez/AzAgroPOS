@@ -4,8 +4,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AzAgroPOS.Entities.Domain
 {
+    [Table("SatisOdemeleri")]
     public class SatisOdemesi
     {
+        [Key]
         public int Id { get; set; }
         
         [Column(TypeName = "decimal(18,2)")]

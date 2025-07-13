@@ -4,8 +4,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AzAgroPOS.Entities.Domain
 {
+    [Table("SatisDetallari")]
     public class SatisDetali
     {
+        [Key]
         public int Id { get; set; }
         
         // Foreign Keys

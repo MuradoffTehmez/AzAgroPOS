@@ -1,13 +1,12 @@
-﻿using AzAgroPOS.DAL.Repositories;
+using AzAgroPOS.DAL.Repositories;
 using AzAgroPOS.Entities.Domain;
 using System;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
+using BCrypt.Net;
 
 namespace AzAgroPOS.BLL.Services
 {
-    public class AuthService
+    public class AuthService : IDisposable
     {
         private readonly IstifadeciRepository _istifadeciRepository;
 
@@ -16,17 +15,37 @@ namespace AzAgroPOS.BLL.Services
             _istifadeciRepository = new IstifadeciRepository();
         }
 
-        private string ComputeSha256Hash(string rawData)
+        /// <summary>
+        /// Hash password using BCrypt with salt
+        /// </summary>
+        /// <param name="password">Plain text password</param>
+        /// <returns>Hashed password with salt</returns>
+        public string HashPassword(string password)
         {
-            using (SHA256 sha256Hash = SHA256.Create())
+            if (string.IsNullOrWhiteSpace(password))
+                throw new ArgumentException("Password cannot be null or empty", nameof(password));
+
+            return BCrypt.Net.BCrypt.HashPassword(password, BCrypt.Net.BCrypt.GenerateSalt(12));
+        }
+
+        /// <summary>
+        /// Verify password against hash
+        /// </summary>
+        /// <param name="password">Plain text password</param>
+        /// <param name="hash">Stored hash</param>
+        /// <returns>True if password matches</returns>
+        public bool VerifyPassword(string password, string hash)
+        {
+            if (string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(hash))
+                return false;
+
+            try
             {
-                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < bytes.Length; i++)
-                {
-                    builder.Append(bytes[i].ToString("x2"));
-                }
-                return builder.ToString();
+                return BCrypt.Net.BCrypt.Verify(password, hash);
+            }
+            catch
+            {
+                return false;
             }
         }
 
@@ -37,26 +56,40 @@ namespace AzAgroPOS.BLL.Services
                 return "Email və ya şifrə boş ola bilməz.";
             }
 
-            var istifadeci = _istifadeciRepository.GetByEmail(email);
-
-            if (istifadeci == null)
+            try
             {
-                return "İstifadəçi tapılmadı və ya şifrə yanlışdır.";
+                var istifadeci = _istifadeciRepository.GetByEmail(email);
+
+                // Always perform hash computation to prevent timing attacks
+                string dummyHash = "$2a$12$dummyhashfortimingatnormalizedconstanttime";
+                
+                if (istifadeci == null)
+                {
+                    // Perform dummy verification to normalize timing
+                    VerifyPassword(password, dummyHash);
+                    return "İstifadəçi tapılmadı və ya şifrə yanlışdır.";
+                }
+
+                if (!VerifyPassword(password, istifadeci.ParolHash))
+                {
+                    return "İstifadəçi tapılmadı və ya şifrə yanlışdır.";
+                }
+
+                if (istifadeci.Status != "Aktiv")
+                {
+                    return $"İstifadəçi aktiv deyil. Status: {istifadeci.Status}";
+                }
+
+                // Update last login time
+                istifadeci.SonGiris = DateTime.Now;
+                _istifadeciRepository.Update(istifadeci);
+
+                return $"Uğurlu giriş! Xoş gəldiniz, {istifadeci.Ad}.";
             }
-
-            string girilenParolHash = ComputeSha256Hash(password);
-
-            if (istifadeci.ParolHash != girilenParolHash)
+            catch (Exception ex)
             {
-                return "İstifadəçi tapılmadı və ya şifrə yanlışdır.";
+                return $"Sistem xətası: {ex.Message}";
             }
-
-            if (istifadeci.Status != "Aktiv")
-            {
-                return $"İstifadəçi aktiv deyil. Status: {istifadeci.Status}";
-            }
-
-            return $"Uğurlu giriş! Xoş gəldiniz, {istifadeci.Ad}.";
         }
 
         public async Task<string> LoginAsync(string email, string password)
@@ -66,26 +99,40 @@ namespace AzAgroPOS.BLL.Services
                 return "Email və ya şifrə boş ola bilməz.";
             }
 
-            var istifadeci = await _istifadeciRepository.GetByEmailAsync(email);
-
-            if (istifadeci == null)
+            try
             {
-                return "İstifadəçi tapılmadı və ya şifrə yanlışdır.";
+                var istifadeci = await _istifadeciRepository.GetByEmailAsync(email);
+
+                // Always perform hash computation to prevent timing attacks
+                string dummyHash = "$2a$12$dummyhashfortimingatnormalizedconstanttime";
+                
+                if (istifadeci == null)
+                {
+                    // Perform dummy verification to normalize timing
+                    VerifyPassword(password, dummyHash);
+                    return "İstifadəçi tapılmadı və ya şifrə yanlışdır.";
+                }
+
+                if (!VerifyPassword(password, istifadeci.ParolHash))
+                {
+                    return "İstifadəçi tapılmadı və ya şifrə yanlışdır.";
+                }
+
+                if (istifadeci.Status != "Aktiv")
+                {
+                    return $"İstifadəçi aktiv deyil. Status: {istifadeci.Status}";
+                }
+
+                // Update last login time
+                istifadeci.SonGiris = DateTime.Now;
+                await _istifadeciRepository.UpdateAsync(istifadeci);
+
+                return $"Uğurlu giriş! Xoş gəldiniz, {istifadeci.Ad}.";
             }
-
-            string girilenParolHash = ComputeSha256Hash(password);
-
-            if (istifadeci.ParolHash != girilenParolHash)
+            catch (Exception ex)
             {
-                return "İstifadəçi tapılmadı və ya şifrə yanlışdır.";
+                return $"Sistem xətası: {ex.Message}";
             }
-
-            if (istifadeci.Status != "Aktiv")
-            {
-                return $"İstifadəçi aktiv deyil. Status: {istifadeci.Status}";
-            }
-
-            return $"Uğurlu giriş! Xoş gəldiniz, {istifadeci.Ad}.";
         }
 
         public async Task<(bool Success, string Message, Istifadeci User)> CreateUserAsync(string ad, string soyad, string email, string password, int? rolId = null, int? temaId = null)
@@ -103,9 +150,15 @@ namespace AzAgroPOS.BLL.Services
                     return (false, "Bu email ünvanı artıq istifadə olunur.", null);
                 }
 
-                if (password.Length < 6)
+                if (password.Length < 8)
                 {
-                    return (false, "Şifrə ən azı 6 simvoldan ibarət olmalıdır.", null);
+                    return (false, "Şifrə ən azı 8 simvoldan ibarət olmalıdır.", null);
+                }
+
+                // Check password complexity
+                if (!IsPasswordComplex(password))
+                {
+                    return (false, "Şifrə ən azı bir böyük hərf, bir kiçik hərf və bir rəqəm olmalıdır.", null);
                 }
 
                 var istifadeci = new Istifadeci
@@ -113,7 +166,7 @@ namespace AzAgroPOS.BLL.Services
                     Ad = ad,
                     Soyad = soyad,
                     Email = email,
-                    ParolHash = ComputeSha256Hash(password),
+                    ParolHash = HashPassword(password),
                     RolId = rolId ?? 2,
                     TemaId = temaId ?? 1,
                     Status = "Aktiv",
@@ -144,18 +197,24 @@ namespace AzAgroPOS.BLL.Services
                     return (false, "İstifadəçi tapılmadı.");
                 }
 
-                string oldPasswordHash = ComputeSha256Hash(oldPassword);
-                if (istifadeci.ParolHash != oldPasswordHash)
+                if (!VerifyPassword(oldPassword, istifadeci.ParolHash))
                 {
                     return (false, "Köhnə şifrə yanlışdır.");
                 }
 
-                if (newPassword.Length < 6)
+                if (newPassword.Length < 8)
                 {
-                    return (false, "Yeni şifrə ən azı 6 simvoldan ibarət olmalıdır.");
+                    return (false, "Yeni şifrə ən azı 8 simvoldan ibarət olmalıdır.");
                 }
 
-                istifadeci.ParolHash = ComputeSha256Hash(newPassword);
+                // Check password complexity
+                if (!IsPasswordComplex(newPassword))
+                {
+                    return (false, "Şifrə ən azı bir böyük hərf, bir kiçik hərf və bir rəqəm olmalıdır.");
+                }
+
+                istifadeci.ParolHash = HashPassword(newPassword);
+                istifadeci.YenilenmeTarixi = DateTime.Now;
                 await _istifadeciRepository.UpdateAsync(istifadeci);
 
                 return (true, "Şifrə uğurla dəyişdirildi.");
@@ -164,6 +223,35 @@ namespace AzAgroPOS.BLL.Services
             {
                 return (false, $"Xəta baş verdi: {ex.Message}");
             }
+        }
+
+        /// <summary>
+        /// Check if password meets complexity requirements
+        /// </summary>
+        /// <param name="password">Password to check</param>
+        /// <returns>True if password is complex enough</returns>
+        private bool IsPasswordComplex(string password)
+        {
+            if (string.IsNullOrWhiteSpace(password) || password.Length < 8)
+                return false;
+
+            bool hasUpper = false;
+            bool hasLower = false;
+            bool hasDigit = false;
+
+            foreach (char c in password)
+            {
+                if (char.IsUpper(c)) hasUpper = true;
+                if (char.IsLower(c)) hasLower = true;
+                if (char.IsDigit(c)) hasDigit = true;
+            }
+
+            return hasUpper && hasLower && hasDigit;
+        }
+
+        public void Dispose()
+        {
+            _istifadeciRepository?.Dispose();
         }
     }
 }

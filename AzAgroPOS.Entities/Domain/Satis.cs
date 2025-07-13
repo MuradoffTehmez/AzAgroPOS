@@ -5,8 +5,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AzAgroPOS.Entities.Domain
 {
+    [Table("Satislar")]
     public class Satis
     {
+        [Key]
         public int Id { get; set; }
         
         [Required]

@@ -95,5 +95,15 @@ namespace AzAgroPOS.DAL.Repositories
                     .AnyAsync(i => i.Email == email && (excludeId == null || i.Id != excludeId));
             }
         }
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Update(Istifadeci istifadeci)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

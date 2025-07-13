@@ -48,5 +48,7 @@ namespace AzAgroPOS.Entities.Domain
 
         public virtual Rol Rol { get; set; }
         public virtual Tema Tema { get; set; }
+        public DateTime SonGiris { get; set; }
+        public DateTime YenilenmeTarixi { get; set; }
     }
 }

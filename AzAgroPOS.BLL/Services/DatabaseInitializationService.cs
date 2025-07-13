@@ -3,9 +3,8 @@ using AzAgroPOS.Entities.Domain;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
+using BCrypt.Net;
 
 namespace AzAgroPOS.BLL.Services
 {
@@ -93,7 +92,7 @@ namespace AzAgroPOS.BLL.Services
                     Ad = "Admin",
                     Soyad = "Sistem",
                     Email = "admin@azagropos.az",
-                    ParolHash = ComputeSha256Hash("admin123"),
+                    ParolHash = BCrypt.Net.BCrypt.HashPassword("Admin123!", BCrypt.Net.BCrypt.GenerateSalt(12)),
                     RolId = savedAdminRole.Id,
                     TemaId = savedLightTheme.Id,
                     Status = "Aktiv",
@@ -287,18 +286,5 @@ namespace AzAgroPOS.BLL.Services
             await context.SaveChangesAsync();
         }
 
-        private string ComputeSha256Hash(string rawData)
-        {
-            using (SHA256 sha256Hash = SHA256.Create())
-            {
-                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < bytes.Length; i++)
-                {
-                    builder.Append(bytes[i].ToString("x2"));
-                }
-                return builder.ToString();
-            }
-        }
     }
 }
