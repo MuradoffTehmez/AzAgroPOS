@@ -34,6 +34,8 @@ namespace AzAgroPOS.PL.Forms
             this.btnAddUser = new System.Windows.Forms.Button();
             this.btnUserManagement = new System.Windows.Forms.Button();
             this.btnRoleManagement = new System.Windows.Forms.Button();
+            this.btnProductManagement = new System.Windows.Forms.Button();
+            this.btnCategoryManagement = new System.Windows.Forms.Button();
             this.btnSettings = new System.Windows.Forms.Button();
             this.btnLogout = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -113,6 +115,32 @@ namespace AzAgroPOS.PL.Forms
             this.btnRoleManagement.UseVisualStyleBackColor = false;
             this.btnRoleManagement.Click += new System.EventHandler(this.btnRoleManagement_Click);
             // 
+            // btnProductManagement
+            // 
+            this.btnProductManagement.BackColor = System.Drawing.Color.DarkCyan;
+            this.btnProductManagement.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnProductManagement.ForeColor = System.Drawing.Color.White;
+            this.btnProductManagement.Location = new System.Drawing.Point(50, 120);
+            this.btnProductManagement.Name = "btnProductManagement";
+            this.btnProductManagement.Size = new System.Drawing.Size(180, 50);
+            this.btnProductManagement.TabIndex = 8;
+            this.btnProductManagement.Text = "Məhsul İdarəetməsi";
+            this.btnProductManagement.UseVisualStyleBackColor = false;
+            this.btnProductManagement.Click += new System.EventHandler(this.btnProductManagement_Click);
+            // 
+            // btnCategoryManagement
+            // 
+            this.btnCategoryManagement.BackColor = System.Drawing.Color.DarkMagenta;
+            this.btnCategoryManagement.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCategoryManagement.ForeColor = System.Drawing.Color.White;
+            this.btnCategoryManagement.Location = new System.Drawing.Point(650, 50);
+            this.btnCategoryManagement.Name = "btnCategoryManagement";
+            this.btnCategoryManagement.Size = new System.Drawing.Size(180, 50);
+            this.btnCategoryManagement.TabIndex = 9;
+            this.btnCategoryManagement.Text = "Kateqoriya İdarəetməsi";
+            this.btnCategoryManagement.UseVisualStyleBackColor = false;
+            this.btnCategoryManagement.Click += new System.EventHandler(this.btnCategoryManagement_Click);
+            // 
             // btnSettings
             // 
             this.btnSettings.BackColor = System.Drawing.Color.DarkSlateGray;
@@ -158,6 +186,8 @@ namespace AzAgroPOS.PL.Forms
             this.panel2.Controls.Add(this.btnUserManagement);
             this.panel2.Controls.Add(this.btnSettings);
             this.panel2.Controls.Add(this.btnRoleManagement);
+            this.panel2.Controls.Add(this.btnProductManagement);
+            this.panel2.Controls.Add(this.btnCategoryManagement);
             this.panel2.Location = new System.Drawing.Point(50, 150);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(700, 200);
@@ -194,6 +224,8 @@ namespace AzAgroPOS.PL.Forms
         private System.Windows.Forms.Button btnAddUser;
         private System.Windows.Forms.Button btnUserManagement;
         private System.Windows.Forms.Button btnRoleManagement;
+        private System.Windows.Forms.Button btnProductManagement;
+        private System.Windows.Forms.Button btnCategoryManagement;
         private System.Windows.Forms.Button btnSettings;
         private System.Windows.Forms.Button btnLogout;
         private System.Windows.Forms.Panel panel1;

@@ -363,11 +363,11 @@ namespace AzAgroPOS.PL.Forms
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        private async void dgvProducts_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        private void dgvProducts_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
             {
-                await btnEdit_Click(sender, e);
+                btnEdit_Click(sender, e);
             }
         }
 
