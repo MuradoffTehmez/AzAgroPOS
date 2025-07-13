@@ -1,5 +1,6 @@
 using AzAgroPOS.BLL.Services;
 using AzAgroPOS.DAL.Repositories;
+using AzAgroPOS.Entities.Domain;
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -8,16 +9,19 @@ using System.Windows.Forms;
 
 namespace AzAgroPOS.PL.Forms
 {
-    public partial class UserAddForm : Form
+    public partial class UserEditForm : Form
     {
-        private readonly AuthService _authService;
+        private readonly IstifadeciRepository _istifadeciRepository;
         private readonly RolRepository _rolRepository;
+        private readonly Istifadeci _user;
 
-        public UserAddForm()
+        public UserEditForm(Istifadeci user)
         {
             InitializeComponent();
-            _authService = new AuthService();
+            _istifadeciRepository = new IstifadeciRepository();
             _rolRepository = new RolRepository();
+            _user = user;
+            LoadUserData();
             LoadRoles();
         }
 
@@ -29,14 +33,30 @@ namespace AzAgroPOS.PL.Forms
                 cmbRole.DataSource = roles.Where(r => r.Status == "Aktiv").ToList();
                 cmbRole.DisplayMember = "Ad";
                 cmbRole.ValueMember = "Id";
-                cmbRole.SelectedIndex = roles.Any(r => r.Ad == "İstifadəçi") ? 
-                    roles.FindIndex(r => r.Ad == "İstifadəçi") : 0;
+                
+                if (_user.RolId.HasValue)
+                {
+                    cmbRole.SelectedValue = _user.RolId.Value;
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Rollar yüklənərkən xəta: {ex.Message}", "Xəta", 
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void LoadUserData()
+        {
+            txtAd.Text = _user.Ad;
+            txtSoyad.Text = _user.Soyad;
+            txtEmail.Text = _user.Email;
+            
+            cmbStatus.Items.AddRange(new[] { "Aktiv", "Deaktiv", "Bloklu" });
+            cmbStatus.SelectedItem = _user.Status;
+            
+            lblUserId.Text = $"İstifadəçi ID: {_user.Id}";
+            lblCreatedDate.Text = $"Yaradılma Tarixi: {_user.YaradilmaTarixi:dd.MM.yyyy HH:mm}";
         }
 
         private async void btnSave_Click(object sender, EventArgs e)
@@ -49,24 +69,30 @@ namespace AzAgroPOS.PL.Forms
                 btnSave.Enabled = false;
                 btnSave.Text = "Saxlanılır...";
 
-                string ad = txtAd.Text.Trim();
-                string soyad = txtSoyad.Text.Trim();
-                string email = txtEmail.Text.Trim();
-                string password = txtPassword.Text;
-                int rolId = (int)cmbRole.SelectedValue;
-
-                var result = await _authService.CreateUserAsync(ad, soyad, email, password, rolId);
-
-                if (result.Success)
+                // Check if email changed and exists
+                if (_user.Email != txtEmail.Text.Trim())
                 {
-                    MessageBox.Show(result.Message, "Uğurlu", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    this.DialogResult = DialogResult.OK;
-                    this.Close();
+                    if (await _istifadeciRepository.EmailExistsAsync(txtEmail.Text.Trim(), _user.Id))
+                    {
+                        MessageBox.Show("Bu email ünvanı başqa istifadəçi tərəfindən istifadə olunur.", 
+                            "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
                 }
-                else
-                {
-                    MessageBox.Show(result.Message, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
+
+                _user.Ad = txtAd.Text.Trim();
+                _user.Soyad = txtSoyad.Text.Trim();
+                _user.Email = txtEmail.Text.Trim();
+                _user.Status = cmbStatus.SelectedItem.ToString();
+                _user.RolId = (int)cmbRole.SelectedValue;
+
+                await _istifadeciRepository.UpdateAsync(_user);
+
+                MessageBox.Show("İstifadəçi məlumatları uğurla yeniləndi.", "Uğurlu", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                
+                this.DialogResult = DialogResult.OK;
+                this.Close();
             }
             catch (Exception ex)
             {
@@ -112,27 +138,10 @@ namespace AzAgroPOS.PL.Forms
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(txtPassword.Text))
+            if (cmbStatus.SelectedItem == null)
             {
-                MessageBox.Show("Şifrəni daxil edin.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtPassword.Focus();
-                return false;
-            }
-
-            if (txtPassword.Text.Length < 6)
-            {
-                MessageBox.Show("Şifrə ən azı 6 simvoldan ibarət olmalıdır.", "Xəta", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtPassword.Focus();
-                txtPassword.SelectAll();
-                return false;
-            }
-
-            if (txtPassword.Text != txtConfirmPassword.Text)
-            {
-                MessageBox.Show("Şifrələr eyni deyil.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtConfirmPassword.Focus();
-                txtConfirmPassword.SelectAll();
+                MessageBox.Show("Status seçin.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                cmbStatus.Focus();
                 return false;
             }
 
@@ -162,31 +171,10 @@ namespace AzAgroPOS.PL.Forms
             }
         }
 
-        private void ClearForm()
-        {
-            txtAd.Clear();
-            txtSoyad.Clear();
-            txtEmail.Clear();
-            txtPassword.Clear();
-            txtConfirmPassword.Clear();
-            if (cmbRole.Items.Count > 0)
-                cmbRole.SelectedIndex = 0;
-            txtAd.Focus();
-        }
-
         private void btnCancel_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();
-        }
-
-        private void btnClear_Click(object sender, EventArgs e)
-        {
-            if (MessageBox.Show("Formu təmizləmək istədiyinizə əminsiniz?", "Təsdiq", 
-                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-            {
-                ClearForm();
-            }
         }
     }
 }

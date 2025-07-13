@@ -38,8 +38,8 @@ namespace AzAgroPOS.PL.Forms
 
         private void btnUserManagement_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("İstifadəçi idarəetməsi funksiyası tezliklə əlavə ediləcək.", 
-                "Məlumat", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            var userManagementForm = new UserManagementForm(_currentUser);
+            userManagementForm.ShowDialog();
         }
 
         private void btnRoleManagement_Click(object sender, EventArgs e)
