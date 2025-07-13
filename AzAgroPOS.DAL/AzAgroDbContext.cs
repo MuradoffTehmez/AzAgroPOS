@@ -11,6 +11,9 @@ namespace AzAgroPOS.DAL
         public DbSet<Istifadeci> Istifadeciler { get; set; }
         public DbSet<RolIcazesi> RolIcazeleri { get; set; }
         public DbSet<AuditLog> AuditLoglar { get; set; }
+        public DbSet<Mehsul> Mehsullar { get; set; }
+        public DbSet<MehsulKateqoriyasi> MehsulKateqoriyalari { get; set; }
+        public DbSet<Vahid> Vahidler { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -60,6 +63,49 @@ namespace AzAgroPOS.DAL
 
                 entity.HasIndex(e => e.Tarix);
                 entity.HasIndex(e => e.IstifadeciId);
+            });
+
+            modelBuilder.Entity<Mehsul>(entity =>
+            {
+                entity.HasIndex(e => e.Barkod).IsUnique();
+                entity.HasIndex(e => e.SKU).IsUnique();
+                entity.HasIndex(e => e.Ad);
+                entity.HasIndex(e => e.KateqoriyaId);
+                entity.HasIndex(e => e.Status);
+
+                entity.HasOne(e => e.Kateqoriya)
+                    .WithMany(k => k.Mehsullar)
+                    .HasForeignKey(e => e.KateqoriyaId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(e => e.Vahid)
+                    .WithMany(v => v.Mehsullar)
+                    .HasForeignKey(e => e.VahidId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            modelBuilder.Entity<MehsulKateqoriyasi>(entity =>
+            {
+                entity.HasIndex(e => e.Ad);
+                entity.HasIndex(e => e.Kod).IsUnique();
+                entity.HasIndex(e => e.UstKateqoriyaId);
+
+                entity.HasOne(e => e.UstKateqoriya)
+                    .WithMany(k => k.AltKateqoriyalar)
+                    .HasForeignKey(e => e.UstKateqoriyaId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            modelBuilder.Entity<Vahid>(entity =>
+            {
+                entity.HasIndex(e => e.Ad);
+                entity.HasIndex(e => e.QisaAd).IsUnique();
+                entity.HasIndex(e => e.AnaVahidId);
+
+                entity.HasOne(e => e.AnaVahid)
+                    .WithMany(v => v.AltVahidler)
+                    .HasForeignKey(e => e.AnaVahidId)
+                    .OnDelete(DeleteBehavior.Restrict);
             });
 
             // Seed data-nı DatabaseInitializationService-də edirik

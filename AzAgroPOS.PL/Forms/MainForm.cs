@@ -27,6 +27,10 @@ namespace AzAgroPOS.PL.Forms
                 bool isAdmin = _currentUser.Rol?.Ad == "Administrator";
                 btnUserManagement.Visible = isAdmin;
                 btnRoleManagement.Visible = isAdmin;
+                
+                // Məhsul idarəetməsi bütün istifadəçilər üçün görünür
+                btnProductManagement.Visible = true;
+                btnCategoryManagement.Visible = isAdmin;
             }
         }
 
@@ -45,6 +49,18 @@ namespace AzAgroPOS.PL.Forms
         private void btnRoleManagement_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Rol idarəetməsi funksiyası tezliklə əlavə ediləcək.", 
+                "Məlumat", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void btnProductManagement_Click(object sender, EventArgs e)
+        {
+            var productManagementForm = new ProductManagementForm(_currentUser);
+            productManagementForm.ShowDialog();
+        }
+
+        private void btnCategoryManagement_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Kateqoriya idarəetməsi funksiyası tezliklə əlavə ediləcək.", 
                 "Məlumat", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
