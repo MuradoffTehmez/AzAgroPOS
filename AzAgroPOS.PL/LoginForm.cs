@@ -37,5 +37,18 @@ namespace AzAgroPOS.PL
                 MessageBox.Show($"Xəta baş verdi: {ex.Message}", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        //private string ComputeSha256Hash(string rawData)
+        //{
+        //    using (System.Security.Cryptography.SHA256 sha256Hash = System.Security.Cryptography.SHA256.Create())
+        //    {
+        //        byte[] bytes = sha256Hash.ComputeHash(System.Text.Encoding.UTF8.GetBytes(rawData));
+        //        System.Text.StringBuilder builder = new System.Text.StringBuilder();
+        //        for (int i = 0; i < bytes.Length; i++)
+        //        {
+        //            builder.Append(bytes[i].ToString("x2"));
+        //        }
+        //        return builder.ToString();
+        //    }
+        //}
     }
 }
