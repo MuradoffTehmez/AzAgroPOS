@@ -155,10 +155,8 @@ namespace AzAgroPOS.PL
         {
             try
             {
-                string email = Microsoft.VisualBasic.Interaction.InputBox(
-                    "Şifrəni sıfırlamaq üçün email ünvanınızı daxil edin:",
-                    "Şifrəni Unutmusan?",
-                    txtEmail.Text);
+                string email = ShowInputDialog("Şifrəni sıfırlamaq üçün email ünvanınızı daxil edin:", 
+                    "Şifrəni Unutmusan?", txtEmail.Text);
 
                 if (string.IsNullOrWhiteSpace(email))
                     return;
@@ -190,6 +188,37 @@ namespace AzAgroPOS.PL
                 MessageBox.Show($"Xəta baş verdi: {ex.Message}", "Xəta", 
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+        
+        private string ShowInputDialog(string text, string caption, string defaultValue = "")
+        {
+            Form prompt = new Form()
+            {
+                Width = 400,
+                Height = 180,
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                Text = caption,
+                StartPosition = FormStartPosition.CenterScreen,
+                MaximizeBox = false,
+                MinimizeBox = false
+            };
+            
+            Label textLabel = new Label() { Left = 20, Top = 20, Width = 350, Text = text };
+            TextBox textBox = new TextBox() { Left = 20, Top = 50, Width = 350, Text = defaultValue };
+            Button confirmation = new Button() { Text = "Tamam", Left = 200, Width = 80, Top = 80, DialogResult = DialogResult.OK };
+            Button cancel = new Button() { Text = "Ləğv et", Left = 290, Width = 80, Top = 80, DialogResult = DialogResult.Cancel };
+            
+            confirmation.Click += (sender, e) => { prompt.Close(); };
+            cancel.Click += (sender, e) => { prompt.Close(); };
+            
+            prompt.Controls.Add(textLabel);
+            prompt.Controls.Add(textBox);
+            prompt.Controls.Add(confirmation);
+            prompt.Controls.Add(cancel);
+            prompt.AcceptButton = confirmation;
+            prompt.CancelButton = cancel;
+            
+            return prompt.ShowDialog() == DialogResult.OK ? textBox.Text : "";
         }
         
         private void lnkRegister_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
