@@ -25,12 +25,23 @@ namespace AzAgroPOS.PL.Forms
                 
                 // Admin roluna əsasən menyu elementlərini göstər/gizlət
                 bool isAdmin = _currentUser.Rol?.Ad == "Administrator";
+                bool isManager = _currentUser.Rol?.Ad == "Menecer" || isAdmin;
+                
                 btnUserManagement.Visible = isAdmin;
                 btnRoleManagement.Visible = isAdmin;
-                
-                // Məhsul idarəetməsi bütün istifadəçilər üçün görünür
-                btnProductManagement.Visible = true;
+                btnAddUser.Visible = isAdmin;
                 btnCategoryManagement.Visible = isAdmin;
+                btnSettings.Visible = isAdmin;
+                
+                // Məhsul və anbar idarəetməsi bütün istifadəçilər üçün görünür
+                btnProductManagement.Visible = true;
+                btnWarehouseManagement.Visible = isManager;
+                
+                // Yeni modullar
+                btnDebtManagement.Visible = isManager;
+                btnRepairManagement.Visible = true;
+                btnPOS.Visible = true;
+                btnReports.Visible = isManager;
             }
         }
 
@@ -61,6 +72,36 @@ namespace AzAgroPOS.PL.Forms
         private void btnCategoryManagement_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Kateqoriya idarəetməsi funksiyası tezliklə əlavə ediləcək.", 
+                "Məlumat", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void btnWarehouseManagement_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Anbar idarəetməsi funksiyası tezliklə əlavə ediləcək.", 
+                "Məlumat", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void btnDebtManagement_Click(object sender, EventArgs e)
+        {
+            var debtManagementForm = new BorcManagementForm(_currentUser);
+            debtManagementForm.ShowDialog();
+        }
+
+        private void btnRepairManagement_Click(object sender, EventArgs e)
+        {
+            var repairManagementForm = new TamirManagementForm(_currentUser);
+            repairManagementForm.ShowDialog();
+        }
+
+        private void btnPOS_Click(object sender, EventArgs e)
+        {
+            var posForm = new POSForm();
+            posForm.ShowDialog();
+        }
+
+        private void btnReports_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Hesabatlar funksiyası tezliklə əlavə ediləcək.", 
                 "Məlumat", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 

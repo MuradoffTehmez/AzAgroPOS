@@ -62,6 +62,9 @@ namespace AzAgroPOS.Entities.Domain
 
         // Computed Properties
         [NotMapped]
+        public string BorcNomresiFormatli => $"B-{BorcNomresi}";
+
+        [NotMapped]
         public decimal QalanBorc => BorcMeblegi - OdenilmisMebleg;
 
         [NotMapped]

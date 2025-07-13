@@ -36,6 +36,11 @@ namespace AzAgroPOS.PL.Forms
             this.btnRoleManagement = new System.Windows.Forms.Button();
             this.btnProductManagement = new System.Windows.Forms.Button();
             this.btnCategoryManagement = new System.Windows.Forms.Button();
+            this.btnWarehouseManagement = new System.Windows.Forms.Button();
+            this.btnDebtManagement = new System.Windows.Forms.Button();
+            this.btnRepairManagement = new System.Windows.Forms.Button();
+            this.btnPOS = new System.Windows.Forms.Button();
+            this.btnReports = new System.Windows.Forms.Button();
             this.btnSettings = new System.Windows.Forms.Button();
             this.btnLogout = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -151,6 +156,81 @@ namespace AzAgroPOS.PL.Forms
             this.btnCategoryManagement.UseVisualStyleBackColor = false;
             this.btnCategoryManagement.Click += new System.EventHandler(this.btnCategoryManagement_Click);
             // 
+            // btnWarehouseManagement
+            // 
+            this.btnWarehouseManagement.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(160)))), ((int)(((byte)(133)))));
+            this.btnWarehouseManagement.FlatAppearance.BorderSize = 0;
+            this.btnWarehouseManagement.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnWarehouseManagement.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.btnWarehouseManagement.ForeColor = System.Drawing.Color.White;
+            this.btnWarehouseManagement.Location = new System.Drawing.Point(470, 120);
+            this.btnWarehouseManagement.Name = "btnWarehouseManagement";
+            this.btnWarehouseManagement.Size = new System.Drawing.Size(200, 60);
+            this.btnWarehouseManagement.TabIndex = 10;
+            this.btnWarehouseManagement.Text = "🏭 Anbar İdarəetməsi";
+            this.btnWarehouseManagement.UseVisualStyleBackColor = false;
+            this.btnWarehouseManagement.Click += new System.EventHandler(this.btnWarehouseManagement_Click);
+            // 
+            // btnDebtManagement
+            // 
+            this.btnDebtManagement.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(76)))), ((int)(((byte)(60)))));
+            this.btnDebtManagement.FlatAppearance.BorderSize = 0;
+            this.btnDebtManagement.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDebtManagement.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.btnDebtManagement.ForeColor = System.Drawing.Color.White;
+            this.btnDebtManagement.Location = new System.Drawing.Point(30, 200);
+            this.btnDebtManagement.Name = "btnDebtManagement";
+            this.btnDebtManagement.Size = new System.Drawing.Size(200, 60);
+            this.btnDebtManagement.TabIndex = 11;
+            this.btnDebtManagement.Text = "💳 Borc/Nisyə İdarəetməsi";
+            this.btnDebtManagement.UseVisualStyleBackColor = false;
+            this.btnDebtManagement.Click += new System.EventHandler(this.btnDebtManagement_Click);
+            // 
+            // btnRepairManagement
+            // 
+            this.btnRepairManagement.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(126)))), ((int)(((byte)(34)))));
+            this.btnRepairManagement.FlatAppearance.BorderSize = 0;
+            this.btnRepairManagement.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRepairManagement.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.btnRepairManagement.ForeColor = System.Drawing.Color.White;
+            this.btnRepairManagement.Location = new System.Drawing.Point(250, 200);
+            this.btnRepairManagement.Name = "btnRepairManagement";
+            this.btnRepairManagement.Size = new System.Drawing.Size(200, 60);
+            this.btnRepairManagement.TabIndex = 12;
+            this.btnRepairManagement.Text = "🔧 Təmir/Servis İdarəetməsi";
+            this.btnRepairManagement.UseVisualStyleBackColor = false;
+            this.btnRepairManagement.Click += new System.EventHandler(this.btnRepairManagement_Click);
+            // 
+            // btnPOS
+            // 
+            this.btnPOS.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(204)))), ((int)(((byte)(113)))));
+            this.btnPOS.FlatAppearance.BorderSize = 0;
+            this.btnPOS.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPOS.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
+            this.btnPOS.ForeColor = System.Drawing.Color.White;
+            this.btnPOS.Location = new System.Drawing.Point(470, 200);
+            this.btnPOS.Name = "btnPOS";
+            this.btnPOS.Size = new System.Drawing.Size(200, 60);
+            this.btnPOS.TabIndex = 13;
+            this.btnPOS.Text = "🛒 Satış POS";
+            this.btnPOS.UseVisualStyleBackColor = false;
+            this.btnPOS.Click += new System.EventHandler(this.btnPOS_Click);
+            // 
+            // btnReports
+            // 
+            this.btnReports.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(152)))), ((int)(((byte)(219)))));
+            this.btnReports.FlatAppearance.BorderSize = 0;
+            this.btnReports.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnReports.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.btnReports.ForeColor = System.Drawing.Color.White;
+            this.btnReports.Location = new System.Drawing.Point(30, 280);
+            this.btnReports.Name = "btnReports";
+            this.btnReports.Size = new System.Drawing.Size(200, 60);
+            this.btnReports.TabIndex = 14;
+            this.btnReports.Text = "📊 Hesabatlar";
+            this.btnReports.UseVisualStyleBackColor = false;
+            this.btnReports.Click += new System.EventHandler(this.btnReports_Click);
+            // 
             // btnSettings
             // 
             this.btnSettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(149)))), ((int)(((byte)(165)))), ((int)(((byte)(166)))));
@@ -158,25 +238,25 @@ namespace AzAgroPOS.PL.Forms
             this.btnSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSettings.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.btnSettings.ForeColor = System.Drawing.Color.White;
-            this.btnSettings.Location = new System.Drawing.Point(470, 120);
+            this.btnSettings.Location = new System.Drawing.Point(250, 280);
             this.btnSettings.Name = "btnSettings";
             this.btnSettings.Size = new System.Drawing.Size(200, 60);
-            this.btnSettings.TabIndex = 6;
+            this.btnSettings.TabIndex = 15;
             this.btnSettings.Text = "⚙️ Parametrlər";
             this.btnSettings.UseVisualStyleBackColor = false;
             this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
             // 
             // btnLogout
             // 
-            this.btnLogout.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(76)))), ((int)(((byte)(60)))));
+            this.btnLogout.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(57)))), ((int)(((byte)(43)))));
             this.btnLogout.FlatAppearance.BorderSize = 0;
             this.btnLogout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLogout.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.btnLogout.ForeColor = System.Drawing.Color.White;
-            this.btnLogout.Location = new System.Drawing.Point(250, 210);
+            this.btnLogout.Location = new System.Drawing.Point(470, 280);
             this.btnLogout.Name = "btnLogout";
-            this.btnLogout.Size = new System.Drawing.Size(200, 50);
-            this.btnLogout.TabIndex = 7;
+            this.btnLogout.Size = new System.Drawing.Size(200, 60);
+            this.btnLogout.TabIndex = 16;
             this.btnLogout.Text = "🚪 Sistemdən Çıx";
             this.btnLogout.UseVisualStyleBackColor = false;
             this.btnLogout.Click += new System.EventHandler(this.btnLogout_Click);
@@ -196,23 +276,28 @@ namespace AzAgroPOS.PL.Forms
             // 
             this.panel2.BackColor = System.Drawing.Color.White;
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel2.Controls.Add(this.btnAddUser);
             this.panel2.Controls.Add(this.btnLogout);
-            this.panel2.Controls.Add(this.btnUserManagement);
             this.panel2.Controls.Add(this.btnSettings);
+            this.panel2.Controls.Add(this.btnReports);
+            this.panel2.Controls.Add(this.btnPOS);
+            this.panel2.Controls.Add(this.btnRepairManagement);
+            this.panel2.Controls.Add(this.btnDebtManagement);
+            this.panel2.Controls.Add(this.btnWarehouseManagement);
+            this.panel2.Controls.Add(this.btnUserManagement);
             this.panel2.Controls.Add(this.btnRoleManagement);
             this.panel2.Controls.Add(this.btnProductManagement);
             this.panel2.Controls.Add(this.btnCategoryManagement);
+            this.panel2.Controls.Add(this.btnAddUser);
             this.panel2.Location = new System.Drawing.Point(50, 120);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(700, 280);
+            this.panel2.Size = new System.Drawing.Size(700, 370);
             this.panel2.TabIndex = 9;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 22F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(800, 520);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.lblTitle);
@@ -242,6 +327,11 @@ namespace AzAgroPOS.PL.Forms
         private System.Windows.Forms.Button btnRoleManagement;
         private System.Windows.Forms.Button btnProductManagement;
         private System.Windows.Forms.Button btnCategoryManagement;
+        private System.Windows.Forms.Button btnWarehouseManagement;
+        private System.Windows.Forms.Button btnDebtManagement;
+        private System.Windows.Forms.Button btnRepairManagement;
+        private System.Windows.Forms.Button btnPOS;
+        private System.Windows.Forms.Button btnReports;
         private System.Windows.Forms.Button btnSettings;
         private System.Windows.Forms.Button btnLogout;
         private System.Windows.Forms.Panel panel1;
