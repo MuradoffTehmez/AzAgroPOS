@@ -51,7 +51,7 @@ namespace AzAgroPOS.PL.Forms
             this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
             this.lblTitle.Location = new System.Drawing.Point(200, 20);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(400, 45);
+            this.lblTitle.Size = new System.Drawing.Size(528, 45);
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "🌾 AzAgroPOS İdarəetmə Sistemi";
             // 
@@ -61,7 +61,7 @@ namespace AzAgroPOS.PL.Forms
             this.lblWelcome.Font = new System.Drawing.Font("Times New Roman", 14F);
             this.lblWelcome.Location = new System.Drawing.Point(20, 20);
             this.lblWelcome.Name = "lblWelcome";
-            this.lblWelcome.Size = new System.Drawing.Size(150, 21);
+            this.lblWelcome.Size = new System.Drawing.Size(180, 21);
             this.lblWelcome.TabIndex = 1;
             this.lblWelcome.Text = "Xoş gəldiniz, İstifadəçi";
             // 
@@ -72,15 +72,15 @@ namespace AzAgroPOS.PL.Forms
             this.lblRole.ForeColor = System.Drawing.Color.DarkGray;
             this.lblRole.Location = new System.Drawing.Point(20, 50);
             this.lblRole.Name = "lblRole";
-            this.lblRole.Size = new System.Drawing.Size(100, 19);
+            this.lblRole.Size = new System.Drawing.Size(91, 19);
             this.lblRole.TabIndex = 2;
             this.lblRole.Text = "Rol: İstifadəçi";
             // 
             // btnAddUser
             // 
             this.btnAddUser.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(204)))), ((int)(((byte)(113)))));
-            this.btnAddUser.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAddUser.FlatAppearance.BorderSize = 0;
+            this.btnAddUser.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAddUser.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.btnAddUser.ForeColor = System.Drawing.Color.White;
             this.btnAddUser.Location = new System.Drawing.Point(30, 30);
@@ -94,8 +94,8 @@ namespace AzAgroPOS.PL.Forms
             // btnUserManagement
             // 
             this.btnUserManagement.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
-            this.btnUserManagement.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnUserManagement.FlatAppearance.BorderSize = 0;
+            this.btnUserManagement.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnUserManagement.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.btnUserManagement.ForeColor = System.Drawing.Color.White;
             this.btnUserManagement.Location = new System.Drawing.Point(250, 30);
@@ -109,8 +109,8 @@ namespace AzAgroPOS.PL.Forms
             // btnRoleManagement
             // 
             this.btnRoleManagement.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(126)))), ((int)(((byte)(34)))));
-            this.btnRoleManagement.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRoleManagement.FlatAppearance.BorderSize = 0;
+            this.btnRoleManagement.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRoleManagement.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.btnRoleManagement.ForeColor = System.Drawing.Color.White;
             this.btnRoleManagement.Location = new System.Drawing.Point(470, 30);
@@ -124,8 +124,8 @@ namespace AzAgroPOS.PL.Forms
             // btnProductManagement
             // 
             this.btnProductManagement.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(152)))), ((int)(((byte)(219)))));
-            this.btnProductManagement.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnProductManagement.FlatAppearance.BorderSize = 0;
+            this.btnProductManagement.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnProductManagement.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.btnProductManagement.ForeColor = System.Drawing.Color.White;
             this.btnProductManagement.Location = new System.Drawing.Point(30, 120);
@@ -139,8 +139,8 @@ namespace AzAgroPOS.PL.Forms
             // btnCategoryManagement
             // 
             this.btnCategoryManagement.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(89)))), ((int)(((byte)(182)))));
-            this.btnCategoryManagement.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCategoryManagement.FlatAppearance.BorderSize = 0;
+            this.btnCategoryManagement.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCategoryManagement.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.btnCategoryManagement.ForeColor = System.Drawing.Color.White;
             this.btnCategoryManagement.Location = new System.Drawing.Point(250, 120);
@@ -154,8 +154,8 @@ namespace AzAgroPOS.PL.Forms
             // btnSettings
             // 
             this.btnSettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(149)))), ((int)(((byte)(165)))), ((int)(((byte)(166)))));
-            this.btnSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSettings.FlatAppearance.BorderSize = 0;
+            this.btnSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSettings.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.btnSettings.ForeColor = System.Drawing.Color.White;
             this.btnSettings.Location = new System.Drawing.Point(470, 120);
@@ -169,8 +169,8 @@ namespace AzAgroPOS.PL.Forms
             // btnLogout
             // 
             this.btnLogout.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(76)))), ((int)(((byte)(60)))));
-            this.btnLogout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLogout.FlatAppearance.BorderSize = 0;
+            this.btnLogout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLogout.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.btnLogout.ForeColor = System.Drawing.Color.White;
             this.btnLogout.Location = new System.Drawing.Point(250, 210);
@@ -223,6 +223,7 @@ namespace AzAgroPOS.PL.Forms
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "AzAgroPOS - Ana Səhifə";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);

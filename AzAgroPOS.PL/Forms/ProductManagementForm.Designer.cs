@@ -76,7 +76,7 @@ namespace AzAgroPOS.PL.Forms
             this.lblTitle.ForeColor = System.Drawing.Color.White;
             this.lblTitle.Location = new System.Drawing.Point(20, 15);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(212, 26);
+            this.lblTitle.Size = new System.Drawing.Size(215, 26);
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "Məhsul İdarəetməsi";
             // 
@@ -104,7 +104,7 @@ namespace AzAgroPOS.PL.Forms
             this.btnClearFilter.ForeColor = System.Drawing.Color.White;
             this.btnClearFilter.Location = new System.Drawing.Point(1000, 25);
             this.btnClearFilter.Name = "btnClearFilter";
-            this.btnClearFilter.Size = new System.Drawing.Size(80, 30);
+            this.btnClearFilter.Size = new System.Drawing.Size(111, 30);
             this.btnClearFilter.TabIndex = 7;
             this.btnClearFilter.Text = "Təmizlə";
             this.btnClearFilter.UseVisualStyleBackColor = false;
@@ -114,7 +114,7 @@ namespace AzAgroPOS.PL.Forms
             // 
             this.cmbStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbStatus.FormattingEnabled = true;
-            this.cmbStatus.Location = new System.Drawing.Point(770, 25);
+            this.cmbStatus.Location = new System.Drawing.Point(787, 20);
             this.cmbStatus.Name = "cmbStatus";
             this.cmbStatus.Size = new System.Drawing.Size(120, 30);
             this.cmbStatus.TabIndex = 6;
@@ -124,7 +124,7 @@ namespace AzAgroPOS.PL.Forms
             this.lblStatus.AutoSize = true;
             this.lblStatus.Location = new System.Drawing.Point(720, 28);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(56, 22);
+            this.lblStatus.Size = new System.Drawing.Size(61, 22);
             this.lblStatus.TabIndex = 5;
             this.lblStatus.Text = "Status";
             // 
@@ -142,7 +142,7 @@ namespace AzAgroPOS.PL.Forms
             this.lblCategory.AutoSize = true;
             this.lblCategory.Location = new System.Drawing.Point(420, 28);
             this.lblCategory.Name = "lblCategory";
-            this.lblCategory.Size = new System.Drawing.Size(94, 22);
+            this.lblCategory.Size = new System.Drawing.Size(101, 22);
             this.lblCategory.TabIndex = 3;
             this.lblCategory.Text = "Kateqoriya";
             // 
@@ -196,9 +196,9 @@ namespace AzAgroPOS.PL.Forms
             this.btnClose.BackColor = System.Drawing.Color.DarkRed;
             this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnClose.ForeColor = System.Drawing.Color.White;
-            this.btnClose.Location = new System.Drawing.Point(1100, 15);
+            this.btnClose.Location = new System.Drawing.Point(1078, 15);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(80, 35);
+            this.btnClose.Size = new System.Drawing.Size(102, 35);
             this.btnClose.TabIndex = 5;
             this.btnClose.Text = "Bağla";
             this.btnClose.UseVisualStyleBackColor = false;
@@ -209,7 +209,7 @@ namespace AzAgroPOS.PL.Forms
             this.btnExport.BackColor = System.Drawing.Color.DarkOrange;
             this.btnExport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnExport.ForeColor = System.Drawing.Color.White;
-            this.btnExport.Location = new System.Drawing.Point(400, 15);
+            this.btnExport.Location = new System.Drawing.Point(426, 15);
             this.btnExport.Name = "btnExport";
             this.btnExport.Size = new System.Drawing.Size(120, 35);
             this.btnExport.TabIndex = 4;
@@ -222,9 +222,9 @@ namespace AzAgroPOS.PL.Forms
             this.btnLowStock.BackColor = System.Drawing.Color.Crimson;
             this.btnLowStock.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLowStock.ForeColor = System.Drawing.Color.White;
-            this.btnLowStock.Location = new System.Drawing.Point(250, 15);
+            this.btnLowStock.Location = new System.Drawing.Point(276, 15);
             this.btnLowStock.Name = "btnLowStock";
-            this.btnLowStock.Size = new System.Drawing.Size(140, 35);
+            this.btnLowStock.Size = new System.Drawing.Size(144, 35);
             this.btnLowStock.TabIndex = 3;
             this.btnLowStock.Text = "Az Stoklu";
             this.btnLowStock.UseVisualStyleBackColor = false;
@@ -235,7 +235,7 @@ namespace AzAgroPOS.PL.Forms
             this.btnDelete.BackColor = System.Drawing.Color.Red;
             this.btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDelete.ForeColor = System.Drawing.Color.White;
-            this.btnDelete.Location = new System.Drawing.Point(175, 15);
+            this.btnDelete.Location = new System.Drawing.Point(201, 15);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(70, 35);
             this.btnDelete.TabIndex = 2;
@@ -248,7 +248,7 @@ namespace AzAgroPOS.PL.Forms
             this.btnEdit.BackColor = System.Drawing.Color.DarkOrange;
             this.btnEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEdit.ForeColor = System.Drawing.Color.White;
-            this.btnEdit.Location = new System.Drawing.Point(95, 15);
+            this.btnEdit.Location = new System.Drawing.Point(121, 15);
             this.btnEdit.Name = "btnEdit";
             this.btnEdit.Size = new System.Drawing.Size(75, 35);
             this.btnEdit.TabIndex = 1;
@@ -263,7 +263,7 @@ namespace AzAgroPOS.PL.Forms
             this.btnAdd.ForeColor = System.Drawing.Color.White;
             this.btnAdd.Location = new System.Drawing.Point(20, 15);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(70, 35);
+            this.btnAdd.Size = new System.Drawing.Size(95, 35);
             this.btnAdd.TabIndex = 0;
             this.btnAdd.Text = "Əlavə";
             this.btnAdd.UseVisualStyleBackColor = false;
@@ -307,7 +307,7 @@ namespace AzAgroPOS.PL.Forms
             this.lblStockValue.ForeColor = System.Drawing.Color.DarkGreen;
             this.lblStockValue.Location = new System.Drawing.Point(900, 20);
             this.lblStockValue.Name = "lblStockValue";
-            this.lblStockValue.Size = new System.Drawing.Size(140, 19);
+            this.lblStockValue.Size = new System.Drawing.Size(142, 19);
             this.lblStockValue.TabIndex = 3;
             this.lblStockValue.Text = "Stok Dəyəri: 0 AZN";
             // 
@@ -318,7 +318,7 @@ namespace AzAgroPOS.PL.Forms
             this.lblLowStockCount.ForeColor = System.Drawing.Color.Red;
             this.lblLowStockCount.Location = new System.Drawing.Point(600, 20);
             this.lblLowStockCount.Name = "lblLowStockCount";
-            this.lblLowStockCount.Size = new System.Drawing.Size(106, 19);
+            this.lblLowStockCount.Size = new System.Drawing.Size(90, 19);
             this.lblLowStockCount.TabIndex = 2;
             this.lblLowStockCount.Text = "Az Stoklu: 0";
             // 
@@ -329,7 +329,7 @@ namespace AzAgroPOS.PL.Forms
             this.lblActiveCount.ForeColor = System.Drawing.Color.DarkGreen;
             this.lblActiveCount.Location = new System.Drawing.Point(300, 20);
             this.lblActiveCount.Name = "lblActiveCount";
-            this.lblActiveCount.Size = new System.Drawing.Size(69, 19);
+            this.lblActiveCount.Size = new System.Drawing.Size(63, 19);
             this.lblActiveCount.TabIndex = 1;
             this.lblActiveCount.Text = "Aktiv: 0";
             // 
@@ -340,7 +340,7 @@ namespace AzAgroPOS.PL.Forms
             this.lblTotalCount.ForeColor = System.Drawing.Color.DarkBlue;
             this.lblTotalCount.Location = new System.Drawing.Point(20, 20);
             this.lblTotalCount.Name = "lblTotalCount";
-            this.lblTotalCount.Size = new System.Drawing.Size(78, 19);
+            this.lblTotalCount.Size = new System.Drawing.Size(61, 19);
             this.lblTotalCount.TabIndex = 0;
             this.lblTotalCount.Text = "Cəmi: 0";
             // 

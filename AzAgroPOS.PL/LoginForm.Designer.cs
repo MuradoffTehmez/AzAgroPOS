@@ -44,7 +44,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular);
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
             this.label1.Location = new System.Drawing.Point(30, 120);
             this.label1.Name = "label1";
@@ -55,19 +55,19 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular);
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
             this.label2.Location = new System.Drawing.Point(30, 180);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(41, 21);
+            this.label2.Size = new System.Drawing.Size(42, 21);
             this.label2.TabIndex = 1;
             this.label2.Text = "Şifrə";
             // 
             // btnLogin
             // 
             this.btnLogin.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(152)))), ((int)(((byte)(219)))));
-            this.btnLogin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLogin.FlatAppearance.BorderSize = 0;
+            this.btnLogin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLogin.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
             this.btnLogin.ForeColor = System.Drawing.Color.White;
             this.btnLogin.Location = new System.Drawing.Point(30, 270);
@@ -102,9 +102,9 @@
             this.lblTitle.AutoSize = true;
             this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
             this.lblTitle.ForeColor = System.Drawing.Color.White;
-            this.lblTitle.Location = new System.Drawing.Point(80, 20);
+            this.lblTitle.Location = new System.Drawing.Point(45, 21);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(240, 32);
+            this.lblTitle.Size = new System.Drawing.Size(341, 32);
             this.lblTitle.TabIndex = 5;
             this.lblTitle.Text = "🌾 AzAgroPOS Sistemə Giriş";
             // 
@@ -115,7 +115,7 @@
             this.chkRememberMe.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
             this.chkRememberMe.Location = new System.Drawing.Point(30, 240);
             this.chkRememberMe.Name = "chkRememberMe";
-            this.chkRememberMe.Size = new System.Drawing.Size(104, 23);
+            this.chkRememberMe.Size = new System.Drawing.Size(99, 23);
             this.chkRememberMe.TabIndex = 3;
             this.chkRememberMe.Text = "Məni xatırla";
             this.chkRememberMe.UseVisualStyleBackColor = true;
@@ -127,7 +127,7 @@
             this.lnkForgotPassword.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(152)))), ((int)(((byte)(219)))));
             this.lnkForgotPassword.Location = new System.Drawing.Point(30, 330);
             this.lnkForgotPassword.Name = "lnkForgotPassword";
-            this.lnkForgotPassword.Size = new System.Drawing.Size(115, 19);
+            this.lnkForgotPassword.Size = new System.Drawing.Size(126, 19);
             this.lnkForgotPassword.TabIndex = 5;
             this.lnkForgotPassword.TabStop = true;
             this.lnkForgotPassword.Text = "Şifrəni unutmusan?";
@@ -138,9 +138,9 @@
             this.lnkRegister.AutoSize = true;
             this.lnkRegister.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lnkRegister.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(204)))), ((int)(((byte)(113)))));
-            this.lnkRegister.Location = new System.Drawing.Point(240, 330);
+            this.lnkRegister.Location = new System.Drawing.Point(210, 330);
             this.lnkRegister.Name = "lnkRegister";
-            this.lnkRegister.Size = new System.Drawing.Size(130, 19);
+            this.lnkRegister.Size = new System.Drawing.Size(176, 19);
             this.lnkRegister.TabIndex = 6;
             this.lnkRegister.TabStop = true;
             this.lnkRegister.Text = "Hesabın yoxdur? Qeydiyyat";
@@ -153,7 +153,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(400, 80);
+            this.panel1.Size = new System.Drawing.Size(404, 80);
             this.panel1.TabIndex = 7;
             // 
             // LoginForm
@@ -161,7 +161,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(400, 380);
+            this.ClientSize = new System.Drawing.Size(404, 380);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.lnkRegister);
             this.Controls.Add(this.lnkForgotPassword);

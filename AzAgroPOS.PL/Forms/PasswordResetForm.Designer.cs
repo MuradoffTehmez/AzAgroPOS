@@ -48,17 +48,17 @@ namespace AzAgroPOS.PL.Forms
             this.lblTitle.ForeColor = System.Drawing.Color.DarkBlue;
             this.lblTitle.Location = new System.Drawing.Point(120, 20);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(160, 25);
+            this.lblTitle.Size = new System.Drawing.Size(148, 25);
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "Şifrə Sıfırlama";
             // 
             // lblUserInfo
             // 
             this.lblUserInfo.AutoSize = true;
-            this.lblUserInfo.ForeColor = System.Drawing.Color.DarkGray;
+            this.lblUserInfo.ForeColor = System.Drawing.Color.Black;
             this.lblUserInfo.Location = new System.Drawing.Point(20, 20);
             this.lblUserInfo.Name = "lblUserInfo";
-            this.lblUserInfo.Size = new System.Drawing.Size(300, 22);
+            this.lblUserInfo.Size = new System.Drawing.Size(350, 22);
             this.lblUserInfo.TabIndex = 0;
             this.lblUserInfo.Text = "İstifadəçi: Ad Soyad (email@domain.com)";
             // 
@@ -67,7 +67,7 @@ namespace AzAgroPOS.PL.Forms
             this.lblNewPassword.AutoSize = true;
             this.lblNewPassword.Location = new System.Drawing.Point(30, 130);
             this.lblNewPassword.Name = "lblNewPassword";
-            this.lblNewPassword.Size = new System.Drawing.Size(96, 22);
+            this.lblNewPassword.Size = new System.Drawing.Size(89, 22);
             this.lblNewPassword.TabIndex = 2;
             this.lblNewPassword.Text = "Yeni Şifrə";
             // 
@@ -85,7 +85,7 @@ namespace AzAgroPOS.PL.Forms
             this.lblConfirmPassword.AutoSize = true;
             this.lblConfirmPassword.Location = new System.Drawing.Point(30, 170);
             this.lblConfirmPassword.Name = "lblConfirmPassword";
-            this.lblConfirmPassword.Size = new System.Drawing.Size(112, 22);
+            this.lblConfirmPassword.Size = new System.Drawing.Size(118, 22);
             this.lblConfirmPassword.TabIndex = 4;
             this.lblConfirmPassword.Text = "Şifrə Təkrarı";
             // 
@@ -105,7 +105,7 @@ namespace AzAgroPOS.PL.Forms
             this.btnReset.ForeColor = System.Drawing.Color.White;
             this.btnReset.Location = new System.Drawing.Point(70, 250);
             this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(120, 40);
+            this.btnReset.Size = new System.Drawing.Size(155, 40);
             this.btnReset.TabIndex = 6;
             this.btnReset.Text = "Şifrəni Sıfırla";
             this.btnReset.UseVisualStyleBackColor = false;
