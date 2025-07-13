@@ -4,7 +4,8 @@
       "Bash(dotnet build:*)",
       "Bash(msbuild:*)",
       "Bash(powershell:*)",
-      "Bash(cmd /c:*)"
+      "Bash(cmd /c:*)",
+      "Bash(dir)"
     ],
     "deny": []
   }

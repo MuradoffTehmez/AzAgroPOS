@@ -152,11 +152,11 @@ namespace AzAgroPOS.DAL.Repositories
                 query = query.Where(q => q.AnbarId == anbarId.Value);
 
             return query
-                .GroupBy(q => new { q.Anbar.Ad, q.Mehsul.Ad, q.MehsulId })
+                .GroupBy(q => new { AnbarAdi = q.Anbar.Ad, MehsulAdi = q.Mehsul.Ad, q.MehsulId })
                 .Select(g => new
                 {
-                    AnbarAdi = g.Key.Ad,
-                    MehsulAdi = g.Key.Ad,
+                    AnbarAdi = g.Key.AnbarAdi,
+                    MehsulAdi = g.Key.MehsulAdi,
                     MehsulId = g.Key.MehsulId,
                     MovcudMiqdar = g.Sum(q => q.MovcudMiqdar),
                     RezervMiqdar = g.Sum(q => q.RezervMiqdar),

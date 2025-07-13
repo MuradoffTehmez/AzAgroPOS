@@ -9,6 +9,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AzAgroPOS.BLL\AzAgroPOS.BLL.csproj" />
+    <ProjectReference Include="..\AzAgroPOS.DAL\AzAgroPOS.DAL.csproj" />
+    <ProjectReference Include="..\AzAgroPOS.Entities\AzAgroPOS.Entities.csproj" />
   </ItemGroup>
 
   <ItemGroup>
