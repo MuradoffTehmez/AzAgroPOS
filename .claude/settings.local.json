@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(dotnet build:*)",
-      "Bash(msbuild:*)"
+      "Bash(msbuild:*)",
+      "Bash(powershell:*)",
+      "Bash(cmd /c:*)"
     ],
     "deny": []
   }
