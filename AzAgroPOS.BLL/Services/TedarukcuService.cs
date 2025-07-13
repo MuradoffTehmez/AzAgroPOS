@@ -179,6 +179,16 @@ namespace AzAgroPOS.BLL.Services
             return _tedarukcuRepository.GetPerformansRaporu(startDate, endDate);
         }
 
+        public List<AlisOrder> GetAllAlisOrders()
+        {
+            return _alisOrderRepository.GetAll();
+        }
+
+        public List<AlisSeined> GetAllAlisSenedleri()
+        {
+            return _alisSenedRepository.GetAll();
+        }
+
         public void Dispose()
         {
             _tedarukcuRepository?.Dispose();

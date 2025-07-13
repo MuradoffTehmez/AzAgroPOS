@@ -473,6 +473,11 @@ namespace AzAgroPOS.BLL.Services
             return DateTime.Now.ToString("yyyyMMddHHmmss");
         }
 
+        public List<AnbarTransfer> GetAllTransfers()
+        {
+            return _transferRepository.GetAll();
+        }
+
         #endregion
 
         public void Dispose()
