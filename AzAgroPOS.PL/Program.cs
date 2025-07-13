@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AzAgroPOS.BLL.Services;
+using System;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AzAgroPOS.PL
@@ -13,6 +15,22 @@ namespace AzAgroPOS.PL
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            
+            // Database-i initialize et
+            Task.Run(async () =>
+            {
+                try
+                {
+                    var dbInitService = new DatabaseInitializationService();
+                    await dbInitService.InitializeDatabaseAsync();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Database initialization xətası: {ex.Message}", 
+                        "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }).Wait();
+
             Application.Run(new LoginForm());
         }
     }

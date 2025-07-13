@@ -1,18 +1,26 @@
 ﻿using AzAgroPOS.BLL.Services;
+using AzAgroPOS.DAL.Repositories;
+using AzAgroPOS.PL.Forms;
 using System;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AzAgroPOS.PL
 {
     public partial class LoginForm : Form
     {
+        private readonly AuthService _authService;
+        private readonly IstifadeciRepository _istifadeciRepository;
+
         public LoginForm()
         {
             InitializeComponent();
+            _authService = new AuthService();
+            _istifadeciRepository = new IstifadeciRepository();
         }
 
-        private void btnLogin_Click(object sender, System.EventArgs e)
+        private async void btnLogin_Click(object sender, System.EventArgs e)
         {
             try
             {
@@ -24,12 +32,29 @@ namespace AzAgroPOS.PL
                     return;
                 }
 
-                var authService = new AuthService();
-                string netice = authService.Login(email, password);
+                btnLogin.Enabled = false;
+                btnLogin.Text = "Yoxlanılır...";
+
+                string netice = await _authService.LoginAsync(email, password);
 
                 if (netice.Contains("Uğurlu"))
                 {
-                    MessageBox.Show(netice, "Uğurlu Giriş", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    // İstifadəçi məlumatlarını əldə et
+                    var istifadeci = await _istifadeciRepository.GetByEmailAsync(email);
+                    
+                    if (istifadeci != null)
+                    {
+                        MessageBox.Show(netice, "Uğurlu Giriş", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        
+                        // Ana forma keç
+                        this.Hide();
+                        var mainForm = new MainForm(istifadeci);
+                        mainForm.ShowDialog();
+                        this.Show();
+                        
+                        // Form-u təmizlə
+                        ClearForm();
+                    }
                 }
                 else
                 {
@@ -41,6 +66,11 @@ namespace AzAgroPOS.PL
             catch (Exception ex)
             {
                 MessageBox.Show($"Xəta baş verdi: {ex.Message}", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                btnLogin.Enabled = true;
+                btnLogin.Text = "Daxil Ol";
             }
         }
 
@@ -93,6 +123,13 @@ namespace AzAgroPOS.PL
             {
                 return false;
             }
+        }
+
+        private void ClearForm()
+        {
+            txtEmail.Clear();
+            txtPassword.Clear();
+            txtEmail.Focus();
         }
     }
 }
