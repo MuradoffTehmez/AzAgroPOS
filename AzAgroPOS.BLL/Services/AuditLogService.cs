@@ -10,6 +10,33 @@ namespace AzAgroPOS.BLL.Services
 {
     public class AuditLogService
     {
+        public void Log(string modul, int? entityId, string emeliyyat, string detal, int? istifadeciId)
+        {
+            try
+            {
+                using (var context = new AzAgroDbContext())
+                {
+                    var auditLog = new AuditLog
+                    {
+                        IstifadeciId = istifadeciId,
+                        Emeliyyat = $"{modul} - {emeliyyat}",
+                        Detal = detal,
+                        IP = "Desktop App",
+                        Browser = "Desktop App",
+                        Platform = "Windows",
+                        Tarix = DateTime.Now
+                    };
+
+                    context.AuditLoglar.Add(auditLog);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception)
+            {
+                // Log xətalarını susdurmaq - sistem işləməsinə mane olmamalı
+            }
+        }
+
         public async Task LogAsync(int? istifadeciId, string modul, string emeliyyat, string clientInfo, string detal = null)
         {
             try

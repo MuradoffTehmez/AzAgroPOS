@@ -32,6 +32,14 @@ namespace AzAgroPOS.DAL
         public DbSet<AnbarHereketi> AnbarHereketleri { get; set; }
         public DbSet<AnbarTransfer> AnbarTransferleri { get; set; }
         public DbSet<AnbarTransferDetali> AnbarTransferDetallari { get; set; }
+        
+        // Debt/Credit Module
+        public DbSet<MusteriBorc> MusteriBorcları { get; set; }
+        public DbSet<BorcOdenis> BorcOdenisleri { get; set; }
+        
+        // Repair/Service Module
+        public DbSet<TamirIsi> TamirIsleri { get; set; }
+        public DbSet<TamirMerhele> TamirMerheleri { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -357,6 +365,97 @@ namespace AzAgroPOS.DAL
                     .WithMany()
                     .HasForeignKey(e => e.MehsulId)
                     .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            // Debt/Credit Module Configurations
+            modelBuilder.Entity<MusteriBorc>(entity =>
+            {
+                entity.HasIndex(e => e.BorcNomresi).IsUnique();
+                entity.HasIndex(e => e.BorcTarixi);
+                entity.HasIndex(e => e.MusteriId);
+                entity.HasIndex(e => e.Status);
+                entity.HasIndex(e => e.SonOdemeTarixi);
+
+                entity.HasOne(e => e.Musteri)
+                    .WithMany()
+                    .HasForeignKey(e => e.MusteriId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(e => e.Satis)
+                    .WithMany()
+                    .HasForeignKey(e => e.SatisId)
+                    .OnDelete(DeleteBehavior.SetNull);
+
+                entity.HasOne(e => e.YaradanIstifadeci)
+                    .WithMany()
+                    .HasForeignKey(e => e.YaradanIstifadeciId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            modelBuilder.Entity<BorcOdenis>(entity =>
+            {
+                entity.HasIndex(e => e.OdenisNomresi).IsUnique();
+                entity.HasIndex(e => e.OdenisTarixi);
+                entity.HasIndex(e => e.MusteriBorcId);
+                entity.HasIndex(e => e.Status);
+                entity.HasIndex(e => e.OdenisTipi);
+
+                entity.HasOne(e => e.MusteriBorc)
+                    .WithMany(mb => mb.BorcOdenisleri)
+                    .HasForeignKey(e => e.MusteriBorcId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(e => e.QebulEdenIstifadeci)
+                    .WithMany()
+                    .HasForeignKey(e => e.QebulEdenIstifadeciId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            // Repair/Service Module Configurations
+            modelBuilder.Entity<TamirIsi>(entity =>
+            {
+                entity.HasIndex(e => e.TamirNomresi).IsUnique();
+                entity.HasIndex(e => e.QebulTarixi);
+                entity.HasIndex(e => e.MusteriId);
+                entity.HasIndex(e => e.Status);
+                entity.HasIndex(e => e.Prioritet);
+
+                entity.HasOne(e => e.Musteri)
+                    .WithMany()
+                    .HasForeignKey(e => e.MusteriId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(e => e.QebulEdenIstifadeci)
+                    .WithMany()
+                    .HasForeignKey(e => e.QebulEdenIstifadeciId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(e => e.TeyinEdilenIstifadeci)
+                    .WithMany()
+                    .HasForeignKey(e => e.TeyinEdilenIstifadeciId)
+                    .OnDelete(DeleteBehavior.SetNull);
+
+                entity.HasOne(e => e.TehvilEdenIstifadeci)
+                    .WithMany()
+                    .HasForeignKey(e => e.TehvilEdenIstifadeciId)
+                    .OnDelete(DeleteBehavior.SetNull);
+            });
+
+            modelBuilder.Entity<TamirMerhele>(entity =>
+            {
+                entity.HasIndex(e => e.TamirIsiId);
+                entity.HasIndex(e => e.Status);
+                entity.HasIndex(e => e.Sira);
+
+                entity.HasOne(e => e.TamirIsi)
+                    .WithMany(ti => ti.TamirMerheleri)
+                    .HasForeignKey(e => e.TamirIsiId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(e => e.TeyinEdilenIstifadeci)
+                    .WithMany()
+                    .HasForeignKey(e => e.TeyinEdilenIstifadeciId)
+                    .OnDelete(DeleteBehavior.SetNull);
             });
 
             // Seed data-nı DatabaseInitializationService-də edirik
