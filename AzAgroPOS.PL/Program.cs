@@ -17,19 +17,22 @@ namespace AzAgroPOS.PL
             Application.SetCompatibleTextRenderingDefault(false);
             
             // Database-i initialize et
-            Task.Run(async () =>
+            try
             {
-                try
-                {
-                    var dbInitService = new DatabaseInitializationService();
-                    await dbInitService.InitializeDatabaseAsync();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Database initialization xətası: {ex.Message}", 
-                        "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }).Wait();
+                var dbInitService = new DatabaseInitializationService();
+                
+                // Debug məqsədi ilə database-i təmizlə və yenidən yarat
+                var initTask = dbInitService.ClearAndInitializeDatabaseAsync();
+                initTask.Wait();
+                
+                MessageBox.Show("Database uğurla hazırlandı!\n\nTest məlumatları:\nEmail: admin@azagropos.az\nŞifrə: admin123", 
+                    "Sistem Hazır", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Database initialization xətası: {ex.Message}\n\nInner Exception: {ex.InnerException?.Message}", 
+                    "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 
             Application.Run(new LoginForm());
         }

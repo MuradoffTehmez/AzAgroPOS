@@ -62,22 +62,7 @@ namespace AzAgroPOS.DAL
                 entity.HasIndex(e => e.IstifadeciId);
             });
 
-            SeedData(modelBuilder);
-        }
-
-        private void SeedData(ModelBuilder modelBuilder)
-        {
-            var baseDate = new DateTime(2025, 1, 1);
-
-            modelBuilder.Entity<Rol>().HasData(
-                new Rol { Id = 1, Ad = "Administrator", Aciklama = "Sistem administratoru", Status = "Aktiv", YaradilmaTarixi = baseDate },
-                new Rol { Id = 2, Ad = "İstifadəçi", Aciklama = "Adi istifadəçi", Status = "Aktiv", YaradilmaTarixi = baseDate }
-            );
-
-            modelBuilder.Entity<Tema>().HasData(
-                new Tema { Id = 1, Ad = "Açıq Tema", ArxaplanRengi = "#FFFFFF", MetinRengi = "#000000", Status = "Aktiv", YaradilmaTarixi = baseDate },
-                new Tema { Id = 2, Ad = "Qaranlıq Tema", ArxaplanRengi = "#2C2C2C", MetinRengi = "#FFFFFF", Status = "Aktiv", YaradilmaTarixi = baseDate }
-            );
+            // Seed data-nı DatabaseInitializationService-də edirik
         }
     }
 }

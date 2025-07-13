@@ -11,6 +11,19 @@ namespace AzAgroPOS.BLL.Services
 {
     public class DatabaseInitializationService
     {
+        public async Task ClearAndInitializeDatabaseAsync()
+        {
+            using (var context = new AzAgroDbContext())
+            {
+                // Database-i sil və yenidən yarat
+                await context.Database.EnsureDeletedAsync();
+                await context.Database.EnsureCreatedAsync();
+            }
+            
+            // Sonra məlumatları əlavə et
+            await InitializeDatabaseAsync();
+        }
+
         public async Task InitializeDatabaseAsync()
         {
             using (var context = new AzAgroDbContext())
@@ -18,9 +31,13 @@ namespace AzAgroPOS.BLL.Services
                 // Database-i yarad
                 await context.Database.EnsureCreatedAsync();
 
-                // Əgər məlumatlar varsa, heç nə etmə
-                if (context.Roller.Any())
+                // Əgər admin istifadəçisi varsa, heç nə etmə
+                var existingAdmin = await context.Istifadeciler.FirstOrDefaultAsync(u => u.Email == "admin@azagropos.az");
+                if (existingAdmin != null)
+                {
+                    // Admin artıq mövcuddur
                     return;
+                }
 
                 // Roller əlavə et
                 var adminRole = new Rol
@@ -66,6 +83,10 @@ namespace AzAgroPOS.BLL.Services
                 context.Temalar.AddRange(lightTheme, darkTheme);
                 await context.SaveChangesAsync();
 
+                // Reload-dan sonra ID-ləri əldə edək
+                var savedAdminRole = await context.Roller.FirstAsync(r => r.Ad == "Administrator");
+                var savedLightTheme = await context.Temalar.FirstAsync(t => t.Ad == "Açıq Tema");
+
                 // Admin istifadəçisi əlavə et
                 var adminUser = new Istifadeci
                 {
@@ -73,8 +94,8 @@ namespace AzAgroPOS.BLL.Services
                     Soyad = "Sistem",
                     Email = "admin@azagropos.az",
                     ParolHash = ComputeSha256Hash("admin123"),
-                    RolId = adminRole.Id,
-                    TemaId = lightTheme.Id,
+                    RolId = savedAdminRole.Id,
+                    TemaId = savedLightTheme.Id,
                     Status = "Aktiv",
                     YaradilmaTarixi = DateTime.Now
                 };
@@ -82,12 +103,15 @@ namespace AzAgroPOS.BLL.Services
                 context.Istifadeciler.Add(adminUser);
                 await context.SaveChangesAsync();
 
+                // Rol ID-lərini yenidən əldə edək
+                var savedUserRole = await context.Roller.FirstAsync(r => r.Ad == "İstifadəçi");
+
                 // Əsas icazələr əlavə et
                 var permissions = new[]
                 {
                     new RolIcazesi
                     {
-                        RolId = adminRole.Id,
+                        RolId = savedAdminRole.Id,
                         Modul = "İstifadəçi",
                         Emeliyyat = "Əlavə",
                         IcazeVerilib = true,
@@ -96,7 +120,7 @@ namespace AzAgroPOS.BLL.Services
                     },
                     new RolIcazesi
                     {
-                        RolId = adminRole.Id,
+                        RolId = savedAdminRole.Id,
                         Modul = "İstifadəçi",
                         Emeliyyat = "Redaktə",
                         IcazeVerilib = true,
@@ -105,7 +129,7 @@ namespace AzAgroPOS.BLL.Services
                     },
                     new RolIcazesi
                     {
-                        RolId = adminRole.Id,
+                        RolId = savedAdminRole.Id,
                         Modul = "İstifadəçi",
                         Emeliyyat = "Silmə",
                         IcazeVerilib = true,
@@ -114,7 +138,7 @@ namespace AzAgroPOS.BLL.Services
                     },
                     new RolIcazesi
                     {
-                        RolId = userRole.Id,
+                        RolId = savedUserRole.Id,
                         Modul = "İstifadəçi",
                         Emeliyyat = "Əlavə",
                         IcazeVerilib = false,
