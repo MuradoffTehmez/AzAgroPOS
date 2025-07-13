@@ -77,14 +77,14 @@ namespace AzAgroPOS.Entities.Domain
         {
             get
             {
-                return Status switch
+                switch (Status)
                 {
-                    "Hazırlıq" => "Hazırlıq",
-                    "Göndərilmiş" => "Göndərilmiş",
-                    "Qəbul Edilmiş" => "Qəbul Edilmiş",
-                    "İptal Edilmiş" => "İptal Edilmiş",
-                    _ => Status
-                };
+                    case "Hazırlıq": return "Hazırlıq";
+                    case "Göndərilmiş": return "Göndərilmiş";
+                    case "Qəbul Edilmiş": return "Qəbul Edilmiş";
+                    case "İptal Edilmiş": return "İptal Edilmiş";
+                    default: return Status;
+                }
             }
         }
 

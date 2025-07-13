@@ -84,14 +84,14 @@ namespace AzAgroPOS.Entities.Domain
         {
             get
             {
-                return Status switch
+                switch (Status)
                 {
-                    "Tamamlandı" => "Tamamlandı",
-                    "Gözləyir" => "Gözləyir",
-                    "İptal Edilmiş" => "İptal Edilmiş",
-                    "Qaytarıldı" => "Qaytarıldı",
-                    _ => Status
-                };
+                    case "Tamamlandı": return "Tamamlandı";
+                    case "Gözləyir": return "Gözləyir";
+                    case "İptal Edilmiş": return "İptal Edilmiş";
+                    case "Qaytarıldı": return "Qaytarıldı";
+                    default: return Status;
+                }
             }
         }
 
@@ -100,14 +100,14 @@ namespace AzAgroPOS.Entities.Domain
         {
             get
             {
-                return OdemeNovu switch
+                switch (OdemeNovu)
                 {
-                    "Nağd" => "Nağd",
-                    "Bank Köçürməsi" => "Bank Köçürməsi",
-                    "Çek" => "Çek",
-                    "Sənəd" => "Sənəd",
-                    _ => OdemeNovu
-                };
+                    case "Nağd": return "Nağd";
+                    case "Bank Köçürməsi": return "Bank Köçürməsi";
+                    case "Çek": return "Çek";
+                    case "Sənəd": return "Sənəd";
+                    default: return OdemeNovu;
+                }
             }
         }
 

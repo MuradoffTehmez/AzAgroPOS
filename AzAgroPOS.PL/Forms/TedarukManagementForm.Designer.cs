@@ -509,7 +509,7 @@ namespace AzAgroPOS.PL.Forms
             // dtpOrderStart
             // 
             this.dtpOrderStart.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpOrderStart.Location = = System.Drawing.Point(290, 20);
+            this.dtpOrderStart.Location = new System.Drawing.Point(290, 20);
             this.dtpOrderStart.Name = "dtpOrderStart";
             this.dtpOrderStart.Size = new System.Drawing.Size(120, 25);
             this.dtpOrderStart.TabIndex = 2;

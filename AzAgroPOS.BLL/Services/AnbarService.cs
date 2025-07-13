@@ -351,7 +351,7 @@ namespace AzAgroPOS.BLL.Services
 
             foreach (var detali in transfer.TransferDetallari)
             {
-                var receivedQty = receivedQuantities.GetValueOrDefault(detali.MehsulId, 0);
+                var receivedQty = receivedQuantities.ContainsKey(detali.MehsulId) ? receivedQuantities[detali.MehsulId] : 0;
                 if (receivedQty > detali.Miqdar)
                     throw new InvalidOperationException($"Qəbul edilən miqdar göndərilən miqdarddan çox ola bilməz: {detali.MehsulAdi}");
 

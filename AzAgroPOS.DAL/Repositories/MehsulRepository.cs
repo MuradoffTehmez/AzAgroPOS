@@ -242,5 +242,11 @@ namespace AzAgroPOS.DAL.Repositories
                 return statistikalar;
             }
         }
+
+        public void Dispose()
+        {
+            // MehsulRepository uses 'using' statements for context management
+            // No explicit disposal needed
+        }
     }
 }

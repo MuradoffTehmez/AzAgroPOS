@@ -67,15 +67,15 @@ namespace AzAgroPOS.Entities.Domain
         {
             get
             {
-                return HereketTipi switch
+                switch (HereketTipi)
                 {
-                    "Giris" => "Giriş",
-                    "Cixis" => "Çıxış",
-                    "Transfer-Giris" => "Transfer Giriş",
-                    "Transfer-Cixis" => "Transfer Çıxış",
-                    "Duzelish" => "Düzəliş",
-                    _ => HereketTipi
-                };
+                    case "Giris": return "Giriş";
+                    case "Cixis": return "Çıxış";
+                    case "Transfer-Giris": return "Transfer Giriş";
+                    case "Transfer-Cixis": return "Transfer Çıxış";
+                    case "Duzelish": return "Düzəliş";
+                    default: return HereketTipi;
+                }
             }
         }
 
