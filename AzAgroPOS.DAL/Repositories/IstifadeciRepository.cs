@@ -98,12 +98,16 @@ namespace AzAgroPOS.DAL.Repositories
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            // DbContext hər metodda 'using' ilə yaradıldığı üçün burada xüsusi bir əməliyyata ehtiyac yoxdur.
         }
 
         public void Update(Istifadeci istifadeci)
         {
-            throw new NotImplementedException();
+            using (var context = new AzAgroDbContext())
+            {
+                context.Istifadeciler.Update(istifadeci);
+                context.SaveChanges();
+            }
         }
     }
 }

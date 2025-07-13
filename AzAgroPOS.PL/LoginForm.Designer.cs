@@ -119,6 +119,7 @@
             this.chkRememberMe.TabIndex = 3;
             this.chkRememberMe.Text = "Məni xatırla";
             this.chkRememberMe.UseVisualStyleBackColor = true;
+            this.chkRememberMe.CheckedChanged += new System.EventHandler(this.chkRememberMe_CheckedChanged);
             // 
             // lnkForgotPassword
             // 

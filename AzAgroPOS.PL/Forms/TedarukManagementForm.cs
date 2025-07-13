@@ -211,7 +211,7 @@ namespace AzAgroPOS.PL.Forms
                 var selectedId = (int)dgvTedarukciler.SelectedRows[0].Cells["Id"].Value;
                 var selectedName = dgvTedarukciler.SelectedRows[0].Cells["Ad"].Value.ToString();
 
-                var result = MessageBox.Show($"'{selectedName}' tədarükçüsünü silmək istədiyinizdən əminsiniz?", 
+                var result = MessageBox.Show($"'{selectedName}' tədarükçüsünü silmək istədiyinizdən əminsiniz?",
                     "Təsdiq", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (result == DialogResult.Yes)
@@ -257,7 +257,7 @@ namespace AzAgroPOS.PL.Forms
                 }
 
                 var searchTerm = txtTedarukcuAxtaris.Text.Trim();
-                var filteredData = _tedarukciler?.Where(t => 
+                var filteredData = _tedarukciler?.Where(t =>
                     (t.Ad?.ToLower().Contains(searchTerm.ToLower()) ?? false) ||
                     (t.Kod?.ToLower().Contains(searchTerm.ToLower()) ?? false) ||
                     (t.VOEN?.ToLower().Contains(searchTerm.ToLower()) ?? false)
@@ -328,7 +328,7 @@ namespace AzAgroPOS.PL.Forms
                 }
 
                 var selectedId = (int)dgvAlisOrderleri.SelectedRows[0].Cells["Id"].Value;
-                var result = MessageBox.Show("Seçilən orderi təsdiqləmək istədiyinizdən əminsiniz?", 
+                var result = MessageBox.Show("Seçilən orderi təsdiqləmək istədiyinizdən əminsiniz?",
                     "Təsdiq", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (result == DialogResult.Yes)
@@ -355,7 +355,7 @@ namespace AzAgroPOS.PL.Forms
                 }
 
                 var selectedId = (int)dgvAlisOrderleri.SelectedRows[0].Cells["Id"].Value;
-                var result = MessageBox.Show("Seçilən orderi ləğv etmək istədiyinizdən əminsiniz?", 
+                var result = MessageBox.Show("Seçilən orderi ləğv etmək istədiyinizdən əminsiniz?",
                     "Təsdiq", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (result == DialogResult.Yes)
@@ -401,7 +401,7 @@ namespace AzAgroPOS.PL.Forms
                 }
 
                 var searchTerm = txtOrderAxtaris.Text.Trim().ToLower();
-                var filteredData = _alişOrderleri?.Where(ao => 
+                var filteredData = _alişOrderleri?.Where(ao =>
                     (ao.OrderNomresi?.ToLower().Contains(searchTerm) ?? false) ||
                     (ao.Tedarukcu?.Ad?.ToLower().Contains(searchTerm) ?? false)
                 ).Select(ao => new
@@ -450,7 +450,7 @@ namespace AzAgroPOS.PL.Forms
                 }
 
                 var selectedId = (int)dgvAlisSenedleri.SelectedRows[0].Cells["Id"].Value;
-                var result = MessageBox.Show("Seçilən sənədi qəbul etmək istədiyinizdən əminsiniz?", 
+                var result = MessageBox.Show("Seçilən sənədi qəbul etmək istədiyinizdən əminsiniz?",
                     "Təsdiq", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (result == DialogResult.Yes)
@@ -477,7 +477,7 @@ namespace AzAgroPOS.PL.Forms
                 }
 
                 var selectedId = (int)dgvAlisSenedleri.SelectedRows[0].Cells["Id"].Value;
-                var result = MessageBox.Show("Seçilən sənədi ləğv etmək istədiyinizdən əminsiniz?", 
+                var result = MessageBox.Show("Seçilən sənədi ləğv etmək istədiyinizdən əminsiniz?",
                     "Təsdiq", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (result == DialogResult.Yes)
@@ -542,7 +542,7 @@ namespace AzAgroPOS.PL.Forms
                 }
 
                 var searchTerm = txtSenedAxtaris.Text.Trim().ToLower();
-                var filteredData = _alisSenedleri?.Where(as1 => 
+                var filteredData = _alisSenedleri?.Where(as1 =>
                     (as1.SenedNomresi?.ToLower().Contains(searchTerm) ?? false) ||
                     (as1.Tedarukcu?.Ad?.ToLower().Contains(searchTerm) ?? false)
                 ).Select(as1 => new
@@ -591,7 +591,7 @@ namespace AzAgroPOS.PL.Forms
                 }
 
                 var selectedId = (int)dgvTransferler.SelectedRows[0].Cells["Id"].Value;
-                var result = MessageBox.Show("Seçilən transferi göndərmək istədiyinizdən əminsiniz?", 
+                var result = MessageBox.Show("Seçilən transferi göndərmək istədiyinizdən əminsiniz?",
                     "Təsdiq", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (result == DialogResult.Yes)
@@ -618,7 +618,7 @@ namespace AzAgroPOS.PL.Forms
                 }
 
                 var selectedId = (int)dgvTransferler.SelectedRows[0].Cells["Id"].Value;
-                var result = MessageBox.Show("Seçilən transferi qəbul etmək istədiyinizdən əminsiniz?", 
+                var result = MessageBox.Show("Seçilən transferi qəbul etmək istədiyinizdən əminsiniz?",
                     "Təsdiq", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (result == DialogResult.Yes)
@@ -645,7 +645,7 @@ namespace AzAgroPOS.PL.Forms
                 }
 
                 var selectedId = (int)dgvTransferler.SelectedRows[0].Cells["Id"].Value;
-                var result = MessageBox.Show("Seçilən transferi ləğv etmək istədiyinizdən əminsiniz?", 
+                var result = MessageBox.Show("Seçilən transferi ləğv etmək istədiyinizdən əminsiniz?",
                     "Təsdiq", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (result == DialogResult.Yes)
@@ -691,7 +691,7 @@ namespace AzAgroPOS.PL.Forms
                 }
 
                 var searchTerm = txtTransferAxtaris.Text.Trim().ToLower();
-                var filteredData = _transferler?.Where(t => 
+                var filteredData = _transferler?.Where(t =>
                     (t.TransferNomresi?.ToLower().Contains(searchTerm) ?? false) ||
                     (t.MenbAnbar?.Ad?.ToLower().Contains(searchTerm) ?? false) ||
                     (t.HedefAnbar?.Ad?.ToLower().Contains(searchTerm) ?? false)
@@ -718,16 +718,16 @@ namespace AzAgroPOS.PL.Forms
 
         #endregion
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                _tedarukcuService?.Dispose();
-                _anbarService?.Dispose();
-                _mehsulService?.Dispose();
-                components?.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+        //protected override void Dispose(bool disposing)
+        //{
+        //    if (disposing)
+        //    {
+        //        _tedarukcuService?.Dispose();
+        //        _anbarService?.Dispose();
+        //        _mehsulService?.Dispose();
+        //        components?.Dispose();
+        //    }
+        //    base.Dispose(disposing);
+        //}
     }
 }

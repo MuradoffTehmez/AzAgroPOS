@@ -276,7 +276,7 @@ namespace AzAgroPOS.PL
                 System.Diagnostics.Debug.WriteLine($"Registry xətası: {ex.Message}");
                 // Default məlumatları təyin et
                 txtEmail.Text = "admin@azagropos.az";
-                txtPassword.Text = "admin123";
+                txtPassword.Text = "Admin123!";
             }
         }
         
@@ -299,6 +299,11 @@ namespace AzAgroPOS.PL
                 // Registry xətası olsa da davam et
                 System.Diagnostics.Debug.WriteLine($"Registry xətası: {ex.Message}");
             }
+        }
+
+        private void chkRememberMe_CheckedChanged(object sender, EventArgs e)
+        {
+            ClearSavedCredentials();
         }
     }
 }
