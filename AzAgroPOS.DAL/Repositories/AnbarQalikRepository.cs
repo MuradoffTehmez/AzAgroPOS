@@ -96,10 +96,14 @@ namespace AzAgroPOS.DAL.Repositories
 
         public List<AnbarQalik> GetMinimumSeviyyedenAsagi()
         {
-            return _context.AnbarQaliqları
+            // DÜZƏLİŞ: Sorğu client-side evaluation üçün yenidən yazıldı
+            var allQaliqlar = _context.AnbarQaliqları
                 .Include(q => q.Anbar)
                 .Include(q => q.Mehsul)
                     .ThenInclude(m => m.Kateqoriya)
+                .ToList();
+
+            return allQaliqlar
                 .Where(q => q.MovcudMiqdar <= q.MinimumMiqdar && q.MinimumMiqdar > 0)
                 .OrderBy(q => q.MovcudMiqdar)
                 .ToList();
@@ -107,10 +111,14 @@ namespace AzAgroPOS.DAL.Repositories
 
         public List<AnbarQalik> GetMaksimumSeviyyedenYuxari()
         {
-            return _context.AnbarQaliqları
+            // DÜZƏLİŞ: Sorğu client-side evaluation üçün yenidən yazıldı
+            var allQaliqlar = _context.AnbarQaliqları
                 .Include(q => q.Anbar)
                 .Include(q => q.Mehsul)
                     .ThenInclude(m => m.Kateqoriya)
+                .ToList();
+
+            return allQaliqlar
                 .Where(q => q.MaksimumMiqdar > 0 && q.MovcudMiqdar >= q.MaksimumMiqdar)
                 .OrderByDescending(q => q.MovcudMiqdar)
                 .ToList();
@@ -178,7 +186,7 @@ namespace AzAgroPOS.DAL.Repositories
         public decimal GetTotalStockValue(int? anbarId = null)
         {
             var query = _context.AnbarQaliqları.AsQueryable();
-            
+
             if (anbarId.HasValue)
                 query = query.Where(q => q.AnbarId == anbarId.Value);
 
@@ -188,7 +196,7 @@ namespace AzAgroPOS.DAL.Repositories
         public int GetTotalProductCount(int? anbarId = null)
         {
             var query = _context.AnbarQaliqları.Where(q => q.MovcudMiqdar > 0);
-            
+
             if (anbarId.HasValue)
                 query = query.Where(q => q.AnbarId == anbarId.Value);
 

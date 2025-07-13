@@ -125,15 +125,14 @@ namespace AzAgroPOS.DAL.Repositories
         {
             using (var context = new AzAgroDbContext())
             {
-                // DÜZƏLDİLMİŞ HİSSƏ
-                // 1. Əvvəlcə tərcümə edilə bilən hissəni bazadan çəkirik
+                // DÜZƏLİŞ: Sorğu iki hissəyə bölündü
                 var activeProducts = await context.Mehsullar
                     .Include(m => m.Kateqoriya)
                     .Include(m => m.Vahid)
                     .Where(m => m.Status == "Aktiv")
                     .ToListAsync();
 
-                // 2. Tərcümə edilə bilməyən filterləməni proqram yaddaşında edirik
+                // Filterləmə proqram yaddaşında (client-side) aparılır
                 return activeProducts
                     .Where(m => m.MovcudMiqdar <= m.MinimumMiqdar)
                     .OrderBy(m => m.Ad)
@@ -239,20 +238,16 @@ namespace AzAgroPOS.DAL.Repositories
             {
                 var statistikalar = new Dictionary<string, object>();
 
-                statistikalar["UmumiMehsulSayi"] = await context.Mehsullar.CountAsync();
-                statistikalar["AktivMehsulSayi"] = await context.Mehsullar.CountAsync(m => m.Status == "Aktiv");
+                // DÜZƏLİŞ: LINQ xətasının qarşısını almaq üçün məlumatlar əvvəlcə yaddaşa çəkilir
+                var allProducts = await context.Mehsullar.AsNoTracking().ToListAsync();
 
-                statistikalar["StoktanKenardaMehsulSayi"] = await context.Mehsullar
-                    .Where(m => m.Status == "Aktiv" && m.MovcudMiqdar <= m.MinimumMiqdar)
-                    .CountAsync();
+                statistikalar["UmumiMehsulSayi"] = allProducts.Count;
 
-                var umumiDeger = await context.Mehsullar
-                    .Where(m => m.Status == "Aktiv")
-                    .Select(m => m.MovcudMiqdar * m.SatisQiymeti)
-                    .ToListAsync();
+                var activeProducts = allProducts.Where(m => m.Status == "Aktiv").ToList();
 
-                statistikalar["UmumiDeger"] = umumiDeger.Sum();
-
+                statistikalar["AktivMehsulSayi"] = activeProducts.Count;
+                statistikalar["StoktanKenardaMehsulSayi"] = activeProducts.Count(m => m.MovcudMiqdar <= m.MinimumMiqdar);
+                statistikalar["UmumiDeger"] = activeProducts.Sum(m => m.MovcudMiqdar * m.SatisQiymeti);
 
                 return statistikalar;
             }
@@ -260,8 +255,7 @@ namespace AzAgroPOS.DAL.Repositories
 
         public void Dispose()
         {
-            // MehsulRepository uses 'using' statements for context management
-            // No explicit disposal needed
+            // Bu repozitoriya hər metodda 'using' bloku istifadə etdiyi üçün xüsusi dispose əməliyyatına ehtiyac yoxdur.
         }
     }
 }
