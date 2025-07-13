@@ -55,6 +55,7 @@ namespace AzAgroPOS.Entities.Domain
         public string Qeydler { get; set; }
         
         public DateTime YaradilmaTarixi { get; set; } = DateTime.Now;
+        public DateTime? YenilenmeTarixi { get; set; }
         
         // Computed Properties
         [NotMapped]

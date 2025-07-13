@@ -14,6 +14,9 @@ namespace AzAgroPOS.DAL
         public DbSet<Mehsul> Mehsullar { get; set; }
         public DbSet<MehsulKateqoriyasi> MehsulKateqoriyalari { get; set; }
         public DbSet<Vahid> Vahidler { get; set; }
+        public DbSet<Satis> Satislar { get; set; }
+        public DbSet<SatisDetali> SatisDetallari { get; set; }
+        public DbSet<SatisOdemesi> SatisOdemeleri { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -106,6 +109,49 @@ namespace AzAgroPOS.DAL
                     .WithMany(v => v.AltVahidler)
                     .HasForeignKey(e => e.AnaVahidId)
                     .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            modelBuilder.Entity<Satis>(entity =>
+            {
+                entity.HasIndex(e => e.SatisNomresi).IsUnique();
+                entity.HasIndex(e => e.SatisTarixi);
+                entity.HasIndex(e => e.KassirId);
+                entity.HasIndex(e => e.Status);
+                entity.HasIndex(e => e.OdemeNovu);
+
+                entity.HasOne(e => e.Kassir)
+                    .WithMany()
+                    .HasForeignKey(e => e.KassirId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            modelBuilder.Entity<SatisDetali>(entity =>
+            {
+                entity.HasIndex(e => e.SatisId);
+                entity.HasIndex(e => e.MehsulId);
+
+                entity.HasOne(e => e.Satis)
+                    .WithMany(s => s.SatisDetallari)
+                    .HasForeignKey(e => e.SatisId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(e => e.Mehsul)
+                    .WithMany()
+                    .HasForeignKey(e => e.MehsulId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            modelBuilder.Entity<SatisOdemesi>(entity =>
+            {
+                entity.HasIndex(e => e.SatisId);
+                entity.HasIndex(e => e.OdemeTarixi);
+                entity.HasIndex(e => e.OdemeNovu);
+                entity.HasIndex(e => e.Status);
+
+                entity.HasOne(e => e.Satis)
+                    .WithMany(s => s.SatisOdemeleri)
+                    .HasForeignKey(e => e.SatisId)
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
             // Seed data-nı DatabaseInitializationService-də edirik
