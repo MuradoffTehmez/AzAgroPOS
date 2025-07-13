@@ -15,8 +15,6 @@ namespace AzAgroPOS.PL.Forms
         private readonly MehsulRepository _mehsulRepository;
         private readonly MehsulKateqoriyasiRepository _kateqoriyaRepository;
         private readonly Istifadeci _currentUser;
-        private List<Mehsul> _allProducts;
-        private List<Mehsul> _filteredProducts;
 
         public ProductManagementForm(Istifadeci currentUser)
         {
@@ -29,8 +27,8 @@ namespace AzAgroPOS.PL.Forms
 
         private async void ProductManagementForm_Load(object sender, EventArgs e)
         {
-            await LoadDataAsync();
             SetupDataGridView();
+            await LoadDataAsync();
             await LoadFiltersAsync();
             await LoadStatisticsAsync();
         }
@@ -39,13 +37,12 @@ namespace AzAgroPOS.PL.Forms
         {
             try
             {
-                _allProducts = await _mehsulRepository.GetAllAsync();
-                _filteredProducts = _allProducts.ToList();
-                LoadProductsToGrid();
+                var allProducts = await _mehsulRepository.GetAllAsync();
+                dgvProducts.DataSource = allProducts;
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Məhsullar yüklənərkən xəta: {ex.Message}", "Xəta", 
+                MessageBox.Show($"Məhsullar yüklənərkən xəta: {ex.Message}", "Xəta",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -54,140 +51,65 @@ namespace AzAgroPOS.PL.Forms
         {
             dgvProducts.AutoGenerateColumns = false;
             dgvProducts.Columns.Clear();
+            dgvProducts.DataSource = null;
 
-            dgvProducts.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                DataPropertyName = "Id",
-                HeaderText = "ID",
-                Name = "Id",
-                Width = 50,
-                Visible = false
-            });
+            // Data-bound columns
+            dgvProducts.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Id", HeaderText = "ID", Name = "Id", Visible = false });
+            dgvProducts.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Ad", HeaderText = "Məhsul Adı", Name = "Ad", Width = 200 });
+            dgvProducts.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "SKU", HeaderText = "SKU", Name = "SKU", Width = 120 });
+            dgvProducts.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Barkod", HeaderText = "Barkod", Name = "Barkod", Width = 120 });
 
-            dgvProducts.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                DataPropertyName = "Ad",
-                HeaderText = "Məhsul Adı",
-                Name = "Ad",
-                Width = 200
-            });
+            // Custom-handled columns
+            dgvProducts.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Kateqoriya", Name = "Kateqoriya", Width = 150 });
+            dgvProducts.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Vahid", Name = "Vahid", Width = 80 });
 
-            dgvProducts.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                DataPropertyName = "SKU",
-                HeaderText = "SKU",
-                Name = "SKU",
-                Width = 120
-            });
+            // Data-bound columns
+            dgvProducts.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "AlisQiymeti", HeaderText = "Alış Qiyməti", Name = "AlisQiymeti", Width = 100, DefaultCellStyle = new DataGridViewCellStyle { Format = "F2" } });
+            dgvProducts.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "SatisQiymeti", HeaderText = "Satış Qiyməti", Name = "SatisQiymeti", Width = 100, DefaultCellStyle = new DataGridViewCellStyle { Format = "F2" } });
+            dgvProducts.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "MovcudMiqdar", HeaderText = "Stok", Name = "MovcudMiqdar", Width = 80, DefaultCellStyle = new DataGridViewCellStyle { Format = "F2" } });
+            dgvProducts.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Status", HeaderText = "Status", Name = "Status", Width = 80 });
 
-            dgvProducts.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                DataPropertyName = "Barkod",
-                HeaderText = "Barkod",
-                Name = "Barkod",
-                Width = 120
-            });
+            // Custom-handled columns
+            dgvProducts.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Stok Vəziyyəti", Name = "StokVeziyyeti", Width = 100 });
 
-            var categoryColumn = new DataGridViewTextBoxColumn
-            {
-                HeaderText = "Kateqoriya",
-                Name = "Kateqoriya",
-                Width = 150
-            };
-            dgvProducts.Columns.Add(categoryColumn);
-
-            var unitColumn = new DataGridViewTextBoxColumn
-            {
-                HeaderText = "Vahid",
-                Name = "Vahid",
-                Width = 80
-            };
-            dgvProducts.Columns.Add(unitColumn);
-
-            dgvProducts.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                DataPropertyName = "AlisQiymeti",
-                HeaderText = "Alış Qiyməti",
-                Name = "AlisQiymeti",
-                Width = 100,
-                DefaultCellStyle = new DataGridViewCellStyle { Format = "F2" }
-            });
-
-            dgvProducts.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                DataPropertyName = "SatisQiymeti",
-                HeaderText = "Satış Qiyməti",
-                Name = "SatisQiymeti",
-                Width = 100,
-                DefaultCellStyle = new DataGridViewCellStyle { Format = "F2" }
-            });
-
-            dgvProducts.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                DataPropertyName = "MovcudMiqdar",
-                HeaderText = "Stok",
-                Name = "MovcudMiqdar",
-                Width = 80,
-                DefaultCellStyle = new DataGridViewCellStyle { Format = "F2" }
-            });
-
-            dgvProducts.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                DataPropertyName = "Status",
-                HeaderText = "Status",
-                Name = "Status",
-                Width = 80
-            });
-
-            // Low stock indicator
-            var lowStockColumn = new DataGridViewTextBoxColumn
-            {
-                HeaderText = "Stok Vəziyyəti",
-                Name = "StokVeziyyeti",
-                Width = 100
-            };
-            dgvProducts.Columns.Add(lowStockColumn);
+            // CellFormatting hadisəsini bağlayırıq
+            dgvProducts.CellFormatting += DgvProducts_CellFormatting;
         }
 
-        private void LoadProductsToGrid()
+        private void DgvProducts_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            dgvProducts.Rows.Clear();
+            if (e.RowIndex < 0) return;
 
-            if (_filteredProducts == null || !_filteredProducts.Any())
+            var dgv = (DataGridView)sender;
+            var product = (Mehsul)dgv.Rows[e.RowIndex].DataBoundItem;
+            if (product == null) return;
+
+            // Xüsusi xanaları doldururuq
+            if (dgv.Columns[e.ColumnIndex].Name == "Kateqoriya")
             {
-                // Boş məhsul siyahısı halında xəta göstərməyin, sadəcə boş grid-i göstərin
-                return;
+                e.Value = product.Kateqoriya?.Ad ?? "N/A";
+            }
+            else if (dgv.Columns[e.ColumnIndex].Name == "Vahid")
+            {
+                e.Value = product.Vahid?.QisaAd ?? "N/A";
+            }
+            else if (dgv.Columns[e.ColumnIndex].Name == "StokVeziyyeti")
+            {
+                e.Value = product.StoktanKenarda ? "Az Stok" : "Normal";
             }
 
-            foreach (var product in _filteredProducts)
+            // Sətir rənglənməsi
+            if (product.StoktanKenarda)
             {
-                var row = new DataGridViewRow();
-                row.CreateCells(dgvProducts);
-
-                row.Cells["Id"].Value = product.Id;
-                row.Cells["Ad"].Value = product.Ad;
-                row.Cells["SKU"].Value = product.SKU;
-                row.Cells["Barkod"].Value = product.Barkod;
-                row.Cells["Kateqoriya"].Value = product.Kateqoriya?.Ad ?? "N/A";
-                row.Cells["Vahid"].Value = product.Vahid?.QisaAd ?? "N/A";
-                row.Cells["AlisQiymeti"].Value = product.AlisQiymeti;
-                row.Cells["SatisQiymeti"].Value = product.SatisQiymeti;
-                row.Cells["MovcudMiqdar"].Value = product.MovcudMiqdar;
-                row.Cells["Status"].Value = product.Status;
-
-                string stokVeziyyeti = product.StoktanKenarda ? "Az Stok" : "Normal";
-                row.Cells["StokVeziyyeti"].Value = stokVeziyyeti;
-
-                if (product.StoktanKenarda)
-                {
-                    row.DefaultCellStyle.BackColor = System.Drawing.Color.LightSalmon;
-                }
-                else if (product.Status == "Deaktiv")
-                {
-                    row.DefaultCellStyle.BackColor = System.Drawing.Color.LightGray;
-                }
-
-                dgvProducts.Rows.Add(row);
+                e.CellStyle.BackColor = System.Drawing.Color.LightSalmon;
+            }
+            else if (product.Status == "Deaktiv")
+            {
+                e.CellStyle.BackColor = System.Drawing.Color.LightGray;
+            }
+            else
+            {
+                e.CellStyle.BackColor = dgv.DefaultCellStyle.BackColor;
             }
         }
 
@@ -197,12 +119,10 @@ namespace AzAgroPOS.PL.Forms
             {
                 // Categories
                 var categories = await _kateqoriyaRepository.GetAllActiveAsync();
-                cmbCategory.Items.Clear();
-                cmbCategory.Items.Add(new { Id = 0, Ad = "Bütün Kateqoriyalar" });
-                foreach (var category in categories)
-                {
-                    cmbCategory.Items.Add(new { Id = category.Id, Ad = category.Ad });
-                }
+                var categoryList = new List<object> { new { Id = 0, Ad = "Bütün Kateqoriyalar" } };
+                categoryList.AddRange(categories.Select(c => new { Id = c.Id, Ad = c.Ad }).ToList());
+
+                cmbCategory.DataSource = categoryList;
                 cmbCategory.DisplayMember = "Ad";
                 cmbCategory.ValueMember = "Id";
                 cmbCategory.SelectedIndex = 0;
@@ -216,7 +136,7 @@ namespace AzAgroPOS.PL.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Filterlər yüklənərkən xəta: {ex.Message}", "Xəta", 
+                MessageBox.Show($"Filterlər yüklənərkən xəta: {ex.Message}", "Xəta",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -235,7 +155,7 @@ namespace AzAgroPOS.PL.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Statistikalar yüklənərkən xəta: {ex.Message}", "Xəta", 
+                MessageBox.Show($"Statistikalar yüklənərkən xəta: {ex.Message}", "Xəta",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -258,15 +178,19 @@ namespace AzAgroPOS.PL.Forms
             try
             {
                 string searchTerm = txtSearch.Text.Trim();
-                int? categoryId = cmbCategory.SelectedValue as int? == 0 ? null : cmbCategory.SelectedValue as int?;
-                string status = cmbStatus.SelectedItem?.ToString() == "Hamısı" ? null : cmbStatus.SelectedItem?.ToString();
+                int categoryId = (int)cmbCategory.SelectedValue;
+                string status = cmbStatus.SelectedItem?.ToString();
 
-                _filteredProducts = await _mehsulService.GetMehsullarByFiltersAsync(searchTerm, categoryId, status);
-                LoadProductsToGrid();
+                var filteredProducts = await _mehsulService.GetMehsullarByFiltersAsync(
+                    searchTerm,
+                    categoryId == 0 ? (int?)null : categoryId,
+                    status == "Hamısı" ? null : status);
+
+                dgvProducts.DataSource = filteredProducts;
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Filterlənərkən xəta: {ex.Message}", "Xəta", 
+                MessageBox.Show($"Filterlənərkən xəta: {ex.Message}", "Xəta",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -293,17 +217,16 @@ namespace AzAgroPOS.PL.Forms
         {
             if (dgvProducts.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Düzəliş etmək üçün məhsul seçin.", "Məlumat", 
+                MessageBox.Show("Düzəliş etmək üçün məhsul seçin.", "Məlumat",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
-            var selectedId = (int)dgvProducts.SelectedRows[0].Cells["Id"].Value;
-            var product = await _mehsulRepository.GetByIdAsync(selectedId);
-            
-            if (product != null)
+            var selectedProduct = (Mehsul)dgvProducts.SelectedRows[0].DataBoundItem;
+
+            if (selectedProduct != null)
             {
-                var editForm = new ProductEditForm(product, _currentUser);
+                var editForm = new ProductEditForm(selectedProduct, _currentUser);
                 if (editForm.ShowDialog() == DialogResult.OK)
                 {
                     await LoadDataAsync();
@@ -316,19 +239,18 @@ namespace AzAgroPOS.PL.Forms
         {
             if (dgvProducts.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Silmək üçün məhsul seçin.", "Məlumat", 
+                MessageBox.Show("Silmək üçün məhsul seçin.", "Məlumat",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
-            var selectedId = (int)dgvProducts.SelectedRows[0].Cells["Id"].Value;
-            var productName = dgvProducts.SelectedRows[0].Cells["Ad"].Value.ToString();
+            var selectedProduct = (Mehsul)dgvProducts.SelectedRows[0].DataBoundItem;
 
-            if (MessageBox.Show($"'{productName}' məhsulunu silmək istədiyinizə əminsiniz?", "Təsdiq", 
+            if (MessageBox.Show($"'{selectedProduct.Ad}' məhsulunu silmək istədiyinizə əminsiniz?", "Təsdiq",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                var result = await _mehsulService.DeleteMehsulAsync(selectedId, _currentUser.Id);
-                
+                var result = await _mehsulService.DeleteMehsulAsync(selectedProduct.Id, _currentUser.Id);
+
                 if (result.Success)
                 {
                     MessageBox.Show(result.Message, "Uğurlu", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -347,25 +269,24 @@ namespace AzAgroPOS.PL.Forms
             try
             {
                 var lowStockProducts = await _mehsulService.GetStoktanKenardaMehsullarAsync();
-                _filteredProducts = lowStockProducts;
-                LoadProductsToGrid();
+                dgvProducts.DataSource = lowStockProducts;
 
                 if (lowStockProducts.Count == 0)
                 {
-                    MessageBox.Show("Az stoklu məhsul tapılmadı.", "Məlumat", 
+                    MessageBox.Show("Az stoklu məhsul tapılmadı.", "Məlumat",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Az stoklu məhsullar yüklənərkən xəta: {ex.Message}", "Xəta", 
+                MessageBox.Show($"Az stoklu məhsullar yüklənərkən xəta: {ex.Message}", "Xəta",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void btnExport_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Excel export funksiyası tezliklə əlavə ediləcək.", "Məlumat", 
+            MessageBox.Show("Excel export funksiyası tezliklə əlavə ediləcək.", "Məlumat",
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 

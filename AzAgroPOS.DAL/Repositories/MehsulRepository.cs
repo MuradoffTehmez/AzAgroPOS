@@ -115,7 +115,7 @@ namespace AzAgroPOS.DAL.Repositories
                     .Where(m => m.Ad.ToLower().Contains(term) ||
                                m.Barkod.ToLower().Contains(term) ||
                                m.SKU.ToLower().Contains(term) ||
-                               m.Tesvir.ToLower().Contains(term))
+                               (m.Tesvir != null && m.Tesvir.ToLower().Contains(term)))
                     .OrderBy(m => m.Ad)
                     .ToListAsync();
             }
@@ -125,12 +125,19 @@ namespace AzAgroPOS.DAL.Repositories
         {
             using (var context = new AzAgroDbContext())
             {
-                return await context.Mehsullar
+                // DÜZƏLDİLMİŞ HİSSƏ
+                // 1. Əvvəlcə tərcümə edilə bilən hissəni bazadan çəkirik
+                var activeProducts = await context.Mehsullar
                     .Include(m => m.Kateqoriya)
                     .Include(m => m.Vahid)
-                    .Where(m => m.Status == "Aktiv" && m.MovcudMiqdar <= m.MinimumMiqdar)
-                    .OrderBy(m => m.Ad)
+                    .Where(m => m.Status == "Aktiv")
                     .ToListAsync();
+
+                // 2. Tərcümə edilə bilməyən filterləməni proqram yaddaşında edirik
+                return activeProducts
+                    .Where(m => m.MovcudMiqdar <= m.MinimumMiqdar)
+                    .OrderBy(m => m.Ad)
+                    .ToList();
             }
         }
 
@@ -208,8 +215,6 @@ namespace AzAgroPOS.DAL.Repositories
         {
             using (var context = new AzAgroDbContext())
             {
-                // Burada satış, alış və digər əlaqələr yoxlanılacaq
-                // Hələlik sadəcə mövcudluq yoxlayırıq
                 return await context.Mehsullar.AnyAsync(m => m.Id == id);
             }
         }
@@ -236,8 +241,18 @@ namespace AzAgroPOS.DAL.Repositories
 
                 statistikalar["UmumiMehsulSayi"] = await context.Mehsullar.CountAsync();
                 statistikalar["AktivMehsulSayi"] = await context.Mehsullar.CountAsync(m => m.Status == "Aktiv");
-                statistikalar["StoktanKenardaMehsulSayi"] = await context.Mehsullar.CountAsync(m => m.Status == "Aktiv" && m.MovcudMiqdar <= m.MinimumMiqdar);
-                statistikalar["UmumiDeger"] = await context.Mehsullar.Where(m => m.Status == "Aktiv").SumAsync(m => m.MovcudMiqdar * m.SatisQiymeti);
+
+                statistikalar["StoktanKenardaMehsulSayi"] = await context.Mehsullar
+                    .Where(m => m.Status == "Aktiv" && m.MovcudMiqdar <= m.MinimumMiqdar)
+                    .CountAsync();
+
+                var umumiDeger = await context.Mehsullar
+                    .Where(m => m.Status == "Aktiv")
+                    .Select(m => m.MovcudMiqdar * m.SatisQiymeti)
+                    .ToListAsync();
+
+                statistikalar["UmumiDeger"] = umumiDeger.Sum();
+
 
                 return statistikalar;
             }
