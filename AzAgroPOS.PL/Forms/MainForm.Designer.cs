@@ -172,6 +172,38 @@ namespace AzAgroPOS.PL.Forms
             this.btnReports.UseVisualStyleBackColor = false;
             this.btnReports.Click += new System.EventHandler(this.btnReports_Click);
             // 
+            // btnRepairManagement
+            // 
+            this.btnRepairManagement.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
+            this.btnRepairManagement.FlatAppearance.BorderSize = 0;
+            this.btnRepairManagement.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRepairManagement.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.btnRepairManagement.ForeColor = System.Drawing.Color.White;
+            this.btnRepairManagement.Location = new System.Drawing.Point(20, 500);
+            this.btnRepairManagement.Name = "btnRepairManagement";
+            this.btnRepairManagement.Size = new System.Drawing.Size(240, 45);
+            this.btnRepairManagement.TabIndex = 7;
+            this.btnRepairManagement.Text = "🔧 Təmir İdarəetməsi";
+            this.btnRepairManagement.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnRepairManagement.UseVisualStyleBackColor = false;
+            this.btnRepairManagement.Click += new System.EventHandler(this.btnRepairManagement_Click);
+            // 
+            // btnDebtManagement
+            // 
+            this.btnDebtManagement.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
+            this.btnDebtManagement.FlatAppearance.BorderSize = 0;
+            this.btnDebtManagement.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDebtManagement.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.btnDebtManagement.ForeColor = System.Drawing.Color.White;
+            this.btnDebtManagement.Location = new System.Drawing.Point(20, 440);
+            this.btnDebtManagement.Name = "btnDebtManagement";
+            this.btnDebtManagement.Size = new System.Drawing.Size(240, 45);
+            this.btnDebtManagement.TabIndex = 6;
+            this.btnDebtManagement.Text = "💳 Borc İdarəetməsi";
+            this.btnDebtManagement.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnDebtManagement.UseVisualStyleBackColor = false;
+            this.btnDebtManagement.Click += new System.EventHandler(this.btnDebtManagement_Click);
+            // 
             // btnInventory
             // 
             this.btnInventory.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
@@ -187,38 +219,6 @@ namespace AzAgroPOS.PL.Forms
             this.btnInventory.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnInventory.UseVisualStyleBackColor = false;
             this.btnInventory.Click += new System.EventHandler(this.btnInventory_Click);
-            // 
-            // btnDebtManagement
-            // 
-            this.btnDebtManagement.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
-            this.btnDebtManagement.FlatAppearance.BorderSize = 0;
-            this.btnDebtManagement.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDebtManagement.Font = new System.Drawing.Font(\"Segoe UI\", 12F, System.Drawing.FontStyle.Bold);
-            this.btnDebtManagement.ForeColor = System.Drawing.Color.White;
-            this.btnDebtManagement.Location = new System.Drawing.Point(20, 440);
-            this.btnDebtManagement.Name = \"btnDebtManagement\";
-            this.btnDebtManagement.Size = new System.Drawing.Size(240, 45);
-            this.btnDebtManagement.TabIndex = 6;
-            this.btnDebtManagement.Text = \"💳 Borc İdarəetməsi\";
-            this.btnDebtManagement.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnDebtManagement.UseVisualStyleBackColor = false;
-            this.btnDebtManagement.Click += new System.EventHandler(this.btnDebtManagement_Click);
-            // 
-            // btnRepairManagement
-            // 
-            this.btnRepairManagement.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
-            this.btnRepairManagement.FlatAppearance.BorderSize = 0;
-            this.btnRepairManagement.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRepairManagement.Font = new System.Drawing.Font(\"Segoe UI\", 12F, System.Drawing.FontStyle.Bold);
-            this.btnRepairManagement.ForeColor = System.Drawing.Color.White;
-            this.btnRepairManagement.Location = new System.Drawing.Point(20, 500);
-            this.btnRepairManagement.Name = \"btnRepairManagement\";
-            this.btnRepairManagement.Size = new System.Drawing.Size(240, 45);
-            this.btnRepairManagement.TabIndex = 7;
-            this.btnRepairManagement.Text = \"🔧 Təmir İdarəetməsi\";
-            this.btnRepairManagement.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnRepairManagement.UseVisualStyleBackColor = false;
-            this.btnRepairManagement.Click += new System.EventHandler(this.btnRepairManagement_Click);
             // 
             // btnPOS
             // 
@@ -312,6 +312,22 @@ namespace AzAgroPOS.PL.Forms
             this.btnCustomerManagement.UseVisualStyleBackColor = false;
             this.btnCustomerManagement.Click += new System.EventHandler(this.btnCustomerManagement_Click);
             // 
+            // btnUserManagement
+            // 
+            this.btnUserManagement.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
+            this.btnUserManagement.FlatAppearance.BorderSize = 0;
+            this.btnUserManagement.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnUserManagement.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.btnUserManagement.ForeColor = System.Drawing.Color.White;
+            this.btnUserManagement.Location = new System.Drawing.Point(20, 130);
+            this.btnUserManagement.Name = "btnUserManagement";
+            this.btnUserManagement.Size = new System.Drawing.Size(240, 45);
+            this.btnUserManagement.TabIndex = 2;
+            this.btnUserManagement.Text = "👤 İstifadəçi İdarəetməsi";
+            this.btnUserManagement.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnUserManagement.UseVisualStyleBackColor = false;
+            this.btnUserManagement.Click += new System.EventHandler(this.btnUserManagement_Click);
+            // 
             // btnDashboard
             // 
             this.btnDashboard.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
@@ -327,22 +343,6 @@ namespace AzAgroPOS.PL.Forms
             this.btnDashboard.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnDashboard.UseVisualStyleBackColor = false;
             this.btnDashboard.Click += new System.EventHandler(this.btnDashboard_Click);
-            // 
-            // btnUserManagement
-            // 
-            this.btnUserManagement.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
-            this.btnUserManagement.FlatAppearance.BorderSize = 0;
-            this.btnUserManagement.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnUserManagement.Font = new System.Drawing.Font(\"Segoe UI\", 12F, System.Drawing.FontStyle.Bold);
-            this.btnUserManagement.ForeColor = System.Drawing.Color.White;
-            this.btnUserManagement.Location = new System.Drawing.Point(20, 130);
-            this.btnUserManagement.Name = \"btnUserManagement\";
-            this.btnUserManagement.Size = new System.Drawing.Size(240, 45);
-            this.btnUserManagement.TabIndex = 2;
-            this.btnUserManagement.Text = \"👤 İstifadəçi İdarəetməsi\";
-            this.btnUserManagement.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnUserManagement.UseVisualStyleBackColor = false;
-            this.btnUserManagement.Click += new System.EventHandler(this.btnUserManagement_Click);
             // 
             // lblTitle
             // 
