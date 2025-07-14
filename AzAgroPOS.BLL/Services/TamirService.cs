@@ -10,16 +10,17 @@ namespace AzAgroPOS.BLL.Services
 {
     public class TamirService : IDisposable
     {
+        private readonly AzAgroDbContext _context;
         private readonly TamirIsiRepository _tamirIsiRepository;
         private readonly TamirMerheleRepository _tamirMerheleRepository;
         private readonly AuditLogService _auditLogService;
 
-        public TamirService(AzAgroDbContext context = null, AuditLogService auditLogService = null)
+        public TamirService()
         {
-            var dbContext = context ?? new AzAgroDbContext();
-            _tamirIsiRepository = new TamirIsiRepository(dbContext);
-            _tamirMerheleRepository = new TamirMerheleRepository(dbContext);
-            _auditLogService = auditLogService ?? new AuditLogService();
+            _context = new AzAgroDbContext();
+            _tamirIsiRepository = new TamirIsiRepository(_context);
+            _tamirMerheleRepository = new TamirMerheleRepository(_context);
+            _auditLogService = new AuditLogService(_context); // Assuming AuditLogService also needs DbContext
         }
 
         #region Tamir İşi Yönetimi
@@ -64,17 +65,17 @@ namespace AzAgroPOS.BLL.Services
             tamirIsi.TamirNomresi = _tamirIsiRepository.GenerateTamirNomresi();
             tamirIsi.YaradilmaTarixi = DateTime.Now;
             tamirIsi.Status = "Qəbul Edildi";
-            
+
             var id = _tamirIsiRepository.Add(tamirIsi);
-            
+
             _auditLogService.Log(
-                "TamirIsi", 
-                id, 
-                "Yaradıldı", 
-                $"Yeni təmir işi qəbul edildi: {tamirIsi.TamirNomresiFormatli}", 
+                "TamirIsi",
+                id,
+                "Yaradıldı",
+                $"Yeni təmir işi qəbul edildi: {tamirIsi.TamirNomresiFormatli}",
                 tamirIsi.QebulEdenIstifadeciId
             );
-            
+
             return id;
         }
 
@@ -85,12 +86,12 @@ namespace AzAgroPOS.BLL.Services
                 throw new ArgumentException("Təmir işi tapılmadı");
 
             _tamirIsiRepository.Update(tamirIsi);
-            
+
             _auditLogService.Log(
-                "TamirIsi", 
-                tamirIsi.Id, 
-                "Yeniləndi", 
-                $"Təmir işi yeniləndi: {tamirIsi.TamirNomresiFormatli}", 
+                "TamirIsi",
+                tamirIsi.Id,
+                "Yeniləndi",
+                $"Təmir işi yeniləndi: {tamirIsi.TamirNomresiFormatli}",
                 istifadeciId
             );
         }
@@ -103,12 +104,12 @@ namespace AzAgroPOS.BLL.Services
 
             var oldStatus = repair.Status;
             _tamirIsiRepository.UpdateStatus(repairId, newStatus, istifadeciId);
-            
+
             _auditLogService.Log(
-                "TamirIsi", 
-                repairId, 
-                "Status Dəyişdi", 
-                $"Status dəyişdirildi: {oldStatus} → {newStatus}", 
+                "TamirIsi",
+                repairId,
+                "Status Dəyişdi",
+                $"Status dəyişdirildi: {oldStatus} → {newStatus}",
                 istifadeciId
             );
         }
@@ -116,12 +117,12 @@ namespace AzAgroPOS.BLL.Services
         public void AssignRepairToUser(int repairId, int istifadeciId, int assigningUserId)
         {
             _tamirIsiRepository.AssignToUser(repairId, istifadeciId);
-            
+
             _auditLogService.Log(
-                "TamirIsi", 
-                repairId, 
-                "Təyin Edildi", 
-                $"İşçiyə təyin edildi: İstifadəçi {istifadeciId}", 
+                "TamirIsi",
+                repairId,
+                "Təyin Edildi",
+                $"İşçiyə təyin edildi: İstifadəçi {istifadeciId}",
                 assigningUserId
             );
         }
@@ -139,12 +140,12 @@ namespace AzAgroPOS.BLL.Services
                 throw new InvalidOperationException("Təsdiq prosesi tamamlanmamış");
 
             _tamirIsiRepository.UpdateStatus(repairId, "Təhvil Verildi", deliveringUserId);
-            
+
             _auditLogService.Log(
-                "TamirIsi", 
-                repairId, 
-                "Təhvil Verildi", 
-                $"Təmir işi müştəriyə təhvil verildi", 
+                "TamirIsi",
+                repairId,
+                "Təhvil Verildi",
+                $"Təmir işi müştəriyə təhvil verildi",
                 deliveringUserId
             );
         }
@@ -176,29 +177,29 @@ namespace AzAgroPOS.BLL.Services
         public int AddStep(TamirMerhele tamirMerhele)
         {
             tamirMerhele.YaradilmaTarixi = DateTime.Now;
-            
+
             var id = _tamirMerheleRepository.Add(tamirMerhele);
-            
+
             _auditLogService.Log(
-                "TamirMerhele", 
-                id, 
-                "Yaradıldı", 
-                $"Yeni mərhələ əlavə edildi: {tamirMerhele.MerheleAdi}", 
+                "TamirMerhele",
+                id,
+                "Yaradıldı",
+                $"Yeni mərhələ əlavə edildi: {tamirMerhele.MerheleAdi}",
                 tamirMerhele.TeyinEdilenIstifadeciId ?? 0
             );
-            
+
             return id;
         }
 
         public void UpdateStep(TamirMerhele tamirMerhele, int istifadeciId)
         {
             _tamirMerheleRepository.Update(tamirMerhele);
-            
+
             _auditLogService.Log(
-                "TamirMerhele", 
-                tamirMerhele.Id, 
-                "Yeniləndi", 
-                $"Mərhələ yeniləndi: {tamirMerhele.MerheleAdi}", 
+                "TamirMerhele",
+                tamirMerhele.Id,
+                "Yeniləndi",
+                $"Mərhələ yeniləndi: {tamirMerhele.MerheleAdi}",
                 istifadeciId
             );
         }
@@ -213,12 +214,12 @@ namespace AzAgroPOS.BLL.Services
                 throw new InvalidOperationException("Mərhələ başladıla bilməz");
 
             _tamirMerheleRepository.StartStep(stepId, istifadeciId);
-            
+
             _auditLogService.Log(
-                "TamirMerhele", 
-                stepId, 
-                "Başladıldı", 
-                $"Mərhələ başladıldı: {step.MerheleAdi}", 
+                "TamirMerhele",
+                stepId,
+                "Başladıldı",
+                $"Mərhələ başladıldı: {step.MerheleAdi}",
                 istifadeciId
             );
         }
@@ -233,15 +234,15 @@ namespace AzAgroPOS.BLL.Services
                 throw new InvalidOperationException("Mərhələ tamamlana bilməz");
 
             _tamirMerheleRepository.CompleteStep(stepId, isSaati, parcaDeyeri, tamirciQeydleri, istifadeOlunmusParcalar);
-            
+
             // Update the repair status if all steps are completed
             UpdateRepairStatusBasedOnSteps(step.TamirIsiId);
-            
+
             _auditLogService.Log(
-                "TamirMerhele", 
-                stepId, 
-                "Tamamlandı", 
-                $"Mərhələ tamamlandı: {step.MerheleAdi}", 
+                "TamirMerhele",
+                stepId,
+                "Tamamlandı",
+                $"Mərhələ tamamlandı: {step.MerheleAdi}",
                 istifadeciId
             );
         }
@@ -256,12 +257,12 @@ namespace AzAgroPOS.BLL.Services
                 throw new InvalidOperationException("Bitmiş mərhələ ləğv edilə bilməz");
 
             _tamirMerheleRepository.CancelStep(stepId);
-            
+
             _auditLogService.Log(
-                "TamirMerhele", 
-                stepId, 
-                "Ləğv Edildi", 
-                $"Mərhələ ləğv edildi: {step.MerheleAdi}", 
+                "TamirMerhele",
+                stepId,
+                "Ləğv Edildi",
+                $"Mərhələ ləğv edildi: {step.MerheleAdi}",
                 istifadeciId
             );
         }
@@ -269,12 +270,12 @@ namespace AzAgroPOS.BLL.Services
         public void AssignStepToUser(int stepId, int istifadeciId, int assigningUserId)
         {
             _tamirMerheleRepository.AssignToUser(stepId, istifadeciId);
-            
+
             _auditLogService.Log(
-                "TamirMerhele", 
-                stepId, 
-                "Təyin Edildi", 
-                $"Mərhələ işçiyə təyin edildi: İstifadəçi {istifadeciId}", 
+                "TamirMerhele",
+                stepId,
+                "Təyin Edildi",
+                $"Mərhələ işçiyə təyin edildi: İstifadəçi {istifadeciId}",
                 assigningUserId
             );
         }
@@ -287,12 +288,12 @@ namespace AzAgroPOS.BLL.Services
         {
             var statuses = new[] { "Qəbul Edildi", "Təşxis", "İşlənir", "Gözləyir", "Hazır", "Təhvil Verildi", "İptal" };
             var summary = new Dictionary<string, int>();
-            
+
             foreach (var status in statuses)
             {
                 summary[status] = _tamirIsiRepository.GetCountByStatus(status);
             }
-            
+
             return summary;
         }
 
@@ -319,7 +320,7 @@ namespace AzAgroPOS.BLL.Services
         {
             var repair = _tamirIsiRepository.GetById(tamirIsiId);
             var steps = _tamirMerheleRepository.GetByTamirIsiId(tamirIsiId).ToList();
-            
+
             if (steps.All(s => s.Status == "Bitdi" || s.Status == "İptal"))
             {
                 if (steps.Any(s => s.Status == "Bitdi"))
@@ -344,8 +345,7 @@ namespace AzAgroPOS.BLL.Services
 
         public void Dispose()
         {
-            // Repository sinifləri IDisposable tətbiq etmədiyi üçün sadəcə null təyin edirik
-            // Gələcəkdə repository siniflərinə IDisposable əlavə edilərsə, burada dispose ediləcək
+            _context?.Dispose();
         }
     }
 }

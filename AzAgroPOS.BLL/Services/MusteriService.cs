@@ -5,171 +5,135 @@ using AzAgroPOS.Entities.Constants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 
 namespace AzAgroPOS.BLL.Services
 {
     public class MusteriService : IDisposable
     {
+        private readonly AzAgroDbContext _context;
         private readonly MusteriRepository _musteriRepository;
         private readonly MusteriQrupuRepository _musteriQrupuRepository;
-        private readonly AuditLogService _auditLogService;
-        private readonly AzAgroDbContext _context;
+        private readonly IAuditLogService _auditLogService;
+        private bool _disposed = false;
 
-        public MusteriService(AzAgroDbContext context = null, AuditLogService auditLogService = null)
+        public MusteriService(AzAgroDbContext context = null, IAuditLogService auditLogService = null)
         {
             _context = context ?? new AzAgroDbContext();
             _musteriRepository = new MusteriRepository(_context);
             _musteriQrupuRepository = new MusteriQrupuRepository(_context);
-            _auditLogService = auditLogService ?? new AuditLogService();
+            _auditLogService = auditLogService ?? new AuditLogService(_context);
         }
 
         #region Müştəri CRUD Operations
 
         public IEnumerable<Musteri> GetAllCustomers()
         {
-            try
-            {
-                return _musteriRepository.GetAll().ToList();
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException($"Müştəri məlumatları alınarkən xəta: {ex.Message}", ex);
-            }
+            return ExecuteWithExceptionHandling(
+                () => _musteriRepository.GetAll().ToList(),
+                "Müştəri məlumatları alınarkən xəta");
         }
 
         public IEnumerable<Musteri> GetActiveCustomers()
         {
-            try
-            {
-                return _musteriRepository.GetActive().ToList();
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException($"Aktiv müştəri məlumatları alınarkən xəta: {ex.Message}", ex);
-            }
+            return ExecuteWithExceptionHandling(
+                () => _musteriRepository.GetActive().ToList(),
+                "Aktiv müştəri məlumatları alınarkən xəta");
         }
 
         public Musteri GetCustomerById(int id)
         {
-            try
-            {
-                if (id <= 0)
-                    throw new ArgumentException("Yanlış müştəri ID-si", nameof(id));
-                    
-                return _musteriRepository.GetById(id);
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException($"Müştəri məlumatı alınarkən xəta: {ex.Message}", ex);
-            }
+            if (id <= 0)
+                throw new ArgumentException("Yanlış müştəri ID-si", nameof(id));
+
+            return ExecuteWithExceptionHandling(
+                () => _musteriRepository.GetById(id),
+                $"Müştəri məlumatı alınarkən xəta (ID: {id})");
         }
 
         public Musteri GetCustomerByCode(string musteriKodu)
         {
-            try
-            {
-                if (string.IsNullOrEmpty(musteriKodu))
-                    throw new ArgumentException("Müştəri kodu boş ola bilməz", nameof(musteriKodu));
-                    
-                return _musteriRepository.GetByCode(musteriKodu);
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException($"Müştəri məlumatı alınarkən xəta: {ex.Message}", ex);
-            }
+            if (string.IsNullOrEmpty(musteriKodu))
+                throw new ArgumentException("Müştəri kodu boş ola bilməz", nameof(musteriKodu));
+
+            return ExecuteWithExceptionHandling(
+                () => _musteriRepository.GetByCode(musteriKodu),
+                $"Müştəri məlumatı alınarkən xəta (Kod: {musteriKodu})");
         }
 
         public (bool Success, string Message, Musteri Customer) CreateCustomer(Musteri musteri, int yaradanIstifadeciId)
         {
-            using (var transaction = _context.Database.BeginTransaction())
+            return ExecuteWithTransaction(() =>
             {
-                try
+                // Validation
+                var validationResult = ValidateCustomer(musteri);
+                if (!validationResult.IsValid)
+                    return (false, validationResult.ErrorMessage, null);
+
+                // Check if code exists
+                if (!string.IsNullOrEmpty(musteri.MusteriKodu) &&
+                    _musteriRepository.IsCodeExists(musteri.MusteriKodu))
                 {
-                    // Validation
-                    var validationResult = ValidateCustomer(musteri);
-                    if (!validationResult.IsValid)
-                        return (false, validationResult.ErrorMessage, null);
-
-                    // Check if code exists
-                    if (!string.IsNullOrEmpty(musteri.MusteriKodu) && 
-                        _musteriRepository.IsCodeExists(musteri.MusteriKodu))
-                    {
-                        return (false, "Bu müştəri kodu artıq mövcuddur.", null);
-                    }
-
-                    // Check if email exists
-                    if (!string.IsNullOrEmpty(musteri.Email) && 
-                        _musteriRepository.IsEmailExists(musteri.Email))
-                    {
-                        return (false, "Bu email ünvanı artıq istifadə olunur.", null);
-                    }
-
-                    musteri.YaradanIstifadeciId = yaradanIstifadeciId;
-                    musteri.YaradilmaTarixi = DateTime.Now;
-                    musteri.Status = SystemConstants.Status.Active;
-
-                    var createdCustomer = _musteriRepository.Add(musteri);
-
-                    // Log audit
-                    _auditLogService.LogAction("Musteri", "CREATE", createdCustomer.Id, 
-                        $"Yeni müştəri yaradıldı: {createdCustomer.TamAd}", yaradanIstifadeciId);
-
-                    transaction.Commit();
-                    return (true, "Müştəri uğurla yaradıldı.", createdCustomer);
+                    return (false, "Bu müştəri kodu artıq mövcuddur.", null);
                 }
-                catch (Exception ex)
+
+                // Check if email exists
+                if (!string.IsNullOrEmpty(musteri.Email) &&
+                    _musteriRepository.IsEmailExists(musteri.Email))
                 {
-                    transaction.Rollback();
-                    return (false, $"Müştəri yaradılarkən xəta: {ex.Message}", null);
+                    return (false, "Bu email ünvanı artıq istifadə olunur.", null);
                 }
-            }
+
+                musteri.YaradanIstifadeciId = yaradanIstifadeciId;
+                musteri.YaradilmaTarixi = DateTime.Now;
+                musteri.Status = SystemConstants.Status.Active;
+
+                var createdCustomer = _musteriRepository.Add(musteri);
+
+                // Log audit
+                _auditLogService.LogAction("Musteri", "CREATE", createdCustomer.Id,
+                    $"Yeni müştəri yaradıldı: {createdCustomer.TamAd}", yaradanIstifadeciId);
+
+                return (true, "Müştəri uğurla yaradıldı.", createdCustomer);
+            }, "Müştəri yaradılarkən xəta");
         }
 
         public (bool Success, string Message) UpdateCustomer(Musteri musteri, int yenileyenIstifadeciId)
         {
-            using (var transaction = _context.Database.BeginTransaction())
+            return ExecuteWithTransaction(() =>
             {
-                try
+                // Validation
+                var validationResult = ValidateCustomer(musteri, musteri.Id);
+                if (!validationResult.IsValid)
+                    return (false, validationResult.ErrorMessage);
+
+                // Check if code exists
+                if (!string.IsNullOrEmpty(musteri.MusteriKodu) &&
+                    _musteriRepository.IsCodeExists(musteri.MusteriKodu, musteri.Id))
                 {
-                    // Validation
-                    var validationResult = ValidateCustomer(musteri, musteri.Id);
-                    if (!validationResult.IsValid)
-                        return (false, validationResult.ErrorMessage);
-
-                    // Check if code exists
-                    if (!string.IsNullOrEmpty(musteri.MusteriKodu) && 
-                        _musteriRepository.IsCodeExists(musteri.MusteriKodu, musteri.Id))
-                    {
-                        return (false, "Bu müştəri kodu artıq mövcuddur.");
-                    }
-
-                    // Check if email exists
-                    if (!string.IsNullOrEmpty(musteri.Email) && 
-                        _musteriRepository.IsEmailExists(musteri.Email, musteri.Id))
-                    {
-                        return (false, "Bu email ünvanı artıq istifadə olunur.");
-                    }
-
-                    var updatedCustomer = _musteriRepository.Update(musteri);
-
-                    // Log audit
-                    _auditLogService.LogAction("Musteri", "UPDATE", musteri.Id, 
-                        $"Müştəri yeniləndi: {musteri.TamAd}", yenileyenIstifadeciId);
-
-                    transaction.Commit();
-                    return (true, "Müştəri məlumatları uğurla yeniləndi.");
+                    return (false, "Bu müştəri kodu artıq mövcuddur.");
                 }
-                catch (Exception ex)
+
+                // Check if email exists
+                if (!string.IsNullOrEmpty(musteri.Email) &&
+                    _musteriRepository.IsEmailExists(musteri.Email, musteri.Id))
                 {
-                    transaction.Rollback();
-                    return (false, $"Müştəri yenilənərkən xəta: {ex.Message}");
+                    return (false, "Bu email ünvanı artıq istifadə olunur.");
                 }
-            }
+
+                _musteriRepository.Update(musteri);
+
+                // Log audit
+                _auditLogService.LogAction("Musteri", "UPDATE", musteri.Id,
+                    $"Müştəri yeniləndi: {musteri.TamAd}", yenileyenIstifadeciId);
+
+                return (true, "Müştəri məlumatları uğurla yeniləndi.");
+            }, "Müştəri yenilənərkən xəta");
         }
 
         public (bool Success, string Message) DeleteCustomer(int id, int silenIstifadeciId)
         {
-            try
+            return ExecuteWithExceptionHandling(() =>
             {
                 var musteri = GetCustomerById(id);
                 if (musteri == null)
@@ -182,15 +146,11 @@ namespace AzAgroPOS.BLL.Services
                 _musteriRepository.Delete(id);
 
                 // Log audit
-                _auditLogService.LogAction("Musteri", "DELETE", id, 
+                _auditLogService.LogAction("Musteri", "DELETE", id,
                     $"Müştəri silindi: {musteri.TamAd}", silenIstifadeciId);
 
                 return (true, "Müştəri uğurla silindi.");
-            }
-            catch (Exception ex)
-            {
-                return (false, $"Müştəri silinərkən xəta: {ex.Message}");
-            }
+            }, "Müştəri silinərkən xəta");
         }
 
         #endregion
@@ -199,19 +159,14 @@ namespace AzAgroPOS.BLL.Services
 
         public IEnumerable<MusteriQrupu> GetAllCustomerGroups()
         {
-            try
-            {
-                return _musteriQrupuRepository.GetActive().ToList();
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException($"Müştəri qrupları alınarkən xəta: {ex.Message}", ex);
-            }
+            return ExecuteWithExceptionHandling(
+                () => _musteriQrupuRepository.GetActive().ToList(),
+                "Müştəri qrupları alınarkən xəta");
         }
 
         public (bool Success, string Message, MusteriQrupu Group) CreateCustomerGroup(MusteriQrupu qrup, int yaradanIstifadeciId)
         {
-            try
+            return ExecuteWithExceptionHandling(() =>
             {
                 // Validation
                 if (string.IsNullOrEmpty(qrup.Ad))
@@ -227,15 +182,11 @@ namespace AzAgroPOS.BLL.Services
                 var createdGroup = _musteriQrupuRepository.Add(qrup);
 
                 // Log audit
-                _auditLogService.LogAction("MusteriQrupu", "CREATE", createdGroup.Id, 
+                _auditLogService.LogAction("MusteriQrupu", "CREATE", createdGroup.Id,
                     $"Yeni müştəri qrupu yaradıldı: {createdGroup.Ad}", yaradanIstifadeciId);
 
                 return (true, "Müştəri qrupu uğurla yaradıldı.", createdGroup);
-            }
-            catch (Exception ex)
-            {
-                return (false, $"Müştəri qrupu yaradılarkən xəta: {ex.Message}", null);
-            }
+            }, "Müştəri qrupu yaradılarkən xəta");
         }
 
         #endregion
@@ -244,62 +195,37 @@ namespace AzAgroPOS.BLL.Services
 
         public IEnumerable<Musteri> SearchCustomers(string searchTerm)
         {
-            try
-            {
-                return _musteriRepository.SearchCustomers(searchTerm).ToList();
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException($"Müştəri axtarışında xəta: {ex.Message}", ex);
-            }
+            return ExecuteWithExceptionHandling(
+                () => _musteriRepository.SearchCustomers(searchTerm).ToList(),
+                "Müştəri axtarışında xəta");
         }
 
         public IEnumerable<Musteri> GetCustomersByGroup(int qrupId)
         {
-            try
-            {
-                return _musteriRepository.GetByGroup(qrupId).ToList();
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException($"Qrup üzrə müştərilər alınarkən xəta: {ex.Message}", ex);
-            }
+            return ExecuteWithExceptionHandling(
+                () => _musteriRepository.GetByGroup(qrupId).ToList(),
+                $"Qrup üzrə müştərilər alınarkən xəta (Qrup ID: {qrupId})");
         }
 
         public IEnumerable<Musteri> GetVIPCustomers()
         {
-            try
-            {
-                return _musteriRepository.GetVIPCustomers().ToList();
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException($"VIP müştərilər alınarkən xəta: {ex.Message}", ex);
-            }
+            return ExecuteWithExceptionHandling(
+                () => _musteriRepository.GetVIPCustomers().ToList(),
+                "VIP müştərilər alınarkən xəta");
         }
 
         public IEnumerable<Musteri> GetNewCustomers(int days = 30)
         {
-            try
-            {
-                return _musteriRepository.GetNewCustomers(days).ToList();
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException($"Yeni müştərilər alınarkən xəta: {ex.Message}", ex);
-            }
+            return ExecuteWithExceptionHandling(
+                () => _musteriRepository.GetNewCustomers(days).ToList(),
+                "Yeni müştərilər alınarkən xəta");
         }
 
         public IEnumerable<Musteri> GetInactiveCustomers(int days = 90)
         {
-            try
-            {
-                return _musteriRepository.GetInactiveCustomers(days).ToList();
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException($"Passiv müştərilər alınarkən xəta: {ex.Message}", ex);
-            }
+            return ExecuteWithExceptionHandling(
+                () => _musteriRepository.GetInactiveCustomers(days).ToList(),
+                "Passiv müştərilər alınarkən xəta");
         }
 
         #endregion
@@ -308,38 +234,23 @@ namespace AzAgroPOS.BLL.Services
 
         public List<object> GetCustomerStatistics()
         {
-            try
-            {
-                return _musteriRepository.GetCustomerStatistics();
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException($"Müştəri statistikaları alınarkən xəta: {ex.Message}", ex);
-            }
+            return ExecuteWithExceptionHandling(
+                _musteriRepository.GetCustomerStatistics,
+                "Müştəri statistikaları alınarkən xəta");
         }
 
         public List<object> GetTopCustomers(int count = 10)
         {
-            try
-            {
-                return _musteriRepository.GetTopCustomers(count);
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException($"Top müştərilər alınarkən xəta: {ex.Message}", ex);
-            }
+            return ExecuteWithExceptionHandling(
+                () => _musteriRepository.GetTopCustomers(count),
+                "Top müştərilər alınarkən xəta");
         }
 
         public List<object> GetGroupStatistics()
         {
-            try
-            {
-                return _musteriQrupuRepository.GetGroupStatistics();
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException($"Qrup statistikaları alınarkən xəta: {ex.Message}", ex);
-            }
+            return ExecuteWithExceptionHandling(
+                _musteriQrupuRepository.GetGroupStatistics,
+                "Qrup statistikaları alınarkən xəta");
         }
 
         #endregion
@@ -348,31 +259,21 @@ namespace AzAgroPOS.BLL.Services
 
         public void UpdateCustomerDebt(int musteriId, decimal yeniBorc)
         {
-            try
-            {
-                _musteriRepository.UpdateDebtAmount(musteriId, yeniBorc);
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException($"Müştəri borc məlumatı yenilənərkən xəta: {ex.Message}", ex);
-            }
+            ExecuteWithExceptionHandling(
+                () => _musteriRepository.UpdateDebtAmount(musteriId, yeniBorc),
+                $"Müştəri borc məlumatı yenilənərkən xəta (Müştəri ID: {musteriId})");
         }
 
         public void UpdateCustomerPurchase(int musteriId, decimal alistutar)
         {
-            try
-            {
-                _musteriRepository.UpdatePurchaseAmount(musteriId, alistutar);
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException($"Müştəri alış məlumatı yenilənərkən xəta: {ex.Message}", ex);
-            }
+            ExecuteWithExceptionHandling(
+                () => _musteriRepository.UpdatePurchaseAmount(musteriId, alistutar),
+                $"Müştəri alış məlumatı yenilənərkən xəta (Müştəri ID: {musteriId})");
         }
 
         #endregion
 
-        #region Validation
+        #region Helper Methods
 
         private (bool IsValid, string ErrorMessage) ValidateCustomer(Musteri musteri, int? excludeId = null)
         {
@@ -382,11 +283,8 @@ namespace AzAgroPOS.BLL.Services
             if (string.IsNullOrEmpty(musteri.Soyad))
                 return (false, "Soyad mütləqdir.");
 
-            if (!string.IsNullOrEmpty(musteri.Email))
-            {
-                if (!IsValidEmail(musteri.Email))
-                    return (false, "Email formatı düzgün deyil.");
-            }
+            if (!string.IsNullOrEmpty(musteri.Email) && !IsValidEmail(musteri.Email))
+                return (false, "Email formatı düzgün deyil.");
 
             if (musteri.KreditLimiti < 0)
                 return (false, "Kredit limiti mənfi ola bilməz.");
@@ -401,7 +299,7 @@ namespace AzAgroPOS.BLL.Services
         {
             try
             {
-                var addr = new System.Net.Mail.MailAddress(email);
+                var addr = new MailAddress(email);
                 return addr.Address == email;
             }
             catch
@@ -410,13 +308,78 @@ namespace AzAgroPOS.BLL.Services
             }
         }
 
+        private T ExecuteWithExceptionHandling<T>(Func<T> action, string errorMessage)
+        {
+            try
+            {
+                return action();
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException($"{errorMessage}: {ex.Message}", ex);
+            }
+        }
+
+        private void ExecuteWithExceptionHandling(Action action, string errorMessage)
+        {
+            try
+            {
+                action();
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException($"{errorMessage}: {ex.Message}", ex);
+            }
+        }
+
+        private T ExecuteWithTransaction<T>(Func<T> action, string errorMessage)
+        {
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var result = action();
+                    transaction.Commit();
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw new ApplicationException($"{errorMessage}: {ex.Message}", ex);
+                }
+            }
+        }
+
         #endregion
+
+        #region IDisposable Implementation
 
         public void Dispose()
         {
-            _musteriRepository?.Dispose();
-            _musteriQrupuRepository?.Dispose();
-            _auditLogService?.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    _context?.Dispose();
+                    _musteriRepository?.Dispose();
+                    _musteriQrupuRepository?.Dispose();
+                    _auditLogService?.Dispose();
+                }
+                _disposed = true;
+            }
+        }
+
+        ~MusteriService()
+        {
+            Dispose(false);
+        }
+
+        #endregion
     }
 }

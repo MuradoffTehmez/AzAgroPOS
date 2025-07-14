@@ -4,11 +4,13 @@ using System.Linq;
 using AzAgroPOS.Entities.Domain;
 using AzAgroPOS.Entities.Constants;
 using AzAgroPOS.DAL.Repositories;
+using AzAgroPOS.DAL;
 
 namespace AzAgroPOS.BLL.Services
 {
     public class TedarukcuService : IDisposable
     {
+        private readonly AzAgroDbContext _context;
         private readonly TedarukcuRepository _tedarukcuRepository;
         private readonly AlisOrderRepository _alisOrderRepository;
         private readonly AlisSenedRepository _alisSenedRepository;
@@ -16,10 +18,11 @@ namespace AzAgroPOS.BLL.Services
 
         public TedarukcuService()
         {
-            _tedarukcuRepository = new TedarukcuRepository();
-            _alisOrderRepository = new AlisOrderRepository();
-            _alisSenedRepository = new AlisSenedRepository();
-            _odemeRepository = new TedarukcuOdemeRepository();
+            _context = new AzAgroDbContext();
+            _tedarukcuRepository = new TedarukcuRepository(_context);
+            _alisOrderRepository = new AlisOrderRepository(_context);
+            _alisSenedRepository = new AlisSenedRepository(_context);
+            _odemeRepository = new TedarukcuOdemeRepository(_context);
         }
 
         public List<Tedarukcu> GetAllActive()
@@ -59,7 +62,7 @@ namespace AzAgroPOS.BLL.Services
             if (_tedarukcuRepository.KodMevcudMu(tedarukcu.Kod, tedarukcu.Id))
                 throw new InvalidOperationException("Bu kod artıq mövcuddur");
 
-            if (!string.IsNullOrEmpty(tedarukcu.VOEN) && 
+            if (!string.IsNullOrEmpty(tedarukcu.VOEN) &&
                 _tedarukcuRepository.VOENMevcudMu(tedarukcu.VOEN, tedarukcu.Id))
                 throw new InvalidOperationException("Bu VOEN artıq mövcuddur");
 
@@ -72,7 +75,7 @@ namespace AzAgroPOS.BLL.Services
             if (_tedarukcuRepository.KodMevcudMu(tedarukcu.Kod, tedarukcu.Id))
                 throw new InvalidOperationException("Bu kod artıq mövcuddur");
 
-            if (!string.IsNullOrEmpty(tedarukcu.VOEN) && 
+            if (!string.IsNullOrEmpty(tedarukcu.VOEN) &&
                 _tedarukcuRepository.VOENMevcudMu(tedarukcu.VOEN, tedarukcu.Id))
                 throw new InvalidOperationException("Bu VOEN artıq mövcuddur");
 
@@ -136,7 +139,7 @@ namespace AzAgroPOS.BLL.Services
         public TedarukcuStatistikleri GetTedarukcuStatistikleri(int tedarukcuId, DateTime? startDate = null, DateTime? endDate = null)
         {
             var statistikalar = new TedarukcuStatistikleri();
-            
+
             var tedarukcu = _tedarukcuRepository.GetById(tedarukcuId);
             if (tedarukcu == null) return statistikalar;
 
@@ -197,8 +200,7 @@ namespace AzAgroPOS.BLL.Services
 
         public void Dispose()
         {
-            // Repository sinifləri IDisposable tətbiq etmədiyi üçün sadəcə boş buraxırıq
-            // Gələcəkdə repository siniflərinə IDisposable əlavə edilərsə, burada dispose ediləcək
+            _context?.Dispose();
         }
     }
 
@@ -208,14 +210,14 @@ namespace AzAgroPOS.BLL.Services
         public int TesdiqlenmisgOrderSayi { get; set; }
         public int TeslimEdilmişOrderSayi { get; set; }
         public decimal UmumiOrderMeblegi { get; set; }
-        
+
         public int UmumiSenedSayi { get; set; }
         public int QebulEdilmişSenedSayi { get; set; }
         public decimal UmumiSenedMeblegi { get; set; }
-        
+
         public int UmumiOdemeSayi { get; set; }
         public decimal UmumiOdemeMeblegi { get; set; }
-        
+
         public decimal CariBorc { get; set; }
         public decimal KreditLimiti { get; set; }
         public decimal QalanKreditLimiti { get; set; }

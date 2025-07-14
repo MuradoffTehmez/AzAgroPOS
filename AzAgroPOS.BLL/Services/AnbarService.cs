@@ -3,24 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using AzAgroPOS.Entities.Domain;
 using AzAgroPOS.DAL.Repositories;
+using AzAgroPOS.DAL;
 
 namespace AzAgroPOS.BLL.Services
 {
-    public class AnbarService
+    public class AnbarService : IDisposable
     {
         private readonly AnbarRepository _anbarRepository;
         private readonly AnbarQalikRepository _qalikRepository;
         private readonly AnbarHereketRepository _hereketRepository;
         private readonly AnbarTransferRepository _transferRepository;
         private readonly MehsulRepository _mehsulRepository;
+        private readonly AzAgroDbContext _context;
 
         public AnbarService()
         {
-            _anbarRepository = new AnbarRepository();
-            _qalikRepository = new AnbarQalikRepository();
-            _hereketRepository = new AnbarHereketRepository();
-            _transferRepository = new AnbarTransferRepository();
-            _mehsulRepository = new MehsulRepository();
+            _context = new AzAgroDbContext();
+            _anbarRepository = new AnbarRepository(_context);
+            _qalikRepository = new AnbarQalikRepository(_context);
+            _hereketRepository = new AnbarHereketRepository(_context);
+            _transferRepository = new AnbarTransferRepository(_context);
+            _mehsulRepository = new MehsulRepository(_context);
         }
 
         #region Anbar Management
@@ -95,7 +98,7 @@ namespace AzAgroPOS.BLL.Services
             return _qalikRepository.GetByAnbarVeMehsul(anbarId, mehsulId);
         }
 
-        public void MehsulGiriş(int anbarId, int mehsulId, decimal miqdar, decimal vahidQiymet, 
+        public void MehsulGiriş(int anbarId, int mehsulId, decimal miqdar, decimal vahidQiymet,
             string senedNomresi, string senedTipi, int senedId, int istifadeciId, string terefkarsi = null)
         {
             var qalik = GetQalik(anbarId, mehsulId);
@@ -116,10 +119,10 @@ namespace AzAgroPOS.BLL.Services
                     SonAlisQiymeti = vahidQiymet,
                     SonAlısTarixi = DateTime.Now
                 };
-                
+
                 // Calculate average purchase price
                 qalik.OrtalamaAlisQiymeti = vahidQiymet;
-                
+
                 _qalikRepository.Add(qalik);
             }
             else
@@ -127,13 +130,13 @@ namespace AzAgroPOS.BLL.Services
                 // Update average purchase price using weighted average
                 var totalValue = (qalik.MovcudMiqdar * qalik.OrtalamaAlisQiymeti) + (miqdar * vahidQiymet);
                 var totalQuantity = qalik.MovcudMiqdar + miqdar;
-                
+
                 qalik.MovcudMiqdar = yeniQalik;
                 qalik.OrtalamaAlisQiymeti = totalQuantity > 0 ? totalValue / totalQuantity : vahidQiymet;
                 qalik.SonAlisQiymeti = vahidQiymet;
                 qalik.SonAlısTarixi = DateTime.Now;
                 qalik.YenilenmeTarixi = DateTime.Now;
-                
+
                 _qalikRepository.Update(qalik);
             }
 
@@ -154,11 +157,11 @@ namespace AzAgroPOS.BLL.Services
                 Terefkarsi = terefkarsi,
                 IstifadeciId = istifadeciId
             };
-            
+
             _hereketRepository.Add(hareket);
         }
 
-        public void MehsulCixis(int anbarId, int mehsulId, decimal miqdar, 
+        public void MehsulCixis(int anbarId, int mehsulId, decimal miqdar,
             string senedNomresi, string senedTipi, int senedId, int istifadeciId, string terefkarsi = null)
         {
             var qalik = GetQalik(anbarId, mehsulId);
@@ -174,7 +177,7 @@ namespace AzAgroPOS.BLL.Services
             qalik.MovcudMiqdar = yeniQalik;
             qalik.SonSatısTarixi = DateTime.Now;
             qalik.YenilenmeTarixi = DateTime.Now;
-            
+
             _qalikRepository.Update(qalik);
 
             // Record movement
@@ -194,11 +197,11 @@ namespace AzAgroPOS.BLL.Services
                 Terefkarsi = terefkarsi,
                 IstifadeciId = istifadeciId
             };
-            
+
             _hereketRepository.Add(hareket);
         }
 
-        public void MiqdarDuzelishi(int anbarId, int mehsulId, decimal yeniMiqdar, 
+        public void MiqdarDuzelishi(int anbarId, int mehsulId, decimal yeniMiqdar,
             string aciklama, int istifadeciId)
         {
             var qalik = GetQalik(anbarId, mehsulId);
@@ -210,7 +213,7 @@ namespace AzAgroPOS.BLL.Services
 
             qalik.MovcudMiqdar = yeniMiqdar;
             qalik.YenilenmeTarixi = DateTime.Now;
-            
+
             _qalikRepository.Update(qalik);
 
             // Record movement
@@ -229,7 +232,7 @@ namespace AzAgroPOS.BLL.Services
                 Aciklama = aciklama,
                 IstifadeciId = istifadeciId
             };
-            
+
             _hereketRepository.Add(hareket);
         }
 
@@ -275,7 +278,7 @@ namespace AzAgroPOS.BLL.Services
 
             transfer.TransferNomresi = GenerateTransferNomresi();
             transfer.Status = "Hazırlıq";
-            
+
             return _transferRepository.Add(transfer);
         }
 
@@ -482,12 +485,7 @@ namespace AzAgroPOS.BLL.Services
 
         public void Dispose()
         {
-            _anbarRepository?.Dispose();
-            _qalikRepository?.Dispose();
-            _hereketRepository?.Dispose();
-            _transferRepository?.Dispose();
-            _mehsulRepository?.Dispose();
+            _context?.Dispose();
         }
     }
-
 }

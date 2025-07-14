@@ -15,6 +15,9 @@ namespace AzAgroPOS.DAL.Repositories
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
+        public TedarukcuOdemeRepository()
+        {
+        }
 
         public int Add(TedarukcuOdeme odeme)
         {

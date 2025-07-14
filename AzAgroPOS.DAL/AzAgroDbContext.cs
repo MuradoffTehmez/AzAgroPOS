@@ -41,6 +41,10 @@ namespace AzAgroPOS.DAL
         public DbSet<TamirIsi> TamirIsleri { get; set; }
         public DbSet<TamirMerhele> TamirMerheleri { get; set; }
 
+
+        public DbSet<Musteri> Musteriler { get; set; }
+        public DbSet<MusteriQrupu> MusteriQruplari { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)

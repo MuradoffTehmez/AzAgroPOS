@@ -1,3 +1,4 @@
+using AzAgroPOS.DAL;
 using AzAgroPOS.DAL.Repositories;
 using AzAgroPOS.Entities.Domain;
 using AzAgroPOS.Entities.Constants;
@@ -12,10 +13,12 @@ namespace AzAgroPOS.BLL.Services
     public class AuthService : IDisposable
     {
         private readonly IstifadeciRepository _istifadeciRepository;
+        private readonly AzAgroDbContext _context;
 
         public AuthService()
         {
-            _istifadeciRepository = new IstifadeciRepository();
+            _context = new AzAgroDbContext();
+            _istifadeciRepository = new IstifadeciRepository(_context);
         }
 
         /// <summary>
@@ -30,7 +33,6 @@ namespace AzAgroPOS.BLL.Services
 
             return BCrypt.Net.BCrypt.HashPassword(password, BCrypt.Net.BCrypt.GenerateSalt(12));
         }
-
 
         public async Task<(bool Success, string Message)> ResetPasswordAsync(int userId, string newPassword)
         {
@@ -63,8 +65,6 @@ namespace AzAgroPOS.BLL.Services
                 return (false, $"Xəta baş verdi: {ex.Message}");
             }
         }
-
-
 
         /// <summary>
         /// Verify password against hash
@@ -100,7 +100,7 @@ namespace AzAgroPOS.BLL.Services
 
                 // Always perform hash computation to prevent timing attacks
                 string dummyHash = "$2a$12$dummyhashfortimingatnormalizedconstanttime";
-                
+
                 if (istifadeci == null)
                 {
                     // Perform dummy verification to normalize timing
@@ -143,7 +143,7 @@ namespace AzAgroPOS.BLL.Services
 
                 // Always perform hash computation to prevent timing attacks
                 string dummyHash = "$2a$12$dummyhashfortimingatnormalizedconstanttime";
-                
+
                 if (istifadeci == null)
                 {
                     // Perform dummy verification to normalize timing
@@ -177,7 +177,7 @@ namespace AzAgroPOS.BLL.Services
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(ad) || string.IsNullOrWhiteSpace(soyad) || 
+                if (string.IsNullOrWhiteSpace(ad) || string.IsNullOrWhiteSpace(soyad) ||
                     string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
                 {
                     return (false, "Bütün sahələr doldurulmalıdır.", null);
@@ -262,7 +262,6 @@ namespace AzAgroPOS.BLL.Services
             }
         }
 
-
         /// <summary>
         /// Check if password meets complexity requirements
         /// </summary>
@@ -281,16 +280,11 @@ namespace AzAgroPOS.BLL.Services
         {
             return _istifadeciRepository.GetAll()
                 .Cast<Istifadeci>()
-                .Where(i => i.Status == SystemConstants.Status.Active && 
-                       (i.Rol?.Ad == SystemConstants.Roles.Worker || 
-                        i.Rol?.Ad == SystemConstants.Roles.Manager || 
+                .Where(i => i.Status == SystemConstants.Status.Active &&
+                       (i.Rol?.Ad == SystemConstants.Roles.Worker ||
+                        i.Rol?.Ad == SystemConstants.Roles.Manager ||
                         i.Rol?.Ad == SystemConstants.Roles.Administrator))
                 .ToList();
-        }
-
-        public void Dispose()
-        {
-            _istifadeciRepository?.Dispose();
         }
 
         public async Task<(bool Success, Istifadeci User)> LoginWithTokenAsync(string token)
@@ -314,6 +308,12 @@ namespace AzAgroPOS.BLL.Services
             }
 
             return (false, null);
+        }
+
+        public void Dispose()
+        {
+            _istifadeciRepository?.Dispose();
+            _context?.Dispose();
         }
     }
 }

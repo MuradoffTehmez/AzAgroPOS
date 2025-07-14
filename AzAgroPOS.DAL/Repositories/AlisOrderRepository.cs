@@ -15,6 +15,10 @@ namespace AzAgroPOS.DAL.Repositories
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
+        public AlisOrderRepository()
+        {
+        }
+
         public int Add(AlisOrder order)
         {
             _context.AlisOrderleri.Add(order);

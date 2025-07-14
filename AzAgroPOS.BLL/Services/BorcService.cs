@@ -8,17 +8,18 @@ using System.Linq;
 
 namespace AzAgroPOS.BLL.Services
 {
-    public class BorcService
+    public class BorcService : IDisposable
     {
         private readonly MusteriBorcRepository _musteriBorcRepository;
         private readonly BorcOdenisRepository _borcOdenisRepository;
         private readonly AuditLogService _auditLogService;
+        private readonly AzAgroDbContext _context;
 
         public BorcService(AzAgroDbContext context = null, AuditLogService auditLogService = null)
         {
-            var dbContext = context ?? new AzAgroDbContext();
-            _musteriBorcRepository = new MusteriBorcRepository(dbContext);
-            _borcOdenisRepository = new BorcOdenisRepository(dbContext);
+            _context = context ?? new AzAgroDbContext();
+            _musteriBorcRepository = new MusteriBorcRepository(_context);
+            _borcOdenisRepository = new BorcOdenisRepository(_context);
             _auditLogService = auditLogService ?? new AuditLogService();
         }
 
@@ -40,7 +41,7 @@ namespace AzAgroPOS.BLL.Services
             {
                 if (id <= 0)
                     throw new ArgumentException("Yanlış borc ID-si", nameof(id));
-                    
+
                 return _musteriBorcRepository.GetById(id);
             }
             catch (Exception ex)
@@ -83,17 +84,17 @@ namespace AzAgroPOS.BLL.Services
         {
             musteriBorc.BorcNomresi = _musteriBorcRepository.GenerateBorcNomresi();
             musteriBorc.YaradilmaTarixi = DateTime.Now;
-            
+
             var id = _musteriBorcRepository.Add(musteriBorc);
-            
+
             _auditLogService.Log(
-                "MusteriBorc", 
-                id, 
-                "Yaradıldı", 
-                $"Yeni borc yaradıldı: {musteriBorc.BorcNomresi}", 
+                "MusteriBorc",
+                id,
+                "Yaradıldı",
+                $"Yeni borc yaradıldı: {musteriBorc.BorcNomresi}",
                 musteriBorc.YaradanIstifadeciId
             );
-            
+
             return id;
         }
 
@@ -104,12 +105,12 @@ namespace AzAgroPOS.BLL.Services
                 throw new ArgumentException("Borc tapılmadı");
 
             _musteriBorcRepository.Update(musteriBorc);
-            
+
             _auditLogService.Log(
-                "MusteriBorc", 
-                musteriBorc.Id, 
-                "Yeniləndi", 
-                $"Borc yeniləndi: {musteriBorc.BorcNomresi}", 
+                "MusteriBorc",
+                musteriBorc.Id,
+                "Yeniləndi",
+                $"Borc yeniləndi: {musteriBorc.BorcNomresi}",
                 musteriBorc.YaradanIstifadeciId
             );
         }
@@ -124,12 +125,12 @@ namespace AzAgroPOS.BLL.Services
                 throw new InvalidOperationException("Ödənişi olan borc silinə bilməz");
 
             _musteriBorcRepository.Delete(id);
-            
+
             _auditLogService.Log(
-                "MusteriBorc", 
-                id, 
-                "Silindi", 
-                $"Borc silindi: {debt.BorcNomresi}", 
+                "MusteriBorc",
+                id,
+                "Silindi",
+                $"Borc silindi: {debt.BorcNomresi}",
                 istifadeciId
             );
         }
@@ -145,34 +146,34 @@ namespace AzAgroPOS.BLL.Services
 
             borcOdenis.OdenisNomresi = _borcOdenisRepository.GenerateOdenisNomresi();
             borcOdenis.YaradilmaTarixi = DateTime.Now;
-            
+
             var id = _borcOdenisRepository.Add(borcOdenis);
-            
+
             UpdateDebtBalance(debt.Id);
-            
+
             _auditLogService.Log(
-                "BorcOdenis", 
-                id, 
-                "Yaradıldı", 
-                $"Yeni ödəniş: {borcOdenis.OdenisNomresi} - {borcOdenis.OdenisMeblegi:C}", 
+                "BorcOdenis",
+                id,
+                "Yaradıldı",
+                $"Yeni ödəniş: {borcOdenis.OdenisNomresi} - {borcOdenis.OdenisMeblegi:C}",
                 borcOdenis.QebulEdenIstifadeciId
             );
-            
+
             return id;
         }
 
         public void ConfirmPayment(int paymentId, int confirmingUserId)
         {
             _borcOdenisRepository.ConfirmPayment(paymentId, confirmingUserId);
-            
+
             var payment = _borcOdenisRepository.GetById(paymentId);
             UpdateDebtBalance(payment.MusteriBorcId);
-            
+
             _auditLogService.Log(
-                "BorcOdenis", 
-                paymentId, 
-                "Təsdiqləndi", 
-                $"Ödəniş təsdiqləndi: {payment.OdenisNomresi}", 
+                "BorcOdenis",
+                paymentId,
+                "Təsdiqləndi",
+                $"Ödəniş təsdiqləndi: {payment.OdenisNomresi}",
                 confirmingUserId
             );
         }
@@ -185,12 +186,12 @@ namespace AzAgroPOS.BLL.Services
 
             _borcOdenisRepository.CancelPayment(paymentId);
             UpdateDebtBalance(payment.MusteriBorcId);
-            
+
             _auditLogService.Log(
-                "BorcOdenis", 
-                paymentId, 
-                "Ləğv edildi", 
-                $"Ödəniş ləğv edildi: {payment.OdenisNomresi}", 
+                "BorcOdenis",
+                paymentId,
+                "Ləğv edildi",
+                $"Ödəniş ləğv edildi: {payment.OdenisNomresi}",
                 cancelingUserId
             );
         }
@@ -224,7 +225,7 @@ namespace AzAgroPOS.BLL.Services
         public Dictionary<string, decimal> GetDebtSummary()
         {
             var debts = _musteriBorcRepository.GetActiveDebts().ToList();
-            
+
             return new Dictionary<string, decimal>
             {
                 ["UmumiBorc"] = debts.Sum(d => d.QalanBorc),
@@ -244,7 +245,7 @@ namespace AzAgroPOS.BLL.Services
                 .Sum(p => p.OdenisMeblegi);
 
             debt.OdenilmisMebleg = confirmedPayments;
-            
+
             if (debt.QalanBorc <= 0)
             {
                 debt.Status = "Tam Ödənilmiş";
@@ -259,6 +260,11 @@ namespace AzAgroPOS.BLL.Services
             }
 
             _musteriBorcRepository.Update(debt);
+        }
+
+        public void Dispose()
+        {
+            _context?.Dispose();
         }
     }
 }

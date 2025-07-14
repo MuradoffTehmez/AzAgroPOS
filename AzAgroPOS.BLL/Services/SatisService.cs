@@ -9,21 +9,21 @@ using System.Threading.Tasks;
 
 namespace AzAgroPOS.BLL.Services
 {
-    public class SatisService
+    public class SatisService : IDisposable
     {
+        private readonly AzAgroDbContext _context;
         private readonly SatisRepository _satisRepository;
         private readonly SatisDetaliRepository _satisDetaliRepository;
         private readonly SatisOdemesiRepository _satisOdemesiRepository;
         private readonly MehsulRepository _mehsulRepository;
-        private readonly AzAgroDbContext _context;
 
-        public SatisService(AzAgroDbContext context = null)
+        public SatisService()
         {
-            _context = context ?? new AzAgroDbContext();
-            _satisRepository = new SatisRepository();
-            _satisDetaliRepository = new SatisDetaliRepository();
-            _satisOdemesiRepository = new SatisOdemesiRepository();
-            _mehsulRepository = new MehsulRepository();
+            _context = new AzAgroDbContext();
+            _satisRepository = new SatisRepository(_context);
+            _satisDetaliRepository = new SatisDetaliRepository(_context);
+            _satisOdemesiRepository = new SatisOdemesiRepository(_context);
+            _mehsulRepository = new MehsulRepository(_context);
         }
 
         public async Task<int> CreateSatisAsync(Satis satis)
@@ -153,7 +153,7 @@ namespace AzAgroPOS.BLL.Services
 
         public SatisReportData GetSatisRaporu(DateTime startDate, DateTime endDate, int? kassirId = null)
         {
-            var satislar = kassirId.HasValue 
+            var satislar = kassirId.HasValue
                 ? GetSatisByKassir(kassirId.Value, startDate, endDate)
                 : GetSatisByDate(startDate, endDate);
 
@@ -181,7 +181,7 @@ namespace AzAgroPOS.BLL.Services
         public List<Mehsul> GetEnCoxSatılanMehsullar(DateTime startDate, DateTime endDate, int topCount = 10)
         {
             var satisDetallari = _satisDetaliRepository.GetByDateRange(startDate, endDate);
-            
+
             var mehsulSatislari = satisDetallari
                 .GroupBy(d => d.MehsulId)
                 .Select(g => new
@@ -205,6 +205,11 @@ namespace AzAgroPOS.BLL.Services
             }
 
             return mehsullar;
+        }
+
+        public void Dispose()
+        {
+            _context?.Dispose();
         }
     }
 

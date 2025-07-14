@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using AzAgroPOS.Entities.Constants;
+using Microsoft.EntityFrameworkCore;
 //using CsvHelper.Configuration.Attributes;
 
 namespace AzAgroPOS.Entities.Domain

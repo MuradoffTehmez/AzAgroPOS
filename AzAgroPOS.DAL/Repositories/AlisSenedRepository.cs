@@ -15,6 +15,10 @@ namespace AzAgroPOS.DAL.Repositories
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
+        public AlisSenedRepository()
+        {
+        }
+
         public int Add(AlisSeined seined)
         {
             _context.AlisSenedleri.Add(seined);
