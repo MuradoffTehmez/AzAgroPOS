@@ -5,7 +5,9 @@
       "Bash(msbuild:*)",
       "Bash(powershell:*)",
       "Bash(cmd /c:*)",
-      "Bash(dir)"
+      "Bash(dir)",
+      "Bash(dir:*)",
+      "Bash(ls:*)"
     ],
     "deny": []
   }

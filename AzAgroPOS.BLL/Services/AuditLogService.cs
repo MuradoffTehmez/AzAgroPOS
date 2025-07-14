@@ -242,9 +242,9 @@ namespace AzAgroPOS.BLL.Services
             CleanOldLogsAsync(days).Wait();
         }
 
-        public void LogAction(string action, string details, int? userId = null)
+        public void LogAction(string module, string action, int? entityId, string details, int? userId = null)
         {
-            Log("System", null, action, details, userId);
+            Log(module, entityId, action, details, userId);
         }
 
         public void Dispose()

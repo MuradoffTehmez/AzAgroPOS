@@ -136,7 +136,7 @@ namespace AzAgroPOS.BLL.Services
                 HesabatTipi = "Məhsul Üzrə",
                 SatisSayi = salesData.Count,
                 ToplamSatis = salesData.Sum(sd => sd.NetQiymet),
-                ToplamMenfeet = salesData.Sum(sd => (sd.SatisQiymeti - product.AlisQiymeti) * sd.Miqdar),
+                ToplamMenfeet = salesData.Sum(sd => (sd.VahidQiymeti - product.AlisQiymeti) * sd.Miqdar),
                 MusteriSayi = salesData.Select(sd => sd.Satis.MusteriId).Distinct().Count(),
                 OrtalamaSatis = salesData.Any() ? salesData.Average(sd => sd.NetQiymet) : 0,
                 EnYuksekSatis = salesData.Any() ? salesData.Max(sd => sd.NetQiymet) : 0,
@@ -205,12 +205,12 @@ namespace AzAgroPOS.BLL.Services
 
             var totalDebt = await _context.MusteriBorcları
                 .Where(mb => mb.Status == SystemConstants.Status.Active)
-                .SumAsync(mb => mb.BorcMeblegi - mb.OdenenMebleg);
+                .SumAsync(mb => mb.BorcMeblegi - mb.OdenilmisMebleg);
 
             var overdueDebt = await _context.MusteriBorcları
                 .Where(mb => mb.Status == SystemConstants.Status.Active && 
-                           mb.VadeTarixi < DateTime.Now)
-                .SumAsync(mb => mb.BorcMeblegi - mb.OdenenMebleg);
+                           mb.SonOdemeTarixi < DateTime.Now)
+                .SumAsync(mb => mb.BorcMeblegi - mb.OdenilmisMebleg);
 
             var currentDebt = totalDebt - overdueDebt;
 
@@ -226,9 +226,9 @@ namespace AzAgroPOS.BLL.Services
             return await _context.MusteriBorcları
                 .Include(mb => mb.Musteri)
                 .Where(mb => mb.Status == SystemConstants.Status.Active && 
-                           mb.VadeTarixi < DateTime.Now &&
-                           mb.BorcMeblegi > mb.OdenenMebleg)
-                .OrderBy(mb => mb.VadeTarixi)
+                           mb.SonOdemeTarixi < DateTime.Now &&
+                           mb.BorcMeblegi > mb.OdenilmisMebleg)
+                .OrderBy(mb => mb.SonOdemeTarixi)
                 .ToListAsync();
         }
 
