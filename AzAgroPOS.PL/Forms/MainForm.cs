@@ -27,70 +27,75 @@ namespace AzAgroPOS.PL.Forms
                 bool isAdmin = _currentUser.Rol?.Ad == "Administrator";
                 bool isManager = _currentUser.Rol?.Ad == "Menecer" || isAdmin;
                 
-                btnUserManagement.Visible = isAdmin;
-                btnRoleManagement.Visible = isAdmin;
-                btnAddUser.Visible = isAdmin;
-                btnCategoryManagement.Visible = isAdmin;
                 btnSettings.Visible = isAdmin;
-                
-                // Məhsul və anbar idarəetməsi bütün istifadəçilər üçün görünür
-                btnProductManagement.Visible = true;
-                btnWarehouseManagement.Visible = isManager;
-                
-                // Yeni modullar
-                btnDebtManagement.Visible = isManager;
-                btnRepairManagement.Visible = true;
-                btnPOS.Visible = true;
                 btnReports.Visible = isManager;
+                btnInventory.Visible = isManager;
+                
+                // Müştəri idarəetməsi və POS bütün istifadəçilər üçün görünür
+                btnCustomerManagement.Visible = true;
+                btnPOS.Visible = true;
+                btnDashboard.Visible = true;
+                
+                // Initialize dashboard as default view
+                dashboardPanel.Visible = true;
+                customerSubmenu.Visible = false;
+                btnDashboard.BackColor = System.Drawing.Color.FromArgb(41, 128, 185);
             }
         }
 
-        private void btnAddUser_Click(object sender, EventArgs e)
+        private void btnDashboard_Click(object sender, EventArgs e)
         {
-            var userAddForm = new UserAddForm();
-            userAddForm.ShowDialog();
+            dashboardPanel.Visible = true;
+            dashboardPanel.BringToFront();
+            
+            // Hide customer submenu
+            customerSubmenu.Visible = false;
+            
+            // Update button appearance
+            ResetButtonColors();
+            btnDashboard.BackColor = System.Drawing.Color.FromArgb(41, 128, 185);
         }
 
-        private void btnUserManagement_Click(object sender, EventArgs e)
+        private void btnCustomerManagement_Click(object sender, EventArgs e)
         {
-            var userManagementForm = new UserManagementForm(_currentUser);
-            userManagementForm.ShowDialog();
+            customerSubmenu.Visible = !customerSubmenu.Visible;
+            
+            // Update button appearance
+            ResetButtonColors();
+            btnCustomerManagement.BackColor = System.Drawing.Color.FromArgb(41, 128, 185);
         }
 
-        private void btnRoleManagement_Click(object sender, EventArgs e)
+        private void btnCustomerAdd_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Rol idarəetməsi funksiyası tezliklə əlavə ediləcək.", 
-                "Məlumat", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            var customerAddForm = new MusteriAddForm(_currentUser);
+            customerAddForm.ShowDialog();
         }
 
-        private void btnProductManagement_Click(object sender, EventArgs e)
+        private void btnCustomerList_Click(object sender, EventArgs e)
+        {
+            var customerListForm = new MusteriManagementForm(_currentUser);
+            customerListForm.ShowDialog();
+        }
+
+        private void btnCustomerGroups_Click(object sender, EventArgs e)
+        {
+            var customerGroupsForm = new MusteriGroupManagementForm(_currentUser);
+            customerGroupsForm.ShowDialog();
+        }
+
+        private void btnInventory_Click(object sender, EventArgs e)
         {
             var productManagementForm = new ProductManagementForm(_currentUser);
             productManagementForm.ShowDialog();
         }
 
-        private void btnCategoryManagement_Click(object sender, EventArgs e)
+        private void ResetButtonColors()
         {
-            MessageBox.Show("Kateqoriya idarəetməsi funksiyası tezliklə əlavə ediləcək.", 
-                "Məlumat", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        private void btnWarehouseManagement_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("Anbar idarəetməsi funksiyası tezliklə əlavə ediləcək.", 
-                "Məlumat", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        private void btnDebtManagement_Click(object sender, EventArgs e)
-        {
-            var debtManagementForm = new BorcManagementForm(_currentUser);
-            debtManagementForm.ShowDialog();
-        }
-
-        private void btnRepairManagement_Click(object sender, EventArgs e)
-        {
-            var repairManagementForm = new TamirManagementForm(_currentUser);
-            repairManagementForm.ShowDialog();
+            btnDashboard.BackColor = System.Drawing.Color.FromArgb(52, 73, 94);
+            btnCustomerManagement.BackColor = System.Drawing.Color.FromArgb(52, 73, 94);
+            btnInventory.BackColor = System.Drawing.Color.FromArgb(52, 73, 94);
+            btnReports.BackColor = System.Drawing.Color.FromArgb(52, 73, 94);
+            btnSettings.BackColor = System.Drawing.Color.FromArgb(52, 73, 94);
         }
 
         private void btnPOS_Click(object sender, EventArgs e)
@@ -130,7 +135,17 @@ namespace AzAgroPOS.PL.Forms
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            // Initialize dashboard with mock data
+            LoadDashboardData();
+        }
 
+        private void LoadDashboardData()
+        {
+            // Mock data for dashboard - In real implementation, this would come from services
+            lblTotalCustomers.Text = "👥 Müştərilər\n\n1,234";
+            lblTotalProducts.Text = "📦 Məhsullar\n\n567";
+            lblTodaySales.Text = "🛒 Bugünkü Satış\n\n89";
+            lblTotalValue.Text = "💰 Ümumi Dəyər\n\n₼12,345";
         }
     }
 }
