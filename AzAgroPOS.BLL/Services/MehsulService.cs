@@ -1,4 +1,3 @@
-using AzAgroPOS.BLL.Services;
 using AzAgroPOS.DAL.Repositories;
 using AzAgroPOS.Entities.Domain;
 using System;
@@ -27,33 +26,28 @@ namespace AzAgroPOS.BLL.Services
         {
             try
             {
-                // Barkod yoxlaması
                 if (await _mehsulRepository.BarkodMevcudAsync(mehsul.Barkod))
                 {
                     return (false, "Bu barkod artıq mövcuddur.", null);
                 }
 
-                // SKU yoxlaması
                 if (await _mehsulRepository.SKUMevcudAsync(mehsul.SKU))
                 {
                     return (false, "Bu SKU artıq mövcuddur.", null);
                 }
 
-                // Kateqoriya yoxlaması
                 var kateqoriya = await _kateqoriyaRepository.GetByIdAsync(mehsul.KateqoriyaId);
                 if (kateqoriya == null || kateqoriya.Status != "Aktiv")
                 {
                     return (false, "Seçilən kateqoriya mövcud deyil və ya aktiv deyil.", null);
                 }
 
-                // Vahid yoxlaması
                 var vahid = await _vahidRepository.GetByIdAsync(mehsul.VahidId);
                 if (vahid == null || vahid.Status != "Aktiv")
                 {
                     return (false, "Seçilən vahid mövcud deyil və ya aktiv deyil.", null);
                 }
 
-                // Qiymət yoxlaması
                 if (mehsul.SatisQiymeti <= mehsul.AlisQiymeti)
                 {
                     return (false, "Satış qiyməti alış qiymətindən böyük olmalıdır.", null);
@@ -61,8 +55,7 @@ namespace AzAgroPOS.BLL.Services
 
                 var mehsulId = await _mehsulRepository.AddAsync(mehsul);
 
-                // Audit log
-                await _auditLogService.LogAsync(istifadeciId, "Məhsul İdarəetməsi", "Məhsul Əlavə Etmə", 
+                await _auditLogService.LogAsync(istifadeciId, "Məhsul İdarəetməsi", "Məhsul Əlavə Etmə",
                     "Desktop App", $"Yeni məhsul yaradıldı: {mehsul.Ad} ({mehsul.SKU})");
 
                 return (true, "Məhsul uğurla yaradıldı.", mehsulId);
@@ -77,52 +70,43 @@ namespace AzAgroPOS.BLL.Services
         {
             try
             {
-                // Mövcudluq yoxlaması
                 var existingMehsul = await _mehsulRepository.GetByIdAsync(mehsul.Id);
                 if (existingMehsul == null)
                 {
                     return (false, "Məhsul tapılmadı.");
                 }
 
-                // Barkod yoxlaması (özü istisna olmaqla)
                 if (await _mehsulRepository.BarkodMevcudAsync(mehsul.Barkod, mehsul.Id))
                 {
                     return (false, "Bu barkod başqa məhsulda mövcuddur.");
                 }
 
-                // SKU yoxlaması (özü istisna olmaqla)
                 if (await _mehsulRepository.SKUMevcudAsync(mehsul.SKU, mehsul.Id))
                 {
                     return (false, "Bu SKU başqa məhsulda mövcuddur.");
                 }
 
-                // Kateqoriya yoxlaması
                 var kateqoriya = await _kateqoriyaRepository.GetByIdAsync(mehsul.KateqoriyaId);
                 if (kateqoriya == null || kateqoriya.Status != "Aktiv")
                 {
                     return (false, "Seçilən kateqoriya mövcud deyil və ya aktiv deyil.");
                 }
 
-                // Vahid yoxlaması
                 var vahid = await _vahidRepository.GetByIdAsync(mehsul.VahidId);
                 if (vahid == null || vahid.Status != "Aktiv")
                 {
                     return (false, "Seçilən vahid mövcud deyil və ya aktiv deyil.");
                 }
 
-                // Qiymət yoxlaması
                 if (mehsul.SatisQiymeti <= mehsul.AlisQiymeti)
                 {
                     return (false, "Satış qiyməti alış qiymətindən böyük olmalıdır.");
                 }
 
-                // Yaradılma tarixini saxla
                 mehsul.YaradilmaTarixi = existingMehsul.YaradilmaTarixi;
-
                 await _mehsulRepository.UpdateAsync(mehsul);
 
-                // Audit log
-                await _auditLogService.LogAsync(istifadeciId, "Məhsul İdarəetməsi", "Məhsul Yeniləmə", 
+                await _auditLogService.LogAsync(istifadeciId, "Məhsul İdarəetməsi", "Məhsul Yeniləmə",
                     "Desktop App", $"Məhsul yeniləndi: {mehsul.Ad} ({mehsul.SKU})");
 
                 return (true, "Məhsul uğurla yeniləndi.");
@@ -150,8 +134,7 @@ namespace AzAgroPOS.BLL.Services
 
                 await _mehsulRepository.DeleteAsync(mehsulId);
 
-                // Audit log
-                await _auditLogService.LogAsync(istifadeciId, "Məhsul İdarəetməsi", "Məhsul Silmə", 
+                await _auditLogService.LogAsync(istifadeciId, "Məhsul İdarəetməsi", "Məhsul Silmə",
                     "Desktop App", $"Məhsul silindi: {mehsul.Ad} ({mehsul.SKU})");
 
                 return (true, "Məhsul uğurla silindi.");
@@ -176,8 +159,7 @@ namespace AzAgroPOS.BLL.Services
                 mehsul.Status = status;
                 await _mehsulRepository.UpdateAsync(mehsul);
 
-                // Audit log
-                await _auditLogService.LogAsync(istifadeciId, "Məhsul İdarəetməsi", "Status Dəyişikliyi", 
+                await _auditLogService.LogAsync(istifadeciId, "Məhsul İdarəetməsi", "Status Dəyişikliyi",
                     "Desktop App", $"Məhsul statusu dəyişdi: {mehsul.Ad} ({oldStatus} → {status})");
 
                 return (true, $"Məhsul statusu {status} olaraq dəyişdirildi.");
@@ -192,10 +174,9 @@ namespace AzAgroPOS.BLL.Services
         {
             var random = new Random();
             string barkod;
-            
+
             do
             {
-                // 13 rəqəmli EAN-13 formatında barkod
                 barkod = "299" + random.Next(1000000000).ToString("D10");
             }
             while (await _mehsulRepository.BarkodMevcudAsync(barkod));
@@ -205,7 +186,6 @@ namespace AzAgroPOS.BLL.Services
 
         public async Task<string> GenerateSKUAsync(string mehsulAdi, string kateqoriyaKodu)
         {
-            // Məhsul adından ilk 3 hərf
             var mehsulPrefix = "";
             var words = mehsulAdi.Split(' ');
             foreach (var word in words)
@@ -218,12 +198,11 @@ namespace AzAgroPOS.BLL.Services
             }
             mehsulPrefix = mehsulPrefix.PadRight(3, 'X').ToUpper();
 
-            // Kateqoriya kodu və ya "GEN"
             var katPrefix = !string.IsNullOrEmpty(kateqoriyaKodu) ? kateqoriyaKodu : "GEN";
 
             string sku;
             int counter = 1;
-            
+
             do
             {
                 sku = $"{katPrefix}-{mehsulPrefix}-{counter:D4}";
@@ -252,9 +231,8 @@ namespace AzAgroPOS.BLL.Services
                 var kohMiqdar = mehsul.MovcudMiqdar;
                 await _mehsulRepository.UpdateMiqdarAsync(mehsulId, yeniMiqdar);
 
-                // Audit log
                 var detal = sebet ?? $"Stok miqdarı dəyişdi: {kohMiqdar} → {yeniMiqdar}";
-                await _auditLogService.LogAsync(istifadeciId, "Məhsul İdarəetməsi", "Stok Yeniləmə", 
+                await _auditLogService.LogAsync(istifadeciId, "Məhsul İdarəetməsi", "Stok Yeniləmə",
                     "Desktop App", $"{mehsul.Ad}: {detal}");
 
                 return (true, "Stok miqdarı uğurla yeniləndi.");
@@ -288,11 +266,11 @@ namespace AzAgroPOS.BLL.Services
             if (!string.IsNullOrEmpty(searchTerm))
             {
                 var term = searchTerm.ToLower();
-                mehsullar = mehsullar.Where(m => 
+                mehsullar = mehsullar.Where(m =>
                     m.Ad.ToLower().Contains(term) ||
                     m.Barkod.ToLower().Contains(term) ||
                     m.SKU.ToLower().Contains(term) ||
-                    m.Tesvir?.ToLower().Contains(term) == true).ToList();
+                    (m.Tesvir != null && m.Tesvir.ToLower().Contains(term))).ToList();
             }
 
             if (kateqoriyaId.HasValue)
@@ -308,9 +286,10 @@ namespace AzAgroPOS.BLL.Services
             return mehsullar;
         }
 
+        // DÜZƏLİŞ: NotImplementedException aradan qaldırıldı
         public List<Mehsul> GetAllActive()
         {
-            throw new NotImplementedException();
+            return _mehsulRepository.GetAllActive();
         }
     }
 }
