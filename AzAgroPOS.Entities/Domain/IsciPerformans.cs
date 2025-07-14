@@ -44,13 +44,20 @@ namespace AzAgroPOS.Entities.Domain
         public decimal SaatlikSatis => IslemeSaati > 0 ? SatisMeblegi / IslemeSaati : 0;
 
         [NotMapped]
-        public string PerformansReytingi => SaatlikSatis switch
+        public string PerformansReytingi
         {
-            > 1000 => "Əla",
-            > 500 => "Yaxşı",
-            > 200 => "Orta",
-            _ => "Zəif"
-        };
+            get
+            {
+                if (SaatlikSatis > 1000)
+                    return "Əla";
+                else if (SaatlikSatis > 500)
+                    return "Yaxşı";
+                else if (SaatlikSatis > 200)
+                    return "Orta";
+                else
+                    return "Zəif";
+            }
+        }
 
         [NotMapped]
         public decimal VerimlilikyIndeksi => (SatisSayi * MusteriMemnuniyeti) / (IslemeSaati + GecikmeSaati);

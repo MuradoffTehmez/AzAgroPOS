@@ -72,12 +72,19 @@ namespace AzAgroPOS.Entities.Domain
             $"{HesabatTipi} hesabatı: {SatisSayi} satış, {ToplamSatis:C} cəmi";
 
         [NotMapped]
-        public string PerformansReytingi => MenfeelFaizi switch
+        public string PerformansReytingi
         {
-            > 30 => "Əla",
-            > 20 => "Yaxşı",
-            > 10 => "Orta",
-            _ => "Zəif"
-        };
+            get
+            {
+                if (MenfeelFaizi > 30)
+                    return "Əla";
+                else if (MenfeelFaizi > 20)
+                    return "Yaxşı";
+                else if (MenfeelFaizi > 10)
+                    return "Orta";
+                else
+                    return "Zəif";
+            }
+        }
     }
 }

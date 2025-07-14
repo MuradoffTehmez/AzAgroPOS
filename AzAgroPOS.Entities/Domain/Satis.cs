@@ -53,6 +53,10 @@ namespace AzAgroPOS.Entities.Domain
         [ForeignKey("KassirId")]
         public virtual Istifadeci Kassir { get; set; }
         
+        public int? MusteriId { get; set; } // Customer ID (optional)
+        [ForeignKey("MusteriId")]
+        public virtual Musteri Musteri { get; set; }
+        
         // Navigation Properties
         public virtual ICollection<SatisDetali> SatisDetallari { get; set; }
         public virtual ICollection<SatisOdemesi> SatisOdemeleri { get; set; }

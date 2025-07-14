@@ -305,7 +305,7 @@ namespace AzAgroPOS.BLL.Services
 
         private async Task LogAuditAsync(int userId, string category, string action, string details)
         {
-            await _auditLogService.LogAsync(userId, category, action, "Desktop App", details);
+            await _auditLogService.LogAsync(category, null, action, details, userId);
         }
 
         private async Task<T> ExecuteWithTransactionAsync<T>(Func<Task<T>> action, string errorMessage)

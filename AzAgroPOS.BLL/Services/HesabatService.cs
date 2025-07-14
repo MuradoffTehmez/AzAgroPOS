@@ -42,13 +42,13 @@ namespace AzAgroPOS.BLL.Services
                 TarixBitis = endDate.AddMilliseconds(-1),
                 HesabatTipi = "Günlük",
                 SatisSayi = salesData.Count,
-                ToplamSatis = salesData.Sum(s => s.ToplamMebleg),
+                ToplamSatis = salesData.Sum(s => s.NetMebleg),
                 ToplamMenfeet = salesData.Sum(s => s.SatisDetallari.Sum(sd => 
-                    (sd.SatisQiymeti - sd.Mehsul.AlisQiymeti) * sd.Miqdar)),
+                    (sd.VahidQiymeti - sd.Mehsul.AlisQiymeti) * sd.Miqdar)),
                 MusteriSayi = salesData.Select(s => s.MusteriId).Distinct().Count(),
-                OrtalamaSatis = salesData.Any() ? salesData.Average(s => s.ToplamMebleg) : 0,
-                EnYuksekSatis = salesData.Any() ? salesData.Max(s => s.ToplamMebleg) : 0,
-                EnAsagiSatis = salesData.Any() ? salesData.Min(s => s.ToplamMebleg) : 0,
+                OrtalamaSatis = salesData.Any() ? salesData.Average(s => s.NetMebleg) : 0,
+                EnYuksekSatis = salesData.Any() ? salesData.Max(s => s.NetMebleg) : 0,
+                EnAsagiSatis = salesData.Any() ? salesData.Min(s => s.NetMebleg) : 0,
                 YaradanIstifadeciId = istifadeciId,
                 YaradilmaTarixi = DateTime.Now
             };
@@ -64,7 +64,7 @@ namespace AzAgroPOS.BLL.Services
 
             // En aktiv müştəri
             var customerSales = salesData.GroupBy(s => s.Musteri.TamAd)
-                .OrderByDescending(g => g.Sum(s => s.ToplamMebleg))
+                .OrderByDescending(g => g.Sum(s => s.NetMebleg))
                 .FirstOrDefault();
 
             if (customerSales != null)
@@ -97,13 +97,13 @@ namespace AzAgroPOS.BLL.Services
                 TarixBitis = endDate.AddMilliseconds(-1),
                 HesabatTipi = "Aylıq",
                 SatisSayi = salesData.Count,
-                ToplamSatis = salesData.Sum(s => s.ToplamMebleg),
+                ToplamSatis = salesData.Sum(s => s.NetMebleg),
                 ToplamMenfeet = salesData.Sum(s => s.SatisDetallari.Sum(sd => 
-                    (sd.SatisQiymeti - sd.Mehsul.AlisQiymeti) * sd.Miqdar)),
+                    (sd.VahidQiymeti - sd.Mehsul.AlisQiymeti) * sd.Miqdar)),
                 MusteriSayi = salesData.Select(s => s.MusteriId).Distinct().Count(),
-                OrtalamaSatis = salesData.Any() ? salesData.Average(s => s.ToplamMebleg) : 0,
-                EnYuksekSatis = salesData.Any() ? salesData.Max(s => s.ToplamMebleg) : 0,
-                EnAsagiSatis = salesData.Any() ? salesData.Min(s => s.ToplamMebleg) : 0,
+                OrtalamaSatis = salesData.Any() ? salesData.Average(s => s.NetMebleg) : 0,
+                EnYuksekSatis = salesData.Any() ? salesData.Max(s => s.NetMebleg) : 0,
+                EnAsagiSatis = salesData.Any() ? salesData.Min(s => s.NetMebleg) : 0,
                 YaradanIstifadeciId = istifadeciId,
                 YaradilmaTarixi = DateTime.Now
             };
@@ -135,12 +135,12 @@ namespace AzAgroPOS.BLL.Services
                 TarixBitis = endDate,
                 HesabatTipi = "Məhsul Üzrə",
                 SatisSayi = salesData.Count,
-                ToplamSatis = salesData.Sum(sd => sd.ToplamMebleg),
+                ToplamSatis = salesData.Sum(sd => sd.NetQiymet),
                 ToplamMenfeet = salesData.Sum(sd => (sd.SatisQiymeti - product.AlisQiymeti) * sd.Miqdar),
                 MusteriSayi = salesData.Select(sd => sd.Satis.MusteriId).Distinct().Count(),
-                OrtalamaSatis = salesData.Any() ? salesData.Average(sd => sd.ToplamMebleg) : 0,
-                EnYuksekSatis = salesData.Any() ? salesData.Max(sd => sd.ToplamMebleg) : 0,
-                EnAsagiSatis = salesData.Any() ? salesData.Min(sd => sd.ToplamMebleg) : 0,
+                OrtalamaSatis = salesData.Any() ? salesData.Average(sd => sd.NetQiymet) : 0,
+                EnYuksekSatis = salesData.Any() ? salesData.Max(sd => sd.NetQiymet) : 0,
+                EnAsagiSatis = salesData.Any() ? salesData.Min(sd => sd.NetQiymet) : 0,
                 EnCoxSatilanMehsul = product?.Ad,
                 YaradanIstifadeciId = istifadeciId,
                 YaradilmaTarixi = DateTime.Now
@@ -174,13 +174,13 @@ namespace AzAgroPOS.BLL.Services
                 TarixBitis = endDate,
                 HesabatTipi = "Müştəri Üzrə",
                 SatisSayi = salesData.Count,
-                ToplamSatis = salesData.Sum(s => s.ToplamMebleg),
+                ToplamSatis = salesData.Sum(s => s.NetMebleg),
                 ToplamMenfeet = salesData.Sum(s => s.SatisDetallari.Sum(sd => 
-                    (sd.SatisQiymeti - sd.Mehsul.AlisQiymeti) * sd.Miqdar)),
+                    (sd.VahidQiymeti - sd.Mehsul.AlisQiymeti) * sd.Miqdar)),
                 MusteriSayi = 1,
-                OrtalamaSatis = salesData.Any() ? salesData.Average(s => s.ToplamMebleg) : 0,
-                EnYuksekSatis = salesData.Any() ? salesData.Max(s => s.ToplamMebleg) : 0,
-                EnAsagiSatis = salesData.Any() ? salesData.Min(s => s.ToplamMebleg) : 0,
+                OrtalamaSatis = salesData.Any() ? salesData.Average(s => s.NetMebleg) : 0,
+                EnYuksekSatis = salesData.Any() ? salesData.Max(s => s.NetMebleg) : 0,
+                EnAsagiSatis = salesData.Any() ? salesData.Min(s => s.NetMebleg) : 0,
                 EnAktivMusteri = customer?.TamAd,
                 YaradanIstifadeciId = istifadeciId,
                 YaradilmaTarixi = DateTime.Now
@@ -203,11 +203,11 @@ namespace AzAgroPOS.BLL.Services
         {
             var debtSummary = new Dictionary<string, decimal>();
 
-            var totalDebt = await _context.MusteriBorclar
+            var totalDebt = await _context.MusteriBorcları
                 .Where(mb => mb.Status == SystemConstants.Status.Active)
                 .SumAsync(mb => mb.BorcMeblegi - mb.OdenenMebleg);
 
-            var overdueDebt = await _context.MusteriBorclar
+            var overdueDebt = await _context.MusteriBorcları
                 .Where(mb => mb.Status == SystemConstants.Status.Active && 
                            mb.VadeTarixi < DateTime.Now)
                 .SumAsync(mb => mb.BorcMeblegi - mb.OdenenMebleg);
@@ -223,7 +223,7 @@ namespace AzAgroPOS.BLL.Services
 
         public async Task<IEnumerable<MusteriBorc>> GetOverdueDebtsAsync()
         {
-            return await _context.MusteriBorclar
+            return await _context.MusteriBorcları
                 .Include(mb => mb.Musteri)
                 .Where(mb => mb.Status == SystemConstants.Status.Active && 
                            mb.VadeTarixi < DateTime.Now &&

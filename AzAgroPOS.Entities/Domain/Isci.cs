@@ -77,13 +77,17 @@ namespace AzAgroPOS.Entities.Domain
                 (int)(DateTime.Now - IseBaslamaTarixi.Value).TotalDays) : 0;
 
         [NotMapped]
-        public string VezifeSeviyyesi => Vezife switch
+        public string VezifeSeviyyesi
         {
-            "Müdür" => "Yüksek",
-            "Supervisor" => "Orta",
-            "Kassir" => "Orta",
-            "Anbar məsul" => "Orta",
-            _ => "Əsas"
-        };
+            get
+            {
+                if (Vezife == "Müdür")
+                    return "Yüksek";
+                else if (Vezife == "Supervisor" || Vezife == "Kassir" || Vezife == "Anbar məsul")
+                    return "Orta";
+                else
+                    return "Əsas";
+            }
+        }
     }
 }
