@@ -107,7 +107,7 @@ namespace AzAgroPOS.PL.Forms
                     _repair.TehvilEdenIstifadeciId = _currentUser.Id;
                 }
 
-                _tamirService.UpdateRepair(_repair);
+                _tamirService.UpdateRepair(_repair, _currentUser.Id);
                 
                 // Add audit log entry
                 string notes = string.IsNullOrEmpty(txtNotes.Text) ? "" : $" - Qeyd: {txtNotes.Text}";
