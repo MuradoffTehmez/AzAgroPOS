@@ -17,6 +17,7 @@ namespace AzAgroPOS.PL.Forms
         private List<SatisDetaliItem> _satisDetallari;
         private decimal _vergiOrani = 0.18m; // 18% vergi
 
+
         public POSForm()
         {
             InitializeComponent();
@@ -305,18 +306,20 @@ namespace AzAgroPOS.PL.Forms
             btnSatisıTamamla.Enabled = _satisDetallari.Count > 0;
         }
 
-        private void BtnSatisiTamamla_Click(object sender, EventArgs e)
+        private async void BtnSatisiTamamla_Click(object sender, EventArgs e)
         {
             if (_satisDetallari.Count == 0)
             {
-                MessageBox.Show("Satış üçün məhsul əlavə edin!", "Xəta", 
+                MessageBox.Show("Satış üçün məhsul əlavə edin!", "Xəta",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             try
             {
-                string odemeNovu = rbNagd.Checked ? "Nağd" : 
+                btnSatisıTamamla.Enabled = false; // Düyməni deaktiv edirik
+
+                string odemeNovu = rbNagd.Checked ? "Nağd" :
                                   rbKart.Checked ? "Kart" : "Nisyə";
 
                 var satis = new Satis
@@ -324,12 +327,12 @@ namespace AzAgroPOS.PL.Forms
                     SatisNomresi = GenerateSatisNomresi(),
                     SatisTarixi = DateTime.Now,
                     UmumiMebleg = _satisDetallari.Sum(item => item.CemMebleg),
-                    EndirimMeblegi = decimal.Parse(txtEndirim.Text),
-                    VergiMeblegi = decimal.Parse(lblVergiValue.Text.Replace(" ₼", "")),
-                    NetMebleg = decimal.Parse(lblNetMeblegValue.Text.Replace(" ₼", "")),
+                    EndirimMeblegi = decimal.TryParse(txtEndirim.Text, out var endirim) ? endirim : 0,
+                    VergiMeblegi = decimal.Parse(lblVergiValue.Text.Replace(" ₼", "").Trim()),
+                    NetMebleg = decimal.Parse(lblNetMeblegValue.Text.Replace(" ₼", "").Trim()),
                     OdemeNovu = odemeNovu,
                     OdemeDetali = txtOdemeDetali.Text,
-                    KassirId = 1, // TODO: Get from current user session
+                    KassirId = 1, // TODO: Cari istifadəçi ID-si ilə əvəz edilməlidir
                     SatisDetallari = _satisDetallari.Select(item => new SatisDetali
                     {
                         MehsulId = item.MehsulId,
@@ -339,24 +342,30 @@ namespace AzAgroPOS.PL.Forms
                         VahidQiymeti = item.VahidQiymeti,
                         UmumiQiymet = item.CemMebleg,
                         NetQiymet = item.CemMebleg,
-                        VahidAdi = "Ədəd"
+                        VahidAdi = "Ədəd" // TODO: Məhsulun real vahidi ilə əvəzlənməlidir
                     }).ToList()
                 };
 
-                int satisId = _satisService.CreateSatis(satis);
+                
+                int satisId = await _satisService.CreateSatisAsync(satis);
 
-                MessageBox.Show($"Satış uğurla tamamlandı!\nSatış nömrəsi: {satis.SatisNomresi}", 
+                MessageBox.Show($"Satış uğurla tamamlandı!\nSatış nömrəsi: {satis.SatisNomresi}",
                     "Uğurlu", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                // Auto print receipt
+                // Qəbz çapını avtomatik çağır
                 BtnQezbCap_Click(sender, e);
-                
+
+                // Yeni satış üçün formu təmizlə
                 BtnYeniSatis_Click(sender, e);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Satış tamamlanarkən xəta baş verdi: {ex.Message}", "Xəta", 
+                MessageBox.Show($"Satış tamamlanarkən xəta baş verdi: {ex.Message}", "Xəta",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                btnSatisıTamamla.Enabled = true; // Düyməni yenidən aktiv edirik
             }
         }
 

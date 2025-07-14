@@ -1,8 +1,9 @@
+using AzAgroPOS.Entities.Domain;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using AzAgroPOS.Entities.Domain;
+using System.Threading.Tasks;
 
 namespace AzAgroPOS.DAL.Repositories
 {
@@ -15,11 +16,10 @@ namespace AzAgroPOS.DAL.Repositories
             _context = new AzAgroDbContext();
         }
 
-        public int Add(SatisOdemesi satisOdemesi)
+        public async Task AddAsync(SatisOdemesi satisOdemesi)
         {
             _context.SatisOdemeleri.Add(satisOdemesi);
-            _context.SaveChanges();
-            return satisOdemesi.Id;
+            await _context.SaveChangesAsync();
         }
 
         public void Update(SatisOdemesi satisOdemesi)

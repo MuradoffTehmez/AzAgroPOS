@@ -208,7 +208,20 @@ namespace AzAgroPOS.DAL.Repositories
         {
             using (var context = new AzAgroDbContext())
             {
-                return await context.Mehsullar.AnyAsync(m => m.Id == id);
+                // Məhsul satış detallarında istifadə edilibmi?
+                bool isInSatis = await context.SatisDetallari.AnyAsync(d => d.MehsulId == id);
+                if (isInSatis) return false;
+
+                // Məhsul anbar hərəkətlərində var mı?
+                bool isInAnbar = await context.AnbarHereketleri.AnyAsync(h => h.MehsulId == id);
+                if (isInAnbar) return false;
+
+                // Məhsul alış sənədlərində var mı?
+                bool isInAlis = await context.AlisSenedDetallari.AnyAsync(d => d.MehsulId == id);
+                if (isInAlis) return false;
+
+                // Əgər heç bir yerdə istifadə edilməyibsə, silinə bilər.
+                return true;
             }
         }
 
