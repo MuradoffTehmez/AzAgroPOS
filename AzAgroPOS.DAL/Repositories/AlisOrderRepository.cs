@@ -6,13 +6,13 @@ using AzAgroPOS.Entities.Domain;
 
 namespace AzAgroPOS.DAL.Repositories
 {
-    public class AlisOrderRepository
+    public class AlisOrderRepository : IDisposable
     {
         private readonly AzAgroDbContext _context;
 
-        public AlisOrderRepository()
+        public AlisOrderRepository(AzAgroDbContext context)
         {
-            _context = new AzAgroDbContext();
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public int Add(AlisOrder order)
@@ -109,9 +109,9 @@ namespace AzAgroPOS.DAL.Repositories
             var today = DateTime.Today;
             return _context.AlisOrderleri
                 .Include(o => o.Tedarukcu)
-                .Where(o => o.TeslimTarixi.HasValue && 
-                           o.TeslimTarixi.Value.Date < today && 
-                           o.Status != "Teslim Edilmiş" && 
+                .Where(o => o.TeslimTarixi.HasValue &&
+                           o.TeslimTarixi.Value.Date < today &&
+                           o.Status != "Teslim Edilmiş" &&
                            o.Status != "İptal Edilmiş")
                 .OrderBy(o => o.TeslimTarixi)
                 .ToList();
