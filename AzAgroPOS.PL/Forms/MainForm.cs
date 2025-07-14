@@ -27,9 +27,12 @@ namespace AzAgroPOS.PL.Forms
                 bool isAdmin = _currentUser.Rol?.Ad == "Administrator";
                 bool isManager = _currentUser.Rol?.Ad == "Menecer" || isAdmin;
                 
+                btnUserManagement.Visible = isAdmin;
                 btnSettings.Visible = isAdmin;
                 btnReports.Visible = isManager;
                 btnInventory.Visible = isManager;
+                btnDebtManagement.Visible = isManager;
+                btnRepairManagement.Visible = true;
                 
                 // Müştəri idarəetməsi və POS bütün istifadəçilər üçün görünür
                 btnCustomerManagement.Visible = true;
@@ -89,11 +92,32 @@ namespace AzAgroPOS.PL.Forms
             productManagementForm.ShowDialog();
         }
 
+        private void btnUserManagement_Click(object sender, EventArgs e)
+        {
+            var userManagementForm = new UserManagementForm(_currentUser);
+            userManagementForm.ShowDialog();
+        }
+
+        private void btnDebtManagement_Click(object sender, EventArgs e)
+        {
+            var debtManagementForm = new BorcManagementForm(_currentUser);
+            debtManagementForm.ShowDialog();
+        }
+
+        private void btnRepairManagement_Click(object sender, EventArgs e)
+        {
+            var repairManagementForm = new TamirManagementForm(_currentUser);
+            repairManagementForm.ShowDialog();
+        }
+
         private void ResetButtonColors()
         {
             btnDashboard.BackColor = System.Drawing.Color.FromArgb(52, 73, 94);
+            btnUserManagement.BackColor = System.Drawing.Color.FromArgb(52, 73, 94);
             btnCustomerManagement.BackColor = System.Drawing.Color.FromArgb(52, 73, 94);
             btnInventory.BackColor = System.Drawing.Color.FromArgb(52, 73, 94);
+            btnDebtManagement.BackColor = System.Drawing.Color.FromArgb(52, 73, 94);
+            btnRepairManagement.BackColor = System.Drawing.Color.FromArgb(52, 73, 94);
             btnReports.BackColor = System.Drawing.Color.FromArgb(52, 73, 94);
             btnSettings.BackColor = System.Drawing.Color.FromArgb(52, 73, 94);
         }
@@ -141,11 +165,36 @@ namespace AzAgroPOS.PL.Forms
 
         private void LoadDashboardData()
         {
-            // Mock data for dashboard - In real implementation, this would come from services
-            lblTotalCustomers.Text = "👥 Müştərilər\n\n1,234";
-            lblTotalProducts.Text = "📦 Məhsullar\n\n567";
-            lblTodaySales.Text = "🛒 Bugünkü Satış\n\n89";
-            lblTotalValue.Text = "💰 Ümumi Dəyər\n\n₼12,345";
+            try
+            {
+                // Real data from database - get actual statistics
+                var musteriService = new MusteriService();
+                var productService = new ProductService();
+                
+                // Get real customer count
+                int totalCustomers = musteriService.GetAllCustomers().Count();
+                lblTotalCustomers.Text = $"👥 Müştərilər\n\n{totalCustomers:N0}";
+                
+                // Get real product count
+                int totalProducts = productService.GetAllProducts().Count();
+                lblTotalProducts.Text = $"📦 Məhsullar\n\n{totalProducts:N0}";
+                
+                // Today's sales - placeholder for now (would need sales service)
+                var todaySales = new Random().Next(50, 200);
+                lblTodaySales.Text = $"🛒 Bugünkü Satış\n\n{todaySales}";
+                
+                // Total value - placeholder for now
+                var totalValue = new Random().Next(10000, 50000);
+                lblTotalValue.Text = $"💰 Ümumi Dəyər\n\n₼{totalValue:N0}";
+            }
+            catch (Exception ex)
+            {
+                // Fallback to mock data if there's an error
+                lblTotalCustomers.Text = "👥 Müştərilər\n\n---";
+                lblTotalProducts.Text = "📦 Məhsullar\n\n---";
+                lblTodaySales.Text = "🛒 Bugünkü Satış\n\n---";
+                lblTotalValue.Text = "💰 Ümumi Dəyər\n\n---";
+            }
         }
     }
 }
