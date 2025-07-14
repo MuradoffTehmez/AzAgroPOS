@@ -255,10 +255,11 @@ namespace AzAgroPOS.BLL.Services
         public List<Istifadeci> GetActiveWorkers()
         {
             return _istifadeciRepository.GetAll()
+                .Cast<Istifadeci>()
                 .Where(i => i.Status == SystemConstants.Status.Active && 
-                       (i.Rol.Ad == SystemConstants.Roles.Worker || 
-                        i.Rol.Ad == SystemConstants.Roles.Manager || 
-                        i.Rol.Ad == SystemConstants.Roles.Administrator))
+                       (i.Rol?.Ad == SystemConstants.Roles.Worker || 
+                        i.Rol?.Ad == SystemConstants.Roles.Manager || 
+                        i.Rol?.Ad == SystemConstants.Roles.Administrator))
                 .ToList();
         }
 

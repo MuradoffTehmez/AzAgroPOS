@@ -342,11 +342,10 @@ namespace AzAgroPOS.BLL.Services
 
         #endregion
 
-        //public void Dispose()
-        //{
-        //    _tamirIsiRepository?.Dispose();
-        //    _tamirMerheleRepository?.Dispose();
-        //    _auditLogService?.Dispose();
-        //}
+        public void Dispose()
+        {
+            // Repository sinifləri IDisposable tətbiq etmədiyi üçün sadəcə null təyin edirik
+            // Gələcəkdə repository siniflərinə IDisposable əlavə edilərsə, burada dispose ediləcək
+        }
     }
 }

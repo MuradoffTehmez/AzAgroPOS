@@ -29,7 +29,7 @@ namespace AzAgroPOS.BLL.Services
 
         public List<Tedarukcu> GetActiveCustomers()
         {
-            return _tedarukcuRepository.GetAll().Where(t => t.Status == SystemConstants.Status.Active).ToList();
+            return _tedarukcuRepository.GetAll().Cast<Tedarukcu>().Where(t => t.Status == SystemConstants.Status.Active).ToList();
         }
 
         public List<Tedarukcu> GetAll()
