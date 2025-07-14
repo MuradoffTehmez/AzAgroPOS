@@ -95,7 +95,7 @@ namespace AzAgroPOS.PL.Forms
             this.tabControl1.Location = new System.Drawing.Point(0, 60);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(900, 520);
+            this.tabControl1.Size = new System.Drawing.Size(900, 590);
             this.tabControl1.TabIndex = 1;
             // 
             // tabDebtInfo
@@ -126,7 +126,7 @@ namespace AzAgroPOS.PL.Forms
             this.panel3.Controls.Add(this.lblAmountInfoTitle);
             this.panel3.Location = new System.Drawing.Point(460, 20);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(420, 180);
+            this.panel3.Size = new System.Drawing.Size(420, 460);
             this.panel3.TabIndex = 1;
             // 
             // lblUmumiBorc
@@ -278,7 +278,7 @@ namespace AzAgroPOS.PL.Forms
             this.panel2.Controls.Add(this.lblDebtInfoTitle);
             this.panel2.Location = new System.Drawing.Point(20, 20);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(420, 450);
+            this.panel2.Size = new System.Drawing.Size(420, 460);
             this.panel2.TabIndex = 0;
             // 
             // lblStatus
@@ -598,7 +598,7 @@ namespace AzAgroPOS.PL.Forms
             this.panel7.Controls.Add(this.btnEditDebt);
             this.panel7.Controls.Add(this.btnAddPayment);
             this.panel7.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel7.Location = new System.Drawing.Point(0, 510);
+            this.panel7.Location = new System.Drawing.Point(0, 580);
             this.panel7.Name = "panel7";
             this.panel7.Size = new System.Drawing.Size(900, 70);
             this.panel7.TabIndex = 2;
@@ -668,7 +668,7 @@ namespace AzAgroPOS.PL.Forms
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(240)))), ((int)(((byte)(241)))));
-            this.ClientSize = new System.Drawing.Size(900, 580);
+            this.ClientSize = new System.Drawing.Size(900, 650);
             this.Controls.Add(this.panel7);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.panel1);
