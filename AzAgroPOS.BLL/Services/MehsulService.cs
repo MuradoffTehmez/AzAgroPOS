@@ -1,6 +1,7 @@
 using AzAgroPOS.DAL;
 using AzAgroPOS.DAL.Repositories;
 using AzAgroPOS.Entities.Domain;
+using AzAgroPOS.BLL.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,19 +35,19 @@ namespace AzAgroPOS.BLL.Services
             {
                 // Validation
                 if (await _mehsulRepository.BarkodMevcudAsync(mehsul.Barkod))
-                    return (false, "Bu barkod artıq mövcuddur.", null);
+                    return (false, "Bu barkod artıq mövcuddur.", (int?)null);
 
                 if (await _mehsulRepository.SKUMevcudAsync(mehsul.SKU))
-                    return (false, "Bu SKU artıq mövcuddur.", null);
+                    return (false, "Bu SKU artıq mövcuddur.", (int?)null);
 
                 if (!await ValidateKateqoriyaAsync(mehsul.KateqoriyaId))
-                    return (false, "Seçilən kateqoriya mövcud deyil və ya aktiv deyil.", null);
+                    return (false, "Seçilən kateqoriya mövcud deyil və ya aktiv deyil.", (int?)null);
 
                 if (!await ValidateVahidAsync(mehsul.VahidId))
-                    return (false, "Seçilən vahid mövcud deyil və ya aktiv deyil.", null);
+                    return (false, "Seçilən vahid mövcud deyil və ya aktiv deyil.", (int?)null);
 
                 if (mehsul.SatisQiymeti <= mehsul.AlisQiymeti)
-                    return (false, "Satış qiyməti alış qiymətindən böyük olmalıdır.", null);
+                    return (false, "Satış qiyməti alış qiymətindən böyük olmalıdır.", (int?)null);
 
                 // Create product
                 var mehsulId = await _mehsulRepository.AddAsync(mehsul);

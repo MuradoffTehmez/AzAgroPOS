@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using AzAgroPOS.Entities.Constants;
 using Microsoft.EntityFrameworkCore;
-//using CsvHelper.Configuration.Attributes;
+using CsvHelper.Configuration.Attributes;
 
 namespace AzAgroPOS.Entities.Domain
 {
@@ -16,7 +16,6 @@ namespace AzAgroPOS.Entities.Domain
 
         [Required(ErrorMessage = "Müştəri kodu mütləqdir")]
         [StringLength(20, ErrorMessage = "Müştəri kodu maksimum 20 simbol ola bilər")]
-        [Index(IsUnique = true)]
         public string MusteriKodu { get; set; }
 
         [Required(ErrorMessage = "Ad mütləqdir")]

@@ -1,4 +1,4 @@
-using AzAgroPOS.Common.Interfaces;
+using AzAgroPOS.BLL.Interfaces;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Diagnostics;
@@ -62,7 +62,7 @@ namespace AzAgroPOS.BLL.Services
 
             foreach (var pattern in sensitivePatterns)
             {
-                if (message.Contains(pattern, StringComparison.OrdinalIgnoreCase))
+                if (message.IndexOf(pattern, StringComparison.OrdinalIgnoreCase) >= 0)
                 {
                     return GetGenericErrorMessage(message);
                 }
@@ -176,17 +176,17 @@ namespace AzAgroPOS.BLL.Services
 
         private string GetGenericErrorMessage(string originalMessage)
         {
-            if (originalMessage.Contains("connection", StringComparison.OrdinalIgnoreCase))
+            if (originalMessage.IndexOf("connection", StringComparison.OrdinalIgnoreCase) >= 0)
                 return "Verilənlər bazası əlaqə xətası.";
 
-            if (originalMessage.Contains("SQL", StringComparison.OrdinalIgnoreCase) ||
-                originalMessage.Contains("database", StringComparison.OrdinalIgnoreCase))
+            if (originalMessage.IndexOf("SQL", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                originalMessage.IndexOf("database", StringComparison.OrdinalIgnoreCase) >= 0)
                 return "Verilənlər bazası əməliyyat xətası.";
 
             if (originalMessage.Contains("\\") || originalMessage.Contains("/"))
                 return "Sistem fayl əməliyyat xətası.";
 
-            if (originalMessage.Contains("network", StringComparison.OrdinalIgnoreCase))
+            if (originalMessage.IndexOf("network", StringComparison.OrdinalIgnoreCase) >= 0)
                 return "Şəbəkə əlaqə xətası.";
 
             return "Sistem xətası baş verdi.";

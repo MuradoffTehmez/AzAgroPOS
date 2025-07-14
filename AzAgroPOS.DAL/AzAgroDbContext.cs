@@ -44,6 +44,14 @@ namespace AzAgroPOS.DAL
 
         public DbSet<Musteri> Musteriler { get; set; }
         public DbSet<MusteriQrupu> MusteriQruplari { get; set; }
+        
+        // Employee Module
+        public DbSet<Isci> Isciler { get; set; }
+        public DbSet<NovbeKaydi> NovbeKayitlari { get; set; }
+        public DbSet<IsciPerformans> IsciPerformans { get; set; }
+        
+        // Reports Module
+        public DbSet<SatisHesabati> SatisHesabatlari { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

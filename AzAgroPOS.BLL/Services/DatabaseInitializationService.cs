@@ -156,7 +156,7 @@ namespace AzAgroPOS.BLL.Services
                 Ad = "Admin",
                 Soyad = "Sistem",
                 Email = "admin@azagropos.az",
-                ParolHash = BCrypt.HashPassword("Admin123!", BCrypt.GenerateSalt(12)),
+                ParolHash = BCrypt.Net.BCrypt.HashPassword("Admin123!", BCrypt.Net.BCrypt.GenerateSalt(12)),
                 RolId = adminRole.Id,
                 TemaId = lightTheme.Id,
                 Status = "Aktiv",

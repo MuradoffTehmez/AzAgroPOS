@@ -1,5 +1,6 @@
 using AzAgroPOS.DAL;
 using AzAgroPOS.Entities.Domain;
+using AzAgroPOS.BLL.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace AzAgroPOS.BLL.Services
 {
-    public class AuditLogService : IDisposable
+    public class AuditLogService : IAuditLogService, IDisposable
     {
         private readonly AzAgroDbContext _context;
 
-        public AuditLogService()
+        public AuditLogService(AzAgroDbContext context = null)
         {
-            _context = new AzAgroDbContext();
+            _context = context ?? new AzAgroDbContext();
         }
 
         public void Log(string modul, int? entityId, string emeliyyat, string detal, int? istifadeciId)
@@ -219,6 +220,26 @@ namespace AzAgroPOS.BLL.Services
             }
 
             return "Windows";
+        }
+
+        public async Task LogAsync(string modul, int? entityId, string emeliyyat, string detal, int? istifadeciId)
+        {
+            await LogAsync(istifadeciId, modul, emeliyyat, "Desktop App", detal);
+        }
+
+        public IEnumerable<AuditLog> GetLogs(int? istifadeciId = null, string modul = null, DateTime? startDate = null, DateTime? endDate = null)
+        {
+            return GetLogsAsync(istifadeciId, startDate, endDate, modul).Result;
+        }
+
+        public async Task<IEnumerable<AuditLog>> GetLogsAsync(int? istifadeciId = null, string modul = null, DateTime? startDate = null, DateTime? endDate = null)
+        {
+            return await GetLogsAsync(istifadeciId, startDate, endDate, modul, 0, 100);
+        }
+
+        public void ClearOldLogs(int days = 90)
+        {
+            CleanOldLogsAsync(days).Wait();
         }
 
         public void Dispose()
