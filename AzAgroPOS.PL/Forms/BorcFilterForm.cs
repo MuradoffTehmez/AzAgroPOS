@@ -1,4 +1,5 @@
 using AzAgroPOS.DAL;
+using AzAgroPOS.Entities.Domain;
 using System;
 using System.Drawing;
 using System.Linq;
@@ -61,7 +62,7 @@ namespace AzAgroPOS.PL.Forms
         private void btnApply_Click(object sender, EventArgs e)
         {
             SelectedStatus = cmbStatus.SelectedItem.ToString() == "Hamısı" ? null : cmbStatus.SelectedItem.ToString();
-            SelectedCustomerId = cmbCustomer.SelectedIndex == 0 ? (int?)null : ((dynamic)cmbCustomer.SelectedItem).Id;
+            SelectedCustomerId = cmbCustomer.SelectedIndex == 0 ? (int?)null : ((Tedarukcu)cmbCustomer.SelectedItem).Id;
             StartDate = chkStartDate.Checked ? dtpStartDate.Value : (DateTime?)null;
             EndDate = chkEndDate.Checked ? dtpEndDate.Value : (DateTime?)null;
             

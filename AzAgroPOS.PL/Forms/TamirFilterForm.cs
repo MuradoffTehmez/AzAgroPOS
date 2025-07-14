@@ -1,4 +1,5 @@
 using AzAgroPOS.DAL;
+using AzAgroPOS.Entities.Domain;
 using System;
 using System.Drawing;
 using System.Linq;
@@ -95,8 +96,8 @@ namespace AzAgroPOS.PL.Forms
         {
             SelectedStatus = cmbStatus.SelectedItem.ToString() == "Hamısı" ? null : GetStatusEnglish(cmbStatus.SelectedItem.ToString());
             SelectedPriority = cmbPriority.SelectedItem.ToString() == "Hamısı" ? null : GetPriorityEnglish(cmbPriority.SelectedItem.ToString());
-            SelectedCustomerId = cmbCustomer.SelectedIndex == 0 ? (int?)null : ((dynamic)cmbCustomer.SelectedItem).Id;
-            SelectedWorkerId = cmbWorker.SelectedIndex == 0 ? (int?)null : ((dynamic)cmbWorker.SelectedItem).Id;
+            SelectedCustomerId = cmbCustomer.SelectedIndex == 0 ? (int?)null : ((Tedarukcu)cmbCustomer.SelectedItem).Id;
+            SelectedWorkerId = cmbWorker.SelectedIndex == 0 ? (int?)null : ((Istifadeci)cmbWorker.SelectedItem).Id;
             StartDate = chkStartDate.Checked ? dtpStartDate.Value : (DateTime?)null;
             EndDate = chkEndDate.Checked ? dtpEndDate.Value : (DateTime?)null;
             

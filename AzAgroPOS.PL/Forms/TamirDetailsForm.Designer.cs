@@ -93,7 +93,7 @@ namespace AzAgroPOS.PL.Forms
             this.lblTitle.ForeColor = System.Drawing.Color.White;
             this.lblTitle.Location = new System.Drawing.Point(20, 15);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(216, 32);
+            this.lblTitle.Size = new System.Drawing.Size(230, 32);
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "Təmir Təfərrüatları";
             // 
@@ -160,7 +160,7 @@ namespace AzAgroPOS.PL.Forms
             this.lblTamirciQeydleriLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
             this.lblTamirciQeydleriLabel.Location = new System.Drawing.Point(20, 350);
             this.lblTamirciQeydleriLabel.Name = "lblTamirciQeydleriLabel";
-            this.lblTamirciQeydleriLabel.Size = new System.Drawing.Size(125, 19);
+            this.lblTamirciQeydleriLabel.Size = new System.Drawing.Size(124, 19);
             this.lblTamirciQeydleriLabel.TabIndex = 13;
             this.lblTamirciQeydleriLabel.Text = "Tamirçi Qeydləri:";
             // 
@@ -180,7 +180,7 @@ namespace AzAgroPOS.PL.Forms
             this.lblMusteriQeydleriLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
             this.lblMusteriQeydleriLabel.Location = new System.Drawing.Point(20, 260);
             this.lblMusteriQeydleriLabel.Name = "lblMusteriQeydleriLabel";
-            this.lblMusteriQeydleriLabel.Size = new System.Drawing.Size(124, 19);
+            this.lblMusteriQeydleriLabel.Size = new System.Drawing.Size(125, 19);
             this.lblMusteriQeydleriLabel.TabIndex = 11;
             this.lblMusteriQeydleriLabel.Text = "Müştəri Qeydləri:";
             // 
@@ -201,7 +201,7 @@ namespace AzAgroPOS.PL.Forms
             this.lblTeyinEdilenIsciLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
             this.lblTeyinEdilenIsciLabel.Location = new System.Drawing.Point(20, 225);
             this.lblTeyinEdilenIsciLabel.Name = "lblTeyinEdilenIsciLabel";
-            this.lblTeyinEdilenIsciLabel.Size = new System.Drawing.Size(127, 19);
+            this.lblTeyinEdilenIsciLabel.Size = new System.Drawing.Size(118, 19);
             this.lblTeyinEdilenIsciLabel.TabIndex = 9;
             this.lblTeyinEdilenIsciLabel.Text = "Təyin Edilən İşçi:";
             // 
@@ -222,7 +222,7 @@ namespace AzAgroPOS.PL.Forms
             this.lblPrioritetLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
             this.lblPrioritetLabel.Location = new System.Drawing.Point(20, 185);
             this.lblPrioritetLabel.Name = "lblPrioritetLabel";
-            this.lblPrioritetLabel.Size = new System.Drawing.Size(71, 19);
+            this.lblPrioritetLabel.Size = new System.Drawing.Size(69, 19);
             this.lblPrioritetLabel.TabIndex = 7;
             this.lblPrioritetLabel.Text = "Prioritet:";
             // 
@@ -265,7 +265,7 @@ namespace AzAgroPOS.PL.Forms
             this.lblSonQiymetLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
             this.lblSonQiymetLabel.Location = new System.Drawing.Point(20, 105);
             this.lblSonQiymetLabel.Name = "lblSonQiymetLabel";
-            this.lblSonQiymetLabel.Size = new System.Drawing.Size(84, 19);
+            this.lblSonQiymetLabel.Size = new System.Drawing.Size(91, 19);
             this.lblSonQiymetLabel.TabIndex = 3;
             this.lblSonQiymetLabel.Text = "Son Qiymət:";
             // 
@@ -287,7 +287,7 @@ namespace AzAgroPOS.PL.Forms
             this.lblTaxminQiymetLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
             this.lblTaxminQiymetLabel.Location = new System.Drawing.Point(20, 65);
             this.lblTaxminQiymetLabel.Name = "lblTaxminQiymetLabel";
-            this.lblTaxminQiymetLabel.Size = new System.Drawing.Size(109, 19);
+            this.lblTaxminQiymetLabel.Size = new System.Drawing.Size(119, 19);
             this.lblTaxminQiymetLabel.TabIndex = 1;
             this.lblTaxminQiymetLabel.Text = "Təxmini Qiymət:";
             // 
@@ -298,7 +298,7 @@ namespace AzAgroPOS.PL.Forms
             this.lblRepairInfoTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
             this.lblRepairInfoTitle.Location = new System.Drawing.Point(15, 15);
             this.lblRepairInfoTitle.Name = "lblRepairInfoTitle";
-            this.lblRepairInfoTitle.Size = new System.Drawing.Size(173, 25);
+            this.lblRepairInfoTitle.Size = new System.Drawing.Size(175, 25);
             this.lblRepairInfoTitle.TabIndex = 0;
             this.lblRepairInfoTitle.Text = "Təmir Məlumatları";
             // 
@@ -344,7 +344,7 @@ namespace AzAgroPOS.PL.Forms
             this.lblTaxminiBitirmeTarixiLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
             this.lblTaxminiBitirmeTarixiLabel.Location = new System.Drawing.Point(20, 275);
             this.lblTaxminiBitirmeTarixiLabel.Name = "lblTaxminiBitirmeTarixiLabel";
-            this.lblTaxminiBitirmeTarixiLabel.Size = new System.Drawing.Size(148, 19);
+            this.lblTaxminiBitirmeTarixiLabel.Size = new System.Drawing.Size(156, 19);
             this.lblTaxminiBitirmeTarixiLabel.TabIndex = 15;
             this.lblTaxminiBitirmeTarixiLabel.Text = "Təxmini Bitirmə Tarix:";
             // 
@@ -372,7 +372,7 @@ namespace AzAgroPOS.PL.Forms
             // lblProblemTasviri
             // 
             this.lblProblemTasviri.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblProblemTasviri.Location = new System.Drawing.Point(170, 165);
+            this.lblProblemTasviri.Location = new System.Drawing.Point(170, 174);
             this.lblProblemTasviri.Name = "lblProblemTasviri";
             this.lblProblemTasviri.Size = new System.Drawing.Size(270, 70);
             this.lblProblemTasviri.TabIndex = 12;
@@ -383,9 +383,9 @@ namespace AzAgroPOS.PL.Forms
             this.lblProblemTasviriLabel.AutoSize = true;
             this.lblProblemTasviriLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblProblemTasviriLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
-            this.lblProblemTasviriLabel.Location = new System.Drawing.Point(20, 165);
+            this.lblProblemTasviriLabel.Location = new System.Drawing.Point(20, 185);
             this.lblProblemTasviriLabel.Name = "lblProblemTasviriLabel";
-            this.lblProblemTasviriLabel.Size = new System.Drawing.Size(117, 19);
+            this.lblProblemTasviriLabel.Size = new System.Drawing.Size(119, 19);
             this.lblProblemTasviriLabel.TabIndex = 11;
             this.lblProblemTasviriLabel.Text = "Problem Təsviri:";
             // 
@@ -404,7 +404,7 @@ namespace AzAgroPOS.PL.Forms
             this.lblSeriNomresiLabel.AutoSize = true;
             this.lblSeriNomresiLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblSeriNomresiLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
-            this.lblSeriNomresiLabel.Location = new System.Drawing.Point(20, 135);
+            this.lblSeriNomresiLabel.Location = new System.Drawing.Point(20, 155);
             this.lblSeriNomresiLabel.Name = "lblSeriNomresiLabel";
             this.lblSeriNomresiLabel.Size = new System.Drawing.Size(100, 19);
             this.lblSeriNomresiLabel.TabIndex = 9;
@@ -425,9 +425,9 @@ namespace AzAgroPOS.PL.Forms
             this.lblMehsulModeliLabel.AutoSize = true;
             this.lblMehsulModeliLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblMehsulModeliLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
-            this.lblMehsulModeliLabel.Location = new System.Drawing.Point(20, 105);
+            this.lblMehsulModeliLabel.Location = new System.Drawing.Point(20, 125);
             this.lblMehsulModeliLabel.Name = "lblMehsulModeliLabel";
-            this.lblMehsulModeliLabel.Size = new System.Drawing.Size(108, 19);
+            this.lblMehsulModeliLabel.Size = new System.Drawing.Size(111, 19);
             this.lblMehsulModeliLabel.TabIndex = 7;
             this.lblMehsulModeliLabel.Text = "Məhsul Modeli:";
             // 
@@ -446,7 +446,7 @@ namespace AzAgroPOS.PL.Forms
             this.lblMehsulAdiLabel.AutoSize = true;
             this.lblMehsulAdiLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblMehsulAdiLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
-            this.lblMehsulAdiLabel.Location = new System.Drawing.Point(20, 75);
+            this.lblMehsulAdiLabel.Location = new System.Drawing.Point(20, 95);
             this.lblMehsulAdiLabel.Name = "lblMehsulAdiLabel";
             this.lblMehsulAdiLabel.Size = new System.Drawing.Size(87, 19);
             this.lblMehsulAdiLabel.TabIndex = 5;
@@ -467,7 +467,7 @@ namespace AzAgroPOS.PL.Forms
             this.lblMusteriAdiLabel.AutoSize = true;
             this.lblMusteriAdiLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblMusteriAdiLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
-            this.lblMusteriAdiLabel.Location = new System.Drawing.Point(20, 45);
+            this.lblMusteriAdiLabel.Location = new System.Drawing.Point(20, 65);
             this.lblMusteriAdiLabel.Name = "lblMusteriAdiLabel";
             this.lblMusteriAdiLabel.Size = new System.Drawing.Size(90, 19);
             this.lblMusteriAdiLabel.TabIndex = 3;
@@ -489,9 +489,9 @@ namespace AzAgroPOS.PL.Forms
             this.lblTamirNomresiLabel.AutoSize = true;
             this.lblTamirNomresiLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblTamirNomresiLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
-            this.lblTamirNomresiLabel.Location = new System.Drawing.Point(20, 15);
+            this.lblTamirNomresiLabel.Location = new System.Drawing.Point(20, 35);
             this.lblTamirNomresiLabel.Name = "lblTamirNomresiLabel";
-            this.lblTamirNomresiLabel.Size = new System.Drawing.Size(111, 19);
+            this.lblTamirNomresiLabel.Size = new System.Drawing.Size(113, 19);
             this.lblTamirNomresiLabel.TabIndex = 1;
             this.lblTamirNomresiLabel.Text = "Təmir Nömrəsi:";
             // 
@@ -500,7 +500,7 @@ namespace AzAgroPOS.PL.Forms
             this.lblBasicInfoTitle.AutoSize = true;
             this.lblBasicInfoTitle.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
             this.lblBasicInfoTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
-            this.lblBasicInfoTitle.Location = new System.Drawing.Point(15, 15);
+            this.lblBasicInfoTitle.Location = new System.Drawing.Point(5, 9);
             this.lblBasicInfoTitle.Name = "lblBasicInfoTitle";
             this.lblBasicInfoTitle.Size = new System.Drawing.Size(159, 25);
             this.lblBasicInfoTitle.TabIndex = 0;
@@ -546,7 +546,7 @@ namespace AzAgroPOS.PL.Forms
             this.lblStepsTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
             this.lblStepsTitle.Location = new System.Drawing.Point(20, 18);
             this.lblStepsTitle.Name = "lblStepsTitle";
-            this.lblStepsTitle.Size = new System.Drawing.Size(167, 25);
+            this.lblStepsTitle.Size = new System.Drawing.Size(168, 25);
             this.lblStepsTitle.TabIndex = 0;
             this.lblStepsTitle.Text = "Təmir Mərhələləri";
             // 

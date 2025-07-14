@@ -118,10 +118,10 @@ namespace AzAgroPOS.PL.Forms
                     s.Id,
                     MerheleAdi = s.MerheleAdi,
                     Aciklama = s.Aciklama,
-                    BaslamaTarixi = s.BaslamaTarixi?.ToString("dd.MM.yyyy HH:mm") ?? "Başlamayıb",
+                    BaslamaTarixi = s.BaslangicTarixi?.ToString("dd.MM.yyyy HH:mm") ?? "Başlamayıb",
                     BitirilmisTarix = s.BitirilmisTarix?.ToString("dd.MM.yyyy HH:mm") ?? "Bitməyib",
-                    Status = s.Status == "Completed" ? "Tamamlanıb" : s.Status == "InProgress" ? "İşlənir" : "Gözləyir",
-                    MesulIsci = s.MesulIstifadeci?.TamAd ?? "Təyin edilməyib"
+                    Status = s.StatusAzerbaycan,
+                    MesulIsci = s.TeyinEdilenIstifadeci?.TamAd ?? "Təyin edilməyib"
                 }).ToList();
 
                 dgvSteps.DataSource = steps;
