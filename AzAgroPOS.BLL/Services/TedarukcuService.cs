@@ -197,10 +197,8 @@ namespace AzAgroPOS.BLL.Services
 
         public void Dispose()
         {
-            _tedarukcuRepository?.Dispose();
-            _alisOrderRepository?.Dispose();
-            _alisSenedRepository?.Dispose();
-            _odemeRepository?.Dispose();
+            // Repository sinifləri IDisposable tətbiq etmədiyi üçün sadəcə boş buraxırıq
+            // Gələcəkdə repository siniflərinə IDisposable əlavə edilərsə, burada dispose ediləcək
         }
     }
 
