@@ -125,18 +125,12 @@ namespace AzAgroPOS.DAL.Repositories
         {
             using (var context = new AzAgroDbContext())
             {
-                // DÜZƏLİŞ: Sorğu iki hissəyə bölündü
-                var activeProducts = await context.Mehsullar
+                return await context.Mehsullar
                     .Include(m => m.Kateqoriya)
                     .Include(m => m.Vahid)
-                    .Where(m => m.Status == "Aktiv")
-                    .ToListAsync();
-
-                // Filterləmə proqram yaddaşında (client-side) aparılır
-                return activeProducts
-                    .Where(m => m.MovcudMiqdar <= m.MinimumMiqdar)
+                    .Where(m => m.Status == "Aktiv" && m.MovcudMiqdar <= m.MinimumMiqdar) // <- FİLTRLƏMƏ BAZADA APARILIR
                     .OrderBy(m => m.Ad)
-                    .ToList();
+                    .ToListAsync();
             }
         }
 
@@ -238,16 +232,20 @@ namespace AzAgroPOS.DAL.Repositories
             {
                 var statistikalar = new Dictionary<string, object>();
 
-                // DÜZƏLİŞ: LINQ xətasının qarşısını almaq üçün məlumatlar əvvəlcə yaddaşa çəkilir
-                var allProducts = await context.Mehsullar.AsNoTracking().ToListAsync();
+                // Bütün hesablamalar birbaşa bazada aparılır
+                var umumiSay = await context.Mehsullar.CountAsync();
+                var aktivSay = await context.Mehsullar.CountAsync(m => m.Status == "Aktiv");
+                var azStokluSay = await context.Mehsullar.CountAsync(m => m.Status == "Aktiv" && m.MovcudMiqdar <= m.MinimumMiqdar);
 
-                statistikalar["UmumiMehsulSayi"] = allProducts.Count;
+                // Sum əməliyyatı üçün ayrıca sorğu
+                var umumiDeyer = await context.Mehsullar
+                    .Where(m => m.Status == "Aktiv")
+                    .SumAsync(m => m.MovcudMiqdar * m.SatisQiymeti);
 
-                var activeProducts = allProducts.Where(m => m.Status == "Aktiv").ToList();
-
-                statistikalar["AktivMehsulSayi"] = activeProducts.Count;
-                statistikalar["StoktanKenardaMehsulSayi"] = activeProducts.Count(m => m.MovcudMiqdar <= m.MinimumMiqdar);
-                statistikalar["UmumiDeger"] = activeProducts.Sum(m => m.MovcudMiqdar * m.SatisQiymeti);
+                statistikalar["UmumiMehsulSayi"] = umumiSay;
+                statistikalar["AktivMehsulSayi"] = aktivSay;
+                statistikalar["StoktanKenardaMehsulSayi"] = azStokluSay;
+                statistikalar["UmumiDeger"] = umumiDeyer;
 
                 return statistikalar;
             }

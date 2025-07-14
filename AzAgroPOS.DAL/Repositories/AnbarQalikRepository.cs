@@ -96,32 +96,31 @@ namespace AzAgroPOS.DAL.Repositories
 
         public List<AnbarQalik> GetMinimumSeviyyedenAsagi()
         {
-            // DÜZƏLİŞ: Sorğu client-side evaluation üçün yenidən yazıldı
-            var allQaliqlar = _context.AnbarQaliqları
-                .Include(q => q.Anbar)
-                .Include(q => q.Mehsul)
-                    .ThenInclude(m => m.Kateqoriya)
-                .ToList();
-
-            return allQaliqlar
-                .Where(q => q.MovcudMiqdar <= q.MinimumMiqdar && q.MinimumMiqdar > 0)
-                .OrderBy(q => q.MovcudMiqdar)
-                .ToList();
+            // Yaradılan hər context 'using' bloku daxilində olmalıdır
+            using (var context = new AzAgroDbContext())
+            {
+                return context.AnbarQaliqları
+                    .Include(q => q.Anbar)
+                    .Include(q => q.Mehsul.Kateqoriya)
+                    // Filtrləmə birbaşa bazada aparılır
+                    .Where(q => q.MovcudMiqdar <= q.MinimumMiqdar && q.MinimumMiqdar > 0)
+                    .OrderBy(q => q.MovcudMiqdar)
+                    .ToList(); // Yalnız nəticə yaddaşa yüklənir
+            }
         }
 
         public List<AnbarQalik> GetMaksimumSeviyyedenYuxari()
         {
-            // DÜZƏLİŞ: Sorğu client-side evaluation üçün yenidən yazıldı
-            var allQaliqlar = _context.AnbarQaliqları
-                .Include(q => q.Anbar)
-                .Include(q => q.Mehsul)
-                    .ThenInclude(m => m.Kateqoriya)
-                .ToList();
-
-            return allQaliqlar
-                .Where(q => q.MaksimumMiqdar > 0 && q.MovcudMiqdar >= q.MaksimumMiqdar)
-                .OrderByDescending(q => q.MovcudMiqdar)
-                .ToList();
+            using (var context = new AzAgroDbContext())
+            {
+                return context.AnbarQaliqları
+                    .Include(q => q.Anbar)
+                    .Include(q => q.Mehsul.Kateqoriya)
+                    // Filtrləmə birbaşa bazada aparılır
+                    .Where(q => q.MaksimumMiqdar > 0 && q.MovcudMiqdar >= q.MaksimumMiqdar)
+                    .OrderByDescending(q => q.MovcudMiqdar)
+                    .ToList(); // Yalnız nəticə yaddaşa yüklənir
+            }
         }
 
         public List<AnbarQalik> GetStoktanKenarda()
