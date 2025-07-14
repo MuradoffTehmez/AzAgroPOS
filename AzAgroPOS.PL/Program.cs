@@ -45,7 +45,8 @@ namespace AzAgroPOS.PL
             // Create a simple logger for database initialization
             var loggerFactory = LoggerFactory.Create(builder =>
             {
-                builder.AddDebug();
+                // Simple logger configuration without external dependencies
+                builder.SetMinimumLevel(LogLevel.Information);
             });
             
             return loggerFactory.CreateLogger<DatabaseInitializationService>();
