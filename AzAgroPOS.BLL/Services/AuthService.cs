@@ -1,6 +1,9 @@
 using AzAgroPOS.DAL.Repositories;
 using AzAgroPOS.Entities.Domain;
+using AzAgroPOS.Entities.Constants;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using BCrypt.Net;
 
@@ -247,6 +250,16 @@ namespace AzAgroPOS.BLL.Services
             }
 
             return hasUpper && hasLower && hasDigit;
+        }
+
+        public List<Istifadeci> GetActiveWorkers()
+        {
+            return _istifadeciRepository.GetAll()
+                .Where(i => i.Status == SystemConstants.Status.Active && 
+                       (i.Rol.Ad == SystemConstants.Roles.Worker || 
+                        i.Rol.Ad == SystemConstants.Roles.Manager || 
+                        i.Rol.Ad == SystemConstants.Roles.Administrator))
+                .ToList();
         }
 
         public void Dispose()

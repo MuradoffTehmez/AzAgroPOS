@@ -1,6 +1,6 @@
 using AzAgroPOS.BLL.Services;
-using AzAgroPOS.DAL;
 using AzAgroPOS.Entities.Domain;
+using AzAgroPOS.Entities.Constants;
 using System;
 using System.Drawing;
 using System.Linq;
@@ -12,7 +12,6 @@ namespace AzAgroPOS.PL.Forms
     {
         private readonly int _repairId;
         private readonly Istifadeci _currentUser;
-        private readonly AzAgroDbContext _context;
         private readonly TamirService _tamirService;
         private TamirIsi _repair;
 
@@ -21,8 +20,7 @@ namespace AzAgroPOS.PL.Forms
             InitializeComponent();
             _repairId = repairId;
             _currentUser = currentUser;
-            _context = new AzAgroDbContext();
-            _tamirService = new TamirService(_context, new AuditLogService());
+            _tamirService = new TamirService();
             SetupForm();
             LoadRepairDetails();
         }
@@ -104,8 +102,7 @@ namespace AzAgroPOS.PL.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Təmir məlumatları yüklənərkən xəta: {ex.Message}", "Xəta", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ErrorHandlingService.HandleError(ex, "Təmir məlumatları yüklənərkən xəta baş verdi.");
             }
         }
 
@@ -139,14 +136,13 @@ namespace AzAgroPOS.PL.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Təmir mərhələləri yüklənərkən xəta: {ex.Message}", "Xəta", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ErrorHandlingService.HandleError(ex, "Təmir mərhələləri yüklənərkən xəta baş verdi.");
             }
         }
 
         private void btnEditRepair_Click(object sender, EventArgs e)
         {
-            if (_currentUser.Role != "Administrator" && _currentUser.Role != "Manager")
+            if (_currentUser.Role != SystemConstants.Roles.Administrator && _currentUser.Role != SystemConstants.Roles.Manager)
             {
                 MessageBox.Show("Bu əməliyyat üçün icazəniz yoxdur.", "İcazə rədd edildi", 
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -185,8 +181,7 @@ namespace AzAgroPOS.PL.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Hesabat yaradılarkən xəta: {ex.Message}", "Xəta", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ErrorHandlingService.HandleError(ex, "Hesabat yaradılarkən xəta baş verdi.");
             }
         }
 
@@ -199,7 +194,7 @@ namespace AzAgroPOS.PL.Forms
         {
             if (disposing)
             {
-                _context?.Dispose();
+                _tamirService?.Dispose();
                 components?.Dispose();
             }
             base.Dispose(disposing);

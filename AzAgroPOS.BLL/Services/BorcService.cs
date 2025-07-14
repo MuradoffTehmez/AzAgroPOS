@@ -1,6 +1,7 @@
 using AzAgroPOS.DAL;
 using AzAgroPOS.DAL.Repositories;
 using AzAgroPOS.Entities.Domain;
+using AzAgroPOS.Entities.Constants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,21 +14,39 @@ namespace AzAgroPOS.BLL.Services
         private readonly BorcOdenisRepository _borcOdenisRepository;
         private readonly AuditLogService _auditLogService;
 
-        public BorcService(AzAgroDbContext context, AuditLogService auditLogService)
+        public BorcService(AzAgroDbContext context = null, AuditLogService auditLogService = null)
         {
-            _musteriBorcRepository = new MusteriBorcRepository(context);
-            _borcOdenisRepository = new BorcOdenisRepository(context);
-            _auditLogService = auditLogService;
+            var dbContext = context ?? new AzAgroDbContext();
+            _musteriBorcRepository = new MusteriBorcRepository(dbContext);
+            _borcOdenisRepository = new BorcOdenisRepository(dbContext);
+            _auditLogService = auditLogService ?? new AuditLogService();
         }
 
         public IEnumerable<MusteriBorc> GetAllDebts()
         {
-            return _musteriBorcRepository.GetAll().ToList();
+            try
+            {
+                return _musteriBorcRepository.GetAll().ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException($"Borc məlumatları alınarkən xəta: {ex.Message}", ex);
+            }
         }
 
         public MusteriBorc GetDebtById(int id)
         {
-            return _musteriBorcRepository.GetById(id);
+            try
+            {
+                if (id <= 0)
+                    throw new ArgumentException("Yanlış borc ID-si", nameof(id));
+                    
+                return _musteriBorcRepository.GetById(id);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException($"Borc məlumatı alınarkən xəta: {ex.Message}", ex);
+            }
         }
 
         public IEnumerable<MusteriBorc> GetDebtsByCustomer(int musteriId)

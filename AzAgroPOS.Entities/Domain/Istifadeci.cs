@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using AzAgroPOS.Entities.Constants;
 
 namespace AzAgroPOS.Entities.Domain
 {
@@ -38,7 +39,7 @@ namespace AzAgroPOS.Entities.Domain
         [Required(ErrorMessage = "Status mütləqdir")]
         [StringLength(20, ErrorMessage = "Status maksimum 20 simbol ola bilər")]
         [Column(TypeName = "varchar(20)")]
-        public string Status { get; set; } = "Aktiv";
+        public string Status { get; set; } = SystemConstants.Status.Active;
 
         [Column(TypeName = "datetime")]
         public DateTime YaradilmaTarixi { get; set; }

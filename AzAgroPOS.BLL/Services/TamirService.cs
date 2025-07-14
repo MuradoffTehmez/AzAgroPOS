@@ -1,23 +1,25 @@
 using AzAgroPOS.DAL;
 using AzAgroPOS.DAL.Repositories;
 using AzAgroPOS.Entities.Domain;
+using AzAgroPOS.Entities.Constants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace AzAgroPOS.BLL.Services
 {
-    public class TamirService
+    public class TamirService : IDisposable
     {
         private readonly TamirIsiRepository _tamirIsiRepository;
         private readonly TamirMerheleRepository _tamirMerheleRepository;
         private readonly AuditLogService _auditLogService;
 
-        public TamirService(AzAgroDbContext context, AuditLogService auditLogService)
+        public TamirService(AzAgroDbContext context = null, AuditLogService auditLogService = null)
         {
-            _tamirIsiRepository = new TamirIsiRepository(context);
-            _tamirMerheleRepository = new TamirMerheleRepository(context);
-            _auditLogService = auditLogService;
+            var dbContext = context ?? new AzAgroDbContext();
+            _tamirIsiRepository = new TamirIsiRepository(dbContext);
+            _tamirMerheleRepository = new TamirMerheleRepository(dbContext);
+            _auditLogService = auditLogService ?? new AuditLogService();
         }
 
         #region Tamir İşi Yönetimi
@@ -339,5 +341,12 @@ namespace AzAgroPOS.BLL.Services
         }
 
         #endregion
+
+        //public void Dispose()
+        //{
+        //    _tamirIsiRepository?.Dispose();
+        //    _tamirMerheleRepository?.Dispose();
+        //    _auditLogService?.Dispose();
+        //}
     }
 }

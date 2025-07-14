@@ -1,5 +1,6 @@
-using AzAgroPOS.DAL;
+using AzAgroPOS.BLL.Services;
 using AzAgroPOS.Entities.Domain;
+using AzAgroPOS.Entities.Constants;
 using System;
 using System.Drawing;
 using System.Linq;
@@ -14,12 +15,12 @@ namespace AzAgroPOS.PL.Forms
         public DateTime? StartDate { get; private set; }
         public DateTime? EndDate { get; private set; }
 
-        private readonly AzAgroDbContext _context;
+        private readonly TedarukcuService _tedarukcuService;
 
         public BorcFilterForm()
         {
             InitializeComponent();
-            _context = new AzAgroDbContext();
+            _tedarukcuService = new TedarukcuService();
             SetupForm();
         }
 
@@ -36,7 +37,7 @@ namespace AzAgroPOS.PL.Forms
         {
             try
             {
-                var customers = _context.Tedarukciler.Where(t => t.Status == "Aktiv").ToList();
+                var customers = _tedarukcuService.GetActiveCustomers();
                 cmbCustomer.Items.Add("Hamısı");
                 foreach (var customer in customers)
                 {
@@ -48,14 +49,19 @@ namespace AzAgroPOS.PL.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Müştəri məlumatları yüklənərkən xəta: {ex.Message}", "Xəta", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ErrorHandlingService.HandleError(ex, "Müştəri məlumatları yüklənərkən xəta baş verdi.");
             }
         }
 
         private void LoadStatusOptions()
         {
-            cmbStatus.Items.AddRange(new object[] { "Hamısı", "Açıq", "Qismən Ödənilmiş", "Tam Ödənilmiş", "Gecikmiş" });
+            cmbStatus.Items.AddRange(new object[] { 
+                "Hamısı", 
+                SystemConstants.DebtStatus.Open, 
+                SystemConstants.DebtStatus.PartiallyPaid, 
+                SystemConstants.DebtStatus.FullyPaid, 
+                SystemConstants.DebtStatus.Overdue 
+            });
             cmbStatus.SelectedIndex = 0;
         }
 
@@ -90,7 +96,7 @@ namespace AzAgroPOS.PL.Forms
         {
             if (disposing)
             {
-                _context?.Dispose();
+                _tedarukcuService?.Dispose();
                 components?.Dispose();
             }
             base.Dispose(disposing);

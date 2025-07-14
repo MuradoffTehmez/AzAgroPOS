@@ -1,5 +1,6 @@
-using AzAgroPOS.DAL;
+using AzAgroPOS.BLL.Services;
 using AzAgroPOS.Entities.Domain;
+using AzAgroPOS.Entities.Constants;
 using System;
 using System.Drawing;
 using System.Linq;
@@ -16,12 +17,14 @@ namespace AzAgroPOS.PL.Forms
         public DateTime? EndDate { get; private set; }
         public int? SelectedWorkerId { get; private set; }
 
-        private readonly AzAgroDbContext _context;
+        private readonly TedarukcuService _tedarukcuService;
+        private readonly AuthService _authService;
 
         public TamirFilterForm()
         {
             InitializeComponent();
-            _context = new AzAgroDbContext();
+            _tedarukcuService = new TedarukcuService();
+            _authService = new AuthService();
             SetupForm();
         }
 
@@ -40,7 +43,7 @@ namespace AzAgroPOS.PL.Forms
         {
             try
             {
-                var customers = _context.Tedarukciler.Where(t => t.Status == "Aktiv").ToList();
+                var customers = _tedarukcuService.GetActiveCustomers();
                 cmbCustomer.Items.Add("Hamısı");
                 foreach (var customer in customers)
                 {
@@ -52,8 +55,7 @@ namespace AzAgroPOS.PL.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Müştəri məlumatları yüklənərkən xəta: {ex.Message}", "Xəta", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ErrorHandlingService.HandleError(ex, "Müştəri məlumatları yüklənərkən xəta baş verdi.");
             }
         }
 
@@ -61,9 +63,7 @@ namespace AzAgroPOS.PL.Forms
         {
             try
             {
-                var workers = _context.Istifadeciler
-                    .Where(i => i.Status == "Aktiv" && (i.Rol.Ad == "Worker" || i.Rol.Ad == "Manager" || i.Rol.Ad == "Administrator"))
-                    .ToList();
+                var workers = _authService.GetActiveWorkers();
                 cmbWorker.Items.Add("Hamısı");
                 foreach (var worker in workers)
                 {
@@ -75,20 +75,32 @@ namespace AzAgroPOS.PL.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"İşçi məlumatları yüklənərkən xəta: {ex.Message}", "Xəta", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ErrorHandlingService.HandleError(ex, "İşçi məlumatları yüklənərkən xəta baş verdi.");
             }
         }
 
         private void LoadStatusOptions()
         {
-            cmbStatus.Items.AddRange(new object[] { "Hamısı", "Qəbul Edildi", "İşlənir", "Hazır", "Təhvil Verildi", "İptal" });
+            cmbStatus.Items.AddRange(new object[] { 
+                "Hamısı", 
+                SystemConstants.RepairStatusAzerbaijani.Received, 
+                SystemConstants.RepairStatusAzerbaijani.InProgress, 
+                SystemConstants.RepairStatusAzerbaijani.Ready, 
+                SystemConstants.RepairStatusAzerbaijani.Delivered, 
+                SystemConstants.RepairStatusAzerbaijani.Cancelled 
+            });
             cmbStatus.SelectedIndex = 0;
         }
 
         private void LoadPriorityOptions()
         {
-            cmbPriority.Items.AddRange(new object[] { "Hamısı", "Aşağı", "Orta", "Yüksək", "Təcili" });
+            cmbPriority.Items.AddRange(new object[] { 
+                "Hamısı", 
+                SystemConstants.PriorityAzerbaijani.Low, 
+                SystemConstants.PriorityAzerbaijani.Medium, 
+                SystemConstants.PriorityAzerbaijani.High, 
+                SystemConstants.PriorityAzerbaijani.Urgent 
+            });
             cmbPriority.SelectedIndex = 0;
         }
 
@@ -109,11 +121,11 @@ namespace AzAgroPOS.PL.Forms
         {
             return azerbaijaniStatus switch
             {
-                "Qəbul Edildi" => "Received",
-                "İşlənir" => "InProgress",
-                "Hazır" => "Ready",
-                "Təhvil Verildi" => "Delivered",
-                "İptal" => "Cancelled",
+                SystemConstants.RepairStatusAzerbaijani.Received => SystemConstants.RepairStatus.Received,
+                SystemConstants.RepairStatusAzerbaijani.InProgress => SystemConstants.RepairStatus.InProgress,
+                SystemConstants.RepairStatusAzerbaijani.Ready => SystemConstants.RepairStatus.Ready,
+                SystemConstants.RepairStatusAzerbaijani.Delivered => SystemConstants.RepairStatus.Delivered,
+                SystemConstants.RepairStatusAzerbaijani.Cancelled => SystemConstants.RepairStatus.Cancelled,
                 _ => null
             };
         }
@@ -122,10 +134,10 @@ namespace AzAgroPOS.PL.Forms
         {
             return azerbaijaniPriority switch
             {
-                "Aşağı" => "Low",
-                "Orta" => "Medium",
-                "Yüksək" => "High",
-                "Təcili" => "Urgent",
+                SystemConstants.PriorityAzerbaijani.Low => SystemConstants.Priority.Low,
+                SystemConstants.PriorityAzerbaijani.Medium => SystemConstants.Priority.Medium,
+                SystemConstants.PriorityAzerbaijani.High => SystemConstants.Priority.High,
+                SystemConstants.PriorityAzerbaijani.Urgent => SystemConstants.Priority.Urgent,
                 _ => null
             };
         }
@@ -152,7 +164,8 @@ namespace AzAgroPOS.PL.Forms
         {
             if (disposing)
             {
-                _context?.Dispose();
+                _tedarukcuService?.Dispose();
+                _authService?.Dispose();
                 components?.Dispose();
             }
             base.Dispose(disposing);

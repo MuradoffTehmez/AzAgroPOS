@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using AzAgroPOS.Entities.Constants;
 
 namespace AzAgroPOS.Entities.Domain
 {
@@ -23,7 +24,7 @@ namespace AzAgroPOS.Entities.Domain
 
         [Required]
         [StringLength(20)]
-        public string Status { get; set; } = "Gözləyir"; // Gözləyir, İşlənir, Bitdi, İptal
+        public string Status { get; set; } = SystemConstants.StepStatus.Waiting;
 
         public int Sira { get; set; }
 
@@ -64,10 +65,10 @@ namespace AzAgroPOS.Entities.Domain
             {
                 switch (Status)
                 {
-                    case "Gözləyir": return "Gözləyir";
-                    case "İşlənir": return "İşlənir";
-                    case "Bitdi": return "Bitdi";
-                    case "İptal": return "İptal";
+                    case SystemConstants.StepStatus.Waiting: return "Gözləyir";
+                    case SystemConstants.StepStatus.InProgress: return "İşlənir";
+                    case SystemConstants.StepStatus.Completed: return "Bitdi";
+                    case SystemConstants.StepStatus.Cancelled: return "İptal";
                     default: return Status;
                 }
             }
@@ -94,13 +95,13 @@ namespace AzAgroPOS.Entities.Domain
                                   (BitirilmisTarix.Value - BaslangicTarixi.Value).Days : 0;
 
         [NotMapped]
-        public bool BaslayaABilir => Status == "Gözləyir" && TeyinEdilenIstifadeciId.HasValue;
+        public bool BaslayaABilir => Status == SystemConstants.StepStatus.Waiting && TeyinEdilenIstifadeciId.HasValue;
 
         [NotMapped]
-        public bool BitireABilir => Status == "İşlənir";
+        public bool BitireABilir => Status == SystemConstants.StepStatus.InProgress;
 
         [NotMapped]
-        public bool IptalEdileABilir => Status != "Bitdi";
+        public bool IptalEdileABilir => Status != SystemConstants.StepStatus.Completed;
 
         [NotMapped]
         public string TeyinEdilenIsciBilgisi => TeyinEdilenIstifadeci?.Ad ?? "Təyin edilməyib";

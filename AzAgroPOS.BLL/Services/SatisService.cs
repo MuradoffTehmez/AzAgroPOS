@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AzAgroPOS.Entities.Domain;
+using AzAgroPOS.Entities.Constants;
 using AzAgroPOS.DAL.Repositories;
+using AzAgroPOS.DAL;
 
 namespace AzAgroPOS.BLL.Services
 {
@@ -12,9 +14,11 @@ namespace AzAgroPOS.BLL.Services
         private readonly SatisDetaliRepository _satisDetaliRepository;
         private readonly SatisOdemesiRepository _satisOdemesiRepository;
         private readonly MehsulRepository _mehsulRepository;
+        private readonly AzAgroDbContext _context;
 
-        public SatisService()
+        public SatisService(AzAgroDbContext context = null)
         {
+            _context = context ?? new AzAgroDbContext();
             _satisRepository = new SatisRepository();
             _satisDetaliRepository = new SatisDetaliRepository();
             _satisOdemesiRepository = new SatisOdemesiRepository();
@@ -23,57 +27,63 @@ namespace AzAgroPOS.BLL.Services
 
         public int CreateSatis(Satis satis)
         {
-            try
+            using (var transaction = _context.Database.BeginTransaction())
             {
-                // Validate sales data
-                if (satis.SatisDetallari == null || !satis.SatisDetallari.Any())
-                    throw new ArgumentException("Satış detayları boş olamaz");
-
-                // Check stock availability for all products
-                foreach (var detay in satis.SatisDetallari)
+                try
                 {
-                    var mehsul = _mehsulRepository.GetById(detay.MehsulId);
-                    if (mehsul == null)
-                        throw new ArgumentException($"Məhsul tapılmadı: {detay.MehsulId}");
+                    // Validate sales data
+                    if (satis.SatisDetallari == null || !satis.SatisDetallari.Any())
+                        throw new ArgumentException("Satış detayları boş olamaz");
 
-                    if (mehsul.MovcudMiqdar < detay.Miqdar)
-                        throw new InvalidOperationException($"Kifayət qədər stok yoxdur: {mehsul.Ad}. Mövcud: {mehsul.MovcudMiqdar}");
+                    // Check stock availability for all products
+                    foreach (var detay in satis.SatisDetallari)
+                    {
+                        var mehsul = _mehsulRepository.GetById(detay.MehsulId);
+                        if (mehsul == null)
+                            throw new ArgumentException($"Məhsul tapılmadı: {detay.MehsulId}");
+
+                        if (mehsul.MovcudMiqdar < detay.Miqdar)
+                            throw new InvalidOperationException($"Kifayət qədər stok yoxdur: {mehsul.Ad}. Mövcud: {mehsul.MovcudMiqdar}");
+                    }
+
+                    // Create sales record
+                    int satisId = _satisRepository.Add(satis);
+
+                    // Create sales details
+                    foreach (var detay in satis.SatisDetallari)
+                    {
+                        detay.SatisId = satisId;
+                        _satisDetaliRepository.Add(detay);
+
+                        // Update product stock
+                        var mehsul = _mehsulRepository.GetById(detay.MehsulId);
+                        mehsul.MovcudMiqdar -= detay.Miqdar;
+                        mehsul.YenilenmeTarixi = DateTime.Now;
+                        _mehsulRepository.Update(mehsul);
+                    }
+
+                    // Create payment record
+                    var odemesi = new SatisOdemesi
+                    {
+                        SatisId = satisId,
+                        OdemeMeblegi = satis.NetMebleg,
+                        OdemeNovu = satis.OdemeNovu,
+                        OdemeDetali = satis.OdemeDetali,
+                        OdemeTarixi = DateTime.Now,
+                        Status = SystemConstants.Status.Active
+                    };
+                    _satisOdemesiRepository.Add(odemesi);
+
+                    // Commit transaction if all operations succeed
+                    transaction.Commit();
+                    return satisId;
                 }
-
-                // Create sales record
-                int satisId = _satisRepository.Add(satis);
-
-                // Create sales details
-                foreach (var detay in satis.SatisDetallari)
+                catch (Exception)
                 {
-                    detay.SatisId = satisId;
-                    _satisDetaliRepository.Add(detay);
-
-                    // Update product stock
-                    var mehsul = _mehsulRepository.GetById(detay.MehsulId);
-                    mehsul.MovcudMiqdar -= detay.Miqdar;
-                    mehsul.YenilenmeTarixi = DateTime.Now;
-                    _mehsulRepository.Update(mehsul);
+                    // Rollback transaction on any error
+                    transaction.Rollback();
+                    throw;
                 }
-
-                // Create payment record
-                var odemesi = new SatisOdemesi
-                {
-                    SatisId = satisId,
-                    OdemeMeblegi = satis.NetMebleg,
-                    OdemeNovu = satis.OdemeNovu,
-                    OdemeDetali = satis.OdemeDetali,
-                    OdemeTarixi = DateTime.Now,
-                    Status = "Tamamlandı"
-                };
-                _satisOdemesiRepository.Add(odemesi);
-
-                return satisId;
-            }
-            catch (Exception)
-            {
-                // Rollback logic should be implemented here in a real scenario
-                throw;
             }
         }
 

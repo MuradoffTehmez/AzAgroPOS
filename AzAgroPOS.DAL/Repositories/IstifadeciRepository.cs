@@ -109,5 +109,10 @@ namespace AzAgroPOS.DAL.Repositories
                 context.SaveChanges();
             }
         }
+
+        public IEnumerable<object> GetAll()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

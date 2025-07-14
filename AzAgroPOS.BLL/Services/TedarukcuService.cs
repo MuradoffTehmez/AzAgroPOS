@@ -2,11 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AzAgroPOS.Entities.Domain;
+using AzAgroPOS.Entities.Constants;
 using AzAgroPOS.DAL.Repositories;
 
 namespace AzAgroPOS.BLL.Services
 {
-    public class TedarukcuService
+    public class TedarukcuService : IDisposable
     {
         private readonly TedarukcuRepository _tedarukcuRepository;
         private readonly AlisOrderRepository _alisOrderRepository;
@@ -24,6 +25,11 @@ namespace AzAgroPOS.BLL.Services
         public List<Tedarukcu> GetAllActive()
         {
             return _tedarukcuRepository.GetAllActive();
+        }
+
+        public List<Tedarukcu> GetActiveCustomers()
+        {
+            return _tedarukcuRepository.GetAll().Where(t => t.Status == SystemConstants.Status.Active).ToList();
         }
 
         public List<Tedarukcu> GetAll()
