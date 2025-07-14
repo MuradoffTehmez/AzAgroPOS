@@ -227,6 +227,15 @@ namespace AzAgroPOS.DAL.Repositories
             return "MST001";
         }
 
+        public IEnumerable<Musteri> GetAllActive()
+        {
+            return _context.Musteriler
+                .Include(m => m.MusteriQrupu)
+                .Where(m => m.Status == SystemConstants.Status.Active)
+                .OrderBy(m => m.Ad)
+                .ThenBy(m => m.Soyad);
+        }
+
         public void Dispose()
         {
             _context?.Dispose();

@@ -139,6 +139,16 @@ namespace AzAgroPOS.DAL.Repositories
             return GetByDateRange(today, today.AddDays(1).AddSeconds(-1));
         }
 
+        public IEnumerable<Satis> GetByCustomer(int customerId)
+        {
+            return _context.Satislar
+                .Include(s => s.Kassir)
+                .Include(s => s.SatisDetallari)
+                .ThenInclude(sd => sd.Mehsul)
+                .Where(s => s.MusteriId == customerId)
+                .OrderByDescending(s => s.SatisTarixi);
+        }
+
         public void Dispose()
         {
             _context?.Dispose();

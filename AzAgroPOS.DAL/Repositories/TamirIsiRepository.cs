@@ -173,6 +173,31 @@ namespace AzAgroPOS.DAL.Repositories
 
             return $"{prefix}{(lastNumber + 1):D4}";
         }
+
+        public List<TamirIsi> GetRepairsByDateRange(DateTime startDate, DateTime endDate)
+        {
+            return _context.TamirIsleri
+                .Include(t => t.Musteri)
+                .Include(t => t.QebulEdenIstifadeci)
+                .Include(t => t.TeyinEdilenIstifadeci)
+                .Include(t => t.TehvilEdenIstifadeci)
+                .Where(t => t.QebulTarixi >= startDate && t.QebulTarixi <= endDate)
+                .OrderByDescending(t => t.QebulTarixi)
+                .ToList();
+        }
+
+        public IEnumerable<TamirIsi> GetByCustomer(int customerId)
+        {
+            return _context.TamirIsleri
+                .Include(t => t.Musteri)
+                .Include(t => t.QebulEdenIstifadeci)
+                .Include(t => t.TeyinEdilenIstifadeci)
+                .Include(t => t.TehvilEdenIstifadeci)
+                .Include(t => t.TamirMerheleri)
+                .Where(t => t.MusteriId == customerId)
+                .OrderByDescending(t => t.QebulTarixi);
+        }
+
         public void Dispose()
         {
             _context?.Dispose();

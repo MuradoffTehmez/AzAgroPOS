@@ -132,8 +132,9 @@ namespace AzAgroPOS.PL.Forms
 
         private void btnReports_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Hesabatlar funksiyası tezliklə əlavə ediləcək.", 
-                "Məlumat", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            // Show Reports submenu or directly open Sales Report
+            var salesReportForm = new SalesReportForm();
+            salesReportForm.ShowDialog();
         }
 
         private void btnSettings_Click(object sender, EventArgs e)

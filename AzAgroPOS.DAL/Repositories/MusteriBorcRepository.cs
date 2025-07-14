@@ -121,6 +121,28 @@ namespace AzAgroPOS.DAL.Repositories
 
             return $"{prefix}{(lastNumber + 1):D4}";
         }
+
+        public List<MusteriBorc> GetAllActiveDebts()
+        {
+            return _context.MusteriBorcları
+                .Include(b => b.Musteri)
+                .Include(b => b.Satis)
+                .Include(b => b.BorcOdenisleri)
+                .Where(b => b.Status == "Aktiv")
+                .OrderByDescending(b => b.YaradilmaTarixi)
+                .ToList();
+        }
+
+        public IEnumerable<MusteriBorc> GetByCustomer(int customerId)
+        {
+            return _context.MusteriBorcları
+                .Include(b => b.Musteri)
+                .Include(b => b.Satis)
+                .Include(b => b.BorcOdenisleri)
+                .Where(b => b.MusteriId == customerId)
+                .OrderByDescending(b => b.YaradilmaTarixi);
+        }
+
         public void Dispose()
         {
             _context?.Dispose();
