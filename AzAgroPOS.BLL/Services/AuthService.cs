@@ -31,6 +31,41 @@ namespace AzAgroPOS.BLL.Services
             return BCrypt.Net.BCrypt.HashPassword(password, BCrypt.Net.BCrypt.GenerateSalt(12));
         }
 
+
+        public async Task<(bool Success, string Message)> ResetPasswordAsync(int userId, string newPassword)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(newPassword))
+                {
+                    return (false, "Yeni şifrə boş ola bilməz.");
+                }
+
+                if (!IsPasswordComplex(newPassword))
+                {
+                    return (false, "Şifrə ən azı 8 simvoldan, bir böyük hərfdən, bir kiçik hərfdən və bir rəqəmdən ibarət olmalıdır.");
+                }
+
+                var istifadeci = await _istifadeciRepository.GetByIdAsync(userId);
+                if (istifadeci == null)
+                {
+                    return (false, "İstifadəçi tapılmadı.");
+                }
+
+                istifadeci.ParolHash = HashPassword(newPassword);
+                istifadeci.YenilenmeTarixi = DateTime.Now;
+                await _istifadeciRepository.UpdateAsync(istifadeci);
+
+                return (true, "Şifrə uğurla sıfırlandı.");
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Xəta baş verdi: {ex.Message}");
+            }
+        }
+
+
+
         /// <summary>
         /// Verify password against hash
         /// </summary>
@@ -185,16 +220,21 @@ namespace AzAgroPOS.BLL.Services
             }
         }
 
-        public async Task<(bool Success, string Message)> ChangePasswordAsync(string email, string oldPassword, string newPassword)
+        public async Task<(bool Success, string Message)> ChangePasswordAsync(int userId, string oldPassword, string newPassword)
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(oldPassword) || string.IsNullOrWhiteSpace(newPassword))
+                if (string.IsNullOrWhiteSpace(oldPassword) || string.IsNullOrWhiteSpace(newPassword))
                 {
-                    return (false, "Bütün sahələr doldurulmalıdır.");
+                    return (false, "Köhnə və yeni şifrə sahələri doldurulmalıdır.");
                 }
 
-                var istifadeci = await _istifadeciRepository.GetByEmailAsync(email);
+                if (oldPassword == newPassword)
+                {
+                    return (false, "Yeni şifrə köhnə şifrə ilə eyni ola bilməz.");
+                }
+
+                var istifadeci = await _istifadeciRepository.GetByIdAsync(userId);
                 if (istifadeci == null)
                 {
                     return (false, "İstifadəçi tapılmadı.");
@@ -205,15 +245,9 @@ namespace AzAgroPOS.BLL.Services
                     return (false, "Köhnə şifrə yanlışdır.");
                 }
 
-                if (newPassword.Length < 8)
-                {
-                    return (false, "Yeni şifrə ən azı 8 simvoldan ibarət olmalıdır.");
-                }
-
-                // Check password complexity
                 if (!IsPasswordComplex(newPassword))
                 {
-                    return (false, "Şifrə ən azı bir böyük hərf, bir kiçik hərf və bir rəqəm olmalıdır.");
+                    return (false, "Yeni şifrə ən azı 8 simvoldan, bir böyük hərfdən, bir kiçik hərfdən və bir rəqəmdən ibarət olmalıdır.");
                 }
 
                 istifadeci.ParolHash = HashPassword(newPassword);
@@ -228,6 +262,7 @@ namespace AzAgroPOS.BLL.Services
             }
         }
 
+
         /// <summary>
         /// Check if password meets complexity requirements
         /// </summary>
@@ -238,18 +273,8 @@ namespace AzAgroPOS.BLL.Services
             if (string.IsNullOrWhiteSpace(password) || password.Length < 8)
                 return false;
 
-            bool hasUpper = false;
-            bool hasLower = false;
-            bool hasDigit = false;
-
-            foreach (char c in password)
-            {
-                if (char.IsUpper(c)) hasUpper = true;
-                if (char.IsLower(c)) hasLower = true;
-                if (char.IsDigit(c)) hasDigit = true;
-            }
-
-            return hasUpper && hasLower && hasDigit;
+            // Ən azı bir böyük hərf, bir kiçik hərf və bir rəqəm olmalıdır.
+            return password.Any(char.IsUpper) && password.Any(char.IsLower) && password.Any(char.IsDigit);
         }
 
         public List<Istifadeci> GetActiveWorkers()

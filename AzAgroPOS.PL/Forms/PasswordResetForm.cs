@@ -1,23 +1,21 @@
 using AzAgroPOS.BLL.Services;
-using AzAgroPOS.DAL.Repositories;
 using AzAgroPOS.Entities.Domain;
 using System;
+using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using BCrypt.Net; // BCrypt kitabxanası üçün using əlavə edildi
 
 namespace AzAgroPOS.PL.Forms
 {
     public partial class PasswordResetForm : Form
     {
-        private readonly IstifadeciRepository _istifadeciRepository;
+        private readonly AuthService _authService;
         private readonly Istifadeci _user;
 
         public PasswordResetForm(Istifadeci user)
         {
             InitializeComponent();
-            _istifadeciRepository = new IstifadeciRepository();
+            _authService = new AuthService(); // AuthService-i yaradırıq
             _user = user;
             LoadUserInfo();
         }
@@ -29,30 +27,33 @@ namespace AzAgroPOS.PL.Forms
 
         private async void btnReset_Click(object sender, EventArgs e)
         {
+            if (!ValidateInput())
+                return;
+
             try
             {
-                if (!ValidateInput())
-                    return;
-
                 btnReset.Enabled = false;
-                btnReset.Text = "Saxlanılır...";
+                btnReset.Text = "Gözləyin...";
 
                 string newPassword = txtNewPassword.Text;
-                // Düzəliş: SHA256 əvəzinə BCrypt istifadə edilir
-                string hashedPassword = BCrypt.Net.BCrypt.HashPassword(newPassword);
 
-                _user.ParolHash = hashedPassword;
-                await _istifadeciRepository.UpdateAsync(_user);
+                // Əməliyyatı AuthService üzərindən edirik
+                var result = await _authService.ResetPasswordAsync(_user.Id, newPassword);
 
-                MessageBox.Show("Şifrə uğurla sıfırlandı.", "Uğurlu", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-                
-                this.DialogResult = DialogResult.OK;
-                this.Close();
+                if (result.Success)
+                {
+                    MessageBox.Show(result.Message, "Uğurlu", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show(result.Message, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Xəta baş verdi: {ex.Message}", "Xəta", 
+                MessageBox.Show($"Gözlənilməz xəta baş verdi: {ex.Message}", "Sistem Xətası",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
@@ -71,9 +72,9 @@ namespace AzAgroPOS.PL.Forms
                 return false;
             }
 
-            if (txtNewPassword.Text.Length < 6)
+            if (txtNewPassword.Text.Length < 8)
             {
-                MessageBox.Show("Şifrə ən azı 6 simvoldan ibarət olmalıdır.", "Xəta", 
+                MessageBox.Show("Şifrə ən azı 8 simvoldan ibarət olmalıdır.", "Xəta",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtNewPassword.Focus();
                 txtNewPassword.SelectAll();
@@ -91,9 +92,6 @@ namespace AzAgroPOS.PL.Forms
             return true;
         }
 
-        // Bu metod artıq lazımsızdır və silinir.
-        // private string ComputeSha256Hash(string rawData) { ... }
-
         private void btnCancel_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
@@ -105,23 +103,34 @@ namespace AzAgroPOS.PL.Forms
             string generatedPassword = GenerateRandomPassword();
             txtNewPassword.Text = generatedPassword;
             txtConfirmPassword.Text = generatedPassword;
-            
-            MessageBox.Show($"Avtomatik yaradılan şifrə: {generatedPassword}\n\nLütfən bu şifrəni istifadəçiyə çatdırın.", 
+
+            MessageBox.Show($"Avtomatik yaradılan şifrə: {generatedPassword}\n\nLütfən bu şifrəni istifadəçiyə çatdırın.",
                 "Avtomatik Şifrə", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private string GenerateRandomPassword()
         {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%";
+            const string lowers = "abcdefghijklmnopqrstuvwxyz";
+            const string uppers = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            const string numbers = "0123456789";
+
             var random = new Random();
             var password = new StringBuilder();
-            
-            for (int i = 0; i < 8; i++)
+
+            // Şifrənin mürəkkəblik tələblərinə cavab verməsini təmin edək
+            password.Append(lowers[random.Next(lowers.Length)]);
+            password.Append(uppers[random.Next(uppers.Length)]);
+            password.Append(numbers[random.Next(numbers.Length)]);
+
+            // Qalan simvolları təsadüfi əlavə edək
+            const string allChars = lowers + uppers + numbers;
+            for (int i = 3; i < 8; i++)
             {
-                password.Append(chars[random.Next(chars.Length)]);
+                password.Append(allChars[random.Next(allChars.Length)]);
             }
-            
-            return password.ToString();
+
+            // Simvolları qarışdıraq
+            return new string(password.ToString().ToCharArray().OrderBy(s => (random.Next(2) % 2) == 0).ToArray());
         }
     }
 }
