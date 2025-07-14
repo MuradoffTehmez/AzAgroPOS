@@ -58,6 +58,9 @@ namespace AzAgroPOS.Entities.Domain
         [StringLength(500)]
         public string Qeydler { get; set; }
 
+        [StringLength(100)]
+        public string Model { get; set; }
+
         // Navigation Properties
         [ForeignKey("KateqoriyaId")]
         public virtual MehsulKateqoriyasi Kateqoriya { get; set; }

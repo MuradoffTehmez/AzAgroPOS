@@ -22,6 +22,10 @@ namespace AzAgroPOS.Entities.Domain
         [ForeignKey("MusteriId")]
         public virtual Tedarukcu Musteri { get; set; }
 
+        public int? MehsulId { get; set; }
+        [ForeignKey("MehsulId")]
+        public virtual Mehsul Mehsul { get; set; }
+
         [Required]
         [StringLength(100)]
         public string MehsulAdi { get; set; }
@@ -33,7 +37,13 @@ namespace AzAgroPOS.Entities.Domain
         public string Model { get; set; }
 
         [StringLength(50)]
+        public string MehsulModeli { get; set; }
+
+        [StringLength(50)]
         public string SeriNomresi { get; set; }
+
+        [StringLength(50)]
+        public string SeriyaNomresi { get; set; }
 
         [Required]
         [StringLength(1000)]

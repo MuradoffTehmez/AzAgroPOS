@@ -181,6 +181,11 @@ namespace AzAgroPOS.BLL.Services
             return _borcOdenisRepository.GetByMusteriBorcId(musteriBorcId);
         }
 
+        public IEnumerable<BorcOdenis> GetPaymentHistory(int debtId)
+        {
+            return _borcOdenisRepository.GetByMusteriBorcId(debtId);
+        }
+
         public IEnumerable<BorcOdenis> GetPaymentsByCustomer(int musteriId)
         {
             return _borcOdenisRepository.GetByMusteriId(musteriId);

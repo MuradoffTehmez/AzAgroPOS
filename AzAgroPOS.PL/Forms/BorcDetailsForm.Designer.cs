@@ -253,6 +253,20 @@ namespace AzAgroPOS.PL.Forms
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.White;
+            this.panel2.Controls.Add(this.lblGecikmeGunleri);
+            this.panel2.Controls.Add(this.lblGecikmeGunleriLabel);
+            this.panel2.Controls.Add(this.lblYaradilmaTarixi);
+            this.panel2.Controls.Add(this.lblYaradilmaTarixiLabel);
+            this.panel2.Controls.Add(this.lblYaradan);
+            this.panel2.Controls.Add(this.lblYaradanLabel);
+            this.panel2.Controls.Add(this.lblAciklama);
+            this.panel2.Controls.Add(this.lblAciklamaLabel);
+            this.panel2.Controls.Add(this.lblFaizDerecesi);
+            this.panel2.Controls.Add(this.lblFaizDerecesiLabel);
+            this.panel2.Controls.Add(this.lblSonOdemeTarixi);
+            this.panel2.Controls.Add(this.lblSonOdemeTarixiLabel);
+            this.panel2.Controls.Add(this.lblBorcTarixi);
+            this.panel2.Controls.Add(this.lblBorcTarixiLabel);
             this.panel2.Controls.Add(this.lblStatus);
             this.panel2.Controls.Add(this.lblStatusLabel);
             this.panel2.Controls.Add(this.lblBorcTipi);
@@ -264,7 +278,7 @@ namespace AzAgroPOS.PL.Forms
             this.panel2.Controls.Add(this.lblDebtInfoTitle);
             this.panel2.Location = new System.Drawing.Point(20, 20);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(420, 180);
+            this.panel2.Size = new System.Drawing.Size(420, 450);
             this.panel2.TabIndex = 0;
             // 
             // lblStatus
@@ -361,6 +375,153 @@ namespace AzAgroPOS.PL.Forms
             this.lblDebtInfoTitle.Size = new System.Drawing.Size(159, 25);
             this.lblDebtInfoTitle.TabIndex = 0;
             this.lblDebtInfoTitle.Text = "Əsas Məlumatlar";
+            // 
+            // lblBorcTarixi
+            // 
+            this.lblBorcTarixi.AutoSize = true;
+            this.lblBorcTarixi.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblBorcTarixi.Location = new System.Drawing.Point(150, 175);
+            this.lblBorcTarixi.Name = "lblBorcTarixi";
+            this.lblBorcTarixi.Size = new System.Drawing.Size(15, 19);
+            this.lblBorcTarixi.TabIndex = 10;
+            this.lblBorcTarixi.Text = "-";
+            // 
+            // lblBorcTarixiLabel
+            // 
+            this.lblBorcTarixiLabel.AutoSize = true;
+            this.lblBorcTarixiLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblBorcTarixiLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
+            this.lblBorcTarixiLabel.Location = new System.Drawing.Point(20, 175);
+            this.lblBorcTarixiLabel.Name = "lblBorcTarixiLabel";
+            this.lblBorcTarixiLabel.Size = new System.Drawing.Size(84, 19);
+            this.lblBorcTarixiLabel.TabIndex = 9;
+            this.lblBorcTarixiLabel.Text = "Borc Tarixi:";
+            // 
+            // lblSonOdemeTarixi
+            // 
+            this.lblSonOdemeTarixi.AutoSize = true;
+            this.lblSonOdemeTarixi.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblSonOdemeTarixi.Location = new System.Drawing.Point(150, 205);
+            this.lblSonOdemeTarixi.Name = "lblSonOdemeTarixi";
+            this.lblSonOdemeTarixi.Size = new System.Drawing.Size(15, 19);
+            this.lblSonOdemeTarixi.TabIndex = 12;
+            this.lblSonOdemeTarixi.Text = "-";
+            // 
+            // lblSonOdemeTarixiLabel
+            // 
+            this.lblSonOdemeTarixiLabel.AutoSize = true;
+            this.lblSonOdemeTarixiLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblSonOdemeTarixiLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
+            this.lblSonOdemeTarixiLabel.Location = new System.Drawing.Point(20, 205);
+            this.lblSonOdemeTarixiLabel.Name = "lblSonOdemeTarixiLabel";
+            this.lblSonOdemeTarixiLabel.Size = new System.Drawing.Size(121, 19);
+            this.lblSonOdemeTarixiLabel.TabIndex = 11;
+            this.lblSonOdemeTarixiLabel.Text = "Son Ödəmə Tarixi:";
+            // 
+            // lblFaizDerecesi
+            // 
+            this.lblFaizDerecesi.AutoSize = true;
+            this.lblFaizDerecesi.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblFaizDerecesi.Location = new System.Drawing.Point(150, 235);
+            this.lblFaizDerecesi.Name = "lblFaizDerecesi";
+            this.lblFaizDerecesi.Size = new System.Drawing.Size(15, 19);
+            this.lblFaizDerecesi.TabIndex = 14;
+            this.lblFaizDerecesi.Text = "-";
+            // 
+            // lblFaizDerecesiLabel
+            // 
+            this.lblFaizDerecesiLabel.AutoSize = true;
+            this.lblFaizDerecesiLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblFaizDerecesiLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
+            this.lblFaizDerecesiLabel.Location = new System.Drawing.Point(20, 235);
+            this.lblFaizDerecesiLabel.Name = "lblFaizDerecesiLabel";
+            this.lblFaizDerecesiLabel.Size = new System.Drawing.Size(95, 19);
+            this.lblFaizDerecesiLabel.TabIndex = 13;
+            this.lblFaizDerecesiLabel.Text = "Faiz Dərəcəsi:";
+            // 
+            // lblAciklama
+            // 
+            this.lblAciklama.AutoSize = true;
+            this.lblAciklama.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblAciklama.Location = new System.Drawing.Point(150, 265);
+            this.lblAciklama.Name = "lblAciklama";
+            this.lblAciklama.Size = new System.Drawing.Size(15, 19);
+            this.lblAciklama.TabIndex = 16;
+            this.lblAciklama.Text = "-";
+            // 
+            // lblAciklamaLabel
+            // 
+            this.lblAciklamaLabel.AutoSize = true;
+            this.lblAciklamaLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblAciklamaLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
+            this.lblAciklamaLabel.Location = new System.Drawing.Point(20, 265);
+            this.lblAciklamaLabel.Name = "lblAciklamaLabel";
+            this.lblAciklamaLabel.Size = new System.Drawing.Size(69, 19);
+            this.lblAciklamaLabel.TabIndex = 15;
+            this.lblAciklamaLabel.Text = "Açıqlama:";
+            // 
+            // lblYaradan
+            // 
+            this.lblYaradan.AutoSize = true;
+            this.lblYaradan.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblYaradan.Location = new System.Drawing.Point(150, 295);
+            this.lblYaradan.Name = "lblYaradan";
+            this.lblYaradan.Size = new System.Drawing.Size(15, 19);
+            this.lblYaradan.TabIndex = 18;
+            this.lblYaradan.Text = "-";
+            // 
+            // lblYaradanLabel
+            // 
+            this.lblYaradanLabel.AutoSize = true;
+            this.lblYaradanLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblYaradanLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
+            this.lblYaradanLabel.Location = new System.Drawing.Point(20, 295);
+            this.lblYaradanLabel.Name = "lblYaradanLabel";
+            this.lblYaradanLabel.Size = new System.Drawing.Size(64, 19);
+            this.lblYaradanLabel.TabIndex = 17;
+            this.lblYaradanLabel.Text = "Yaradan:";
+            // 
+            // lblYaradilmaTarixi
+            // 
+            this.lblYaradilmaTarixi.AutoSize = true;
+            this.lblYaradilmaTarixi.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblYaradilmaTarixi.Location = new System.Drawing.Point(150, 325);
+            this.lblYaradilmaTarixi.Name = "lblYaradilmaTarixi";
+            this.lblYaradilmaTarixi.Size = new System.Drawing.Size(15, 19);
+            this.lblYaradilmaTarixi.TabIndex = 20;
+            this.lblYaradilmaTarixi.Text = "-";
+            // 
+            // lblYaradilmaTarixiLabel
+            // 
+            this.lblYaradilmaTarixiLabel.AutoSize = true;
+            this.lblYaradilmaTarixiLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblYaradilmaTarixiLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
+            this.lblYaradilmaTarixiLabel.Location = new System.Drawing.Point(20, 325);
+            this.lblYaradilmaTarixiLabel.Name = "lblYaradilmaTarixiLabel";
+            this.lblYaradilmaTarixiLabel.Size = new System.Drawing.Size(122, 19);
+            this.lblYaradilmaTarixiLabel.TabIndex = 19;
+            this.lblYaradilmaTarixiLabel.Text = "Yaradılma Tarixi:";
+            // 
+            // lblGecikmeGunleri
+            // 
+            this.lblGecikmeGunleri.AutoSize = true;
+            this.lblGecikmeGunleri.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblGecikmeGunleri.Location = new System.Drawing.Point(150, 355);
+            this.lblGecikmeGunleri.Name = "lblGecikmeGunleri";
+            this.lblGecikmeGunleri.Size = new System.Drawing.Size(15, 19);
+            this.lblGecikmeGunleri.TabIndex = 22;
+            this.lblGecikmeGunleri.Text = "-";
+            // 
+            // lblGecikmeGunleriLabel
+            // 
+            this.lblGecikmeGunleriLabel.AutoSize = true;
+            this.lblGecikmeGunleriLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblGecikmeGunleriLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
+            this.lblGecikmeGunleriLabel.Location = new System.Drawing.Point(20, 355);
+            this.lblGecikmeGunleriLabel.Name = "lblGecikmeGunleriLabel";
+            this.lblGecikmeGunleriLabel.Size = new System.Drawing.Size(115, 19);
+            this.lblGecikmeGunleriLabel.TabIndex = 21;
+            this.lblGecikmeGunleriLabel.Text = "Gecikm ə Günləri:";
             // 
             // tabPaymentHistory
             // 
@@ -574,5 +735,19 @@ namespace AzAgroPOS.PL.Forms
         private System.Windows.Forms.Button btnEditDebt;
         private System.Windows.Forms.Button btnPrintReport;
         private System.Windows.Forms.Button btnClose;
+        private System.Windows.Forms.Label lblBorcTarixi;
+        private System.Windows.Forms.Label lblBorcTarixiLabel;
+        private System.Windows.Forms.Label lblSonOdemeTarixi;
+        private System.Windows.Forms.Label lblSonOdemeTarixiLabel;
+        private System.Windows.Forms.Label lblFaizDerecesi;
+        private System.Windows.Forms.Label lblFaizDerecesiLabel;
+        private System.Windows.Forms.Label lblAciklama;
+        private System.Windows.Forms.Label lblAciklamaLabel;
+        private System.Windows.Forms.Label lblYaradan;
+        private System.Windows.Forms.Label lblYaradanLabel;
+        private System.Windows.Forms.Label lblYaradilmaTarixi;
+        private System.Windows.Forms.Label lblYaradilmaTarixiLabel;
+        private System.Windows.Forms.Label lblGecikmeGunleri;
+        private System.Windows.Forms.Label lblGecikmeGunleriLabel;
     }
 }

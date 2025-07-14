@@ -193,7 +193,7 @@ namespace AzAgroPOS.PL.Forms
                 return false;
             }
 
-            if (dtpTaxminiBitirməTarixi.Value <= dtpQebulTarixi.Value)
+            if (dtpTaxminiBitirmeTarixi.Value <= dtpQebulTarixi.Value)
             {
                 MessageBox.Show("Təxmini bitirmə tarixi qəbul tarixindən sonra olmalıdır.", "Xəbərdarlıq", 
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);

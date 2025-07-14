@@ -81,7 +81,7 @@ namespace AzAgroPOS.PL.Forms
                 {
                     d.Id,
                     BorcNomresi = d.BorcNomresiFormatli,
-                    MusteriAdi = d.Musteri?.Ad ?? "Naməlum",
+                    MusteriAdi = d.Musteri != null ? d.Musteri.Ad : "Naməlum",
                     BorcMeblegi = d.BorcMeblegi.ToString("C"),
                     QalanBorc = d.QalanBorc.ToString("C"),
                     OdemeYuzdesi = d.OdemeYuzdesi.ToString("F1") + "%",
@@ -188,7 +188,7 @@ namespace AzAgroPOS.PL.Forms
             }
 
             var selectedDebtId = (int)dgvDebts.SelectedRows[0].Cells["Id"].Value;
-            var detailsForm = new BorcDetailsForm(selectedDebtId);
+            var detailsForm = new BorcDetailsForm(selectedDebtId, _currentUser);
             detailsForm.ShowDialog();
         }
 
@@ -230,7 +230,7 @@ namespace AzAgroPOS.PL.Forms
                 {
                     d.Id,
                     BorcNomresi = d.BorcNomresiFormatli,
-                    MusteriAdi = d.Musteri?.Ad ?? "Naməlum",
+                    MusteriAdi = d.Musteri != null ? d.Musteri.Ad : "Naməlum",
                     BorcMeblegi = d.BorcMeblegi.ToString("C"),
                     QalanBorc = d.QalanBorc.ToString("C"),
                     OdemeYuzdesi = d.OdemeYuzdesi.ToString("F1") + "%",

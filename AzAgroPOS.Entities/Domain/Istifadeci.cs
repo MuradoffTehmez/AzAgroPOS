@@ -46,6 +46,9 @@ namespace AzAgroPOS.Entities.Domain
         [NotMapped]
         public string TamAd => $"{Ad} {Soyad}";
 
+        [NotMapped]
+        public string Role => Rol?.Ad ?? "User";
+
         public virtual Rol Rol { get; set; }
         public virtual Tema Tema { get; set; }
         public DateTime SonGiris { get; set; }
