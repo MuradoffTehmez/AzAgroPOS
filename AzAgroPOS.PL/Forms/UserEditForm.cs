@@ -1,4 +1,5 @@
 using AzAgroPOS.BLL.Services;
+using AzAgroPOS.DAL;
 using AzAgroPOS.DAL.Repositories;
 using AzAgroPOS.Entities.Domain;
 using System;
@@ -18,8 +19,9 @@ namespace AzAgroPOS.PL.Forms
         public UserEditForm(Istifadeci user)
         {
             InitializeComponent();
-            _istifadeciRepository = new IstifadeciRepository();
-            _rolRepository = new RolRepository();
+            var context = new AzAgroDbContext();
+            _istifadeciRepository = new IstifadeciRepository(context);
+            _rolRepository = new RolRepository(context);
             _user = user;
             LoadUserData();
             LoadRoles();

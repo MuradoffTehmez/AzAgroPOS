@@ -110,6 +110,9 @@ namespace AzAgroPOS.Entities.Domain
         public string MusteriKoduFormatli => $"MST-{MusteriKodu}";
 
         [NotMapped]
+        public string KreditLimitiFormatli => KreditLimiti.ToString("C", System.Globalization.CultureInfo.CreateSpecificCulture("az-AZ"));
+
+        [NotMapped]
         public string TelefonBilgisi => !string.IsNullOrEmpty(MobilTelefon) ? MobilTelefon : 
                                        !string.IsNullOrEmpty(Telefon) ? Telefon : "Məlumat yoxdur";
 

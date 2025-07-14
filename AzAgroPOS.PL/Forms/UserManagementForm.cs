@@ -1,4 +1,5 @@
 using AzAgroPOS.BLL.Services;
+using AzAgroPOS.DAL;
 using AzAgroPOS.DAL.Repositories;
 using AzAgroPOS.Entities.Domain;
 using System;
@@ -22,8 +23,9 @@ namespace AzAgroPOS.PL.Forms
         public UserManagementForm(Istifadeci currentUser)
         {
             InitializeComponent();
-            _istifadeciRepository = new IstifadeciRepository();
-            _rolRepository = new RolRepository();
+            var context = new AzAgroDbContext();
+            _istifadeciRepository = new IstifadeciRepository(context);
+            _rolRepository = new RolRepository(context);
             _authService = new AuthService();
             _auditLogService = new AuditLogService();
             _currentUser = currentUser;

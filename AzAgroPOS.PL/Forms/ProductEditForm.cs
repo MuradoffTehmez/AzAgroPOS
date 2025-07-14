@@ -1,4 +1,5 @@
 using AzAgroPOS.BLL.Services;
+using AzAgroPOS.DAL;
 using AzAgroPOS.DAL.Repositories;
 using AzAgroPOS.Entities.Domain;
 using System;
@@ -19,9 +20,10 @@ namespace AzAgroPOS.PL.Forms
         public ProductEditForm(Mehsul product, Istifadeci currentUser)
         {
             InitializeComponent();
+            var context = new AzAgroDbContext();
             _mehsulService = new MehsulService();
-            _kateqoriyaRepository = new MehsulKateqoriyasiRepository();
-            _vahidRepository = new VahidRepository();
+            _kateqoriyaRepository = new MehsulKateqoriyasiRepository(context);
+            _vahidRepository = new VahidRepository(context);
             _currentUser = currentUser;
             _product = product;
         }

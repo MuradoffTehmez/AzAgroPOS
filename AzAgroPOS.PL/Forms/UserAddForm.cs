@@ -1,4 +1,5 @@
 using AzAgroPOS.BLL.Services;
+using AzAgroPOS.DAL;
 using AzAgroPOS.DAL.Repositories;
 using System;
 using System.Linq;
@@ -16,8 +17,9 @@ namespace AzAgroPOS.PL.Forms
         public UserAddForm()
         {
             InitializeComponent();
+            var context = new AzAgroDbContext();
             _authService = new AuthService();
-            _rolRepository = new RolRepository();
+            _rolRepository = new RolRepository(context);
             LoadRoles();
         }
 

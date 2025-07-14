@@ -19,6 +19,43 @@ namespace AzAgroPOS.BLL.Services
             _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
         }
 
+        // Static methods for backward compatibility
+        public static void HandleError(Exception ex, string userFriendlyMessage, bool isCritical = false)
+        {
+            if (ex == null)
+                throw new ArgumentNullException(nameof(ex));
+
+            if (string.IsNullOrWhiteSpace(userFriendlyMessage))
+                throw new ArgumentException("User message cannot be empty", nameof(userFriendlyMessage));
+
+            // Simple static version - just show the message
+            MessageBox.Show(userFriendlyMessage, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        public static void ShowValidationError(string message)
+        {
+            if (string.IsNullOrWhiteSpace(message))
+                throw new ArgumentException("Message cannot be empty", nameof(message));
+
+            MessageBox.Show(message, "Doğrulama Xətası", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        public static void ShowSuccess(string message)
+        {
+            if (string.IsNullOrWhiteSpace(message))
+                throw new ArgumentException("Message cannot be empty", nameof(message));
+
+            MessageBox.Show(message, "Uğur", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        public static bool ShowConfirmation(string message, string title = "Təsdiq")
+        {
+            if (string.IsNullOrWhiteSpace(message))
+                throw new ArgumentException("Message cannot be empty", nameof(message));
+
+            return MessageBox.Show(message, title, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
+        }
+
         /// <summary>
         /// Handles errors with logging and user-friendly messages
         /// </summary>

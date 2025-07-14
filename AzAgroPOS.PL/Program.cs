@@ -1,4 +1,6 @@
 ﻿using AzAgroPOS.BLL.Services;
+using AzAgroPOS.DAL;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -19,11 +21,15 @@ namespace AzAgroPOS.PL
             // Database-i initialize et
             try
             {
-                var dbInitService = new DatabaseInitializationService();
+                var context = new AzAgroDbContext();
+                var logger = CreateLogger();
+                var dbInitService = new DatabaseInitializationService(context, logger);
                 
                 // Database mövcud deyilsə yaradın, mövcuddursa toxunmayın
                 var initTask = dbInitService.InitializeDatabaseAsync();
                 initTask.Wait();
+                
+                context.Dispose();
             }
             catch (Exception ex)
             {
@@ -32,6 +38,17 @@ namespace AzAgroPOS.PL
             }
 
             Application.Run(new LoginForm());
+        }
+        
+        private static ILogger<DatabaseInitializationService> CreateLogger()
+        {
+            // Create a simple console logger for database initialization
+            var loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder.AddConsole();
+            });
+            
+            return loggerFactory.CreateLogger<DatabaseInitializationService>();
         }
     }
 }

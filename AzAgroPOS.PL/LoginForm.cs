@@ -1,4 +1,5 @@
 ﻿using AzAgroPOS.BLL.Services;
+using AzAgroPOS.DAL;
 using AzAgroPOS.DAL.Repositories;
 using AzAgroPOS.Entities.Domain;
 using AzAgroPOS.PL.Forms;
@@ -20,8 +21,9 @@ namespace AzAgroPOS.PL
         public LoginForm()
         {
             InitializeComponent();
+            var context = new AzAgroDbContext();
             _authService = new AuthService();
-            _istifadeciRepository = new IstifadeciRepository();
+            _istifadeciRepository = new IstifadeciRepository(context);
             // Form yükləndikdə avtomatik giriş cəhdini yoxla
             this.Load += async (s, e) => await TryAutoLoginAsync();
         }
@@ -253,6 +255,12 @@ namespace AzAgroPOS.PL
         {
             var registerForm = new UserAddForm();
             registerForm.ShowDialog();
+        }
+
+        private void chkRememberMe_CheckedChanged(object sender, EventArgs e)
+        {
+            // This event handler is required by the designer
+            // The checkbox logic is handled in the login button click event
         }
 
         private bool ValidateInput(string email, string password)

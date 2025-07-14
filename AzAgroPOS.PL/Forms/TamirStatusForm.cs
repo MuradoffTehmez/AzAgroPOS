@@ -21,7 +21,7 @@ namespace AzAgroPOS.PL.Forms
             _repairId = repairId;
             _currentUser = currentUser;
             _context = new AzAgroDbContext();
-            _tamirService = new TamirService(_context, new AuditLogService());
+            _tamirService = new TamirService();
             SetupForm();
             LoadRepairInfo();
         }
