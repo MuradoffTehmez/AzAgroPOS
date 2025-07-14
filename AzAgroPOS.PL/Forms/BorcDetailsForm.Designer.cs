@@ -21,16 +21,6 @@ namespace AzAgroPOS.PL.Forms
             this.lblTitle = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabDebtInfo = new System.Windows.Forms.TabPage();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.lblStatus = new System.Windows.Forms.Label();
-            this.lblStatusLabel = new System.Windows.Forms.Label();
-            this.lblBorcTipi = new System.Windows.Forms.Label();
-            this.lblBorcTipiLabel = new System.Windows.Forms.Label();
-            this.lblMusteriAdi = new System.Windows.Forms.Label();
-            this.lblMusteriAdiLabel = new System.Windows.Forms.Label();
-            this.lblBorcNomresi = new System.Windows.Forms.Label();
-            this.lblBorcNomresiLabel = new System.Windows.Forms.Label();
-            this.lblDebtInfoTitle = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
             this.lblUmumiBorc = new System.Windows.Forms.Label();
             this.lblUmumiBorcLabel = new System.Windows.Forms.Label();
@@ -43,6 +33,16 @@ namespace AzAgroPOS.PL.Forms
             this.lblBorcMeblegi = new System.Windows.Forms.Label();
             this.lblBorcMeblegLabel = new System.Windows.Forms.Label();
             this.lblAmountInfoTitle = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.lblStatus = new System.Windows.Forms.Label();
+            this.lblStatusLabel = new System.Windows.Forms.Label();
+            this.lblBorcTipi = new System.Windows.Forms.Label();
+            this.lblBorcTipiLabel = new System.Windows.Forms.Label();
+            this.lblMusteriAdi = new System.Windows.Forms.Label();
+            this.lblMusteriAdiLabel = new System.Windows.Forms.Label();
+            this.lblBorcNomresi = new System.Windows.Forms.Label();
+            this.lblBorcNomresiLabel = new System.Windows.Forms.Label();
+            this.lblDebtInfoTitle = new System.Windows.Forms.Label();
             this.tabPaymentHistory = new System.Windows.Forms.TabPage();
             this.dgvPayments = new System.Windows.Forms.DataGridView();
             this.panel6 = new System.Windows.Forms.Panel();
@@ -57,8 +57,8 @@ namespace AzAgroPOS.PL.Forms
             this.panel1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabDebtInfo.SuspendLayout();
-            this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.tabPaymentHistory.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPayments)).BeginInit();
             this.panel6.SuspendLayout();
@@ -82,7 +82,7 @@ namespace AzAgroPOS.PL.Forms
             this.lblTitle.ForeColor = System.Drawing.Color.White;
             this.lblTitle.Location = new System.Drawing.Point(20, 15);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(246, 32);
+            this.lblTitle.Size = new System.Drawing.Size(216, 32);
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "Borc Təfərrüatları";
             // 
@@ -95,7 +95,7 @@ namespace AzAgroPOS.PL.Forms
             this.tabControl1.Location = new System.Drawing.Point(0, 60);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(900, 450);
+            this.tabControl1.Size = new System.Drawing.Size(900, 520);
             this.tabControl1.TabIndex = 1;
             // 
             // tabDebtInfo
@@ -106,121 +106,9 @@ namespace AzAgroPOS.PL.Forms
             this.tabDebtInfo.Location = new System.Drawing.Point(4, 29);
             this.tabDebtInfo.Name = "tabDebtInfo";
             this.tabDebtInfo.Padding = new System.Windows.Forms.Padding(3);
-            this.tabDebtInfo.Size = new System.Drawing.Size(892, 417);
+            this.tabDebtInfo.Size = new System.Drawing.Size(892, 487);
             this.tabDebtInfo.TabIndex = 0;
             this.tabDebtInfo.Text = "Borc Məlumatları";
-            // 
-            // panel2
-            // 
-            this.panel2.BackColor = System.Drawing.Color.White;
-            this.panel2.Controls.Add(this.lblStatus);
-            this.panel2.Controls.Add(this.lblStatusLabel);
-            this.panel2.Controls.Add(this.lblBorcTipi);
-            this.panel2.Controls.Add(this.lblBorcTipiLabel);
-            this.panel2.Controls.Add(this.lblMusteriAdi);
-            this.panel2.Controls.Add(this.lblMusteriAdiLabel);
-            this.panel2.Controls.Add(this.lblBorcNomresi);
-            this.panel2.Controls.Add(this.lblBorcNomresiLabel);
-            this.panel2.Controls.Add(this.lblDebtInfoTitle);
-            this.panel2.Location = new System.Drawing.Point(20, 20);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(420, 180);
-            this.panel2.TabIndex = 0;
-            // 
-            // lblDebtInfoTitle
-            // 
-            this.lblDebtInfoTitle.AutoSize = true;
-            this.lblDebtInfoTitle.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
-            this.lblDebtInfoTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
-            this.lblDebtInfoTitle.Location = new System.Drawing.Point(15, 15);
-            this.lblDebtInfoTitle.Name = "lblDebtInfoTitle";
-            this.lblDebtInfoTitle.Size = new System.Drawing.Size(142, 25);
-            this.lblDebtInfoTitle.TabIndex = 0;
-            this.lblDebtInfoTitle.Text = "Əsas Məlumatlar";
-            // 
-            // lblBorcNomresiLabel
-            // 
-            this.lblBorcNomresiLabel.AutoSize = true;
-            this.lblBorcNomresiLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblBorcNomresiLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
-            this.lblBorcNomresiLabel.Location = new System.Drawing.Point(20, 55);
-            this.lblBorcNomresiLabel.Name = "lblBorcNomresiLabel";
-            this.lblBorcNomresiLabel.Size = new System.Drawing.Size(100, 19);
-            this.lblBorcNomresiLabel.TabIndex = 1;
-            this.lblBorcNomresiLabel.Text = "Borc Nömrəsi:";
-            // 
-            // lblBorcNomresi
-            // 
-            this.lblBorcNomresi.AutoSize = true;
-            this.lblBorcNomresi.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblBorcNomresi.Location = new System.Drawing.Point(150, 55);
-            this.lblBorcNomresi.Name = "lblBorcNomresi";
-            this.lblBorcNomresi.Size = new System.Drawing.Size(17, 19);
-            this.lblBorcNomresi.TabIndex = 2;
-            this.lblBorcNomresi.Text = "-";
-            // 
-            // lblMusteriAdiLabel
-            // 
-            this.lblMusteriAdiLabel.AutoSize = true;
-            this.lblMusteriAdiLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblMusteriAdiLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
-            this.lblMusteriAdiLabel.Location = new System.Drawing.Point(20, 85);
-            this.lblMusteriAdiLabel.Name = "lblMusteriAdiLabel";
-            this.lblMusteriAdiLabel.Size = new System.Drawing.Size(91, 19);
-            this.lblMusteriAdiLabel.TabIndex = 3;
-            this.lblMusteriAdiLabel.Text = "Müştəri Adı:";
-            // 
-            // lblMusteriAdi
-            // 
-            this.lblMusteriAdi.AutoSize = true;
-            this.lblMusteriAdi.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblMusteriAdi.Location = new System.Drawing.Point(150, 85);
-            this.lblMusteriAdi.Name = "lblMusteriAdi";
-            this.lblMusteriAdi.Size = new System.Drawing.Size(17, 19);
-            this.lblMusteriAdi.TabIndex = 4;
-            this.lblMusteriAdi.Text = "-";
-            // 
-            // lblBorcTipiLabel
-            // 
-            this.lblBorcTipiLabel.AutoSize = true;
-            this.lblBorcTipiLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblBorcTipiLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
-            this.lblBorcTipiLabel.Location = new System.Drawing.Point(20, 115);
-            this.lblBorcTipiLabel.Name = "lblBorcTipiLabel";
-            this.lblBorcTipiLabel.Size = new System.Drawing.Size(64, 19);
-            this.lblBorcTipiLabel.TabIndex = 5;
-            this.lblBorcTipiLabel.Text = "Borc Tipi:";
-            // 
-            // lblBorcTipi
-            // 
-            this.lblBorcTipi.AutoSize = true;
-            this.lblBorcTipi.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblBorcTipi.Location = new System.Drawing.Point(150, 115);
-            this.lblBorcTipi.Name = "lblBorcTipi";
-            this.lblBorcTipi.Size = new System.Drawing.Size(17, 19);
-            this.lblBorcTipi.TabIndex = 6;
-            this.lblBorcTipi.Text = "-";
-            // 
-            // lblStatusLabel
-            // 
-            this.lblStatusLabel.AutoSize = true;
-            this.lblStatusLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblStatusLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
-            this.lblStatusLabel.Location = new System.Drawing.Point(20, 145);
-            this.lblStatusLabel.Name = "lblStatusLabel";
-            this.lblStatusLabel.Size = new System.Drawing.Size(53, 19);
-            this.lblStatusLabel.TabIndex = 7;
-            this.lblStatusLabel.Text = "Status:";
-            // 
-            // lblStatus
-            // 
-            this.lblStatus.AutoSize = true;
-            this.lblStatus.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblStatus.Location = new System.Drawing.Point(150, 145);
-            this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(15, 19);
-            this.lblStatus.TabIndex = 8;
-            this.lblStatus.Text = "-";
             // 
             // panel3
             // 
@@ -241,104 +129,16 @@ namespace AzAgroPOS.PL.Forms
             this.panel3.Size = new System.Drawing.Size(420, 180);
             this.panel3.TabIndex = 1;
             // 
-            // lblAmountInfoTitle
+            // lblUmumiBorc
             // 
-            this.lblAmountInfoTitle.AutoSize = true;
-            this.lblAmountInfoTitle.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
-            this.lblAmountInfoTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
-            this.lblAmountInfoTitle.Location = new System.Drawing.Point(15, 15);
-            this.lblAmountInfoTitle.Name = "lblAmountInfoTitle";
-            this.lblAmountInfoTitle.Size = new System.Drawing.Size(177, 25);
-            this.lblAmountInfoTitle.TabIndex = 0;
-            this.lblAmountInfoTitle.Text = "Məbləğ Məlumatları";
-            // 
-            // lblBorcMeblegLabel
-            // 
-            this.lblBorcMeblegLabel.AutoSize = true;
-            this.lblBorcMeblegLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblBorcMeblegLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
-            this.lblBorcMeblegLabel.Location = new System.Drawing.Point(20, 55);
-            this.lblBorcMeblegLabel.Name = "lblBorcMeblegLabel";
-            this.lblBorcMeblegLabel.Size = new System.Drawing.Size(108, 19);
-            this.lblBorcMeblegLabel.TabIndex = 1;
-            this.lblBorcMeblegLabel.Text = "Əsas Məbləği:";
-            // 
-            // lblBorcMeblegi
-            // 
-            this.lblBorcMeblegi.AutoSize = true;
-            this.lblBorcMeblegi.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblBorcMeblegi.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
-            this.lblBorcMeblegi.Location = new System.Drawing.Point(150, 55);
-            this.lblBorcMeblegi.Name = "lblBorcMeblegi";
-            this.lblBorcMeblegi.Size = new System.Drawing.Size(15, 19);
-            this.lblBorcMeblegi.TabIndex = 2;
-            this.lblBorcMeblegi.Text = "-";
-            // 
-            // lblOdenilmisMeblegLabel
-            // 
-            this.lblOdenilmisMeblegLabel.AutoSize = true;
-            this.lblOdenilmisMeblegLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblOdenilmisMeblegLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
-            this.lblOdenilmisMeblegLabel.Location = new System.Drawing.Point(20, 85);
-            this.lblOdenilmisMeblegLabel.Name = "lblOdenilmisMeblegLabel";
-            this.lblOdenilmisMeblegLabel.Size = new System.Drawing.Size(123, 19);
-            this.lblOdenilmisMeblegLabel.TabIndex = 3;
-            this.lblOdenilmisMeblegLabel.Text = "Ödənilmiş Məbləğ:";
-            // 
-            // lblOdenilmisMebleg
-            // 
-            this.lblOdenilmisMebleg.AutoSize = true;
-            this.lblOdenilmisMebleg.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblOdenilmisMebleg.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(174)))), ((int)(((byte)(96)))));
-            this.lblOdenilmisMebleg.Location = new System.Drawing.Point(150, 85);
-            this.lblOdenilmisMebleg.Name = "lblOdenilmisMebleg";
-            this.lblOdenilmisMebleg.Size = new System.Drawing.Size(15, 19);
-            this.lblOdenilmisMebleg.TabIndex = 4;
-            this.lblOdenilmisMebleg.Text = "-";
-            // 
-            // lblQalanBorcLabel
-            // 
-            this.lblQalanBorcLabel.AutoSize = true;
-            this.lblQalanBorcLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblQalanBorcLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
-            this.lblQalanBorcLabel.Location = new System.Drawing.Point(20, 115);
-            this.lblQalanBorcLabel.Name = "lblQalanBorcLabel";
-            this.lblQalanBorcLabel.Size = new System.Drawing.Size(87, 19);
-            this.lblQalanBorcLabel.TabIndex = 5;
-            this.lblQalanBorcLabel.Text = "Qalan Borc:";
-            // 
-            // lblQalanBorc
-            // 
-            this.lblQalanBorc.AutoSize = true;
-            this.lblQalanBorc.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.lblQalanBorc.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(57)))), ((int)(((byte)(43)))));
-            this.lblQalanBorc.Location = new System.Drawing.Point(150, 113);
-            this.lblQalanBorc.Name = "lblQalanBorc";
-            this.lblQalanBorc.Size = new System.Drawing.Size(16, 21);
-            this.lblQalanBorc.TabIndex = 6;
-            this.lblQalanBorc.Text = "-";
-            // 
-            // lblFaizMeblegLabel
-            // 
-            this.lblFaizMeblegLabel.AutoSize = true;
-            this.lblFaizMeblegLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblFaizMeblegLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
-            this.lblFaizMeblegLabel.Location = new System.Drawing.Point(200, 55);
-            this.lblFaizMeblegLabel.Name = "lblFaizMeblegLabel";
-            this.lblFaizMeblegLabel.Size = new System.Drawing.Size(95, 19);
-            this.lblFaizMeblegLabel.TabIndex = 7;
-            this.lblFaizMeblegLabel.Text = "Faiz Məbləği:";
-            // 
-            // lblFaizMeblegi
-            // 
-            this.lblFaizMeblegi.AutoSize = true;
-            this.lblFaizMeblegi.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblFaizMeblegi.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(126)))), ((int)(((byte)(34)))));
-            this.lblFaizMeblegi.Location = new System.Drawing.Point(310, 55);
-            this.lblFaizMeblegi.Name = "lblFaizMeblegi";
-            this.lblFaizMeblegi.Size = new System.Drawing.Size(15, 19);
-            this.lblFaizMeblegi.TabIndex = 8;
-            this.lblFaizMeblegi.Text = "-";
+            this.lblUmumiBorc.AutoSize = true;
+            this.lblUmumiBorc.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.lblUmumiBorc.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(89)))), ((int)(((byte)(182)))));
+            this.lblUmumiBorc.Location = new System.Drawing.Point(310, 114);
+            this.lblUmumiBorc.Name = "lblUmumiBorc";
+            this.lblUmumiBorc.Size = new System.Drawing.Size(16, 21);
+            this.lblUmumiBorc.TabIndex = 10;
+            this.lblUmumiBorc.Text = "-";
             // 
             // lblUmumiBorcLabel
             // 
@@ -351,16 +151,216 @@ namespace AzAgroPOS.PL.Forms
             this.lblUmumiBorcLabel.TabIndex = 9;
             this.lblUmumiBorcLabel.Text = "Ümumi Borc:";
             // 
-            // lblUmumiBorc
+            // lblFaizMeblegi
             // 
-            this.lblUmumiBorc.AutoSize = true;
-            this.lblUmumiBorc.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.lblUmumiBorc.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(89)))), ((int)(((byte)(182)))));
-            this.lblUmumiBorc.Location = new System.Drawing.Point(310, 114);
-            this.lblUmumiBorc.Name = "lblUmumiBorc";
-            this.lblUmumiBorc.Size = new System.Drawing.Size(16, 21);
-            this.lblUmumiBorc.TabIndex = 10;
-            this.lblUmumiBorc.Text = "-";
+            this.lblFaizMeblegi.AutoSize = true;
+            this.lblFaizMeblegi.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblFaizMeblegi.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(126)))), ((int)(((byte)(34)))));
+            this.lblFaizMeblegi.Location = new System.Drawing.Point(310, 55);
+            this.lblFaizMeblegi.Name = "lblFaizMeblegi";
+            this.lblFaizMeblegi.Size = new System.Drawing.Size(15, 19);
+            this.lblFaizMeblegi.TabIndex = 8;
+            this.lblFaizMeblegi.Text = "-";
+            // 
+            // lblFaizMeblegLabel
+            // 
+            this.lblFaizMeblegLabel.AutoSize = true;
+            this.lblFaizMeblegLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblFaizMeblegLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
+            this.lblFaizMeblegLabel.Location = new System.Drawing.Point(200, 55);
+            this.lblFaizMeblegLabel.Name = "lblFaizMeblegLabel";
+            this.lblFaizMeblegLabel.Size = new System.Drawing.Size(98, 19);
+            this.lblFaizMeblegLabel.TabIndex = 7;
+            this.lblFaizMeblegLabel.Text = "Faiz Məbləği:";
+            // 
+            // lblQalanBorc
+            // 
+            this.lblQalanBorc.AutoSize = true;
+            this.lblQalanBorc.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.lblQalanBorc.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(57)))), ((int)(((byte)(43)))));
+            this.lblQalanBorc.Location = new System.Drawing.Point(150, 113);
+            this.lblQalanBorc.Name = "lblQalanBorc";
+            this.lblQalanBorc.Size = new System.Drawing.Size(16, 21);
+            this.lblQalanBorc.TabIndex = 6;
+            this.lblQalanBorc.Text = "-";
+            // 
+            // lblQalanBorcLabel
+            // 
+            this.lblQalanBorcLabel.AutoSize = true;
+            this.lblQalanBorcLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblQalanBorcLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
+            this.lblQalanBorcLabel.Location = new System.Drawing.Point(20, 115);
+            this.lblQalanBorcLabel.Name = "lblQalanBorcLabel";
+            this.lblQalanBorcLabel.Size = new System.Drawing.Size(87, 19);
+            this.lblQalanBorcLabel.TabIndex = 5;
+            this.lblQalanBorcLabel.Text = "Qalan Borc:";
+            // 
+            // lblOdenilmisMebleg
+            // 
+            this.lblOdenilmisMebleg.AutoSize = true;
+            this.lblOdenilmisMebleg.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblOdenilmisMebleg.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(174)))), ((int)(((byte)(96)))));
+            this.lblOdenilmisMebleg.Location = new System.Drawing.Point(150, 85);
+            this.lblOdenilmisMebleg.Name = "lblOdenilmisMebleg";
+            this.lblOdenilmisMebleg.Size = new System.Drawing.Size(15, 19);
+            this.lblOdenilmisMebleg.TabIndex = 4;
+            this.lblOdenilmisMebleg.Text = "-";
+            // 
+            // lblOdenilmisMeblegLabel
+            // 
+            this.lblOdenilmisMeblegLabel.AutoSize = true;
+            this.lblOdenilmisMeblegLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblOdenilmisMeblegLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
+            this.lblOdenilmisMeblegLabel.Location = new System.Drawing.Point(20, 85);
+            this.lblOdenilmisMeblegLabel.Name = "lblOdenilmisMeblegLabel";
+            this.lblOdenilmisMeblegLabel.Size = new System.Drawing.Size(135, 19);
+            this.lblOdenilmisMeblegLabel.TabIndex = 3;
+            this.lblOdenilmisMeblegLabel.Text = "Ödənilmiş Məbləğ:";
+            // 
+            // lblBorcMeblegi
+            // 
+            this.lblBorcMeblegi.AutoSize = true;
+            this.lblBorcMeblegi.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblBorcMeblegi.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
+            this.lblBorcMeblegi.Location = new System.Drawing.Point(150, 55);
+            this.lblBorcMeblegi.Name = "lblBorcMeblegi";
+            this.lblBorcMeblegi.Size = new System.Drawing.Size(15, 19);
+            this.lblBorcMeblegi.TabIndex = 2;
+            this.lblBorcMeblegi.Text = "-";
+            // 
+            // lblBorcMeblegLabel
+            // 
+            this.lblBorcMeblegLabel.AutoSize = true;
+            this.lblBorcMeblegLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblBorcMeblegLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
+            this.lblBorcMeblegLabel.Location = new System.Drawing.Point(20, 55);
+            this.lblBorcMeblegLabel.Name = "lblBorcMeblegLabel";
+            this.lblBorcMeblegLabel.Size = new System.Drawing.Size(103, 19);
+            this.lblBorcMeblegLabel.TabIndex = 1;
+            this.lblBorcMeblegLabel.Text = "Əsas Məbləği:";
+            // 
+            // lblAmountInfoTitle
+            // 
+            this.lblAmountInfoTitle.AutoSize = true;
+            this.lblAmountInfoTitle.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
+            this.lblAmountInfoTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
+            this.lblAmountInfoTitle.Location = new System.Drawing.Point(15, 15);
+            this.lblAmountInfoTitle.Name = "lblAmountInfoTitle";
+            this.lblAmountInfoTitle.Size = new System.Drawing.Size(191, 25);
+            this.lblAmountInfoTitle.TabIndex = 0;
+            this.lblAmountInfoTitle.Text = "Məbləğ Məlumatları";
+            // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.Color.White;
+            this.panel2.Controls.Add(this.lblStatus);
+            this.panel2.Controls.Add(this.lblStatusLabel);
+            this.panel2.Controls.Add(this.lblBorcTipi);
+            this.panel2.Controls.Add(this.lblBorcTipiLabel);
+            this.panel2.Controls.Add(this.lblMusteriAdi);
+            this.panel2.Controls.Add(this.lblMusteriAdiLabel);
+            this.panel2.Controls.Add(this.lblBorcNomresi);
+            this.panel2.Controls.Add(this.lblBorcNomresiLabel);
+            this.panel2.Controls.Add(this.lblDebtInfoTitle);
+            this.panel2.Location = new System.Drawing.Point(20, 20);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(420, 180);
+            this.panel2.TabIndex = 0;
+            // 
+            // lblStatus
+            // 
+            this.lblStatus.AutoSize = true;
+            this.lblStatus.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblStatus.Location = new System.Drawing.Point(150, 145);
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(15, 19);
+            this.lblStatus.TabIndex = 8;
+            this.lblStatus.Text = "-";
+            // 
+            // lblStatusLabel
+            // 
+            this.lblStatusLabel.AutoSize = true;
+            this.lblStatusLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblStatusLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
+            this.lblStatusLabel.Location = new System.Drawing.Point(20, 145);
+            this.lblStatusLabel.Name = "lblStatusLabel";
+            this.lblStatusLabel.Size = new System.Drawing.Size(53, 19);
+            this.lblStatusLabel.TabIndex = 7;
+            this.lblStatusLabel.Text = "Status:";
+            // 
+            // lblBorcTipi
+            // 
+            this.lblBorcTipi.AutoSize = true;
+            this.lblBorcTipi.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblBorcTipi.Location = new System.Drawing.Point(150, 115);
+            this.lblBorcTipi.Name = "lblBorcTipi";
+            this.lblBorcTipi.Size = new System.Drawing.Size(15, 19);
+            this.lblBorcTipi.TabIndex = 6;
+            this.lblBorcTipi.Text = "-";
+            // 
+            // lblBorcTipiLabel
+            // 
+            this.lblBorcTipiLabel.AutoSize = true;
+            this.lblBorcTipiLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblBorcTipiLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
+            this.lblBorcTipiLabel.Location = new System.Drawing.Point(20, 115);
+            this.lblBorcTipiLabel.Name = "lblBorcTipiLabel";
+            this.lblBorcTipiLabel.Size = new System.Drawing.Size(73, 19);
+            this.lblBorcTipiLabel.TabIndex = 5;
+            this.lblBorcTipiLabel.Text = "Borc Tipi:";
+            // 
+            // lblMusteriAdi
+            // 
+            this.lblMusteriAdi.AutoSize = true;
+            this.lblMusteriAdi.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblMusteriAdi.Location = new System.Drawing.Point(150, 85);
+            this.lblMusteriAdi.Name = "lblMusteriAdi";
+            this.lblMusteriAdi.Size = new System.Drawing.Size(15, 19);
+            this.lblMusteriAdi.TabIndex = 4;
+            this.lblMusteriAdi.Text = "-";
+            // 
+            // lblMusteriAdiLabel
+            // 
+            this.lblMusteriAdiLabel.AutoSize = true;
+            this.lblMusteriAdiLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblMusteriAdiLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
+            this.lblMusteriAdiLabel.Location = new System.Drawing.Point(20, 85);
+            this.lblMusteriAdiLabel.Name = "lblMusteriAdiLabel";
+            this.lblMusteriAdiLabel.Size = new System.Drawing.Size(90, 19);
+            this.lblMusteriAdiLabel.TabIndex = 3;
+            this.lblMusteriAdiLabel.Text = "Müştəri Adı:";
+            // 
+            // lblBorcNomresi
+            // 
+            this.lblBorcNomresi.AutoSize = true;
+            this.lblBorcNomresi.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblBorcNomresi.Location = new System.Drawing.Point(150, 55);
+            this.lblBorcNomresi.Name = "lblBorcNomresi";
+            this.lblBorcNomresi.Size = new System.Drawing.Size(15, 19);
+            this.lblBorcNomresi.TabIndex = 2;
+            this.lblBorcNomresi.Text = "-";
+            // 
+            // lblBorcNomresiLabel
+            // 
+            this.lblBorcNomresiLabel.AutoSize = true;
+            this.lblBorcNomresiLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblBorcNomresiLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
+            this.lblBorcNomresiLabel.Location = new System.Drawing.Point(20, 55);
+            this.lblBorcNomresiLabel.Name = "lblBorcNomresiLabel";
+            this.lblBorcNomresiLabel.Size = new System.Drawing.Size(105, 19);
+            this.lblBorcNomresiLabel.TabIndex = 1;
+            this.lblBorcNomresiLabel.Text = "Borc Nömrəsi:";
+            // 
+            // lblDebtInfoTitle
+            // 
+            this.lblDebtInfoTitle.AutoSize = true;
+            this.lblDebtInfoTitle.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
+            this.lblDebtInfoTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
+            this.lblDebtInfoTitle.Location = new System.Drawing.Point(15, 15);
+            this.lblDebtInfoTitle.Name = "lblDebtInfoTitle";
+            this.lblDebtInfoTitle.Size = new System.Drawing.Size(159, 25);
+            this.lblDebtInfoTitle.TabIndex = 0;
+            this.lblDebtInfoTitle.Text = "Əsas Məlumatlar";
             // 
             // tabPaymentHistory
             // 
@@ -370,7 +370,7 @@ namespace AzAgroPOS.PL.Forms
             this.tabPaymentHistory.Location = new System.Drawing.Point(4, 29);
             this.tabPaymentHistory.Name = "tabPaymentHistory";
             this.tabPaymentHistory.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPaymentHistory.Size = new System.Drawing.Size(892, 417);
+            this.tabPaymentHistory.Size = new System.Drawing.Size(892, 487);
             this.tabPaymentHistory.TabIndex = 1;
             this.tabPaymentHistory.Text = "Ödəniş Tarixçəsi";
             // 
@@ -381,7 +381,7 @@ namespace AzAgroPOS.PL.Forms
             this.dgvPayments.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvPayments.Location = new System.Drawing.Point(3, 63);
             this.dgvPayments.Name = "dgvPayments";
-            this.dgvPayments.Size = new System.Drawing.Size(886, 351);
+            this.dgvPayments.Size = new System.Drawing.Size(886, 421);
             this.dgvPayments.TabIndex = 1;
             // 
             // panel6
@@ -396,28 +396,6 @@ namespace AzAgroPOS.PL.Forms
             this.panel6.Size = new System.Drawing.Size(886, 60);
             this.panel6.TabIndex = 0;
             // 
-            // lblPaymentHistoryTitle
-            // 
-            this.lblPaymentHistoryTitle.AutoSize = true;
-            this.lblPaymentHistoryTitle.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
-            this.lblPaymentHistoryTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
-            this.lblPaymentHistoryTitle.Location = new System.Drawing.Point(20, 18);
-            this.lblPaymentHistoryTitle.Name = "lblPaymentHistoryTitle";
-            this.lblPaymentHistoryTitle.Size = new System.Drawing.Size(157, 25);
-            this.lblPaymentHistoryTitle.TabIndex = 0;
-            this.lblPaymentHistoryTitle.Text = "Ödəniş Tarixçəsi";
-            // 
-            // lblTotalPaymentsLabel
-            // 
-            this.lblTotalPaymentsLabel.AutoSize = true;
-            this.lblTotalPaymentsLabel.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.lblTotalPaymentsLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
-            this.lblTotalPaymentsLabel.Location = new System.Drawing.Point(500, 20);
-            this.lblTotalPaymentsLabel.Name = "lblTotalPaymentsLabel";
-            this.lblTotalPaymentsLabel.Size = new System.Drawing.Size(146, 20);
-            this.lblTotalPaymentsLabel.TabIndex = 1;
-            this.lblTotalPaymentsLabel.Text = "Ümumi Ödəniş Sayı:";
-            // 
             // lblTotalPayments
             // 
             this.lblTotalPayments.AutoSize = true;
@@ -428,6 +406,28 @@ namespace AzAgroPOS.PL.Forms
             this.lblTotalPayments.Size = new System.Drawing.Size(18, 20);
             this.lblTotalPayments.TabIndex = 2;
             this.lblTotalPayments.Text = "0";
+            // 
+            // lblTotalPaymentsLabel
+            // 
+            this.lblTotalPaymentsLabel.AutoSize = true;
+            this.lblTotalPaymentsLabel.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.lblTotalPaymentsLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
+            this.lblTotalPaymentsLabel.Location = new System.Drawing.Point(500, 20);
+            this.lblTotalPaymentsLabel.Name = "lblTotalPaymentsLabel";
+            this.lblTotalPaymentsLabel.Size = new System.Drawing.Size(149, 20);
+            this.lblTotalPaymentsLabel.TabIndex = 1;
+            this.lblTotalPaymentsLabel.Text = "Ümumi Ödəniş Sayı:";
+            // 
+            // lblPaymentHistoryTitle
+            // 
+            this.lblPaymentHistoryTitle.AutoSize = true;
+            this.lblPaymentHistoryTitle.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
+            this.lblPaymentHistoryTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
+            this.lblPaymentHistoryTitle.Location = new System.Drawing.Point(20, 18);
+            this.lblPaymentHistoryTitle.Name = "lblPaymentHistoryTitle";
+            this.lblPaymentHistoryTitle.Size = new System.Drawing.Size(153, 25);
+            this.lblPaymentHistoryTitle.TabIndex = 0;
+            this.lblPaymentHistoryTitle.Text = "Ödəniş Tarixçəsi";
             // 
             // panel7
             // 
@@ -442,35 +442,20 @@ namespace AzAgroPOS.PL.Forms
             this.panel7.Size = new System.Drawing.Size(900, 70);
             this.panel7.TabIndex = 2;
             // 
-            // btnAddPayment
+            // btnClose
             // 
-            this.btnAddPayment.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(204)))), ((int)(((byte)(113)))));
-            this.btnAddPayment.FlatAppearance.BorderSize = 0;
-            this.btnAddPayment.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAddPayment.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.btnAddPayment.ForeColor = System.Drawing.Color.White;
-            this.btnAddPayment.Location = new System.Drawing.Point(20, 15);
-            this.btnAddPayment.Name = "btnAddPayment";
-            this.btnAddPayment.Size = new System.Drawing.Size(150, 40);
-            this.btnAddPayment.TabIndex = 0;
-            this.btnAddPayment.Text = "Ödəniş Et";
-            this.btnAddPayment.UseVisualStyleBackColor = false;
-            this.btnAddPayment.Click += new System.EventHandler(this.btnAddPayment_Click);
-            // 
-            // btnEditDebt
-            // 
-            this.btnEditDebt.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(152)))), ((int)(((byte)(219)))));
-            this.btnEditDebt.FlatAppearance.BorderSize = 0;
-            this.btnEditDebt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnEditDebt.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.btnEditDebt.ForeColor = System.Drawing.Color.White;
-            this.btnEditDebt.Location = new System.Drawing.Point(190, 15);
-            this.btnEditDebt.Name = "btnEditDebt";
-            this.btnEditDebt.Size = new System.Drawing.Size(150, 40);
-            this.btnEditDebt.TabIndex = 1;
-            this.btnEditDebt.Text = "Borcu Düzəlt";
-            this.btnEditDebt.UseVisualStyleBackColor = false;
-            this.btnEditDebt.Click += new System.EventHandler(this.btnEditDebt_Click);
+            this.btnClose.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(149)))), ((int)(((byte)(165)))), ((int)(((byte)(166)))));
+            this.btnClose.FlatAppearance.BorderSize = 0;
+            this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnClose.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.btnClose.ForeColor = System.Drawing.Color.White;
+            this.btnClose.Location = new System.Drawing.Point(720, 15);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(150, 40);
+            this.btnClose.TabIndex = 3;
+            this.btnClose.Text = "Bağla";
+            this.btnClose.UseVisualStyleBackColor = false;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // btnPrintReport
             // 
@@ -487,20 +472,35 @@ namespace AzAgroPOS.PL.Forms
             this.btnPrintReport.UseVisualStyleBackColor = false;
             this.btnPrintReport.Click += new System.EventHandler(this.btnPrintReport_Click);
             // 
-            // btnClose
+            // btnEditDebt
             // 
-            this.btnClose.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(149)))), ((int)(((byte)(165)))), ((int)(((byte)(166)))));
-            this.btnClose.FlatAppearance.BorderSize = 0;
-            this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnClose.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.btnClose.ForeColor = System.Drawing.Color.White;
-            this.btnClose.Location = new System.Drawing.Point(720, 15);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(150, 40);
-            this.btnClose.TabIndex = 3;
-            this.btnClose.Text = "Bağla";
-            this.btnClose.UseVisualStyleBackColor = false;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            this.btnEditDebt.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(152)))), ((int)(((byte)(219)))));
+            this.btnEditDebt.FlatAppearance.BorderSize = 0;
+            this.btnEditDebt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEditDebt.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.btnEditDebt.ForeColor = System.Drawing.Color.White;
+            this.btnEditDebt.Location = new System.Drawing.Point(190, 15);
+            this.btnEditDebt.Name = "btnEditDebt";
+            this.btnEditDebt.Size = new System.Drawing.Size(150, 40);
+            this.btnEditDebt.TabIndex = 1;
+            this.btnEditDebt.Text = "Borcu Düzəlt";
+            this.btnEditDebt.UseVisualStyleBackColor = false;
+            this.btnEditDebt.Click += new System.EventHandler(this.btnEditDebt_Click);
+            // 
+            // btnAddPayment
+            // 
+            this.btnAddPayment.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(204)))), ((int)(((byte)(113)))));
+            this.btnAddPayment.FlatAppearance.BorderSize = 0;
+            this.btnAddPayment.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAddPayment.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.btnAddPayment.ForeColor = System.Drawing.Color.White;
+            this.btnAddPayment.Location = new System.Drawing.Point(20, 15);
+            this.btnAddPayment.Name = "btnAddPayment";
+            this.btnAddPayment.Size = new System.Drawing.Size(150, 40);
+            this.btnAddPayment.TabIndex = 0;
+            this.btnAddPayment.Text = "Ödəniş Et";
+            this.btnAddPayment.UseVisualStyleBackColor = false;
+            this.btnAddPayment.Click += new System.EventHandler(this.btnAddPayment_Click);
             // 
             // BorcDetailsForm
             // 
@@ -522,10 +522,10 @@ namespace AzAgroPOS.PL.Forms
             this.panel1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tabDebtInfo.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.tabPaymentHistory.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvPayments)).EndInit();
             this.panel6.ResumeLayout(false);
