@@ -50,6 +50,11 @@ namespace AzAgroPOS.Entities.Domain
         [NotMapped]
         public string Role => Rol?.Ad ?? "User";
 
+        [StringLength(256)]
+        public string RememberMeToken { get; set; }
+
+        public DateTime? RememberMeTokenExpiry { get; set; }
+
         public virtual Rol Rol { get; set; }
         public virtual Tema Tema { get; set; }
         public DateTime SonGiris { get; set; }

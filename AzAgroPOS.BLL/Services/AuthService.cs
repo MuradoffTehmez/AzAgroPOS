@@ -267,5 +267,28 @@ namespace AzAgroPOS.BLL.Services
         {
             _istifadeciRepository?.Dispose();
         }
+
+        public async Task<(bool Success, Istifadeci User)> LoginWithTokenAsync(string token)
+        {
+            var user = await _istifadeciRepository.GetByRememberMeTokenAsync(token);
+
+            if (user != null && user.RememberMeTokenExpiry.HasValue && user.RememberMeTokenExpiry.Value > DateTime.Now)
+            {
+                // Token düzgün və vaxtı keçməyibsə, son giriş tarixini yenilə
+                user.SonGiris = DateTime.Now;
+                await _istifadeciRepository.UpdateAsync(user);
+                return (true, user);
+            }
+
+            // Token səhvdirsə və ya vaxtı keçibsə, təmizlə
+            if (user != null)
+            {
+                user.RememberMeToken = null;
+                user.RememberMeTokenExpiry = null;
+                await _istifadeciRepository.UpdateAsync(user);
+            }
+
+            return (false, null);
+        }
     }
 }

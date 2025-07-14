@@ -114,5 +114,29 @@ namespace AzAgroPOS.DAL.Repositories
         {
             throw new NotImplementedException();
         }
+
+        //public async Task<Istifadeci> GetByRememberMeTokenAsync(string token, bool includeDetails = true)
+        //{
+        //    using (var context = new AzAgroDbContext())
+        //    {
+        //        var query = context.Istifadeciler.AsQueryable();
+        //        if (includeDetails)
+        //        {
+        //            query = query.Include(i => i.Rol).Include(i => i.Tema);
+        //        }
+        //        return await query.FirstOrDefaultAsync(i => i.RememberMeToken == token);
+        //    }
+        //}
+
+        public async Task<Istifadeci> GetByRememberMeTokenAsync(string token)
+        {
+            using (var context = new AzAgroDbContext())
+            {
+                return await context.Istifadeciler
+                    .Include(i => i.Rol)
+                    .Include(i => i.Tema)
+                    .FirstOrDefaultAsync(i => i.RememberMeToken == token);
+            }
+        }
     }
 }
