@@ -1,6 +1,8 @@
 using AzAgroPOS.Entities.Domain;
 using AzAgroPOS.PL.Forms;
+using AzAgroPOS.BLL.Services;
 using System;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace AzAgroPOS.PL.Forms
@@ -169,14 +171,14 @@ namespace AzAgroPOS.PL.Forms
             {
                 // Real data from database - get actual statistics
                 var musteriService = new MusteriService();
-                var productService = new ProductService();
+                var mehsulService = new MehsulService();
                 
                 // Get real customer count
                 int totalCustomers = musteriService.GetAllCustomers().Count();
                 lblTotalCustomers.Text = $"👥 Müştərilər\n\n{totalCustomers:N0}";
                 
                 // Get real product count
-                int totalProducts = productService.GetAllProducts().Count();
+                int totalProducts = mehsulService.GetAllActive().Count;
                 lblTotalProducts.Text = $"📦 Məhsullar\n\n{totalProducts:N0}";
                 
                 // Today's sales - placeholder for now (would need sales service)

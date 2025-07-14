@@ -102,7 +102,7 @@ namespace AzAgroPOS.PL.Forms
             }
             catch (Exception ex)
             {
-                ErrorHandlingService.HandleError(ex, "Təmir məlumatları yüklənərkən xəta baş verdi.");
+                ErrorHandlingService.HandleErrorStatic(ex, "Təmir məlumatları yüklənərkən xəta baş verdi.");
             }
         }
 
@@ -136,7 +136,7 @@ namespace AzAgroPOS.PL.Forms
             }
             catch (Exception ex)
             {
-                ErrorHandlingService.HandleError(ex, "Təmir mərhələləri yüklənərkən xəta baş verdi.");
+                ErrorHandlingService.HandleErrorStatic(ex, "Təmir mərhələləri yüklənərkən xəta baş verdi.");
             }
         }
 
@@ -181,7 +181,7 @@ namespace AzAgroPOS.PL.Forms
             }
             catch (Exception ex)
             {
-                ErrorHandlingService.HandleError(ex, "Hesabat yaradılarkən xəta baş verdi.");
+                ErrorHandlingService.HandleErrorStatic(ex, "Hesabat yaradılarkən xəta baş verdi.");
             }
         }
 

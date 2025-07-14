@@ -20,7 +20,7 @@ namespace AzAgroPOS.BLL.Services
         }
 
         // Static methods for backward compatibility
-        public static void HandleError(Exception ex, string userFriendlyMessage, bool isCritical = false)
+        public static void HandleErrorStatic(Exception ex, string userFriendlyMessage, bool isCritical = false)
         {
             if (ex == null)
                 throw new ArgumentNullException(nameof(ex));
@@ -62,7 +62,7 @@ namespace AzAgroPOS.BLL.Services
         /// <param name="ex">Exception that occurred</param>
         /// <param name="userFriendlyMessage">User-friendly message to display</param>
         /// <param name="isCritical">Whether the error is critical</param>
-        public void HandleErrorInstance(Exception ex, string userFriendlyMessage, bool isCritical = false)
+        public void HandleError(Exception ex, string userFriendlyMessage, bool isCritical = false)
         {
             if (ex == null)
                 throw new ArgumentNullException(nameof(ex));
@@ -71,7 +71,7 @@ namespace AzAgroPOS.BLL.Services
                 throw new ArgumentException("User message cannot be empty", nameof(userFriendlyMessage));
 
             // Log the error
-            LogError(ex, isCritical);
+            LogErrorInternal(ex, isCritical);
 
             // Show user-friendly message
             ShowErrorMessage(userFriendlyMessage, ex, _userContext.IsAdmin);
@@ -108,51 +108,74 @@ namespace AzAgroPOS.BLL.Services
             return message;
         }
 
-        /// <summary>
-        /// Shows validation error message
-        /// </summary>
-        public void ShowValidationErrorInstance(string message)
+        public void LogError(Exception ex, string message = "")
         {
-            if (string.IsNullOrWhiteSpace(message))
-                throw new ArgumentException("Message cannot be empty", nameof(message));
-
-            MessageBox.Show(message,
-                "Doğrulama Xətası",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Warning);
+            try
+            {
+                var logMessage = BuildLogMessage(ex, false);
+                if (!string.IsNullOrEmpty(message))
+                    logMessage = $"{message}: {logMessage}";
+                
+                _logger.LogError(logMessage);
+            }
+            catch (Exception logEx)
+            {
+                // Fallback logging
+                System.Diagnostics.Debug.WriteLine($"Logging failed: {logEx.Message}");
+            }
         }
 
-        /// <summary>
-        /// Shows success message
-        /// </summary>
-        public void ShowSuccessInstance(string message)
+        public void LogWarning(string message)
         {
-            if (string.IsNullOrWhiteSpace(message))
-                throw new ArgumentException("Message cannot be empty", nameof(message));
-
-            MessageBox.Show(message,
-                "Uğur",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
+            try
+            {
+                _logger.LogWarning(message);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Warning logging failed: {ex.Message}");
+            }
         }
 
-        /// <summary>
-        /// Shows confirmation dialog
-        /// </summary>
-        public bool ShowConfirmationInstance(string message, string title = "Təsdiq")
+        public void LogInfo(string message)
+        {
+            try
+            {
+                _logger.LogInformation(message);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Info logging failed: {ex.Message}");
+            }
+        }
+
+        public void ShowUserMessage(string message, bool isError = false)
         {
             if (string.IsNullOrWhiteSpace(message))
                 throw new ArgumentException("Message cannot be empty", nameof(message));
 
-            return MessageBox.Show(message,
-                title,
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question) == DialogResult.Yes;
+            var icon = isError ? MessageBoxIcon.Error : MessageBoxIcon.Information;
+            var title = isError ? "Xəta" : "Məlumat";
+            
+            MessageBox.Show(message, title, MessageBoxButtons.OK, icon);
+        }
+
+        public void ShowCriticalError(string message)
+        {
+            if (string.IsNullOrWhiteSpace(message))
+                throw new ArgumentException("Message cannot be empty", nameof(message));
+
+            MessageBox.Show(message, "Kritik Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        public string GetUserFriendlyMessage(Exception ex)
+        {
+            return SanitizeErrorMessage(ex?.Message ?? "Naməlum xəta baş verdi.");
         }
 
         #region Private Methods
 
-        private void LogError(Exception ex, bool isCritical)
+        private void LogErrorInternal(Exception ex, bool isCritical)
         {
             try
             {
@@ -230,14 +253,5 @@ namespace AzAgroPOS.BLL.Services
         }
 
         #endregion
-    }
-
-    public interface IErrorHandlingService
-    {
-        void HandleErrorInstance(Exception ex, string userFriendlyMessage, bool isCritical = false);
-        string SanitizeErrorMessage(string message);
-        void ShowValidationErrorInstance(string message);
-        void ShowSuccessInstance(string message);
-        bool ShowConfirmationInstance(string message, string title = "Təsdiq");
     }
 }

@@ -114,9 +114,14 @@ namespace AzAgroPOS.DAL.Repositories
             }
         }
 
-        public IEnumerable<object> GetAll()
+        public IEnumerable<Istifadeci> GetAll()
         {
-            throw new NotImplementedException();
+            using (var context = new AzAgroDbContext())
+            {
+                return context.Istifadeciler
+                    .Include(i => i.Rol)
+                    .ToList();
+            }
         }
 
         //public async Task<Istifadeci> GetByRememberMeTokenAsync(string token, bool includeDetails = true)

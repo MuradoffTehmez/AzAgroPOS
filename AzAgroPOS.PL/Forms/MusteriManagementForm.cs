@@ -130,7 +130,7 @@ namespace AzAgroPOS.PL.Forms
             }
             catch (Exception ex)
             {
-                ErrorHandlingService.HandleError(ex, "Müştəri məlumatları yüklənərkən xəta baş verdi.");
+                ErrorHandlingService.HandleErrorStatic(ex, "Müştəri məlumatları yüklənərkən xəta baş verdi.");
             }
             finally
             {
@@ -157,7 +157,7 @@ namespace AzAgroPOS.PL.Forms
             }
             catch (Exception ex)
             {
-                ErrorHandlingService.HandleError(ex, "Müştəri qrupları yüklənərkən xəta baş verdi.");
+                ErrorHandlingService.HandleErrorStatic(ex, "Müştəri qrupları yüklənərkən xəta baş verdi.");
             }
         }
 
@@ -220,7 +220,7 @@ namespace AzAgroPOS.PL.Forms
             }
             catch (Exception ex)
             {
-                ErrorHandlingService.HandleError(ex, "Müştəri əlavə edilərkən xəta baş verdi.");
+                ErrorHandlingService.HandleErrorStatic(ex, "Müştəri əlavə edilərkən xəta baş verdi.");
             }
         }
 
@@ -244,7 +244,7 @@ namespace AzAgroPOS.PL.Forms
             }
             catch (Exception ex)
             {
-                ErrorHandlingService.HandleError(ex, "Müştəri düzəldilməsi zamanı xəta baş verdi.");
+                ErrorHandlingService.HandleErrorStatic(ex, "Müştəri düzəldilməsi zamanı xəta baş verdi.");
             }
         }
 
@@ -277,7 +277,7 @@ namespace AzAgroPOS.PL.Forms
             }
             catch (Exception ex)
             {
-                ErrorHandlingService.HandleError(ex, "Müştəri silinərkən xəta baş verdi.");
+                ErrorHandlingService.HandleErrorStatic(ex, "Müştəri silinərkən xəta baş verdi.");
             }
         }
 
@@ -297,7 +297,7 @@ namespace AzAgroPOS.PL.Forms
             }
             catch (Exception ex)
             {
-                ErrorHandlingService.HandleError(ex, "Müştəri detalları göstərilərkən xəta baş verdi.");
+                ErrorHandlingService.HandleErrorStatic(ex, "Müştəri detalları göstərilərkən xəta baş verdi.");
             }
         }
 
@@ -314,7 +314,7 @@ namespace AzAgroPOS.PL.Forms
             }
             catch (Exception ex)
             {
-                ErrorHandlingService.HandleError(ex, "Müştəri qrupları idarə edilərkən xəta baş verdi.");
+                ErrorHandlingService.HandleErrorStatic(ex, "Müştəri qrupları idarə edilərkən xəta baş verdi.");
             }
         }
 

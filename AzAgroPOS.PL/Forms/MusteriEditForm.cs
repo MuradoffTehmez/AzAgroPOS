@@ -78,7 +78,7 @@ namespace AzAgroPOS.PL.Forms
             }
             catch (Exception ex)
             {
-                ErrorHandlingService.HandleError(ex, "Müştəri yenilənərkən xəta baş verdi.");
+                ErrorHandlingService.HandleErrorStatic(ex, "Müştəri yenilənərkən xəta baş verdi.");
             }
         }
 

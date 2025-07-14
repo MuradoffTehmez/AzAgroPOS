@@ -38,7 +38,7 @@ namespace AzAgroPOS.PL.Forms
             }
             catch (Exception ex)
             {
-                ErrorHandlingService.HandleError(ex, "Form açılarkən xəta baş verdi.");
+                ErrorHandlingService.HandleErrorStatic(ex, "Form açılarkən xəta baş verdi.");
                 this.Close();
             }
         }
@@ -129,7 +129,7 @@ namespace AzAgroPOS.PL.Forms
             }
             catch (Exception ex)
             {
-                ErrorHandlingService.HandleError(ex, "Borc məlumatları yüklənərkən xəta baş verdi.");
+                ErrorHandlingService.HandleErrorStatic(ex, "Borc məlumatları yüklənərkən xəta baş verdi.");
             }
         }
 
@@ -177,7 +177,7 @@ namespace AzAgroPOS.PL.Forms
             }
             catch (Exception ex)
             {
-                ErrorHandlingService.HandleError(ex, "Ödəniş tarixçəsi yüklənərkən xəta baş verdi.");
+                ErrorHandlingService.HandleErrorStatic(ex, "Ödəniş tarixçəsi yüklənərkən xəta baş verdi.");
             }
         }
 
@@ -207,7 +207,7 @@ namespace AzAgroPOS.PL.Forms
             }
             catch (Exception ex)
             {
-                ErrorHandlingService.HandleError(ex, "Ödəniş əlavə edilərkən xəta baş verdi.");
+                ErrorHandlingService.HandleErrorStatic(ex, "Ödəniş əlavə edilərkən xəta baş verdi.");
             }
         }
 
@@ -236,7 +236,7 @@ namespace AzAgroPOS.PL.Forms
             }
             catch (Exception ex)
             {
-                ErrorHandlingService.HandleError(ex, "Borc düzəldilməsi zamanı xəta baş verdi.");
+                ErrorHandlingService.HandleErrorStatic(ex, "Borc düzəldilməsi zamanı xəta baş verdi.");
             }
         }
 
@@ -250,7 +250,7 @@ namespace AzAgroPOS.PL.Forms
             }
             catch (Exception ex)
             {
-                ErrorHandlingService.HandleError(ex, "Hesabat yaradılarkən xəta baş verdi.");
+                ErrorHandlingService.HandleErrorStatic(ex, "Hesabat yaradılarkən xəta baş verdi.");
             }
         }
 
