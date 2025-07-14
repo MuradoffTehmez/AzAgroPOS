@@ -6,13 +6,13 @@ using AzAgroPOS.Entities.Domain;
 
 namespace AzAgroPOS.DAL.Repositories
 {
-    public class AnbarRepository
+    public class AnbarRepository : IDisposable
     {
         private readonly AzAgroDbContext _context;
 
-        public AnbarRepository()
+        public AnbarRepository(AzAgroDbContext context)
         {
-            _context = new AzAgroDbContext();
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public int Add(Anbar anbar)

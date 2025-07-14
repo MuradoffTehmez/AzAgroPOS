@@ -6,13 +6,13 @@ using System.Linq;
 
 namespace AzAgroPOS.DAL.Repositories
 {
-    public class TamirMerheleRepository
+    public class TamirMerheleRepository : IDisposable
     {
         private readonly AzAgroDbContext _context;
 
         public TamirMerheleRepository(AzAgroDbContext context)
         {
-            _context = context;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public IQueryable<TamirMerhele> GetAll()
@@ -184,6 +184,10 @@ namespace AzAgroPOS.DAL.Repositories
                     Update(step);
                 }
             }
+        }
+        public void Dispose()
+        {
+            _context?.Dispose();
         }
     }
 }

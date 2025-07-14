@@ -7,17 +7,21 @@ using System.Threading.Tasks;
 
 namespace AzAgroPOS.DAL.Repositories
 {
-    public class RolRepository
+    public class RolRepository : IDisposable
     {
+        private readonly AzAgroDbContext _context;
+
+        public RolRepository(AzAgroDbContext context)
+        {
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+        }
+
         public List<Rol> GetAll()
         {
-            using (var context = new AzAgroDbContext())
-            {
-                return context.Roller
-                    .Include(r => r.Istifadeciler)
-                    .Include(r => r.RolIcazeleri)
-                    .ToList();
-            }
+            return _context.Roller
+                .Include(r => r.Istifadeciler)
+                .Include(r => r.RolIcazeleri)
+                .ToList();
         }
 
         public async Task<List<Rol>> GetAllAsync()
@@ -95,6 +99,10 @@ namespace AzAgroPOS.DAL.Repositories
                 return await context.Roller
                     .AnyAsync(r => r.Ad == ad && (excludeId == null || r.Id != excludeId));
             }
+        }
+        public void Dispose()
+        {
+            _context?.Dispose();
         }
     }
 }

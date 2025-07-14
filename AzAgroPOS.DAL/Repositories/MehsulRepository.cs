@@ -7,18 +7,22 @@ using System.Threading.Tasks;
 
 namespace AzAgroPOS.DAL.Repositories
 {
-    public class MehsulRepository
+    public class MehsulRepository : IDisposable
     {
+        private readonly AzAgroDbContext _context;
+
+        public MehsulRepository(AzAgroDbContext context)
+        {
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+        }
+
         public async Task<List<Mehsul>> GetAllAsync()
         {
-            using (var context = new AzAgroDbContext())
-            {
-                return await context.Mehsullar
-                    .Include(m => m.Kateqoriya)
-                    .Include(m => m.Vahid)
-                    .OrderBy(m => m.Ad)
-                    .ToListAsync();
-            }
+            return await _context.Mehsullar
+                .Include(m => m.Kateqoriya)
+                .Include(m => m.Vahid)
+                .OrderBy(m => m.Ad)
+                .ToListAsync();
         }
 
         public async Task<List<Mehsul>> GetAllActiveAsync()
@@ -266,7 +270,7 @@ namespace AzAgroPOS.DAL.Repositories
 
         public void Dispose()
         {
-            // Bu repozitoriya hər metodda 'using' bloku istifadə etdiyi üçün xüsusi dispose əməliyyatına ehtiyac yoxdur.
+            _context?.Dispose();
         }
     }
 }

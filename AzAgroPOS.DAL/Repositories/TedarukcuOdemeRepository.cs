@@ -6,14 +6,15 @@ using AzAgroPOS.Entities.Domain;
 
 namespace AzAgroPOS.DAL.Repositories
 {
-    public class TedarukcuOdemeRepository
+    public class TedarukcuOdemeRepository : IDisposable
     {
         private readonly AzAgroDbContext _context;
 
-        public TedarukcuOdemeRepository()
+        public TedarukcuOdemeRepository(AzAgroDbContext context)
         {
-            _context = new AzAgroDbContext();
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
+
 
         public int Add(TedarukcuOdeme odeme)
         {

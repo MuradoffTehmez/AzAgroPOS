@@ -6,15 +6,14 @@ using System.Linq;
 
 namespace AzAgroPOS.DAL.Repositories
 {
-    public class BorcOdenisRepository
+    public class BorcOdenisRepository : IDisposable
     {
         private readonly AzAgroDbContext _context;
 
         public BorcOdenisRepository(AzAgroDbContext context)
         {
-            _context = context;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
-
         public IQueryable<BorcOdenis> GetAll()
         {
             return _context.BorcOdenisleri
@@ -142,6 +141,10 @@ namespace AzAgroPOS.DAL.Repositories
                 .Max();
 
             return $"{prefix}{(lastNumber + 1):D4}";
+        }
+        public void Dispose()
+        {
+            _context?.Dispose();
         }
     }
 }

@@ -7,17 +7,21 @@ using System.Threading.Tasks;
 
 namespace AzAgroPOS.DAL.Repositories
 {
-    public class IstifadeciRepository
+    public class IstifadeciRepository : IDisposable
     {
+        private readonly AzAgroDbContext _context;
+
+        public IstifadeciRepository(AzAgroDbContext context)
+        {
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+        }
+
         public Istifadeci GetByEmail(string email)
         {
-            using (var context = new AzAgroDbContext())
-            {
-                return context.Istifadeciler
-                    .Include(i => i.Rol)
-                    .Include(i => i.Tema)
-                    .FirstOrDefault(i => i.Email == email);
-            }
+            return _context.Istifadeciler
+                .Include(i => i.Rol)
+                .Include(i => i.Tema)
+                .FirstOrDefault(i => i.Email == email);
         }
 
         public async Task<Istifadeci> GetByEmailAsync(string email)
@@ -138,5 +142,9 @@ namespace AzAgroPOS.DAL.Repositories
                     .FirstOrDefaultAsync(i => i.RememberMeToken == token);
             }
         }
+        //public void Dispose()
+        //{
+        //    _context?.Dispose();
+        //}
     }
 }

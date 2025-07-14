@@ -6,13 +6,13 @@ using System.Linq;
 
 namespace AzAgroPOS.DAL.Repositories
 {
-    public class TamirIsiRepository
+    public class TamirIsiRepository : IDisposable
     {
         private readonly AzAgroDbContext _context;
 
         public TamirIsiRepository(AzAgroDbContext context)
         {
-            _context = context;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public IQueryable<TamirIsi> GetAll()
@@ -172,6 +172,10 @@ namespace AzAgroPOS.DAL.Repositories
                 .Max();
 
             return $"{prefix}{(lastNumber + 1):D4}";
+        }
+        public void Dispose()
+        {
+            _context?.Dispose();
         }
     }
 }

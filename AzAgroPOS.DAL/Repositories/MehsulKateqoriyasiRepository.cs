@@ -7,18 +7,22 @@ using System.Threading.Tasks;
 
 namespace AzAgroPOS.DAL.Repositories
 {
-    public class MehsulKateqoriyasiRepository
+    public class MehsulKateqoriyasiRepository : IDisposable
     {
+        private readonly AzAgroDbContext _context;
+
+        public MehsulKateqoriyasiRepository(AzAgroDbContext context)
+        {
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+        }
+
         public async Task<List<MehsulKateqoriyasi>> GetAllAsync()
         {
-            using (var context = new AzAgroDbContext())
-            {
-                return await context.MehsulKateqoriyalari
-                    .Include(k => k.UstKateqoriya)
-                    .Include(k => k.AltKateqoriyalar)
-                    .OrderBy(k => k.Ad)
-                    .ToListAsync();
-            }
+            return await _context.MehsulKateqoriyalari
+                .Include(k => k.UstKateqoriya)
+                .Include(k => k.AltKateqoriyalar)
+                .OrderBy(k => k.Ad)
+                .ToListAsync();
         }
 
         public async Task<List<MehsulKateqoriyasi>> GetAllActiveAsync()
@@ -215,6 +219,10 @@ namespace AzAgroPOS.DAL.Repositories
 
                 return statistikalar;
             }
+        }
+        public void Dispose()
+        {
+            _context?.Dispose();
         }
     }
 }

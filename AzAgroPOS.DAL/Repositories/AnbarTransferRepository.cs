@@ -6,13 +6,13 @@ using AzAgroPOS.Entities.Domain;
 
 namespace AzAgroPOS.DAL.Repositories
 {
-    public class AnbarTransferRepository
+    public class AnbarTransferRepository : IDisposable
     {
         private readonly AzAgroDbContext _context;
 
-        public AnbarTransferRepository()
+        public AnbarTransferRepository(AzAgroDbContext context)
         {
-            _context = new AzAgroDbContext();
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public int Add(AnbarTransfer transfer)

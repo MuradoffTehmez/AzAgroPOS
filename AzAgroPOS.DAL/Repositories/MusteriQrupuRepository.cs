@@ -16,6 +16,7 @@ namespace AzAgroPOS.DAL.Repositories
             _context = context ?? new AzAgroDbContext();
         }
 
+
         public IQueryable<MusteriQrupu> GetAll()
         {
             return _context.MusteriQruplari

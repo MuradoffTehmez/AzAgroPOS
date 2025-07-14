@@ -7,20 +7,23 @@ using System.Threading.Tasks;
 
 namespace AzAgroPOS.DAL.Repositories
 {
-    public class VahidRepository
+    public class VahidRepository : IDisposable
     {
-        public async Task<List<Vahid>> GetAllAsync()
+        private readonly AzAgroDbContext _context;
+
+        public VahidRepository(AzAgroDbContext context)
         {
-            using (var context = new AzAgroDbContext())
-            {
-                return await context.Vahidler
-                    .Include(v => v.AnaVahid)
-                    .Include(v => v.AltVahidler)
-                    .OrderBy(v => v.Ad)
-                    .ToListAsync();
-            }
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
+        public async Task<List<Vahid>> GetAllAsync()
+        {
+            return await _context.Vahidler
+                .Include(v => v.AnaVahid)
+                .Include(v => v.AltVahidler)
+                .OrderBy(v => v.Ad)
+                .ToListAsync();
+        }
         public async Task<List<Vahid>> GetAllActiveAsync()
         {
             using (var context = new AzAgroDbContext())
@@ -235,6 +238,11 @@ namespace AzAgroPOS.DAL.Repositories
 
                 return statistikalar;
             }
+        }
+
+        public void Dispose()
+        {
+            _context?.Dispose();
         }
     }
 }

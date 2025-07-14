@@ -6,15 +6,14 @@ using AzAgroPOS.Entities.Domain;
 
 namespace AzAgroPOS.DAL.Repositories
 {
-    public class AnbarHereketRepository
+    public class AnbarHereketRepository : IDisposable
     {
         private readonly AzAgroDbContext _context;
 
-        public AnbarHereketRepository()
+        public AnbarHereketRepository(AzAgroDbContext context)
         {
-            _context = new AzAgroDbContext();
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
-
         public int Add(AnbarHereketi hareket)
         {
             _context.AnbarHereketleri.Add(hareket);

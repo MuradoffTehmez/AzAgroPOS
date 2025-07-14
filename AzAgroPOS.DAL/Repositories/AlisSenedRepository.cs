@@ -6,13 +6,13 @@ using AzAgroPOS.Entities.Domain;
 
 namespace AzAgroPOS.DAL.Repositories
 {
-    public class AlisSenedRepository
+    public class AlisSenedRepository : IDisposable
     {
         private readonly AzAgroDbContext _context;
 
-        public AlisSenedRepository()
+        public AlisSenedRepository(AzAgroDbContext context)
         {
-            _context = new AzAgroDbContext();
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public int Add(AlisSeined seined)
@@ -124,7 +124,7 @@ namespace AzAgroPOS.DAL.Repositories
         {
             return _context.AlisSenedleri
                 .Include(s => s.Tedarukcu)
-                .Where(s => s.Status == "Qəbul Edilmiş" && 
+                .Where(s => s.Status == "Qəbul Edilmiş" &&
                            s.OdemeStatus != "Tam Ödənilmiş")
                 .OrderBy(s => s.SenedTarixi)
                 .ToList();

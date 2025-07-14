@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace AzAgroPOS.DAL.Repositories
 {
-    public class SatisRepository
+    public class SatisRepository : IDisposable
     {
         private readonly AzAgroDbContext _context;
 
-        public SatisRepository()
+        public SatisRepository(AzAgroDbContext context)
         {
-            _context = new AzAgroDbContext();
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public async Task<int> AddAsync(Satis satis)
