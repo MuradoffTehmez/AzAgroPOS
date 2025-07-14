@@ -34,12 +34,28 @@ namespace AzAgroPOS.PL.Forms
         {
             try
             {
+                // Validate input
+                if (string.IsNullOrWhiteSpace(txtAd.Text))
+                {
+                    ErrorHandlingService.ShowValidationError("Ad mütləqdir.");
+                    txtAd.Focus();
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(txtSoyad.Text))
+                {
+                    ErrorHandlingService.ShowValidationError("Soyad mütləqdir.");
+                    txtSoyad.Focus();
+                    return;
+                }
+
                 var musteri = new Musteri
                 {
-                    // TODO: Map form controls to entity properties
-                    Ad = "Test",
-                    Soyad = "Customer",
-                    MusteriKodu = DateTime.Now.Ticks.ToString()
+                    Ad = txtAd.Text.Trim(),
+                    Soyad = txtSoyad.Text.Trim(),
+                    MobilTelefon = txtTelefon.Text.Trim(),
+                    Email = txtEmail.Text.Trim(),
+                    MusteriKodu = GenerateCustomerCode()
                 };
 
                 var result = _musteriService.CreateCustomer(musteri, _currentUser.Id);
@@ -59,6 +75,11 @@ namespace AzAgroPOS.PL.Forms
             {
                 ErrorHandlingService.HandleError(ex, "Müştəri yaradılarkən xəta baş verdi.");
             }
+        }
+
+        private string GenerateCustomerCode()
+        {
+            return "MST" + DateTime.Now.ToString("yyyyMMddHHmmss");
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

@@ -62,7 +62,7 @@ namespace AzAgroPOS.BLL.Services
         /// <param name="ex">Exception that occurred</param>
         /// <param name="userFriendlyMessage">User-friendly message to display</param>
         /// <param name="isCritical">Whether the error is critical</param>
-        public void HandleError(Exception ex, string userFriendlyMessage, bool isCritical = false)
+        public void HandleErrorInstance(Exception ex, string userFriendlyMessage, bool isCritical = false)
         {
             if (ex == null)
                 throw new ArgumentNullException(nameof(ex));
@@ -111,7 +111,7 @@ namespace AzAgroPOS.BLL.Services
         /// <summary>
         /// Shows validation error message
         /// </summary>
-        public void ShowValidationError(string message)
+        public void ShowValidationErrorInstance(string message)
         {
             if (string.IsNullOrWhiteSpace(message))
                 throw new ArgumentException("Message cannot be empty", nameof(message));
@@ -125,7 +125,7 @@ namespace AzAgroPOS.BLL.Services
         /// <summary>
         /// Shows success message
         /// </summary>
-        public void ShowSuccess(string message)
+        public void ShowSuccessInstance(string message)
         {
             if (string.IsNullOrWhiteSpace(message))
                 throw new ArgumentException("Message cannot be empty", nameof(message));
@@ -139,7 +139,7 @@ namespace AzAgroPOS.BLL.Services
         /// <summary>
         /// Shows confirmation dialog
         /// </summary>
-        public bool ShowConfirmation(string message, string title = "Təsdiq")
+        public bool ShowConfirmationInstance(string message, string title = "Təsdiq")
         {
             if (string.IsNullOrWhiteSpace(message))
                 throw new ArgumentException("Message cannot be empty", nameof(message));
@@ -234,10 +234,10 @@ namespace AzAgroPOS.BLL.Services
 
     public interface IErrorHandlingService
     {
-        void HandleError(Exception ex, string userFriendlyMessage, bool isCritical = false);
+        void HandleErrorInstance(Exception ex, string userFriendlyMessage, bool isCritical = false);
         string SanitizeErrorMessage(string message);
-        void ShowValidationError(string message);
-        void ShowSuccess(string message);
-        bool ShowConfirmation(string message, string title = "Təsdiq");
+        void ShowValidationErrorInstance(string message);
+        void ShowSuccessInstance(string message);
+        bool ShowConfirmationInstance(string message, string title = "Təsdiq");
     }
 }

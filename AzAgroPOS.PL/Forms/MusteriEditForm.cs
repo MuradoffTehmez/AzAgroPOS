@@ -11,12 +11,15 @@ namespace AzAgroPOS.PL.Forms
         private readonly Istifadeci _currentUser;
         private readonly Musteri _musteri;
 
-        public MusteriEditForm(Musteri musteri, Istifadeci currentUser)
+        public MusteriEditForm(int musteriId, Istifadeci currentUser)
         {
             InitializeComponent();
-            _musteri = musteri ?? throw new ArgumentNullException(nameof(musteri));
             _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
             _musteriService = new MusteriService();
+            
+            _musteri = _musteriService.GetCustomerById(musteriId);
+            if (_musteri == null)
+                throw new ArgumentException("Müştəri tapılmadı", nameof(musteriId));
             
             SetupForm();
             LoadCustomerData();
@@ -29,14 +32,38 @@ namespace AzAgroPOS.PL.Forms
 
         private void LoadCustomerData()
         {
-            // TODO: Load customer data into form controls
+            txtMusteriKodu.Text = _musteri.MusteriKodu;
+            txtAd.Text = _musteri.Ad;
+            txtSoyad.Text = _musteri.Soyad;
+            txtTelefon.Text = _musteri.MobilTelefon;
+            txtEmail.Text = _musteri.Email;
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
             try
             {
-                // TODO: Map form controls to entity properties
+                // Validate input
+                if (string.IsNullOrWhiteSpace(txtAd.Text))
+                {
+                    ErrorHandlingService.ShowValidationError("Ad mütləqdir.");
+                    txtAd.Focus();
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(txtSoyad.Text))
+                {
+                    ErrorHandlingService.ShowValidationError("Soyad mütləqdir.");
+                    txtSoyad.Focus();
+                    return;
+                }
+
+                // Update customer data
+                _musteri.Ad = txtAd.Text.Trim();
+                _musteri.Soyad = txtSoyad.Text.Trim();
+                _musteri.MobilTelefon = txtTelefon.Text.Trim();
+                _musteri.Email = txtEmail.Text.Trim();
+                
                 var result = _musteriService.UpdateCustomer(_musteri, _currentUser.Id);
                 
                 if (result.Success)

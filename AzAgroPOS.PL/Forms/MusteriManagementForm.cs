@@ -85,7 +85,7 @@ namespace AzAgroPOS.PL.Forms
                     CariBorc = m.CariBorc.ToString("C"),
                     KreditLimiti = m.KreditLimitiFormatli,
                     Seviyye = m.MusteriSeviyyesi,
-                    SonZiyaret = m.SonZiyaretTarixi?.ToString("dd.MM.yyyy") ?? "Heç vaxt",
+                    SonZiyaret = m.SonZiyaretTarixi.HasValue ? m.SonZiyaretTarixi.Value.ToString("dd.MM.yyyy") : "Heç vaxt",
                     m.Status
                 }).ToList();
 
@@ -292,7 +292,7 @@ namespace AzAgroPOS.PL.Forms
                 }
 
                 var customerId = (int)dgvCustomers.SelectedRows[0].Cells["Id"].Value;
-                var detailsForm = new MusteriDetailsForm(customerId, _currentUser);
+                var detailsForm = new MusteriDetailsForm(customerId);
                 detailsForm.ShowDialog();
             }
             catch (Exception ex)

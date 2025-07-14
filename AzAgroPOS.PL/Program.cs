@@ -42,10 +42,10 @@ namespace AzAgroPOS.PL
         
         private static ILogger<DatabaseInitializationService> CreateLogger()
         {
-            // Create a simple console logger for database initialization
+            // Create a simple logger for database initialization
             var loggerFactory = LoggerFactory.Create(builder =>
             {
-                builder.AddConsole();
+                builder.AddDebug();
             });
             
             return loggerFactory.CreateLogger<DatabaseInitializationService>();
