@@ -1,6 +1,6 @@
 using AzAgroPOS.BLL.Services;
-using AzAgroPOS.DAL;
 using AzAgroPOS.Entities.Domain;
+using AzAgroPOS.Entities.Constants;
 using System;
 using System.Drawing;
 using System.Linq;
@@ -12,20 +12,35 @@ namespace AzAgroPOS.PL.Forms
     {
         private readonly int _debtId;
         private readonly Istifadeci _currentUser;
-        private readonly AzAgroDbContext _context;
         private readonly BorcService _borcService;
         private MusteriBorc _debt;
 
         public BorcDetailsForm(int debtId, Istifadeci currentUser)
         {
-            InitializeComponent();
-            _debtId = debtId;
-            _currentUser = currentUser;
-            _context = new AzAgroDbContext();
-            _borcService = new BorcService(_context, new AuditLogService());
-            SetupForm();
-            LoadDebtDetails();
-            LoadPaymentHistory();
+            try
+            {
+                InitializeComponent();
+                
+                if (debtId <= 0)
+                    throw new ArgumentException("Yanlış borc ID-si");
+                if (currentUser == null)
+                    throw new ArgumentNullException(nameof(currentUser), "İstifadəçi məlumatı tələb olunur");
+                
+                _debtId = debtId;
+                _currentUser = currentUser;
+                _borcService = new BorcService();
+                
+                SetupForm();
+                LoadDebtDetails();
+                
+                // Load payment history asynchronously to improve form loading speed
+                this.Load += (s, e) => LoadPaymentHistory();
+            }
+            catch (Exception ex)
+            {
+                ErrorHandlingService.HandleError(ex, "Form açılarkən xəta baş verdi.");
+                this.Close();
+            }
         }
 
         private void SetupForm()
@@ -61,16 +76,15 @@ namespace AzAgroPOS.PL.Forms
                 _debt = _borcService.GetDebtById(_debtId);
                 if (_debt == null)
                 {
-                    MessageBox.Show("Borc məlumatı tapılmadı.", "Xəta", 
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    ErrorHandlingService.ShowValidationError("Borc məlumatı tapılmadı.");
                     this.Close();
                     return;
                 }
 
-                // Load basic debt information
-                lblBorcNomresi.Text = _debt.BorcNomresiFormatli;
+                // Load basic debt information with null checks
+                lblBorcNomresi.Text = _debt.BorcNomresiFormatli ?? $"BORC-{_debt.Id:000000}";
                 lblMusteriAdi.Text = _debt.Musteri?.Ad ?? "Naməlum";
-                lblBorcTipi.Text = _debt.BorcTipi;
+                lblBorcTipi.Text = _debt.BorcTipi ?? "Naməlum";
                 lblBorcMeblegi.Text = _debt.BorcMeblegi.ToString("C");
                 lblOdenilmisMebleg.Text = _debt.OdenilmisMebleg.ToString("C");
                 lblQalanBorc.Text = _debt.QalanBorc.ToString("C");
@@ -115,8 +129,7 @@ namespace AzAgroPOS.PL.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Borc məlumatları yüklənərkən xəta: {ex.Message}", "Xəta", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ErrorHandlingService.HandleError(ex, "Borc məlumatları yüklənərkən xəta baş verdi.");
             }
         }
 
@@ -124,12 +137,20 @@ namespace AzAgroPOS.PL.Forms
         {
             try
             {
-                var payments = _borcService.GetPaymentHistory(_debtId).Select(p => new
+                var paymentHistory = _borcService.GetPaymentHistory(_debtId);
+                if (paymentHistory == null)
+                {
+                    dgvPayments.DataSource = null;
+                    lblTotalPayments.Text = "0";
+                    return;
+                }
+
+                var payments = paymentHistory.Select(p => new
                 {
                     p.Id,
                     OdenisTarixi = p.OdenisTarixi.ToString("dd.MM.yyyy"),
                     OdenisMeblegi = p.OdenisMeblegi.ToString("C"),
-                    OdenisTipi = p.OdenisTipi,
+                    OdenisTipi = p.OdenisTipi ?? "Naməlum",
                     FaizOdenisi = p.FaizOdenisi.ToString("C"),
                     EsasBorcOdenisi = p.EsasBorcOdenisi.ToString("C"),
                     KomissiyaMeblegi = p.KomissiyaMeblegi.ToString("C"),
@@ -156,41 +177,66 @@ namespace AzAgroPOS.PL.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ödəniş tarixçəsi yüklənərkən xəta: {ex.Message}", "Xəta", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ErrorHandlingService.HandleError(ex, "Ödəniş tarixçəsi yüklənərkən xəta baş verdi.");
             }
         }
 
         private void btnAddPayment_Click(object sender, EventArgs e)
         {
-            if (_debt.QalanBorc <= 0)
+            try
             {
-                MessageBox.Show("Bu borc artıq tam ödənilib.", "Məlumat", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
+                if (_debt == null)
+                {
+                    ErrorHandlingService.ShowValidationError("Borc məlumatı yüklənməyib.");
+                    return;
+                }
 
-            var paymentForm = new BorcPaymentForm(_debtId, _currentUser);
-            if (paymentForm.ShowDialog() == DialogResult.OK)
+                if (_debt.QalanBorc <= 0)
+                {
+                    ErrorHandlingService.ShowValidationError("Bu borc artıq tam ödənilib.");
+                    return;
+                }
+
+                var paymentForm = new BorcPaymentForm(_debtId, _currentUser);
+                if (paymentForm.ShowDialog() == DialogResult.OK)
+                {
+                    LoadDebtDetails();
+                    LoadPaymentHistory();
+                    ErrorHandlingService.ShowSuccess("Ödəniş uğurla əlavə edildi.");
+                }
+            }
+            catch (Exception ex)
             {
-                LoadDebtDetails();
-                LoadPaymentHistory();
+                ErrorHandlingService.HandleError(ex, "Ödəniş əlavə edilərkən xəta baş verdi.");
             }
         }
 
         private void btnEditDebt_Click(object sender, EventArgs e)
         {
-            if (_currentUser.Role != "Administrator" && _currentUser.Role != "Manager")
+            try
             {
-                MessageBox.Show("Bu əməliyyat üçün icazəniz yoxdur.", "İcazə rədd edildi", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
+                if (_currentUser.Role != SystemConstants.Roles.Administrator && _currentUser.Role != SystemConstants.Roles.Manager)
+                {
+                    ErrorHandlingService.ShowValidationError("Bu əməliyyat üçün icazəniz yoxdur.");
+                    return;
+                }
 
-            var editForm = new BorcEditForm(_debtId, _currentUser);
-            if (editForm.ShowDialog() == DialogResult.OK)
+                if (_debt == null)
+                {
+                    ErrorHandlingService.ShowValidationError("Borc məlumatı yüklənməyib.");
+                    return;
+                }
+
+                var editForm = new BorcEditForm(_debtId, _currentUser);
+                if (editForm.ShowDialog() == DialogResult.OK)
+                {
+                    LoadDebtDetails();
+                    ErrorHandlingService.ShowSuccess("Borc məlumatları uğurla yeniləndi.");
+                }
+            }
+            catch (Exception ex)
             {
-                LoadDebtDetails();
+                ErrorHandlingService.HandleError(ex, "Borc düzəldilməsi zamanı xəta baş verdi.");
             }
         }
 
@@ -204,8 +250,7 @@ namespace AzAgroPOS.PL.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Hesabat yaradılarkən xəta: {ex.Message}", "Xəta", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ErrorHandlingService.HandleError(ex, "Hesabat yaradılarkən xəta baş verdi.");
             }
         }
 
@@ -214,14 +259,14 @@ namespace AzAgroPOS.PL.Forms
             this.Close();
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                _context?.Dispose();
-                components?.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+        //protected override void Dispose(bool disposing)
+        //{
+        //    if (disposing)
+        //    {
+        //        _borcService?.Dispose();
+        //        components?.Dispose();
+        //    }
+        //    base.Dispose(disposing);
+        //}
     }
 }
