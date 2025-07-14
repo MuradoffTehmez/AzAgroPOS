@@ -198,6 +198,24 @@ namespace AzAgroPOS.DAL.Repositories
                 .OrderByDescending(t => t.QebulTarixi);
         }
 
+        public IEnumerable<TamirIsi> GetByTechnician(int technicianId, DateTime? startDate = null, DateTime? endDate = null)
+        {
+            var query = _context.TamirIsleri
+                .Include(t => t.Musteri)
+                .Include(t => t.QebulEdenIstifadeci)
+                .Include(t => t.TeyinEdilenIstifadeci)
+                .Include(t => t.TehvilEdenIstifadeci)
+                .Where(t => t.TeyinEdilenIstifadeciId == technicianId || t.QebulEdenIstifadeciId == technicianId);
+
+            if (startDate.HasValue)
+                query = query.Where(t => t.QebulTarixi >= startDate.Value);
+
+            if (endDate.HasValue)
+                query = query.Where(t => t.QebulTarixi <= endDate.Value);
+
+            return query.OrderByDescending(t => t.QebulTarixi);
+        }
+
         public void Dispose()
         {
             _context?.Dispose();

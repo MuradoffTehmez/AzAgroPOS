@@ -132,9 +132,176 @@ namespace AzAgroPOS.PL.Forms
 
         private void btnReports_Click(object sender, EventArgs e)
         {
-            // Show Reports submenu or directly open Sales Report
-            var salesReportForm = new SalesReportForm();
-            salesReportForm.ShowDialog();
+            // Show Reports submenu
+            ShowReportsMenu();
+        }
+
+        private void ShowReportsMenu()
+        {
+            var reportsMenu = new ContextMenuStrip();
+            
+            // Sales Reports
+            var salesReportItem = new ToolStripMenuItem("📊 Satış Hesabatları");
+            salesReportItem.Click += (s, e) => {
+                var salesReportForm = new SalesReportForm();
+                salesReportForm.ShowDialog();
+            };
+            
+            // Debt Analysis
+            var debtAnalysisItem = new ToolStripMenuItem("💰 Borc Analizi");
+            debtAnalysisItem.Click += (s, e) => {
+                var debtAnalysisForm = new DebtAnalysisForm();
+                debtAnalysisForm.ShowDialog();
+            };
+            
+            // Repair Analytics
+            var repairAnalyticsItem = new ToolStripMenuItem("🔧 Təmir Analitikası");
+            repairAnalyticsItem.Click += (s, e) => {
+                var repairAnalyticsForm = new RepairAnalyticsForm();
+                repairAnalyticsForm.ShowDialog();
+            };
+            
+            // Customer Analytics
+            var customerAnalyticsItem = new ToolStripMenuItem("👥 Müştəri Analitikası");
+            customerAnalyticsItem.Click += (s, e) => {
+                ShowCustomerAnalyticsMenu();
+            };
+            
+            // Employee Performance
+            var employeePerformanceItem = new ToolStripMenuItem("⭐ İşçi Performansı");
+            employeePerformanceItem.Click += (s, e) => {
+                ShowEmployeePerformanceMenu();
+            };
+            
+            // Add separator
+            var separator = new ToolStripSeparator();
+            
+            // Export Options
+            var exportItem = new ToolStripMenuItem("📤 Toplu İxrac");
+            exportItem.Click += (s, e) => {
+                ShowExportOptionsDialog();
+            };
+            
+            reportsMenu.Items.AddRange(new ToolStripItem[] {
+                salesReportItem,
+                debtAnalysisItem, 
+                repairAnalyticsItem,
+                customerAnalyticsItem,
+                employeePerformanceItem,
+                separator,
+                exportItem
+            });
+            
+            // Show menu at button location
+            var buttonLocation = btnReports.PointToScreen(new System.Drawing.Point(0, btnReports.Height));
+            reportsMenu.Show(buttonLocation);
+        }
+
+        private void ShowCustomerAnalyticsMenu()
+        {
+            var customerMenu = new ContextMenuStrip();
+            
+            var summaryItem = new ToolStripMenuItem("Müştəri Xülasəsi");
+            summaryItem.Click += (s, e) => {
+                MessageBox.Show("Müştəri xülasəsi formu açılacaq.", "Məlumat", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            };
+            
+            var individualItem = new ToolStripMenuItem("Fərdi Müştəri Analizi");
+            individualItem.Click += (s, e) => {
+                MessageBox.Show("Fərdi müştəri analizi formu açılacaq.", "Məlumat", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            };
+            
+            customerMenu.Items.AddRange(new ToolStripItem[] { summaryItem, individualItem });
+            customerMenu.Show(Cursor.Position);
+        }
+
+        private void ShowEmployeePerformanceMenu()
+        {
+            var employeeMenu = new ContextMenuStrip();
+            
+            var summaryItem = new ToolStripMenuItem("İşçi Xülasəsi");
+            summaryItem.Click += (s, e) => {
+                MessageBox.Show("İşçi xülasəsi formu açılacaq.", "Məlumat", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            };
+            
+            var individualItem = new ToolStripMenuItem("Fərdi Performans");
+            individualItem.Click += (s, e) => {
+                MessageBox.Show("Fərdi performans formu açılacaq.", "Məlumat", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            };
+            
+            var shiftsItem = new ToolStripMenuItem("Növbə İdarəetməsi");
+            shiftsItem.Click += (s, e) => {
+                MessageBox.Show("Növbə idarəetmə formu açılacaq.", "Məlumat", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            };
+            
+            employeeMenu.Items.AddRange(new ToolStripItem[] { summaryItem, individualItem, shiftsItem });
+            employeeMenu.Show(Cursor.Position);
+        }
+
+        private void ShowExportOptionsDialog()
+        {
+            var exportDialog = new Form
+            {
+                Text = "Toplu İxrac Seçimləri",
+                Size = new System.Drawing.Size(400, 300),
+                StartPosition = FormStartPosition.CenterParent,
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                MaximizeBox = false,
+                MinimizeBox = false
+            };
+
+            var label = new Label
+            {
+                Text = "İxrac ediləcək hesabat növlərini seçin:",
+                Location = new System.Drawing.Point(20, 20),
+                Size = new System.Drawing.Size(350, 20)
+            };
+
+            var salesCheck = new CheckBox { Text = "Satış Hesabatları", Location = new System.Drawing.Point(20, 50), Checked = true };
+            var debtCheck = new CheckBox { Text = "Borc Analizi", Location = new System.Drawing.Point(20, 80), Checked = true };
+            var repairCheck = new CheckBox { Text = "Təmir Analitikası", Location = new System.Drawing.Point(20, 110), Checked = false };
+            var customerCheck = new CheckBox { Text = "Müştəri Analitikası", Location = new System.Drawing.Point(20, 140), Checked = false };
+
+            var exportButton = new Button
+            {
+                Text = "İxrac Et",
+                Location = new System.Drawing.Point(200, 200),
+                Size = new System.Drawing.Size(80, 30)
+            };
+
+            var cancelButton = new Button
+            {
+                Text = "Ləğv Et",
+                Location = new System.Drawing.Point(290, 200),
+                Size = new System.Drawing.Size(80, 30)
+            };
+
+            exportButton.Click += (s, e) => {
+                var selectedReports = new List<string>();
+                if (salesCheck.Checked) selectedReports.Add("Satış");
+                if (debtCheck.Checked) selectedReports.Add("Borc");
+                if (repairCheck.Checked) selectedReports.Add("Təmir");
+                if (customerCheck.Checked) selectedReports.Add("Müştəri");
+
+                if (selectedReports.Any())
+                {
+                    MessageBox.Show($"Seçilən hesabatlar ixrac ediləcək: {string.Join(", ", selectedReports)}", 
+                        "İxrac", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    exportDialog.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Ən azı bir hesabat növü seçin.", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            };
+
+            cancelButton.Click += (s, e) => exportDialog.Close();
+
+            exportDialog.Controls.AddRange(new Control[] { 
+                label, salesCheck, debtCheck, repairCheck, customerCheck, exportButton, cancelButton 
+            });
+
+            exportDialog.ShowDialog(this);
         }
 
         private void btnSettings_Click(object sender, EventArgs e)

@@ -48,8 +48,8 @@ namespace AzAgroPOS.BLL.Services
                     EndDate = endDate,
                     TotalSales = sales.Count(),
                     TotalAmount = sales.Sum(s => s.UmumiMebleg),
-                    TotalDiscount = sales.Sum(s => s.Endirim ?? 0),
-                    NetAmount = sales.Sum(s => s.UmumiMebleg - (s.Endirim ?? 0)),
+                    TotalDiscount = sales.Sum(s => s.EndirimMeblegi),
+                    NetAmount = sales.Sum(s => s.UmumiMebleg - s.EndirimMeblegi),
                     TopProducts = GetTopSellingProducts(sales),
                     SalesByHour = GetSalesByHour(sales),
                     ReportType = "Günlük",
@@ -81,8 +81,8 @@ namespace AzAgroPOS.BLL.Services
                     EndDate = endDate,
                     TotalSales = sales.Count(),
                     TotalAmount = sales.Sum(s => s.UmumiMebleg),
-                    TotalDiscount = sales.Sum(s => s.Endirim ?? 0),
-                    NetAmount = sales.Sum(s => s.UmumiMebleg - (s.Endirim ?? 0)),
+                    TotalDiscount = sales.Sum(s => s.EndirimMeblegi),
+                    NetAmount = sales.Sum(s => s.UmumiMebleg - s.EndirimMeblegi),
                     TopProducts = GetTopSellingProducts(sales),
                     SalesByDay = GetSalesByDay(sales),
                     ReportType = "Aylıq",
@@ -117,13 +117,13 @@ namespace AzAgroPOS.BLL.Services
                     if (mehsul != null)
                     {
                         var totalQuantity = group.Sum(sd => sd.Miqdar);
-                        var totalAmount = group.Sum(sd => sd.Miqdar * sd.SatisQiymeti);
+                        var totalAmount = group.Sum(sd => sd.Miqdar * sd.VahidQiymeti);
 
                         productSales.Add(new ProductSalesDto
                         {
                             ProductId = mehsul.Id,
                             ProductName = mehsul.Ad,
-                            ProductCode = mehsul.Kodu,
+                            ProductCode = mehsul.SKU,
                             TotalQuantity = totalQuantity,
                             TotalAmount = totalAmount,
                             AveragePrice = totalAmount / totalQuantity,
@@ -156,7 +156,7 @@ namespace AzAgroPOS.BLL.Services
                 var customers = _musteriRepository.GetAll();
 
                 var totalDebt = allDebts.Sum(d => d.BorcMeblegi);
-                var totalPaid = allDebts.Sum(d => d.OdenenMebleg ?? 0);
+                var totalPaid = allDebts.Sum(d => d.OdenilmisMebleg);
                 var remainingDebt = totalDebt - totalPaid;
 
                 var customerDebts = allDebts
@@ -167,8 +167,8 @@ namespace AzAgroPOS.BLL.Services
                         CustomerName = customers.FirstOrDefault(c => c.Id == g.Key)?.Ad + " " + 
                                      customers.FirstOrDefault(c => c.Id == g.Key)?.Soyad,
                         TotalDebt = g.Sum(d => d.BorcMeblegi),
-                        TotalPaid = g.Sum(d => d.OdenenMebleg ?? 0),
-                        RemainingDebt = g.Sum(d => d.BorcMeblegi) - g.Sum(d => d.OdenenMebleg ?? 0),
+                        TotalPaid = g.Sum(d => d.OdenilmisMebleg),
+                        RemainingDebt = g.Sum(d => d.BorcMeblegi) - g.Sum(d => d.OdenilmisMebleg),
                         LastPaymentDate = g.Max(d => d.SonOdemeTarixi),
                         DebtCount = g.Count()
                     })
@@ -207,21 +207,21 @@ namespace AzAgroPOS.BLL.Services
                 var repairs = _tamirRepository.GetRepairsByDateRange(startDate, endDate);
                 
                 var totalRepairs = repairs.Count();
-                var completedRepairs = repairs.Count(r => r.Veziyyeti == "Tamamlandı");
-                var pendingRepairs = repairs.Count(r => r.Veziyyeti == "Gözləyir");
-                var inProgressRepairs = repairs.Count(r => r.Veziyyeti == "Davam edir");
+                var completedRepairs = repairs.Count(r => r.Status == "Hazır");
+                var pendingRepairs = repairs.Count(r => r.Status == "Gözləyir");
+                var inProgressRepairs = repairs.Count(r => r.Status == "İşlənir");
 
-                var totalCost = repairs.Sum(r => r.TamirMebləgi ?? 0);
+                var totalCost = repairs.Sum(r => r.SonQiymet);
                 var averageCost = totalRepairs > 0 ? totalCost / totalRepairs : 0;
 
                 var repairsByType = repairs
-                    .GroupBy(r => r.TamirNovu)
+                    .GroupBy(r => r.Status)
                     .Select(g => new RepairTypeDto
                     {
                         RepairType = g.Key,
                         Count = g.Count(),
-                        TotalCost = g.Sum(r => r.TamirMebləgi ?? 0),
-                        AverageCost = g.Average(r => r.TamirMebləgi ?? 0)
+                        TotalCost = g.Sum(r => r.SonQiymet),
+                        AverageCost = g.Average(r => r.SonQiymet)
                     })
                     .OrderByDescending(rt => rt.Count)
                     .ToList();
@@ -261,7 +261,7 @@ namespace AzAgroPOS.BLL.Services
                     ProductId = g.Key,
                     ProductName = _mehsulRepository.GetById(g.Key)?.Ad ?? "Naməlum",
                     TotalQuantity = g.Sum(sd => sd.Miqdar),
-                    TotalAmount = g.Sum(sd => sd.Miqdar * sd.SatisQiymeti),
+                    TotalAmount = g.Sum(sd => sd.Miqdar * sd.VahidQiymeti),
                     SalesCount = g.Count()
                 })
                 .OrderByDescending(ps => ps.TotalQuantity)

@@ -35,6 +35,14 @@ namespace AzAgroPOS.DAL.Repositories
             }
         }
 
+        public Istifadeci GetById(int id)
+        {
+            return _context.Istifadeciler
+                .Include(i => i.Rol)
+                .Include(i => i.Tema)
+                .FirstOrDefault(i => i.Id == id);
+        }
+
         public async Task<Istifadeci> GetByIdAsync(int id)
         {
             using (var context = new AzAgroDbContext())
@@ -120,6 +128,18 @@ namespace AzAgroPOS.DAL.Repositories
             {
                 return context.Istifadeciler
                     .Include(i => i.Rol)
+                    .ToList();
+            }
+        }
+
+        public IEnumerable<Istifadeci> GetAllActive()
+        {
+            using (var context = new AzAgroDbContext())
+            {
+                return context.Istifadeciler
+                    .Include(i => i.Rol)
+                    .Where(i => i.Status == "Aktiv")
+                    .OrderBy(i => i.Ad)
                     .ToList();
             }
         }

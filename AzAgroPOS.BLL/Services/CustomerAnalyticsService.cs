@@ -53,13 +53,13 @@ namespace AzAgroPOS.BLL.Services
                 var lastPurchase = customerSales.OrderByDescending(s => s.SatisTarixi).FirstOrDefault()?.SatisTarixi;
 
                 var totalDebt = customerDebts.Sum(d => d.BorcMeblegi);
-                var paidAmount = customerDebts.Sum(d => d.OdenenMebleg ?? 0);
+                var paidAmount = customerDebts.Sum(d => d.OdenilmisMebleg);
                 var remainingDebt = totalDebt - paidAmount;
 
                 var totalRepairs = customerRepairs.Count();
-                var totalRepairCost = customerRepairs.Sum(r => r.TamirMebləgi ?? 0);
-                var completedRepairs = customerRepairs.Count(r => r.Veziyyeti == "Tamamlandı");
-                var pendingRepairs = customerRepairs.Count(r => r.Veziyyeti != "Tamamlandı");
+                var totalRepairCost = customerRepairs.Sum(r => r.SonQiymet);
+                var completedRepairs = customerRepairs.Count(r => r.Status == "Hazır");
+                var pendingRepairs = customerRepairs.Count(r => r.Status != "Hazır");
 
                 var analytics = new CustomerAnalyticsDto
                 {
@@ -316,14 +316,14 @@ namespace AzAgroPOS.BLL.Services
                 if (product != null)
                 {
                     var totalQuantity = group.Sum(sd => sd.Miqdar);
-                    var totalAmount = group.Sum(sd => sd.Miqdar * sd.SatisQiymeti);
+                    var totalAmount = group.Sum(sd => sd.Miqdar * sd.VahidQiymeti);
                     var purchaseCount = group.Count();
 
                     productPurchases.Add(new ProductPurchaseDto
                     {
                         ProductId = product.Id,
                         ProductName = product.Ad,
-                        ProductCode = product.Kodu,
+                        ProductCode = product.SKU,
                         PurchaseCount = purchaseCount,
                         TotalQuantity = totalQuantity,
                         TotalAmount = totalAmount,
@@ -350,10 +350,10 @@ namespace AzAgroPOS.BLL.Services
                 serviceHistory.Add(new CustomerServiceDto
                 {
                     ServiceDate = repair.QebulTarixi,
-                    ServiceType = repair.TamirNovu,
-                    Description = repair.ProblemTesviri,
-                    Status = repair.Veziyyeti,
-                    Cost = repair.TamirMebləgi ?? 0,
+                    ServiceType = repair.Status,
+                    Description = repair.ProblemTasviri,
+                    Status = repair.Status,
+                    Cost = repair.SonQiymet,
                     Technician = repair.TeyinEdilenIstifadeci?.TamAd ?? "Təyin edilməyib",
                     CompletionDays = completionDays,
                     SatisfactionRating = "Qiymətləndirilməyib" // This could be expanded
@@ -474,14 +474,14 @@ namespace AzAgroPOS.BLL.Services
 
         private string GetSegmentDescription(string segment)
         {
-            return segment switch
+            switch (segment)
             {
-                "VIP" => "Yüksək dəyərli müştərilər",
-                "Daimi" => "Müntəzəm alışveriş edən müştərilər",
-                "Yeni" => "Son 30 gündə qeydiyyatdan keçən müştərilər",
-                "Passiv" => "Uzun müddətdir alışveriş etməyən müştərilər",
-                _ => "Adi müştərilər"
-            };
+                case "VIP": return "Yüksək dəyərli müştərilər";
+                case "Daimi": return "Müntəzəm alışveriş edən müştərilər";
+                case "Yeni": return "Son 30 gündə qeydiyyatdan keçən müştərilər";
+                case "Passiv": return "Uzun müddətdir alışveriş etməyən müştərilər";
+                default: return "Adi müştərilər";
+            }
         }
 
         private List<CustomerAnalyticsDto> GetTopCustomers(List<Musteri> customers, List<Satis> sales)
@@ -523,7 +523,7 @@ namespace AzAgroPOS.BLL.Services
                 if (customer != null)
                 {
                     var totalDebt = customerDebtGroup.Sum(d => d.BorcMeblegi);
-                    var paidAmount = customerDebtGroup.Sum(d => d.OdenenMebleg ?? 0);
+                    var paidAmount = customerDebtGroup.Sum(d => d.OdenilmisMebleg);
                     var remainingDebt = totalDebt - paidAmount;
                     var lastPayment = customerDebtGroup.Max(d => d.SonOdemeTarixi);
 
