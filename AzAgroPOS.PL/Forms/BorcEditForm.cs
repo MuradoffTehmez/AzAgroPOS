@@ -167,14 +167,14 @@ namespace AzAgroPOS.PL.Forms
             this.Close();
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                _context?.Dispose();
-                components?.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+        //protected override void Dispose(bool disposing)
+        //{
+        //    if (disposing)
+        //    {
+        //        _context?.Dispose();
+        //        components?.Dispose();
+        //    }
+        //    base.Dispose(disposing);
+        //}
     }
 }
