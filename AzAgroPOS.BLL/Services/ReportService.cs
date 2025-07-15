@@ -111,10 +111,14 @@ namespace AzAgroPOS.BLL.Services
                     .GroupBy(sd => sd.MehsulId)
                     .ToList();
 
+                // Get all product IDs and fetch products in a single batch query
+                var productIds = groupedSales.Select(g => g.Key).ToList();
+                var products = _mehsulRepository.GetByIds(productIds);
+                var productLookup = products.ToDictionary(p => p.Id);
+
                 foreach (var group in groupedSales)
                 {
-                    var mehsul = _mehsulRepository.GetById(group.Key);
-                    if (mehsul != null)
+                    if (productLookup.TryGetValue(group.Key, out var mehsul))
                     {
                         var totalQuantity = group.Sum(sd => sd.Miqdar);
                         var totalAmount = group.Sum(sd => sd.Miqdar * sd.VahidQiymeti);
@@ -253,13 +257,22 @@ namespace AzAgroPOS.BLL.Services
 
         private List<ProductSalesDto> GetTopSellingProducts(IEnumerable<Satis> sales, int topCount = 10)
         {
-            var productSales = sales
+            // Group sales first to get product IDs
+            var groupedSales = sales
                 .SelectMany(s => s.SatisDetallari)
                 .GroupBy(sd => sd.MehsulId)
+                .ToList();
+
+            // Get all product IDs and fetch products in a single batch query
+            var productIds = groupedSales.Select(g => g.Key).ToList();
+            var products = _mehsulRepository.GetByIds(productIds);
+            var productLookup = products.ToDictionary(p => p.Id);
+
+            var productSales = groupedSales
                 .Select(g => new ProductSalesDto
                 {
                     ProductId = g.Key,
-                    ProductName = _mehsulRepository.GetById(g.Key)?.Ad ?? "Naməlum",
+                    ProductName = productLookup.TryGetValue(g.Key, out var product) ? product.Ad : "Naməlum",
                     TotalQuantity = g.Sum(sd => sd.Miqdar),
                     TotalAmount = g.Sum(sd => sd.Miqdar * sd.VahidQiymeti),
                     SalesCount = g.Count()

@@ -268,6 +268,30 @@ namespace AzAgroPOS.DAL.Repositories
             }
         }
 
+        public async Task<List<Mehsul>> GetByIdsAsync(List<int> ids)
+        {
+            using (var context = new AzAgroDbContext())
+            {
+                return await context.Mehsullar
+                    .Include(m => m.Kateqoriya)
+                    .Include(m => m.Vahid)
+                    .Where(m => ids.Contains(m.Id))
+                    .ToListAsync();
+            }
+        }
+
+        public List<Mehsul> GetByIds(List<int> ids)
+        {
+            using (var context = new AzAgroDbContext())
+            {
+                return context.Mehsullar
+                    .Include(m => m.Kateqoriya)
+                    .Include(m => m.Vahid)
+                    .Where(m => ids.Contains(m.Id))
+                    .ToList();
+            }
+        }
+
         public void Dispose()
         {
             _context?.Dispose();

@@ -23,11 +23,28 @@ namespace AzAgroPOS.DAL.Repositories
             return satis.Id;
         }
 
+        public async Task UpdateAsync(Satis satis)
+        {
+            satis.YenilenmeTarixi = DateTime.Now;
+            _context.Satislar.Update(satis);
+            await _context.SaveChangesAsync();
+        }
+
         public void Update(Satis satis)
         {
             satis.YenilenmeTarixi = DateTime.Now;
             _context.Satislar.Update(satis);
             _context.SaveChanges();
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var satis = await _context.Satislar.FindAsync(id);
+            if (satis != null)
+            {
+                _context.Satislar.Remove(satis);
+                await _context.SaveChangesAsync();
+            }
         }
 
         public void Delete(int id)

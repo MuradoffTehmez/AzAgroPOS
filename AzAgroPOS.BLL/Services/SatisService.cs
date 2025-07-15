@@ -35,10 +35,15 @@ namespace AzAgroPOS.BLL.Services
                     if (satis.SatisDetallari == null || !satis.SatisDetallari.Any())
                         throw new ArgumentException("Satış detalları boş ola bilməz");
 
+                    // Get all product IDs and fetch products in a single batch query
+                    var productIds = satis.SatisDetallari.Select(d => d.MehsulId).ToList();
+                    var products = await _mehsulRepository.GetByIdsAsync(productIds);
+                    var productLookup = products.ToDictionary(p => p.Id);
+
+                    // Validate all products and stock levels
                     foreach (var detay in satis.SatisDetallari)
                     {
-                        var mehsul = await _mehsulRepository.GetByIdAsync(detay.MehsulId);
-                        if (mehsul == null)
+                        if (!productLookup.TryGetValue(detay.MehsulId, out var mehsul))
                             throw new ArgumentException($"Məhsul tapılmadı: {detay.MehsulId}");
                         if (mehsul.MovcudMiqdar < detay.Miqdar)
                             throw new InvalidOperationException($"Kifayət qədər stok yoxdur: {mehsul.Ad}. Mövcud: {mehsul.MovcudMiqdar}");
@@ -46,12 +51,13 @@ namespace AzAgroPOS.BLL.Services
 
                     int satisId = await _satisRepository.AddAsync(satis);
 
+                    // Update stock levels for all products
                     foreach (var detay in satis.SatisDetallari)
                     {
                         detay.SatisId = satisId;
                         await _satisDetaliRepository.AddAsync(detay);
 
-                        var mehsul = await _mehsulRepository.GetByIdAsync(detay.MehsulId);
+                        var mehsul = productLookup[detay.MehsulId];
                         mehsul.MovcudMiqdar -= detay.Miqdar;
                         await _mehsulRepository.UpdateAsync(mehsul);
                     }
@@ -116,10 +122,15 @@ namespace AzAgroPOS.BLL.Services
 
                 // Restore product stock
                 var detaylar = _satisDetaliRepository.GetBySatisId(satisId);
+                
+                // Get all product IDs and fetch products in a single batch query
+                var productIds = detaylar.Select(d => d.MehsulId).ToList();
+                var products = _mehsulRepository.GetByIds(productIds);
+                var productLookup = products.ToDictionary(p => p.Id);
+
                 foreach (var detay in detaylar)
                 {
-                    var mehsul = _mehsulRepository.GetById(detay.MehsulId);
-                    if (mehsul != null)
+                    if (productLookup.TryGetValue(detay.MehsulId, out var mehsul))
                     {
                         mehsul.MovcudMiqdar += detay.Miqdar;
                         mehsul.YenilenmeTarixi = DateTime.Now;
@@ -194,11 +205,15 @@ namespace AzAgroPOS.BLL.Services
                 .Take(topCount)
                 .ToList();
 
+            // Get all product IDs and fetch products in a single batch query
+            var productIds = mehsulSatislari.Select(x => x.MehsulId).ToList();
+            var products = _mehsulRepository.GetByIds(productIds);
+            var productLookup = products.ToDictionary(p => p.Id);
+
             var mehsullar = new List<Mehsul>();
             foreach (var item in mehsulSatislari)
             {
-                var mehsul = _mehsulRepository.GetById(item.MehsulId);
-                if (mehsul != null)
+                if (productLookup.TryGetValue(item.MehsulId, out var mehsul))
                 {
                     mehsullar.Add(mehsul);
                 }
