@@ -46,6 +46,7 @@ namespace AzAgroPOS.PL.Forms
             _serviceProvider = serviceProvider;
             _authService = serviceProvider.GetRequiredService<AuthService>();
             _istifadeciRepository = serviceProvider.GetRequiredService<IstifadeciRepository>();
+            InitializeCustomComponents();
             this.Load += async (s, e) => await TryAutoLoginAsync();
         }
 
@@ -53,10 +54,8 @@ namespace AzAgroPOS.PL.Forms
         {
         }
 
-        private void InitializeComponent()
+        private void InitializeCustomComponents()
         {
-            this.SuspendLayout();
-
             // Form settings
             this.Text = "AzAgroPOS - Giriş";
             this.Size = new Size(1200, 700);
@@ -219,8 +218,6 @@ namespace AzAgroPOS.PL.Forms
 
             // Load last user email
             LoadLastUserEmail();
-
-            this.ResumeLayout(false);
         }
 
         private void CreateLeftPanelContent()

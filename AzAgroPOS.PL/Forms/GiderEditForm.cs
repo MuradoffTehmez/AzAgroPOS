@@ -49,6 +49,7 @@ namespace AzAgroPOS.PL.Forms
             _serviceProvider = serviceProvider;
             _giderService = serviceProvider.GetRequiredService<GiderService>();
             _currentUser = currentUser;
+            InitializeCustomComponents();
             SetupModernDesign();
             this.Load += GiderEditForm_Load;
         }
@@ -62,10 +63,8 @@ namespace AzAgroPOS.PL.Forms
             await LoadExpenseAsync();
         }
 
-        private void InitializeComponent()
+        private void InitializeCustomComponents()
         {
-            this.SuspendLayout();
-
             // Form settings
             this.Text = "Gidər Redaktəsi";
             this.Size = new Size(600, 700);
@@ -125,8 +124,6 @@ namespace AzAgroPOS.PL.Forms
 
             // Add controls to form
             this.Controls.AddRange(new Control[] { pnlHeader, pnlMain });
-
-            this.ResumeLayout(false);
         }
 
         private void CreateFormControls()

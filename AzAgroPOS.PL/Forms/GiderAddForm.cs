@@ -45,6 +45,7 @@ namespace AzAgroPOS.PL.Forms
             _serviceProvider = serviceProvider;
             _giderService = serviceProvider.GetRequiredService<GiderService>();
             _currentUser = currentUser;
+            InitializeCustomComponents();
             SetupModernDesign();
         }
 
@@ -52,10 +53,8 @@ namespace AzAgroPOS.PL.Forms
         {
         }
 
-        private void InitializeComponent()
+        private void InitializeCustomComponents()
         {
-            this.SuspendLayout();
-
             // Form settings
             this.Text = "Yeni Gidər Əlavə Et";
             this.Size = new Size(600, 700);
@@ -115,8 +114,6 @@ namespace AzAgroPOS.PL.Forms
 
             // Add controls to form
             this.Controls.AddRange(new Control[] { pnlHeader, pnlMain });
-
-            this.ResumeLayout(false);
         }
 
         private void CreateFormControls()

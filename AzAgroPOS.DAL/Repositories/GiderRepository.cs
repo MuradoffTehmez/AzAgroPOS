@@ -157,20 +157,6 @@ namespace AzAgroPOS.DAL.Repositories
                 .ToListAsync();
         }
 
-        public override async Task<IEnumerable<Gider>> GetAllAsync()
-        {
-            return await _context.Giderler
-                .Include(g => g.Istifadeci)
-                .OrderByDescending(g => g.Tarix)
-                .ToListAsync();
-        }
-
-        public override async Task<Gider> GetByIdAsync(int id)
-        {
-            return await _context.Giderler
-                .Include(g => g.Istifadeci)
-                .FirstOrDefaultAsync(g => g.Id == id);
-        }
     }
 
     public interface IGiderRepository : IDisposable
