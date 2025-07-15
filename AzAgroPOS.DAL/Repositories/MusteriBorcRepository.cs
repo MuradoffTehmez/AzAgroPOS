@@ -143,6 +143,78 @@ namespace AzAgroPOS.DAL.Repositories
                 .OrderByDescending(b => b.YaradilmaTarixi);
         }
 
+        public async Task<List<MusteriBorc>> GetFilteredDebtsAsync(string customerSearch, string status, DateTime? startDate, DateTime? endDate, int pageSize = 100, int pageNumber = 1)
+        {
+            using (var context = new AzAgroDbContext())
+            {
+                var query = context.MusteriBorcları
+                    .Include(b => b.Musteri)
+                    .Include(b => b.Satis)
+                    .Include(b => b.BorcOdenisleri)
+                    .AsQueryable();
+
+                if (!string.IsNullOrEmpty(customerSearch))
+                {
+                    query = query.Where(b => 
+                        b.Musteri.Ad.Contains(customerSearch) || 
+                        b.Musteri.Soyad.Contains(customerSearch));
+                }
+
+                if (!string.IsNullOrEmpty(status))
+                {
+                    query = query.Where(b => b.Status == status);
+                }
+
+                if (startDate.HasValue)
+                {
+                    query = query.Where(b => b.YaradilmaTarixi >= startDate.Value);
+                }
+
+                if (endDate.HasValue)
+                {
+                    query = query.Where(b => b.YaradilmaTarixi <= endDate.Value);
+                }
+
+                return await query
+                    .OrderByDescending(b => b.YaradilmaTarixi)
+                    .Skip((pageNumber - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToListAsync();
+            }
+        }
+
+        public async Task<int> GetFilteredDebtsCountAsync(string customerSearch, string status, DateTime? startDate, DateTime? endDate)
+        {
+            using (var context = new AzAgroDbContext())
+            {
+                var query = context.MusteriBorcları.AsQueryable();
+
+                if (!string.IsNullOrEmpty(customerSearch))
+                {
+                    query = query.Where(b => 
+                        b.Musteri.Ad.Contains(customerSearch) || 
+                        b.Musteri.Soyad.Contains(customerSearch));
+                }
+
+                if (!string.IsNullOrEmpty(status))
+                {
+                    query = query.Where(b => b.Status == status);
+                }
+
+                if (startDate.HasValue)
+                {
+                    query = query.Where(b => b.YaradilmaTarixi >= startDate.Value);
+                }
+
+                if (endDate.HasValue)
+                {
+                    query = query.Where(b => b.YaradilmaTarixi <= endDate.Value);
+                }
+
+                return await query.CountAsync();
+            }
+        }
+
         public void Dispose()
         {
             _context?.Dispose();

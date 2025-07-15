@@ -16,6 +16,7 @@ namespace AzAgroPOS.PL.Forms
         private List<Mehsul> _mehsullar;
         private List<SatisDetaliItem> _satisDetallari;
         private decimal _vergiOrani = 0.18m; // 18% vergi
+        private Istifadeci _currentUser;
 
 
         public POSForm()
@@ -24,7 +25,30 @@ namespace AzAgroPOS.PL.Forms
             _mehsulService = new MehsulService();
             _satisService = new SatisService();
             _satisDetallari = new List<SatisDetaliItem>();
+            _currentUser = GetCurrentUser();
             InitializeForm();
+        }
+
+        public POSForm(Istifadeci currentUser)
+        {
+            InitializeComponent();
+            _mehsulService = new MehsulService();
+            _satisService = new SatisService();
+            _satisDetallari = new List<SatisDetaliItem>();
+            _currentUser = currentUser;
+            InitializeForm();
+        }
+
+        private Istifadeci GetCurrentUser()
+        {
+            // TODO: Implement proper session management
+            // For now, return a default user to prevent null reference exceptions
+            return new Istifadeci 
+            { 
+                Id = 1, 
+                Ad = "Kassir", 
+                Email = "kassir@azagropos.com" 
+            };
         }
 
         private void InitializeForm()
@@ -94,8 +118,7 @@ namespace AzAgroPOS.PL.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Məhsullar yüklənərkən xəta baş verdi: {ex.Message}", "Xəta", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ErrorHandlingService.HandleErrorStatic(ex, "Məhsullar yüklənərkən xəta baş verdi");
                 _mehsullar = new List<Mehsul>();
             }
         }
@@ -122,8 +145,7 @@ namespace AzAgroPOS.PL.Forms
             if (mehsul == null)
             {
                 SystemSounds.Exclamation.Play();
-                MessageBox.Show("Barkod tapılmadı!", "Məhsul Tapılmadı", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                ErrorHandlingService.ShowValidationError("Barkod tapılmadı!");
                 txtBarkod.SelectAll();
                 return;
             }
@@ -172,8 +194,7 @@ namespace AzAgroPOS.PL.Forms
         {
             if (mehsul.MovcudMiqdar < miqdar)
             {
-                MessageBox.Show($"Kifayət qədər stok yoxdur! Mövcud: {mehsul.MovcudMiqdar}", 
-                    "Stok Çatışmazlığı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                ErrorHandlingService.ShowValidationError($"Kifayət qədər stok yoxdur! Mövcud: {mehsul.MovcudMiqdar}");
                 return;
             }
 
@@ -332,7 +353,7 @@ namespace AzAgroPOS.PL.Forms
                     NetMebleg = decimal.Parse(lblNetMeblegValue.Text.Replace(" ₼", "").Trim()),
                     OdemeNovu = odemeNovu,
                     OdemeDetali = txtOdemeDetali.Text,
-                    KassirId = 1, // TODO: Cari istifadəçi ID-si ilə əvəz edilməlidir
+                    KassirId = _currentUser?.Id ?? 1, // Use current user ID or fallback to 1
                     SatisDetallari = _satisDetallari.Select(item => new SatisDetali
                     {
                         MehsulId = item.MehsulId,
@@ -360,8 +381,7 @@ namespace AzAgroPOS.PL.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Satış tamamlanarkən xəta baş verdi: {ex.Message}", "Xəta",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ErrorHandlingService.HandleErrorStatic(ex, "Satış tamamlanarkən xəta baş verdi");
             }
             finally
             {

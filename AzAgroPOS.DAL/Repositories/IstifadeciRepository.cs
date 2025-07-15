@@ -167,6 +167,70 @@ namespace AzAgroPOS.DAL.Repositories
                     .FirstOrDefaultAsync(i => i.RememberMeToken == token);
             }
         }
+
+        public async Task<List<Istifadeci>> GetFilteredUsersAsync(string searchTerm, string status, int? rolId, int pageSize = 100, int pageNumber = 1)
+        {
+            using (var context = new AzAgroDbContext())
+            {
+                var query = context.Istifadeciler
+                    .Include(i => i.Rol)
+                    .Include(i => i.Tema)
+                    .AsQueryable();
+
+                if (!string.IsNullOrEmpty(searchTerm))
+                {
+                    query = query.Where(i => 
+                        i.Ad.Contains(searchTerm) || 
+                        i.Soyad.Contains(searchTerm) || 
+                        i.Email.Contains(searchTerm));
+                }
+
+                if (!string.IsNullOrEmpty(status))
+                {
+                    query = query.Where(i => i.Status == status);
+                }
+
+                if (rolId.HasValue)
+                {
+                    query = query.Where(i => i.RolId == rolId.Value);
+                }
+
+                return await query
+                    .OrderBy(i => i.Ad)
+                    .Skip((pageNumber - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToListAsync();
+            }
+        }
+
+        public async Task<int> GetFilteredUsersCountAsync(string searchTerm, string status, int? rolId)
+        {
+            using (var context = new AzAgroDbContext())
+            {
+                var query = context.Istifadeciler.AsQueryable();
+
+                if (!string.IsNullOrEmpty(searchTerm))
+                {
+                    query = query.Where(i => 
+                        i.Ad.Contains(searchTerm) || 
+                        i.Soyad.Contains(searchTerm) || 
+                        i.Email.Contains(searchTerm));
+                }
+
+                if (!string.IsNullOrEmpty(status))
+                {
+                    query = query.Where(i => i.Status == status);
+                }
+
+                if (rolId.HasValue)
+                {
+                    query = query.Where(i => i.RolId == rolId.Value);
+                }
+
+                return await query.CountAsync();
+            }
+        }
+
         //public void Dispose()
         //{
         //    _context?.Dispose();
