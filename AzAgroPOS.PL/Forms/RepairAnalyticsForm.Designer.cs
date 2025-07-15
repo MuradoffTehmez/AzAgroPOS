@@ -15,11 +15,7 @@ namespace AzAgroPOS.PL.Forms
 
         #region Windows Form Designer generated code
 
-        private void InitializeComponent()
-        {
-            // This method is intentionally left empty.
-            // The actual initialization is done in the main form class.
-        }
+        // InitializeComponent is implemented in the main form class
 
         #endregion
     }

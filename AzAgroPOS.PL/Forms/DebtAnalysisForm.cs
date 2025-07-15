@@ -4,7 +4,7 @@ using System;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using System.Windows.Forms.DataVisualization.Charting;
+// using System.Windows.Forms.DataVisualization.Charting;
 
 namespace AzAgroPOS.PL.Forms
 {
@@ -18,7 +18,7 @@ namespace AzAgroPOS.PL.Forms
         private Button btnExport;
         private Panel pnlSummary;
         private DataGridView dgvCustomerDebts;
-        private Chart chartDebtAnalysis;
+        private Panel chartDebtAnalysis; // Chart placeholder
         private Label lblTotalDebt;
         private Label lblTotalPaid;
         private Label lblRemainingDebt;
@@ -107,12 +107,21 @@ namespace AzAgroPOS.PL.Forms
                 SplitterDistance = 300
             };
 
-            // Chart for debt visualization
-            chartDebtAnalysis = new Chart
+            // Chart placeholder for debt visualization
+            chartDebtAnalysis = new Panel
             {
-                Dock = DockStyle.Fill
+                Dock = DockStyle.Fill,
+                BackColor = Color.LightGray,
+                BorderStyle = BorderStyle.FixedSingle
             };
-            InitializeChart();
+            chartDebtAnalysis.Controls.Add(new Label 
+            { 
+                Text = "📊 Chart Analitikası (Chart kontrolları yüklənir...)", 
+                Dock = DockStyle.Fill, 
+                TextAlign = ContentAlignment.MiddleCenter,
+                Font = new Font("Segoe UI", 12, FontStyle.Bold)
+            });
+            // InitializeChart(); // Chart yüklənəndən sonra aktiv ediləcək
 
             // DataGridView for customer debts
             dgvCustomerDebts = new DataGridView
@@ -201,6 +210,8 @@ namespace AzAgroPOS.PL.Forms
 
         private void InitializeChart()
         {
+            // Chart initialize ediləcək (Chart paketlərinin yüklənməsindən sonra)
+            /*
             chartDebtAnalysis.Series.Clear();
             chartDebtAnalysis.ChartAreas.Clear();
 
@@ -239,6 +250,7 @@ namespace AzAgroPOS.PL.Forms
                 ChartArea = "PieArea"
             };
             chartDebtAnalysis.Series.Add(pieSeries);
+            */
         }
 
         private void InitializeDataGridView()
@@ -411,6 +423,8 @@ namespace AzAgroPOS.PL.Forms
 
         private void UpdateChart(DebtReportDto report)
         {
+            // Chart yenilənməsi müvəqqəti deaktivdir
+            /*
             // Clear existing data
             chartDebtAnalysis.Series["Qalan Borc"].Points.Clear();
             chartDebtAnalysis.Series["Ödənilən"].Points.Clear();
@@ -431,6 +445,7 @@ namespace AzAgroPOS.PL.Forms
             // Add pie chart data
             chartDebtAnalysis.Series["Borc Bölgüsü"].Points.AddXY("Ödənilən", (double)report.TotalPaid);
             chartDebtAnalysis.Series["Borc Bölgüsü"].Points.AddXY("Qalan", (double)report.RemainingDebt);
+            */
         }
 
         private void UpdateDebtsGrid(System.Collections.Generic.List<CustomerDebtDto> debts)

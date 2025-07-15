@@ -117,30 +117,24 @@ namespace AzAgroPOS.PL.Forms
             this.Close();
         }
 
-        private string GetStatusEnglish(string azerbaijaniStatus)
+        private string GetStatusEnglish(string azerbaijaniStatus) => azerbaijaniStatus switch
         {
-            return azerbaijaniStatus switch
-            {
-                SystemConstants.RepairStatusAzerbaijani.Received => SystemConstants.RepairStatus.Received,
-                SystemConstants.RepairStatusAzerbaijani.InProgress => SystemConstants.RepairStatus.InProgress,
-                SystemConstants.RepairStatusAzerbaijani.Ready => SystemConstants.RepairStatus.Ready,
-                SystemConstants.RepairStatusAzerbaijani.Delivered => SystemConstants.RepairStatus.Delivered,
-                SystemConstants.RepairStatusAzerbaijani.Cancelled => SystemConstants.RepairStatus.Cancelled,
-                _ => null
-            };
-        }
+            SystemConstants.RepairStatusAzerbaijani.Received => SystemConstants.RepairStatus.Received,
+            SystemConstants.RepairStatusAzerbaijani.InProgress => SystemConstants.RepairStatus.InProgress,
+            SystemConstants.RepairStatusAzerbaijani.Ready => SystemConstants.RepairStatus.Ready,
+            SystemConstants.RepairStatusAzerbaijani.Delivered => SystemConstants.RepairStatus.Delivered,
+            SystemConstants.RepairStatusAzerbaijani.Cancelled => SystemConstants.RepairStatus.Cancelled,
+            _ => null
+        };
 
-        private string GetPriorityEnglish(string azerbaijaniPriority)
+        private string GetPriorityEnglish(string azerbaijaniPriority) => azerbaijaniPriority switch
         {
-            return azerbaijaniPriority switch
-            {
-                SystemConstants.PriorityAzerbaijani.Low => SystemConstants.Priority.Low,
-                SystemConstants.PriorityAzerbaijani.Medium => SystemConstants.Priority.Medium,
-                SystemConstants.PriorityAzerbaijani.High => SystemConstants.Priority.High,
-                SystemConstants.PriorityAzerbaijani.Urgent => SystemConstants.Priority.Urgent,
-                _ => null
-            };
-        }
+            SystemConstants.PriorityAzerbaijani.Low => SystemConstants.Priority.Low,
+            SystemConstants.PriorityAzerbaijani.Medium => SystemConstants.Priority.Medium,
+            SystemConstants.PriorityAzerbaijani.High => SystemConstants.Priority.High,
+            SystemConstants.PriorityAzerbaijani.Urgent => SystemConstants.Priority.Urgent,
+            _ => null
+        };
 
         private void btnCancel_Click(object sender, EventArgs e)
         {

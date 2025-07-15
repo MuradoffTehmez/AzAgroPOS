@@ -4,7 +4,7 @@ using System;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using System.Windows.Forms.DataVisualization.Charting;
+// using System.Windows.Forms.DataVisualization.Charting;
 
 namespace AzAgroPOS.PL.Forms
 {
@@ -21,7 +21,7 @@ namespace AzAgroPOS.PL.Forms
         private Button btnExport;
         private Panel pnlSummary;
         private DataGridView dgvTopProducts;
-        private Chart chartSales;
+        private Panel chartSales; // Chart placeholder
         private Label lblTotalSales;
         private Label lblTotalAmount;
         private Label lblNetAmount;
@@ -151,12 +151,21 @@ namespace AzAgroPOS.PL.Forms
                 SplitterDistance = 300
             };
 
-            // Chart for sales visualization
-            chartSales = new Chart
+            // Chart placeholder for sales visualization
+            chartSales = new Panel
             {
-                Dock = DockStyle.Fill
+                Dock = DockStyle.Fill,
+                BackColor = Color.LightBlue,
+                BorderStyle = BorderStyle.FixedSingle
             };
-            InitializeChart();
+            chartSales.Controls.Add(new Label 
+            { 
+                Text = "📈 Satış Analitikası (Chart kontrolları yüklənir...)", 
+                Dock = DockStyle.Fill, 
+                TextAlign = ContentAlignment.MiddleCenter,
+                Font = new Font("Segoe UI", 12, FontStyle.Bold)
+            });
+            // InitializeChart(); // Chart yüklənəndən sonra aktiv ediləcək
 
             // DataGridView for top products
             dgvTopProducts = new DataGridView
@@ -235,6 +244,8 @@ namespace AzAgroPOS.PL.Forms
 
         private void InitializeChart()
         {
+            // Chart initialize ediləcək (Chart paketlərinin yüklənməsindən sonra)
+            /*
             chartSales.Series.Clear();
             chartSales.ChartAreas.Clear();
 
@@ -252,6 +263,7 @@ namespace AzAgroPOS.PL.Forms
             chartSales.Series.Add(series);
 
             chartSales.Legends.Add(new Legend("Legend1"));
+            */
         }
 
         private void InitializeDataGridView()
@@ -405,6 +417,8 @@ namespace AzAgroPOS.PL.Forms
 
         private void UpdateChart(SalesReportDto report)
         {
+            // Chart yenilənməsi müvəqqəti deaktivdir
+            /*
             chartSales.Series["Satışlar"].Points.Clear();
 
             if (report.SalesByHour?.Any() == true && report.ReportType == "Günlük")
@@ -423,6 +437,7 @@ namespace AzAgroPOS.PL.Forms
                     chartSales.Series["Satışlar"].Points.AddXY(sale.Key, sale.Value);
                 }
             }
+            */
         }
 
         private void UpdateTopProductsGrid(System.Collections.Generic.List<ProductSalesDto> products)

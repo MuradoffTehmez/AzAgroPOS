@@ -4,7 +4,7 @@ using System;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using System.Windows.Forms.DataVisualization.Charting;
+// using System.Windows.Forms.DataVisualization.Charting;
 
 namespace AzAgroPOS.PL.Forms
 {
@@ -21,7 +21,7 @@ namespace AzAgroPOS.PL.Forms
         private Panel pnlSummary;
         private DataGridView dgvRepairTypes;
         private DataGridView dgvWorkerPerformance;
-        private Chart chartRepairAnalytics;
+        private Panel chartRepairAnalytics; // Chart placeholder
         private TabControl tabControl;
         
         // Summary labels
@@ -242,12 +242,21 @@ namespace AzAgroPOS.PL.Forms
                 SplitterDistance = 350
             };
 
-            // Chart for repair analytics
-            chartRepairAnalytics = new Chart
+            // Chart placeholder for repair analytics
+            chartRepairAnalytics = new Panel
             {
-                Dock = DockStyle.Fill
+                Dock = DockStyle.Fill,
+                BackColor = Color.LightGreen,
+                BorderStyle = BorderStyle.FixedSingle
             };
-            InitializeChart();
+            chartRepairAnalytics.Controls.Add(new Label 
+            { 
+                Text = "🔧 Təmir Analitikası (Chart kontrolları yüklənir...)", 
+                Dock = DockStyle.Fill, 
+                TextAlign = ContentAlignment.MiddleCenter,
+                Font = new Font("Segoe UI", 12, FontStyle.Bold)
+            });
+            // InitializeChart(); // Chart yüklənəndən sonra aktiv ediləcək
 
             // Repair types grid
             dgvRepairTypes = new DataGridView
@@ -296,6 +305,8 @@ namespace AzAgroPOS.PL.Forms
 
         private void InitializeChart()
         {
+            // Chart initialize ediləcək (Chart paketlərinin yüklənməsindən sonra)
+            /*
             chartRepairAnalytics.Series.Clear();
             chartRepairAnalytics.ChartAreas.Clear();
 
@@ -346,6 +357,7 @@ namespace AzAgroPOS.PL.Forms
             chartRepairAnalytics.Series.Add(costSeries);
 
             chartRepairAnalytics.Legends.Add(new Legend("Legend1"));
+            */
         }
 
         private void InitializeRepairTypesGrid()
@@ -554,6 +566,8 @@ namespace AzAgroPOS.PL.Forms
 
         private void UpdateCharts(RepairAnalyticsDto report)
         {
+            // Chart yenilənməsi müvəqqəti deaktivdir
+            /*
             // Clear existing data
             chartRepairAnalytics.Series["Təmir Sayı"].Points.Clear();
             chartRepairAnalytics.Series["Status Bölgüsü"].Points.Clear();
@@ -573,6 +587,7 @@ namespace AzAgroPOS.PL.Forms
             chartRepairAnalytics.Series["Status Bölgüsü"].Points.AddXY("Tamamlanmış", report.CompletedRepairs);
             chartRepairAnalytics.Series["Status Bölgüsü"].Points.AddXY("Gözləyən", report.PendingRepairs);
             chartRepairAnalytics.Series["Status Bölgüsü"].Points.AddXY("Davam edən", report.InProgressRepairs);
+            */
         }
 
         private void UpdateRepairTypesGrid(System.Collections.Generic.List<RepairTypeDto> repairTypes)

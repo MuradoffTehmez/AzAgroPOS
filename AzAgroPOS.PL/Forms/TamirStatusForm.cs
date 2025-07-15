@@ -125,18 +125,15 @@ namespace AzAgroPOS.PL.Forms
             }
         }
 
-        private string GetStatusEnglish(string azerbaijaniStatus)
+        private string GetStatusEnglish(string azerbaijaniStatus) => azerbaijaniStatus switch
         {
-            return azerbaijaniStatus switch
-            {
-                "Qəbul Edildi" => "Received",
-                "İşlənir" => "InProgress",
-                "Hazır" => "Ready",
-                "Təhvil Verildi" => "Delivered",
-                "İptal" => "Cancelled",
-                _ => "Received"
-            };
-        }
+            "Qəbul Edildi" => "Received",
+            "İşlənir" => "InProgress",
+            "Hazır" => "Ready",
+            "Təhvil Verildi" => "Delivered",
+            "İptal" => "Cancelled",
+            _ => "Received"
+        };
 
         private void btnCancel_Click(object sender, EventArgs e)
         {

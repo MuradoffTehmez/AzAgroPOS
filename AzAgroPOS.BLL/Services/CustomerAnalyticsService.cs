@@ -133,7 +133,7 @@ namespace AzAgroPOS.BLL.Services
 
                 var totalCustomerValue = allSales.Sum(s => s.UmumiMebleg);
                 var averageCustomerValue = allCustomers.Count > 0 ? totalCustomerValue / allCustomers.Count : 0;
-                var totalOutstandingDebt = allDebts.Sum(d => d.BorcMeblegi - (d.OdenenMebleg ?? 0));
+                var totalOutstandingDebt = allDebts.Sum(d => d.BorcMeblegi - d.OdenilmisMebleg);
 
                 var summary = new CustomerSummaryDto
                 {
@@ -264,22 +264,19 @@ namespace AzAgroPOS.BLL.Services
             }
 
             // Add payment activities
-            var recentPayments = _borcRepository.GetByCustomer(customerId).Where(d => d.SonOdemeTarixi.HasValue)
+            var recentPayments = _borcRepository.GetByCustomer(customerId).Where(d => d.SonOdemeTarixi >= DateTime.Now.AddDays(-365))
                 .OrderByDescending(d => d.SonOdemeTarixi).Take(10);
             foreach (var payment in recentPayments)
             {
-                if (payment.SonOdemeTarixi.HasValue)
+                activities.Add(new CustomerActivityDto
                 {
-                    activities.Add(new CustomerActivityDto
-                    {
-                        ActivityDate = payment.SonOdemeTarixi.Value,
+                    ActivityDate = payment.SonOdemeTarixi,
                         ActivityType = "Ödəniş",
                         Description = $"Borc ödənişi",
-                        Amount = payment.OdenenMebleg ?? 0,
+                        Amount = payment.OdenilmisMebleg,
                         Status = payment.Status,
-                        Details = $"Qalan: {payment.BorcMeblegi - (payment.OdenenMebleg ?? 0):C}"
-                    });
-                }
+                    Details = $"Qalan: {payment.BorcMeblegi - payment.OdenilmisMebleg:C}"
+                });
             }
 
             // Add repair activities
@@ -290,10 +287,10 @@ namespace AzAgroPOS.BLL.Services
                 {
                     ActivityDate = repair.QebulTarixi,
                     ActivityType = "Təmir",
-                    Description = repair.TamirNovu,
-                    Amount = repair.TamirMebləgi ?? 0,
-                    Status = repair.Veziyyeti,
-                    Details = repair.ProblemTesviri
+                    Description = repair.MehsulAdi,
+                    Amount = repair.SonQiymet,
+                    Status = repair.Status,
+                    Details = repair.ProblemTasviri
                 });
             }
 

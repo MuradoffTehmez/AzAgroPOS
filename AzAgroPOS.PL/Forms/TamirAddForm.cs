@@ -145,30 +145,24 @@ namespace AzAgroPOS.PL.Forms
             }
         }
 
-        private string GetStatusEnglish(string azerbaijaniStatus)
+        private string GetStatusEnglish(string azerbaijaniStatus) => azerbaijaniStatus switch
         {
-            return azerbaijaniStatus switch
-            {
-                "Qəbul Edildi" => "Received",
-                "İşlənir" => "InProgress",
-                "Hazır" => "Ready",
-                "Təhvil Verildi" => "Delivered",
-                "İptal" => "Cancelled",
-                _ => "Received"
-            };
-        }
+            "Qəbul Edildi" => "Received",
+            "İşlənir" => "InProgress",
+            "Hazır" => "Ready",
+            "Təhvil Verildi" => "Delivered",
+            "İptal" => "Cancelled",
+            _ => "Received"
+        };
 
-        private string GetPriorityEnglish(string azerbaijaniPriority)
+        private string GetPriorityEnglish(string azerbaijaniPriority) => azerbaijaniPriority switch
         {
-            return azerbaijaniPriority switch
-            {
-                "Aşağı" => "Low",
-                "Orta" => "Medium",
-                "Yüksək" => "High",
-                "Təcili" => "Urgent",
-                _ => "Medium"
-            };
-        }
+            "Aşağı" => "Low",
+            "Orta" => "Medium",
+            "Yüksək" => "High",
+            "Təcili" => "Urgent",
+            _ => "Medium"
+        };
 
         private bool ValidateInput()
         {
