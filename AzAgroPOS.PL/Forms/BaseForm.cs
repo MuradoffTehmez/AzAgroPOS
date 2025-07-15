@@ -1,7 +1,9 @@
 using System;
+using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using AzAgroPOS.PL.Services;
+using AzAgroPOS.PL.Styles;
 using AzAgroPOS.Entities.Domain;
 
 namespace AzAgroPOS.PL.Forms
@@ -17,12 +19,29 @@ namespace AzAgroPOS.PL.Forms
             
             // Get current user from session or login context
             _currentUser = GetCurrentUser();
+            
+            // Apply modern styling
+            InitializeModernDesign();
         }
 
         public BaseForm(IUINotificationService notificationService)
         {
             _notificationService = notificationService;
             _currentUser = GetCurrentUser();
+            InitializeModernDesign();
+        }
+
+        private void InitializeModernDesign()
+        {
+            // Set form properties for modern look
+            this.Font = ModernTheme.Fonts.Body;
+            this.BackColor = ModernTheme.Colors.Background;
+            this.ForeColor = ModernTheme.Colors.TextPrimary;
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.MinimumSize = new Size(800, 600);
+            
+            // Apply modern theme when the form loads
+            this.Load += (s, e) => ModernTheme.ApplyModernStyle(this);
         }
 
         protected virtual Istifadeci GetCurrentUser()

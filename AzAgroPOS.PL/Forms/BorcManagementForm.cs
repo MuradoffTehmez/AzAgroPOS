@@ -2,9 +2,11 @@ using AzAgroPOS.BLL.Services;
 using AzAgroPOS.DAL;
 using AzAgroPOS.Entities.Domain;
 using AzAgroPOS.PL.Services;
+using AzAgroPOS.PL.Styles;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -23,6 +25,7 @@ namespace AzAgroPOS.PL.Forms
             _borcService = serviceProvider.GetRequiredService<BorcService>();
             _currentUser = currentUser;
             SetupModernDesign();
+            this.Load += BorcManagementForm_Load;
         }
 
         // Backward compatibility constructor
@@ -32,10 +35,10 @@ namespace AzAgroPOS.PL.Forms
 
         private async void BorcManagementForm_Load(object sender, EventArgs e)
         {
+            SetupDataGridView();
             await LoadDebtsAsync();
             LoadCustomers();
             LoadStatistics();
-            SetupDataGridView();
         }
 
         protected override async void OnFormLoad()
@@ -45,44 +48,297 @@ namespace AzAgroPOS.PL.Forms
 
         private void SetupModernDesign()
         {
-            this.BackColor = Color.FromArgb(236, 240, 241);
-            this.Font = new Font("Segoe UI", 9F);
+            // Set main form properties
+            this.Text = "💰 Borc İdarəetməsi";
+            this.BackColor = ModernTheme.Colors.Background;
+            this.Font = ModernTheme.Fonts.Body;
+            this.WindowState = FormWindowState.Maximized;
             
-            foreach (Control control in this.Controls)
-            {
-                if (control is Button btn)
-                {
-                    btn.FlatStyle = FlatStyle.Flat;
-                    btn.FlatAppearance.BorderSize = 0;
-                    btn.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-                    btn.Cursor = Cursors.Hand;
-                }
-                else if (control is Panel panel)
-                {
-                    panel.BackColor = Color.White;
-                }
-            }
+            // Create main layout
+            CreateModernLayout();
+            
+            // Apply modern theme to all controls
+            ModernTheme.ApplyModernStyle(this);
         }
+
+        private void CreateModernLayout()
+        {
+            // Create header panel
+            var headerPanel = ModernTheme.CreateHeader("Borc İdarəetməsi");
+            this.Controls.Add(headerPanel);
+
+            // Create main content panel
+            var mainPanel = new Panel
+            {
+                Dock = DockStyle.Fill,
+                BackColor = ModernTheme.Colors.Background,
+                Padding = new Padding(ModernTheme.Layout.Padding)
+            };
+            
+            // Create statistics panel
+            var statsPanel = CreateStatisticsPanel();
+            statsPanel.Dock = DockStyle.Top;
+            statsPanel.Height = 120;
+            mainPanel.Controls.Add(statsPanel);
+
+            // Create filter panel
+            var filterPanel = CreateFilterPanel();
+            filterPanel.Dock = DockStyle.Top;
+            filterPanel.Height = 80;
+            mainPanel.Controls.Add(filterPanel);
+
+            // Create data grid panel
+            var gridPanel = CreateDataGridPanel();
+            gridPanel.Dock = DockStyle.Fill;
+            mainPanel.Controls.Add(gridPanel);
+
+            // Create action buttons panel
+            var buttonPanel = CreateActionButtonsPanel();
+            buttonPanel.Dock = DockStyle.Bottom;
+            buttonPanel.Height = 60;
+            mainPanel.Controls.Add(buttonPanel);
+
+            this.Controls.Add(mainPanel);
+        }
+
+        private Panel CreateStatisticsPanel()
+        {
+            var panel = ModernTheme.CreateCard();
+            panel.Height = 120;
+            panel.Margin = new Padding(0, 0, 0, ModernTheme.Layout.Margin);
+
+            var titleLabel = new Label
+            {
+                Text = "Statistika",
+                Font = ModernTheme.Fonts.SubHeading,
+                ForeColor = ModernTheme.Colors.TextPrimary,
+                AutoSize = true,
+                Location = new Point(ModernTheme.Layout.Padding, 10)
+            };
+            panel.Controls.Add(titleLabel);
+
+            int x = ModernTheme.Layout.Padding;
+            int y = 40;
+
+            // Total Debt
+            var totalDebtPanel = CreateStatCard("Ümumi Borc", "0 ₼", ModernTheme.Colors.Primary);
+            totalDebtPanel.Location = new Point(x, y);
+            totalDebtPanel.Size = new Size(180, 60);
+            panel.Controls.Add(totalDebtPanel);
+
+            // Overdue Debt
+            x += 200;
+            var overduePanel = CreateStatCard("Gecikmiş Borc", "0 ₼", ModernTheme.Colors.Warning);
+            overduePanel.Location = new Point(x, y);
+            overduePanel.Size = new Size(180, 60);
+            panel.Controls.Add(overduePanel);
+
+            // Interest
+            x += 200;
+            var interestPanel = CreateStatCard("Faiz", "0 ₼", ModernTheme.Colors.Info);
+            interestPanel.Location = new Point(x, y);
+            interestPanel.Size = new Size(180, 60);
+            panel.Controls.Add(interestPanel);
+
+            // Customer Count
+            x += 200;
+            var customerPanel = CreateStatCard("Müştəri Sayı", "0", ModernTheme.Colors.Secondary);
+            customerPanel.Location = new Point(x, y);
+            customerPanel.Size = new Size(180, 60);
+            panel.Controls.Add(customerPanel);
+
+            // Initialize labels for updating
+            lblTotalDebt = totalDebtPanel.Controls.OfType<Label>().FirstOrDefault(l => l.Tag?.ToString() == "value");
+            lblOverdueDebt = overduePanel.Controls.OfType<Label>().FirstOrDefault(l => l.Tag?.ToString() == "value");
+            lblTotalInterest = interestPanel.Controls.OfType<Label>().FirstOrDefault(l => l.Tag?.ToString() == "value");
+            lblCustomerCount = customerPanel.Controls.OfType<Label>().FirstOrDefault(l => l.Tag?.ToString() == "value");
+
+            return panel;
+        }
+
+        private Panel CreateStatCard(string title, string value, Color color)
+        {
+            var panel = new Panel
+            {
+                BackColor = color,
+                Padding = new Padding(15, 10, 15, 10)
+            };
+
+            var titleLbl = new Label
+            {
+                Text = title,
+                Font = ModernTheme.Fonts.Caption,
+                ForeColor = Color.White,
+                AutoSize = true,
+                Location = new Point(0, 5)
+            };
+            panel.Controls.Add(titleLbl);
+
+            var valueLbl = new Label
+            {
+                Text = value,
+                Font = ModernTheme.Fonts.SubHeading,
+                ForeColor = Color.White,
+                AutoSize = true,
+                Location = new Point(0, 25),
+                Tag = "value"
+            };
+            panel.Controls.Add(valueLbl);
+
+            return panel;
+        }
+
+        private Panel CreateFilterPanel()
+        {
+            var panel = ModernTheme.CreateCard();
+            panel.Height = 80;
+            panel.Margin = new Padding(0, 0, 0, ModernTheme.Layout.Margin);
+
+            var titleLabel = new Label
+            {
+                Text = "Filtr və Axtarış",
+                Font = ModernTheme.Fonts.SubHeading,
+                ForeColor = ModernTheme.Colors.TextPrimary,
+                AutoSize = true,
+                Location = new Point(ModernTheme.Layout.Padding, 10)
+            };
+            panel.Controls.Add(titleLabel);
+
+            // Customer dropdown
+            var customerLabel = new Label
+            {
+                Text = "Müştəri:",
+                Font = ModernTheme.Fonts.Body,
+                ForeColor = ModernTheme.Colors.TextSecondary,
+                AutoSize = true,
+                Location = new Point(ModernTheme.Layout.Padding, 40)
+            };
+            panel.Controls.Add(customerLabel);
+
+            cmbCustomer = new ComboBox
+            {
+                Location = new Point(80, 37),
+                Size = new Size(200, ModernTheme.Layout.InputHeight),
+                Font = ModernTheme.Fonts.Body,
+                DropDownStyle = ComboBoxStyle.DropDownList
+            };
+            ModernTheme.ApplyComboBoxStyle(cmbCustomer);
+            panel.Controls.Add(cmbCustomer);
+
+            // Filter button
+            var btnFilter = new Button
+            {
+                Text = "🔍 Filtr",
+                Location = new Point(300, 37),
+                Size = new Size(100, ModernTheme.Layout.ButtonHeight),
+                Font = ModernTheme.Fonts.Button
+            };
+            btnFilter.Click += btnFilterByStatus_Click;
+            ModernTheme.ApplyButtonStyle(btnFilter);
+            panel.Controls.Add(btnFilter);
+
+            // Refresh button
+            var btnRefresh = new Button
+            {
+                Text = "🔄 Yenilə",
+                Location = new Point(410, 37),
+                Size = new Size(100, ModernTheme.Layout.ButtonHeight),
+                Font = ModernTheme.Fonts.Button
+            };
+            btnRefresh.Click += btnRefresh_Click;
+            ModernTheme.ApplyButtonStyle(btnRefresh);
+            panel.Controls.Add(btnRefresh);
+
+            return panel;
+        }
+
+        private Panel CreateDataGridPanel()
+        {
+            var panel = ModernTheme.CreateCard();
+            panel.Margin = new Padding(0, 0, 0, ModernTheme.Layout.Margin);
+
+            var titleLabel = new Label
+            {
+                Text = "Borc Siyahısı",
+                Font = ModernTheme.Fonts.SubHeading,
+                ForeColor = ModernTheme.Colors.TextPrimary,
+                AutoSize = true,
+                Location = new Point(ModernTheme.Layout.Padding, 10)
+            };
+            panel.Controls.Add(titleLabel);
+
+            dgvDebts = new DataGridView
+            {
+                Location = new Point(ModernTheme.Layout.Padding, 40),
+                Size = new Size(panel.Width - (ModernTheme.Layout.Padding * 2), 
+                               panel.Height - 60),
+                Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right,
+                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
+            };
+            dgvDebts.CellDoubleClick += dgvDebts_CellDoubleClick;
+            panel.Controls.Add(dgvDebts);
+
+            return panel;
+        }
+
+        private Panel CreateActionButtonsPanel()
+        {
+            var panel = ModernTheme.CreateCard();
+            panel.Height = 60;
+
+            // Add debt button
+            var btnAddDebt = new Button
+            {
+                Text = "➕ Borc Əlavə Et",
+                Location = new Point(ModernTheme.Layout.Padding, 15),
+                Size = new Size(150, ModernTheme.Layout.ButtonHeight),
+                Font = ModernTheme.Fonts.Button
+            };
+            btnAddDebt.Click += btnAddDebt_Click;
+            ModernTheme.ApplyButtonStyle(btnAddDebt, true);
+            panel.Controls.Add(btnAddDebt);
+
+            // Add payment button
+            var btnAddPayment = new Button
+            {
+                Text = "💳 Ödəniş Et",
+                Location = new Point(180, 15),
+                Size = new Size(130, ModernTheme.Layout.ButtonHeight),
+                Font = ModernTheme.Fonts.Button
+            };
+            btnAddPayment.Click += btnAddPayment_Click;
+            ModernTheme.ApplyButtonStyle(btnAddPayment);
+            panel.Controls.Add(btnAddPayment);
+
+            // View details button
+            var btnViewDetails = new Button
+            {
+                Text = "📊 Təfərrüatlar",
+                Location = new Point(320, 15),
+                Size = new Size(130, ModernTheme.Layout.ButtonHeight),
+                Font = ModernTheme.Fonts.Button
+            };
+            btnViewDetails.Click += btnViewDetails_Click;
+            ModernTheme.ApplyButtonStyle(btnViewDetails);
+            panel.Controls.Add(btnViewDetails);
+
+            return panel;
+        }
+
+        // Control declarations
+        private DataGridView dgvDebts;
+        private ComboBox cmbCustomer;
+        private Label lblTotalDebt;
+        private Label lblOverdueDebt;
+        private Label lblTotalInterest;
+        private Label lblCustomerCount;
 
         private void SetupDataGridView()
         {
-            dgvDebts.EnableHeadersVisualStyles = false;
-            dgvDebts.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(52, 73, 94);
-            dgvDebts.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            dgvDebts.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            dgvDebts.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(52, 73, 94);
-            
-            dgvDebts.DefaultCellStyle.SelectionBackColor = Color.FromArgb(52, 152, 219);
-            dgvDebts.DefaultCellStyle.SelectionForeColor = Color.White;
-            dgvDebts.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(247, 249, 250);
-            
-            dgvDebts.BorderStyle = BorderStyle.None;
-            dgvDebts.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            dgvDebts.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvDebts.MultiSelect = false;
-            dgvDebts.AllowUserToAddRows = false;
-            dgvDebts.AllowUserToDeleteRows = false;
-            dgvDebts.ReadOnly = true;
+            if (dgvDebts != null)
+            {
+                ModernTheme.ApplyDataGridViewStyle(dgvDebts);
+            }
         }
 
         private async Task LoadDebtsAsync()
@@ -128,19 +384,15 @@ namespace AzAgroPOS.PL.Forms
 
         private void LoadCustomers()
         {
-            try
+            Execute(() =>
             {
-                var customers = _context.Tedarukciler.Where(t => t.Status == "Aktiv").ToList();
+                var repository = _serviceProvider.GetRequiredService<MusteriRepository>();
+                var customers = repository.GetAllActive();
                 cmbCustomer.DataSource = customers;
-                cmbCustomer.DisplayMember = "Ad";
+                cmbCustomer.DisplayMember = "TamAd";
                 cmbCustomer.ValueMember = "Id";
                 cmbCustomer.SelectedIndex = -1;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Müştəri məlumatları yüklənərkən xəta: {ex.Message}", "Xəta", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            }, "Müştəri məlumatları yüklənərkən xəta baş verdi");
         }
 
         private void LoadStatistics()

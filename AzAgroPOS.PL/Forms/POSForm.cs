@@ -224,6 +224,7 @@ namespace AzAgroPOS.PL.Forms
                     MehsulId = mehsul.Id,
                     Barkod = mehsul.Barkod,
                     MehsulAdi = mehsul.Ad,
+                    VahidAdi = mehsul.Vahid?.Ad ?? "Ədəd",
                     Miqdar = miqdar,
                     VahidQiymeti = mehsul.SatisQiymeti
                 });
@@ -475,6 +476,7 @@ namespace AzAgroPOS.PL.Forms
         public int MehsulId { get; set; }
         public string Barkod { get; set; }
         public string MehsulAdi { get; set; }
+        public string VahidAdi { get; set; }
         public decimal Miqdar { get; set; }
         public decimal VahidQiymeti { get; set; }
         public decimal CemMebleg => Miqdar * VahidQiymeti;

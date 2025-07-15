@@ -60,7 +60,7 @@ namespace AzAgroPOS.PL.Services
         public static IHost CreateAppHost()
         {
             return Host.CreateDefaultBuilder()
-                .UseContentRoot(AppContext.BaseDirectory)
+                .UseContentRoot(System.AppContext.BaseDirectory)
                 .ConfigureServices((context, services) =>
                 {
                     services.ConfigureServices();

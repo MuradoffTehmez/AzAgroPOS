@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using AzAgroPOS.Entities.Domain;
 
@@ -25,6 +26,16 @@ namespace AzAgroPOS.DAL.Repositories
             _context.Tedarukciler.Add(tedarukcu);
             _context.SaveChanges();
             return tedarukcu.Id;
+        }
+
+        public async Task<int> AddAsync(Tedarukcu tedarukcu)
+        {
+            using (var context = new AzAgroDbContext())
+            {
+                context.Tedarukciler.Add(tedarukcu);
+                await context.SaveChangesAsync();
+                return tedarukcu.Id;
+            }
         }
 
         public void Update(Tedarukcu tedarukcu)
