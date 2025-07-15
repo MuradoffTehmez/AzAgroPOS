@@ -33,6 +33,7 @@ namespace AzAgroPOS.PL.Services
             services.AddScoped<AnbarRepository>();
             services.AddScoped<AnbarQalikRepository>();
             services.AddScoped<AnbarHereketRepository>();
+            services.AddScoped<IGiderRepository, GiderRepository>();
 
             // Services
             services.AddScoped<AuthService>();
@@ -47,6 +48,7 @@ namespace AzAgroPOS.PL.Services
             services.AddScoped<DatabaseInitializationService>();
             services.AddScoped<CustomerAnalyticsService>();
             services.AddScoped<EmployeePerformanceService>();
+            services.AddScoped<GiderService>();
 
             // Error Handling
             services.AddScoped<IErrorHandlingService, ErrorHandlingService>();

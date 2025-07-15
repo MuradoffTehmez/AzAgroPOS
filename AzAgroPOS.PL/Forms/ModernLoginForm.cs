@@ -593,5 +593,56 @@ TryAutoLoginAsync()
                 txtEmail.Focus();
             }
         }
+
+        private void ShowError(string message)
+        {
+            var errorDialog = new Form
+            {
+                Text = "Xəta",
+                Size = new Size(400, 200),
+                StartPosition = FormStartPosition.CenterParent,
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                MaximizeBox = false,
+                MinimizeBox = false,
+                BackColor = Color.White
+            };
+
+            var iconLabel = new Label
+            {
+                Text = "⚠️",
+                Font = new Font("Segoe UI", 24F),
+                ForeColor = ModernTheme.Colors.Warning,
+                AutoSize = true,
+                Location = new Point(30, 40)
+            };
+
+            var messageLabel = new Label
+            {
+                Text = message,
+                Font = ModernTheme.Fonts.Body,
+                ForeColor = ModernTheme.Colors.TextPrimary,
+                AutoSize = false,
+                Size = new Size(300, 60),
+                Location = new Point(80, 50),
+                TextAlign = ContentAlignment.MiddleLeft
+            };
+
+            var okButton = new Button
+            {
+                Text = "Tamam",
+                Size = new Size(80, 35),
+                Location = new Point(150, 120),
+                Font = ModernTheme.Fonts.Button,
+                BackColor = ModernTheme.Colors.Primary,
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat,
+                DialogResult = DialogResult.OK
+            };
+            okButton.FlatAppearance.BorderSize = 0;
+
+            errorDialog.Controls.AddRange(new Control[] { iconLabel, messageLabel, okButton });
+            errorDialog.AcceptButton = okButton;
+            errorDialog.ShowDialog(this);
+        }
     }
 }

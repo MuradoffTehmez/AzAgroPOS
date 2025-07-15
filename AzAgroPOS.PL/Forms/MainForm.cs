@@ -51,6 +51,9 @@ namespace AzAgroPOS.PL.Forms
                 btnDebtManagement.Visible = isManager;
                 btnRepairManagement.Visible = true;
                 
+                // Expense management - accessible for manager and admin
+                // btnExpenseManagement.Visible = isManager; // Will be set in CreateMenuButtons
+                
                 // Müştəri idarəetməsi və POS bütün istifadəçilər üçün görünür
                 btnCustomerManagement.Visible = true;
                 btnPOS.Visible = true;
@@ -127,6 +130,12 @@ namespace AzAgroPOS.PL.Forms
         {
             var repairManagementForm = new TamirManagementForm(_currentUser);
             repairManagementForm.ShowDialog();
+        }
+
+        private void btnExpenseManagement_Click(object sender, EventArgs e)
+        {
+            var expenseManagementForm = new GiderManagementForm(_currentUser, _serviceProvider);
+            expenseManagementForm.ShowDialog();
         }
 
         private void ResetButtonColors()
@@ -496,6 +505,10 @@ namespace AzAgroPOS.PL.Forms
             int yPos = 20;
             int buttonHeight = 50;
             int spacing = 5;
+            
+            // Get user role permissions
+            bool isAdmin = _currentUser?.Rol?.Ad == SystemConstants.Roles.Administrator;
+            bool isManager = _currentUser?.Rol?.Ad == SystemConstants.Roles.Manager || isAdmin;
 
             // Dashboard button
             var btnDashboard = CreateMenuButton("🏠 Ana Səhifə", yPos);
@@ -513,6 +526,7 @@ namespace AzAgroPOS.PL.Forms
             // Inventory button
             var btnInventory = CreateMenuButton("📦 Anbar", yPos);
             btnInventory.Click += btnInventory_Click;
+            btnInventory.Visible = isManager;
             sidebarPanel.Controls.Add(btnInventory);
             yPos += buttonHeight + spacing;
 
@@ -525,6 +539,7 @@ namespace AzAgroPOS.PL.Forms
             // Debt Management button
             var btnDebtManagement = CreateMenuButton("💰 Borc İdarəsi", yPos);
             btnDebtManagement.Click += btnDebtManagement_Click;
+            btnDebtManagement.Visible = isManager;
             sidebarPanel.Controls.Add(btnDebtManagement);
             yPos += buttonHeight + spacing;
 
@@ -534,21 +549,31 @@ namespace AzAgroPOS.PL.Forms
             sidebarPanel.Controls.Add(btnRepairManagement);
             yPos += buttonHeight + spacing;
 
+            // Expense Management button
+            var btnExpenseManagement = CreateMenuButton("💰 Gidər İdarəsi", yPos);
+            btnExpenseManagement.Click += btnExpenseManagement_Click;
+            btnExpenseManagement.Visible = isManager; // Only for managers and admins
+            sidebarPanel.Controls.Add(btnExpenseManagement);
+            yPos += buttonHeight + spacing;
+
             // Reports button
             var btnReports = CreateMenuButton("📊 Hesabatlar", yPos);
             btnReports.Click += btnReports_Click;
+            btnReports.Visible = isManager;
             sidebarPanel.Controls.Add(btnReports);
             yPos += buttonHeight + spacing;
 
             // User Management button
             var btnUserManagement = CreateMenuButton("👤 İstifadəçilər", yPos);
             btnUserManagement.Click += btnUserManagement_Click;
+            btnUserManagement.Visible = isAdmin;
             sidebarPanel.Controls.Add(btnUserManagement);
             yPos += buttonHeight + spacing;
 
             // Settings button
             var btnSettings = CreateMenuButton("⚙️ Parametrlər", yPos);
             btnSettings.Click += btnSettings_Click;
+            btnSettings.Visible = isAdmin;
             sidebarPanel.Controls.Add(btnSettings);
         }
 

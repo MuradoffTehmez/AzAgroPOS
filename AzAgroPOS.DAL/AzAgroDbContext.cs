@@ -50,6 +50,9 @@ namespace AzAgroPOS.DAL
         public DbSet<NovbeKaydi> NovbeKayitlari { get; set; }
         public DbSet<IsciPerformans> IsciPerformans { get; set; }
         
+        // Expense Module
+        public DbSet<Gider> Giderler { get; set; }
+        
         // Reports Module
         public DbSet<SatisHesabati> SatisHesabatlari { get; set; }
 
@@ -468,6 +471,21 @@ namespace AzAgroPOS.DAL
                     .WithMany()
                     .HasForeignKey(e => e.TeyinEdilenIstifadeciId)
                     .OnDelete(DeleteBehavior.SetNull);
+            });
+
+            // Expense Module Configurations
+            modelBuilder.Entity<Gider>(entity =>
+            {
+                entity.HasIndex(e => e.Tarix);
+                entity.HasIndex(e => e.Kateqoriya);
+                entity.HasIndex(e => e.IstifadeciId);
+                entity.HasIndex(e => e.TesdiqEdildi);
+                entity.HasIndex(e => e.Ad);
+
+                entity.HasOne(e => e.Istifadeci)
+                    .WithMany()
+                    .HasForeignKey(e => e.IstifadeciId)
+                    .OnDelete(DeleteBehavior.Restrict);
             });
 
             // Seed data-nı DatabaseInitializationService-də edirik

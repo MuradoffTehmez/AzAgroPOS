@@ -46,9 +46,9 @@ namespace AzAgroPOS.PL
                     "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-            // Start with LoginForm using DI
+            // Start with ModernLoginForm using DI
             using var loginScope = _serviceProvider.CreateScope();
-            var loginForm = new LoginForm(loginScope.ServiceProvider);
+            var loginForm = new Forms.ModernLoginForm(loginScope.ServiceProvider);
             Application.Run(loginForm);
 
             _host?.Dispose();
