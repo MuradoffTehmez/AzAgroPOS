@@ -11,16 +11,17 @@ using System.Windows.Forms;
 
 namespace AzAgroPOS.PL.Forms
 {
-    public partial class UserManagementForm : Form
+    public partial class UserManagementForm : BaseForm
     {
         private readonly IstifadeciRepository _istifadeciRepository;
         private readonly RolRepository _rolRepository;
         private readonly AuthService _authService;
         private readonly AuditLogService _auditLogService;
-        private readonly Istifadeci _currentUser;
-        private List<Istifadeci> _allUsers;
+        private List<Istifadeci> _filteredUsers;
+        private int _currentPageNumber = 1;
+        private const int PageSize = 100;
 
-        public UserManagementForm(Istifadeci currentUser)
+        public UserManagementForm(Istifadeci currentUser) : base()
         {
             InitializeComponent();
             var context = new AzAgroDbContext();
@@ -30,8 +31,12 @@ namespace AzAgroPOS.PL.Forms
             _auditLogService = new AuditLogService();
             _currentUser = currentUser;
             
-            LoadUsers();
             SetupDataGridView();
+        }
+
+        protected override async void OnFormLoad()
+        {
+            await LoadUsersAsync();
         }
 
         private void SetupDataGridView()
@@ -116,31 +121,54 @@ namespace AzAgroPOS.PL.Forms
             }
         }
 
-        private async void LoadUsers()
+        private async Task LoadUsersAsync()
         {
-            try
+            await ExecuteAsync(async () =>
             {
                 lblStatus.Text = "İstifadəçilər yüklənir...";
-                _allUsers = await _istifadeciRepository.GetAllAsync();
-                FilterUsers();
-                lblStatus.Text = $"Cəmi {_allUsers.Count} istifadəçi";
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"İstifadəçilər yüklənərkən xəta: {ex.Message}", "Xəta", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                lblStatus.Text = "Xəta baş verdi";
-            }
+                
+                // Get filter values
+                string searchTerm = txtSearch?.Text?.Trim();
+                string status = cmbStatusFilter?.SelectedItem?.ToString();
+                if (status == "Hamısı") status = null;
+                
+                int? rolId = null;
+                if (cmbRoleFilter?.SelectedItem is Rol selectedRole)
+                {
+                    rolId = selectedRole.Id;
+                }
+                
+                // Load filtered users from database
+                _filteredUsers = await _istifadeciRepository.GetFilteredUsersAsync(
+                    searchTerm, status, rolId, PageSize, _currentPageNumber);
+                
+                // Update DataGridView
+                dgvUsers.DataSource = _filteredUsers;
+                
+                // Get total count for status display
+                int totalCount = await _istifadeciRepository.GetFilteredUsersCountAsync(
+                    searchTerm, status, rolId);
+                
+                lblStatus.Text = $"Cəmi {totalCount} istifadəçi (Səhifə {_currentPageNumber})";
+            }, "İstifadəçilər yüklənərkən xəta baş verdi");
         }
 
-        private void FilterUsers()
+        private async void LoadUsers()
         {
-            if (_allUsers == null) return;
+            await LoadUsersAsync();
+        }
 
-            var filteredUsers = _allUsers.AsEnumerable();
+        private async void FilterUsers()
+        {
+            await LoadUsersAsync();
+        }
 
-            // Status filter
-            if (cmbStatusFilter.SelectedItem != null && cmbStatusFilter.SelectedItem.ToString() != "Hamısı")
+        private void FilterUsers_Old()
+        {
+            if (_filteredUsers == null) return;
+
+            // This method is now replaced by database-level filtering
+            // Keep for reference or remove later
             {
                 filteredUsers = filteredUsers.Where(u => u.Status == cmbStatusFilter.SelectedItem.ToString());
             }
@@ -229,8 +257,7 @@ namespace AzAgroPOS.PL.Forms
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Status dəyişdirilərkən xəta: {ex.Message}", "Xəta", 
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    _notificationService.HandleError(ex, "Status dəyişdirilərkən xəta baş verdi");
                 }
             }
         }
@@ -304,8 +331,7 @@ namespace AzAgroPOS.PL.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Roller yüklənərkən xəta: {ex.Message}", "Xəta", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                _notificationService.HandleError(ex, "Roller yüklənərkən xəta baş verdi");
             }
         }
     }

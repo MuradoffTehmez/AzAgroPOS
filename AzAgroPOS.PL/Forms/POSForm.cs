@@ -6,6 +6,7 @@ using System.Media;
 using System.Windows.Forms;
 using AzAgroPOS.Entities.Domain;
 using AzAgroPOS.BLL.Services;
+using AzAgroPOS.PL.Services;
 
 namespace AzAgroPOS.PL.Forms
 {
@@ -41,8 +42,13 @@ namespace AzAgroPOS.PL.Forms
 
         private Istifadeci GetCurrentUser()
         {
-            // TODO: Implement proper session management
-            // For now, return a default user to prevent null reference exceptions
+            // Use SessionManager to get current user
+            if (SessionManager.IsLoggedIn)
+            {
+                return SessionManager.CurrentUser;
+            }
+
+            // Fallback for development/testing
             return new Istifadeci 
             { 
                 Id = 1, 

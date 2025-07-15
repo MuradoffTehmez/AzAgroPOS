@@ -27,9 +27,13 @@ namespace AzAgroPOS.PL.Forms
 
         protected virtual Istifadeci GetCurrentUser()
         {
-            // This should be implemented to get the current logged-in user
-            // For now, return a basic user to prevent null reference exceptions
-            // TODO: Implement proper session management
+            // Use SessionManager to get current user
+            if (SessionManager.IsLoggedIn)
+            {
+                return SessionManager.CurrentUser;
+            }
+
+            // Fallback for development/testing
             return new Istifadeci 
             { 
                 Id = 1, 

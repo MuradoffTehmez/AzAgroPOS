@@ -14,7 +14,7 @@ namespace AzAgroPOS.Entities.Domain
 
         public int MusteriId { get; set; }
         [ForeignKey("MusteriId")]
-        public virtual Tedarukcu Musteri { get; set; }
+        public virtual Musteri Musteri { get; set; }
 
         [Required]
         [StringLength(50)]
