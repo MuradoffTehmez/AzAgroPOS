@@ -1,34 +1,46 @@
 using AzAgroPOS.BLL.Services;
 using AzAgroPOS.DAL;
 using AzAgroPOS.Entities.Domain;
+using AzAgroPOS.PL.Services;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Drawing;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AzAgroPOS.PL.Forms
 {
-    public partial class BorcManagementForm : Form
+    public partial class BorcManagementForm : BaseForm
     {
         private readonly BorcService _borcService;
-        private readonly Istifadeci _currentUser;
-        private readonly AzAgroDbContext _context;
+        private readonly IServiceProvider _serviceProvider;
 
-        public BorcManagementForm(Istifadeci currentUser)
+        public BorcManagementForm(Istifadeci currentUser, IServiceProvider serviceProvider) : base()
         {
             InitializeComponent();
-            _context = new AzAgroDbContext();
-            _borcService = new BorcService(_context, new AuditLogService());
+            _serviceProvider = serviceProvider;
+            _borcService = serviceProvider.GetRequiredService<BorcService>();
             _currentUser = currentUser;
             SetupModernDesign();
         }
 
-        private void BorcManagementForm_Load(object sender, EventArgs e)
+        // Backward compatibility constructor
+        public BorcManagementForm(Istifadeci currentUser) : this(currentUser, Program.ServiceProvider)
         {
-            LoadDebts();
+        }
+
+        private async void BorcManagementForm_Load(object sender, EventArgs e)
+        {
+            await LoadDebtsAsync();
             LoadCustomers();
             LoadStatistics();
             SetupDataGridView();
+        }
+
+        protected override async void OnFormLoad()
+        {
+            await LoadDebtsAsync();
         }
 
         private void SetupModernDesign()
@@ -73,11 +85,14 @@ namespace AzAgroPOS.PL.Forms
             dgvDebts.ReadOnly = true;
         }
 
-        private void LoadDebts()
+        private async Task LoadDebtsAsync()
         {
-            try
+            await ExecuteAsync(async () =>
             {
-                var debts = _borcService.GetAllDebts().Select(d => new
+                var repository = _serviceProvider.GetRequiredService<MusteriBorcRepository>();
+                var debts = await repository.GetFilteredDebtsAsync(null, null, null, null, 100, 1);
+                
+                var displayData = debts.Select(d => new
                 {
                     d.Id,
                     BorcNomresi = d.BorcNomresiFormatli,
@@ -91,7 +106,7 @@ namespace AzAgroPOS.PL.Forms
                     SonOdemeTarixi = d.SonOdemeTarixi.ToString("dd.MM.yyyy")
                 }).ToList();
 
-                dgvDebts.DataSource = debts;
+                dgvDebts.DataSource = displayData;
                 
                 dgvDebts.Columns["Id"].Visible = false;
                 dgvDebts.Columns["BorcNomresi"].HeaderText = "Borc №";
@@ -103,12 +118,12 @@ namespace AzAgroPOS.PL.Forms
                 dgvDebts.Columns["GecikmeDurumu"].HeaderText = "Gecikməsi";
                 dgvDebts.Columns["BorcTarixi"].HeaderText = "Borc Tarixi";
                 dgvDebts.Columns["SonOdemeTarixi"].HeaderText = "Son Ödəmə";
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Borc məlumatları yüklənərkən xəta: {ex.Message}", "Xəta", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            }, "Borc məlumatları yüklənərkən xəta baş verdi");
+        }
+
+        private async void LoadDebts()
+        {
+            await LoadDebtsAsync();
         }
 
         private void LoadCustomers()

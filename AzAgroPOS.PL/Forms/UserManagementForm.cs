@@ -163,35 +163,6 @@ namespace AzAgroPOS.PL.Forms
             await LoadUsersAsync();
         }
 
-        private void FilterUsers_Old()
-        {
-            if (_filteredUsers == null) return;
-
-            // This method is now replaced by database-level filtering
-            // Keep for reference or remove later
-            {
-                filteredUsers = filteredUsers.Where(u => u.Status == cmbStatusFilter.SelectedItem.ToString());
-            }
-
-            // Role filter
-            if (cmbRoleFilter.SelectedItem != null && cmbRoleFilter.SelectedItem.ToString() != "Hamısı")
-            {
-                filteredUsers = filteredUsers.Where(u => u.Rol?.Ad == cmbRoleFilter.SelectedItem.ToString());
-            }
-
-            // Search filter
-            if (!string.IsNullOrWhiteSpace(txtSearch.Text))
-            {
-                var searchTerm = txtSearch.Text.ToLower();
-                filteredUsers = filteredUsers.Where(u => 
-                    u.Ad.ToLower().Contains(searchTerm) ||
-                    u.Soyad.ToLower().Contains(searchTerm) ||
-                    u.Email.ToLower().Contains(searchTerm)
-                );
-            }
-
-            dgvUsers.DataSource = filteredUsers.ToList();
-        }
 
         private async void btnAddUser_Click(object sender, EventArgs e)
         {

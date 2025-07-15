@@ -1,6 +1,9 @@
 using AzAgroPOS.Entities.Domain;
+using AzAgroPOS.Entities.Constants;
 using AzAgroPOS.PL.Forms;
+using AzAgroPOS.PL.Services;
 using AzAgroPOS.BLL.Services;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,15 +11,21 @@ using System.Windows.Forms;
 
 namespace AzAgroPOS.PL.Forms
 {
-    public partial class MainForm : Form
+    public partial class MainForm : BaseForm
     {
-        private readonly Istifadeci _currentUser;
+        private readonly IServiceProvider _serviceProvider;
 
-        public MainForm(Istifadeci currentUser)
+        public MainForm(Istifadeci currentUser, IServiceProvider serviceProvider) : base()
         {
             InitializeComponent();
+            _serviceProvider = serviceProvider;
             _currentUser = currentUser;
             LoadUserInfo();
+        }
+
+        // Backward compatibility constructor
+        public MainForm(Istifadeci currentUser) : this(currentUser, Program.ServiceProvider)
+        {
         }
 
         private void LoadUserInfo()
@@ -27,8 +36,8 @@ namespace AzAgroPOS.PL.Forms
                 lblRole.Text = $"Rol: {_currentUser.Rol?.Ad ?? "Təyin edilməyib"}";
                 
                 // Admin roluna əsasən menyu elementlərini göstər/gizlət
-                bool isAdmin = _currentUser.Rol?.Ad == "Administrator";
-                bool isManager = _currentUser.Rol?.Ad == "Menecer" || isAdmin;
+                bool isAdmin = _currentUser.Rol?.Ad == SystemConstants.Roles.Administrator;
+                bool isManager = _currentUser.Rol?.Ad == SystemConstants.Roles.Manager || isAdmin;
                 
                 btnUserManagement.Visible = isAdmin;
                 btnSettings.Visible = isAdmin;

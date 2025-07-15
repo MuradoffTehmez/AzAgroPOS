@@ -170,8 +170,11 @@ namespace AzAgroPOS.PL.Forms
         {
             try
             {
-                // TODO: Open new supplier form
-                MessageBox.Show("Yeni tədarükçü formu açılacaq", "Məlumat", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                var addForm = new TedarukcuAddForm();
+                if (addForm.ShowDialog() == DialogResult.OK)
+                {
+                    LoadTedarukciler(); // Refresh supplier list
+                }
             }
             catch (Exception ex)
             {

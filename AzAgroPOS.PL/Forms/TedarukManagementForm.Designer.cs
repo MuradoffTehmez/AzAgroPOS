@@ -17,983 +17,1011 @@ namespace AzAgroPOS.PL.Forms
 
         private void InitializeComponent()
         {
-            this.tabControl = new System.Windows.Forms.TabControl();
-            this.tabTedarukciler = new System.Windows.Forms.TabPage();
-            this.panelTedarukcu = new System.Windows.Forms.Panel();
-            this.dgvTedarukciler = new System.Windows.Forms.DataGridView();
-            this.colTedarukcuKod = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colTedarukcuAd = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colTelefon = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colEmail = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colCariBorc = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colKreditLimiti = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.panelTedarukcuButtons = new System.Windows.Forms.Panel();
-            this.btnOdemeYap = new System.Windows.Forms.Button();
-            this.btnSilTedarukcu = new System.Windows.Forms.Button();
-            this.btnDuzenleTedarukcu = new System.Windows.Forms.Button();
-            this.btnYeniTedarukcu = new System.Windows.Forms.Button();
-            this.panelTedarukcuSearch = new System.Windows.Forms.Panel();
-            this.lblTedarukcuAxtaris = new System.Windows.Forms.Label();
-            this.txtTedarukcuAxtaris = new System.Windows.Forms.TextBox();
-            this.tabAlisOrderleri = new System.Windows.Forms.TabPage();
-            this.panelAlisOrder = new System.Windows.Forms.Panel();
-            this.dgvAlisOrderleri = new System.Windows.Forms.DataGridView();
-            this.colOrderNomresi = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colOrderTarixi = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colTedarukcu = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colOrderMebleg = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colOrderStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colTeslimTarixi = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.panelOrderButtons = new System.Windows.Forms.Panel();
-            this.btnOrderDetali = new System.Windows.Forms.Button();
-            this.btnIptalOrder = new System.Windows.Forms.Button();
-            this.btnTesdiqleOrder = new System.Windows.Forms.Button();
-            this.btnDuzenleOrder = new System.Windows.Forms.Button();
-            this.btnYeniOrder = new System.Windows.Forms.Button();
-            this.panelOrderFilter = new System.Windows.Forms.Panel();
-            this.lblOrderTarix = new System.Windows.Forms.Label();
-            this.dtpOrderEnd = new System.Windows.Forms.DateTimePicker();
-            this.dtpOrderStart = new System.Windows.Forms.DateTimePicker();
-            this.lblOrderStatus = new System.Windows.Forms.Label();
-            this.cmbOrderStatus = new System.Windows.Forms.ComboBox();
-            this.tabAlisSenedleri = new System.Windows.Forms.TabPage();
-            this.panelAlisSened = new System.Windows.Forms.Panel();
-            this.dgvAlisSenedleri = new System.Windows.Forms.DataGridView();
-            this.colSenedNomresi = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colSenedTarixi = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colSenedTedarukcu = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colSenedAnbar = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colSenedMebleg = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colSenedStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colOdemeStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.panelSenedButtons = new System.Windows.Forms.Panel();
-            this.btnFaktura = new System.Windows.Forms.Button();
-            this.btnSenedDetali = new System.Windows.Forms.Button();
-            this.btnIptalSened = new System.Windows.Forms.Button();
-            this.btnQebulEt = new System.Windows.Forms.Button();
-            this.btnYeniSened = new System.Windows.Forms.Button();
-            this.panelSenedFilter = new System.Windows.Forms.Panel();
-            this.lblOdemeStatus = new System.Windows.Forms.Label();
-            this.cmbOdemeStatus = new System.Windows.Forms.ComboBox();
-            this.lblSenedStatus = new System.Windows.Forms.Label();
-            this.cmbSenedStatus = new System.Windows.Forms.ComboBox();
-            this.tabAnbarTransfer = new System.Windows.Forms.TabPage();
-            this.panelTransfer = new System.Windows.Forms.Panel();
-            this.dgvTransferler = new System.Windows.Forms.DataGridView();
-            this.colTransferNomresi = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colTransferTarixi = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colMenbAnbar = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colHedefAnbar = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colMehsulSayi = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colTransferStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.panelTransferButtons = new System.Windows.Forms.Panel();
-            this.btnTransferDetali = new System.Windows.Forms.Button();
-            this.btnIptalTransfer = new System.Windows.Forms.Button();
-            this.btnQebulTransfer = new System.Windows.Forms.Button();
-            this.btnGonderTransfer = new System.Windows.Forms.Button();
-            this.btnYeniTransfer = new System.Windows.Forms.Button();
-            this.statusStrip = new System.Windows.Forms.StatusStrip();
-            this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.txtOrderAxtaris = new System.Windows.Forms.Button();
-            this.txtSenedAxtaris = new System.Windows.Forms.Button();
-            this.txtTransferAxtaris = new System.Windows.Forms.Button();
-            this.tabControl.SuspendLayout();
-            this.tabTedarukciler.SuspendLayout();
-            this.panelTedarukcu.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvTedarukciler)).BeginInit();
-            this.panelTedarukcuButtons.SuspendLayout();
-            this.panelTedarukcuSearch.SuspendLayout();
-            this.tabAlisOrderleri.SuspendLayout();
-            this.panelAlisOrder.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvAlisOrderleri)).BeginInit();
-            this.panelOrderButtons.SuspendLayout();
-            this.panelOrderFilter.SuspendLayout();
-            this.tabAlisSenedleri.SuspendLayout();
-            this.panelAlisSened.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvAlisSenedleri)).BeginInit();
-            this.panelSenedButtons.SuspendLayout();
-            this.panelSenedFilter.SuspendLayout();
-            this.tabAnbarTransfer.SuspendLayout();
-            this.panelTransfer.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvTransferler)).BeginInit();
-            this.panelTransferButtons.SuspendLayout();
-            this.statusStrip.SuspendLayout();
-            this.SuspendLayout();
+            tabControl = new System.Windows.Forms.TabControl();
+            tabTedarukciler = new System.Windows.Forms.TabPage();
+            panelTedarukcu = new System.Windows.Forms.Panel();
+            dgvTedarukciler = new System.Windows.Forms.DataGridView();
+            colTedarukcuKod = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            colTedarukcuAd = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            colTelefon = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            colEmail = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            colCariBorc = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            colKreditLimiti = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            colStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            panelTedarukcuButtons = new System.Windows.Forms.Panel();
+            btnOdemeYap = new System.Windows.Forms.Button();
+            btnSilTedarukcu = new System.Windows.Forms.Button();
+            btnDuzenleTedarukcu = new System.Windows.Forms.Button();
+            btnYeniTedarukcu = new System.Windows.Forms.Button();
+            panelTedarukcuSearch = new System.Windows.Forms.Panel();
+            lblTedarukcuAxtaris = new System.Windows.Forms.Label();
+            txtTedarukcuAxtaris = new System.Windows.Forms.TextBox();
+            tabAlisOrderleri = new System.Windows.Forms.TabPage();
+            panelAlisOrder = new System.Windows.Forms.Panel();
+            dgvAlisOrderleri = new System.Windows.Forms.DataGridView();
+            colOrderNomresi = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            colOrderTarixi = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            colTedarukcu = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            colOrderMebleg = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            colOrderStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            colTeslimTarixi = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            panelOrderButtons = new System.Windows.Forms.Panel();
+            btnOrderDetali = new System.Windows.Forms.Button();
+            btnIptalOrder = new System.Windows.Forms.Button();
+            btnTesdiqleOrder = new System.Windows.Forms.Button();
+            btnDuzenleOrder = new System.Windows.Forms.Button();
+            btnYeniOrder = new System.Windows.Forms.Button();
+            panelOrderFilter = new System.Windows.Forms.Panel();
+            txtOrderAxtaris = new System.Windows.Forms.Button();
+            lblOrderTarix = new System.Windows.Forms.Label();
+            dtpOrderEnd = new System.Windows.Forms.DateTimePicker();
+            dtpOrderStart = new System.Windows.Forms.DateTimePicker();
+            lblOrderStatus = new System.Windows.Forms.Label();
+            cmbOrderStatus = new System.Windows.Forms.ComboBox();
+            tabAlisSenedleri = new System.Windows.Forms.TabPage();
+            panelAlisSened = new System.Windows.Forms.Panel();
+            dgvAlisSenedleri = new System.Windows.Forms.DataGridView();
+            colSenedNomresi = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            colSenedTarixi = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            colSenedTedarukcu = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            colSenedAnbar = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            colSenedMebleg = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            colSenedStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            colOdemeStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            panelSenedButtons = new System.Windows.Forms.Panel();
+            btnFaktura = new System.Windows.Forms.Button();
+            btnSenedDetali = new System.Windows.Forms.Button();
+            btnIptalSened = new System.Windows.Forms.Button();
+            btnQebulEt = new System.Windows.Forms.Button();
+            btnYeniSened = new System.Windows.Forms.Button();
+            panelSenedFilter = new System.Windows.Forms.Panel();
+            txtSenedAxtaris = new System.Windows.Forms.Button();
+            lblOdemeStatus = new System.Windows.Forms.Label();
+            cmbOdemeStatus = new System.Windows.Forms.ComboBox();
+            lblSenedStatus = new System.Windows.Forms.Label();
+            cmbSenedStatus = new System.Windows.Forms.ComboBox();
+            tabAnbarTransfer = new System.Windows.Forms.TabPage();
+            panelTransfer = new System.Windows.Forms.Panel();
+            dgvTransferler = new System.Windows.Forms.DataGridView();
+            colTransferNomresi = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            colTransferTarixi = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            colMenbAnbar = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            colHedefAnbar = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            colMehsulSayi = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            colTransferStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            panelTransferButtons = new System.Windows.Forms.Panel();
+            txtTransferAxtaris = new System.Windows.Forms.Button();
+            btnTransferDetali = new System.Windows.Forms.Button();
+            btnIptalTransfer = new System.Windows.Forms.Button();
+            btnQebulTransfer = new System.Windows.Forms.Button();
+            btnGonderTransfer = new System.Windows.Forms.Button();
+            btnYeniTransfer = new System.Windows.Forms.Button();
+            statusStrip = new System.Windows.Forms.StatusStrip();
+            toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            tabControl.SuspendLayout();
+            tabTedarukciler.SuspendLayout();
+            panelTedarukcu.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvTedarukciler).BeginInit();
+            panelTedarukcuButtons.SuspendLayout();
+            panelTedarukcuSearch.SuspendLayout();
+            tabAlisOrderleri.SuspendLayout();
+            panelAlisOrder.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvAlisOrderleri).BeginInit();
+            panelOrderButtons.SuspendLayout();
+            panelOrderFilter.SuspendLayout();
+            tabAlisSenedleri.SuspendLayout();
+            panelAlisSened.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvAlisSenedleri).BeginInit();
+            panelSenedButtons.SuspendLayout();
+            panelSenedFilter.SuspendLayout();
+            tabAnbarTransfer.SuspendLayout();
+            panelTransfer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvTransferler).BeginInit();
+            panelTransferButtons.SuspendLayout();
+            statusStrip.SuspendLayout();
+            SuspendLayout();
             // 
             // tabControl
             // 
-            this.tabControl.Controls.Add(this.tabTedarukciler);
-            this.tabControl.Controls.Add(this.tabAlisOrderleri);
-            this.tabControl.Controls.Add(this.tabAlisSenedleri);
-            this.tabControl.Controls.Add(this.tabAnbarTransfer);
-            this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.tabControl.Location = new System.Drawing.Point(0, 0);
-            this.tabControl.Name = "tabControl";
-            this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(1200, 650);
-            this.tabControl.TabIndex = 0;
+            tabControl.Controls.Add(tabTedarukciler);
+            tabControl.Controls.Add(tabAlisOrderleri);
+            tabControl.Controls.Add(tabAlisSenedleri);
+            tabControl.Controls.Add(tabAnbarTransfer);
+            tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            tabControl.Font = new System.Drawing.Font("Segoe UI", 10F);
+            tabControl.Location = new System.Drawing.Point(0, 0);
+            tabControl.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            tabControl.Name = "tabControl";
+            tabControl.SelectedIndex = 0;
+            tabControl.Size = new System.Drawing.Size(1400, 753);
+            tabControl.TabIndex = 0;
             // 
             // tabTedarukciler
             // 
-            this.tabTedarukciler.Controls.Add(this.panelTedarukcu);
-            this.tabTedarukciler.Location = new System.Drawing.Point(4, 26);
-            this.tabTedarukciler.Name = "tabTedarukciler";
-            this.tabTedarukciler.Padding = new System.Windows.Forms.Padding(3);
-            this.tabTedarukciler.Size = new System.Drawing.Size(1192, 620);
-            this.tabTedarukciler.TabIndex = 0;
-            this.tabTedarukciler.Text = "Tədarükçülər";
-            this.tabTedarukciler.UseVisualStyleBackColor = true;
+            tabTedarukciler.Controls.Add(panelTedarukcu);
+            tabTedarukciler.Location = new System.Drawing.Point(4, 26);
+            tabTedarukciler.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            tabTedarukciler.Name = "tabTedarukciler";
+            tabTedarukciler.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            tabTedarukciler.Size = new System.Drawing.Size(1392, 723);
+            tabTedarukciler.TabIndex = 0;
+            tabTedarukciler.Text = "Tədarükçülər";
+            tabTedarukciler.UseVisualStyleBackColor = true;
             // 
             // panelTedarukcu
             // 
-            this.panelTedarukcu.Controls.Add(this.dgvTedarukciler);
-            this.panelTedarukcu.Controls.Add(this.panelTedarukcuButtons);
-            this.panelTedarukcu.Controls.Add(this.panelTedarukcuSearch);
-            this.panelTedarukcu.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelTedarukcu.Location = new System.Drawing.Point(3, 3);
-            this.panelTedarukcu.Name = "panelTedarukcu";
-            this.panelTedarukcu.Size = new System.Drawing.Size(1186, 614);
-            this.panelTedarukcu.TabIndex = 0;
+            panelTedarukcu.Controls.Add(dgvTedarukciler);
+            panelTedarukcu.Controls.Add(panelTedarukcuButtons);
+            panelTedarukcu.Controls.Add(panelTedarukcuSearch);
+            panelTedarukcu.Dock = System.Windows.Forms.DockStyle.Fill;
+            panelTedarukcu.Location = new System.Drawing.Point(4, 3);
+            panelTedarukcu.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            panelTedarukcu.Name = "panelTedarukcu";
+            panelTedarukcu.Size = new System.Drawing.Size(1384, 717);
+            panelTedarukcu.TabIndex = 0;
             // 
             // dgvTedarukciler
             // 
-            this.dgvTedarukciler.AllowUserToAddRows = false;
-            this.dgvTedarukciler.AllowUserToDeleteRows = false;
-            this.dgvTedarukciler.BackgroundColor = System.Drawing.Color.White;
-            this.dgvTedarukciler.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvTedarukciler.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.colTedarukcuKod,
-            this.colTedarukcuAd,
-            this.colTelefon,
-            this.colEmail,
-            this.colCariBorc,
-            this.colKreditLimiti,
-            this.colStatus});
-            this.dgvTedarukciler.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvTedarukciler.Location = new System.Drawing.Point(0, 60);
-            this.dgvTedarukciler.MultiSelect = false;
-            this.dgvTedarukciler.Name = "dgvTedarukciler";
-            this.dgvTedarukciler.ReadOnly = true;
-            this.dgvTedarukciler.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvTedarukciler.Size = new System.Drawing.Size(1186, 494);
-            this.dgvTedarukciler.TabIndex = 0;
+            dgvTedarukciler.AllowUserToAddRows = false;
+            dgvTedarukciler.AllowUserToDeleteRows = false;
+            dgvTedarukciler.BackgroundColor = System.Drawing.Color.White;
+            dgvTedarukciler.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvTedarukciler.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { colTedarukcuKod, colTedarukcuAd, colTelefon, colEmail, colCariBorc, colKreditLimiti, colStatus });
+            dgvTedarukciler.Dock = System.Windows.Forms.DockStyle.Fill;
+            dgvTedarukciler.Location = new System.Drawing.Point(0, 69);
+            dgvTedarukciler.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            dgvTedarukciler.MultiSelect = false;
+            dgvTedarukciler.Name = "dgvTedarukciler";
+            dgvTedarukciler.ReadOnly = true;
+            dgvTedarukciler.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            dgvTedarukciler.Size = new System.Drawing.Size(1384, 579);
+            dgvTedarukciler.TabIndex = 0;
             // 
             // colTedarukcuKod
             // 
-            this.colTedarukcuKod.HeaderText = "Kod";
-            this.colTedarukcuKod.Name = "colTedarukcuKod";
-            this.colTedarukcuKod.ReadOnly = true;
-            this.colTedarukcuKod.Width = 80;
+            colTedarukcuKod.HeaderText = "Kod";
+            colTedarukcuKod.Name = "colTedarukcuKod";
+            colTedarukcuKod.ReadOnly = true;
+            colTedarukcuKod.Width = 80;
             // 
             // colTedarukcuAd
             // 
-            this.colTedarukcuAd.HeaderText = "Tədarükçü Adı";
-            this.colTedarukcuAd.Name = "colTedarukcuAd";
-            this.colTedarukcuAd.ReadOnly = true;
-            this.colTedarukcuAd.Width = 250;
+            colTedarukcuAd.HeaderText = "Tədarükçü Adı";
+            colTedarukcuAd.Name = "colTedarukcuAd";
+            colTedarukcuAd.ReadOnly = true;
+            colTedarukcuAd.Width = 250;
             // 
             // colTelefon
             // 
-            this.colTelefon.HeaderText = "Telefon";
-            this.colTelefon.Name = "colTelefon";
-            this.colTelefon.ReadOnly = true;
-            this.colTelefon.Width = 120;
+            colTelefon.HeaderText = "Telefon";
+            colTelefon.Name = "colTelefon";
+            colTelefon.ReadOnly = true;
+            colTelefon.Width = 120;
             // 
             // colEmail
             // 
-            this.colEmail.HeaderText = "Email";
-            this.colEmail.Name = "colEmail";
-            this.colEmail.ReadOnly = true;
-            this.colEmail.Width = 200;
+            colEmail.HeaderText = "Email";
+            colEmail.Name = "colEmail";
+            colEmail.ReadOnly = true;
+            colEmail.Width = 200;
             // 
             // colCariBorc
             // 
-            this.colCariBorc.HeaderText = "Cari Borc";
-            this.colCariBorc.Name = "colCariBorc";
-            this.colCariBorc.ReadOnly = true;
-            this.colCariBorc.Width = 120;
+            colCariBorc.HeaderText = "Cari Borc";
+            colCariBorc.Name = "colCariBorc";
+            colCariBorc.ReadOnly = true;
+            colCariBorc.Width = 120;
             // 
             // colKreditLimiti
             // 
-            this.colKreditLimiti.HeaderText = "Kredit Limiti";
-            this.colKreditLimiti.Name = "colKreditLimiti";
-            this.colKreditLimiti.ReadOnly = true;
-            this.colKreditLimiti.Width = 120;
+            colKreditLimiti.HeaderText = "Kredit Limiti";
+            colKreditLimiti.Name = "colKreditLimiti";
+            colKreditLimiti.ReadOnly = true;
+            colKreditLimiti.Width = 120;
             // 
             // colStatus
             // 
-            this.colStatus.HeaderText = "Status";
-            this.colStatus.Name = "colStatus";
-            this.colStatus.ReadOnly = true;
+            colStatus.HeaderText = "Status";
+            colStatus.Name = "colStatus";
+            colStatus.ReadOnly = true;
             // 
             // panelTedarukcuButtons
             // 
-            this.panelTedarukcuButtons.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
-            this.panelTedarukcuButtons.Controls.Add(this.btnOdemeYap);
-            this.panelTedarukcuButtons.Controls.Add(this.btnSilTedarukcu);
-            this.panelTedarukcuButtons.Controls.Add(this.btnDuzenleTedarukcu);
-            this.panelTedarukcuButtons.Controls.Add(this.btnYeniTedarukcu);
-            this.panelTedarukcuButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelTedarukcuButtons.Location = new System.Drawing.Point(0, 554);
-            this.panelTedarukcuButtons.Name = "panelTedarukcuButtons";
-            this.panelTedarukcuButtons.Size = new System.Drawing.Size(1186, 60);
-            this.panelTedarukcuButtons.TabIndex = 1;
+            panelTedarukcuButtons.BackColor = System.Drawing.Color.FromArgb(240, 240, 240);
+            panelTedarukcuButtons.Controls.Add(btnOdemeYap);
+            panelTedarukcuButtons.Controls.Add(btnSilTedarukcu);
+            panelTedarukcuButtons.Controls.Add(btnDuzenleTedarukcu);
+            panelTedarukcuButtons.Controls.Add(btnYeniTedarukcu);
+            panelTedarukcuButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
+            panelTedarukcuButtons.Location = new System.Drawing.Point(0, 648);
+            panelTedarukcuButtons.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            panelTedarukcuButtons.Name = "panelTedarukcuButtons";
+            panelTedarukcuButtons.Size = new System.Drawing.Size(1384, 69);
+            panelTedarukcuButtons.TabIndex = 1;
             // 
             // btnOdemeYap
             // 
-            this.btnOdemeYap.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(89)))), ((int)(((byte)(182)))));
-            this.btnOdemeYap.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnOdemeYap.ForeColor = System.Drawing.Color.White;
-            this.btnOdemeYap.Location = new System.Drawing.Point(330, 15);
-            this.btnOdemeYap.Name = "btnOdemeYap";
-            this.btnOdemeYap.Size = new System.Drawing.Size(100, 35);
-            this.btnOdemeYap.TabIndex = 3;
-            this.btnOdemeYap.Text = "Ödəmə Yap";
-            this.btnOdemeYap.UseVisualStyleBackColor = false;
+            btnOdemeYap.BackColor = System.Drawing.Color.FromArgb(155, 89, 182);
+            btnOdemeYap.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnOdemeYap.ForeColor = System.Drawing.Color.White;
+            btnOdemeYap.Location = new System.Drawing.Point(385, 17);
+            btnOdemeYap.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnOdemeYap.Name = "btnOdemeYap";
+            btnOdemeYap.Size = new System.Drawing.Size(117, 40);
+            btnOdemeYap.TabIndex = 3;
+            btnOdemeYap.Text = "Ödəmə Yap";
+            btnOdemeYap.UseVisualStyleBackColor = false;
             // 
             // btnSilTedarukcu
             // 
-            this.btnSilTedarukcu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(76)))), ((int)(((byte)(60)))));
-            this.btnSilTedarukcu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSilTedarukcu.ForeColor = System.Drawing.Color.White;
-            this.btnSilTedarukcu.Location = new System.Drawing.Point(244, 15);
-            this.btnSilTedarukcu.Name = "btnSilTedarukcu";
-            this.btnSilTedarukcu.Size = new System.Drawing.Size(80, 35);
-            this.btnSilTedarukcu.TabIndex = 2;
-            this.btnSilTedarukcu.Text = "Sil";
-            this.btnSilTedarukcu.UseVisualStyleBackColor = false;
+            btnSilTedarukcu.BackColor = System.Drawing.Color.FromArgb(231, 76, 60);
+            btnSilTedarukcu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnSilTedarukcu.ForeColor = System.Drawing.Color.White;
+            btnSilTedarukcu.Location = new System.Drawing.Point(285, 17);
+            btnSilTedarukcu.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnSilTedarukcu.Name = "btnSilTedarukcu";
+            btnSilTedarukcu.Size = new System.Drawing.Size(93, 40);
+            btnSilTedarukcu.TabIndex = 2;
+            btnSilTedarukcu.Text = "Sil";
+            btnSilTedarukcu.UseVisualStyleBackColor = false;
             // 
             // btnDuzenleTedarukcu
             // 
-            this.btnDuzenleTedarukcu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(152)))), ((int)(((byte)(219)))));
-            this.btnDuzenleTedarukcu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDuzenleTedarukcu.ForeColor = System.Drawing.Color.White;
-            this.btnDuzenleTedarukcu.Location = new System.Drawing.Point(138, 15);
-            this.btnDuzenleTedarukcu.Name = "btnDuzenleTedarukcu";
-            this.btnDuzenleTedarukcu.Size = new System.Drawing.Size(100, 35);
-            this.btnDuzenleTedarukcu.TabIndex = 1;
-            this.btnDuzenleTedarukcu.Text = "Düzənlə";
-            this.btnDuzenleTedarukcu.UseVisualStyleBackColor = false;
+            btnDuzenleTedarukcu.BackColor = System.Drawing.Color.FromArgb(52, 152, 219);
+            btnDuzenleTedarukcu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnDuzenleTedarukcu.ForeColor = System.Drawing.Color.White;
+            btnDuzenleTedarukcu.Location = new System.Drawing.Point(161, 17);
+            btnDuzenleTedarukcu.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnDuzenleTedarukcu.Name = "btnDuzenleTedarukcu";
+            btnDuzenleTedarukcu.Size = new System.Drawing.Size(117, 40);
+            btnDuzenleTedarukcu.TabIndex = 1;
+            btnDuzenleTedarukcu.Text = "Düzənlə";
+            btnDuzenleTedarukcu.UseVisualStyleBackColor = false;
             // 
             // btnYeniTedarukcu
             // 
-            this.btnYeniTedarukcu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(204)))), ((int)(((byte)(113)))));
-            this.btnYeniTedarukcu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnYeniTedarukcu.ForeColor = System.Drawing.Color.White;
-            this.btnYeniTedarukcu.Location = new System.Drawing.Point(12, 15);
-            this.btnYeniTedarukcu.Name = "btnYeniTedarukcu";
-            this.btnYeniTedarukcu.Size = new System.Drawing.Size(120, 35);
-            this.btnYeniTedarukcu.TabIndex = 0;
-            this.btnYeniTedarukcu.Text = "Yeni Tədarükçü";
-            this.btnYeniTedarukcu.UseVisualStyleBackColor = false;
+            btnYeniTedarukcu.BackColor = System.Drawing.Color.FromArgb(46, 204, 113);
+            btnYeniTedarukcu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnYeniTedarukcu.ForeColor = System.Drawing.Color.White;
+            btnYeniTedarukcu.Location = new System.Drawing.Point(14, 17);
+            btnYeniTedarukcu.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnYeniTedarukcu.Name = "btnYeniTedarukcu";
+            btnYeniTedarukcu.Size = new System.Drawing.Size(140, 40);
+            btnYeniTedarukcu.TabIndex = 0;
+            btnYeniTedarukcu.Text = "Yeni Tədarükçü";
+            btnYeniTedarukcu.UseVisualStyleBackColor = false;
             // 
             // panelTedarukcuSearch
             // 
-            this.panelTedarukcuSearch.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
-            this.panelTedarukcuSearch.Controls.Add(this.lblTedarukcuAxtaris);
-            this.panelTedarukcuSearch.Controls.Add(this.txtTedarukcuAxtaris);
-            this.panelTedarukcuSearch.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelTedarukcuSearch.Location = new System.Drawing.Point(0, 0);
-            this.panelTedarukcuSearch.Name = "panelTedarukcuSearch";
-            this.panelTedarukcuSearch.Size = new System.Drawing.Size(1186, 60);
-            this.panelTedarukcuSearch.TabIndex = 2;
+            panelTedarukcuSearch.BackColor = System.Drawing.Color.FromArgb(248, 249, 250);
+            panelTedarukcuSearch.Controls.Add(lblTedarukcuAxtaris);
+            panelTedarukcuSearch.Controls.Add(txtTedarukcuAxtaris);
+            panelTedarukcuSearch.Dock = System.Windows.Forms.DockStyle.Top;
+            panelTedarukcuSearch.Location = new System.Drawing.Point(0, 0);
+            panelTedarukcuSearch.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            panelTedarukcuSearch.Name = "panelTedarukcuSearch";
+            panelTedarukcuSearch.Size = new System.Drawing.Size(1384, 69);
+            panelTedarukcuSearch.TabIndex = 2;
             // 
             // lblTedarukcuAxtaris
             // 
-            this.lblTedarukcuAxtaris.AutoSize = true;
-            this.lblTedarukcuAxtaris.Location = new System.Drawing.Point(12, 24);
-            this.lblTedarukcuAxtaris.Name = "lblTedarukcuAxtaris";
-            this.lblTedarukcuAxtaris.Size = new System.Drawing.Size(53, 19);
-            this.lblTedarukcuAxtaris.TabIndex = 1;
-            this.lblTedarukcuAxtaris.Text = "Axtarış:";
+            lblTedarukcuAxtaris.AutoSize = true;
+            lblTedarukcuAxtaris.Location = new System.Drawing.Point(14, 28);
+            lblTedarukcuAxtaris.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lblTedarukcuAxtaris.Name = "lblTedarukcuAxtaris";
+            lblTedarukcuAxtaris.Size = new System.Drawing.Size(53, 19);
+            lblTedarukcuAxtaris.TabIndex = 1;
+            lblTedarukcuAxtaris.Text = "Axtarış:";
             // 
             // txtTedarukcuAxtaris
             // 
-            this.txtTedarukcuAxtaris.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.txtTedarukcuAxtaris.Location = new System.Drawing.Point(100, 20);
-            this.txtTedarukcuAxtaris.Name = "txtTedarukcuAxtaris";
-            this.txtTedarukcuAxtaris.Size = new System.Drawing.Size(300, 27);
-            this.txtTedarukcuAxtaris.TabIndex = 0;
+            txtTedarukcuAxtaris.Font = new System.Drawing.Font("Segoe UI", 11F);
+            txtTedarukcuAxtaris.Location = new System.Drawing.Point(117, 23);
+            txtTedarukcuAxtaris.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            txtTedarukcuAxtaris.Name = "txtTedarukcuAxtaris";
+            txtTedarukcuAxtaris.Size = new System.Drawing.Size(349, 27);
+            txtTedarukcuAxtaris.TabIndex = 0;
             // 
             // tabAlisOrderleri
             // 
-            this.tabAlisOrderleri.Controls.Add(this.panelAlisOrder);
-            this.tabAlisOrderleri.Location = new System.Drawing.Point(4, 26);
-            this.tabAlisOrderleri.Name = "tabAlisOrderleri";
-            this.tabAlisOrderleri.Padding = new System.Windows.Forms.Padding(3);
-            this.tabAlisOrderleri.Size = new System.Drawing.Size(1192, 620);
-            this.tabAlisOrderleri.TabIndex = 1;
-            this.tabAlisOrderleri.Text = "Alış Sifarişləri";
-            this.tabAlisOrderleri.UseVisualStyleBackColor = true;
+            tabAlisOrderleri.Controls.Add(panelAlisOrder);
+            tabAlisOrderleri.Location = new System.Drawing.Point(4, 26);
+            tabAlisOrderleri.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            tabAlisOrderleri.Name = "tabAlisOrderleri";
+            tabAlisOrderleri.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            tabAlisOrderleri.Size = new System.Drawing.Size(1392, 723);
+            tabAlisOrderleri.TabIndex = 1;
+            tabAlisOrderleri.Text = "Alış Sifarişləri";
+            tabAlisOrderleri.UseVisualStyleBackColor = true;
             // 
             // panelAlisOrder
             // 
-            this.panelAlisOrder.Controls.Add(this.dgvAlisOrderleri);
-            this.panelAlisOrder.Controls.Add(this.panelOrderButtons);
-            this.panelAlisOrder.Controls.Add(this.panelOrderFilter);
-            this.panelAlisOrder.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelAlisOrder.Location = new System.Drawing.Point(3, 3);
-            this.panelAlisOrder.Name = "panelAlisOrder";
-            this.panelAlisOrder.Size = new System.Drawing.Size(1186, 614);
-            this.panelAlisOrder.TabIndex = 0;
+            panelAlisOrder.Controls.Add(dgvAlisOrderleri);
+            panelAlisOrder.Controls.Add(panelOrderButtons);
+            panelAlisOrder.Controls.Add(panelOrderFilter);
+            panelAlisOrder.Dock = System.Windows.Forms.DockStyle.Fill;
+            panelAlisOrder.Location = new System.Drawing.Point(4, 3);
+            panelAlisOrder.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            panelAlisOrder.Name = "panelAlisOrder";
+            panelAlisOrder.Size = new System.Drawing.Size(1384, 717);
+            panelAlisOrder.TabIndex = 0;
             // 
             // dgvAlisOrderleri
             // 
-            this.dgvAlisOrderleri.AllowUserToAddRows = false;
-            this.dgvAlisOrderleri.AllowUserToDeleteRows = false;
-            this.dgvAlisOrderleri.BackgroundColor = System.Drawing.Color.White;
-            this.dgvAlisOrderleri.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvAlisOrderleri.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.colOrderNomresi,
-            this.colOrderTarixi,
-            this.colTedarukcu,
-            this.colOrderMebleg,
-            this.colOrderStatus,
-            this.colTeslimTarixi});
-            this.dgvAlisOrderleri.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvAlisOrderleri.Location = new System.Drawing.Point(0, 60);
-            this.dgvAlisOrderleri.Name = "dgvAlisOrderleri";
-            this.dgvAlisOrderleri.ReadOnly = true;
-            this.dgvAlisOrderleri.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvAlisOrderleri.Size = new System.Drawing.Size(1186, 494);
-            this.dgvAlisOrderleri.TabIndex = 0;
+            dgvAlisOrderleri.AllowUserToAddRows = false;
+            dgvAlisOrderleri.AllowUserToDeleteRows = false;
+            dgvAlisOrderleri.BackgroundColor = System.Drawing.Color.White;
+            dgvAlisOrderleri.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvAlisOrderleri.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { colOrderNomresi, colOrderTarixi, colTedarukcu, colOrderMebleg, colOrderStatus, colTeslimTarixi });
+            dgvAlisOrderleri.Dock = System.Windows.Forms.DockStyle.Fill;
+            dgvAlisOrderleri.Location = new System.Drawing.Point(0, 69);
+            dgvAlisOrderleri.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            dgvAlisOrderleri.Name = "dgvAlisOrderleri";
+            dgvAlisOrderleri.ReadOnly = true;
+            dgvAlisOrderleri.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            dgvAlisOrderleri.Size = new System.Drawing.Size(1384, 579);
+            dgvAlisOrderleri.TabIndex = 0;
             // 
             // colOrderNomresi
             // 
-            this.colOrderNomresi.HeaderText = "Order Nömrəsi";
-            this.colOrderNomresi.Name = "colOrderNomresi";
-            this.colOrderNomresi.ReadOnly = true;
-            this.colOrderNomresi.Width = 120;
+            colOrderNomresi.HeaderText = "Order Nömrəsi";
+            colOrderNomresi.Name = "colOrderNomresi";
+            colOrderNomresi.ReadOnly = true;
+            colOrderNomresi.Width = 120;
             // 
             // colOrderTarixi
             // 
-            this.colOrderTarixi.HeaderText = "Tarix";
-            this.colOrderTarixi.Name = "colOrderTarixi";
-            this.colOrderTarixi.ReadOnly = true;
+            colOrderTarixi.HeaderText = "Tarix";
+            colOrderTarixi.Name = "colOrderTarixi";
+            colOrderTarixi.ReadOnly = true;
             // 
             // colTedarukcu
             // 
-            this.colTedarukcu.HeaderText = "Tədarükçü";
-            this.colTedarukcu.Name = "colTedarukcu";
-            this.colTedarukcu.ReadOnly = true;
-            this.colTedarukcu.Width = 200;
+            colTedarukcu.HeaderText = "Tədarükçü";
+            colTedarukcu.Name = "colTedarukcu";
+            colTedarukcu.ReadOnly = true;
+            colTedarukcu.Width = 200;
             // 
             // colOrderMebleg
             // 
-            this.colOrderMebleg.HeaderText = "Məbləğ";
-            this.colOrderMebleg.Name = "colOrderMebleg";
-            this.colOrderMebleg.ReadOnly = true;
-            this.colOrderMebleg.Width = 120;
+            colOrderMebleg.HeaderText = "Məbləğ";
+            colOrderMebleg.Name = "colOrderMebleg";
+            colOrderMebleg.ReadOnly = true;
+            colOrderMebleg.Width = 120;
             // 
             // colOrderStatus
             // 
-            this.colOrderStatus.HeaderText = "Status";
-            this.colOrderStatus.Name = "colOrderStatus";
-            this.colOrderStatus.ReadOnly = true;
-            this.colOrderStatus.Width = 120;
+            colOrderStatus.HeaderText = "Status";
+            colOrderStatus.Name = "colOrderStatus";
+            colOrderStatus.ReadOnly = true;
+            colOrderStatus.Width = 120;
             // 
             // colTeslimTarixi
             // 
-            this.colTeslimTarixi.HeaderText = "Təslim Tarixi";
-            this.colTeslimTarixi.Name = "colTeslimTarixi";
-            this.colTeslimTarixi.ReadOnly = true;
-            this.colTeslimTarixi.Width = 120;
+            colTeslimTarixi.HeaderText = "Təslim Tarixi";
+            colTeslimTarixi.Name = "colTeslimTarixi";
+            colTeslimTarixi.ReadOnly = true;
+            colTeslimTarixi.Width = 120;
             // 
             // panelOrderButtons
             // 
-            this.panelOrderButtons.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
-            this.panelOrderButtons.Controls.Add(this.btnOrderDetali);
-            this.panelOrderButtons.Controls.Add(this.btnIptalOrder);
-            this.panelOrderButtons.Controls.Add(this.btnTesdiqleOrder);
-            this.panelOrderButtons.Controls.Add(this.btnDuzenleOrder);
-            this.panelOrderButtons.Controls.Add(this.btnYeniOrder);
-            this.panelOrderButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelOrderButtons.Location = new System.Drawing.Point(0, 554);
-            this.panelOrderButtons.Name = "panelOrderButtons";
-            this.panelOrderButtons.Size = new System.Drawing.Size(1186, 60);
-            this.panelOrderButtons.TabIndex = 1;
+            panelOrderButtons.BackColor = System.Drawing.Color.FromArgb(240, 240, 240);
+            panelOrderButtons.Controls.Add(btnOrderDetali);
+            panelOrderButtons.Controls.Add(btnIptalOrder);
+            panelOrderButtons.Controls.Add(btnTesdiqleOrder);
+            panelOrderButtons.Controls.Add(btnDuzenleOrder);
+            panelOrderButtons.Controls.Add(btnYeniOrder);
+            panelOrderButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
+            panelOrderButtons.Location = new System.Drawing.Point(0, 648);
+            panelOrderButtons.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            panelOrderButtons.Name = "panelOrderButtons";
+            panelOrderButtons.Size = new System.Drawing.Size(1384, 69);
+            panelOrderButtons.TabIndex = 1;
             // 
             // btnOrderDetali
             // 
-            this.btnOrderDetali.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(149)))), ((int)(((byte)(165)))), ((int)(((byte)(166)))));
-            this.btnOrderDetali.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnOrderDetali.ForeColor = System.Drawing.Color.White;
-            this.btnOrderDetali.Location = new System.Drawing.Point(416, 15);
-            this.btnOrderDetali.Name = "btnOrderDetali";
-            this.btnOrderDetali.Size = new System.Drawing.Size(100, 35);
-            this.btnOrderDetali.TabIndex = 4;
-            this.btnOrderDetali.Text = "Detaylar";
-            this.btnOrderDetali.UseVisualStyleBackColor = false;
+            btnOrderDetali.BackColor = System.Drawing.Color.FromArgb(149, 165, 166);
+            btnOrderDetali.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnOrderDetali.ForeColor = System.Drawing.Color.White;
+            btnOrderDetali.Location = new System.Drawing.Point(485, 17);
+            btnOrderDetali.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnOrderDetali.Name = "btnOrderDetali";
+            btnOrderDetali.Size = new System.Drawing.Size(117, 40);
+            btnOrderDetali.TabIndex = 4;
+            btnOrderDetali.Text = "Detaylar";
+            btnOrderDetali.UseVisualStyleBackColor = false;
             // 
             // btnIptalOrder
             // 
-            this.btnIptalOrder.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(76)))), ((int)(((byte)(60)))));
-            this.btnIptalOrder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnIptalOrder.ForeColor = System.Drawing.Color.White;
-            this.btnIptalOrder.Location = new System.Drawing.Point(330, 15);
-            this.btnIptalOrder.Name = "btnIptalOrder";
-            this.btnIptalOrder.Size = new System.Drawing.Size(80, 35);
-            this.btnIptalOrder.TabIndex = 3;
-            this.btnIptalOrder.Text = "İptal";
-            this.btnIptalOrder.UseVisualStyleBackColor = false;
+            btnIptalOrder.BackColor = System.Drawing.Color.FromArgb(231, 76, 60);
+            btnIptalOrder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnIptalOrder.ForeColor = System.Drawing.Color.White;
+            btnIptalOrder.Location = new System.Drawing.Point(385, 17);
+            btnIptalOrder.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnIptalOrder.Name = "btnIptalOrder";
+            btnIptalOrder.Size = new System.Drawing.Size(93, 40);
+            btnIptalOrder.TabIndex = 3;
+            btnIptalOrder.Text = "İptal";
+            btnIptalOrder.UseVisualStyleBackColor = false;
             // 
             // btnTesdiqleOrder
             // 
-            this.btnTesdiqleOrder.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(89)))), ((int)(((byte)(182)))));
-            this.btnTesdiqleOrder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnTesdiqleOrder.ForeColor = System.Drawing.Color.White;
-            this.btnTesdiqleOrder.Location = new System.Drawing.Point(224, 15);
-            this.btnTesdiqleOrder.Name = "btnTesdiqleOrder";
-            this.btnTesdiqleOrder.Size = new System.Drawing.Size(100, 35);
-            this.btnTesdiqleOrder.TabIndex = 2;
-            this.btnTesdiqleOrder.Text = "Təsdiqlə";
-            this.btnTesdiqleOrder.UseVisualStyleBackColor = false;
+            btnTesdiqleOrder.BackColor = System.Drawing.Color.FromArgb(155, 89, 182);
+            btnTesdiqleOrder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnTesdiqleOrder.ForeColor = System.Drawing.Color.White;
+            btnTesdiqleOrder.Location = new System.Drawing.Point(261, 17);
+            btnTesdiqleOrder.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnTesdiqleOrder.Name = "btnTesdiqleOrder";
+            btnTesdiqleOrder.Size = new System.Drawing.Size(117, 40);
+            btnTesdiqleOrder.TabIndex = 2;
+            btnTesdiqleOrder.Text = "Təsdiqlə";
+            btnTesdiqleOrder.UseVisualStyleBackColor = false;
             // 
             // btnDuzenleOrder
             // 
-            this.btnDuzenleOrder.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(152)))), ((int)(((byte)(219)))));
-            this.btnDuzenleOrder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDuzenleOrder.ForeColor = System.Drawing.Color.White;
-            this.btnDuzenleOrder.Location = new System.Drawing.Point(118, 15);
-            this.btnDuzenleOrder.Name = "btnDuzenleOrder";
-            this.btnDuzenleOrder.Size = new System.Drawing.Size(100, 35);
-            this.btnDuzenleOrder.TabIndex = 1;
-            this.btnDuzenleOrder.Text = "Düzənlə";
-            this.btnDuzenleOrder.UseVisualStyleBackColor = false;
+            btnDuzenleOrder.BackColor = System.Drawing.Color.FromArgb(52, 152, 219);
+            btnDuzenleOrder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnDuzenleOrder.ForeColor = System.Drawing.Color.White;
+            btnDuzenleOrder.Location = new System.Drawing.Point(138, 17);
+            btnDuzenleOrder.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnDuzenleOrder.Name = "btnDuzenleOrder";
+            btnDuzenleOrder.Size = new System.Drawing.Size(117, 40);
+            btnDuzenleOrder.TabIndex = 1;
+            btnDuzenleOrder.Text = "Düzənlə";
+            btnDuzenleOrder.UseVisualStyleBackColor = false;
             // 
             // btnYeniOrder
             // 
-            this.btnYeniOrder.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(204)))), ((int)(((byte)(113)))));
-            this.btnYeniOrder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnYeniOrder.ForeColor = System.Drawing.Color.White;
-            this.btnYeniOrder.Location = new System.Drawing.Point(12, 15);
-            this.btnYeniOrder.Name = "btnYeniOrder";
-            this.btnYeniOrder.Size = new System.Drawing.Size(100, 35);
-            this.btnYeniOrder.TabIndex = 0;
-            this.btnYeniOrder.Text = "Yeni Order";
-            this.btnYeniOrder.UseVisualStyleBackColor = false;
+            btnYeniOrder.BackColor = System.Drawing.Color.FromArgb(46, 204, 113);
+            btnYeniOrder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnYeniOrder.ForeColor = System.Drawing.Color.White;
+            btnYeniOrder.Location = new System.Drawing.Point(14, 17);
+            btnYeniOrder.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnYeniOrder.Name = "btnYeniOrder";
+            btnYeniOrder.Size = new System.Drawing.Size(117, 40);
+            btnYeniOrder.TabIndex = 0;
+            btnYeniOrder.Text = "Yeni Order";
+            btnYeniOrder.UseVisualStyleBackColor = false;
             // 
             // panelOrderFilter
             // 
-            this.panelOrderFilter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
-            this.panelOrderFilter.Controls.Add(this.txtOrderAxtaris);
-            this.panelOrderFilter.Controls.Add(this.lblOrderTarix);
-            this.panelOrderFilter.Controls.Add(this.dtpOrderEnd);
-            this.panelOrderFilter.Controls.Add(this.dtpOrderStart);
-            this.panelOrderFilter.Controls.Add(this.lblOrderStatus);
-            this.panelOrderFilter.Controls.Add(this.cmbOrderStatus);
-            this.panelOrderFilter.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelOrderFilter.Location = new System.Drawing.Point(0, 0);
-            this.panelOrderFilter.Name = "panelOrderFilter";
-            this.panelOrderFilter.Size = new System.Drawing.Size(1186, 60);
-            this.panelOrderFilter.TabIndex = 2;
-            // 
-            // lblOrderTarix
-            // 
-            this.lblOrderTarix.AutoSize = true;
-            this.lblOrderTarix.Location = new System.Drawing.Point(240, 24);
-            this.lblOrderTarix.Name = "lblOrderTarix";
-            this.lblOrderTarix.Size = new System.Drawing.Size(38, 19);
-            this.lblOrderTarix.TabIndex = 4;
-            this.lblOrderTarix.Text = "Tarix:";
-            // 
-            // dtpOrderEnd
-            // 
-            this.dtpOrderEnd.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpOrderEnd.Location = new System.Drawing.Point(420, 20);
-            this.dtpOrderEnd.Name = "dtpOrderEnd";
-            this.dtpOrderEnd.Size = new System.Drawing.Size(120, 25);
-            this.dtpOrderEnd.TabIndex = 3;
-            // 
-            // dtpOrderStart
-            // 
-            this.dtpOrderStart.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpOrderStart.Location = new System.Drawing.Point(290, 20);
-            this.dtpOrderStart.Name = "dtpOrderStart";
-            this.dtpOrderStart.Size = new System.Drawing.Size(120, 25);
-            this.dtpOrderStart.TabIndex = 2;
-            // 
-            // lblOrderStatus
-            // 
-            this.lblOrderStatus.AutoSize = true;
-            this.lblOrderStatus.Location = new System.Drawing.Point(12, 24);
-            this.lblOrderStatus.Name = "lblOrderStatus";
-            this.lblOrderStatus.Size = new System.Drawing.Size(50, 19);
-            this.lblOrderStatus.TabIndex = 1;
-            this.lblOrderStatus.Text = "Status:";
-            // 
-            // cmbOrderStatus
-            // 
-            this.cmbOrderStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbOrderStatus.FormattingEnabled = true;
-            this.cmbOrderStatus.Location = new System.Drawing.Point(70, 20);
-            this.cmbOrderStatus.Name = "cmbOrderStatus";
-            this.cmbOrderStatus.Size = new System.Drawing.Size(150, 25);
-            this.cmbOrderStatus.TabIndex = 0;
-            // 
-            // tabAlisSenedleri
-            // 
-            this.tabAlisSenedleri.Controls.Add(this.panelAlisSened);
-            this.tabAlisSenedleri.Location = new System.Drawing.Point(4, 26);
-            this.tabAlisSenedleri.Name = "tabAlisSenedleri";
-            this.tabAlisSenedleri.Size = new System.Drawing.Size(1192, 620);
-            this.tabAlisSenedleri.TabIndex = 2;
-            this.tabAlisSenedleri.Text = "Alış Sənədləri";
-            this.tabAlisSenedleri.UseVisualStyleBackColor = true;
-            // 
-            // panelAlisSened
-            // 
-            this.panelAlisSened.Controls.Add(this.dgvAlisSenedleri);
-            this.panelAlisSened.Controls.Add(this.panelSenedButtons);
-            this.panelAlisSened.Controls.Add(this.panelSenedFilter);
-            this.panelAlisSened.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelAlisSened.Location = new System.Drawing.Point(0, 0);
-            this.panelAlisSened.Name = "panelAlisSened";
-            this.panelAlisSened.Size = new System.Drawing.Size(1192, 620);
-            this.panelAlisSened.TabIndex = 0;
-            // 
-            // dgvAlisSenedleri
-            // 
-            this.dgvAlisSenedleri.AllowUserToAddRows = false;
-            this.dgvAlisSenedleri.AllowUserToDeleteRows = false;
-            this.dgvAlisSenedleri.BackgroundColor = System.Drawing.Color.White;
-            this.dgvAlisSenedleri.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvAlisSenedleri.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.colSenedNomresi,
-            this.colSenedTarixi,
-            this.colSenedTedarukcu,
-            this.colSenedAnbar,
-            this.colSenedMebleg,
-            this.colSenedStatus,
-            this.colOdemeStatus});
-            this.dgvAlisSenedleri.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvAlisSenedleri.Location = new System.Drawing.Point(0, 60);
-            this.dgvAlisSenedleri.Name = "dgvAlisSenedleri";
-            this.dgvAlisSenedleri.ReadOnly = true;
-            this.dgvAlisSenedleri.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvAlisSenedleri.Size = new System.Drawing.Size(1192, 500);
-            this.dgvAlisSenedleri.TabIndex = 0;
-            // 
-            // colSenedNomresi
-            // 
-            this.colSenedNomresi.HeaderText = "Sənəd Nömrəsi";
-            this.colSenedNomresi.Name = "colSenedNomresi";
-            this.colSenedNomresi.ReadOnly = true;
-            this.colSenedNomresi.Width = 120;
-            // 
-            // colSenedTarixi
-            // 
-            this.colSenedTarixi.HeaderText = "Tarix";
-            this.colSenedTarixi.Name = "colSenedTarixi";
-            this.colSenedTarixi.ReadOnly = true;
-            // 
-            // colSenedTedarukcu
-            // 
-            this.colSenedTedarukcu.HeaderText = "Tədarükçü";
-            this.colSenedTedarukcu.Name = "colSenedTedarukcu";
-            this.colSenedTedarukcu.ReadOnly = true;
-            this.colSenedTedarukcu.Width = 200;
-            // 
-            // colSenedAnbar
-            // 
-            this.colSenedAnbar.HeaderText = "Anbar";
-            this.colSenedAnbar.Name = "colSenedAnbar";
-            this.colSenedAnbar.ReadOnly = true;
-            this.colSenedAnbar.Width = 150;
-            // 
-            // colSenedMebleg
-            // 
-            this.colSenedMebleg.HeaderText = "Məbləğ";
-            this.colSenedMebleg.Name = "colSenedMebleg";
-            this.colSenedMebleg.ReadOnly = true;
-            this.colSenedMebleg.Width = 120;
-            // 
-            // colSenedStatus
-            // 
-            this.colSenedStatus.HeaderText = "Status";
-            this.colSenedStatus.Name = "colSenedStatus";
-            this.colSenedStatus.ReadOnly = true;
-            this.colSenedStatus.Width = 120;
-            // 
-            // colOdemeStatus
-            // 
-            this.colOdemeStatus.HeaderText = "Ödəmə Status";
-            this.colOdemeStatus.Name = "colOdemeStatus";
-            this.colOdemeStatus.ReadOnly = true;
-            this.colOdemeStatus.Width = 120;
-            // 
-            // panelSenedButtons
-            // 
-            this.panelSenedButtons.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
-            this.panelSenedButtons.Controls.Add(this.btnFaktura);
-            this.panelSenedButtons.Controls.Add(this.btnSenedDetali);
-            this.panelSenedButtons.Controls.Add(this.btnIptalSened);
-            this.panelSenedButtons.Controls.Add(this.btnQebulEt);
-            this.panelSenedButtons.Controls.Add(this.btnYeniSened);
-            this.panelSenedButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelSenedButtons.Location = new System.Drawing.Point(0, 560);
-            this.panelSenedButtons.Name = "panelSenedButtons";
-            this.panelSenedButtons.Size = new System.Drawing.Size(1192, 60);
-            this.panelSenedButtons.TabIndex = 1;
-            // 
-            // btnFaktura
-            // 
-            this.btnFaktura.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(152)))), ((int)(((byte)(219)))));
-            this.btnFaktura.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnFaktura.ForeColor = System.Drawing.Color.White;
-            this.btnFaktura.Location = new System.Drawing.Point(416, 15);
-            this.btnFaktura.Name = "btnFaktura";
-            this.btnFaktura.Size = new System.Drawing.Size(100, 35);
-            this.btnFaktura.TabIndex = 4;
-            this.btnFaktura.Text = "Faktura Çap";
-            this.btnFaktura.UseVisualStyleBackColor = false;
-            // 
-            // btnSenedDetali
-            // 
-            this.btnSenedDetali.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(149)))), ((int)(((byte)(165)))), ((int)(((byte)(166)))));
-            this.btnSenedDetali.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSenedDetali.ForeColor = System.Drawing.Color.White;
-            this.btnSenedDetali.Location = new System.Drawing.Point(310, 15);
-            this.btnSenedDetali.Name = "btnSenedDetali";
-            this.btnSenedDetali.Size = new System.Drawing.Size(100, 35);
-            this.btnSenedDetali.TabIndex = 3;
-            this.btnSenedDetali.Text = "Detaylar";
-            this.btnSenedDetali.UseVisualStyleBackColor = false;
-            // 
-            // btnIptalSened
-            // 
-            this.btnIptalSened.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(76)))), ((int)(((byte)(60)))));
-            this.btnIptalSened.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnIptalSened.ForeColor = System.Drawing.Color.White;
-            this.btnIptalSened.Location = new System.Drawing.Point(224, 15);
-            this.btnIptalSened.Name = "btnIptalSened";
-            this.btnIptalSened.Size = new System.Drawing.Size(80, 35);
-            this.btnIptalSened.TabIndex = 2;
-            this.btnIptalSened.Text = "İptal";
-            this.btnIptalSened.UseVisualStyleBackColor = false;
-            // 
-            // btnQebulEt
-            // 
-            this.btnQebulEt.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(89)))), ((int)(((byte)(182)))));
-            this.btnQebulEt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnQebulEt.ForeColor = System.Drawing.Color.White;
-            this.btnQebulEt.Location = new System.Drawing.Point(118, 15);
-            this.btnQebulEt.Name = "btnQebulEt";
-            this.btnQebulEt.Size = new System.Drawing.Size(100, 35);
-            this.btnQebulEt.TabIndex = 1;
-            this.btnQebulEt.Text = "Qəbul Et";
-            this.btnQebulEt.UseVisualStyleBackColor = false;
-            // 
-            // btnYeniSened
-            // 
-            this.btnYeniSened.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(204)))), ((int)(((byte)(113)))));
-            this.btnYeniSened.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnYeniSened.ForeColor = System.Drawing.Color.White;
-            this.btnYeniSened.Location = new System.Drawing.Point(12, 15);
-            this.btnYeniSened.Name = "btnYeniSened";
-            this.btnYeniSened.Size = new System.Drawing.Size(100, 35);
-            this.btnYeniSened.TabIndex = 0;
-            this.btnYeniSened.Text = "Yeni Sənəd";
-            this.btnYeniSened.UseVisualStyleBackColor = false;
-            // 
-            // panelSenedFilter
-            // 
-            this.panelSenedFilter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
-            this.panelSenedFilter.Controls.Add(this.txtSenedAxtaris);
-            this.panelSenedFilter.Controls.Add(this.lblOdemeStatus);
-            this.panelSenedFilter.Controls.Add(this.cmbOdemeStatus);
-            this.panelSenedFilter.Controls.Add(this.lblSenedStatus);
-            this.panelSenedFilter.Controls.Add(this.cmbSenedStatus);
-            this.panelSenedFilter.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelSenedFilter.Location = new System.Drawing.Point(0, 0);
-            this.panelSenedFilter.Name = "panelSenedFilter";
-            this.panelSenedFilter.Size = new System.Drawing.Size(1192, 60);
-            this.panelSenedFilter.TabIndex = 2;
-            // 
-            // lblOdemeStatus
-            // 
-            this.lblOdemeStatus.AutoSize = true;
-            this.lblOdemeStatus.Location = new System.Drawing.Point(240, 24);
-            this.lblOdemeStatus.Name = "lblOdemeStatus";
-            this.lblOdemeStatus.Size = new System.Drawing.Size(76, 19);
-            this.lblOdemeStatus.TabIndex = 3;
-            this.lblOdemeStatus.Text = "Ödəmə St.:";
-            // 
-            // cmbOdemeStatus
-            // 
-            this.cmbOdemeStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbOdemeStatus.FormattingEnabled = true;
-            this.cmbOdemeStatus.Location = new System.Drawing.Point(320, 20);
-            this.cmbOdemeStatus.Name = "cmbOdemeStatus";
-            this.cmbOdemeStatus.Size = new System.Drawing.Size(150, 25);
-            this.cmbOdemeStatus.TabIndex = 2;
-            // 
-            // lblSenedStatus
-            // 
-            this.lblSenedStatus.AutoSize = true;
-            this.lblSenedStatus.Location = new System.Drawing.Point(12, 24);
-            this.lblSenedStatus.Name = "lblSenedStatus";
-            this.lblSenedStatus.Size = new System.Drawing.Size(50, 19);
-            this.lblSenedStatus.TabIndex = 1;
-            this.lblSenedStatus.Text = "Status:";
-            // 
-            // cmbSenedStatus
-            // 
-            this.cmbSenedStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbSenedStatus.FormattingEnabled = true;
-            this.cmbSenedStatus.Location = new System.Drawing.Point(70, 20);
-            this.cmbSenedStatus.Name = "cmbSenedStatus";
-            this.cmbSenedStatus.Size = new System.Drawing.Size(150, 25);
-            this.cmbSenedStatus.TabIndex = 0;
-            // 
-            // tabAnbarTransfer
-            // 
-            this.tabAnbarTransfer.Controls.Add(this.panelTransfer);
-            this.tabAnbarTransfer.Location = new System.Drawing.Point(4, 26);
-            this.tabAnbarTransfer.Name = "tabAnbarTransfer";
-            this.tabAnbarTransfer.Size = new System.Drawing.Size(1192, 620);
-            this.tabAnbarTransfer.TabIndex = 3;
-            this.tabAnbarTransfer.Text = "Anbar Transferləri";
-            this.tabAnbarTransfer.UseVisualStyleBackColor = true;
-            // 
-            // panelTransfer
-            // 
-            this.panelTransfer.Controls.Add(this.dgvTransferler);
-            this.panelTransfer.Controls.Add(this.panelTransferButtons);
-            this.panelTransfer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelTransfer.Location = new System.Drawing.Point(0, 0);
-            this.panelTransfer.Name = "panelTransfer";
-            this.panelTransfer.Size = new System.Drawing.Size(1192, 620);
-            this.panelTransfer.TabIndex = 0;
-            // 
-            // dgvTransferler
-            // 
-            this.dgvTransferler.AllowUserToAddRows = false;
-            this.dgvTransferler.AllowUserToDeleteRows = false;
-            this.dgvTransferler.BackgroundColor = System.Drawing.Color.White;
-            this.dgvTransferler.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvTransferler.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.colTransferNomresi,
-            this.colTransferTarixi,
-            this.colMenbAnbar,
-            this.colHedefAnbar,
-            this.colMehsulSayi,
-            this.colTransferStatus});
-            this.dgvTransferler.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvTransferler.Location = new System.Drawing.Point(0, 0);
-            this.dgvTransferler.Name = "dgvTransferler";
-            this.dgvTransferler.ReadOnly = true;
-            this.dgvTransferler.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvTransferler.Size = new System.Drawing.Size(1192, 560);
-            this.dgvTransferler.TabIndex = 0;
-            // 
-            // colTransferNomresi
-            // 
-            this.colTransferNomresi.HeaderText = "Transfer Nömrəsi";
-            this.colTransferNomresi.Name = "colTransferNomresi";
-            this.colTransferNomresi.ReadOnly = true;
-            this.colTransferNomresi.Width = 140;
-            // 
-            // colTransferTarixi
-            // 
-            this.colTransferTarixi.HeaderText = "Tarix";
-            this.colTransferTarixi.Name = "colTransferTarixi";
-            this.colTransferTarixi.ReadOnly = true;
-            // 
-            // colMenbAnbar
-            // 
-            this.colMenbAnbar.HeaderText = "Mənbə Anbar";
-            this.colMenbAnbar.Name = "colMenbAnbar";
-            this.colMenbAnbar.ReadOnly = true;
-            this.colMenbAnbar.Width = 150;
-            // 
-            // colHedefAnbar
-            // 
-            this.colHedefAnbar.HeaderText = "Hədəf Anbar";
-            this.colHedefAnbar.Name = "colHedefAnbar";
-            this.colHedefAnbar.ReadOnly = true;
-            this.colHedefAnbar.Width = 150;
-            // 
-            // colMehsulSayi
-            // 
-            this.colMehsulSayi.HeaderText = "Məhsul Sayı";
-            this.colMehsulSayi.Name = "colMehsulSayi";
-            this.colMehsulSayi.ReadOnly = true;
-            // 
-            // colTransferStatus
-            // 
-            this.colTransferStatus.HeaderText = "Status";
-            this.colTransferStatus.Name = "colTransferStatus";
-            this.colTransferStatus.ReadOnly = true;
-            this.colTransferStatus.Width = 120;
-            // 
-            // panelTransferButtons
-            // 
-            this.panelTransferButtons.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
-            this.panelTransferButtons.Controls.Add(this.txtTransferAxtaris);
-            this.panelTransferButtons.Controls.Add(this.btnTransferDetali);
-            this.panelTransferButtons.Controls.Add(this.btnIptalTransfer);
-            this.panelTransferButtons.Controls.Add(this.btnQebulTransfer);
-            this.panelTransferButtons.Controls.Add(this.btnGonderTransfer);
-            this.panelTransferButtons.Controls.Add(this.btnYeniTransfer);
-            this.panelTransferButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelTransferButtons.Location = new System.Drawing.Point(0, 560);
-            this.panelTransferButtons.Name = "panelTransferButtons";
-            this.panelTransferButtons.Size = new System.Drawing.Size(1192, 60);
-            this.panelTransferButtons.TabIndex = 1;
-            // 
-            // btnTransferDetali
-            // 
-            this.btnTransferDetali.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(149)))), ((int)(((byte)(165)))), ((int)(((byte)(166)))));
-            this.btnTransferDetali.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnTransferDetali.ForeColor = System.Drawing.Color.White;
-            this.btnTransferDetali.Location = new System.Drawing.Point(426, 15);
-            this.btnTransferDetali.Name = "btnTransferDetali";
-            this.btnTransferDetali.Size = new System.Drawing.Size(100, 35);
-            this.btnTransferDetali.TabIndex = 4;
-            this.btnTransferDetali.Text = "Detaylar";
-            this.btnTransferDetali.UseVisualStyleBackColor = false;
-            // 
-            // btnIptalTransfer
-            // 
-            this.btnIptalTransfer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(76)))), ((int)(((byte)(60)))));
-            this.btnIptalTransfer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnIptalTransfer.ForeColor = System.Drawing.Color.White;
-            this.btnIptalTransfer.Location = new System.Drawing.Point(340, 15);
-            this.btnIptalTransfer.Name = "btnIptalTransfer";
-            this.btnIptalTransfer.Size = new System.Drawing.Size(80, 35);
-            this.btnIptalTransfer.TabIndex = 3;
-            this.btnIptalTransfer.Text = "İptal";
-            this.btnIptalTransfer.UseVisualStyleBackColor = false;
-            // 
-            // btnQebulTransfer
-            // 
-            this.btnQebulTransfer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(89)))), ((int)(((byte)(182)))));
-            this.btnQebulTransfer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnQebulTransfer.ForeColor = System.Drawing.Color.White;
-            this.btnQebulTransfer.Location = new System.Drawing.Point(234, 15);
-            this.btnQebulTransfer.Name = "btnQebulTransfer";
-            this.btnQebulTransfer.Size = new System.Drawing.Size(100, 35);
-            this.btnQebulTransfer.TabIndex = 2;
-            this.btnQebulTransfer.Text = "Qəbul Et";
-            this.btnQebulTransfer.UseVisualStyleBackColor = false;
-            // 
-            // btnGonderTransfer
-            // 
-            this.btnGonderTransfer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(152)))), ((int)(((byte)(219)))));
-            this.btnGonderTransfer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnGonderTransfer.ForeColor = System.Drawing.Color.White;
-            this.btnGonderTransfer.Location = new System.Drawing.Point(128, 15);
-            this.btnGonderTransfer.Name = "btnGonderTransfer";
-            this.btnGonderTransfer.Size = new System.Drawing.Size(100, 35);
-            this.btnGonderTransfer.TabIndex = 1;
-            this.btnGonderTransfer.Text = "Göndər";
-            this.btnGonderTransfer.UseVisualStyleBackColor = false;
-            // 
-            // btnYeniTransfer
-            // 
-            this.btnYeniTransfer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(204)))), ((int)(((byte)(113)))));
-            this.btnYeniTransfer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnYeniTransfer.ForeColor = System.Drawing.Color.White;
-            this.btnYeniTransfer.Location = new System.Drawing.Point(12, 15);
-            this.btnYeniTransfer.Name = "btnYeniTransfer";
-            this.btnYeniTransfer.Size = new System.Drawing.Size(110, 35);
-            this.btnYeniTransfer.TabIndex = 0;
-            this.btnYeniTransfer.Text = "Yeni Transfer";
-            this.btnYeniTransfer.UseVisualStyleBackColor = false;
-            // 
-            // statusStrip
-            // 
-            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabel});
-            this.statusStrip.Location = new System.Drawing.Point(0, 650);
-            this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(1200, 22);
-            this.statusStrip.TabIndex = 1;
-            this.statusStrip.Text = "statusStrip1";
-            // 
-            // toolStripStatusLabel
-            // 
-            this.toolStripStatusLabel.Name = "toolStripStatusLabel";
-            this.toolStripStatusLabel.Size = new System.Drawing.Size(95, 17);
-            this.toolStripStatusLabel.Text = "Tədarük Modulu";
+            panelOrderFilter.BackColor = System.Drawing.Color.FromArgb(248, 249, 250);
+            panelOrderFilter.Controls.Add(txtOrderAxtaris);
+            panelOrderFilter.Controls.Add(lblOrderTarix);
+            panelOrderFilter.Controls.Add(dtpOrderEnd);
+            panelOrderFilter.Controls.Add(dtpOrderStart);
+            panelOrderFilter.Controls.Add(lblOrderStatus);
+            panelOrderFilter.Controls.Add(cmbOrderStatus);
+            panelOrderFilter.Dock = System.Windows.Forms.DockStyle.Top;
+            panelOrderFilter.Location = new System.Drawing.Point(0, 0);
+            panelOrderFilter.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            panelOrderFilter.Name = "panelOrderFilter";
+            panelOrderFilter.Size = new System.Drawing.Size(1384, 69);
+            panelOrderFilter.TabIndex = 2;
             // 
             // txtOrderAxtaris
             // 
-            this.txtOrderAxtaris.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(204)))), ((int)(((byte)(113)))));
-            this.txtOrderAxtaris.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.txtOrderAxtaris.ForeColor = System.Drawing.Color.White;
-            this.txtOrderAxtaris.Location = new System.Drawing.Point(579, 20);
-            this.txtOrderAxtaris.Name = "txtOrderAxtaris";
-            this.txtOrderAxtaris.Size = new System.Drawing.Size(94, 25);
-            this.txtOrderAxtaris.TabIndex = 5;
-            this.txtOrderAxtaris.Text = "Axtar";
-            this.txtOrderAxtaris.UseVisualStyleBackColor = false;
+            txtOrderAxtaris.BackColor = System.Drawing.Color.FromArgb(46, 204, 113);
+            txtOrderAxtaris.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            txtOrderAxtaris.ForeColor = System.Drawing.Color.White;
+            txtOrderAxtaris.Location = new System.Drawing.Point(676, 23);
+            txtOrderAxtaris.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            txtOrderAxtaris.Name = "txtOrderAxtaris";
+            txtOrderAxtaris.Size = new System.Drawing.Size(110, 29);
+            txtOrderAxtaris.TabIndex = 5;
+            txtOrderAxtaris.Text = "Axtar";
+            txtOrderAxtaris.UseVisualStyleBackColor = false;
+            // 
+            // lblOrderTarix
+            // 
+            lblOrderTarix.AutoSize = true;
+            lblOrderTarix.Location = new System.Drawing.Point(280, 28);
+            lblOrderTarix.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lblOrderTarix.Name = "lblOrderTarix";
+            lblOrderTarix.Size = new System.Drawing.Size(38, 19);
+            lblOrderTarix.TabIndex = 4;
+            lblOrderTarix.Text = "Tarix:";
+            // 
+            // dtpOrderEnd
+            // 
+            dtpOrderEnd.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            dtpOrderEnd.Location = new System.Drawing.Point(490, 23);
+            dtpOrderEnd.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            dtpOrderEnd.Name = "dtpOrderEnd";
+            dtpOrderEnd.Size = new System.Drawing.Size(139, 25);
+            dtpOrderEnd.TabIndex = 3;
+            // 
+            // dtpOrderStart
+            // 
+            dtpOrderStart.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            dtpOrderStart.Location = new System.Drawing.Point(338, 23);
+            dtpOrderStart.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            dtpOrderStart.Name = "dtpOrderStart";
+            dtpOrderStart.Size = new System.Drawing.Size(139, 25);
+            dtpOrderStart.TabIndex = 2;
+            // 
+            // lblOrderStatus
+            // 
+            lblOrderStatus.AutoSize = true;
+            lblOrderStatus.Location = new System.Drawing.Point(14, 28);
+            lblOrderStatus.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lblOrderStatus.Name = "lblOrderStatus";
+            lblOrderStatus.Size = new System.Drawing.Size(50, 19);
+            lblOrderStatus.TabIndex = 1;
+            lblOrderStatus.Text = "Status:";
+            // 
+            // cmbOrderStatus
+            // 
+            cmbOrderStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            cmbOrderStatus.FormattingEnabled = true;
+            cmbOrderStatus.Location = new System.Drawing.Point(82, 23);
+            cmbOrderStatus.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            cmbOrderStatus.Name = "cmbOrderStatus";
+            cmbOrderStatus.Size = new System.Drawing.Size(174, 25);
+            cmbOrderStatus.TabIndex = 0;
+            // 
+            // tabAlisSenedleri
+            // 
+            tabAlisSenedleri.Controls.Add(panelAlisSened);
+            tabAlisSenedleri.Location = new System.Drawing.Point(4, 26);
+            tabAlisSenedleri.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            tabAlisSenedleri.Name = "tabAlisSenedleri";
+            tabAlisSenedleri.Size = new System.Drawing.Size(1392, 723);
+            tabAlisSenedleri.TabIndex = 2;
+            tabAlisSenedleri.Text = "Alış Sənədləri";
+            tabAlisSenedleri.UseVisualStyleBackColor = true;
+            // 
+            // panelAlisSened
+            // 
+            panelAlisSened.Controls.Add(dgvAlisSenedleri);
+            panelAlisSened.Controls.Add(panelSenedButtons);
+            panelAlisSened.Controls.Add(panelSenedFilter);
+            panelAlisSened.Dock = System.Windows.Forms.DockStyle.Fill;
+            panelAlisSened.Location = new System.Drawing.Point(0, 0);
+            panelAlisSened.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            panelAlisSened.Name = "panelAlisSened";
+            panelAlisSened.Size = new System.Drawing.Size(1392, 723);
+            panelAlisSened.TabIndex = 0;
+            // 
+            // dgvAlisSenedleri
+            // 
+            dgvAlisSenedleri.AllowUserToAddRows = false;
+            dgvAlisSenedleri.AllowUserToDeleteRows = false;
+            dgvAlisSenedleri.BackgroundColor = System.Drawing.Color.White;
+            dgvAlisSenedleri.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvAlisSenedleri.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { colSenedNomresi, colSenedTarixi, colSenedTedarukcu, colSenedAnbar, colSenedMebleg, colSenedStatus, colOdemeStatus });
+            dgvAlisSenedleri.Dock = System.Windows.Forms.DockStyle.Fill;
+            dgvAlisSenedleri.Location = new System.Drawing.Point(0, 69);
+            dgvAlisSenedleri.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            dgvAlisSenedleri.Name = "dgvAlisSenedleri";
+            dgvAlisSenedleri.ReadOnly = true;
+            dgvAlisSenedleri.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            dgvAlisSenedleri.Size = new System.Drawing.Size(1392, 585);
+            dgvAlisSenedleri.TabIndex = 0;
+            // 
+            // colSenedNomresi
+            // 
+            colSenedNomresi.HeaderText = "Sənəd Nömrəsi";
+            colSenedNomresi.Name = "colSenedNomresi";
+            colSenedNomresi.ReadOnly = true;
+            colSenedNomresi.Width = 120;
+            // 
+            // colSenedTarixi
+            // 
+            colSenedTarixi.HeaderText = "Tarix";
+            colSenedTarixi.Name = "colSenedTarixi";
+            colSenedTarixi.ReadOnly = true;
+            // 
+            // colSenedTedarukcu
+            // 
+            colSenedTedarukcu.HeaderText = "Tədarükçü";
+            colSenedTedarukcu.Name = "colSenedTedarukcu";
+            colSenedTedarukcu.ReadOnly = true;
+            colSenedTedarukcu.Width = 200;
+            // 
+            // colSenedAnbar
+            // 
+            colSenedAnbar.HeaderText = "Anbar";
+            colSenedAnbar.Name = "colSenedAnbar";
+            colSenedAnbar.ReadOnly = true;
+            colSenedAnbar.Width = 150;
+            // 
+            // colSenedMebleg
+            // 
+            colSenedMebleg.HeaderText = "Məbləğ";
+            colSenedMebleg.Name = "colSenedMebleg";
+            colSenedMebleg.ReadOnly = true;
+            colSenedMebleg.Width = 120;
+            // 
+            // colSenedStatus
+            // 
+            colSenedStatus.HeaderText = "Status";
+            colSenedStatus.Name = "colSenedStatus";
+            colSenedStatus.ReadOnly = true;
+            colSenedStatus.Width = 120;
+            // 
+            // colOdemeStatus
+            // 
+            colOdemeStatus.HeaderText = "Ödəmə Status";
+            colOdemeStatus.Name = "colOdemeStatus";
+            colOdemeStatus.ReadOnly = true;
+            colOdemeStatus.Width = 120;
+            // 
+            // panelSenedButtons
+            // 
+            panelSenedButtons.BackColor = System.Drawing.Color.FromArgb(240, 240, 240);
+            panelSenedButtons.Controls.Add(btnFaktura);
+            panelSenedButtons.Controls.Add(btnSenedDetali);
+            panelSenedButtons.Controls.Add(btnIptalSened);
+            panelSenedButtons.Controls.Add(btnQebulEt);
+            panelSenedButtons.Controls.Add(btnYeniSened);
+            panelSenedButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
+            panelSenedButtons.Location = new System.Drawing.Point(0, 654);
+            panelSenedButtons.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            panelSenedButtons.Name = "panelSenedButtons";
+            panelSenedButtons.Size = new System.Drawing.Size(1392, 69);
+            panelSenedButtons.TabIndex = 1;
+            // 
+            // btnFaktura
+            // 
+            btnFaktura.BackColor = System.Drawing.Color.FromArgb(52, 152, 219);
+            btnFaktura.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnFaktura.ForeColor = System.Drawing.Color.White;
+            btnFaktura.Location = new System.Drawing.Point(485, 17);
+            btnFaktura.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnFaktura.Name = "btnFaktura";
+            btnFaktura.Size = new System.Drawing.Size(117, 40);
+            btnFaktura.TabIndex = 4;
+            btnFaktura.Text = "Faktura Çap";
+            btnFaktura.UseVisualStyleBackColor = false;
+            // 
+            // btnSenedDetali
+            // 
+            btnSenedDetali.BackColor = System.Drawing.Color.FromArgb(149, 165, 166);
+            btnSenedDetali.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnSenedDetali.ForeColor = System.Drawing.Color.White;
+            btnSenedDetali.Location = new System.Drawing.Point(362, 17);
+            btnSenedDetali.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnSenedDetali.Name = "btnSenedDetali";
+            btnSenedDetali.Size = new System.Drawing.Size(117, 40);
+            btnSenedDetali.TabIndex = 3;
+            btnSenedDetali.Text = "Detaylar";
+            btnSenedDetali.UseVisualStyleBackColor = false;
+            // 
+            // btnIptalSened
+            // 
+            btnIptalSened.BackColor = System.Drawing.Color.FromArgb(231, 76, 60);
+            btnIptalSened.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnIptalSened.ForeColor = System.Drawing.Color.White;
+            btnIptalSened.Location = new System.Drawing.Point(261, 17);
+            btnIptalSened.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnIptalSened.Name = "btnIptalSened";
+            btnIptalSened.Size = new System.Drawing.Size(93, 40);
+            btnIptalSened.TabIndex = 2;
+            btnIptalSened.Text = "İptal";
+            btnIptalSened.UseVisualStyleBackColor = false;
+            // 
+            // btnQebulEt
+            // 
+            btnQebulEt.BackColor = System.Drawing.Color.FromArgb(155, 89, 182);
+            btnQebulEt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnQebulEt.ForeColor = System.Drawing.Color.White;
+            btnQebulEt.Location = new System.Drawing.Point(138, 17);
+            btnQebulEt.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnQebulEt.Name = "btnQebulEt";
+            btnQebulEt.Size = new System.Drawing.Size(117, 40);
+            btnQebulEt.TabIndex = 1;
+            btnQebulEt.Text = "Qəbul Et";
+            btnQebulEt.UseVisualStyleBackColor = false;
+            // 
+            // btnYeniSened
+            // 
+            btnYeniSened.BackColor = System.Drawing.Color.FromArgb(46, 204, 113);
+            btnYeniSened.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnYeniSened.ForeColor = System.Drawing.Color.White;
+            btnYeniSened.Location = new System.Drawing.Point(14, 17);
+            btnYeniSened.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnYeniSened.Name = "btnYeniSened";
+            btnYeniSened.Size = new System.Drawing.Size(117, 40);
+            btnYeniSened.TabIndex = 0;
+            btnYeniSened.Text = "Yeni Sənəd";
+            btnYeniSened.UseVisualStyleBackColor = false;
+            // 
+            // panelSenedFilter
+            // 
+            panelSenedFilter.BackColor = System.Drawing.Color.FromArgb(248, 249, 250);
+            panelSenedFilter.Controls.Add(txtSenedAxtaris);
+            panelSenedFilter.Controls.Add(lblOdemeStatus);
+            panelSenedFilter.Controls.Add(cmbOdemeStatus);
+            panelSenedFilter.Controls.Add(lblSenedStatus);
+            panelSenedFilter.Controls.Add(cmbSenedStatus);
+            panelSenedFilter.Dock = System.Windows.Forms.DockStyle.Top;
+            panelSenedFilter.Location = new System.Drawing.Point(0, 0);
+            panelSenedFilter.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            panelSenedFilter.Name = "panelSenedFilter";
+            panelSenedFilter.Size = new System.Drawing.Size(1392, 69);
+            panelSenedFilter.TabIndex = 2;
             // 
             // txtSenedAxtaris
             // 
-            this.txtSenedAxtaris.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(204)))), ((int)(((byte)(113)))));
-            this.txtSenedAxtaris.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.txtSenedAxtaris.ForeColor = System.Drawing.Color.White;
-            this.txtSenedAxtaris.Location = new System.Drawing.Point(504, 18);
-            this.txtSenedAxtaris.Name = "txtSenedAxtaris";
-            this.txtSenedAxtaris.Size = new System.Drawing.Size(94, 25);
-            this.txtSenedAxtaris.TabIndex = 6;
-            this.txtSenedAxtaris.Text = "Axtar";
-            this.txtSenedAxtaris.UseVisualStyleBackColor = false;
+            txtSenedAxtaris.BackColor = System.Drawing.Color.FromArgb(46, 204, 113);
+            txtSenedAxtaris.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            txtSenedAxtaris.ForeColor = System.Drawing.Color.White;
+            txtSenedAxtaris.Location = new System.Drawing.Point(588, 21);
+            txtSenedAxtaris.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            txtSenedAxtaris.Name = "txtSenedAxtaris";
+            txtSenedAxtaris.Size = new System.Drawing.Size(110, 29);
+            txtSenedAxtaris.TabIndex = 6;
+            txtSenedAxtaris.Text = "Axtar";
+            txtSenedAxtaris.UseVisualStyleBackColor = false;
+            // 
+            // lblOdemeStatus
+            // 
+            lblOdemeStatus.AutoSize = true;
+            lblOdemeStatus.Location = new System.Drawing.Point(280, 28);
+            lblOdemeStatus.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lblOdemeStatus.Name = "lblOdemeStatus";
+            lblOdemeStatus.Size = new System.Drawing.Size(76, 19);
+            lblOdemeStatus.TabIndex = 3;
+            lblOdemeStatus.Text = "Ödəmə St.:";
+            // 
+            // cmbOdemeStatus
+            // 
+            cmbOdemeStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            cmbOdemeStatus.FormattingEnabled = true;
+            cmbOdemeStatus.Location = new System.Drawing.Point(373, 23);
+            cmbOdemeStatus.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            cmbOdemeStatus.Name = "cmbOdemeStatus";
+            cmbOdemeStatus.Size = new System.Drawing.Size(174, 25);
+            cmbOdemeStatus.TabIndex = 2;
+            // 
+            // lblSenedStatus
+            // 
+            lblSenedStatus.AutoSize = true;
+            lblSenedStatus.Location = new System.Drawing.Point(14, 28);
+            lblSenedStatus.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lblSenedStatus.Name = "lblSenedStatus";
+            lblSenedStatus.Size = new System.Drawing.Size(50, 19);
+            lblSenedStatus.TabIndex = 1;
+            lblSenedStatus.Text = "Status:";
+            // 
+            // cmbSenedStatus
+            // 
+            cmbSenedStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            cmbSenedStatus.FormattingEnabled = true;
+            cmbSenedStatus.Location = new System.Drawing.Point(82, 23);
+            cmbSenedStatus.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            cmbSenedStatus.Name = "cmbSenedStatus";
+            cmbSenedStatus.Size = new System.Drawing.Size(174, 25);
+            cmbSenedStatus.TabIndex = 0;
+            // 
+            // tabAnbarTransfer
+            // 
+            tabAnbarTransfer.Controls.Add(panelTransfer);
+            tabAnbarTransfer.Location = new System.Drawing.Point(4, 26);
+            tabAnbarTransfer.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            tabAnbarTransfer.Name = "tabAnbarTransfer";
+            tabAnbarTransfer.Size = new System.Drawing.Size(1392, 723);
+            tabAnbarTransfer.TabIndex = 3;
+            tabAnbarTransfer.Text = "Anbar Transferləri";
+            tabAnbarTransfer.UseVisualStyleBackColor = true;
+            // 
+            // panelTransfer
+            // 
+            panelTransfer.Controls.Add(dgvTransferler);
+            panelTransfer.Controls.Add(panelTransferButtons);
+            panelTransfer.Dock = System.Windows.Forms.DockStyle.Fill;
+            panelTransfer.Location = new System.Drawing.Point(0, 0);
+            panelTransfer.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            panelTransfer.Name = "panelTransfer";
+            panelTransfer.Size = new System.Drawing.Size(1392, 723);
+            panelTransfer.TabIndex = 0;
+            // 
+            // dgvTransferler
+            // 
+            dgvTransferler.AllowUserToAddRows = false;
+            dgvTransferler.AllowUserToDeleteRows = false;
+            dgvTransferler.BackgroundColor = System.Drawing.Color.White;
+            dgvTransferler.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvTransferler.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { colTransferNomresi, colTransferTarixi, colMenbAnbar, colHedefAnbar, colMehsulSayi, colTransferStatus });
+            dgvTransferler.Dock = System.Windows.Forms.DockStyle.Fill;
+            dgvTransferler.Location = new System.Drawing.Point(0, 0);
+            dgvTransferler.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            dgvTransferler.Name = "dgvTransferler";
+            dgvTransferler.ReadOnly = true;
+            dgvTransferler.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            dgvTransferler.Size = new System.Drawing.Size(1392, 654);
+            dgvTransferler.TabIndex = 0;
+            // 
+            // colTransferNomresi
+            // 
+            colTransferNomresi.HeaderText = "Transfer Nömrəsi";
+            colTransferNomresi.Name = "colTransferNomresi";
+            colTransferNomresi.ReadOnly = true;
+            colTransferNomresi.Width = 140;
+            // 
+            // colTransferTarixi
+            // 
+            colTransferTarixi.HeaderText = "Tarix";
+            colTransferTarixi.Name = "colTransferTarixi";
+            colTransferTarixi.ReadOnly = true;
+            // 
+            // colMenbAnbar
+            // 
+            colMenbAnbar.HeaderText = "Mənbə Anbar";
+            colMenbAnbar.Name = "colMenbAnbar";
+            colMenbAnbar.ReadOnly = true;
+            colMenbAnbar.Width = 150;
+            // 
+            // colHedefAnbar
+            // 
+            colHedefAnbar.HeaderText = "Hədəf Anbar";
+            colHedefAnbar.Name = "colHedefAnbar";
+            colHedefAnbar.ReadOnly = true;
+            colHedefAnbar.Width = 150;
+            // 
+            // colMehsulSayi
+            // 
+            colMehsulSayi.HeaderText = "Məhsul Sayı";
+            colMehsulSayi.Name = "colMehsulSayi";
+            colMehsulSayi.ReadOnly = true;
+            // 
+            // colTransferStatus
+            // 
+            colTransferStatus.HeaderText = "Status";
+            colTransferStatus.Name = "colTransferStatus";
+            colTransferStatus.ReadOnly = true;
+            colTransferStatus.Width = 120;
+            // 
+            // panelTransferButtons
+            // 
+            panelTransferButtons.BackColor = System.Drawing.Color.FromArgb(240, 240, 240);
+            panelTransferButtons.Controls.Add(txtTransferAxtaris);
+            panelTransferButtons.Controls.Add(btnTransferDetali);
+            panelTransferButtons.Controls.Add(btnIptalTransfer);
+            panelTransferButtons.Controls.Add(btnQebulTransfer);
+            panelTransferButtons.Controls.Add(btnGonderTransfer);
+            panelTransferButtons.Controls.Add(btnYeniTransfer);
+            panelTransferButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
+            panelTransferButtons.Location = new System.Drawing.Point(0, 654);
+            panelTransferButtons.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            panelTransferButtons.Name = "panelTransferButtons";
+            panelTransferButtons.Size = new System.Drawing.Size(1392, 69);
+            panelTransferButtons.TabIndex = 1;
             // 
             // txtTransferAxtaris
             // 
-            this.txtTransferAxtaris.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(204)))), ((int)(((byte)(113)))));
-            this.txtTransferAxtaris.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.txtTransferAxtaris.ForeColor = System.Drawing.Color.White;
-            this.txtTransferAxtaris.Location = new System.Drawing.Point(546, 15);
-            this.txtTransferAxtaris.Name = "txtTransferAxtaris";
-            this.txtTransferAxtaris.Size = new System.Drawing.Size(97, 35);
-            this.txtTransferAxtaris.TabIndex = 7;
-            this.txtTransferAxtaris.Text = "Axtar";
-            this.txtTransferAxtaris.UseVisualStyleBackColor = false;
+            txtTransferAxtaris.BackColor = System.Drawing.Color.FromArgb(46, 204, 113);
+            txtTransferAxtaris.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            txtTransferAxtaris.ForeColor = System.Drawing.Color.White;
+            txtTransferAxtaris.Location = new System.Drawing.Point(637, 17);
+            txtTransferAxtaris.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            txtTransferAxtaris.Name = "txtTransferAxtaris";
+            txtTransferAxtaris.Size = new System.Drawing.Size(113, 40);
+            txtTransferAxtaris.TabIndex = 7;
+            txtTransferAxtaris.Text = "Axtar";
+            txtTransferAxtaris.UseVisualStyleBackColor = false;
+            // 
+            // btnTransferDetali
+            // 
+            btnTransferDetali.BackColor = System.Drawing.Color.FromArgb(149, 165, 166);
+            btnTransferDetali.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnTransferDetali.ForeColor = System.Drawing.Color.White;
+            btnTransferDetali.Location = new System.Drawing.Point(497, 17);
+            btnTransferDetali.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnTransferDetali.Name = "btnTransferDetali";
+            btnTransferDetali.Size = new System.Drawing.Size(117, 40);
+            btnTransferDetali.TabIndex = 4;
+            btnTransferDetali.Text = "Detaylar";
+            btnTransferDetali.UseVisualStyleBackColor = false;
+            // 
+            // btnIptalTransfer
+            // 
+            btnIptalTransfer.BackColor = System.Drawing.Color.FromArgb(231, 76, 60);
+            btnIptalTransfer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnIptalTransfer.ForeColor = System.Drawing.Color.White;
+            btnIptalTransfer.Location = new System.Drawing.Point(397, 17);
+            btnIptalTransfer.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnIptalTransfer.Name = "btnIptalTransfer";
+            btnIptalTransfer.Size = new System.Drawing.Size(93, 40);
+            btnIptalTransfer.TabIndex = 3;
+            btnIptalTransfer.Text = "İptal";
+            btnIptalTransfer.UseVisualStyleBackColor = false;
+            // 
+            // btnQebulTransfer
+            // 
+            btnQebulTransfer.BackColor = System.Drawing.Color.FromArgb(155, 89, 182);
+            btnQebulTransfer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnQebulTransfer.ForeColor = System.Drawing.Color.White;
+            btnQebulTransfer.Location = new System.Drawing.Point(273, 17);
+            btnQebulTransfer.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnQebulTransfer.Name = "btnQebulTransfer";
+            btnQebulTransfer.Size = new System.Drawing.Size(117, 40);
+            btnQebulTransfer.TabIndex = 2;
+            btnQebulTransfer.Text = "Qəbul Et";
+            btnQebulTransfer.UseVisualStyleBackColor = false;
+            // 
+            // btnGonderTransfer
+            // 
+            btnGonderTransfer.BackColor = System.Drawing.Color.FromArgb(52, 152, 219);
+            btnGonderTransfer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnGonderTransfer.ForeColor = System.Drawing.Color.White;
+            btnGonderTransfer.Location = new System.Drawing.Point(149, 17);
+            btnGonderTransfer.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnGonderTransfer.Name = "btnGonderTransfer";
+            btnGonderTransfer.Size = new System.Drawing.Size(117, 40);
+            btnGonderTransfer.TabIndex = 1;
+            btnGonderTransfer.Text = "Göndər";
+            btnGonderTransfer.UseVisualStyleBackColor = false;
+            // 
+            // btnYeniTransfer
+            // 
+            btnYeniTransfer.BackColor = System.Drawing.Color.FromArgb(46, 204, 113);
+            btnYeniTransfer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnYeniTransfer.ForeColor = System.Drawing.Color.White;
+            btnYeniTransfer.Location = new System.Drawing.Point(14, 17);
+            btnYeniTransfer.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            btnYeniTransfer.Name = "btnYeniTransfer";
+            btnYeniTransfer.Size = new System.Drawing.Size(128, 40);
+            btnYeniTransfer.TabIndex = 0;
+            btnYeniTransfer.Text = "Yeni Transfer";
+            btnYeniTransfer.UseVisualStyleBackColor = false;
+            // 
+            // statusStrip
+            // 
+            statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripStatusLabel });
+            statusStrip.Location = new System.Drawing.Point(0, 753);
+            statusStrip.Name = "statusStrip";
+            statusStrip.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
+            statusStrip.Size = new System.Drawing.Size(1400, 22);
+            statusStrip.TabIndex = 1;
+            statusStrip.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel
+            // 
+            toolStripStatusLabel.Name = "toolStripStatusLabel";
+            toolStripStatusLabel.Size = new System.Drawing.Size(95, 17);
+            toolStripStatusLabel.Text = "Tədarük Modulu";
             // 
             // TedarukManagementForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1200, 672);
-            this.Controls.Add(this.tabControl);
-            this.Controls.Add(this.statusStrip);
-            this.Name = "TedarukManagementForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Tədarük və Anbar İdarəetməsi";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.tabControl.ResumeLayout(false);
-            this.tabTedarukciler.ResumeLayout(false);
-            this.panelTedarukcu.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvTedarukciler)).EndInit();
-            this.panelTedarukcuButtons.ResumeLayout(false);
-            this.panelTedarukcuSearch.ResumeLayout(false);
-            this.panelTedarukcuSearch.PerformLayout();
-            this.tabAlisOrderleri.ResumeLayout(false);
-            this.panelAlisOrder.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvAlisOrderleri)).EndInit();
-            this.panelOrderButtons.ResumeLayout(false);
-            this.panelOrderFilter.ResumeLayout(false);
-            this.panelOrderFilter.PerformLayout();
-            this.tabAlisSenedleri.ResumeLayout(false);
-            this.panelAlisSened.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvAlisSenedleri)).EndInit();
-            this.panelSenedButtons.ResumeLayout(false);
-            this.panelSenedFilter.ResumeLayout(false);
-            this.panelSenedFilter.PerformLayout();
-            this.tabAnbarTransfer.ResumeLayout(false);
-            this.panelTransfer.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvTransferler)).EndInit();
-            this.panelTransferButtons.ResumeLayout(false);
-            this.statusStrip.ResumeLayout(false);
-            this.statusStrip.PerformLayout();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            ClientSize = new System.Drawing.Size(1400, 775);
+            Controls.Add(tabControl);
+            Controls.Add(statusStrip);
+            Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            Name = "TedarukManagementForm";
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            Text = "Tədarük və Anbar İdarəetməsi";
+            WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            tabControl.ResumeLayout(false);
+            tabTedarukciler.ResumeLayout(false);
+            panelTedarukcu.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dgvTedarukciler).EndInit();
+            panelTedarukcuButtons.ResumeLayout(false);
+            panelTedarukcuSearch.ResumeLayout(false);
+            panelTedarukcuSearch.PerformLayout();
+            tabAlisOrderleri.ResumeLayout(false);
+            panelAlisOrder.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dgvAlisOrderleri).EndInit();
+            panelOrderButtons.ResumeLayout(false);
+            panelOrderFilter.ResumeLayout(false);
+            panelOrderFilter.PerformLayout();
+            tabAlisSenedleri.ResumeLayout(false);
+            panelAlisSened.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dgvAlisSenedleri).EndInit();
+            panelSenedButtons.ResumeLayout(false);
+            panelSenedFilter.ResumeLayout(false);
+            panelSenedFilter.PerformLayout();
+            tabAnbarTransfer.ResumeLayout(false);
+            panelTransfer.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dgvTransferler).EndInit();
+            panelTransferButtons.ResumeLayout(false);
+            statusStrip.ResumeLayout(false);
+            statusStrip.PerformLayout();
+            ResumeLayout(false);
+            PerformLayout();
 
         }
 

@@ -3,6 +3,8 @@ using AzAgroPOS.DAL;
 using AzAgroPOS.DAL.Repositories;
 using AzAgroPOS.Entities.Domain;
 using AzAgroPOS.PL.Forms;
+using AzAgroPOS.PL.Services;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Win32;
 using System;
 using System.Security.Cryptography;
@@ -12,20 +14,26 @@ using System.Windows.Forms;
 
 namespace AzAgroPOS.PL
 {
-    public partial class LoginForm : Form
+    public partial class LoginForm : BaseForm
     {
         private readonly AuthService _authService;
         private readonly IstifadeciRepository _istifadeciRepository;
+        private readonly IServiceProvider _serviceProvider;
         private bool _isAutoLoginAttempted = false;
 
-        public LoginForm()
+        public LoginForm(IServiceProvider serviceProvider) : base()
         {
             InitializeComponent();
-            var context = new AzAgroDbContext();
-            _authService = new AuthService();
-            _istifadeciRepository = new IstifadeciRepository(context);
+            _serviceProvider = serviceProvider;
+            _authService = serviceProvider.GetRequiredService<AuthService>();
+            _istifadeciRepository = serviceProvider.GetRequiredService<IstifadeciRepository>();
             // Form yükləndikdə avtomatik giriş cəhdini yoxla
             this.Load += async (s, e) => await TryAutoLoginAsync();
+        }
+
+        // Backward compatibility constructor
+        public LoginForm() : this(Program.ServiceProvider)
+        {
         }
 
         private async Task TryAutoLoginAsync()
@@ -114,9 +122,15 @@ namespace AzAgroPOS.PL
 
         private void ShowMainForm(Istifadeci user)
         {
+            // Set user session using SessionManager
+            SessionManager.SetCurrentUser(user);
+            
             this.Hide();
-            var mainForm = new MainForm(user);
+            var mainForm = new MainForm(user, _serviceProvider);
             mainForm.ShowDialog();
+            
+            // Clear session when main form closes
+            SessionManager.ClearSession();
             this.Close(); // Ana formadan sonra login formunu bağla
         }
 

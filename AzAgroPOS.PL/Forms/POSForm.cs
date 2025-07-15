@@ -369,7 +369,7 @@ namespace AzAgroPOS.PL.Forms
                         VahidQiymeti = item.VahidQiymeti,
                         UmumiQiymet = item.CemMebleg,
                         NetQiymet = item.CemMebleg,
-                        VahidAdi = "Ədəd" // TODO: Məhsulun real vahidi ilə əvəzlənməlidir
+                        VahidAdi = item.VahidAdi ?? "Ədəd"
                     }).ToList()
                 };
 
@@ -445,7 +445,7 @@ namespace AzAgroPOS.PL.Forms
             receipt.AppendLine("         AzAgro POS");
             receipt.AppendLine("================================");
             receipt.AppendLine($"Tarix: {DateTime.Now:dd.MM.yyyy HH:mm}");
-            receipt.AppendLine($"Kassir: Admin"); // TODO: Get from session
+            receipt.AppendLine($"Kassir: {_currentUser?.TamAd ?? "Admin"}");
             receipt.AppendLine("--------------------------------");
             
             foreach (var item in _satisDetallari)
