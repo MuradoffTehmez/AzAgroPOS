@@ -5,7 +5,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
-// using System.Windows.Forms; // BLL layer-də UI components istifadə edilmir
+using System.Windows.Forms;
 
 namespace AzAgroPOS.BLL.Services
 {
@@ -377,90 +377,78 @@ namespace AzAgroPOS.BLL.Services
         /// <summary>
         /// Show save file dialog and export debt report
         /// </summary>
-        public void ShowExportDebtReportDialog(DebtReportDto report)
+        public bool ExportDebtReport(DebtReportDto report, string filePath)
         {
             try
             {
-                using (var saveDialog = new SaveFileDialog())
+                if (string.IsNullOrEmpty(filePath))
                 {
-                    saveDialog.Title = "Borc Hesabatını İxrac Et";
-                    saveDialog.Filter = "CSV Files (*.csv)|*.csv|HTML Files (*.html)|*.html";
-                    saveDialog.FileName = $"Borc_Hesabati_{DateTime.Now:yyyyMMdd_HHmm}";
-
-                    if (saveDialog.ShowDialog() == DialogResult.OK)
-                    {
-                        bool success = false;
-                        
-                        if (Path.GetExtension(saveDialog.FileName).ToLower() == ".csv")
-                        {
-                            success = ExportDebtReportToExcel(report, saveDialog.FileName);
-                        }
-                        else if (Path.GetExtension(saveDialog.FileName).ToLower() == ".html")
-                        {
-                            success = ExportDebtReportToHTML(report, saveDialog.FileName);
-                        }
-
-                        if (success)
-                        {
-                            ErrorHandlingService.ShowSuccess("Hesabat uğurla ixrac edildi!");
-                            
-                            // Ask if user wants to open the file
-                            if (ErrorHandlingService.ShowConfirmation("Faylı açmaq istəyirsiniz?"))
-                            {
-                                System.Diagnostics.Process.Start(saveDialog.FileName);
-                            }
-                        }
-                    }
+                    Console.WriteLine("ERROR: File path is required for export");
+                    return false;
                 }
+
+                bool success = false;
+                var extension = Path.GetExtension(filePath).ToLower();
+                
+                if (extension == ".csv")
+                {
+                    success = ExportDebtReportToExcel(report, filePath);
+                }
+                else if (extension == ".html")
+                {
+                    success = ExportDebtReportToHTML(report, filePath);
+                }
+
+                if (success)
+                {
+                    Console.WriteLine($"SUCCESS: Report exported to {filePath}");
+                }
+
+                return success;
             }
             catch (Exception ex)
             {
                 ErrorHandlingService.HandleErrorStatic(ex, "İxrac zamanı xəta baş verdi.");
+                return false;
             }
         }
 
         /// <summary>
         /// Show save file dialog and export sales report
         /// </summary>
-        public void ShowExportSalesReportDialog(SalesReportDto report)
+        public bool ExportSalesReport(SalesReportDto report, string filePath)
         {
             try
             {
-                using (var saveDialog = new SaveFileDialog())
+                if (string.IsNullOrEmpty(filePath))
                 {
-                    saveDialog.Title = "Satış Hesabatını İxrac Et";
-                    saveDialog.Filter = "CSV Files (*.csv)|*.csv|HTML Files (*.html)|*.html";
-                    saveDialog.FileName = $"Satis_Hesabati_{DateTime.Now:yyyyMMdd_HHmm}";
-
-                    if (saveDialog.ShowDialog() == DialogResult.OK)
-                    {
-                        bool success = false;
-                        
-                        if (Path.GetExtension(saveDialog.FileName).ToLower() == ".csv")
-                        {
-                            success = ExportSalesReportToExcel(report, saveDialog.FileName);
-                        }
-                        else if (Path.GetExtension(saveDialog.FileName).ToLower() == ".html")
-                        {
-                            success = ExportSalesReportToHTML(report, saveDialog.FileName);
-                        }
-
-                        if (success)
-                        {
-                            ErrorHandlingService.ShowSuccess("Hesabat uğurla ixrac edildi!");
-                            
-                            // Ask if user wants to open the file
-                            if (ErrorHandlingService.ShowConfirmation("Faylı açmaq istəyirsiniz?"))
-                            {
-                                System.Diagnostics.Process.Start(saveDialog.FileName);
-                            }
-                        }
-                    }
+                    Console.WriteLine("ERROR: File path is required for export");
+                    return false;
                 }
+
+                bool success = false;
+                var extension = Path.GetExtension(filePath).ToLower();
+                
+                if (extension == ".csv")
+                {
+                    success = ExportSalesReportToExcel(report, filePath);
+                }
+                else if (extension == ".html")
+                {
+                    success = ExportSalesReportToHTML(report, filePath);
+                }
+
+                if (success)
+                {
+                    Console.WriteLine($"SUCCESS: Sales report exported to {filePath}");
+                }
+
+                return success;
             }
             catch (Exception ex)
             {
                 ErrorHandlingService.HandleErrorStatic(ex, "İxrac zamanı xəta baş verdi.");
+                return false;
             }
         }
 
@@ -484,6 +472,44 @@ namespace AzAgroPOS.BLL.Services
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        public void ShowExportSalesReportDialog(SalesReportDto currentReport)
+        {
+            try
+            {
+                using (var saveDialog = new System.Windows.Forms.SaveFileDialog())
+                {
+                    saveDialog.Title = "Satış Hesabatını İxrac Et";
+                    saveDialog.Filter = "CSV Files (*.csv)|*.csv|HTML Files (*.html)|*.html";
+                    saveDialog.FileName = $"Satis_Hesabati_{DateTime.Now:yyyyMMdd_HHmm}";
+
+                    if (saveDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    {
+                        bool success = ExportSalesReport(currentReport, saveDialog.FileName);
+                        
+                        if (success)
+                        {
+                            System.Windows.Forms.MessageBox.Show("Hesabat uğurla ixrac edildi!", "Uğur", 
+                                System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+                            
+                            if (System.Windows.Forms.MessageBox.Show("Faylı açmaq istəyirsiniz?", "Təsdiq", 
+                                System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes)
+                            {
+                                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                                {
+                                    FileName = saveDialog.FileName,
+                                    UseShellExecute = true
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorHandlingService.HandleErrorStatic(ex, "İxrac zamanı xəta baş verdi.");
+            }
         }
 
         #endregion

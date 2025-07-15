@@ -29,7 +29,7 @@ namespace AzAgroPOS.BLL.Services
                 throw new ArgumentException("User message cannot be empty", nameof(userFriendlyMessage));
 
             // Simple static version - just show the message
-            MessageBox.Show(userFriendlyMessage, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            Console.WriteLine($"ERROR: {userFriendlyMessage ?? ex.Message}");
         }
 
         public static void ShowValidationError(string message)
@@ -37,7 +37,7 @@ namespace AzAgroPOS.BLL.Services
             if (string.IsNullOrWhiteSpace(message))
                 throw new ArgumentException("Message cannot be empty", nameof(message));
 
-            MessageBox.Show(message, "Doğrulama Xətası", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            Console.WriteLine($"VALIDATION ERROR: {message}");
         }
 
         public static void ShowSuccess(string message)
@@ -45,7 +45,7 @@ namespace AzAgroPOS.BLL.Services
             if (string.IsNullOrWhiteSpace(message))
                 throw new ArgumentException("Message cannot be empty", nameof(message));
 
-            MessageBox.Show(message, "Uğur", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            Console.WriteLine($"SUCCESS: {message}");
         }
 
         public static bool ShowConfirmation(string message, string title = "Təsdiq")
@@ -53,7 +53,8 @@ namespace AzAgroPOS.BLL.Services
             if (string.IsNullOrWhiteSpace(message))
                 throw new ArgumentException("Message cannot be empty", nameof(message));
 
-            return MessageBox.Show(message, title, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
+            Console.WriteLine($"CONFIRMATION NEEDED: {message}");
+            return true; // BLL layer-də həmişə true qaytarır
         }
 
         /// <summary>
@@ -154,10 +155,8 @@ namespace AzAgroPOS.BLL.Services
             if (string.IsNullOrWhiteSpace(message))
                 throw new ArgumentException("Message cannot be empty", nameof(message));
 
-            var icon = isError ? MessageBoxIcon.Error : MessageBoxIcon.Information;
-            var title = isError ? "Xəta" : "Məlumat";
-            
-            MessageBox.Show(message, title, MessageBoxButtons.OK, icon);
+            var title = isError ? "ERROR" : "INFO";
+            Console.WriteLine($"{title}: {message}");
         }
 
         public void ShowCriticalError(string message)
@@ -165,7 +164,7 @@ namespace AzAgroPOS.BLL.Services
             if (string.IsNullOrWhiteSpace(message))
                 throw new ArgumentException("Message cannot be empty", nameof(message));
 
-            MessageBox.Show(message, "Kritik Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            Console.WriteLine($"CRITICAL ERROR: {message}");
         }
 
         public string GetUserFriendlyMessage(Exception ex)
@@ -228,10 +227,7 @@ namespace AzAgroPOS.BLL.Services
                 }
             }
 
-            MessageBox.Show(displayMessage.ToString(),
-                "Xəta",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Error);
+            Console.WriteLine($"ERROR DETAIL: {displayMessage}");
         }
 
         private string GetGenericErrorMessage(string originalMessage)

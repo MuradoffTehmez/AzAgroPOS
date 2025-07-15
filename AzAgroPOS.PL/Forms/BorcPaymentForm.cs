@@ -152,10 +152,11 @@ namespace AzAgroPOS.PL.Forms
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.Cancel;
+            this.DialogResult = 
+                DialogResult.Cancel;
             this.Close();
         }
-
+        
         protected override void Dispose(bool disposing)
         {
             if (disposing)

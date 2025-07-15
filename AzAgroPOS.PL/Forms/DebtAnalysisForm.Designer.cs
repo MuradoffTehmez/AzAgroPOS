@@ -18,5 +18,10 @@ namespace AzAgroPOS.PL.Forms
         // InitializeComponent is implemented in the main form class
 
         #endregion
+
+        private System.Windows.Forms.Panel pnlControls;
+        private System.Windows.Forms.Label lblTitle;
+        private System.Windows.Forms.Panel pnlMain;
+        private System.Windows.Forms.SplitContainer splitContainer;
     }
 }

@@ -36,115 +36,119 @@ namespace AzAgroPOS.PL.Forms
 
         private void InitializeComponent()
         {
-            this.SuspendLayout();
-
-            // Form properties
-            this.Text = "Borc Analizi";
-            this.Size = new Size(1200, 800);
-            this.StartPosition = FormStartPosition.CenterScreen;
-            this.WindowState = FormWindowState.Maximized;
-
-            // Controls Panel
-            var pnlControls = new Panel
-            {
-                Dock = DockStyle.Top,
-                Height = 60,
-                BackColor = Color.LightGray
-            };
-
-            // Buttons
-            btnRefresh = new Button
-            {
-                Text = "🔄 Yenilə",
-                Location = new Point(20, 17),
-                Size = new Size(100, 25),
-                BackColor = Color.LightBlue
-            };
+            this.pnlControls = new Panel();
+            btnRefresh = new Button();
+            btnExport = new Button();
+            this.lblTitle = new Label();
+            pnlSummary = new Panel();
+            this.pnlMain = new Panel();
+            this.splitContainer = new SplitContainer();
+            chartDebtAnalysis = new Panel();
+            dgvCustomerDebts = new DataGridView();
+            this.pnlControls.SuspendLayout();
+            this.pnlMain.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)this.splitContainer).BeginInit();
+            this.splitContainer.Panel1.SuspendLayout();
+            this.splitContainer.Panel2.SuspendLayout();
+            this.splitContainer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvCustomerDebts).BeginInit();
+            SuspendLayout();
+            // 
+            // pnlControls
+            // 
+            this.pnlControls.Controls.Add(btnRefresh);
+            this.pnlControls.Controls.Add(btnExport);
+            this.pnlControls.Controls.Add(this.lblTitle);
+            this.pnlControls.Location = new Point(0, 0);
+            this.pnlControls.Name = "pnlControls";
+            this.pnlControls.Size = new Size(200, 100);
+            this.pnlControls.TabIndex = 2;
+            // 
+            // btnRefresh
+            // 
+            btnRefresh.Location = new Point(0, 0);
+            btnRefresh.Name = "btnRefresh";
+            btnRefresh.Size = new Size(75, 23);
+            btnRefresh.TabIndex = 0;
             btnRefresh.Click += BtnRefresh_Click;
-
-            btnExport = new Button
-            {
-                Text = "📤 İxrac Et",
-                Location = new Point(130, 17),
-                Size = new Size(100, 25),
-                BackColor = Color.LightGreen,
-                Enabled = false
-            };
+            // 
+            // btnExport
+            // 
+            btnExport.Location = new Point(0, 0);
+            btnExport.Name = "btnExport";
+            btnExport.Size = new Size(75, 23);
+            btnExport.TabIndex = 1;
             btnExport.Click += BtnExport_Click;
-
-            var lblTitle = new Label
-            {
-                Text = "Borc Balansı və Analitika",
-                Location = new Point(250, 22),
-                Size = new Size(200, 20),
-                Font = new Font("Arial", 10, FontStyle.Bold)
-            };
-
-            pnlControls.Controls.AddRange(new Control[] { btnRefresh, btnExport, lblTitle });
-
-            // Summary Panel
-            pnlSummary = new Panel
-            {
-                Dock = DockStyle.Top,
-                Height = 120,
-                BackColor = Color.WhiteSmoke,
-                BorderStyle = BorderStyle.FixedSingle
-            };
-
-            CreateSummaryLabels();
-
-            // Main content panel
-            var pnlMain = new Panel
-            {
-                Dock = DockStyle.Fill
-            };
-
-            // Split container for chart and grid
-            var splitContainer = new SplitContainer
-            {
-                Dock = DockStyle.Fill,
-                Orientation = Orientation.Horizontal,
-                SplitterDistance = 300
-            };
-
-            // Chart placeholder for debt visualization
-            chartDebtAnalysis = new Panel
-            {
-                Dock = DockStyle.Fill,
-                BackColor = Color.LightGray,
-                BorderStyle = BorderStyle.FixedSingle
-            };
-            chartDebtAnalysis.Controls.Add(new Label 
-            { 
-                Text = "📊 Chart Analitikası (Chart kontrolları yüklənir...)", 
-                Dock = DockStyle.Fill, 
-                TextAlign = ContentAlignment.MiddleCenter,
-                Font = new Font("Segoe UI", 12, FontStyle.Bold)
-            });
-            // InitializeChart(); // Chart yüklənəndən sonra aktiv ediləcək
-
-            // DataGridView for customer debts
-            dgvCustomerDebts = new DataGridView
-            {
-                Dock = DockStyle.Fill,
-                AutoGenerateColumns = false,
-                AllowUserToAddRows = false,
-                AllowUserToDeleteRows = false,
-                ReadOnly = true,
-                SelectionMode = DataGridViewSelectionMode.FullRowSelect
-            };
-            InitializeDataGridView();
-
-            splitContainer.Panel1.Controls.Add(chartDebtAnalysis);
-            splitContainer.Panel2.Controls.Add(dgvCustomerDebts);
-            pnlMain.Controls.Add(splitContainer);
-
-            // Add controls to form
-            this.Controls.Add(pnlMain);
-            this.Controls.Add(pnlSummary);
-            this.Controls.Add(pnlControls);
-
-            this.ResumeLayout(false);
+            // 
+            // lblTitle
+            // 
+            this.lblTitle.Location = new Point(0, 0);
+            this.lblTitle.Name = "lblTitle";
+            this.lblTitle.Size = new Size(100, 23);
+            this.lblTitle.TabIndex = 2;
+            // 
+            // pnlSummary
+            // 
+            pnlSummary.Location = new Point(0, 0);
+            pnlSummary.Name = "pnlSummary";
+            pnlSummary.Size = new Size(200, 100);
+            pnlSummary.TabIndex = 1;
+            // 
+            // pnlMain
+            // 
+            this.pnlMain.Controls.Add(this.splitContainer);
+            this.pnlMain.Location = new Point(0, 0);
+            this.pnlMain.Name = "pnlMain";
+            this.pnlMain.Size = new Size(200, 100);
+            this.pnlMain.TabIndex = 0;
+            // 
+            // splitContainer
+            // 
+            this.splitContainer.Location = new Point(0, 0);
+            this.splitContainer.Name = "splitContainer";
+            // 
+            // splitContainer.Panel1
+            // 
+            this.splitContainer.Panel1.Controls.Add(chartDebtAnalysis);
+            // 
+            // splitContainer.Panel2
+            // 
+            this.splitContainer.Panel2.Controls.Add(dgvCustomerDebts);
+            this.splitContainer.Size = new Size(150, 100);
+            this.splitContainer.TabIndex = 0;
+            // 
+            // chartDebtAnalysis
+            // 
+            chartDebtAnalysis.Location = new Point(0, 0);
+            chartDebtAnalysis.Name = "chartDebtAnalysis";
+            chartDebtAnalysis.Size = new Size(200, 100);
+            chartDebtAnalysis.TabIndex = 0;
+            // 
+            // dgvCustomerDebts
+            // 
+            dgvCustomerDebts.Location = new Point(0, 0);
+            dgvCustomerDebts.Name = "dgvCustomerDebts";
+            dgvCustomerDebts.Size = new Size(240, 150);
+            dgvCustomerDebts.TabIndex = 0;
+            // 
+            // DebtAnalysisForm
+            // 
+            ClientSize = new Size(1184, 761);
+            Controls.Add(this.pnlMain);
+            Controls.Add(pnlSummary);
+            Controls.Add(this.pnlControls);
+            Name = "DebtAnalysisForm";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Borc Analizi";
+            WindowState = FormWindowState.Maximized;
+            this.pnlControls.ResumeLayout(false);
+            this.pnlMain.ResumeLayout(false);
+            this.splitContainer.Panel1.ResumeLayout(false);
+            this.splitContainer.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)this.splitContainer).EndInit();
+            this.splitContainer.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dgvCustomerDebts).EndInit();
+            ResumeLayout(false);
         }
 
         private void CreateSummaryLabels()
@@ -336,7 +340,40 @@ namespace AzAgroPOS.PL.Forms
                 return;
             }
 
-            _exportService.ShowExportDebtReportDialog(_currentReport);
+            // Show save file dialog in UI layer
+            using (var saveDialog = new SaveFileDialog())
+            {
+                saveDialog.Title = "Borc Hesabatını İxrac Et";
+                saveDialog.Filter = "CSV Files (*.csv)|*.csv|HTML Files (*.html)|*.html";
+                saveDialog.FileName = $"Borc_Hesabati_{DateTime.Now:yyyyMMdd_HHmm}";
+
+                if (saveDialog.ShowDialog() == DialogResult.OK)
+                {
+                    bool success = _exportService.ExportDebtReport(_currentReport, saveDialog.FileName);
+                    
+                    if (success)
+                    {
+                        MessageBox.Show("Hesabat uğurla ixrac edildi!", "Uğur", 
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        
+                        // Ask if user wants to open the file
+                        if (MessageBox.Show("Faylı açmaq istəyirsiniz?", "Təsdiq", 
+                            MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                        {
+                            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                            {
+                                FileName = saveDialog.FileName,
+                                UseShellExecute = true
+                            });
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("İxrac zamanı xəta baş verdi.", "Xəta", 
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
         }
 
         private void PaymentMenuItem_Click(object sender, EventArgs e)
