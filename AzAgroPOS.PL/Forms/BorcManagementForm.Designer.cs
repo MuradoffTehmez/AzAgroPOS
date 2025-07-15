@@ -17,9 +17,9 @@ namespace AzAgroPOS.PL.Forms
 
         private void InitializeComponent()
         {
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.lblTitle = new System.Windows.Forms.Label();
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.pnlHeader = new System.Windows.Forms.Panel();
+            this.lblFormTitle = new System.Windows.Forms.Label();
+            this.pnlStats = new System.Windows.Forms.Panel();
             this.lblTotalDebtLabel = new System.Windows.Forms.Label();
             this.lblTotalDebt = new System.Windows.Forms.Label();
             this.lblOverdueDebtLabel = new System.Windows.Forms.Label();
@@ -28,59 +28,59 @@ namespace AzAgroPOS.PL.Forms
             this.lblTotalInterest = new System.Windows.Forms.Label();
             this.lblCustomerCountLabel = new System.Windows.Forms.Label();
             this.lblCustomerCount = new System.Windows.Forms.Label();
-            this.panel3 = new System.Windows.Forms.Panel();
+            this.pnlControls = new System.Windows.Forms.Panel();
             this.btnAddDebt = new System.Windows.Forms.Button();
             this.btnAddPayment = new System.Windows.Forms.Button();
             this.btnViewDetails = new System.Windows.Forms.Button();
             this.btnFilterByStatus = new System.Windows.Forms.Button();
             this.btnRefresh = new System.Windows.Forms.Button();
-            this.cmbCustomer = new System.Windows.Forms.ComboBox();
             this.lblCustomer = new System.Windows.Forms.Label();
-            this.panel4 = new System.Windows.Forms.Panel();
+            this.cmbCustomer = new System.Windows.Forms.ComboBox();
+            this.pnlData = new System.Windows.Forms.Panel();
             this.dgvDebts = new System.Windows.Forms.DataGridView();
-            this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
-            this.panel3.SuspendLayout();
-            this.panel4.SuspendLayout();
+            this.pnlHeader.SuspendLayout();
+            this.pnlStats.SuspendLayout();
+            this.pnlControls.SuspendLayout();
+            this.pnlData.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDebts)).BeginInit();
             this.SuspendLayout();
             // 
-            // panel1
+            // pnlHeader
             // 
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
-            this.panel1.Controls.Add(this.lblTitle);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1200, 80);
-            this.panel1.TabIndex = 0;
+            this.pnlHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
+            this.pnlHeader.Controls.Add(this.lblFormTitle);
+            this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlHeader.Location = new System.Drawing.Point(0, 0);
+            this.pnlHeader.Name = "pnlHeader";
+            this.pnlHeader.Size = new System.Drawing.Size(1200, 80);
+            this.pnlHeader.TabIndex = 0;
             // 
-            // lblTitle
+            // lblFormTitle
             // 
-            this.lblTitle.AutoSize = true;
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
-            this.lblTitle.ForeColor = System.Drawing.Color.White;
-            this.lblTitle.Location = new System.Drawing.Point(30, 25);
-            this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(371, 37);
-            this.lblTitle.TabIndex = 0;
-            this.lblTitle.Text = "💳 Borc/Nisyə İdarəetməsi";
+            this.lblFormTitle.AutoSize = true;
+            this.lblFormTitle.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
+            this.lblFormTitle.ForeColor = System.Drawing.Color.White;
+            this.lblFormTitle.Location = new System.Drawing.Point(30, 25);
+            this.lblFormTitle.Name = "lblFormTitle";
+            this.lblFormTitle.Size = new System.Drawing.Size(371, 37);
+            this.lblFormTitle.TabIndex = 0;
+            this.lblFormTitle.Text = "💳 Borc/Nisyə İdarəetməsi";
             // 
-            // panel2
+            // pnlStats
             // 
-            this.panel2.BackColor = System.Drawing.Color.White;
-            this.panel2.Controls.Add(this.lblCustomerCount);
-            this.panel2.Controls.Add(this.lblCustomerCountLabel);
-            this.panel2.Controls.Add(this.lblTotalInterest);
-            this.panel2.Controls.Add(this.lblTotalInterestLabel);
-            this.panel2.Controls.Add(this.lblOverdueDebt);
-            this.panel2.Controls.Add(this.lblOverdueDebtLabel);
-            this.panel2.Controls.Add(this.lblTotalDebt);
-            this.panel2.Controls.Add(this.lblTotalDebtLabel);
-            this.panel2.Location = new System.Drawing.Point(20, 100);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1160, 100);
-            this.panel2.TabIndex = 1;
+            this.pnlStats.BackColor = System.Drawing.Color.White;
+            this.pnlStats.Controls.Add(this.lblCustomerCount);
+            this.pnlStats.Controls.Add(this.lblCustomerCountLabel);
+            this.pnlStats.Controls.Add(this.lblTotalInterest);
+            this.pnlStats.Controls.Add(this.lblTotalInterestLabel);
+            this.pnlStats.Controls.Add(this.lblOverdueDebt);
+            this.pnlStats.Controls.Add(this.lblOverdueDebtLabel);
+            this.pnlStats.Controls.Add(this.lblTotalDebt);
+            this.pnlStats.Controls.Add(this.lblTotalDebtLabel);
+            this.pnlStats.Location = new System.Drawing.Point(20, 100);
+            this.pnlStats.Name = "pnlStats";
+            this.pnlStats.Size = new System.Drawing.Size(1160, 100);
+            this.pnlStats.TabIndex = 1;
             // 
             // lblTotalDebtLabel
             // 
@@ -170,20 +170,20 @@ namespace AzAgroPOS.PL.Forms
             this.lblCustomerCount.TabIndex = 7;
             this.lblCustomerCount.Text = "0";
             // 
-            // panel3
+            // pnlControls
             // 
-            this.panel3.BackColor = System.Drawing.Color.White;
-            this.panel3.Controls.Add(this.lblCustomer);
-            this.panel3.Controls.Add(this.cmbCustomer);
-            this.panel3.Controls.Add(this.btnRefresh);
-            this.panel3.Controls.Add(this.btnFilterByStatus);
-            this.panel3.Controls.Add(this.btnViewDetails);
-            this.panel3.Controls.Add(this.btnAddPayment);
-            this.panel3.Controls.Add(this.btnAddDebt);
-            this.panel3.Location = new System.Drawing.Point(20, 220);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1160, 80);
-            this.panel3.TabIndex = 2;
+            this.pnlControls.BackColor = System.Drawing.Color.White;
+            this.pnlControls.Controls.Add(this.cmbCustomer);
+            this.pnlControls.Controls.Add(this.lblCustomer);
+            this.pnlControls.Controls.Add(this.btnRefresh);
+            this.pnlControls.Controls.Add(this.btnFilterByStatus);
+            this.pnlControls.Controls.Add(this.btnViewDetails);
+            this.pnlControls.Controls.Add(this.btnAddPayment);
+            this.pnlControls.Controls.Add(this.btnAddDebt);
+            this.pnlControls.Location = new System.Drawing.Point(20, 220);
+            this.pnlControls.Name = "pnlControls";
+            this.pnlControls.Size = new System.Drawing.Size(1160, 80);
+            this.pnlControls.TabIndex = 2;
             // 
             // btnAddDebt
             // 
@@ -260,6 +260,16 @@ namespace AzAgroPOS.PL.Forms
             this.btnRefresh.UseVisualStyleBackColor = false;
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
+            // lblCustomer
+            // 
+            this.lblCustomer.AutoSize = true;
+            this.lblCustomer.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblCustomer.Location = new System.Drawing.Point(810, 28);
+            this.lblCustomer.Name = "lblCustomer";
+            this.lblCustomer.Size = new System.Drawing.Size(64, 19);
+            this.lblCustomer.TabIndex = 5;
+            this.lblCustomer.Text = "Müştəri:";
+            // 
             // cmbCustomer
             // 
             this.cmbCustomer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -268,26 +278,16 @@ namespace AzAgroPOS.PL.Forms
             this.cmbCustomer.Location = new System.Drawing.Point(880, 25);
             this.cmbCustomer.Name = "cmbCustomer";
             this.cmbCustomer.Size = new System.Drawing.Size(200, 25);
-            this.cmbCustomer.TabIndex = 5;
+            this.cmbCustomer.TabIndex = 6;
             // 
-            // lblCustomer
+            // pnlData
             // 
-            this.lblCustomer.AutoSize = true;
-            this.lblCustomer.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblCustomer.Location = new System.Drawing.Point(810, 28);
-            this.lblCustomer.Name = "lblCustomer";
-            this.lblCustomer.Size = new System.Drawing.Size(64, 19);
-            this.lblCustomer.TabIndex = 6;
-            this.lblCustomer.Text = "Müştəri:";
-            // 
-            // panel4
-            // 
-            this.panel4.BackColor = System.Drawing.Color.White;
-            this.panel4.Controls.Add(this.dgvDebts);
-            this.panel4.Location = new System.Drawing.Point(20, 320);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(1160, 400);
-            this.panel4.TabIndex = 3;
+            this.pnlData.BackColor = System.Drawing.Color.White;
+            this.pnlData.Controls.Add(this.dgvDebts);
+            this.pnlData.Location = new System.Drawing.Point(20, 320);
+            this.pnlData.Name = "pnlData";
+            this.pnlData.Size = new System.Drawing.Size(1160, 400);
+            this.pnlData.TabIndex = 3;
             // 
             // dgvDebts
             // 
@@ -313,10 +313,10 @@ namespace AzAgroPOS.PL.Forms
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(240)))), ((int)(((byte)(241)))));
             this.ClientSize = new System.Drawing.Size(1200, 740);
-            this.Controls.Add(this.panel4);
-            this.Controls.Add(this.panel3);
-            this.Controls.Add(this.panel2);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.pnlData);
+            this.Controls.Add(this.pnlControls);
+            this.Controls.Add(this.pnlStats);
+            this.Controls.Add(this.pnlHeader);
             this.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
@@ -324,40 +324,39 @@ namespace AzAgroPOS.PL.Forms
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Borc/Nisyə İdarəetməsi";
             this.Load += new System.EventHandler(this.BorcManagementForm_Load);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
-            this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
-            this.panel4.ResumeLayout(false);
+            this.pnlHeader.ResumeLayout(false);
+            this.pnlHeader.PerformLayout();
+            this.pnlStats.ResumeLayout(false);
+            this.pnlStats.PerformLayout();
+            this.pnlControls.ResumeLayout(false);
+            this.pnlControls.PerformLayout();
+            this.pnlData.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvDebts)).EndInit();
             this.ResumeLayout(false);
-
         }
 
         #endregion
 
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label lblTitle;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Label lblCustomerCount;
-        private System.Windows.Forms.Label lblCustomerCountLabel;
-        private System.Windows.Forms.Label lblTotalInterest;
-        private System.Windows.Forms.Label lblTotalInterestLabel;
-        private System.Windows.Forms.Label lblOverdueDebt;
-        private System.Windows.Forms.Label lblOverdueDebtLabel;
-        private System.Windows.Forms.Label lblTotalDebt;
+        private System.Windows.Forms.Panel pnlHeader;
+        private System.Windows.Forms.Label lblFormTitle;
+        private System.Windows.Forms.Panel pnlStats;
         private System.Windows.Forms.Label lblTotalDebtLabel;
-        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Label lblTotalDebt;
+        private System.Windows.Forms.Label lblOverdueDebtLabel;
+        private System.Windows.Forms.Label lblOverdueDebt;
+        private System.Windows.Forms.Label lblTotalInterestLabel;
+        private System.Windows.Forms.Label lblTotalInterest;
+        private System.Windows.Forms.Label lblCustomerCountLabel;
+        private System.Windows.Forms.Label lblCustomerCount;
+        private System.Windows.Forms.Panel pnlControls;
+        private System.Windows.Forms.Button btnAddDebt;
+        private System.Windows.Forms.Button btnAddPayment;
+        private System.Windows.Forms.Button btnViewDetails;
+        private System.Windows.Forms.Button btnFilterByStatus;
+        private System.Windows.Forms.Button btnRefresh;
         private System.Windows.Forms.Label lblCustomer;
         private System.Windows.Forms.ComboBox cmbCustomer;
-        private System.Windows.Forms.Button btnRefresh;
-        private System.Windows.Forms.Button btnFilterByStatus;
-        private System.Windows.Forms.Button btnViewDetails;
-        private System.Windows.Forms.Button btnAddPayment;
-        private System.Windows.Forms.Button btnAddDebt;
-        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.Panel pnlData;
         private System.Windows.Forms.DataGridView dgvDebts;
     }
 }

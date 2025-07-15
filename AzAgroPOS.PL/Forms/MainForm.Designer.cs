@@ -2,48 +2,8 @@ namespace AzAgroPOS.PL.Forms
 {
     partial class MainForm
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
-        private System.Windows.Forms.Panel sidebarPanel;
-        private System.Windows.Forms.Panel headerPanel;
-        private System.Windows.Forms.Panel contentPanel;
-        private System.Windows.Forms.Label lblTitle;
-        private System.Windows.Forms.Label lblWelcome;
-        private System.Windows.Forms.Label lblRole;
-        private System.Windows.Forms.Button btnDashboard;
-        private System.Windows.Forms.Button btnUserManagement;
-        private System.Windows.Forms.Button btnCustomerManagement;
-        private System.Windows.Forms.Button btnPOS;
-        private System.Windows.Forms.Button btnInventory;
-        private System.Windows.Forms.Button btnDebtManagement;
-        private System.Windows.Forms.Button btnRepairManagement;
-        private System.Windows.Forms.Button btnReports;
-        private System.Windows.Forms.Button btnSettings;
-        private System.Windows.Forms.Button btnLogout;
-        private System.Windows.Forms.Panel customerSubmenu;
-        private System.Windows.Forms.Button btnCustomerAdd;
-        private System.Windows.Forms.Button btnCustomerList;
-        private System.Windows.Forms.Button btnCustomerGroups;
-        private System.Windows.Forms.Panel dashboardPanel;
-        private System.Windows.Forms.Label lblDashboardTitle;
-        private System.Windows.Forms.Panel statsPanel;
-        private System.Windows.Forms.GroupBox grpQuickStats;
-        private System.Windows.Forms.Label lblTotalCustomers;
-        private System.Windows.Forms.Label lblTotalProducts;
-        private System.Windows.Forms.Label lblTodaySales;
-        private System.Windows.Forms.Label lblTotalValue;
-        private System.Windows.Forms.GroupBox grpQuickActions;
-        private System.Windows.Forms.Button btnQuickPOS;
-        private System.Windows.Forms.Button btnQuickCustomerAdd;
-        private System.Windows.Forms.Button btnQuickInventory;
-        private System.Windows.Forms.Button btnQuickReports;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -55,74 +15,69 @@ namespace AzAgroPOS.PL.Forms
 
         #region Windows Form Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
-            this.sidebarPanel = new System.Windows.Forms.Panel();
+            this.pnlSidebar = new System.Windows.Forms.Panel();
             this.btnLogout = new System.Windows.Forms.Button();
             this.btnSettings = new System.Windows.Forms.Button();
             this.btnReports = new System.Windows.Forms.Button();
             this.btnRepairManagement = new System.Windows.Forms.Button();
             this.btnDebtManagement = new System.Windows.Forms.Button();
-            this.btnInventory = new System.Windows.Forms.Button();
             this.btnPOS = new System.Windows.Forms.Button();
-            this.customerSubmenu = new System.Windows.Forms.Panel();
+            this.btnInventory = new System.Windows.Forms.Button();
+            this.pnlCustomerSubmenu = new System.Windows.Forms.Panel();
             this.btnCustomerGroups = new System.Windows.Forms.Button();
             this.btnCustomerList = new System.Windows.Forms.Button();
             this.btnCustomerAdd = new System.Windows.Forms.Button();
             this.btnCustomerManagement = new System.Windows.Forms.Button();
             this.btnUserManagement = new System.Windows.Forms.Button();
             this.btnDashboard = new System.Windows.Forms.Button();
-            this.lblTitle = new System.Windows.Forms.Label();
-            this.headerPanel = new System.Windows.Forms.Panel();
-            this.lblWelcome = new System.Windows.Forms.Label();
-            this.lblRole = new System.Windows.Forms.Label();
-            this.contentPanel = new System.Windows.Forms.Panel();
-            this.dashboardPanel = new System.Windows.Forms.Panel();
+            this.lblAppTitle = new System.Windows.Forms.Label();
+            this.pnlHeader = new System.Windows.Forms.Panel();
+            this.lblUserRole = new System.Windows.Forms.Label();
+            this.lblWelcomeMessage = new System.Windows.Forms.Label();
+            this.pnlContent = new System.Windows.Forms.Panel();
+            this.pnlDashboard = new System.Windows.Forms.Panel();
+            this.lblDashboardTitle = new System.Windows.Forms.Label();
             this.grpQuickActions = new System.Windows.Forms.GroupBox();
             this.btnQuickReports = new System.Windows.Forms.Button();
             this.btnQuickInventory = new System.Windows.Forms.Button();
             this.btnQuickCustomerAdd = new System.Windows.Forms.Button();
             this.btnQuickPOS = new System.Windows.Forms.Button();
             this.grpQuickStats = new System.Windows.Forms.GroupBox();
-            this.lblTotalValue = new System.Windows.Forms.Label();
-            this.lblTodaySales = new System.Windows.Forms.Label();
-            this.lblTotalProducts = new System.Windows.Forms.Label();
-            this.lblTotalCustomers = new System.Windows.Forms.Label();
-            this.lblDashboardTitle = new System.Windows.Forms.Label();
-            this.statsPanel = new System.Windows.Forms.Panel();
-            this.sidebarPanel.SuspendLayout();
-            this.customerSubmenu.SuspendLayout();
-            this.headerPanel.SuspendLayout();
-            this.contentPanel.SuspendLayout();
-            this.dashboardPanel.SuspendLayout();
+            this.lblStatTotalValue = new System.Windows.Forms.Label();
+            this.lblStatTodaySales = new System.Windows.Forms.Label();
+            this.lblStatTotalProducts = new System.Windows.Forms.Label();
+            this.lblStatTotalCustomers = new System.Windows.Forms.Label();
+            this.pnlSidebar.SuspendLayout();
+            this.pnlCustomerSubmenu.SuspendLayout();
+            this.pnlHeader.SuspendLayout();
+            this.pnlContent.SuspendLayout();
+            this.pnlDashboard.SuspendLayout();
             this.grpQuickActions.SuspendLayout();
             this.grpQuickStats.SuspendLayout();
             this.SuspendLayout();
             // 
-            // sidebarPanel
+            // pnlSidebar
             // 
-            this.sidebarPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
-            this.sidebarPanel.Controls.Add(this.btnLogout);
-            this.sidebarPanel.Controls.Add(this.btnSettings);
-            this.sidebarPanel.Controls.Add(this.btnReports);
-            this.sidebarPanel.Controls.Add(this.btnRepairManagement);
-            this.sidebarPanel.Controls.Add(this.btnDebtManagement);
-            this.sidebarPanel.Controls.Add(this.btnInventory);
-            this.sidebarPanel.Controls.Add(this.btnPOS);
-            this.sidebarPanel.Controls.Add(this.customerSubmenu);
-            this.sidebarPanel.Controls.Add(this.btnCustomerManagement);
-            this.sidebarPanel.Controls.Add(this.btnUserManagement);
-            this.sidebarPanel.Controls.Add(this.btnDashboard);
-            this.sidebarPanel.Controls.Add(this.lblTitle);
-            this.sidebarPanel.Dock = System.Windows.Forms.DockStyle.Left;
-            this.sidebarPanel.Location = new System.Drawing.Point(0, 0);
-            this.sidebarPanel.Name = "sidebarPanel";
-            this.sidebarPanel.Size = new System.Drawing.Size(280, 800);
-            this.sidebarPanel.TabIndex = 0;
+            this.pnlSidebar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
+            this.pnlSidebar.Controls.Add(this.btnLogout);
+            this.pnlSidebar.Controls.Add(this.btnSettings);
+            this.pnlSidebar.Controls.Add(this.btnReports);
+            this.pnlSidebar.Controls.Add(this.btnRepairManagement);
+            this.pnlSidebar.Controls.Add(this.btnDebtManagement);
+            this.pnlSidebar.Controls.Add(this.btnPOS);
+            this.pnlSidebar.Controls.Add(this.btnInventory);
+            this.pnlSidebar.Controls.Add(this.pnlCustomerSubmenu);
+            this.pnlSidebar.Controls.Add(this.btnCustomerManagement);
+            this.pnlSidebar.Controls.Add(this.btnUserManagement);
+            this.pnlSidebar.Controls.Add(this.btnDashboard);
+            this.pnlSidebar.Controls.Add(this.lblAppTitle);
+            this.pnlSidebar.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pnlSidebar.Location = new System.Drawing.Point(0, 0);
+            this.pnlSidebar.Name = "pnlSidebar";
+            this.pnlSidebar.Size = new System.Drawing.Size(280, 800);
+            this.pnlSidebar.TabIndex = 0;
             // 
             // btnLogout
             // 
@@ -204,22 +159,6 @@ namespace AzAgroPOS.PL.Forms
             this.btnDebtManagement.UseVisualStyleBackColor = false;
             this.btnDebtManagement.Click += new System.EventHandler(this.btnDebtManagement_Click);
             // 
-            // btnInventory
-            // 
-            this.btnInventory.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
-            this.btnInventory.FlatAppearance.BorderSize = 0;
-            this.btnInventory.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnInventory.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.btnInventory.ForeColor = System.Drawing.Color.White;
-            this.btnInventory.Location = new System.Drawing.Point(20, 380);
-            this.btnInventory.Name = "btnInventory";
-            this.btnInventory.Size = new System.Drawing.Size(240, 45);
-            this.btnInventory.TabIndex = 5;
-            this.btnInventory.Text = "📦 Anbar İdarəetməsi";
-            this.btnInventory.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnInventory.UseVisualStyleBackColor = false;
-            this.btnInventory.Click += new System.EventHandler(this.btnInventory_Click);
-            // 
             // btnPOS
             // 
             this.btnPOS.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(204)))), ((int)(((byte)(113)))));
@@ -236,17 +175,33 @@ namespace AzAgroPOS.PL.Forms
             this.btnPOS.UseVisualStyleBackColor = false;
             this.btnPOS.Click += new System.EventHandler(this.btnPOS_Click);
             // 
-            // customerSubmenu
+            // btnInventory
             // 
-            this.customerSubmenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
-            this.customerSubmenu.Controls.Add(this.btnCustomerGroups);
-            this.customerSubmenu.Controls.Add(this.btnCustomerList);
-            this.customerSubmenu.Controls.Add(this.btnCustomerAdd);
-            this.customerSubmenu.Location = new System.Drawing.Point(20, 225);
-            this.customerSubmenu.Name = "customerSubmenu";
-            this.customerSubmenu.Size = new System.Drawing.Size(240, 135);
-            this.customerSubmenu.TabIndex = 4;
-            this.customerSubmenu.Visible = false;
+            this.btnInventory.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
+            this.btnInventory.FlatAppearance.BorderSize = 0;
+            this.btnInventory.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnInventory.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.btnInventory.ForeColor = System.Drawing.Color.White;
+            this.btnInventory.Location = new System.Drawing.Point(20, 380);
+            this.btnInventory.Name = "btnInventory";
+            this.btnInventory.Size = new System.Drawing.Size(240, 45);
+            this.btnInventory.TabIndex = 5;
+            this.btnInventory.Text = "📦 Anbar İdarəetməsi";
+            this.btnInventory.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnInventory.UseVisualStyleBackColor = false;
+            this.btnInventory.Click += new System.EventHandler(this.btnInventory_Click);
+            // 
+            // pnlCustomerSubmenu
+            // 
+            this.pnlCustomerSubmenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
+            this.pnlCustomerSubmenu.Controls.Add(this.btnCustomerGroups);
+            this.pnlCustomerSubmenu.Controls.Add(this.btnCustomerList);
+            this.pnlCustomerSubmenu.Controls.Add(this.btnCustomerAdd);
+            this.pnlCustomerSubmenu.Location = new System.Drawing.Point(20, 225);
+            this.pnlCustomerSubmenu.Name = "pnlCustomerSubmenu";
+            this.pnlCustomerSubmenu.Size = new System.Drawing.Size(240, 135);
+            this.pnlCustomerSubmenu.TabIndex = 4;
+            this.pnlCustomerSubmenu.Visible = false;
             // 
             // btnCustomerGroups
             // 
@@ -344,71 +299,82 @@ namespace AzAgroPOS.PL.Forms
             this.btnDashboard.UseVisualStyleBackColor = false;
             this.btnDashboard.Click += new System.EventHandler(this.btnDashboard_Click);
             // 
-            // lblTitle
+            // lblAppTitle
             // 
-            this.lblTitle.AutoSize = true;
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
-            this.lblTitle.ForeColor = System.Drawing.Color.White;
-            this.lblTitle.Location = new System.Drawing.Point(20, 20);
-            this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(187, 32);
-            this.lblTitle.TabIndex = 0;
-            this.lblTitle.Text = "🌾 AzAgroPOS";
+            this.lblAppTitle.AutoSize = true;
+            this.lblAppTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
+            this.lblAppTitle.ForeColor = System.Drawing.Color.White;
+            this.lblAppTitle.Location = new System.Drawing.Point(20, 20);
+            this.lblAppTitle.Name = "lblAppTitle";
+            this.lblAppTitle.Size = new System.Drawing.Size(187, 32);
+            this.lblAppTitle.TabIndex = 0;
+            this.lblAppTitle.Text = "🌾 AzAgroPOS";
             // 
-            // headerPanel
+            // pnlHeader
             // 
-            this.headerPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(240)))), ((int)(((byte)(241)))));
-            this.headerPanel.Controls.Add(this.lblWelcome);
-            this.headerPanel.Controls.Add(this.lblRole);
-            this.headerPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.headerPanel.Location = new System.Drawing.Point(280, 0);
-            this.headerPanel.Name = "headerPanel";
-            this.headerPanel.Size = new System.Drawing.Size(920, 80);
-            this.headerPanel.TabIndex = 1;
+            this.pnlHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(240)))), ((int)(((byte)(241)))));
+            this.pnlHeader.Controls.Add(this.lblUserRole);
+            this.pnlHeader.Controls.Add(this.lblWelcomeMessage);
+            this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlHeader.Location = new System.Drawing.Point(280, 0);
+            this.pnlHeader.Name = "pnlHeader";
+            this.pnlHeader.Size = new System.Drawing.Size(920, 80);
+            this.pnlHeader.TabIndex = 1;
             // 
-            // lblWelcome
+            // lblUserRole
             // 
-            this.lblWelcome.AutoSize = true;
-            this.lblWelcome.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
-            this.lblWelcome.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
-            this.lblWelcome.Location = new System.Drawing.Point(20, 20);
-            this.lblWelcome.Name = "lblWelcome";
-            this.lblWelcome.Size = new System.Drawing.Size(245, 30);
-            this.lblWelcome.TabIndex = 1;
-            this.lblWelcome.Text = "Xoş gəldiniz, İstifadəçi";
+            this.lblUserRole.AutoSize = true;
+            this.lblUserRole.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.lblUserRole.ForeColor = System.Drawing.Color.DarkGray;
+            this.lblUserRole.Location = new System.Drawing.Point(20, 50);
+            this.lblUserRole.Name = "lblUserRole";
+            this.lblUserRole.Size = new System.Drawing.Size(101, 21);
+            this.lblUserRole.TabIndex = 1;
+            this.lblUserRole.Text = "Rol: İstifadəçi";
             // 
-            // lblRole
+            // lblWelcomeMessage
             // 
-            this.lblRole.AutoSize = true;
-            this.lblRole.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.lblRole.ForeColor = System.Drawing.Color.DarkGray;
-            this.lblRole.Location = new System.Drawing.Point(20, 50);
-            this.lblRole.Name = "lblRole";
-            this.lblRole.Size = new System.Drawing.Size(101, 21);
-            this.lblRole.TabIndex = 2;
-            this.lblRole.Text = "Rol: İstifadəçi";
+            this.lblWelcomeMessage.AutoSize = true;
+            this.lblWelcomeMessage.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
+            this.lblWelcomeMessage.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
+            this.lblWelcomeMessage.Location = new System.Drawing.Point(20, 20);
+            this.lblWelcomeMessage.Name = "lblWelcomeMessage";
+            this.lblWelcomeMessage.Size = new System.Drawing.Size(245, 30);
+            this.lblWelcomeMessage.TabIndex = 0;
+            this.lblWelcomeMessage.Text = "Xoş gəldiniz, İstifadəçi";
             // 
-            // contentPanel
+            // pnlContent
             // 
-            this.contentPanel.BackColor = System.Drawing.Color.White;
-            this.contentPanel.Controls.Add(this.dashboardPanel);
-            this.contentPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.contentPanel.Location = new System.Drawing.Point(280, 80);
-            this.contentPanel.Name = "contentPanel";
-            this.contentPanel.Size = new System.Drawing.Size(920, 720);
-            this.contentPanel.TabIndex = 2;
+            this.pnlContent.BackColor = System.Drawing.Color.White;
+            this.pnlContent.Controls.Add(this.pnlDashboard);
+            this.pnlContent.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlContent.Location = new System.Drawing.Point(280, 80);
+            this.pnlContent.Name = "pnlContent";
+            this.pnlContent.Size = new System.Drawing.Size(920, 720);
+            this.pnlContent.TabIndex = 2;
             // 
-            // dashboardPanel
+            // pnlDashboard
             // 
-            this.dashboardPanel.BackColor = System.Drawing.Color.White;
-            this.dashboardPanel.Controls.Add(this.lblDashboardTitle);
-            this.dashboardPanel.Controls.Add(this.grpQuickActions);
-            this.dashboardPanel.Controls.Add(this.grpQuickStats);
-            this.dashboardPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dashboardPanel.Location = new System.Drawing.Point(0, 0);
-            this.dashboardPanel.Name = "dashboardPanel";
-            this.dashboardPanel.Size = new System.Drawing.Size(920, 720);
-            this.dashboardPanel.TabIndex = 0;
+            this.pnlDashboard.BackColor = System.Drawing.Color.White;
+            this.pnlDashboard.Controls.Add(this.lblDashboardTitle);
+            this.pnlDashboard.Controls.Add(this.grpQuickActions);
+            this.pnlDashboard.Controls.Add(this.grpQuickStats);
+            this.pnlDashboard.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlDashboard.Location = new System.Drawing.Point(0, 0);
+            this.pnlDashboard.Name = "pnlDashboard";
+            this.pnlDashboard.Size = new System.Drawing.Size(920, 720);
+            this.pnlDashboard.TabIndex = 0;
+            // 
+            // lblDashboardTitle
+            // 
+            this.lblDashboardTitle.AutoSize = true;
+            this.lblDashboardTitle.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
+            this.lblDashboardTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
+            this.lblDashboardTitle.Location = new System.Drawing.Point(23, 24);
+            this.lblDashboardTitle.Name = "lblDashboardTitle";
+            this.lblDashboardTitle.Size = new System.Drawing.Size(363, 37);
+            this.lblDashboardTitle.TabIndex = 0;
+            this.lblDashboardTitle.Text = "🏠 Ana Səhifə - Dashboard";
             // 
             // grpQuickActions
             // 
@@ -489,10 +455,10 @@ namespace AzAgroPOS.PL.Forms
             // grpQuickStats
             // 
             this.grpQuickStats.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(240)))), ((int)(((byte)(241)))));
-            this.grpQuickStats.Controls.Add(this.lblTotalValue);
-            this.grpQuickStats.Controls.Add(this.lblTodaySales);
-            this.grpQuickStats.Controls.Add(this.lblTotalProducts);
-            this.grpQuickStats.Controls.Add(this.lblTotalCustomers);
+            this.grpQuickStats.Controls.Add(this.lblStatTotalValue);
+            this.grpQuickStats.Controls.Add(this.lblStatTodaySales);
+            this.grpQuickStats.Controls.Add(this.lblStatTotalProducts);
+            this.grpQuickStats.Controls.Add(this.lblStatTotalCustomers);
             this.grpQuickStats.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.grpQuickStats.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
             this.grpQuickStats.Location = new System.Drawing.Point(30, 90);
@@ -502,80 +468,62 @@ namespace AzAgroPOS.PL.Forms
             this.grpQuickStats.TabStop = false;
             this.grpQuickStats.Text = "📊 Tez Statistikalar";
             // 
-            // lblTotalValue
+            // lblStatTotalValue
             // 
-            this.lblTotalValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(89)))), ((int)(((byte)(182)))));
-            this.lblTotalValue.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
-            this.lblTotalValue.ForeColor = System.Drawing.Color.White;
-            this.lblTotalValue.Location = new System.Drawing.Point(630, 40);
-            this.lblTotalValue.Name = "lblTotalValue";
-            this.lblTotalValue.Size = new System.Drawing.Size(180, 80);
-            this.lblTotalValue.TabIndex = 3;
-            this.lblTotalValue.Text = "💰 Ümumi Dəyər\n\n₼12,345";
-            this.lblTotalValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblStatTotalValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(89)))), ((int)(((byte)(182)))));
+            this.lblStatTotalValue.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
+            this.lblStatTotalValue.ForeColor = System.Drawing.Color.White;
+            this.lblStatTotalValue.Location = new System.Drawing.Point(630, 40);
+            this.lblStatTotalValue.Name = "lblStatTotalValue";
+            this.lblStatTotalValue.Size = new System.Drawing.Size(180, 80);
+            this.lblStatTotalValue.TabIndex = 3;
+            this.lblStatTotalValue.Text = "💰 Ümumi Dəyər\n\n₼12,345";
+            this.lblStatTotalValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // lblTodaySales
+            // lblStatTodaySales
             // 
-            this.lblTodaySales.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(126)))), ((int)(((byte)(34)))));
-            this.lblTodaySales.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
-            this.lblTodaySales.ForeColor = System.Drawing.Color.White;
-            this.lblTodaySales.Location = new System.Drawing.Point(430, 40);
-            this.lblTodaySales.Name = "lblTodaySales";
-            this.lblTodaySales.Size = new System.Drawing.Size(180, 80);
-            this.lblTodaySales.TabIndex = 2;
-            this.lblTodaySales.Text = "🛒 Bugünkü Satış\n\n89";
-            this.lblTodaySales.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblStatTodaySales.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(126)))), ((int)(((byte)(34)))));
+            this.lblStatTodaySales.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
+            this.lblStatTodaySales.ForeColor = System.Drawing.Color.White;
+            this.lblStatTodaySales.Location = new System.Drawing.Point(430, 40);
+            this.lblStatTodaySales.Name = "lblStatTodaySales";
+            this.lblStatTodaySales.Size = new System.Drawing.Size(180, 80);
+            this.lblStatTodaySales.TabIndex = 2;
+            this.lblStatTodaySales.Text = "🛒 Bugünkü Satış\n\n89";
+            this.lblStatTodaySales.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // lblTotalProducts
+            // lblStatTotalProducts
             // 
-            this.lblTotalProducts.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(204)))), ((int)(((byte)(113)))));
-            this.lblTotalProducts.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
-            this.lblTotalProducts.ForeColor = System.Drawing.Color.White;
-            this.lblTotalProducts.Location = new System.Drawing.Point(230, 40);
-            this.lblTotalProducts.Name = "lblTotalProducts";
-            this.lblTotalProducts.Size = new System.Drawing.Size(180, 80);
-            this.lblTotalProducts.TabIndex = 1;
-            this.lblTotalProducts.Text = "📦 Məhsullar\n\n567";
-            this.lblTotalProducts.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblStatTotalProducts.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(204)))), ((int)(((byte)(113)))));
+            this.lblStatTotalProducts.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
+            this.lblStatTotalProducts.ForeColor = System.Drawing.Color.White;
+            this.lblStatTotalProducts.Location = new System.Drawing.Point(230, 40);
+            this.lblStatTotalProducts.Name = "lblStatTotalProducts";
+            this.lblStatTotalProducts.Size = new System.Drawing.Size(180, 80);
+            this.lblStatTotalProducts.TabIndex = 1;
+            this.lblStatTotalProducts.Text = "📦 Məhsullar\n\n567";
+            this.lblStatTotalProducts.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // lblTotalCustomers
+            // lblStatTotalCustomers
             // 
-            this.lblTotalCustomers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(152)))), ((int)(((byte)(219)))));
-            this.lblTotalCustomers.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
-            this.lblTotalCustomers.ForeColor = System.Drawing.Color.White;
-            this.lblTotalCustomers.Location = new System.Drawing.Point(30, 40);
-            this.lblTotalCustomers.Name = "lblTotalCustomers";
-            this.lblTotalCustomers.Size = new System.Drawing.Size(180, 80);
-            this.lblTotalCustomers.TabIndex = 0;
-            this.lblTotalCustomers.Text = "👥 Müştərilər\n\n1,234";
-            this.lblTotalCustomers.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblDashboardTitle
-            // 
-            this.lblDashboardTitle.AutoSize = true;
-            this.lblDashboardTitle.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
-            this.lblDashboardTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
-            this.lblDashboardTitle.Location = new System.Drawing.Point(23, 24);
-            this.lblDashboardTitle.Name = "lblDashboardTitle";
-            this.lblDashboardTitle.Size = new System.Drawing.Size(363, 37);
-            this.lblDashboardTitle.TabIndex = 0;
-            this.lblDashboardTitle.Text = "🏠 Ana Səhifə - Dashboard";
-            // 
-            // statsPanel
-            // 
-            this.statsPanel.Location = new System.Drawing.Point(0, 0);
-            this.statsPanel.Name = "statsPanel";
-            this.statsPanel.Size = new System.Drawing.Size(200, 100);
-            this.statsPanel.TabIndex = 0;
+            this.lblStatTotalCustomers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(152)))), ((int)(((byte)(219)))));
+            this.lblStatTotalCustomers.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
+            this.lblStatTotalCustomers.ForeColor = System.Drawing.Color.White;
+            this.lblStatTotalCustomers.Location = new System.Drawing.Point(30, 40);
+            this.lblStatTotalCustomers.Name = "lblStatTotalCustomers";
+            this.lblStatTotalCustomers.Size = new System.Drawing.Size(180, 80);
+            this.lblStatTotalCustomers.TabIndex = 0;
+            this.lblStatTotalCustomers.Text = "👥 Müştərilər\n\n1,234";
+            this.lblStatTotalCustomers.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1200, 800);
-            this.Controls.Add(this.contentPanel);
-            this.Controls.Add(this.headerPanel);
-            this.Controls.Add(this.sidebarPanel);
+            this.Controls.Add(this.pnlContent);
+            this.Controls.Add(this.pnlHeader);
+            this.Controls.Add(this.pnlSidebar);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
@@ -585,20 +533,52 @@ namespace AzAgroPOS.PL.Forms
             this.Text = "AzAgroPOS - Ana Səhifə";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
-            this.sidebarPanel.ResumeLayout(false);
-            this.sidebarPanel.PerformLayout();
-            this.customerSubmenu.ResumeLayout(false);
-            this.headerPanel.ResumeLayout(false);
-            this.headerPanel.PerformLayout();
-            this.contentPanel.ResumeLayout(false);
-            this.dashboardPanel.ResumeLayout(false);
-            this.dashboardPanel.PerformLayout();
+            this.pnlSidebar.ResumeLayout(false);
+            this.pnlSidebar.PerformLayout();
+            this.pnlCustomerSubmenu.ResumeLayout(false);
+            this.pnlHeader.ResumeLayout(false);
+            this.pnlHeader.PerformLayout();
+            this.pnlContent.ResumeLayout(false);
+            this.pnlDashboard.ResumeLayout(false);
+            this.pnlDashboard.PerformLayout();
             this.grpQuickActions.ResumeLayout(false);
             this.grpQuickStats.ResumeLayout(false);
             this.ResumeLayout(false);
-
         }
 
         #endregion
+
+        private System.Windows.Forms.Panel pnlSidebar;
+        private System.Windows.Forms.Label lblAppTitle;
+        private System.Windows.Forms.Button btnDashboard;
+        private System.Windows.Forms.Button btnUserManagement;
+        private System.Windows.Forms.Button btnCustomerManagement;
+        private System.Windows.Forms.Panel pnlCustomerSubmenu;
+        private System.Windows.Forms.Button btnCustomerAdd;
+        private System.Windows.Forms.Button btnCustomerList;
+        private System.Windows.Forms.Button btnCustomerGroups;
+        private System.Windows.Forms.Button btnInventory;
+        private System.Windows.Forms.Button btnDebtManagement;
+        private System.Windows.Forms.Button btnRepairManagement;
+        private System.Windows.Forms.Button btnPOS;
+        private System.Windows.Forms.Button btnReports;
+        private System.Windows.Forms.Button btnSettings;
+        private System.Windows.Forms.Button btnLogout;
+        private System.Windows.Forms.Panel pnlHeader;
+        private System.Windows.Forms.Label lblWelcomeMessage;
+        private System.Windows.Forms.Label lblUserRole;
+        private System.Windows.Forms.Panel pnlContent;
+        private System.Windows.Forms.Panel pnlDashboard;
+        private System.Windows.Forms.Label lblDashboardTitle;
+        private System.Windows.Forms.GroupBox grpQuickStats;
+        private System.Windows.Forms.Label lblStatTotalCustomers;
+        private System.Windows.Forms.Label lblStatTotalProducts;
+        private System.Windows.Forms.Label lblStatTodaySales;
+        private System.Windows.Forms.Label lblStatTotalValue;
+        private System.Windows.Forms.GroupBox grpQuickActions;
+        private System.Windows.Forms.Button btnQuickPOS;
+        private System.Windows.Forms.Button btnQuickCustomerAdd;
+        private System.Windows.Forms.Button btnQuickInventory;
+        private System.Windows.Forms.Button btnQuickReports;
     }
 }

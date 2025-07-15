@@ -1,5 +1,6 @@
 using AzAgroPOS.BLL.Services;
 using AzAgroPOS.DAL;
+using AzAgroPOS.DAL.Repositories;
 using AzAgroPOS.Entities.Domain;
 using AzAgroPOS.PL.Services;
 using AzAgroPOS.PL.Styles;
@@ -325,13 +326,6 @@ namespace AzAgroPOS.PL.Forms
             return panel;
         }
 
-        // Control declarations
-        private DataGridView dgvDebts;
-        private ComboBox cmbCustomer;
-        private Label lblTotalDebt;
-        private Label lblOverdueDebt;
-        private Label lblTotalInterest;
-        private Label lblCustomerCount;
 
         private void SetupDataGridView()
         {
