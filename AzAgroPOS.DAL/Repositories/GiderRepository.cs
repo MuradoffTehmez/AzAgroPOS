@@ -7,10 +7,57 @@ using System.Threading.Tasks;
 
 namespace AzAgroPOS.DAL.Repositories
 {
-    public class GiderRepository : Repository<Gider>, IGiderRepository
+    public class GiderRepository : IGiderRepository
     {
-        public GiderRepository(AzAgroDbContext context) : base(context)
+        private readonly AzAgroDbContext _context;
+
+        public GiderRepository(AzAgroDbContext context = null)
         {
+            _context = context ?? new AzAgroDbContext();
+        }
+
+        public async Task<IEnumerable<Gider>> GetAllAsync()
+        {
+            return await _context.Giderler
+                .Include(g => g.Istifadeci)
+                .OrderByDescending(g => g.Tarix)
+                .ToListAsync();
+        }
+
+        public async Task<Gider> GetByIdAsync(int id)
+        {
+            return await _context.Giderler
+                .Include(g => g.Istifadeci)
+                .FirstOrDefaultAsync(g => g.Id == id);
+        }
+
+        public async Task<Gider> AddAsync(Gider entity)
+        {
+            entity.YaranmaTarixi = DateTime.Now;
+            entity.YenilenmeTarixi = DateTime.Now;
+            
+            _context.Giderler.Add(entity);
+            await _context.SaveChangesAsync();
+            return entity;
+        }
+
+        public async Task<Gider> UpdateAsync(Gider entity)
+        {
+            entity.YenilenmeTarixi = DateTime.Now;
+            
+            _context.Giderler.Update(entity);
+            await _context.SaveChangesAsync();
+            return entity;
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var entity = await GetByIdAsync(id);
+            if (entity != null)
+            {
+                _context.Giderler.Remove(entity);
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task<IEnumerable<Gider>> GetByDateRangeAsync(DateTime startDate, DateTime endDate)
@@ -94,6 +141,11 @@ namespace AzAgroPOS.DAL.Repositories
             }
         }
 
+        public void Dispose()
+        {
+            _context?.Dispose();
+        }
+
         public async Task<IEnumerable<Gider>> SearchAsync(string searchTerm)
         {
             return await _context.Giderler
@@ -121,8 +173,13 @@ namespace AzAgroPOS.DAL.Repositories
         }
     }
 
-    public interface IGiderRepository : IRepository<Gider>
+    public interface IGiderRepository : IDisposable
     {
+        Task<IEnumerable<Gider>> GetAllAsync();
+        Task<Gider> GetByIdAsync(int id);
+        Task<Gider> AddAsync(Gider entity);
+        Task<Gider> UpdateAsync(Gider entity);
+        Task DeleteAsync(int id);
         Task<IEnumerable<Gider>> GetByDateRangeAsync(DateTime startDate, DateTime endDate);
         Task<IEnumerable<Gider>> GetByCategoryAsync(string category);
         Task<IEnumerable<Gider>> GetPendingApprovalAsync();

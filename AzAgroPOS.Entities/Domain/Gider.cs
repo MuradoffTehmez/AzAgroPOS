@@ -57,9 +57,6 @@ namespace AzAgroPOS.Entities.Domain
         
         [NotMapped]
         public string TamMelumat => $"{Ad} - {MeblegFormatli} ({TarixFormatli})";
-
-        public DateTime YenilenmeTarixi { get; set; }
-        public DateTime YaranmaTarixi { get; set; }
     }
     
     public static class GiderKateqoriyalari
