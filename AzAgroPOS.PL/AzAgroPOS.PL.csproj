@@ -24,6 +24,8 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+    <PackageReference Include="MaterialSkin.2" Version="2.2.1" />
+    <PackageReference Include="FontAwesome.Sharp" Version="6.3.0" />
     <!-- Chart paketləri müvəqqəti kaldırıldı - internet bağlantısı problemi -->
     <!-- <PackageReference Include="ScottPlot.WinForms" Version="5.0.2" /> -->
     <!-- <PackageReference Include="System.Windows.Forms.DataVisualization" Version="1.0.0-prerelease.20110.1" /> -->

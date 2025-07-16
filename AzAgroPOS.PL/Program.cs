@@ -46,10 +46,15 @@ namespace AzAgroPOS.PL
                     "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-            // Start with ModernLoginForm using DI
-            using var loginScope = _serviceProvider.CreateScope();
-            var loginForm = new Forms.ModernLoginForm(loginScope.ServiceProvider);
-            Application.Run(loginForm);
+            // Show splash screen first
+            var splashScreen = new Forms.ModernSplashScreen();
+            if (splashScreen.ShowDialog() == DialogResult.OK)
+            {
+                // Start with MaterialModernLoginForm using DI
+                using var loginScope = _serviceProvider.CreateScope();
+                var loginForm = new Forms.MaterialModernLoginForm(loginScope.ServiceProvider);
+                Application.Run(loginForm);
+            }
 
             _host?.Dispose();
         }
