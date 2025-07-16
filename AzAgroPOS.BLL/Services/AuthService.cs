@@ -1,4 +1,5 @@
 using AzAgroPOS.DAL;
+using AzAgroPOS.DAL.Interfaces;
 using AzAgroPOS.DAL.Repositories;
 using AzAgroPOS.Entities.Domain;
 using AzAgroPOS.Entities.Constants;
@@ -12,13 +13,14 @@ namespace AzAgroPOS.BLL.Services
 {
     public class AuthService : IDisposable
     {
-        private readonly IstifadeciRepository _istifadeciRepository;
-        private readonly AzAgroDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IAuditLogService _auditLogService;
+        private bool _disposed = false;
 
-        public AuthService()
+        public AuthService(IUnitOfWork unitOfWork, IAuditLogService auditLogService = null)
         {
-            _context = new AzAgroDbContext();
-            _istifadeciRepository = new IstifadeciRepository(_context);
+            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            _auditLogService = auditLogService;
         }
 
         /// <summary>
@@ -48,7 +50,7 @@ namespace AzAgroPOS.BLL.Services
                     return (false, "Şifrə ən azı 8 simvoldan, bir böyük hərfdən, bir kiçik hərfdən və bir rəqəmdən ibarət olmalıdır.");
                 }
 
-                var istifadeci = await _istifadeciRepository.GetByIdAsync(userId);
+                var istifadeci = await _unitOfWork.Istifadeciler.GetByIdAsync(userId);
                 if (istifadeci == null)
                 {
                     return (false, "İstifadəçi tapılmadı.");
@@ -56,7 +58,8 @@ namespace AzAgroPOS.BLL.Services
 
                 istifadeci.ParolHash = HashPassword(newPassword);
                 istifadeci.YenilenmeTarixi = DateTime.Now;
-                await _istifadeciRepository.UpdateAsync(istifadeci);
+                await _unitOfWork.Istifadeciler.UpdateAsync(istifadeci);
+                await _unitOfWork.CompleteAsync();
 
                 return (true, "Şifrə uğurla sıfırlandı.");
             }
@@ -96,7 +99,7 @@ namespace AzAgroPOS.BLL.Services
 
             try
             {
-                var istifadeci = _istifadeciRepository.GetByEmail(email);
+                var istifadeci = _unitOfWork.Istifadeciler.GetByEmail(email);
 
                 // Always perform hash computation to prevent timing attacks
                 string dummyHash = "$2a$12$dummyhashfortimingatnormalizedconstanttime";
@@ -120,7 +123,8 @@ namespace AzAgroPOS.BLL.Services
 
                 // Update last login time
                 istifadeci.SonGiris = DateTime.Now;
-                _istifadeciRepository.Update(istifadeci);
+                _unitOfWork.Istifadeciler.Update(istifadeci);
+                _unitOfWork.Complete();
 
                 return $"Uğurlu giriş! Xoş gəldiniz, {istifadeci.Ad}.";
             }
@@ -139,7 +143,7 @@ namespace AzAgroPOS.BLL.Services
 
             try
             {
-                var istifadeci = await _istifadeciRepository.GetByEmailAsync(email);
+                var istifadeci = await _unitOfWork.Istifadeciler.GetByEmailAsync(email);
 
                 // Always perform hash computation to prevent timing attacks
                 string dummyHash = "$2a$12$dummyhashfortimingatnormalizedconstanttime";
@@ -163,7 +167,8 @@ namespace AzAgroPOS.BLL.Services
 
                 // Update last login time
                 istifadeci.SonGiris = DateTime.Now;
-                await _istifadeciRepository.UpdateAsync(istifadeci);
+                await _unitOfWork.Istifadeciler.UpdateAsync(istifadeci);
+                await _unitOfWork.CompleteAsync();
 
                 return $"Uğurlu giriş! Xoş gəldiniz, {istifadeci.Ad}.";
             }
@@ -183,7 +188,7 @@ namespace AzAgroPOS.BLL.Services
                     return (false, "Bütün sahələr doldurulmalıdır.", null);
                 }
 
-                if (await _istifadeciRepository.EmailExistsAsync(email))
+                if (await _unitOfWork.Istifadeciler.EmailExistsAsync(email))
                 {
                     return (false, "Bu email ünvanı artıq istifadə olunur.", null);
                 }
@@ -211,7 +216,8 @@ namespace AzAgroPOS.BLL.Services
                     YaradilmaTarixi = DateTime.Now
                 };
 
-                var createdUser = await _istifadeciRepository.CreateAsync(istifadeci);
+                var createdUser = await _unitOfWork.Istifadeciler.CreateAsync(istifadeci);
+                await _unitOfWork.CompleteAsync();
                 return (true, "İstifadəçi uğurla yaradıldı.", createdUser);
             }
             catch (Exception ex)
@@ -234,7 +240,7 @@ namespace AzAgroPOS.BLL.Services
                     return (false, "Yeni şifrə köhnə şifrə ilə eyni ola bilməz.");
                 }
 
-                var istifadeci = await _istifadeciRepository.GetByIdAsync(userId);
+                var istifadeci = await _unitOfWork.Istifadeciler.GetByIdAsync(userId);
                 if (istifadeci == null)
                 {
                     return (false, "İstifadəçi tapılmadı.");
@@ -252,7 +258,8 @@ namespace AzAgroPOS.BLL.Services
 
                 istifadeci.ParolHash = HashPassword(newPassword);
                 istifadeci.YenilenmeTarixi = DateTime.Now;
-                await _istifadeciRepository.UpdateAsync(istifadeci);
+                await _unitOfWork.Istifadeciler.UpdateAsync(istifadeci);
+                await _unitOfWork.CompleteAsync();
 
                 return (true, "Şifrə uğurla dəyişdirildi.");
             }
@@ -278,7 +285,7 @@ namespace AzAgroPOS.BLL.Services
 
         public List<Istifadeci> GetActiveWorkers()
         {
-            return _istifadeciRepository.GetAll()
+            return _unitOfWork.Istifadeciler.GetAll()
                 .Cast<Istifadeci>()
                 .Where(i => i.Status == SystemConstants.Status.Active &&
                        (i.Rol?.Ad == SystemConstants.Roles.Worker ||
@@ -300,7 +307,7 @@ namespace AzAgroPOS.BLL.Services
                     await _unitOfWork.Istifadeciler.UpdateAsync(user);
                     await _unitOfWork.CompleteAsync();
 
-                    _auditLogService.LogAction(
+                    _auditLogService?.LogAction(
                         "Istifadeci",
                         "TOKEN_LOGIN",
                         user.Id,

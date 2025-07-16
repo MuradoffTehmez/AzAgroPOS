@@ -5,7 +5,7 @@ using AzAgroPOS.Entities.Domain;
 using AzAgroPOS.Entities.Constants;
 using AzAgroPOS.DAL.Repositories;
 using AzAgroPOS.DAL;
-using AzAgroPOS.BLL.Interfaces;
+using AzAgroPOS.DAL.Interfaces;
 using System.Threading.Tasks;
 
 namespace AzAgroPOS.BLL.Services

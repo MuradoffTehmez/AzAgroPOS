@@ -4,7 +4,7 @@ using System.Linq;
 using AzAgroPOS.Entities.Domain;
 using AzAgroPOS.DAL.Repositories;
 using AzAgroPOS.DAL;
-using AzAgroPOS.BLL.Interfaces;
+using AzAgroPOS.DAL.Interfaces;
 
 namespace AzAgroPOS.BLL.Services
 {

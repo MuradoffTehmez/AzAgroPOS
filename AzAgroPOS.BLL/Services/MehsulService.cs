@@ -1,7 +1,7 @@
 using AzAgroPOS.DAL;
 using AzAgroPOS.DAL.Repositories;
 using AzAgroPOS.Entities.Domain;
-using AzAgroPOS.BLL.Interfaces;
+using AzAgroPOS.DAL.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;

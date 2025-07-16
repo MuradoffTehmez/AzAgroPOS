@@ -1,4 +1,4 @@
-using AzAgroPOS.BLL.Interfaces;
+using AzAgroPOS.DAL.Interfaces;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Diagnostics;

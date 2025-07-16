@@ -1,7 +1,7 @@
 using AzAgroPOS.DAL;
 using AzAgroPOS.Entities.Domain;
 using AzAgroPOS.Entities.Constants;
-using AzAgroPOS.BLL.Interfaces;
+using AzAgroPOS.DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

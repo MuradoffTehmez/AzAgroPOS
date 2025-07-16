@@ -1,4 +1,4 @@
-using AzAgroPOS.BLL.Interfaces;
+using AzAgroPOS.DAL.Interfaces;
 using System.Threading.Tasks;
 
 namespace AzAgroPOS.DAL.Repositories
