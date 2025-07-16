@@ -11,9 +11,9 @@ namespace AzAgroPOS.DAL.Repositories
     {
         private readonly AzAgroDbContext _context;
 
-        public BildirisAyariRepository(AzAgroDbContext context = null)
+        public BildirisAyariRepository(AzAgroDbContext context)
         {
-            _context = context ?? new AzAgroDbContext();
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public async Task<IEnumerable<BildirisAyari>> GetAllAsync()
@@ -96,7 +96,6 @@ namespace AzAgroPOS.DAL.Repositories
             entity.YenilenmeTarixi = DateTime.Now;
             
             _context.BildirisAyarlari.Add(entity);
-            await _context.SaveChangesAsync();
             return entity;
         }
 
@@ -105,7 +104,6 @@ namespace AzAgroPOS.DAL.Repositories
             entity.YenilenmeTarixi = DateTime.Now;
             
             _context.BildirisAyarlari.Update(entity);
-            await _context.SaveChangesAsync();
             return entity;
         }
 
@@ -115,8 +113,7 @@ namespace AzAgroPOS.DAL.Repositories
             if (entity != null)
             {
                 _context.BildirisAyarlari.Remove(entity);
-                await _context.SaveChangesAsync();
-            }
+                }
         }
 
         public async Task<BildirisAyari> CreateOrUpdateSettingAsync(int userId, string moduleName, string notificationType, BildirisAyari newSettings)

@@ -18,7 +18,6 @@ namespace AzAgroPOS.DAL.Repositories
         public int Add(AnbarTransfer transfer)
         {
             _context.AnbarTransferleri.Add(transfer);
-            _context.SaveChanges();
             return transfer.Id;
         }
 
@@ -26,7 +25,6 @@ namespace AzAgroPOS.DAL.Repositories
         {
             transfer.YenilenmeTarixi = DateTime.Now;
             _context.AnbarTransferleri.Update(transfer);
-            _context.SaveChanges();
         }
 
         public void Delete(int id)
@@ -35,8 +33,7 @@ namespace AzAgroPOS.DAL.Repositories
             if (transfer != null)
             {
                 _context.AnbarTransferleri.Remove(transfer);
-                _context.SaveChanges();
-            }
+                }
         }
 
         public AnbarTransfer GetById(int id)
@@ -140,14 +137,12 @@ namespace AzAgroPOS.DAL.Repositories
         public void AddDetali(AnbarTransferDetali detali)
         {
             _context.AnbarTransferDetallari.Add(detali);
-            _context.SaveChanges();
         }
 
         public void UpdateDetali(AnbarTransferDetali detali)
         {
             detali.YenilenmeTarixi = DateTime.Now;
             _context.AnbarTransferDetallari.Update(detali);
-            _context.SaveChanges();
         }
 
         public void DeleteDetali(int id)
@@ -156,8 +151,7 @@ namespace AzAgroPOS.DAL.Repositories
             if (detali != null)
             {
                 _context.AnbarTransferDetallari.Remove(detali);
-                _context.SaveChanges();
-            }
+                }
         }
 
         public List<AnbarTransferDetali> GetDetallari(int transferId)

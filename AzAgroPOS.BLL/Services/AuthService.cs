@@ -289,31 +289,119 @@ namespace AzAgroPOS.BLL.Services
 
         public async Task<(bool Success, Istifadeci User)> LoginWithTokenAsync(string token)
         {
-            var user = await _istifadeciRepository.GetByRememberMeTokenAsync(token);
-
-            if (user != null && user.RememberMeTokenExpiry.HasValue && user.RememberMeTokenExpiry.Value > DateTime.Now)
+            return await ExecuteWithExceptionHandlingAsync(async () =>
             {
-                // Token düzgün və vaxtı keçməyibsə, son giriş tarixini yenilə
-                user.SonGiris = DateTime.Now;
-                await _istifadeciRepository.UpdateAsync(user);
-                return (true, user);
-            }
+                var user = await _unitOfWork.Istifadeciler.GetByRememberMeTokenAsync(token);
 
-            // Token səhvdirsə və ya vaxtı keçibsə, təmizlə
-            if (user != null)
-            {
-                user.RememberMeToken = null;
-                user.RememberMeTokenExpiry = null;
-                await _istifadeciRepository.UpdateAsync(user);
-            }
+                if (user != null && user.RememberMeTokenExpiry.HasValue && user.RememberMeTokenExpiry.Value > DateTime.Now)
+                {
+                    // Token düzgün və vaxtı keçməyibsə, son giriş tarixini yenilə
+                    user.SonGiris = DateTime.Now;
+                    await _unitOfWork.Istifadeciler.UpdateAsync(user);
+                    await _unitOfWork.CompleteAsync();
 
-            return (false, null);
+                    _auditLogService.LogAction(
+                        "Istifadeci",
+                        "TOKEN_LOGIN",
+                        user.Id,
+                        "Token ilə giriş",
+                        user.Id
+                    );
+
+                    return (true, user);
+                }
+
+                // Token səhvdirsə və ya vaxtı keçibsə, təmizlə
+                if (user != null)
+                {
+                    user.RememberMeToken = null;
+                    user.RememberMeTokenExpiry = null;
+                    await _unitOfWork.Istifadeciler.UpdateAsync(user);
+                    await _unitOfWork.CompleteAsync();
+                }
+
+                return (false, null);
+            }, "Token ilə giriş zamanı xəta");
         }
+
+        #region Helper Methods
+
+        private T ExecuteWithExceptionHandling<T>(Func<T> action, string errorMessage)
+        {
+            try
+            {
+                return action();
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException($"{errorMessage}: {ex.Message}", ex);
+            }
+        }
+
+        private void ExecuteWithExceptionHandling(Action action, string errorMessage)
+        {
+            try
+            {
+                action();
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException($"{errorMessage}: {ex.Message}", ex);
+            }
+        }
+
+        private async Task<T> ExecuteWithExceptionHandlingAsync<T>(Func<Task<T>> action, string errorMessage)
+        {
+            try
+            {
+                return await action();
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException($"{errorMessage}: {ex.Message}", ex);
+            }
+        }
+
+        private async Task ExecuteWithExceptionHandlingAsync(Func<Task> action, string errorMessage)
+        {
+            try
+            {
+                await action();
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException($"{errorMessage}: {ex.Message}", ex);
+            }
+        }
+
+        #endregion
+
+        #region IDisposable Implementation
 
         public void Dispose()
         {
-            _istifadeciRepository?.Dispose();
-            _context?.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    _unitOfWork?.Dispose();
+                    _auditLogService?.Dispose();
+                }
+                _disposed = true;
+            }
+        }
+
+        ~AuthService()
+        {
+            Dispose(false);
+        }
+
+        #endregion
     }
 }

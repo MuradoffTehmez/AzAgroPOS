@@ -23,7 +23,31 @@ namespace AzAgroPOS.DAL.Repositories
         public RolRepository Roller { get; private set; }
         public MehsulKateqoriyasiRepository MehsulKateqoriyalari { get; private set; }
         public VahidRepository Vahidler { get; private set; }
+        public VahidRepository AltVahidler { get; private set; }
+        public MehsulKateqoriyasiRepository UstMehsulKateqoriyalari { get; private set; }
         public BorcOdenisRepository BorcOdenisleri { get; private set; }
+        
+        // Əlavə edilən repozitorilər
+        public AlisOrderRepository AlisOrderleri { get; private set; }
+        public AlisSenedRepository AlisSenedleri { get; private set; }
+        public AnbarHereketRepository AnbarHereketleri { get; private set; }
+        public AnbarTransferRepository AnbarTransferleri { get; private set; }
+        public BackupKaydiRepository BackupKayitlari { get; private set; }
+        public BackupTenzimlemeRepository BackupTenzimlemeleri { get; private set; }
+        public BildirisAyariRepository BildirisAyarlari { get; private set; }
+        public BildirisRepository Bildirisler { get; private set; }
+        public IsciIzniRepository IsciIzinleri { get; private set; }
+        public MusteriQrupuRepository MusteriQruplari { get; private set; }
+        public NovbeCedveliRepository NovbeCedvelleri { get; private set; }
+        public NovbeDetaliRepository NovbeDetallari { get; private set; }
+        public NovbeRepository Novbeler { get; private set; }
+        public PrintLogKaydiRepository PrintLogKayitlari { get; private set; }
+        public PrintSablonuRepository PrintSablonlari { get; private set; }
+        public PrinterKonfiqurasiyasiRepository PrinterKonfiqurasiyas { get; private set; }
+        public SatisHesabatiRepository SatisHesabatlari { get; private set; }
+        public SistemAyarlariRepository SistemAyarlari { get; private set; }
+        public TamirMerheleRepository TamirMerheleri { get; private set; }
+        public TedarukcuOdemeRepository TedarukcuOdemeleri { get; private set; }
 
         public UnitOfWork(AzAgroDbContext context)
         {
@@ -46,7 +70,31 @@ namespace AzAgroPOS.DAL.Repositories
             Roller = new RolRepository(_context);
             MehsulKateqoriyalari = new MehsulKateqoriyasiRepository(_context);
             Vahidler = new VahidRepository(_context);
+            AltVahidler = new VahidRepository(_context);
+            UstMehsulKateqoriyalari = new MehsulKateqoriyasiRepository(_context);
             BorcOdenisleri = new BorcOdenisRepository(_context);
+            
+            // Əlavə edilən repozitoriləri initialize edirik
+            AlisOrderleri = new AlisOrderRepository(_context);
+            AlisSenedleri = new AlisSenedRepository(_context);
+            AnbarHereketleri = new AnbarHereketRepository(_context);
+            AnbarTransferleri = new AnbarTransferRepository(_context);
+            BackupKayitlari = new BackupKaydiRepository(_context);
+            BackupTenzimlemeleri = new BackupTenzimlemeRepository(_context);
+            BildirisAyarlari = new BildirisAyariRepository(_context);
+            Bildirisler = new BildirisRepository(_context);
+            IsciIzinleri = new IsciIzniRepository(_context);
+            MusteriQruplari = new MusteriQrupuRepository(_context);
+            NovbeCedvelleri = new NovbeCedveliRepository(_context);
+            NovbeDetallari = new NovbeDetaliRepository(_context);
+            Novbeler = new NovbeRepository(_context);
+            PrintLogKayitlari = new PrintLogKaydiRepository(_context);
+            PrintSablonlari = new PrintSablonuRepository(_context);
+            PrinterKonfiqurasiyas = new PrinterKonfiqurasiyasiRepository(_context);
+            SatisHesabatlari = new SatisHesabatiRepository(_context);
+            SistemAyarlari = new SistemAyarlariRepository(_context);
+            TamirMerheleri = new TamirMerheleRepository(_context);
+            TedarukcuOdemeleri = new TedarukcuOdemeRepository(_context);
         }
 
         public int Complete()

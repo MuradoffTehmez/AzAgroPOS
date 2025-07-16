@@ -11,9 +11,9 @@ namespace AzAgroPOS.DAL.Repositories
     {
         private readonly AzAgroDbContext _context;
 
-        public PrinterKonfiqurasiyasiRepository(AzAgroDbContext context = null)
+        public PrinterKonfiqurasiyasiRepository(AzAgroDbContext context)
         {
-            _context = context ?? new AzAgroDbContext();
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public async Task<IEnumerable<PrinterKonfiqurasiyasi>> GetAllAsync()
@@ -139,7 +139,6 @@ namespace AzAgroPOS.DAL.Repositories
             if (entity != null)
             {
                 _context.PrinterKonfiqurasiyas.Remove(entity);
-                await _context.SaveChangesAsync();
             }
         }
 

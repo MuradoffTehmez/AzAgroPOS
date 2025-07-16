@@ -104,7 +104,6 @@ namespace AzAgroPOS.DAL.Repositories
             }
             
             _context.TamirMerheleri.Add(tamirMerhele);
-            _context.SaveChanges();
             return tamirMerhele.Id;
         }
 
@@ -112,7 +111,6 @@ namespace AzAgroPOS.DAL.Repositories
         {
             tamirMerhele.YenilenmeTarixi = DateTime.Now;
             _context.Entry(tamirMerhele).State = EntityState.Modified;
-            _context.SaveChanges();
         }
 
         public void Delete(int id)
@@ -121,8 +119,7 @@ namespace AzAgroPOS.DAL.Repositories
             if (tamirMerhele != null)
             {
                 _context.TamirMerheleri.Remove(tamirMerhele);
-                _context.SaveChanges();
-            }
+                }
         }
 
         public void StartStep(int id, int istifadeciId)

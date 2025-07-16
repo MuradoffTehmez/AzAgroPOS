@@ -25,8 +25,28 @@ namespace AzAgroPOS.BLL.Interfaces
         VahidRepository AltVahidler { get; }
         MehsulKateqoriyasiRepository UstMehsulKateqoriyalari { get; }
         BorcOdenisRepository BorcOdenisleri { get; }
-
-        // Digər bütün repozitorilərinizi bura əlavə edin
+        
+        // Əlavə edilən repozitorilər
+        AlisOrderRepository AlisOrderleri { get; }
+        AlisSenedRepository AlisSenedleri { get; }
+        AnbarHereketRepository AnbarHereketleri { get; }
+        AnbarTransferRepository AnbarTransferleri { get; }
+        BackupKaydiRepository BackupKayitlari { get; }
+        BackupTenzimlemeRepository BackupTenzimlemeleri { get; }
+        BildirisAyariRepository BildirisAyarlari { get; }
+        BildirisRepository Bildirisler { get; }
+        IsciIzniRepository IsciIzinleri { get; }
+        MusteriQrupuRepository MusteriQruplari { get; }
+        NovbeCedveliRepository NovbeCedvelleri { get; }
+        NovbeDetaliRepository NovbeDetallari { get; }
+        NovbeRepository Novbeler { get; }
+        PrintLogKaydiRepository PrintLogKayitlari { get; }
+        PrintSablonuRepository PrintSablonlari { get; }
+        PrinterKonfiqurasiyasiRepository PrinterKonfiqurasiyas { get; }
+        SatisHesabatiRepository SatisHesabatlari { get; }
+        SistemAyarlariRepository SistemAyarlari { get; }
+        TamirMerheleRepository TamirMerheleri { get; }
+        TedarukcuOdemeRepository TedarukcuOdemeleri { get; }
 
         /// <summary>
         /// Bütün dəyişiklikləri vahid bir tranzaksiya ilə verilənlər bazasına yazır.

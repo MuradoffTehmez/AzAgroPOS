@@ -15,14 +15,10 @@ namespace AzAgroPOS.DAL.Repositories
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public TedarukcuOdemeRepository()
-        {
-        }
 
         public int Add(TedarukcuOdeme odeme)
         {
             _context.TedarukcuOdemeleri.Add(odeme);
-            _context.SaveChanges();
             return odeme.Id;
         }
 
@@ -30,7 +26,6 @@ namespace AzAgroPOS.DAL.Repositories
         {
             odeme.YenilenmeTarixi = DateTime.Now;
             _context.TedarukcuOdemeleri.Update(odeme);
-            _context.SaveChanges();
         }
 
         public void Delete(int id)
@@ -39,8 +34,7 @@ namespace AzAgroPOS.DAL.Repositories
             if (odeme != null)
             {
                 _context.TedarukcuOdemeleri.Remove(odeme);
-                _context.SaveChanges();
-            }
+                }
         }
 
         public TedarukcuOdeme GetById(int id)

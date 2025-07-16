@@ -11,9 +11,9 @@ namespace AzAgroPOS.DAL.Repositories
     {
         private readonly AzAgroDbContext _context;
 
-        public PrintLogKaydiRepository(AzAgroDbContext context = null)
+        public PrintLogKaydiRepository(AzAgroDbContext context)
         {
-            _context = context ?? new AzAgroDbContext();
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public async Task<IEnumerable<PrintLogKaydi>> GetAllAsync()
@@ -169,7 +169,6 @@ namespace AzAgroPOS.DAL.Repositories
             entity.YenilenmeTarixi = DateTime.Now;
             
             _context.PrintLogKayitlari.Add(entity);
-            await _context.SaveChangesAsync();
             return entity;
         }
 
@@ -178,7 +177,6 @@ namespace AzAgroPOS.DAL.Repositories
             entity.YenilenmeTarixi = DateTime.Now;
             
             _context.PrintLogKayitlari.Update(entity);
-            await _context.SaveChangesAsync();
             return entity;
         }
 
@@ -188,8 +186,7 @@ namespace AzAgroPOS.DAL.Repositories
             if (entity != null)
             {
                 _context.PrintLogKayitlari.Remove(entity);
-                await _context.SaveChangesAsync();
-            }
+                }
         }
 
         public async Task<int> DeleteOldLogsAsync(int daysOld)
@@ -203,8 +200,7 @@ namespace AzAgroPOS.DAL.Repositories
             if (count > 0)
             {
                 _context.PrintLogKayitlari.RemoveRange(oldLogs);
-                await _context.SaveChangesAsync();
-            }
+                }
 
             return count;
         }

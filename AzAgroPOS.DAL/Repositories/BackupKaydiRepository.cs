@@ -11,9 +11,9 @@ namespace AzAgroPOS.DAL.Repositories
     {
         private readonly AzAgroDbContext _context;
 
-        public BackupKaydiRepository(AzAgroDbContext context = null)
+        public BackupKaydiRepository(AzAgroDbContext context)
         {
-            _context = context ?? new AzAgroDbContext();
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public async Task<IEnumerable<BackupKaydi>> GetAllAsync()
@@ -139,7 +139,6 @@ namespace AzAgroPOS.DAL.Repositories
             entity.YenilenmeTarixi = DateTime.Now;
             
             _context.BackupKayitlari.Add(entity);
-            await _context.SaveChangesAsync();
             return entity;
         }
 
@@ -148,7 +147,6 @@ namespace AzAgroPOS.DAL.Repositories
             entity.YenilenmeTarixi = DateTime.Now;
             
             _context.BackupKayitlari.Update(entity);
-            await _context.SaveChangesAsync();
             return entity;
         }
 
@@ -158,7 +156,6 @@ namespace AzAgroPOS.DAL.Repositories
             if (entity != null)
             {
                 _context.BackupKayitlari.Remove(entity);
-                await _context.SaveChangesAsync();
             }
         }
 
@@ -172,7 +169,6 @@ namespace AzAgroPOS.DAL.Repositories
             if (oldBackups.Any())
             {
                 _context.BackupKayitlari.RemoveRange(oldBackups);
-                await _context.SaveChangesAsync();
             }
         }
 

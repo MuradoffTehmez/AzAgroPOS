@@ -7,23 +7,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
+using System.Threading.Tasks;
 
 namespace AzAgroPOS.BLL.Services
 {
     public class MusteriService : IDisposable
     {
-        private readonly AzAgroDbContext _context;
-        private readonly MusteriRepository _musteriRepository;
-        private readonly MusteriQrupuRepository _musteriQrupuRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IAuditLogService _auditLogService;
         private bool _disposed = false;
 
-        public MusteriService(AzAgroDbContext context = null, IAuditLogService auditLogService = null)
+        public MusteriService(IUnitOfWork unitOfWork, IAuditLogService auditLogService)
         {
-            _context = context ?? new AzAgroDbContext();
-            _musteriRepository = new MusteriRepository(_context);
-            _musteriQrupuRepository = new MusteriQrupuRepository(_context);
-            _auditLogService = auditLogService ?? new AuditLogService(_context);
+            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            _auditLogService = auditLogService ?? throw new ArgumentNullException(nameof(auditLogService));
         }
 
         #region Müştəri CRUD Operations
@@ -31,14 +28,14 @@ namespace AzAgroPOS.BLL.Services
         public IEnumerable<Musteri> GetAllCustomers()
         {
             return ExecuteWithExceptionHandling(
-                () => _musteriRepository.GetAll().ToList(),
+                () => _unitOfWork.Musteriler.GetAll().ToList(),
                 "Müştəri məlumatları alınarkən xəta");
         }
 
         public IEnumerable<Musteri> GetActiveCustomers()
         {
             return ExecuteWithExceptionHandling(
-                () => _musteriRepository.GetActive().ToList(),
+                () => _unitOfWork.Musteriler.GetActive().ToList(),
                 "Aktiv müştəri məlumatları alınarkən xəta");
         }
 
@@ -48,7 +45,7 @@ namespace AzAgroPOS.BLL.Services
                 throw new ArgumentException("Yanlış müştəri ID-si", nameof(id));
 
             return ExecuteWithExceptionHandling(
-                () => _musteriRepository.GetById(id),
+                () => _unitOfWork.Musteriler.GetById(id),
                 $"Müştəri məlumatı alınarkən xəta (ID: {id})");
         }
 
@@ -58,7 +55,7 @@ namespace AzAgroPOS.BLL.Services
                 throw new ArgumentException("Müştəri kodu boş ola bilməz", nameof(musteriKodu));
 
             return ExecuteWithExceptionHandling(
-                () => _musteriRepository.GetByCode(musteriKodu),
+                () => _unitOfWork.Musteriler.GetByCode(musteriKodu),
                 $"Müştəri məlumatı alınarkən xəta (Kod: {musteriKodu})");
         }
 
@@ -73,14 +70,14 @@ namespace AzAgroPOS.BLL.Services
 
                 // Check if code exists
                 if (!string.IsNullOrEmpty(musteri.MusteriKodu) &&
-                    _musteriRepository.IsCodeExists(musteri.MusteriKodu))
+                    _unitOfWork.Musteriler.IsCodeExists(musteri.MusteriKodu))
                 {
                     return (false, "Bu müştəri kodu artıq mövcuddur.", null);
                 }
 
                 // Check if email exists
                 if (!string.IsNullOrEmpty(musteri.Email) &&
-                    _musteriRepository.IsEmailExists(musteri.Email))
+                    _unitOfWork.Musteriler.IsEmailExists(musteri.Email))
                 {
                     return (false, "Bu email ünvanı artıq istifadə olunur.", null);
                 }
@@ -89,7 +86,8 @@ namespace AzAgroPOS.BLL.Services
                 musteri.YaradilmaTarixi = DateTime.Now;
                 musteri.Status = SystemConstants.Status.Active;
 
-                var createdCustomer = _musteriRepository.Add(musteri);
+                var createdCustomer = _unitOfWork.Musteriler.Add(musteri);
+                _unitOfWork.Complete();
 
                 // Log audit
                 _auditLogService.LogAction("Musteri", "CREATE", createdCustomer.Id,
@@ -110,19 +108,20 @@ namespace AzAgroPOS.BLL.Services
 
                 // Check if code exists
                 if (!string.IsNullOrEmpty(musteri.MusteriKodu) &&
-                    _musteriRepository.IsCodeExists(musteri.MusteriKodu, musteri.Id))
+                    _unitOfWork.Musteriler.IsCodeExists(musteri.MusteriKodu, musteri.Id))
                 {
                     return (false, "Bu müştəri kodu artıq mövcuddur.");
                 }
 
                 // Check if email exists
                 if (!string.IsNullOrEmpty(musteri.Email) &&
-                    _musteriRepository.IsEmailExists(musteri.Email, musteri.Id))
+                    _unitOfWork.Musteriler.IsEmailExists(musteri.Email, musteri.Id))
                 {
                     return (false, "Bu email ünvanı artıq istifadə olunur.");
                 }
 
-                _musteriRepository.Update(musteri);
+                _unitOfWork.Musteriler.Update(musteri);
+                _unitOfWork.Complete();
 
                 // Log audit
                 _auditLogService.LogAction("Musteri", "UPDATE", musteri.Id,
@@ -144,7 +143,8 @@ namespace AzAgroPOS.BLL.Services
                 if (musteri.CariBorc > 0)
                     return (false, "Borcu olan müştəri silinə bilməz.");
 
-                _musteriRepository.Delete(id);
+                _unitOfWork.Musteriler.Delete(id);
+                _unitOfWork.Complete();
 
                 // Log audit
                 _auditLogService.LogAction("Musteri", "DELETE", id,
@@ -161,7 +161,7 @@ namespace AzAgroPOS.BLL.Services
         public IEnumerable<MusteriQrupu> GetAllCustomerGroups()
         {
             return ExecuteWithExceptionHandling(
-                () => _musteriQrupuRepository.GetActive().ToList(),
+                () => _unitOfWork.MusteriQruplari.GetActive().ToList(),
                 "Müştəri qrupları alınarkən xəta");
         }
 
@@ -173,14 +173,15 @@ namespace AzAgroPOS.BLL.Services
                 if (string.IsNullOrEmpty(qrup.Ad))
                     return (false, "Qrup adı mütləqdir.", null);
 
-                if (_musteriQrupuRepository.IsNameExists(qrup.Ad))
+                if (_unitOfWork.MusteriQruplari.IsNameExists(qrup.Ad))
                     return (false, "Bu qrup adı artıq mövcuddur.", null);
 
                 qrup.YaradanIstifadeciId = yaradanIstifadeciId;
                 qrup.YaradilmaTarixi = DateTime.Now;
                 qrup.Status = SystemConstants.Status.Active;
 
-                var createdGroup = _musteriQrupuRepository.Add(qrup);
+                var createdGroup = _unitOfWork.MusteriQruplari.Add(qrup);
+                _unitOfWork.Complete();
 
                 // Log audit
                 _auditLogService.LogAction("MusteriQrupu", "CREATE", createdGroup.Id,
@@ -197,35 +198,35 @@ namespace AzAgroPOS.BLL.Services
         public IEnumerable<Musteri> SearchCustomers(string searchTerm)
         {
             return ExecuteWithExceptionHandling(
-                () => _musteriRepository.SearchCustomers(searchTerm).ToList(),
+                () => _unitOfWork.Musteriler.SearchCustomers(searchTerm).ToList(),
                 "Müştəri axtarışında xəta");
         }
 
         public IEnumerable<Musteri> GetCustomersByGroup(int qrupId)
         {
             return ExecuteWithExceptionHandling(
-                () => _musteriRepository.GetByGroup(qrupId).ToList(),
+                () => _unitOfWork.Musteriler.GetByGroup(qrupId).ToList(),
                 $"Qrup üzrə müştərilər alınarkən xəta (Qrup ID: {qrupId})");
         }
 
         public IEnumerable<Musteri> GetVIPCustomers()
         {
             return ExecuteWithExceptionHandling(
-                () => _musteriRepository.GetVIPCustomers().ToList(),
+                () => _unitOfWork.Musteriler.GetVIPCustomers().ToList(),
                 "VIP müştərilər alınarkən xəta");
         }
 
         public IEnumerable<Musteri> GetNewCustomers(int days = 30)
         {
             return ExecuteWithExceptionHandling(
-                () => _musteriRepository.GetNewCustomers(days).ToList(),
+                () => _unitOfWork.Musteriler.GetNewCustomers(days).ToList(),
                 "Yeni müştərilər alınarkən xəta");
         }
 
         public IEnumerable<Musteri> GetInactiveCustomers(int days = 90)
         {
             return ExecuteWithExceptionHandling(
-                () => _musteriRepository.GetInactiveCustomers(days).ToList(),
+                () => _unitOfWork.Musteriler.GetInactiveCustomers(days).ToList(),
                 "Passiv müştərilər alınarkən xəta");
         }
 
@@ -236,21 +237,21 @@ namespace AzAgroPOS.BLL.Services
         public List<object> GetCustomerStatistics()
         {
             return ExecuteWithExceptionHandling(
-                _musteriRepository.GetCustomerStatistics,
+                _unitOfWork.Musteriler.GetCustomerStatistics,
                 "Müştəri statistikaları alınarkən xəta");
         }
 
         public List<object> GetTopCustomers(int count = 10)
         {
             return ExecuteWithExceptionHandling(
-                () => _musteriRepository.GetTopCustomers(count),
+                () => _unitOfWork.Musteriler.GetTopCustomers(count),
                 "Top müştərilər alınarkən xəta");
         }
 
         public List<object> GetGroupStatistics()
         {
             return ExecuteWithExceptionHandling(
-                _musteriQrupuRepository.GetGroupStatistics,
+                _unitOfWork.MusteriQruplari.GetGroupStatistics,
                 "Qrup statistikaları alınarkən xəta");
         }
 
@@ -261,14 +262,20 @@ namespace AzAgroPOS.BLL.Services
         public void UpdateCustomerDebt(int musteriId, decimal yeniBorc)
         {
             ExecuteWithExceptionHandling(
-                () => _musteriRepository.UpdateDebtAmount(musteriId, yeniBorc),
+                () => {
+                    _unitOfWork.Musteriler.UpdateDebtAmount(musteriId, yeniBorc);
+                    _unitOfWork.Complete();
+                },
                 $"Müştəri borc məlumatı yenilənərkən xəta (Müştəri ID: {musteriId})");
         }
 
         public void UpdateCustomerPurchase(int musteriId, decimal alistutar)
         {
             ExecuteWithExceptionHandling(
-                () => _musteriRepository.UpdatePurchaseAmount(musteriId, alistutar),
+                () => {
+                    _unitOfWork.Musteriler.UpdatePurchaseAmount(musteriId, alistutar);
+                    _unitOfWork.Complete();
+                },
                 $"Müştəri alış məlumatı yenilənərkən xəta (Müştəri ID: {musteriId})");
         }
 
@@ -335,19 +342,13 @@ namespace AzAgroPOS.BLL.Services
 
         private T ExecuteWithTransaction<T>(Func<T> action, string errorMessage)
         {
-            using (var transaction = _context.Database.BeginTransaction())
+            try
             {
-                try
-                {
-                    var result = action();
-                    transaction.Commit();
-                    return result;
-                }
-                catch (Exception ex)
-                {
-                    transaction.Rollback();
-                    throw new ApplicationException($"{errorMessage}: {ex.Message}", ex);
-                }
+                return action();
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException($"{errorMessage}: {ex.Message}", ex);
             }
         }
 
@@ -367,9 +368,7 @@ namespace AzAgroPOS.BLL.Services
             {
                 if (disposing)
                 {
-                    _context?.Dispose();
-                    _musteriRepository?.Dispose();
-                    _musteriQrupuRepository?.Dispose();
+                    _unitOfWork?.Dispose();
                     _auditLogService?.Dispose();
                 }
                 _disposed = true;

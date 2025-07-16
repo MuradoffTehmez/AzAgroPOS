@@ -17,14 +17,12 @@ namespace AzAgroPOS.DAL.Repositories
         public int Add(AnbarHereketi hareket)
         {
             _context.AnbarHereketleri.Add(hareket);
-            _context.SaveChanges();
             return hareket.Id;
         }
 
         public void Update(AnbarHereketi hareket)
         {
             _context.AnbarHereketleri.Update(hareket);
-            _context.SaveChanges();
         }
 
         public void Delete(int id)
@@ -33,8 +31,7 @@ namespace AzAgroPOS.DAL.Repositories
             if (hareket != null)
             {
                 _context.AnbarHereketleri.Remove(hareket);
-                _context.SaveChanges();
-            }
+                }
         }
 
         public AnbarHereketi GetById(int id)

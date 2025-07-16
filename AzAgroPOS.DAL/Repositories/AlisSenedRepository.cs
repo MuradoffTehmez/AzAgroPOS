@@ -15,14 +15,10 @@ namespace AzAgroPOS.DAL.Repositories
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public AlisSenedRepository()
-        {
-        }
 
         public int Add(AlisSeined seined)
         {
             _context.AlisSenedleri.Add(seined);
-            _context.SaveChanges();
             return seined.Id;
         }
 
@@ -30,7 +26,6 @@ namespace AzAgroPOS.DAL.Repositories
         {
             seined.YenilenmeTarixi = DateTime.Now;
             _context.AlisSenedleri.Update(seined);
-            _context.SaveChanges();
         }
 
         public void Delete(int id)
@@ -39,8 +34,7 @@ namespace AzAgroPOS.DAL.Repositories
             if (seined != null)
             {
                 _context.AlisSenedleri.Remove(seined);
-                _context.SaveChanges();
-            }
+                }
         }
 
         public AlisSeined GetById(int id)
@@ -147,14 +141,12 @@ namespace AzAgroPOS.DAL.Repositories
         public void AddDetali(AlisSenedDetali detali)
         {
             _context.AlisSenedDetallari.Add(detali);
-            _context.SaveChanges();
         }
 
         public void UpdateDetali(AlisSenedDetali detali)
         {
             detali.YenilenmeTarixi = DateTime.Now;
             _context.AlisSenedDetallari.Update(detali);
-            _context.SaveChanges();
         }
 
         public void DeleteDetali(int id)
@@ -163,8 +155,7 @@ namespace AzAgroPOS.DAL.Repositories
             if (detali != null)
             {
                 _context.AlisSenedDetallari.Remove(detali);
-                _context.SaveChanges();
-            }
+                }
         }
 
         public List<AlisSenedDetali> GetDetallari(int senedId)

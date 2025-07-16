@@ -11,9 +11,9 @@ namespace AzAgroPOS.DAL.Repositories
     {
         private readonly AzAgroDbContext _context;
 
-        public PrintSablonuRepository(AzAgroDbContext context = null)
+        public PrintSablonuRepository(AzAgroDbContext context)
         {
-            _context = context ?? new AzAgroDbContext();
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public async Task<IEnumerable<PrintSablonu>> GetAllAsync()
@@ -123,7 +123,6 @@ namespace AzAgroPOS.DAL.Repositories
             }
             
             _context.PrintSablonlari.Add(entity);
-            await _context.SaveChangesAsync();
             return entity;
         }
 
@@ -138,7 +137,6 @@ namespace AzAgroPOS.DAL.Repositories
             }
             
             _context.PrintSablonlari.Update(entity);
-            await _context.SaveChangesAsync();
             return entity;
         }
 
@@ -148,8 +146,7 @@ namespace AzAgroPOS.DAL.Repositories
             if (entity != null)
             {
                 _context.PrintSablonlari.Remove(entity);
-                await _context.SaveChangesAsync();
-            }
+                }
         }
 
         public async Task<bool> SetAsDefaultAsync(int id)

@@ -15,14 +15,10 @@ namespace AzAgroPOS.DAL.Repositories
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public AlisOrderRepository()
-        {
-        }
 
         public int Add(AlisOrder order)
         {
             _context.AlisOrderleri.Add(order);
-            _context.SaveChanges();
             return order.Id;
         }
 
@@ -30,7 +26,6 @@ namespace AzAgroPOS.DAL.Repositories
         {
             order.YenilenmeTarixi = DateTime.Now;
             _context.AlisOrderleri.Update(order);
-            _context.SaveChanges();
         }
 
         public void Delete(int id)
@@ -39,8 +34,7 @@ namespace AzAgroPOS.DAL.Repositories
             if (order != null)
             {
                 _context.AlisOrderleri.Remove(order);
-                _context.SaveChanges();
-            }
+                }
         }
 
         public AlisOrder GetById(int id)
@@ -134,14 +128,12 @@ namespace AzAgroPOS.DAL.Repositories
         public void AddDetali(AlisOrderDetali detali)
         {
             _context.AlisOrderDetallari.Add(detali);
-            _context.SaveChanges();
         }
 
         public void UpdateDetali(AlisOrderDetali detali)
         {
             detali.YenilenmeTarixi = DateTime.Now;
             _context.AlisOrderDetallari.Update(detali);
-            _context.SaveChanges();
         }
 
         public void DeleteDetali(int id)
@@ -150,8 +142,7 @@ namespace AzAgroPOS.DAL.Repositories
             if (detali != null)
             {
                 _context.AlisOrderDetallari.Remove(detali);
-                _context.SaveChanges();
-            }
+                }
         }
 
         public List<AlisOrderDetali> GetDetallari(int orderId)

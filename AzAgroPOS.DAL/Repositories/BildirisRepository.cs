@@ -11,9 +11,9 @@ namespace AzAgroPOS.DAL.Repositories
     {
         private readonly AzAgroDbContext _context;
 
-        public BildirisRepository(AzAgroDbContext context = null)
+        public BildirisRepository(AzAgroDbContext context)
         {
-            _context = context ?? new AzAgroDbContext();
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public async Task<IEnumerable<Bildiris>> GetAllAsync()
@@ -143,7 +143,6 @@ namespace AzAgroPOS.DAL.Repositories
             entity.YenilenmeTarixi = DateTime.Now;
             
             _context.Bildirisler.Add(entity);
-            await _context.SaveChangesAsync();
             return entity;
         }
 
@@ -152,7 +151,6 @@ namespace AzAgroPOS.DAL.Repositories
             entity.YenilenmeTarixi = DateTime.Now;
             
             _context.Bildirisler.Update(entity);
-            await _context.SaveChangesAsync();
             return entity;
         }
 
@@ -172,8 +170,7 @@ namespace AzAgroPOS.DAL.Repositories
             if (entity != null)
             {
                 _context.Bildirisler.Remove(entity);
-                await _context.SaveChangesAsync();
-            }
+                }
         }
 
         public async Task<bool> MarkAsReadAsync(int notificationId, int userId)
@@ -186,8 +183,7 @@ namespace AzAgroPOS.DAL.Repositories
             {
                 notification.Oxundu = true;
                 notification.OxunduTarixi = DateTime.Now;
-                await _context.SaveChangesAsync();
-                return true;
+                    return true;
             }
             return false;
         }
@@ -202,8 +198,7 @@ namespace AzAgroPOS.DAL.Repositories
             {
                 notification.Oxundu = false;
                 notification.OxunduTarixi = null;
-                await _context.SaveChangesAsync();
-                return true;
+                    return true;
             }
             return false;
         }
@@ -222,7 +217,6 @@ namespace AzAgroPOS.DAL.Repositories
                 notification.OxunduTarixi = DateTime.Now;
             }
 
-            await _context.SaveChangesAsync();
             return count;
         }
 
@@ -235,7 +229,6 @@ namespace AzAgroPOS.DAL.Repositories
 
             var count = oldNotifications.Count;
             _context.Bildirisler.RemoveRange(oldNotifications);
-            await _context.SaveChangesAsync();
             return count;
         }
 
@@ -251,7 +244,6 @@ namespace AzAgroPOS.DAL.Repositories
                 _context.Bildirisler.Update(notification);
             }
 
-            await _context.SaveChangesAsync();
             return count;
         }
 

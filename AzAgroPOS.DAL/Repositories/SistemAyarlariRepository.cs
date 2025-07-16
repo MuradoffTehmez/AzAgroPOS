@@ -11,9 +11,9 @@ namespace AzAgroPOS.DAL.Repositories
     {
         private readonly AzAgroDbContext _context;
 
-        public SistemAyarlariRepository(AzAgroDbContext context = null)
+        public SistemAyarlariRepository(AzAgroDbContext context)
         {
-            _context = context ?? new AzAgroDbContext();
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public async Task<IEnumerable<SistemAyarlari>> GetAllAsync()
@@ -108,7 +108,6 @@ namespace AzAgroPOS.DAL.Repositories
                 _context.SistemAyarlari.Update(setting);
             }
 
-            await _context.SaveChangesAsync();
             return true;
         }
 
@@ -118,7 +117,6 @@ namespace AzAgroPOS.DAL.Repositories
             entity.YenilenmeTarixi = DateTime.Now;
             
             _context.SistemAyarlari.Add(entity);
-            await _context.SaveChangesAsync();
             return entity;
         }
 
@@ -127,7 +125,6 @@ namespace AzAgroPOS.DAL.Repositories
             entity.YenilenmeTarixi = DateTime.Now;
             
             _context.SistemAyarlari.Update(entity);
-            await _context.SaveChangesAsync();
             return entity;
         }
 
@@ -137,8 +134,7 @@ namespace AzAgroPOS.DAL.Repositories
             if (entity != null)
             {
                 _context.SistemAyarlari.Remove(entity);
-                await _context.SaveChangesAsync();
-            }
+                }
         }
 
         public async Task<bool> DeleteByKeyAsync(string key)
@@ -147,8 +143,7 @@ namespace AzAgroPOS.DAL.Repositories
             if (setting != null)
             {
                 _context.SistemAyarlari.Remove(setting);
-                await _context.SaveChangesAsync();
-                return true;
+                    return true;
             }
             return false;
         }

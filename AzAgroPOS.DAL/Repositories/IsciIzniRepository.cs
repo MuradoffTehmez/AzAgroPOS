@@ -11,9 +11,9 @@ namespace AzAgroPOS.DAL.Repositories
     {
         private readonly AzAgroDbContext _context;
 
-        public IsciIzniRepository(AzAgroDbContext context = null)
+        public IsciIzniRepository(AzAgroDbContext context)
         {
-            _context = context ?? new AzAgroDbContext();
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public async Task<IEnumerable<IsciIzni>> GetAllAsync()
@@ -140,7 +140,6 @@ namespace AzAgroPOS.DAL.Repositories
             entity.YenilenmeTarixi = DateTime.Now;
             
             _context.IsciIzinleri.Add(entity);
-            await _context.SaveChangesAsync();
             return entity;
         }
 
@@ -149,7 +148,6 @@ namespace AzAgroPOS.DAL.Repositories
             entity.YenilenmeTarixi = DateTime.Now;
             
             _context.IsciIzinleri.Update(entity);
-            await _context.SaveChangesAsync();
             return entity;
         }
 
@@ -159,8 +157,7 @@ namespace AzAgroPOS.DAL.Repositories
             if (entity != null)
             {
                 _context.IsciIzinleri.Remove(entity);
-                await _context.SaveChangesAsync();
-            }
+                }
         }
 
         public async Task<bool> ApproveLeaveAsync(int leaveId, string approverName, string approvalNote = null)
@@ -220,7 +217,6 @@ namespace AzAgroPOS.DAL.Repositories
                 leave.YenilenmeTarixi = DateTime.Now;
             }
 
-            await _context.SaveChangesAsync();
             return true;
         }
 

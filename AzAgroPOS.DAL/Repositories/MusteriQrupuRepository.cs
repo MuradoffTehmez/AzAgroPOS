@@ -11,9 +11,9 @@ namespace AzAgroPOS.DAL.Repositories
     {
         private readonly AzAgroDbContext _context;
 
-        public MusteriQrupuRepository(AzAgroDbContext context = null)
+        public MusteriQrupuRepository(AzAgroDbContext context)
         {
-            _context = context ?? new AzAgroDbContext();
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
 
@@ -42,7 +42,6 @@ namespace AzAgroPOS.DAL.Repositories
         public MusteriQrupu Add(MusteriQrupu musteriQrupu)
         {
             _context.MusteriQruplari.Add(musteriQrupu);
-            _context.SaveChanges();
             return musteriQrupu;
         }
 
@@ -50,7 +49,6 @@ namespace AzAgroPOS.DAL.Repositories
         {
             musteriQrupu.YenilenmeTarixi = DateTime.Now;
             _context.Entry(musteriQrupu).State = EntityState.Modified;
-            _context.SaveChanges();
             return musteriQrupu;
         }
 
@@ -71,8 +69,7 @@ namespace AzAgroPOS.DAL.Repositories
             if (qrup != null)
             {
                 _context.MusteriQruplari.Remove(qrup);
-                _context.SaveChanges();
-            }
+                }
         }
 
         public bool IsNameExists(string ad, int? excludeId = null)

@@ -11,9 +11,9 @@ namespace AzAgroPOS.DAL.Repositories
     {
         private readonly AzAgroDbContext _context;
 
-        public SatisHesabatiRepository(AzAgroDbContext context = null)
+        public SatisHesabatiRepository(AzAgroDbContext context)
         {
-            _context = context ?? new AzAgroDbContext();
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public async Task<IEnumerable<SatisHesabati>> GetAllAsync()
@@ -70,14 +70,12 @@ namespace AzAgroPOS.DAL.Repositories
         public async Task<int> AddAsync(SatisHesabati hesabat)
         {
             _context.SatisHesabatlari.Add(hesabat);
-            await _context.SaveChangesAsync();
             return hesabat.Id;
         }
 
         public async Task UpdateAsync(SatisHesabati hesabat)
         {
             _context.Entry(hesabat).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
@@ -86,8 +84,7 @@ namespace AzAgroPOS.DAL.Repositories
             if (hesabat != null)
             {
                 _context.SatisHesabatlari.Remove(hesabat);
-                await _context.SaveChangesAsync();
-            }
+                }
         }
 
         public async Task<Dictionary<string, decimal>> GetSummaryAsync(DateTime startDate, DateTime endDate)
@@ -127,8 +124,7 @@ namespace AzAgroPOS.DAL.Repositories
             if (oldReports.Any())
             {
                 _context.SatisHesabatlari.RemoveRange(oldReports);
-                await _context.SaveChangesAsync();
-            }
+                }
         }
 
         public void Dispose()

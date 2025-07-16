@@ -2,152 +2,188 @@ using AzAgroPOS.DAL;
 using AzAgroPOS.DAL.Repositories;
 using AzAgroPOS.Entities.Domain;
 using AzAgroPOS.Entities.Constants;
+using AzAgroPOS.BLL.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AzAgroPOS.BLL.Services
 {
     public class TamirService : IDisposable
     {
-        private readonly AzAgroDbContext _context;
-        private readonly TamirIsiRepository _tamirIsiRepository;
-        private readonly TamirMerheleRepository _tamirMerheleRepository;
-        private readonly AuditLogService _auditLogService;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IAuditLogService _auditLogService;
+        private bool _disposed = false;
 
-        public TamirService()
+        public TamirService(IUnitOfWork unitOfWork, IAuditLogService auditLogService)
         {
-            _context = new AzAgroDbContext();
-            _tamirIsiRepository = new TamirIsiRepository(_context);
-            _tamirMerheleRepository = new TamirMerheleRepository(_context);
-            _auditLogService = new AuditLogService(_context); // Assuming AuditLogService also needs DbContext
+            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            _auditLogService = auditLogService ?? throw new ArgumentNullException(nameof(auditLogService));
         }
 
         #region Tamir İşi Yönetimi
 
         public IEnumerable<TamirIsi> GetAllRepairs()
         {
-            return _tamirIsiRepository.GetAll().ToList();
+            return ExecuteWithExceptionHandling(
+                () => _unitOfWork.TamirIsleri.GetAll().ToList(),
+                "Təmir işləri alınarkən xəta");
         }
 
         public TamirIsi GetRepairById(int id)
         {
-            return _tamirIsiRepository.GetById(id);
+            if (id <= 0)
+                throw new ArgumentException("Yanlış təmir işi ID-si", nameof(id));
+
+            return ExecuteWithExceptionHandling(
+                () => _unitOfWork.TamirIsleri.GetById(id),
+                $"Təmir işi alınarkən xəta (ID: {id})");
         }
 
         public IEnumerable<TamirIsi> GetRepairsByStatus(string status)
         {
-            return _tamirIsiRepository.GetByStatus(status);
+            return ExecuteWithExceptionHandling(
+                () => _unitOfWork.TamirIsleri.GetByStatus(status),
+                $"Status üzrə təmir işləri alınarkən xəta (Status: {status})");
         }
 
         public IEnumerable<TamirIsi> GetRepairsByCustomer(int musteriId)
         {
-            return _tamirIsiRepository.GetByMusteriId(musteriId);
+            return ExecuteWithExceptionHandling(
+                () => _unitOfWork.TamirIsleri.GetByMusteriId(musteriId),
+                $"Müştərinin təmir işləri alınarkən xəta (Müştəri ID: {musteriId})");
         }
 
         public IEnumerable<TamirIsi> GetOverdueRepairs()
         {
-            return _tamirIsiRepository.GetOverdueRepairs();
+            return ExecuteWithExceptionHandling(
+                () => _unitOfWork.TamirIsleri.GetOverdueRepairs(),
+                "Gecikmiş təmir işləri alınarkən xəta");
         }
 
         public IEnumerable<TamirIsi> GetReadyForDelivery()
         {
-            return _tamirIsiRepository.GetReadyForDelivery();
+            return ExecuteWithExceptionHandling(
+                () => _unitOfWork.TamirIsleri.GetReadyForDelivery(),
+                "Təhvilə hazır təmir işləri alınarkən xəta");
         }
 
         public IEnumerable<TamirIsi> GetActiveRepairs()
         {
-            return _tamirIsiRepository.GetActiveRepairs();
+            return ExecuteWithExceptionHandling(
+                () => _unitOfWork.TamirIsleri.GetActiveRepairs(),
+                "Aktiv təmir işləri alınarkən xəta");
         }
 
         public int CreateRepair(TamirIsi tamirIsi)
         {
-            tamirIsi.TamirNomresi = _tamirIsiRepository.GenerateTamirNomresi();
-            tamirIsi.YaradilmaTarixi = DateTime.Now;
-            tamirIsi.Status = "Qəbul Edildi";
+            return ExecuteWithExceptionHandling(() =>
+            {
+                tamirIsi.TamirNomresi = _unitOfWork.TamirIsleri.GenerateTamirNomresi();
+                tamirIsi.YaradilmaTarixi = DateTime.Now;
+                tamirIsi.Status = "Qəbul Edildi";
 
-            var id = _tamirIsiRepository.Add(tamirIsi);
+                var id = _unitOfWork.TamirIsleri.Add(tamirIsi);
+                _unitOfWork.Complete();
 
-            _auditLogService.Log(
-                "TamirIsi",
-                id,
-                "Yaradıldı",
-                $"Yeni təmir işi qəbul edildi: {tamirIsi.TamirNomresiFormatli}",
-                tamirIsi.QebulEdenIstifadeciId
-            );
+                _auditLogService.LogAction(
+                    "TamirIsi",
+                    "CREATE",
+                    id,
+                    $"Yeni təmir işi qəbul edildi: {tamirIsi.TamirNomresiFormatli}",
+                    tamirIsi.QebulEdenIstifadeciId
+                );
 
-            return id;
+                return id;
+            }, "Təmir işi yaradılarkən xəta");
         }
 
         public void UpdateRepair(TamirIsi tamirIsi, int istifadeciId)
         {
-            var originalRepair = _tamirIsiRepository.GetById(tamirIsi.Id);
-            if (originalRepair == null)
-                throw new ArgumentException("Təmir işi tapılmadı");
+            ExecuteWithExceptionHandling(() =>
+            {
+                var originalRepair = _unitOfWork.TamirIsleri.GetById(tamirIsi.Id);
+                if (originalRepair == null)
+                    throw new ArgumentException("Təmir işi tapılmadı");
 
-            _tamirIsiRepository.Update(tamirIsi);
+                _unitOfWork.TamirIsleri.Update(tamirIsi);
+                _unitOfWork.Complete();
 
-            _auditLogService.Log(
-                "TamirIsi",
-                tamirIsi.Id,
-                "Yeniləndi",
-                $"Təmir işi yeniləndi: {tamirIsi.TamirNomresiFormatli}",
-                istifadeciId
-            );
+                _auditLogService.LogAction(
+                    "TamirIsi",
+                    "UPDATE",
+                    tamirIsi.Id,
+                    $"Təmir işi yeniləndi: {tamirIsi.TamirNomresiFormatli}",
+                    istifadeciId
+                );
+            }, "Təmir işi yenilənərkən xəta");
         }
 
         public void UpdateRepairStatus(int repairId, string newStatus, int istifadeciId)
         {
-            var repair = _tamirIsiRepository.GetById(repairId);
-            if (repair == null)
-                throw new ArgumentException("Təmir işi tapılmadı");
+            ExecuteWithExceptionHandling(() =>
+            {
+                var repair = _unitOfWork.TamirIsleri.GetById(repairId);
+                if (repair == null)
+                    throw new ArgumentException("Təmir işi tapılmadı");
 
-            var oldStatus = repair.Status;
-            _tamirIsiRepository.UpdateStatus(repairId, newStatus, istifadeciId);
+                var oldStatus = repair.Status;
+                _unitOfWork.TamirIsleri.UpdateStatus(repairId, newStatus, istifadeciId);
+                _unitOfWork.Complete();
 
-            _auditLogService.Log(
-                "TamirIsi",
-                repairId,
-                "Status Dəyişdi",
-                $"Status dəyişdirildi: {oldStatus} → {newStatus}",
-                istifadeciId
-            );
+                _auditLogService.LogAction(
+                    "TamirIsi",
+                    "STATUS_CHANGE",
+                    repairId,
+                    $"Status dəyişdirildi: {oldStatus} → {newStatus}",
+                    istifadeciId
+                );
+            }, "Təmir işi statusu dəyişdirilərkən xəta");
         }
 
         public void AssignRepairToUser(int repairId, int istifadeciId, int assigningUserId)
         {
-            _tamirIsiRepository.AssignToUser(repairId, istifadeciId);
+            ExecuteWithExceptionHandling(() =>
+            {
+                _unitOfWork.TamirIsleri.AssignToUser(repairId, istifadeciId);
+                _unitOfWork.Complete();
 
-            _auditLogService.Log(
-                "TamirIsi",
-                repairId,
-                "Təyin Edildi",
-                $"İşçiyə təyin edildi: İstifadəçi {istifadeciId}",
-                assigningUserId
-            );
+                _auditLogService.LogAction(
+                    "TamirIsi",
+                    "ASSIGN",
+                    repairId,
+                    $"İşçiyə təyin edildi: İstifadəçi {istifadeciId}",
+                    assigningUserId
+                );
+            }, "Təmir işi təyin edilərkən xəta");
         }
 
         public void DeliverRepair(int repairId, int deliveringUserId)
         {
-            var repair = _tamirIsiRepository.GetById(repairId);
-            if (repair == null)
-                throw new ArgumentException("Təmir işi tapılmadı");
+            ExecuteWithExceptionHandling(() =>
+            {
+                var repair = _unitOfWork.TamirIsleri.GetById(repairId);
+                if (repair == null)
+                    throw new ArgumentException("Təmir işi tapılmadı");
 
-            if (repair.Status != "Hazır")
-                throw new InvalidOperationException("Təmir işi hazır statusunda deyil");
+                if (repair.Status != "Hazır")
+                    throw new InvalidOperationException("Təmir işi hazır statusunda deyil");
 
-            if (!repair.TesdiqlerTamdir)
-                throw new InvalidOperationException("Təsdiq prosesi tamamlanmamış");
+                if (!repair.TesdiqlerTamdir)
+                    throw new InvalidOperationException("Təsdiq prosesi tamamlanmamış");
 
-            _tamirIsiRepository.UpdateStatus(repairId, "Təhvil Verildi", deliveringUserId);
+                _unitOfWork.TamirIsleri.UpdateStatus(repairId, "Təhvil Verildi", deliveringUserId);
+                _unitOfWork.Complete();
 
-            _auditLogService.Log(
-                "TamirIsi",
-                repairId,
-                "Təhvil Verildi",
-                $"Təmir işi müştəriyə təhvil verildi",
-                deliveringUserId
-            );
+                _auditLogService.LogAction(
+                    "TamirIsi",
+                    "DELIVER",
+                    repairId,
+                    $"Təmir işi müştəriyə təhvil verildi",
+                    deliveringUserId
+                );
+            }, "Təmir işi təhvil verilərkən xəta");
         }
 
         #endregion
@@ -156,128 +192,163 @@ namespace AzAgroPOS.BLL.Services
 
         public IEnumerable<TamirMerhele> GetStepsByRepairId(int tamirIsiId)
         {
-            return _tamirMerheleRepository.GetByTamirIsiId(tamirIsiId);
+            return ExecuteWithExceptionHandling(
+                () => _unitOfWork.TamirMerheleri.GetByTamirIsiId(tamirIsiId),
+                $"Təmir işi mərhələləri alınarkən xəta (Təmir ID: {tamirIsiId})");
         }
 
         public TamirMerhele GetStepById(int id)
         {
-            return _tamirMerheleRepository.GetById(id);
+            if (id <= 0)
+                throw new ArgumentException("Yanlış mərhələ ID-si", nameof(id));
+
+            return ExecuteWithExceptionHandling(
+                () => _unitOfWork.TamirMerheleri.GetById(id),
+                $"Mərhələ alınarkən xəta (ID: {id})");
         }
 
         public IEnumerable<TamirMerhele> GetStepsByUser(int istifadeciId)
         {
-            return _tamirMerheleRepository.GetByTeyinEdilenIstifadeci(istifadeciId);
+            return ExecuteWithExceptionHandling(
+                () => _unitOfWork.TamirMerheleri.GetByTeyinEdilenIstifadeci(istifadeciId),
+                $"İstifadəçi mərhələləri alınarkən xəta (İstifadəçi ID: {istifadeciId})");
         }
 
         public IEnumerable<TamirMerhele> GetActiveSteps()
         {
-            return _tamirMerheleRepository.GetActiveSteps();
+            return ExecuteWithExceptionHandling(
+                () => _unitOfWork.TamirMerheleri.GetActiveSteps(),
+                "Aktiv mərhələlər alınarkən xəta");
         }
 
         public int AddStep(TamirMerhele tamirMerhele)
         {
-            tamirMerhele.YaradilmaTarixi = DateTime.Now;
+            return ExecuteWithExceptionHandling(() =>
+            {
+                tamirMerhele.YaradilmaTarixi = DateTime.Now;
 
-            var id = _tamirMerheleRepository.Add(tamirMerhele);
+                var id = _unitOfWork.TamirMerheleri.Add(tamirMerhele);
+                _unitOfWork.Complete();
 
-            _auditLogService.Log(
-                "TamirMerhele",
-                id,
-                "Yaradıldı",
-                $"Yeni mərhələ əlavə edildi: {tamirMerhele.MerheleAdi}",
-                tamirMerhele.TeyinEdilenIstifadeciId ?? 0
-            );
+                _auditLogService.LogAction(
+                    "TamirMerhele",
+                    "CREATE",
+                    id,
+                    $"Yeni mərhələ əlavə edildi: {tamirMerhele.MerheleAdi}",
+                    tamirMerhele.TeyinEdilenIstifadeciId ?? 0
+                );
 
-            return id;
+                return id;
+            }, "Mərhələ əlavə edilərkən xəta");
         }
 
         public void UpdateStep(TamirMerhele tamirMerhele, int istifadeciId)
         {
-            _tamirMerheleRepository.Update(tamirMerhele);
+            ExecuteWithExceptionHandling(() =>
+            {
+                _unitOfWork.TamirMerheleri.Update(tamirMerhele);
+                _unitOfWork.Complete();
 
-            _auditLogService.Log(
-                "TamirMerhele",
-                tamirMerhele.Id,
-                "Yeniləndi",
-                $"Mərhələ yeniləndi: {tamirMerhele.MerheleAdi}",
-                istifadeciId
-            );
+                _auditLogService.LogAction(
+                    "TamirMerhele",
+                    "UPDATE",
+                    tamirMerhele.Id,
+                    $"Mərhələ yeniləndi: {tamirMerhele.MerheleAdi}",
+                    istifadeciId
+                );
+            }, "Mərhələ yenilənərkən xəta");
         }
 
         public void StartStep(int stepId, int istifadeciId)
         {
-            var step = _tamirMerheleRepository.GetById(stepId);
-            if (step == null)
-                throw new ArgumentException("Mərhələ tapılmadı");
+            ExecuteWithExceptionHandling(() =>
+            {
+                var step = _unitOfWork.TamirMerheleri.GetById(stepId);
+                if (step == null)
+                    throw new ArgumentException("Mərhələ tapılmadı");
 
-            if (step.Status != "Gözləyir")
-                throw new InvalidOperationException("Mərhələ başladıla bilməz");
+                if (step.Status != "Gözləyir")
+                    throw new InvalidOperationException("Mərhələ başladıla bilməz");
 
-            _tamirMerheleRepository.StartStep(stepId, istifadeciId);
+                _unitOfWork.TamirMerheleri.StartStep(stepId, istifadeciId);
+                _unitOfWork.Complete();
 
-            _auditLogService.Log(
-                "TamirMerhele",
-                stepId,
-                "Başladıldı",
-                $"Mərhələ başladıldı: {step.MerheleAdi}",
-                istifadeciId
-            );
+                _auditLogService.LogAction(
+                    "TamirMerhele",
+                    "START",
+                    stepId,
+                    $"Mərhələ başladıldı: {step.MerheleAdi}",
+                    istifadeciId
+                );
+            }, "Mərhələ başladılarkən xəta");
         }
 
         public void CompleteStep(int stepId, decimal isSaati, decimal parcaDeyeri, string tamirciQeydleri, string istifadeOlunmusParcalar, int istifadeciId)
         {
-            var step = _tamirMerheleRepository.GetById(stepId);
-            if (step == null)
-                throw new ArgumentException("Mərhələ tapılmadı");
+            ExecuteWithExceptionHandling(() =>
+            {
+                var step = _unitOfWork.TamirMerheleri.GetById(stepId);
+                if (step == null)
+                    throw new ArgumentException("Mərhələ tapılmadı");
 
-            if (step.Status != "İşlənir")
-                throw new InvalidOperationException("Mərhələ tamamlana bilməz");
+                if (step.Status != "İşlənir")
+                    throw new InvalidOperationException("Mərhələ tamamlana bilməz");
 
-            _tamirMerheleRepository.CompleteStep(stepId, isSaati, parcaDeyeri, tamirciQeydleri, istifadeOlunmusParcalar);
+                _unitOfWork.TamirMerheleri.CompleteStep(stepId, isSaati, parcaDeyeri, tamirciQeydleri, istifadeOlunmusParcalar);
+                _unitOfWork.Complete();
 
-            // Update the repair status if all steps are completed
-            UpdateRepairStatusBasedOnSteps(step.TamirIsiId);
+                // Update the repair status if all steps are completed
+                UpdateRepairStatusBasedOnSteps(step.TamirIsiId);
 
-            _auditLogService.Log(
-                "TamirMerhele",
-                stepId,
-                "Tamamlandı",
-                $"Mərhələ tamamlandı: {step.MerheleAdi}",
-                istifadeciId
-            );
+                _auditLogService.LogAction(
+                    "TamirMerhele",
+                    "COMPLETE",
+                    stepId,
+                    $"Mərhələ tamamlandı: {step.MerheleAdi}",
+                    istifadeciId
+                );
+            }, "Mərhələ tamamlanırkən xəta");
         }
 
         public void CancelStep(int stepId, int istifadeciId)
         {
-            var step = _tamirMerheleRepository.GetById(stepId);
-            if (step == null)
-                throw new ArgumentException("Mərhələ tapılmadı");
+            ExecuteWithExceptionHandling(() =>
+            {
+                var step = _unitOfWork.TamirMerheleri.GetById(stepId);
+                if (step == null)
+                    throw new ArgumentException("Mərhələ tapılmadı");
 
-            if (step.Status == "Bitdi")
-                throw new InvalidOperationException("Bitmiş mərhələ ləğv edilə bilməz");
+                if (step.Status == "Bitdi")
+                    throw new InvalidOperationException("Bitmiş mərhələ ləğv edilə bilməz");
 
-            _tamirMerheleRepository.CancelStep(stepId);
+                _unitOfWork.TamirMerheleri.CancelStep(stepId);
+                _unitOfWork.Complete();
 
-            _auditLogService.Log(
-                "TamirMerhele",
-                stepId,
-                "Ləğv Edildi",
-                $"Mərhələ ləğv edildi: {step.MerheleAdi}",
-                istifadeciId
-            );
+                _auditLogService.LogAction(
+                    "TamirMerhele",
+                    "CANCEL",
+                    stepId,
+                    $"Mərhələ ləğv edildi: {step.MerheleAdi}",
+                    istifadeciId
+                );
+            }, "Mərhələ ləğv edilərkən xəta");
         }
 
         public void AssignStepToUser(int stepId, int istifadeciId, int assigningUserId)
         {
-            _tamirMerheleRepository.AssignToUser(stepId, istifadeciId);
+            ExecuteWithExceptionHandling(() =>
+            {
+                _unitOfWork.TamirMerheleri.AssignToUser(stepId, istifadeciId);
+                _unitOfWork.Complete();
 
-            _auditLogService.Log(
-                "TamirMerhele",
-                stepId,
-                "Təyin Edildi",
-                $"Mərhələ işçiyə təyin edildi: İstifadəçi {istifadeciId}",
-                assigningUserId
-            );
+                _auditLogService.LogAction(
+                    "TamirMerhele",
+                    "ASSIGN",
+                    stepId,
+                    $"Mərhələ işçiyə təyin edildi: İstifadəçi {istifadeciId}",
+                    assigningUserId
+                );
+            }, "Mərhələ təyin edilərkən xəta");
         }
 
         #endregion
@@ -286,30 +357,39 @@ namespace AzAgroPOS.BLL.Services
 
         public Dictionary<string, int> GetRepairStatusSummary()
         {
-            var statuses = new[] { "Qəbul Edildi", "Təşxis", "İşlənir", "Gözləyir", "Hazır", "Təhvil Verildi", "İptal" };
-            var summary = new Dictionary<string, int>();
-
-            foreach (var status in statuses)
+            return ExecuteWithExceptionHandling(() =>
             {
-                summary[status] = _tamirIsiRepository.GetCountByStatus(status);
-            }
+                var statuses = new[] { "Qəbul Edildi", "Təşxis", "İşlənir", "Gözləyir", "Hazır", "Təhvil Verildi", "İptal" };
+                var summary = new Dictionary<string, int>();
 
-            return summary;
+                foreach (var status in statuses)
+                {
+                    summary[status] = _unitOfWork.TamirIsleri.GetCountByStatus(status);
+                }
+
+                return summary;
+            }, "Təmir statusu xülasəsi hesablanarkən xəta");
         }
 
         public decimal GetTotalRevenue(DateTime? startDate = null, DateTime? endDate = null)
         {
-            return _tamirIsiRepository.GetTotalRevenue(startDate, endDate);
+            return ExecuteWithExceptionHandling(
+                () => _unitOfWork.TamirIsleri.GetTotalRevenue(startDate, endDate),
+                "Təmir gəliri hesablanarkən xəta");
         }
 
         public decimal GetTotalWorkingHoursByUser(int istifadeciId, DateTime? startDate = null, DateTime? endDate = null)
         {
-            return _tamirMerheleRepository.GetTotalWorkingHoursByUser(istifadeciId, startDate, endDate);
+            return ExecuteWithExceptionHandling(
+                () => _unitOfWork.TamirMerheleri.GetTotalWorkingHoursByUser(istifadeciId, startDate, endDate),
+                $"İstifadəçi iş saatları hesablanarkən xəta (İstifadəçi ID: {istifadeciId})");
         }
 
         public IEnumerable<TamirIsi> GetRepairsByDateRange(DateTime startDate, DateTime endDate)
         {
-            return _tamirIsiRepository.GetByDateRange(startDate, endDate);
+            return ExecuteWithExceptionHandling(
+                () => _unitOfWork.TamirIsleri.GetByDateRange(startDate, endDate),
+                $"Tarix aralığına görə təmir işləri alınarkən xəta ({startDate:yyyy-MM-dd} - {endDate:yyyy-MM-dd})");
         }
 
         #endregion
@@ -318,34 +398,90 @@ namespace AzAgroPOS.BLL.Services
 
         private void UpdateRepairStatusBasedOnSteps(int tamirIsiId)
         {
-            var repair = _tamirIsiRepository.GetById(tamirIsiId);
-            var steps = _tamirMerheleRepository.GetByTamirIsiId(tamirIsiId).ToList();
+            ExecuteWithExceptionHandling(() =>
+            {
+                var repair = _unitOfWork.TamirIsleri.GetById(tamirIsiId);
+                var steps = _unitOfWork.TamirMerheleri.GetByTamirIsiId(tamirIsiId).ToList();
 
-            if (steps.All(s => s.Status == "Bitdi" || s.Status == "İptal"))
-            {
-                if (steps.Any(s => s.Status == "Bitdi"))
+                if (steps.All(s => s.Status == "Bitdi" || s.Status == "İptal"))
                 {
-                    repair.Status = "Hazır";
-                    repair.EmeliBitirmeTarixi = DateTime.Now;
-                    repair.SonQiymet = _tamirMerheleRepository.GetTotalCostByTamirId(tamirIsiId);
-                    _tamirIsiRepository.Update(repair);
+                    if (steps.Any(s => s.Status == "Bitdi"))
+                    {
+                        repair.Status = "Hazır";
+                        repair.EmeliBitirmeTarixi = DateTime.Now;
+                        repair.SonQiymet = _unitOfWork.TamirMerheleri.GetTotalCostByTamirId(tamirIsiId);
+                        _unitOfWork.TamirIsleri.Update(repair);
+                        _unitOfWork.Complete();
+                    }
                 }
+                else if (steps.Any(s => s.Status == "İşlənir"))
+                {
+                    if (repair.Status != "İşlənir")
+                    {
+                        repair.Status = "İşlənir";
+                        _unitOfWork.TamirIsleri.Update(repair);
+                        _unitOfWork.Complete();
+                    }
+                }
+            }, $"Təmir statusu yenilənərkən xəta (Təmir ID: {tamirIsiId})");
+        }
+
+        #endregion
+
+        #region Helper Methods
+
+        private T ExecuteWithExceptionHandling<T>(Func<T> action, string errorMessage)
+        {
+            try
+            {
+                return action();
             }
-            else if (steps.Any(s => s.Status == "İşlənir"))
+            catch (Exception ex)
             {
-                if (repair.Status != "İşlənir")
-                {
-                    repair.Status = "İşlənir";
-                    _tamirIsiRepository.Update(repair);
-                }
+                throw new ApplicationException($"{errorMessage}: {ex.Message}", ex);
+            }
+        }
+
+        private void ExecuteWithExceptionHandling(Action action, string errorMessage)
+        {
+            try
+            {
+                action();
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException($"{errorMessage}: {ex.Message}", ex);
             }
         }
 
         #endregion
 
+        #region IDisposable Implementation
+
         public void Dispose()
         {
-            _context?.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    _unitOfWork?.Dispose();
+                    _auditLogService?.Dispose();
+                }
+                _disposed = true;
+            }
+        }
+
+        ~TamirService()
+        {
+            Dispose(false);
+        }
+
+        #endregion
     }
 }

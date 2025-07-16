@@ -11,20 +11,14 @@ namespace AzAgroPOS.BLL.Services
 {
     public class MehsulService : IDisposable
     {
-        private readonly AzAgroDbContext _context;
-        private readonly MehsulRepository _mehsulRepository;
-        private readonly MehsulKateqoriyasiRepository _kateqoriyaRepository;
-        private readonly VahidRepository _vahidRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IAuditLogService _auditLogService;
         private bool _disposed = false;
 
-        public MehsulService(AzAgroDbContext context = null, IAuditLogService auditLogService = null)
+        public MehsulService(IUnitOfWork unitOfWork, IAuditLogService auditLogService)
         {
-            _context = context ?? new AzAgroDbContext();
-            _mehsulRepository = new MehsulRepository(_context);
-            _kateqoriyaRepository = new MehsulKateqoriyasiRepository(_context);
-            _vahidRepository = new VahidRepository(_context);
-            _auditLogService = auditLogService ?? new AuditLogService(_context);
+            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            _auditLogService = auditLogService ?? throw new ArgumentNullException(nameof(auditLogService));
         }
 
         #region CRUD Operations
@@ -34,10 +28,10 @@ namespace AzAgroPOS.BLL.Services
             return await ExecuteWithTransactionAsync(async () =>
             {
                 // Validation
-                if (await _mehsulRepository.BarkodMevcudAsync(mehsul.Barkod))
+                if (await _unitOfWork.Mehsullar.BarkodMevcudAsync(mehsul.Barkod))
                     return (false, "Bu barkod artıq mövcuddur.", (int?)null);
 
-                if (await _mehsulRepository.SKUMevcudAsync(mehsul.SKU))
+                if (await _unitOfWork.Mehsullar.SKUMevcudAsync(mehsul.SKU))
                     return (false, "Bu SKU artıq mövcuddur.", (int?)null);
 
                 if (!await ValidateKateqoriyaAsync(mehsul.KateqoriyaId))
@@ -50,7 +44,7 @@ namespace AzAgroPOS.BLL.Services
                     return (false, "Satış qiyməti alış qiymətindən böyük olmalıdır.", (int?)null);
 
                 // Create product
-                var mehsulId = await _mehsulRepository.AddAsync(mehsul);
+                var mehsulId = await _unitOfWork.Mehsullar.AddAsync(mehsul);
 
                 // Log audit
                 await LogAuditAsync(istifadeciId, "Məhsul İdarəetməsi", "Məhsul Əlavə Etmə",
@@ -64,14 +58,14 @@ namespace AzAgroPOS.BLL.Services
         {
             return await ExecuteWithTransactionAsync(async () =>
             {
-                var existingMehsul = await _mehsulRepository.GetByIdAsync(mehsul.Id);
+                var existingMehsul = await _unitOfWork.Mehsullar.GetByIdAsync(mehsul.Id);
                 if (existingMehsul == null)
                     return (false, "Məhsul tapılmadı.");
 
-                if (await _mehsulRepository.BarkodMevcudAsync(mehsul.Barkod, mehsul.Id))
+                if (await _unitOfWork.Mehsullar.BarkodMevcudAsync(mehsul.Barkod, mehsul.Id))
                     return (false, "Bu barkod başqa məhsulda mövcuddur.");
 
-                if (await _mehsulRepository.SKUMevcudAsync(mehsul.SKU, mehsul.Id))
+                if (await _unitOfWork.Mehsullar.SKUMevcudAsync(mehsul.SKU, mehsul.Id))
                     return (false, "Bu SKU başqa məhsulda mövcuddur.");
 
                 if (!await ValidateKateqoriyaAsync(mehsul.KateqoriyaId))
@@ -85,7 +79,7 @@ namespace AzAgroPOS.BLL.Services
 
                 // Update product
                 mehsul.YaradilmaTarixi = existingMehsul.YaradilmaTarixi;
-                await _mehsulRepository.UpdateAsync(mehsul);
+                await _unitOfWork.Mehsullar.UpdateAsync(mehsul);
 
                 // Log audit
                 await LogAuditAsync(istifadeciId, "Məhsul İdarəetməsi", "Məhsul Yeniləmə",
@@ -99,14 +93,14 @@ namespace AzAgroPOS.BLL.Services
         {
             return await ExecuteWithTransactionAsync(async () =>
             {
-                var mehsul = await _mehsulRepository.GetByIdAsync(mehsulId);
+                var mehsul = await _unitOfWork.Mehsullar.GetByIdAsync(mehsulId);
                 if (mehsul == null)
                     return (false, "Məhsul tapılmadı.");
 
-                if (!await _mehsulRepository.CanDeleteAsync(mehsulId))
+                if (!await _unitOfWork.Mehsullar.CanDeleteAsync(mehsulId))
                     return (false, "Bu məhsul silinə bilməz çünki digər əməliyyatlarda istifadə olunur.");
 
-                await _mehsulRepository.DeleteAsync(mehsulId);
+                await _unitOfWork.Mehsullar.DeleteAsync(mehsulId);
 
                 // Log audit
                 await LogAuditAsync(istifadeciId, "Məhsul İdarəetməsi", "Məhsul Silmə",
@@ -124,13 +118,13 @@ namespace AzAgroPOS.BLL.Services
         {
             return await ExecuteWithTransactionAsync(async () =>
             {
-                var mehsul = await _mehsulRepository.GetByIdAsync(mehsulId);
+                var mehsul = await _unitOfWork.Mehsullar.GetByIdAsync(mehsulId);
                 if (mehsul == null)
                     return (false, "Məhsul tapılmadı.");
 
                 var oldStatus = mehsul.Status;
                 mehsul.Status = status;
-                await _mehsulRepository.UpdateAsync(mehsul);
+                await _unitOfWork.Mehsullar.UpdateAsync(mehsul);
 
                 // Log audit
                 await LogAuditAsync(istifadeciId, "Məhsul İdarəetməsi", "Status Dəyişikliyi",
@@ -148,7 +142,7 @@ namespace AzAgroPOS.BLL.Services
         {
             return await ExecuteWithTransactionAsync(async () =>
             {
-                var mehsul = await _mehsulRepository.GetByIdAsync(mehsulId);
+                var mehsul = await _unitOfWork.Mehsullar.GetByIdAsync(mehsulId);
                 if (mehsul == null)
                     return (false, "Məhsul tapılmadı.");
 
@@ -156,7 +150,7 @@ namespace AzAgroPOS.BLL.Services
                     return (false, "Stok miqdarı mənfi ola bilməz.");
 
                 var kohMiqdar = mehsul.MovcudMiqdar;
-                await _mehsulRepository.UpdateMiqdarAsync(mehsulId, yeniMiqdar);
+                await _unitOfWork.Mehsullar.UpdateMiqdarAsync(mehsulId, yeniMiqdar);
 
                 var detal = sebet ?? $"Stok miqdarı dəyişdi: {kohMiqdar} → {yeniMiqdar}";
                 await LogAuditAsync(istifadeciId, "Məhsul İdarəetməsi", "Stok Yeniləmə",
@@ -169,7 +163,7 @@ namespace AzAgroPOS.BLL.Services
         public async Task<List<Mehsul>> GetStoktanKenardaMehsullarAsync()
         {
             return await ExecuteWithExceptionHandlingAsync(
-                () => _mehsulRepository.GetStoktanKenardaAsync(),
+                () => _unitOfWork.Mehsullar.GetStoktanKenardaAsync(),
                 "Stokdan kənar məhsullar alınarkən xəta");
         }
 
@@ -177,7 +171,7 @@ namespace AzAgroPOS.BLL.Services
         {
             return await ExecuteWithExceptionHandlingAsync(async () =>
             {
-                var mehsullar = await _mehsulRepository.GetAllActiveAsync();
+                var mehsullar = await _unitOfWork.Mehsullar.GetAllActiveAsync();
                 return mehsullar.Sum(m => m.MovcudMiqdar * m.SatisQiymeti);
             }, "Ümumi stok dəyəri hesablanarkən xəta");
         }
@@ -197,7 +191,7 @@ namespace AzAgroPOS.BLL.Services
                 {
                     barkod = "299" + random.Next(1000000000).ToString("D10");
                 }
-                while (await _mehsulRepository.BarkodMevcudAsync(barkod));
+                while (await _unitOfWork.Mehsullar.BarkodMevcudAsync(barkod));
 
                 return barkod;
             }, "Barkod yaradılarkən xəta");
@@ -229,7 +223,7 @@ namespace AzAgroPOS.BLL.Services
                     sku = $"{katPrefix}-{mehsulPrefix}-{counter:D4}";
                     counter++;
                 }
-                while (await _mehsulRepository.SKUMevcudAsync(sku));
+                while (await _unitOfWork.Mehsullar.SKUMevcudAsync(sku));
 
                 return sku;
             }, "SKU yaradılarkən xəta");
@@ -242,7 +236,7 @@ namespace AzAgroPOS.BLL.Services
         public async Task<Dictionary<string, object>> GetMehsulStatistikalarAsync()
         {
             return await ExecuteWithExceptionHandlingAsync(
-                () => _mehsulRepository.GetStatistikalarAsync(),
+                () => _unitOfWork.Mehsullar.GetStatistikalarAsync(),
                 "Məhsul statistikaları alınarkən xəta");
         }
 
@@ -254,7 +248,7 @@ namespace AzAgroPOS.BLL.Services
         {
             return await ExecuteWithExceptionHandlingAsync(async () =>
             {
-                var mehsullar = await _mehsulRepository.GetAllAsync();
+                var mehsullar = await _unitOfWork.Mehsullar.GetAllAsync();
 
                 if (!string.IsNullOrEmpty(searchTerm))
                 {
@@ -283,7 +277,7 @@ namespace AzAgroPOS.BLL.Services
         public List<Mehsul> GetAllActive()
         {
             return ExecuteWithExceptionHandling(
-                () => _mehsulRepository.GetAllActive(),
+                () => _unitOfWork.Mehsullar.GetAllActive(),
                 "Aktiv məhsullar alınarkən xəta");
         }
 
@@ -293,13 +287,13 @@ namespace AzAgroPOS.BLL.Services
 
         private async Task<bool> ValidateKateqoriyaAsync(int kateqoriyaId)
         {
-            var kateqoriya = await _kateqoriyaRepository.GetByIdAsync(kateqoriyaId);
+            var kateqoriya = await _unitOfWork.MehsulKateqoriyalari.GetByIdAsync(kateqoriyaId);
             return kateqoriya != null && kateqoriya.Status == "Aktiv";
         }
 
         private async Task<bool> ValidateVahidAsync(int vahidId)
         {
-            var vahid = await _vahidRepository.GetByIdAsync(vahidId);
+            var vahid = await _unitOfWork.Vahidler.GetByIdAsync(vahidId);
             return vahid != null && vahid.Status == "Aktiv";
         }
 
@@ -310,19 +304,15 @@ namespace AzAgroPOS.BLL.Services
 
         private async Task<T> ExecuteWithTransactionAsync<T>(Func<Task<T>> action, string errorMessage)
         {
-            using (var transaction = await _context.Database.BeginTransactionAsync())
+            try
             {
-                try
-                {
-                    var result = await action();
-                    await transaction.CommitAsync();
-                    return result;
-                }
-                catch (Exception ex)
-                {
-                    await transaction.RollbackAsync();
-                    throw new ApplicationException($"{errorMessage}: {ex.Message}", ex);
-                }
+                var result = await action();
+                await _unitOfWork.CompleteAsync();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException($"{errorMessage}: {ex.Message}", ex);
             }
         }
 
@@ -366,10 +356,7 @@ namespace AzAgroPOS.BLL.Services
             {
                 if (disposing)
                 {
-                    _context?.Dispose();
-                    _mehsulRepository?.Dispose();
-                    _kateqoriyaRepository?.Dispose();
-                    _vahidRepository?.Dispose();
+                    _unitOfWork?.Dispose();
                     _auditLogService?.Dispose();
                 }
                 _disposed = true;

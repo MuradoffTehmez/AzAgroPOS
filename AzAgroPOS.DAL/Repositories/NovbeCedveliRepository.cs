@@ -11,9 +11,9 @@ namespace AzAgroPOS.DAL.Repositories
     {
         private readonly AzAgroDbContext _context;
 
-        public NovbeCedveliRepository(AzAgroDbContext context = null)
+        public NovbeCedveliRepository(AzAgroDbContext context)
         {
-            _context = context ?? new AzAgroDbContext();
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public async Task<IEnumerable<NovbeCedveli>> GetAllAsync()
@@ -60,7 +60,6 @@ namespace AzAgroPOS.DAL.Repositories
             entity.YenilenmeTarixi = DateTime.Now;
             
             _context.NovbeCedvelleri.Add(entity);
-            await _context.SaveChangesAsync();
             return entity;
         }
 
@@ -69,7 +68,6 @@ namespace AzAgroPOS.DAL.Repositories
             entity.YenilenmeTarixi = DateTime.Now;
             
             _context.NovbeCedvelleri.Update(entity);
-            await _context.SaveChangesAsync();
             return entity;
         }
 
@@ -79,8 +77,7 @@ namespace AzAgroPOS.DAL.Repositories
             if (entity != null)
             {
                 _context.NovbeCedvelleri.Remove(entity);
-                await _context.SaveChangesAsync();
-            }
+                }
         }
 
         public async Task<bool> DeactivateScheduleAsync(int id)

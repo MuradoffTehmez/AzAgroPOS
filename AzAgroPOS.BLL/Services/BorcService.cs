@@ -2,269 +2,364 @@ using AzAgroPOS.DAL;
 using AzAgroPOS.DAL.Repositories;
 using AzAgroPOS.Entities.Domain;
 using AzAgroPOS.Entities.Constants;
+using AzAgroPOS.BLL.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AzAgroPOS.BLL.Services
 {
     public class BorcService : IDisposable
     {
-        private readonly MusteriBorcRepository _musteriBorcRepository;
-        private readonly BorcOdenisRepository _borcOdenisRepository;
-        private readonly AuditLogService _auditLogService;
-        private readonly AzAgroDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IAuditLogService _auditLogService;
+        private bool _disposed = false;
 
-        public BorcService(AzAgroDbContext context = null, AuditLogService auditLogService = null)
+        public BorcService(IUnitOfWork unitOfWork, IAuditLogService auditLogService)
         {
-            _context = context ?? new AzAgroDbContext();
-            _musteriBorcRepository = new MusteriBorcRepository(_context);
-            _borcOdenisRepository = new BorcOdenisRepository(_context);
-            _auditLogService = auditLogService ?? new AuditLogService();
+            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            _auditLogService = auditLogService ?? throw new ArgumentNullException(nameof(auditLogService));
         }
 
         public IEnumerable<MusteriBorc> GetAllDebts()
         {
-            try
-            {
-                return _musteriBorcRepository.GetAll().ToList();
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException($"Borc məlumatları alınarkən xəta: {ex.Message}", ex);
-            }
+            return ExecuteWithExceptionHandling(
+                () => _unitOfWork.MusteriBorclari.GetAll().ToList(),
+                "Borc məlumatları alınarkən xəta");
         }
 
         public MusteriBorc GetDebtById(int id)
         {
-            try
-            {
-                if (id <= 0)
-                    throw new ArgumentException("Yanlış borc ID-si", nameof(id));
+            if (id <= 0)
+                throw new ArgumentException("Yanlış borc ID-si", nameof(id));
 
-                return _musteriBorcRepository.GetById(id);
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException($"Borc məlumatı alınarkən xəta: {ex.Message}", ex);
-            }
+            return ExecuteWithExceptionHandling(
+                () => _unitOfWork.MusteriBorclari.GetById(id),
+                $"Borc məlumatı alınarkən xəta (ID: {id})");
         }
 
         public IEnumerable<MusteriBorc> GetDebtsByCustomer(int musteriId)
         {
-            return _musteriBorcRepository.GetByMusteriId(musteriId);
+            return ExecuteWithExceptionHandling(
+                () => _unitOfWork.MusteriBorclari.GetByMusteriId(musteriId),
+                $"Müştərinin borcları alınarkən xəta (Müştəri ID: {musteriId})");
         }
 
         public IEnumerable<MusteriBorc> GetActiveDebts()
         {
-            return _musteriBorcRepository.GetActiveDebts();
+            return ExecuteWithExceptionHandling(
+                () => _unitOfWork.MusteriBorclari.GetActiveDebts(),
+                "Aktiv borclar alınarkən xəta");
         }
 
         public IEnumerable<MusteriBorc> GetOverdueDebts()
         {
-            return _musteriBorcRepository.GetOverdueDebts();
+            return ExecuteWithExceptionHandling(
+                () => _unitOfWork.MusteriBorclari.GetOverdueDebts(),
+                "Gecikmiş borclar alınarkən xəta");
         }
 
         public IEnumerable<MusteriBorc> GetDebtsRequiringAttention()
         {
-            return _musteriBorcRepository.GetDebtsRequiringAttention();
+            return ExecuteWithExceptionHandling(
+                () => _unitOfWork.MusteriBorclari.GetDebtsRequiringAttention(),
+                "Diqqət tələb edən borclar alınarkən xəta");
         }
 
         public decimal GetTotalDebtByCustomer(int musteriId)
         {
-            return _musteriBorcRepository.GetTotalDebtByMusteriId(musteriId);
+            return ExecuteWithExceptionHandling(
+                () => _unitOfWork.MusteriBorclari.GetTotalDebtByMusteriId(musteriId),
+                $"Müştərinin ümumi borcu hesablanarkən xəta (Müştəri ID: {musteriId})");
         }
 
         public decimal GetTotalOverdueDebt()
         {
-            return _musteriBorcRepository.GetTotalOverdueDebt();
+            return ExecuteWithExceptionHandling(
+                () => _unitOfWork.MusteriBorclari.GetTotalOverdueDebt(),
+                "Ümumi gecikmiş borc hesablanarkən xəta");
         }
 
         public int CreateDebt(MusteriBorc musteriBorc)
         {
-            musteriBorc.BorcNomresi = _musteriBorcRepository.GenerateBorcNomresi();
-            musteriBorc.YaradilmaTarixi = DateTime.Now;
+            return ExecuteWithExceptionHandling(() =>
+            {
+                musteriBorc.BorcNomresi = _unitOfWork.MusteriBorclari.GenerateBorcNomresi();
+                musteriBorc.YaradilmaTarixi = DateTime.Now;
 
-            var id = _musteriBorcRepository.Add(musteriBorc);
+                var id = _unitOfWork.MusteriBorclari.Add(musteriBorc);
+                _unitOfWork.Complete();
 
-            _auditLogService.Log(
-                "MusteriBorc",
-                id,
-                "Yaradıldı",
-                $"Yeni borc yaradıldı: {musteriBorc.BorcNomresi}",
-                musteriBorc.YaradanIstifadeciId
-            );
+                _auditLogService.LogAction(
+                    "MusteriBorc",
+                    "CREATE",
+                    id,
+                    $"Yeni borc yaradıldı: {musteriBorc.BorcNomresi}",
+                    musteriBorc.YaradanIstifadeciId
+                );
 
-            return id;
+                return id;
+            }, "Borc yaradılarkən xəta");
         }
 
         public void UpdateDebt(MusteriBorc musteriBorc)
         {
-            var originalDebt = _musteriBorcRepository.GetById(musteriBorc.Id);
-            if (originalDebt == null)
-                throw new ArgumentException("Borc tapılmadı");
+            ExecuteWithExceptionHandling(() =>
+            {
+                var originalDebt = _unitOfWork.MusteriBorclari.GetById(musteriBorc.Id);
+                if (originalDebt == null)
+                    throw new ArgumentException("Borc tapılmadı");
 
-            _musteriBorcRepository.Update(musteriBorc);
+                _unitOfWork.MusteriBorclari.Update(musteriBorc);
+                _unitOfWork.Complete();
 
-            _auditLogService.Log(
-                "MusteriBorc",
-                musteriBorc.Id,
-                "Yeniləndi",
-                $"Borc yeniləndi: {musteriBorc.BorcNomresi}",
-                musteriBorc.YaradanIstifadeciId
-            );
+                _auditLogService.LogAction(
+                    "MusteriBorc",
+                    "UPDATE",
+                    musteriBorc.Id,
+                    $"Borc yeniləndi: {musteriBorc.BorcNomresi}",
+                    musteriBorc.YaradanIstifadeciId
+                );
+            }, "Borc yenilənərkən xəta");
         }
 
         public void DeleteDebt(int id, int istifadeciId)
         {
-            var debt = _musteriBorcRepository.GetById(id);
-            if (debt == null)
-                throw new ArgumentException("Borc tapılmadı");
+            ExecuteWithExceptionHandling(() =>
+            {
+                var debt = _unitOfWork.MusteriBorclari.GetById(id);
+                if (debt == null)
+                    throw new ArgumentException("Borc tapılmadı");
 
-            if (debt.BorcOdenisleri?.Any() == true)
-                throw new InvalidOperationException("Ödənişi olan borc silinə bilməz");
+                if (debt.BorcOdenisleri?.Any() == true)
+                    throw new InvalidOperationException("Ödənişi olan borc silinə bilməz");
 
-            _musteriBorcRepository.Delete(id);
+                _unitOfWork.MusteriBorclari.Delete(id);
+                _unitOfWork.Complete();
 
-            _auditLogService.Log(
-                "MusteriBorc",
-                id,
-                "Silindi",
-                $"Borc silindi: {debt.BorcNomresi}",
-                istifadeciId
-            );
+                _auditLogService.LogAction(
+                    "MusteriBorc",
+                    "DELETE",
+                    id,
+                    $"Borc silindi: {debt.BorcNomresi}",
+                    istifadeciId
+                );
+            }, "Borc silinərkən xəta");
         }
 
         public int AddPayment(BorcOdenis borcOdenis)
         {
-            var debt = _musteriBorcRepository.GetById(borcOdenis.MusteriBorcId);
-            if (debt == null)
-                throw new ArgumentException("Borc tapılmadı");
+            return ExecuteWithExceptionHandling(() =>
+            {
+                var debt = _unitOfWork.MusteriBorclari.GetById(borcOdenis.MusteriBorcId);
+                if (debt == null)
+                    throw new ArgumentException("Borc tapılmadı");
 
-            if (borcOdenis.OdenisMeblegi > debt.QalanBorc)
-                throw new ArgumentException("Ödəniş məbləği qalan borcu aşa bilməz");
+                if (borcOdenis.OdenisMeblegi > debt.QalanBorc)
+                    throw new ArgumentException("Ödəniş məbləği qalan borcu aşa bilməz");
 
-            borcOdenis.OdenisNomresi = _borcOdenisRepository.GenerateOdenisNomresi();
-            borcOdenis.YaradilmaTarixi = DateTime.Now;
+                borcOdenis.OdenisNomresi = _unitOfWork.BorcOdenisleri.GenerateOdenisNomresi();
+                borcOdenis.YaradilmaTarixi = DateTime.Now;
 
-            var id = _borcOdenisRepository.Add(borcOdenis);
+                var id = _unitOfWork.BorcOdenisleri.Add(borcOdenis);
+                _unitOfWork.Complete();
 
-            UpdateDebtBalance(debt.Id);
+                UpdateDebtBalance(debt.Id);
 
-            _auditLogService.Log(
-                "BorcOdenis",
-                id,
-                "Yaradıldı",
-                $"Yeni ödəniş: {borcOdenis.OdenisNomresi} - {borcOdenis.OdenisMeblegi:C}",
-                borcOdenis.QebulEdenIstifadeciId
-            );
+                _auditLogService.LogAction(
+                    "BorcOdenis",
+                    "CREATE",
+                    id,
+                    $"Yeni ödəniş: {borcOdenis.OdenisNomresi} - {borcOdenis.OdenisMeblegi:C}",
+                    borcOdenis.QebulEdenIstifadeciId
+                );
 
-            return id;
+                return id;
+            }, "Ödəniş əlavə edilərkən xəta");
         }
 
         public void ConfirmPayment(int paymentId, int confirmingUserId)
         {
-            _borcOdenisRepository.ConfirmPayment(paymentId, confirmingUserId);
+            ExecuteWithExceptionHandling(() =>
+            {
+                _unitOfWork.BorcOdenisleri.ConfirmPayment(paymentId, confirmingUserId);
+                _unitOfWork.Complete();
 
-            var payment = _borcOdenisRepository.GetById(paymentId);
-            UpdateDebtBalance(payment.MusteriBorcId);
+                var payment = _unitOfWork.BorcOdenisleri.GetById(paymentId);
+                UpdateDebtBalance(payment.MusteriBorcId);
 
-            _auditLogService.Log(
-                "BorcOdenis",
-                paymentId,
-                "Təsdiqləndi",
-                $"Ödəniş təsdiqləndi: {payment.OdenisNomresi}",
-                confirmingUserId
-            );
+                _auditLogService.LogAction(
+                    "BorcOdenis",
+                    "CONFIRM",
+                    paymentId,
+                    $"Ödəniş təsdiqləndi: {payment.OdenisNomresi}",
+                    confirmingUserId
+                );
+            }, "Ödəniş təsdiqləyərkən xəta");
         }
 
         public void CancelPayment(int paymentId, int cancelingUserId)
         {
-            var payment = _borcOdenisRepository.GetById(paymentId);
-            if (payment == null)
-                throw new ArgumentException("Ödəniş tapılmadı");
+            ExecuteWithExceptionHandling(() =>
+            {
+                var payment = _unitOfWork.BorcOdenisleri.GetById(paymentId);
+                if (payment == null)
+                    throw new ArgumentException("Ödəniş tapılmadı");
 
-            _borcOdenisRepository.CancelPayment(paymentId);
-            UpdateDebtBalance(payment.MusteriBorcId);
+                _unitOfWork.BorcOdenisleri.CancelPayment(paymentId);
+                _unitOfWork.Complete();
+                
+                UpdateDebtBalance(payment.MusteriBorcId);
 
-            _auditLogService.Log(
-                "BorcOdenis",
-                paymentId,
-                "Ləğv edildi",
-                $"Ödəniş ləğv edildi: {payment.OdenisNomresi}",
-                cancelingUserId
-            );
+                _auditLogService.LogAction(
+                    "BorcOdenis",
+                    "CANCEL",
+                    paymentId,
+                    $"Ödəniş ləğv edildi: {payment.OdenisNomresi}",
+                    cancelingUserId
+                );
+            }, "Ödəniş ləğv edilərkən xəta");
         }
 
         public IEnumerable<BorcOdenis> GetPaymentsByDebt(int musteriBorcId)
         {
-            return _borcOdenisRepository.GetByMusteriBorcId(musteriBorcId);
+            return ExecuteWithExceptionHandling(
+                () => _unitOfWork.BorcOdenisleri.GetByMusteriBorcId(musteriBorcId),
+                $"Borcun ödənişləri alınarkən xəta (Borc ID: {musteriBorcId})");
         }
 
         public IEnumerable<BorcOdenis> GetPaymentHistory(int debtId)
         {
-            return _borcOdenisRepository.GetByMusteriBorcId(debtId);
+            return ExecuteWithExceptionHandling(
+                () => _unitOfWork.BorcOdenisleri.GetByMusteriBorcId(debtId),
+                $"Ödəniş tarixçəsi alınarkən xəta (Borc ID: {debtId})");
         }
 
         public IEnumerable<BorcOdenis> GetPaymentsByCustomer(int musteriId)
         {
-            return _borcOdenisRepository.GetByMusteriId(musteriId);
+            return ExecuteWithExceptionHandling(
+                () => _unitOfWork.BorcOdenisleri.GetByMusteriId(musteriId),
+                $"Müştərinin ödənişləri alınarkən xəta (Müştəri ID: {musteriId})");
         }
 
         public IEnumerable<BorcOdenis> GetPendingPayments()
         {
-            return _borcOdenisRepository.GetPendingPayments();
+            return ExecuteWithExceptionHandling(
+                () => _unitOfWork.BorcOdenisleri.GetPendingPayments(),
+                "Gözləyən ödənişlər alınarkən xəta");
         }
 
         public decimal CalculateInterest(int debtId)
         {
-            var debt = _musteriBorcRepository.GetById(debtId);
-            return debt?.FaizMeblegi ?? 0;
+            return ExecuteWithExceptionHandling(() =>
+            {
+                var debt = _unitOfWork.MusteriBorclari.GetById(debtId);
+                return debt?.FaizMeblegi ?? 0;
+            }, $"Faiz hesablanarkən xəta (Borc ID: {debtId})");
         }
 
         public Dictionary<string, decimal> GetDebtSummary()
         {
-            var debts = _musteriBorcRepository.GetActiveDebts().ToList();
-
-            return new Dictionary<string, decimal>
+            return ExecuteWithExceptionHandling(() =>
             {
-                ["UmumiBorc"] = debts.Sum(d => d.QalanBorc),
-                ["GecikmisBorc"] = debts.Where(d => d.Gecikmiş).Sum(d => d.QalanBorc),
-                ["UmumiFaiz"] = debts.Sum(d => d.FaizMeblegi),
-                ["MusteriSayi"] = debts.Select(d => d.MusteriId).Distinct().Count()
-            };
+                var debts = _unitOfWork.MusteriBorclari.GetActiveDebts().ToList();
+
+                return new Dictionary<string, decimal>
+                {
+                    ["UmumiBorc"] = debts.Sum(d => d.QalanBorc),
+                    ["GecikmisBorc"] = debts.Where(d => d.Gecikmiş).Sum(d => d.QalanBorc),
+                    ["UmumiFaiz"] = debts.Sum(d => d.FaizMeblegi),
+                    ["MusteriSayi"] = debts.Select(d => d.MusteriId).Distinct().Count()
+                };
+            }, "Borc xülasəsi hesablanarkən xəta");
         }
 
         private void UpdateDebtBalance(int debtId)
         {
-            var debt = _musteriBorcRepository.GetById(debtId);
-            if (debt == null) return;
-
-            var confirmedPayments = _borcOdenisRepository.GetByMusteriBorcId(debtId)
-                .Where(p => p.Status == "Təsdiqlənmiş")
-                .Sum(p => p.OdenisMeblegi);
-
-            debt.OdenilmisMebleg = confirmedPayments;
-
-            if (debt.QalanBorc <= 0)
+            ExecuteWithExceptionHandling(() =>
             {
-                debt.Status = "Tam Ödənilmiş";
-            }
-            else if (debt.OdenilmisMebleg > 0)
-            {
-                debt.Status = "Qismən Ödənilmiş";
-            }
-            else
-            {
-                debt.Status = "Açıq";
-            }
+                var debt = _unitOfWork.MusteriBorclari.GetById(debtId);
+                if (debt == null) return;
 
-            _musteriBorcRepository.Update(debt);
+                var confirmedPayments = _unitOfWork.BorcOdenisleri.GetByMusteriBorcId(debtId)
+                    .Where(p => p.Status == "Təsdiqlənmiş")
+                    .Sum(p => p.OdenisMeblegi);
+
+                debt.OdenilmisMebleg = confirmedPayments;
+
+                if (debt.QalanBorc <= 0)
+                {
+                    debt.Status = "Tam Ödənilmiş";
+                }
+                else if (debt.OdenilmisMebleg > 0)
+                {
+                    debt.Status = "Qismən Ödənilmiş";
+                }
+                else
+                {
+                    debt.Status = "Açıq";
+                }
+
+                _unitOfWork.MusteriBorclari.Update(debt);
+                _unitOfWork.Complete();
+            }, $"Borc balansı yenilənərkən xəta (Borc ID: {debtId})");
         }
+
+        #region Helper Methods
+
+        private T ExecuteWithExceptionHandling<T>(Func<T> action, string errorMessage)
+        {
+            try
+            {
+                return action();
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException($"{errorMessage}: {ex.Message}", ex);
+            }
+        }
+
+        private void ExecuteWithExceptionHandling(Action action, string errorMessage)
+        {
+            try
+            {
+                action();
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException($"{errorMessage}: {ex.Message}", ex);
+            }
+        }
+
+        #endregion
+
+        #region IDisposable Implementation
 
         public void Dispose()
         {
-            _context?.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    _unitOfWork?.Dispose();
+                    _auditLogService?.Dispose();
+                }
+                _disposed = true;
+            }
+        }
+
+        ~BorcService()
+        {
+            Dispose(false);
+        }
+
+        #endregion
     }
 }

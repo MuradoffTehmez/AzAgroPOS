@@ -11,9 +11,9 @@ namespace AzAgroPOS.DAL.Repositories
     {
         private readonly AzAgroDbContext _context;
 
-        public NovbeRepository(AzAgroDbContext context = null)
+        public NovbeRepository(AzAgroDbContext context)
         {
-            _context = context ?? new AzAgroDbContext();
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public async Task<IEnumerable<NovbeKaydi>> GetAllAsync()
@@ -61,14 +61,12 @@ namespace AzAgroPOS.DAL.Repositories
         public async Task<int> AddAsync(NovbeKaydi novbeKaydi)
         {
             _context.NovbeKayitlari.Add(novbeKaydi);
-            await _context.SaveChangesAsync();
             return novbeKaydi.Id;
         }
 
         public async Task UpdateAsync(NovbeKaydi novbeKaydi)
         {
             _context.Entry(novbeKaydi).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
         }
 
         public async Task<NovbeKaydi> GetByIdAsync(int id)

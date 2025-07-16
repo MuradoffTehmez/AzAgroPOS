@@ -11,9 +11,9 @@ namespace AzAgroPOS.DAL.Repositories
     {
         private readonly AzAgroDbContext _context;
 
-        public BackupTenzimlemeRepository(AzAgroDbContext context = null)
+        public BackupTenzimlemeRepository(AzAgroDbContext context)
         {
-            _context = context ?? new AzAgroDbContext();
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public async Task<IEnumerable<BackupTenzimleme>> GetAllAsync()
@@ -82,7 +82,6 @@ namespace AzAgroPOS.DAL.Repositories
             entity.HesablaNextBackupTime();
             
             _context.BackupTenzimlemeleri.Add(entity);
-            await _context.SaveChangesAsync();
             return entity;
         }
 
@@ -94,7 +93,6 @@ namespace AzAgroPOS.DAL.Repositories
             entity.HesablaNextBackupTime();
             
             _context.BackupTenzimlemeleri.Update(entity);
-            await _context.SaveChangesAsync();
             return entity;
         }
 
@@ -104,7 +102,6 @@ namespace AzAgroPOS.DAL.Repositories
             if (entity != null)
             {
                 _context.BackupTenzimlemeleri.Remove(entity);
-                await _context.SaveChangesAsync();
             }
         }
 
@@ -154,7 +151,6 @@ namespace AzAgroPOS.DAL.Repositories
                 config.HesablaNextBackupTime();
                 _context.BackupTenzimlemeleri.Update(config);
             }
-            await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<BackupTenzimleme>> GetConfigurationsNeedingCleanupAsync()
