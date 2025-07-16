@@ -23,7 +23,7 @@ namespace AzAgroPOS.PL.Forms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1200, 700);
+            this.ClientSize = new System.Drawing.Size(1000, 650);
             this.Name = "MaterialModernLoginForm";
             this.Text = "AzAgroPOS - Modern Giriş";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

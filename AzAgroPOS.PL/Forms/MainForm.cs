@@ -24,7 +24,7 @@ namespace AzAgroPOS.PL.Forms
             _serviceProvider = serviceProvider;
             _currentUser = currentUser;
             SetupModernDesign();
-            LoadUserInfo();
+            // LoadUserInfo will be called after the controls are created
             this.Load += MainForm_Load;
         }
 
@@ -37,32 +37,34 @@ namespace AzAgroPOS.PL.Forms
         {
             if (_currentUser != null)
             {
-                lblWelcome.Text = $"Xoş gəldiniz, {_currentUser.TamAd}";
-                lblRole.Text = $"Rol: {_currentUser.Rol?.Ad ?? "Təyin edilməyib"}";
+                // Use Designer-generated controls
+                lblWelcomeMessage.Text = $"Xoş gəldiniz, {_currentUser.TamAd}";
+                lblUserRole.Text = $"Rol: {_currentUser.Rol?.Ad ?? "Təyin edilməyib"}";
                 
                 // Admin roluna əsasən menyu elementlərini göstər/gizlət
                 bool isAdmin = _currentUser.Rol?.Ad == SystemConstants.Roles.Administrator;
                 bool isManager = _currentUser.Rol?.Ad == SystemConstants.Roles.Manager || isAdmin;
                 
-                btnUserManagement.Visible = isAdmin;
-                btnSettings.Visible = isAdmin;
-                btnReports.Visible = isManager;
-                btnInventory.Visible = isManager;
-                btnDebtManagement.Visible = isManager;
-                btnRepairManagement.Visible = true;
-                
-                // Expense management - accessible for manager and admin
-                // btnExpenseManagement.Visible = isManager; // Will be set in CreateMenuButtons
-                
-                // Müştəri idarəetməsi və POS bütün istifadəçilər üçün görünür
-                btnCustomerManagement.Visible = true;
-                btnPOS.Visible = true;
-                btnDashboard.Visible = true;
-                
                 // Initialize dashboard as default view
-                dashboardPanel.Visible = true;
-                customerSubmenu.Visible = false;
-                btnDashboard.BackColor = System.Drawing.Color.FromArgb(41, 128, 185);
+                if (pnlDashboard != null)
+                {
+                    pnlDashboard.Visible = true;
+                }
+                
+                // Initialize customer submenu if it exists
+                if (pnlCustomerSubmenu != null)
+                {
+                    pnlCustomerSubmenu.Visible = false;
+                }
+                
+                // Initialize dashboard button color
+                if (btnDashboard != null)
+                {
+                    btnDashboard.BackColor = System.Drawing.Color.FromArgb(41, 128, 185);
+                }
+                
+                // Set menu visibility based on roles
+                SetMenuVisibility(isAdmin, isManager);
             }
         }
 
@@ -436,6 +438,9 @@ namespace AzAgroPOS.PL.Forms
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            // Load user info after all controls are created
+            LoadUserInfo();
+            
             // Initialize dashboard with mock data
             LoadDashboardData();
         }
@@ -450,35 +455,35 @@ namespace AzAgroPOS.PL.Forms
                 
                 // Get real customer count
                 int totalCustomers = musteriService.GetAllCustomers().Count();
-                if (lblTotalCustomers != null)
-                    lblTotalCustomers.Text = $"👥 Müştərilər\n\n{totalCustomers:N0}";
+                if (lblStatTotalCustomers != null)
+                    lblStatTotalCustomers.Text = $"👥 Müştərilər\n\n{totalCustomers:N0}";
                 
                 // Get real product count
                 int totalProducts = mehsulService.GetAllActive().Count;
-                if (lblTotalProducts != null)
-                    lblTotalProducts.Text = $"📦 Məhsullar\n\n{totalProducts:N0}";
+                if (lblStatTotalProducts != null)
+                    lblStatTotalProducts.Text = $"📦 Məhsullar\n\n{totalProducts:N0}";
                 
                 // Today's sales - placeholder for now (would need sales service)
                 var todaySales = new Random().Next(50, 200);
-                if (lblTodaySales != null)
-                    lblTodaySales.Text = $"🛒 Bugünkü Satış\n\n{todaySales}";
+                if (lblStatTodaySales != null)
+                    lblStatTodaySales.Text = $"🛒 Bugünkü Satış\n\n{todaySales}";
                 
                 // Total value - placeholder for now
                 var totalValue = new Random().Next(10000, 50000);
-                if (lblTotalValue != null)
-                    lblTotalValue.Text = $"💰 Ümumi Dəyər\n\n₼{totalValue:N0}";
+                if (lblStatTotalValue != null)
+                    lblStatTotalValue.Text = $"💰 Ümumi Dəyər\n\n₼{totalValue:N0}";
             }
             catch (Exception ex)
             {
                 // Fallback to mock data if there's an error
-                if (lblTotalCustomers != null)
-                    lblTotalCustomers.Text = "👥 Müştərilər\n\n---";
-                if (lblTotalProducts != null)
-                    lblTotalProducts.Text = "📦 Məhsullar\n\n---";
-                if (lblTodaySales != null)
-                    lblTodaySales.Text = "🛒 Bugünkü Satış\n\n---";
-                if (lblTotalValue != null)
-                    lblTotalValue.Text = "💰 Ümumi Dəyər\n\n---";
+                if (lblStatTotalCustomers != null)
+                    lblStatTotalCustomers.Text = "👥 Müştərilər\n\n---";
+                if (lblStatTotalProducts != null)
+                    lblStatTotalProducts.Text = "📦 Məhsullar\n\n---";
+                if (lblStatTodaySales != null)
+                    lblStatTodaySales.Text = "🛒 Bugünkü Satış\n\n---";
+                if (lblStatTotalValue != null)
+                    lblStatTotalValue.Text = "💰 Ümumi Dəyər\n\n---";
             }
         }
 
@@ -491,412 +496,89 @@ namespace AzAgroPOS.PL.Forms
             this.WindowState = FormWindowState.Maximized;
             this.StartPosition = FormStartPosition.CenterScreen;
             
-            // Create modern layout
-            CreateModernLayout();
-            
             // Apply modern theme to all controls
             ModernTheme.ApplyModernStyle(this);
-        }
-
-        private void CreateModernLayout()
-        {
-            this.SuspendLayout();
-
-            // Create main layout panels
-            CreateTopPanel();
-            CreateSidebarPanel();
-            CreateMainContentPanel();
-            CreateDashboardPanel();
-
-            this.ResumeLayout(false);
-        }
-
-        private void CreateTopPanel()
-        {
-            topPanel = new Panel
-            {
-                Height = 70,
-                Dock = DockStyle.Top,
-                BackColor = ModernTheme.Colors.Primary
-            };
-            topPanel.Paint += TopPanel_Paint;
-
-            // Welcome label
-            lblWelcome = new Label
-            {
-                Text = "Xoş gəldiniz",
-                Font = ModernTheme.Fonts.Heading,
-                ForeColor = Color.White,
-                AutoSize = true,
-                Location = new Point(20, 15)
-            };
-            topPanel.Controls.Add(lblWelcome);
-
-            // Role label
-            lblRole = new Label
-            {
-                Text = "Rol: ---",
-                Font = ModernTheme.Fonts.Body,
-                ForeColor = Color.FromArgb(220, 255, 255, 255),
-                AutoSize = true,
-                Location = new Point(20, 40)
-            };
-            topPanel.Controls.Add(lblRole);
-
-            // Logout button
-            var btnLogout = new Button
-            {
-                Text = "🚪 Çıxış",
-                Size = new Size(100, 35),
-                Location = new Point(this.Width - 120, 20),
-                Font = ModernTheme.Fonts.Button,
-                BackColor = ModernTheme.Colors.Danger,
-                ForeColor = Color.White,
-                FlatStyle = FlatStyle.Flat,
-                Anchor = AnchorStyles.Top | AnchorStyles.Right,
-                Cursor = Cursors.Hand
-            };
-            btnLogout.FlatAppearance.BorderSize = 0;
-            btnLogout.Click += btnLogout_Click;
-            topPanel.Controls.Add(btnLogout);
-
-            this.Controls.Add(topPanel);
-        }
-
-        private void CreateSidebarPanel()
-        {
-            sidebarPanel = new Panel
-            {
-                Width = 220,
-                Dock = DockStyle.Left,
-                BackColor = ModernTheme.Colors.Primary
-            };
-            sidebarPanel.Paint += SidebarPanel_Paint;
-
-            // Create menu buttons
-            CreateMenuButtons();
-
-            this.Controls.Add(sidebarPanel);
-        }
-
-        private void CreateMenuButtons()
-        {
-            int yPos = 20;
-            int buttonHeight = 50;
-            int spacing = 5;
             
-            // Get user role permissions
-            bool isAdmin = _currentUser?.Rol?.Ad == SystemConstants.Roles.Administrator;
-            bool isManager = _currentUser?.Rol?.Ad == SystemConstants.Roles.Manager || isAdmin;
-
-            // Dashboard button
-            var btnDashboard = CreateMenuButton("🏠 Ana Səhifə", yPos);
-            btnDashboard.Click += btnDashboard_Click;
-            btnDashboard.BackColor = ModernTheme.Colors.PrimaryDark; // Active by default
-            sidebarPanel.Controls.Add(btnDashboard);
-            yPos += buttonHeight + spacing;
-
-            // Customer Management button
-            var btnCustomers = CreateMenuButton("👥 Müştərilər", yPos);
-            btnCustomers.Click += btnCustomerManagement_Click;
-            sidebarPanel.Controls.Add(btnCustomers);
-            yPos += buttonHeight + spacing;
-
-            // Inventory button
-            var btnInventory = CreateMenuButton("📦 Anbar", yPos);
-            btnInventory.Click += btnInventory_Click;
-            btnInventory.Visible = isManager;
-            sidebarPanel.Controls.Add(btnInventory);
-            yPos += buttonHeight + spacing;
-
-            // POS button
-            var btnPOS = CreateMenuButton("🛒 Satış", yPos);
-            btnPOS.Click += btnPOS_Click;
-            sidebarPanel.Controls.Add(btnPOS);
-            yPos += buttonHeight + spacing;
-
-            // Debt Management button
-            var btnDebtManagement = CreateMenuButton("💰 Borc İdarəsi", yPos);
-            btnDebtManagement.Click += btnDebtManagement_Click;
-            btnDebtManagement.Visible = isManager;
-            sidebarPanel.Controls.Add(btnDebtManagement);
-            yPos += buttonHeight + spacing;
-
-            // Repair Management button
-            var btnRepairManagement = CreateMenuButton("🔧 Təmir", yPos);
-            btnRepairManagement.Click += btnRepairManagement_Click;
-            sidebarPanel.Controls.Add(btnRepairManagement);
-            yPos += buttonHeight + spacing;
-
-            // Expense Management button
-            var btnExpenseManagement = CreateMenuButton("💰 Gidər İdarəsi", yPos);
-            btnExpenseManagement.Click += btnExpenseManagement_Click;
-            btnExpenseManagement.Visible = isManager; // Only for managers and admins
-            sidebarPanel.Controls.Add(btnExpenseManagement);
-            yPos += buttonHeight + spacing;
-
-            // Reports button
-            var btnReports = CreateMenuButton("📊 Hesabatlar", yPos);
-            btnReports.Click += btnReports_Click;
-            btnReports.Visible = isManager;
-            sidebarPanel.Controls.Add(btnReports);
-            yPos += buttonHeight + spacing;
-
-            // User Management button
-            var btnUserManagement = CreateMenuButton("👤 İstifadəçilər", yPos);
-            btnUserManagement.Click += btnUserManagement_Click;
-            btnUserManagement.Visible = isAdmin;
-            sidebarPanel.Controls.Add(btnUserManagement);
-            yPos += buttonHeight + spacing;
-
-            // Settings button
-            var btnSettings = CreateMenuButton("⚙️ Parametrlər", yPos);
-            btnSettings.Click += btnSettings_Click;
-            btnSettings.Visible = isAdmin;
-            sidebarPanel.Controls.Add(btnSettings);
-            yPos += buttonHeight + spacing;
-
+            // Add expense management button if not in designer
+            AddExpenseManagementButton();
         }
 
-        private Button CreateMenuButton(string text, int yPos)
+        private void AddExpenseManagementButton()
         {
-            var button = new Button
+            // Add expense management button dynamically since it's not in Designer
+            if (btnExpenseManagement == null)
             {
-                Text = text,
-                Size = new Size(200, 45),
-                Location = new Point(10, yPos),
-                Font = ModernTheme.Fonts.Button,
-                BackColor = ModernTheme.Colors.Primary,
-                ForeColor = Color.White,
-                FlatStyle = FlatStyle.Flat,
-                TextAlign = ContentAlignment.MiddleLeft,
-                Cursor = Cursors.Hand
-            };
-            button.FlatAppearance.BorderSize = 0;
-            button.MouseEnter += (s, e) => button.BackColor = ModernTheme.Colors.PrimaryDark;
-            button.MouseLeave += (s, e) => 
-            {
-                if (button.BackColor == ModernTheme.Colors.PrimaryDark && !IsActiveButton(button))
-                    button.BackColor = ModernTheme.Colors.Primary;
-            };
-            return button;
-        }
-
-        private bool IsActiveButton(Button button)
-        {
-            return button.BackColor == ModernTheme.Colors.PrimaryDark;
-        }
-
-        private void CreateMainContentPanel()
-        {
-            mainContentPanel = new Panel
-            {
-                Dock = DockStyle.Fill,
-                BackColor = ModernTheme.Colors.Background,
-                Padding = new Padding(20)
-            };
-
-            this.Controls.Add(mainContentPanel);
-        }
-
-        private void CreateDashboardPanel()
-        {
-            dashboardPanel = new Panel
-            {
-                Dock = DockStyle.Fill,
-                BackColor = ModernTheme.Colors.Background
-            };
-
-            // Create dashboard content
-            CreateDashboardContent();
-
-            mainContentPanel.Controls.Add(dashboardPanel);
-        }
-
-        private void CreateDashboardContent()
-        {
-            // Dashboard title
-            var titleLabel = new Label
-            {
-                Text = "İdarəetmə Paneli",
-                Font = ModernTheme.Fonts.Title,
-                ForeColor = ModernTheme.Colors.TextPrimary,
-                AutoSize = true,
-                Location = new Point(0, 0)
-            };
-            dashboardPanel.Controls.Add(titleLabel);
-
-            // Statistics cards
-            CreateStatisticsCards();
-
-            // Recent activity panel
-            CreateRecentActivityPanel();
-        }
-
-        private void CreateStatisticsCards()
-        {
-            int x = 0;
-            int y = 60;
-            int cardWidth = 250;
-            int cardHeight = 120;
-            int spacing = 20;
-
-            // Total Customers card
-            var customersCard = CreateStatisticCard("👥 Müştərilər", "0", ModernTheme.Colors.Primary);
-            customersCard.Location = new Point(x, y);
-            customersCard.Size = new Size(cardWidth, cardHeight);
-            lblTotalCustomers = customersCard.Controls.OfType<Label>().FirstOrDefault(l => l.Tag?.ToString() == "value");
-            dashboardPanel.Controls.Add(customersCard);
-
-            // Total Products card
-            x += cardWidth + spacing;
-            var productsCard = CreateStatisticCard("📦 Məhsullar", "0", ModernTheme.Colors.Secondary);
-            productsCard.Location = new Point(x, y);
-            productsCard.Size = new Size(cardWidth, cardHeight);
-            lblTotalProducts = productsCard.Controls.OfType<Label>().FirstOrDefault(l => l.Tag?.ToString() == "value");
-            dashboardPanel.Controls.Add(productsCard);
-
-            // Today's Sales card
-            x += cardWidth + spacing;
-            var salesCard = CreateStatisticCard("🛒 Bugünkü Satış", "0", ModernTheme.Colors.Warning);
-            salesCard.Location = new Point(x, y);
-            salesCard.Size = new Size(cardWidth, cardHeight);
-            lblTodaySales = salesCard.Controls.OfType<Label>().FirstOrDefault(l => l.Tag?.ToString() == "value");
-            dashboardPanel.Controls.Add(salesCard);
-
-            // Total Value card
-            x += cardWidth + spacing;
-            var valueCard = CreateStatisticCard("💰 Ümumi Dəyər", "₼0", ModernTheme.Colors.Info);
-            valueCard.Location = new Point(x, y);
-            valueCard.Size = new Size(cardWidth, cardHeight);
-            lblTotalValue = valueCard.Controls.OfType<Label>().FirstOrDefault(l => l.Tag?.ToString() == "value");
-            dashboardPanel.Controls.Add(valueCard);
-        }
-
-        private Panel CreateStatisticCard(string title, string value, Color color)
-        {
-            var card = new Panel
-            {
-                BackColor = color,
-                Padding = new Padding(20)
-            };
-
-            var titleLabel = new Label
-            {
-                Text = title,
-                Font = ModernTheme.Fonts.Body,
-                ForeColor = Color.White,
-                AutoSize = true,
-                Location = new Point(0, 10)
-            };
-            card.Controls.Add(titleLabel);
-
-            var valueLabel = new Label
-            {
-                Text = value,
-                Font = ModernTheme.Fonts.Title,
-                ForeColor = Color.White,
-                AutoSize = true,
-                Location = new Point(0, 40),
-                Tag = "value"
-            };
-            card.Controls.Add(valueLabel);
-
-            return card;
-        }
-
-        private void CreateRecentActivityPanel()
-        {
-            var activityPanel = ModernTheme.CreateCard();
-            activityPanel.Location = new Point(0, 220);
-            activityPanel.Size = new Size(800, 300);
-
-            var titleLabel = new Label
-            {
-                Text = "Son Fəaliyyətlər",
-                Font = ModernTheme.Fonts.SubHeading,
-                ForeColor = ModernTheme.Colors.TextPrimary,
-                AutoSize = true,
-                Location = new Point(20, 20)
-            };
-            activityPanel.Controls.Add(titleLabel);
-
-            var activityList = new Label
-            {
-                Text = "• Yeni müştəri əlavə edildi\n• Məhsul anbarı yeniləndi\n• Satış hesabatı hazırlandı\n• Sistem yeniləndi",
-                Font = ModernTheme.Fonts.Body,
-                ForeColor = ModernTheme.Colors.TextSecondary,
-                Location = new Point(20, 60),
-                Size = new Size(750, 200)
-            };
-            activityPanel.Controls.Add(activityList);
-
-            dashboardPanel.Controls.Add(activityPanel);
-        }
-
-        private void TopPanel_Paint(object sender, PaintEventArgs e)
-        {
-            using (var brush = new LinearGradientBrush(
-                topPanel.ClientRectangle,
-                ModernTheme.Colors.Primary,
-                ModernTheme.Colors.PrimaryDark,
-                LinearGradientMode.Horizontal))
-            {
-                e.Graphics.FillRectangle(brush, topPanel.ClientRectangle);
+                btnExpenseManagement = new Button
+                {
+                    Text = "💰 Gidər İdarəsi",
+                    Size = new Size(240, 45),
+                    Location = new Point(20, 555), // Position after repair management
+                    Font = new Font("Segoe UI", 12F, FontStyle.Bold),
+                    BackColor = Color.FromArgb(52, 73, 94),
+                    ForeColor = Color.White,
+                    FlatStyle = FlatStyle.Flat,
+                    TextAlign = ContentAlignment.MiddleLeft,
+                    UseVisualStyleBackColor = false
+                };
+                
+                btnExpenseManagement.FlatAppearance.BorderSize = 0;
+                btnExpenseManagement.Click += btnExpenseManagement_Click;
+                
+                // Add to sidebar panel
+                pnlSidebar.Controls.Add(btnExpenseManagement);
             }
         }
 
-        private void SidebarPanel_Paint(object sender, PaintEventArgs e)
-        {
-            using (var brush = new LinearGradientBrush(
-                sidebarPanel.ClientRectangle,
-                ModernTheme.Colors.Primary,
-                ModernTheme.Colors.PrimaryDark,
-                LinearGradientMode.Vertical))
-            {
-                e.Graphics.FillRectangle(brush, sidebarPanel.ClientRectangle);
-            }
-        }
+        // Designer-generated controls are used instead
+
+        // Designer-generated controls are used instead
+
+        // Designer-generated buttons are used instead
+
+        // All methods removed - Designer-generated controls are used instead
 
         private void ShowDashboard()
         {
-            if (dashboardPanel != null)
+            if (pnlDashboard != null)
             {
-                dashboardPanel.Visible = true;
-                dashboardPanel.BringToFront();
+                pnlDashboard.Visible = true;
+                pnlDashboard.BringToFront();
             }
         }
 
         private void ToggleCustomerSubmenu()
         {
-            if (customerSubmenu != null)
+            if (pnlCustomerSubmenu != null)
             {
-                customerSubmenu.Visible = !customerSubmenu.Visible;
+                pnlCustomerSubmenu.Visible = !pnlCustomerSubmenu.Visible;
             }
         }
 
         private void SetMenuVisibility(bool isAdmin, bool isManager)
         {
-            // Implementation for setting menu visibility based on roles
-            foreach (Control control in sidebarPanel.Controls)
-            {
-                if (control is Button btn)
-                {
-                    // Show/hide based on role
-                    if (btn.Text.Contains("İstifadəçilər") || btn.Text.Contains("Parametrlər"))
-                    {
-                        btn.Visible = isAdmin;
-                    }
-                    else if (btn.Text.Contains("Hesabatlar") || btn.Text.Contains("Anbar") || btn.Text.Contains("Borc"))
-                    {
-                        btn.Visible = isManager;
-                    }
-                    else
-                    {
-                        btn.Visible = true;
-                    }
-                }
-            }
+            // Set visibility for buttons based on roles
+            if (btnUserManagement != null)
+                btnUserManagement.Visible = isAdmin;
+            if (btnSettings != null)
+                btnSettings.Visible = isAdmin;
+            if (btnReports != null)
+                btnReports.Visible = isManager;
+            if (btnInventory != null)
+                btnInventory.Visible = isManager;
+            if (btnDebtManagement != null)
+                btnDebtManagement.Visible = isManager;
+            if (btnExpenseManagement != null)
+                btnExpenseManagement.Visible = isManager;
+            
+            // These are always visible
+            if (btnDashboard != null)
+                btnDashboard.Visible = true;
+            if (btnCustomerManagement != null)
+                btnCustomerManagement.Visible = true;
+            if (btnPOS != null)
+                btnPOS.Visible = true;
+            if (btnRepairManagement != null)
+                btnRepairManagement.Visible = true;
         }
 
         // Control declarations
@@ -911,5 +593,8 @@ namespace AzAgroPOS.PL.Forms
         private Label lblTotalProducts;
         private Label lblTodaySales;
         private Label lblTotalValue;
+        
+        // Additional button for expense management (not in Designer)
+        private Button btnExpenseManagement;
     }
 }

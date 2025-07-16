@@ -81,28 +81,41 @@ namespace AzAgroPOS.PL.Forms
         {
             // Form settings
             this.Text = "AzAgroPOS - Modern Giriş";
-            this.Size = new Size(1200, 700);
+            this.Size = new Size(1000, 650);
             this.StartPosition = FormStartPosition.CenterScreen;
             this.FormBorderStyle = FormBorderStyle.None;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.BackColor = Color.FromArgb(45, 45, 48);
             
-            // Apply rounded corners
-            this.Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
+            // Apply rounded corners after form is shown to prevent shaking
+            this.Shown += (s, e) => {
+                try
+                {
+                    this.Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
+                }
+                catch (Exception ex)
+                {
+                    // Fallback if rounded corners fail
+                    System.Diagnostics.Debug.WriteLine($"Rounded corners failed: {ex.Message}");
+                }
+            };
 
             // Main container
             pnlMain = new Panel
             {
-                Dock = DockStyle.Fill,
-                BackColor = Color.Transparent
+                Name = "pnlMain",
+                Location = new Point(0, 0),
+                Size = new Size(1000, 650),
+                BackColor = Color.FromArgb(45, 45, 48)
             };
 
             // Left panel with branding
             pnlLeft = new Panel
             {
-                Width = 600,
-                Dock = DockStyle.Left,
+                Name = "pnlLeft",
+                Location = new Point(0, 0),
+                Size = new Size(500, 650),
                 BackColor = Color.FromArgb(63, 81, 181) // Material Indigo
             };
             pnlLeft.Paint += PnlLeft_Paint;
@@ -110,22 +123,20 @@ namespace AzAgroPOS.PL.Forms
             // Right panel with login form
             pnlRight = new Panel
             {
-                Dock = DockStyle.Fill,
-                BackColor = Color.FromArgb(55, 55, 58),
-                Padding = new Padding(60, 80, 60, 80)
+                Name = "pnlRight",
+                Location = new Point(500, 0),
+                Size = new Size(500, 650),
+                BackColor = Color.FromArgb(55, 55, 58)
             };
 
             // Login card with rounded corners
             pnlLoginCard = new Panel
             {
-                Size = new Size(400, 520),
-                BackColor = Color.FromArgb(69, 69, 72),
-                Anchor = AnchorStyles.None
+                Name = "pnlLoginCard",
+                Location = new Point(50, 75),
+                Size = new Size(400, 500),
+                BackColor = Color.FromArgb(69, 69, 72)
             };
-            pnlLoginCard.Location = new Point(
-                (pnlRight.Width - pnlLoginCard.Width) / 2,
-                (pnlRight.Height - pnlLoginCard.Height) / 2
-            );
             pnlLoginCard.Paint += PnlLoginCard_Paint;
 
             // Title and window controls
@@ -157,13 +168,13 @@ namespace AzAgroPOS.PL.Forms
             // Close button
             btnClose = new MaterialButton
             {
+                Name = "btnClose",
                 Size = new Size(40, 30),
-                Location = new Point(this.Width - 50, 10),
+                Location = new Point(950, 10),
                 Text = "✕",
                 BackColor = Color.FromArgb(232, 17, 35),
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
-                Anchor = AnchorStyles.Top | AnchorStyles.Right,
                 Font = new Font("Segoe UI", 12, FontStyle.Bold)
             };
             btnClose.Click += (s, e) => this.Close();
@@ -173,20 +184,20 @@ namespace AzAgroPOS.PL.Forms
             // Minimize button
             btnMinimize = new MaterialButton
             {
+                Name = "btnMinimize",
                 Size = new Size(40, 30),
-                Location = new Point(this.Width - 95, 10),
+                Location = new Point(905, 10),
                 Text = "−",
                 BackColor = Color.FromArgb(80, 80, 80),
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
-                Anchor = AnchorStyles.Top | AnchorStyles.Right,
                 Font = new Font("Segoe UI", 12, FontStyle.Bold)
             };
             btnMinimize.Click += (s, e) => this.WindowState = FormWindowState.Minimized;
             btnMinimize.MouseEnter += (s, e) => btnMinimize.BackColor = Color.FromArgb(100, 100, 100);
             btnMinimize.MouseLeave += (s, e) => btnMinimize.BackColor = Color.FromArgb(80, 80, 80);
 
-            this.Controls.AddRange(new Control[] { btnClose, btnMinimize });
+            pnlMain.Controls.AddRange(new Control[] { btnClose, btnMinimize });
         }
 
         private void CreateLeftPanelContent()
@@ -194,8 +205,9 @@ namespace AzAgroPOS.PL.Forms
             // Logo
             picLogo = new IconPictureBox
             {
+                Name = "picLogo",
                 Size = new Size(80, 80),
-                Location = new Point(60, 60),
+                Location = new Point(50, 80),
                 IconChar = IconChar.Seedling,
                 IconColor = Color.White,
                 IconSize = 80,
@@ -205,23 +217,25 @@ namespace AzAgroPOS.PL.Forms
             // Title
             lblTitle = new MaterialLabel
             {
+                Name = "lblTitle",
                 Text = "AzAgroPOS",
-                Font = new Font("Segoe UI", 36, FontStyle.Bold),
+                Font = new Font("Segoe UI", 32, FontStyle.Bold),
                 ForeColor = Color.White,
                 AutoSize = true,
-                Location = new Point(60, 160),
+                Location = new Point(50, 180),
                 BackColor = Color.Transparent
             };
 
             // Version
             lblVersion = new MaterialLabel
             {
+                Name = "lblVersion",
                 Text = "Versiya 2.0 - Müasir Kənd Təsərrüfatı İdarəetmə Sistemi",
-                Font = new Font("Segoe UI", 12, FontStyle.Regular),
+                Font = new Font("Segoe UI", 11, FontStyle.Regular),
                 ForeColor = Color.FromArgb(200, 255, 255, 255),
                 AutoSize = false,
-                Size = new Size(450, 60),
-                Location = new Point(60, 220),
+                Size = new Size(400, 50),
+                Location = new Point(50, 240),
                 BackColor = Color.Transparent
             };
 
@@ -240,26 +254,28 @@ namespace AzAgroPOS.PL.Forms
             {
                 var iconPic = new IconPictureBox
                 {
-                    Size = new Size(20, 20),
-                    Location = new Point(60, yPos),
+                    Name = $"iconFeature{yPos}",
+                    Size = new Size(18, 18),
+                    Location = new Point(50, yPos),
                     IconChar = feature.Icon,
                     IconColor = Color.FromArgb(129, 199, 132),
-                    IconSize = 20,
+                    IconSize = 18,
                     BackColor = Color.Transparent
                 };
 
                 var lblFeature = new MaterialLabel
                 {
+                    Name = $"lblFeature{yPos}",
                     Text = feature.Text,
-                    Font = new Font("Segoe UI", 11, FontStyle.Regular),
+                    Font = new Font("Segoe UI", 10, FontStyle.Regular),
                     ForeColor = Color.FromArgb(230, 255, 255, 255),
                     AutoSize = true,
-                    Location = new Point(90, yPos),
+                    Location = new Point(75, yPos),
                     BackColor = Color.Transparent
                 };
 
                 pnlLeft.Controls.AddRange(new Control[] { iconPic, lblFeature });
-                yPos += 40;
+                yPos += 35;
             }
 
             pnlLeft.Controls.AddRange(new Control[] { picLogo, lblTitle, lblVersion });
@@ -270,32 +286,35 @@ namespace AzAgroPOS.PL.Forms
             // Welcome label
             lblWelcome = new MaterialLabel
             {
+                Name = "lblWelcome",
                 Text = "Xoş gəldiniz!",
-                Font = new Font("Segoe UI", 28, FontStyle.Bold),
+                Font = new Font("Segoe UI", 24, FontStyle.Bold),
                 ForeColor = Color.White,
                 AutoSize = true,
-                Location = new Point(40, 30),
+                Location = new Point(40, 40),
                 BackColor = Color.Transparent
             };
 
             // Subtitle
             lblSubtitle = new MaterialLabel
             {
+                Name = "lblSubtitle",
                 Text = "Hesabınıza daxil olmaq üçün məlumatlarınızı daxil edin",
-                Font = new Font("Segoe UI", 11, FontStyle.Regular),
+                Font = new Font("Segoe UI", 10, FontStyle.Regular),
                 ForeColor = Color.FromArgb(180, 180, 180),
                 AutoSize = false,
-                Size = new Size(320, 40),
-                Location = new Point(40, 80),
+                Size = new Size(320, 30),
+                Location = new Point(40, 85),
                 BackColor = Color.Transparent
             };
 
             // Email textbox
             txtEmail = new MaterialTextBox
             {
-                Size = new Size(320, 50),
-                Location = new Point(40, 150),
-                Font = new Font("Segoe UI", 12, FontStyle.Regular),
+                Name = "txtEmail",
+                Size = new Size(320, 45),
+                Location = new Point(40, 140),
+                Font = new Font("Segoe UI", 11, FontStyle.Regular),
                 Hint = "   Email adresi",
                 BackColor = Color.FromArgb(69, 69, 72),
                 ForeColor = Color.White
@@ -305,11 +324,12 @@ namespace AzAgroPOS.PL.Forms
             // Add email icon
             var emailIcon = new IconPictureBox
             {
-                Size = new Size(20, 20),
-                Location = new Point(50, 165),
+                Name = "emailIcon",
+                Size = new Size(18, 18),
+                Location = new Point(50, (txtEmail.Location.Y + (txtEmail.Height - 18) / 2)),
                 IconChar = IconChar.Envelope,
                 IconColor = Color.FromArgb(150, 150, 150),
-                IconSize = 20,
+                IconSize = 18,
                 BackColor = Color.Transparent
             };
             pnlLoginCard.Controls.Add(emailIcon);
@@ -317,9 +337,10 @@ namespace AzAgroPOS.PL.Forms
             // Password textbox
             txtPassword = new MaterialTextBox
             {
-                Size = new Size(320, 50),
-                Location = new Point(40, 220),
-                Font = new Font("Segoe UI", 12, FontStyle.Regular),
+                Name = "txtPassword",
+                Size = new Size(320, 45),
+                Location = new Point(40, 210),
+                Font = new Font("Segoe UI", 11, FontStyle.Regular),
                 Hint = "   Şifrə",
                 Password = true,
                 BackColor = Color.FromArgb(69, 69, 72),
@@ -330,11 +351,12 @@ namespace AzAgroPOS.PL.Forms
             // Add password icon
             var passwordIcon = new IconPictureBox
             {
-                Size = new Size(20, 20),
-                Location = new Point(50, 235),
+                Name = "passwordIcon",
+                Size = new Size(18, 18),
+                Location = new Point(50, (txtPassword.Location.Y + (txtPassword.Height - 18) / 2)),
                 IconChar = IconChar.Lock,
                 IconColor = Color.FromArgb(150, 150, 150),
-                IconSize = 20,
+                IconSize = 18,
                 BackColor = Color.Transparent
             };
             pnlLoginCard.Controls.Add(passwordIcon);
@@ -342,8 +364,9 @@ namespace AzAgroPOS.PL.Forms
             // Remember me checkbox
             chkRememberMe = new MaterialCheckbox
             {
+                Name = "chkRememberMe",
                 Text = "Məni xatırla",
-                Location = new Point(40, 290),
+                Location = new Point(40, 280),
                 Font = new Font("Segoe UI", 10, FontStyle.Regular),
                 ForeColor = Color.FromArgb(200, 200, 200),
                 AutoSize = true
@@ -352,10 +375,11 @@ namespace AzAgroPOS.PL.Forms
             // Login button
             btnLogin = new MaterialButton
             {
+                Name = "btnLogin",
                 Text = "  Daxil Ol",
-                Size = new Size(320, 50),
-                Location = new Point(40, 340),
-                Font = new Font("Segoe UI", 12, FontStyle.Bold),
+                Size = new Size(320, 45),
+                Location = new Point(40, 330),
+                Font = new Font("Segoe UI", 11, FontStyle.Bold),
                 BackColor = Color.FromArgb(63, 81, 181),
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
@@ -369,11 +393,12 @@ namespace AzAgroPOS.PL.Forms
             // Add login icon to button
             var loginIcon = new IconPictureBox
             {
-                Size = new Size(20, 20),
-                Location = new Point(50, 355),
+                Name = "loginIcon",
+                Size = new Size(18, 18),
+                Location = new Point(12, (btnLogin.Height - 18) / 2),
                 IconChar = IconChar.SignInAlt,
                 IconColor = Color.White,
-                IconSize = 20,
+                IconSize = 18,
                 BackColor = Color.Transparent
             };
             btnLogin.Controls.Add(loginIcon);
@@ -382,17 +407,23 @@ namespace AzAgroPOS.PL.Forms
         private void InitializeAnimations()
         {
             animationTimer = new Timer();
-            animationTimer.Interval = 50;
+            animationTimer.Interval = 100; // Slower animation to prevent shaking
             animationTimer.Tick += AnimationTimer_Tick;
-            animationTimer.Start();
+            
+            // Start animation after form is fully loaded
+            this.Shown += (s, e) => animationTimer.Start();
         }
 
         private void AnimationTimer_Tick(object sender, EventArgs e)
         {
-            animationProgress += 0.02f;
+            animationProgress += 0.01f; // Slower progression
             if (animationProgress > 1f) animationProgress = 0f;
             
-            pnlLeft.Invalidate();
+            // Only invalidate if form is visible and stable
+            if (this.Visible && this.WindowState != FormWindowState.Minimized)
+            {
+                pnlLeft?.Invalidate();
+            }
         }
 
         private void PnlLeft_Paint(object sender, PaintEventArgs e)
@@ -795,20 +826,28 @@ namespace AzAgroPOS.PL.Forms
         // Allow form to be dragged by clicking anywhere on the form
         protected override void WndProc(ref Message m)
         {
-            const int WM_NCHITTEST = 0x84;
-            const int HTCLIENT = 0x1;
-            const int HTCAPTION = 0x2;
-
-            if (m.Msg == WM_NCHITTEST)
+            try
             {
-                base.WndProc(ref m);
-                if ((int)m.Result == HTCLIENT)
+                const int WM_NCHITTEST = 0x84;
+                const int HTCLIENT = 0x1;
+                const int HTCAPTION = 0x2;
+
+                if (m.Msg == WM_NCHITTEST)
                 {
-                    m.Result = (IntPtr)HTCAPTION;
+                    base.WndProc(ref m);
+                    if ((int)m.Result == HTCLIENT)
+                    {
+                        m.Result = (IntPtr)HTCAPTION;
+                    }
+                }
+                else
+                {
+                    base.WndProc(ref m);
                 }
             }
-            else
+            catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine($"WndProc error: {ex.Message}");
                 base.WndProc(ref m);
             }
         }
