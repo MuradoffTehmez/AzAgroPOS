@@ -24,22 +24,9 @@ namespace AzAgroPOS.PL.Forms
             _backupService = new BackupService();
             InitializeComponent();
             SetupForm();
-            ModernTheme.ApplyTheme(this);
+            ModernTheme.ApplyModernStyle(this);
         }
 
-        private void InitializeComponent()
-        {
-            SuspendLayout();
-            
-            Name = "BackupForm";
-            Text = "Backup İdarəetməsi";
-            Size = new Size(1200, 800);
-            StartPosition = FormStartPosition.CenterScreen;
-            WindowState = FormWindowState.Maximized;
-            MinimumSize = new Size(1000, 600);
-
-            ResumeLayout(false);
-        }
 
         private void SetupForm()
         {

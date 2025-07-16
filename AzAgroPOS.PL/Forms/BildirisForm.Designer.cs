@@ -23,10 +23,12 @@ namespace AzAgroPOS.PL.Forms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1000, 700);
+            this.ClientSize = new System.Drawing.Size(1200, 800);
             this.Name = "BildirisForm";
-            this.Text = "Bildiriş Sistemi";
+            this.Text = "Bildiriş İdarəetməsi";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.MinimumSize = new System.Drawing.Size(1000, 600);
             this.ResumeLayout(false);
         }
 

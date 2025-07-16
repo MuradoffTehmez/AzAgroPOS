@@ -43,15 +43,6 @@ namespace AzAgroPOS.PL.Styles
             
             // Shadow
             public static readonly Color Shadow = Color.FromArgb(50, 0, 0, 0);        // Semi-transparent black
-            
-            // Backward compatibility properties
-            public static Color BackgroundColor => Background;
-            public static Color TextColor => TextPrimary;
-            public static Color PrimaryColor => Primary;
-            public static Color SuccessColor => Success;
-            public static Color WarningColor => Warning;
-            public static Color DangerColor => Danger;
-            public static Color InfoColor => Info;
         }
 
         // Typography
@@ -407,12 +398,42 @@ namespace AzAgroPOS.PL.Styles
         }
 
         // Draw a tab item
-        public static void DrawTabItem(TabControl tabControl, TabPage tabPage, string text, bool isSelected)
+        public static void DrawTabItem(TabControl tabControl, DrawItemEventArgs e)
         {
-            tabPage.BackColor = isSelected ? Colors.Primary : Colors.Background;
-            tabPage.ForeColor = isSelected ? Colors.TextOnPrimary : Colors.TextPrimary;
-            tabPage.Text = text;
-            tabPage.Font = Fonts.Body;
+            if (tabControl == null) return;
+            
+            var tabPage = tabControl.TabPages[e.Index];
+            var isSelected = e.Index == tabControl.SelectedIndex;
+            
+            // Set colors
+            var backColor = isSelected ? Colors.Primary : Colors.Background;
+            var foreColor = isSelected ? Colors.TextOnPrimary : Colors.TextPrimary;
+            
+            // Draw background
+            using (var brush = new SolidBrush(backColor))
+            {
+                e.Graphics.FillRectangle(brush, e.Bounds);
+            }
+            
+            // Draw text
+            using (var brush = new SolidBrush(foreColor))
+            {
+                var stringFormat = new StringFormat
+                {
+                    Alignment = StringAlignment.Center,
+                    LineAlignment = StringAlignment.Center
+                };
+                e.Graphics.DrawString(tabPage.Text, Fonts.Body, brush, e.Bounds, stringFormat);
+            }
         }
+
+        // Backward compatibility properties - accessible directly from ModernTheme
+        public static Color BackgroundColor => Colors.Background;
+        public static Color TextColor => Colors.TextPrimary;
+        public static Color PrimaryColor => Colors.Primary;
+        public static Color SuccessColor => Colors.Success;
+        public static Color WarningColor => Colors.Warning;
+        public static Color DangerColor => Colors.Danger;
+        public static Color InfoColor => Colors.Info;
     }
 }
