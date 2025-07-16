@@ -34,8 +34,25 @@ namespace AzAgroPOS.PL.Services
             services.AddScoped<AnbarQalikRepository>();
             services.AddScoped<AnbarHereketRepository>();
             services.AddScoped<GiderRepository>();
-            services.AddScoped<IGiderRepository, GiderRepository>();
             services.AddScoped<SistemAyarlariRepository>();
+            
+            // Shift Management Repositories
+            services.AddScoped<NovbeCedveliRepository>();
+            services.AddScoped<NovbeDetaliRepository>();
+            services.AddScoped<IsciIzniRepository>();
+            
+            // Backup System Repositories
+            services.AddScoped<BackupKaydiRepository>();
+            services.AddScoped<BackupTenzimlemeRepository>();
+            
+            // Notification System Repositories
+            services.AddScoped<BildirisRepository>();
+            services.AddScoped<BildirisAyariRepository>();
+            
+            // Printer System Repositories
+            services.AddScoped<PrinterKonfiqurasiyasiRepository>();
+            services.AddScoped<PrintSablonuRepository>();
+            services.AddScoped<PrintLogKaydiRepository>();
 
             // Services
             services.AddScoped<AuthService>();
@@ -53,6 +70,12 @@ namespace AzAgroPOS.PL.Services
             services.AddScoped<GiderService>();
             services.AddScoped<SistemAyarlariService>();
             services.AddScoped<LocalizationService>();
+            
+            // New Module Services
+            services.AddScoped<NovbeIdaretmesiService>();
+            services.AddScoped<BackupService>();
+            services.AddScoped<BildirisService>();
+            services.AddScoped<PrinterService>();
 
             // Error Handling
             services.AddScoped<IErrorHandlingService, ErrorHandlingService>();

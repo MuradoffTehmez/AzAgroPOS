@@ -43,6 +43,15 @@ namespace AzAgroPOS.PL.Styles
             
             // Shadow
             public static readonly Color Shadow = Color.FromArgb(50, 0, 0, 0);        // Semi-transparent black
+            
+            // Backward compatibility properties
+            public static Color BackgroundColor => Background;
+            public static Color TextColor => TextPrimary;
+            public static Color PrimaryColor => Primary;
+            public static Color SuccessColor => Success;
+            public static Color WarningColor => Warning;
+            public static Color DangerColor => Danger;
+            public static Color InfoColor => Info;
         }
 
         // Typography
@@ -379,6 +388,31 @@ namespace AzAgroPOS.PL.Styles
                 // Use default theme on error
                 ApplyTheme("modern");
             }
+        }
+
+        // Apply card style to a panel
+        public static void ApplyCardStyle(Panel panel)
+        {
+            panel.BackColor = Colors.CardBackground;
+            panel.Padding = new Padding(Layout.Padding);
+            
+            panel.Paint += (s, e) =>
+            {
+                var rect = new Rectangle(0, 0, panel.Width - 1, panel.Height - 1);
+                using (var pen = new Pen(Colors.Border))
+                {
+                    e.Graphics.DrawRectangle(pen, rect);
+                }
+            };
+        }
+
+        // Draw a tab item
+        public static void DrawTabItem(TabControl tabControl, TabPage tabPage, string text, bool isSelected)
+        {
+            tabPage.BackColor = isSelected ? Colors.Primary : Colors.Background;
+            tabPage.ForeColor = isSelected ? Colors.TextOnPrimary : Colors.TextPrimary;
+            tabPage.Text = text;
+            tabPage.Font = Fonts.Body;
         }
     }
 }

@@ -31,6 +31,14 @@ namespace AzAgroPOS.PL.Forms
             InitializeModernDesign();
         }
 
+        public BaseForm(string title)
+        {
+            _notificationService = new UINotificationService();
+            _currentUser = GetCurrentUser();
+            this.Text = title;
+            InitializeModernDesign();
+        }
+
         private void InitializeModernDesign()
         {
             // Set form properties for modern look

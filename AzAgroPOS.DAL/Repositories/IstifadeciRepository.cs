@@ -11,9 +11,9 @@ namespace AzAgroPOS.DAL.Repositories
     {
         private readonly AzAgroDbContext _context;
 
-        public IstifadeciRepository(AzAgroDbContext context)
+        public IstifadeciRepository(AzAgroDbContext context = null)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _context = context ?? new AzAgroDbContext();
         }
 
         public Istifadeci GetByEmail(string email)

@@ -166,6 +166,62 @@ namespace AzAgroPOS.PL.Forms
             }
         }
 
+        private void btnShiftManagement_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var shiftForm = new NovbeIdaretmesiForm();
+                shiftForm.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Növbə idarəetməsi açılarkən xəta: {ex.Message}", 
+                    "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnBackupSystem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var backupForm = new BackupForm();
+                backupForm.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Backup sistemi açılarkən xəta: {ex.Message}", 
+                    "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnNotifications_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var notificationForm = new BildirisForm(_currentUser.Id);
+                notificationForm.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Bildiriş sistemi açılarkən xəta: {ex.Message}", 
+                    "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnPrinterManagement_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var printerForm = new PrinterForm(_currentUser.Id);
+                printerForm.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Printer idarəetməsi açılarkən xəta: {ex.Message}", 
+                    "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
         private void ResetButtonColors()
         {
             var normalColor = ModernTheme.Colors.Primary;
