@@ -240,12 +240,12 @@ namespace AzAgroPOS.BLL.Services
         }
 
         // Currency formatting
-        public string FormatCurrency(decimal amount)
+        public async System.Threading.Tasks.Task<string> FormatCurrencyAsync(decimal amount)
         {
             try
             {
-                var currencySymbol = _sistemAyarlariService.GetCurrentCurrencyAsync().Result;
-                var decimalPlaces = _sistemAyarlariService.GetDecimalPlacesAsync().Result;
+                var currencySymbol = await _sistemAyarlariService.GetCurrentCurrencyAsync();
+                var decimalPlaces = await _sistemAyarlariService.GetDecimalPlacesAsync();
                 
                 return $"{amount.ToString($"N{decimalPlaces}")} {currencySymbol}";
             }
@@ -256,11 +256,11 @@ namespace AzAgroPOS.BLL.Services
         }
 
         // Date formatting
-        public string FormatDate(DateTime date)
+        public async System.Threading.Tasks.Task<string> FormatDateAsync(DateTime date)
         {
             try
             {
-                var dateFormat = _sistemAyarlariService.GetDateFormatAsync().Result;
+                var dateFormat = await _sistemAyarlariService.GetDateFormatAsync();
                 return date.ToString(dateFormat);
             }
             catch (Exception)
@@ -270,17 +270,33 @@ namespace AzAgroPOS.BLL.Services
         }
 
         // Number formatting
-        public string FormatNumber(decimal number)
+        public async System.Threading.Tasks.Task<string> FormatNumberAsync(decimal number)
         {
             try
             {
-                var decimalPlaces = _sistemAyarlariService.GetDecimalPlacesAsync().Result;
+                var decimalPlaces = await _sistemAyarlariService.GetDecimalPlacesAsync();
                 return number.ToString($"N{decimalPlaces}");
             }
             catch (Exception)
             {
                 return number.ToString("N2");
             }
+        }
+
+        // Sync versions for backward compatibility
+        public string FormatCurrency(decimal amount)
+        {
+            return FormatCurrencyAsync(amount).Result;
+        }
+
+        public string FormatDate(DateTime date)
+        {
+            return FormatDateAsync(date).Result;
+        }
+
+        public string FormatNumber(decimal number)
+        {
+            return FormatNumberAsync(number).Result;
         }
     }
 

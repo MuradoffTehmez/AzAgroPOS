@@ -146,19 +146,6 @@ namespace AzAgroPOS.PL.Forms
             }
         }
 
-        private void btnTest_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                var testForm = new TestForm();
-                testForm.ShowDialog();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Test formu açılarkən xəta baş verdi:\n\n{ex.Message}\n\nInner Exception: {ex.InnerException?.Message}", 
-                    "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
 
         private void btnSettings_Click(object sender, EventArgs e)
         {
@@ -613,11 +600,6 @@ namespace AzAgroPOS.PL.Forms
             sidebarPanel.Controls.Add(btnSettings);
             yPos += buttonHeight + spacing;
 
-            // Test button (temporary - for debugging)
-            var btnTest = CreateMenuButton("🔧 Test Form", yPos);
-            btnTest.Click += btnTest_Click;
-            btnTest.Visible = isAdmin; // Only for debugging
-            sidebarPanel.Controls.Add(btnTest);
         }
 
         private Button CreateMenuButton(string text, int yPos)

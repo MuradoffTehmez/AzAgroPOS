@@ -8,7 +8,9 @@
       "Bash(dir)",
       "Bash(dir:*)",
       "Bash(ls:*)",
-      "Bash(dotnet clean:*)"
+      "Bash(dotnet clean:*)",
+      "Bash(rm:*)",
+      "Bash(del \"C:\\AzAgroPOS\\AzAgroPOS.PL\\Forms\\TestForm.cs\")"
     ],
     "deny": []
   }
