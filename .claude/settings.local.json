@@ -10,7 +10,8 @@
       "Bash(ls:*)",
       "Bash(dotnet clean:*)",
       "Bash(rm:*)",
-      "Bash(del \"C:\\AzAgroPOS\\AzAgroPOS.PL\\Forms\\TestForm.cs\")"
+      "Bash(del \"C:\\AzAgroPOS\\AzAgroPOS.PL\\Forms\\TestForm.cs\")",
+      "Bash(find:*)"
     ],
     "deny": []
   }

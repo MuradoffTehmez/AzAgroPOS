@@ -18,14 +18,12 @@ namespace AzAgroPOS.DAL.Repositories
         public async Task AddAsync(SatisOdemesi satisOdemesi)
         {
             _context.SatisOdemeleri.Add(satisOdemesi);
-            await _context.SaveChangesAsync();
         }
 
         public void Update(SatisOdemesi satisOdemesi)
         {
             satisOdemesi.YenilenmeTarixi = DateTime.Now;
             _context.SatisOdemeleri.Update(satisOdemesi);
-            _context.SaveChanges();
         }
 
         public void Delete(int id)
@@ -34,7 +32,6 @@ namespace AzAgroPOS.DAL.Repositories
             if (satisOdemesi != null)
             {
                 _context.SatisOdemeleri.Remove(satisOdemesi);
-                _context.SaveChanges();
             }
         }
 

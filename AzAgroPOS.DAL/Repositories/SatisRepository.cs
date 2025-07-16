@@ -19,7 +19,6 @@ namespace AzAgroPOS.DAL.Repositories
         public async Task<int> AddAsync(Satis satis)
         {
             _context.Satislar.Add(satis);
-            await _context.SaveChangesAsync();
             return satis.Id;
         }
 
@@ -27,14 +26,12 @@ namespace AzAgroPOS.DAL.Repositories
         {
             satis.YenilenmeTarixi = DateTime.Now;
             _context.Satislar.Update(satis);
-            await _context.SaveChangesAsync();
         }
 
         public void Update(Satis satis)
         {
             satis.YenilenmeTarixi = DateTime.Now;
             _context.Satislar.Update(satis);
-            _context.SaveChanges();
         }
 
         public async Task DeleteAsync(int id)
@@ -43,7 +40,6 @@ namespace AzAgroPOS.DAL.Repositories
             if (satis != null)
             {
                 _context.Satislar.Remove(satis);
-                await _context.SaveChangesAsync();
             }
         }
 
@@ -53,7 +49,6 @@ namespace AzAgroPOS.DAL.Repositories
             if (satis != null)
             {
                 _context.Satislar.Remove(satis);
-                _context.SaveChanges();
             }
         }
 
