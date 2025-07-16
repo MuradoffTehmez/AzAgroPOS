@@ -69,6 +69,11 @@ namespace AzAgroPOS.DAL
         public DbSet<Bildiris> Bildirisler { get; set; }
         public DbSet<BildirisAyari> BildirisAyarlari { get; set; }
         
+        // Printer Module
+        public DbSet<PrinterKonfiqurasiyasi> PrinterKonfiqurasiyas { get; set; }
+        public DbSet<PrintSablonu> PrintSablonlari { get; set; }
+        public DbSet<PrintLogKaydi> PrintLogKayitlari { get; set; }
+        
         // Reports Module
         public DbSet<SatisHesabati> SatisHesabatlari { get; set; }
 
