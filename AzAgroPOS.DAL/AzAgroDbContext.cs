@@ -50,11 +50,24 @@ namespace AzAgroPOS.DAL
         public DbSet<NovbeKaydi> NovbeKayitlari { get; set; }
         public DbSet<IsciPerformans> IsciPerformans { get; set; }
         
+        // Shift Management Module
+        public DbSet<NovbeCedveli> NovbeCedvelleri { get; set; }
+        public DbSet<NovbeDetali> NovbeDetallari { get; set; }
+        public DbSet<IsciIzni> IsciIzinleri { get; set; }
+        
         // Expense Module
         public DbSet<Gider> Giderler { get; set; }
         
         // System Settings Module
         public DbSet<SistemAyarlari> SistemAyarlari { get; set; }
+        
+        // Backup Module
+        public DbSet<BackupKaydi> BackupKayitlari { get; set; }
+        public DbSet<BackupTenzimleme> BackupTenzimlemeleri { get; set; }
+        
+        // Notification Module
+        public DbSet<Bildiris> Bildirisler { get; set; }
+        public DbSet<BildirisAyari> BildirisAyarlari { get; set; }
         
         // Reports Module
         public DbSet<SatisHesabati> SatisHesabatlari { get; set; }
