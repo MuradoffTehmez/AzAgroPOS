@@ -18,6 +18,7 @@ namespace AzAgroPOS.PL.Styles
             // Secondary Colors
             public static readonly Color Secondary = Color.FromArgb(46, 204, 113);    // Green
             public static readonly Color SecondaryDark = Color.FromArgb(39, 174, 96); // Dark Green
+            public static readonly Color Success = Color.FromArgb(46, 204, 113);      // Success Green
             
             // Accent Colors
             public static readonly Color Accent = Color.FromArgb(241, 196, 15);       // Gold

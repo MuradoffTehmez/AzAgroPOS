@@ -134,8 +134,30 @@ namespace AzAgroPOS.PL.Forms
 
         private void btnExpenseManagement_Click(object sender, EventArgs e)
         {
-            var expenseManagementForm = new GiderManagementForm(_currentUser, _serviceProvider);
-            expenseManagementForm.ShowDialog();
+            try
+            {
+                var expenseManagementForm = new GiderManagementForm(_currentUser, _serviceProvider);
+                expenseManagementForm.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Gidər idarəetməsi formu açılarkən xəta baş verdi:\n\n{ex.Message}\n\nInner Exception: {ex.InnerException?.Message}", 
+                    "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnTest_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var testForm = new TestForm();
+                testForm.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Test formu açılarkən xəta baş verdi:\n\n{ex.Message}\n\nInner Exception: {ex.InnerException?.Message}", 
+                    "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void ResetButtonColors()
@@ -575,6 +597,13 @@ namespace AzAgroPOS.PL.Forms
             btnSettings.Click += btnSettings_Click;
             btnSettings.Visible = isAdmin;
             sidebarPanel.Controls.Add(btnSettings);
+            yPos += buttonHeight + spacing;
+
+            // Test button (temporary - for debugging)
+            var btnTest = CreateMenuButton("🔧 Test Form", yPos);
+            btnTest.Click += btnTest_Click;
+            btnTest.Visible = isAdmin; // Only for debugging
+            sidebarPanel.Controls.Add(btnTest);
         }
 
         private Button CreateMenuButton(string text, int yPos)

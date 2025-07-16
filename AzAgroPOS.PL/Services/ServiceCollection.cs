@@ -34,6 +34,7 @@ namespace AzAgroPOS.PL.Services
             services.AddScoped<AnbarQalikRepository>();
             services.AddScoped<AnbarHereketRepository>();
             services.AddScoped<GiderRepository>();
+            services.AddScoped<IGiderRepository, GiderRepository>();
 
             // Services
             services.AddScoped<AuthService>();

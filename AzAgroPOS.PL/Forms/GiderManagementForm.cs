@@ -449,7 +449,9 @@ namespace AzAgroPOS.PL.Forms
                 Font = ModernTheme.Fonts.Button
             };
             btnDeleteExpense.Click += BtnDeleteExpense_Click;
-            ModernTheme.ApplyButtonStyle(btnDeleteExpense, false, ModernTheme.Colors.Danger);
+            ModernTheme.ApplyButtonStyle(btnDeleteExpense, false);
+            btnDeleteExpense.BackColor = ModernTheme.Colors.Danger;
+            btnDeleteExpense.ForeColor = Color.White;
             panel.Controls.Add(btnDeleteExpense);
 
             // Refresh button
