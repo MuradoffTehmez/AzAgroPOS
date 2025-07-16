@@ -160,6 +160,25 @@ namespace AzAgroPOS.PL.Forms
             }
         }
 
+        private void btnSettings_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var settingsForm = new SistemAyarlariForm(_currentUser, _serviceProvider);
+                if (settingsForm.ShowDialog() == DialogResult.OK)
+                {
+                    // Settings have been saved, reload theme and other settings
+                    MessageBox.Show("Sistem ayarları yeniləndi. Dəyişikliklərin tam tətbiqi üçün proqramı yenidən başladın.", 
+                        "Ayarlar Yeniləndi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Sistem ayarları formu açılarkən xəta baş verdi:\n\n{ex.Message}\n\nInner Exception: {ex.InnerException?.Message}", 
+                    "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
         private void ResetButtonColors()
         {
             var normalColor = ModernTheme.Colors.Primary;
@@ -354,11 +373,6 @@ namespace AzAgroPOS.PL.Forms
             exportDialog.ShowDialog(this);
         }
 
-        private void btnSettings_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("Parametrlər funksiyası tezliklə əlavə ediləcək.", 
-                "Məlumat", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
 
         private void btnLogout_Click(object sender, EventArgs e)
         {

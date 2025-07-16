@@ -10,10 +10,10 @@ namespace AzAgroPOS.PL.Styles
         // Modern Color Palette
         public static class Colors
         {
-            // Primary Colors
-            public static readonly Color Primary = Color.FromArgb(52, 152, 219);     // Modern Blue
-            public static readonly Color PrimaryDark = Color.FromArgb(41, 128, 185);  // Darker Blue
-            public static readonly Color PrimaryLight = Color.FromArgb(174, 214, 241); // Light Blue
+            // Primary Colors - Now dynamic
+            public static Color Primary { get; set; } = Color.FromArgb(52, 152, 219);     // Modern Blue
+            public static Color PrimaryDark { get; set; } = Color.FromArgb(41, 128, 185);  // Darker Blue
+            public static Color PrimaryLight { get; set; } = Color.FromArgb(174, 214, 241); // Light Blue
             
             // Secondary Colors
             public static readonly Color Secondary = Color.FromArgb(46, 204, 113);    // Green
@@ -311,6 +311,74 @@ namespace AzAgroPOS.PL.Styles
 
             panel.Controls.Add(lblTitle);
             return panel;
+        }
+
+        // Theme Management
+        public static void SetPrimaryColor(Color color)
+        {
+            Colors.Primary = color;
+            Colors.PrimaryDark = DarkenColor(color, 20);
+            Colors.PrimaryLight = LightenColor(color, 40);
+        }
+
+        public static void ApplyTheme(string themeName)
+        {
+            switch (themeName.ToLower())
+            {
+                case "modern":
+                    SetPrimaryColor(Color.FromArgb(52, 152, 219)); // Blue
+                    break;
+                case "classic":
+                    SetPrimaryColor(Color.FromArgb(52, 73, 94)); // Dark Gray
+                    break;
+                case "dark":
+                    SetPrimaryColor(Color.FromArgb(44, 62, 80)); // Dark Blue-Gray
+                    break;
+                case "light":
+                    SetPrimaryColor(Color.FromArgb(74, 144, 226)); // Light Blue
+                    break;
+                default:
+                    SetPrimaryColor(Color.FromArgb(52, 152, 219)); // Default Blue
+                    break;
+            }
+        }
+
+        private static Color DarkenColor(Color color, int percent)
+        {
+            var factor = 1.0 - (percent / 100.0);
+            return Color.FromArgb(
+                (int)(color.R * factor),
+                (int)(color.G * factor),
+                (int)(color.B * factor)
+            );
+        }
+
+        private static Color LightenColor(Color color, int percent)
+        {
+            var factor = percent / 100.0;
+            return Color.FromArgb(
+                Math.Min(255, (int)(color.R + (255 - color.R) * factor)),
+                Math.Min(255, (int)(color.G + (255 - color.G) * factor)),
+                Math.Min(255, (int)(color.B + (255 - color.B) * factor))
+            );
+        }
+
+        // Apply settings-based theme
+        public static async System.Threading.Tasks.Task ApplySettingsThemeAsync(AzAgroPOS.BLL.Services.SistemAyarlariService settingsService)
+        {
+            try
+            {
+                var themeName = await settingsService.GetCurrentThemeAsync();
+                var primaryColor = await settingsService.GetPrimaryColorAsync();
+                
+                ApplyTheme(themeName);
+                SetPrimaryColor(primaryColor);
+            }
+            catch (System.Exception)
+            {
+                // Use default theme on error
+                ApplyTheme("modern");
+            }
         }
     }
 }

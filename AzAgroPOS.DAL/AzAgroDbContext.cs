@@ -53,6 +53,9 @@ namespace AzAgroPOS.DAL
         // Expense Module
         public DbSet<Gider> Giderler { get; set; }
         
+        // System Settings Module
+        public DbSet<SistemAyarlari> SistemAyarlari { get; set; }
+        
         // Reports Module
         public DbSet<SatisHesabati> SatisHesabatlari { get; set; }
 
