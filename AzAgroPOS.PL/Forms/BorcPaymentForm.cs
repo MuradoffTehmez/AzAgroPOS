@@ -9,15 +9,14 @@ using System.Windows.Forms;
 
 namespace AzAgroPOS.PL.Forms
 {
-    public partial class BorcPaymentForm : Form
+    public partial class BorcPaymentForm : BaseForm
     {
         private readonly int _debtId;
-        private readonly Istifadeci _currentUser;
         private readonly AzAgroDbContext _context;
         private readonly BorcService _borcService;
         private MusteriBorc _debt;
 
-        public BorcPaymentForm(int debtId, Istifadeci currentUser)
+        public BorcPaymentForm(int debtId, Istifadeci currentUser) : base()
         {
             InitializeComponent();
             _debtId = debtId;
@@ -45,8 +44,7 @@ namespace AzAgroPOS.PL.Forms
                 _debt = _borcService.GetDebtById(_debtId);
                 if (_debt == null)
                 {
-                    MessageBox.Show("Borc məlumatı tapılmadı.", "Xəta", 
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    ShowError("Borc məlumatı tapılmadı.");
                     this.Close();
                     return;
                 }
@@ -69,8 +67,7 @@ namespace AzAgroPOS.PL.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Borc məlumatları yüklənərkən xəta: {ex.Message}", "Xəta", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowError($"Borc məlumatları yüklənərkən xəta: {ex.Message}");
             }
         }
 
@@ -112,16 +109,14 @@ namespace AzAgroPOS.PL.Forms
 
                 _borcService.AddPayment(borcOdenis);
                 
-                MessageBox.Show("Ödəniş uğurla qeydə alındı.", "Uğur", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ShowSuccess("Ödəniş uğurla qeydə alındı.");
                 
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ödəniş qeydə alınarkən xəta: {ex.Message}", "Xəta", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowError($"Ödəniş qeydə alınarkən xəta: {ex.Message}");
             }
         }
 
@@ -129,22 +124,19 @@ namespace AzAgroPOS.PL.Forms
         {
             if (numOdenisMeblegi.Value <= 0)
             {
-                MessageBox.Show("Ödəniş məbləği sıfırdan böyük olmalıdır.", "Xəbərdarlıq", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                ShowWarning("Ödəniş məbləği sıfırdan böyük olmalıdır.");
                 return false;
             }
 
             if (numOdenisMeblegi.Value > _debt.UmumiBorc)
             {
-                MessageBox.Show("Ödəniş məbləği ümumi borcu aşa bilməz.", "Xəbərdarlıq", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                ShowWarning("Ödəniş məbləği ümumi borcu aşa bilməz.");
                 return false;
             }
 
             if (cmbOdenisTipi.SelectedIndex == -1)
             {
-                MessageBox.Show("Zəhmət olmasa ödəniş tipi seçin.", "Xəbərdarlıq", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                ShowWarning("Zəhmət olmasa ödəniş tipi seçin.");
                 return false;
             }
 

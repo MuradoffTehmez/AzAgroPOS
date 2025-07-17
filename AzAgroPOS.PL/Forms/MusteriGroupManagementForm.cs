@@ -7,14 +7,14 @@ using System.Windows.Forms;
 
 namespace AzAgroPOS.PL.Forms
 {
-    public partial class MusteriGroupManagementForm : Form
+    public partial class MusteriGroupManagementForm : BaseForm
     {
         private readonly MusteriService _musteriService;
         private readonly Istifadeci _currentUser;
         private MusteriQrupu _selectedGroup;
         private bool _isEditMode = false;
 
-        public MusteriGroupManagementForm(Istifadeci currentUser)
+        public MusteriGroupManagementForm(Istifadeci currentUser) : base()
         {
             InitializeComponent();
             _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));

@@ -10,7 +10,7 @@ using AzAgroPOS.Entities.Domain;
 
 namespace AzAgroPOS.PL.Forms
 {
-    public partial class TedarukManagementForm : Form
+    public partial class TedarukManagementForm : BaseForm
     {
         private readonly TedarukcuService _tedarukcuService;
         private readonly AnbarService _anbarService;
@@ -20,7 +20,7 @@ namespace AzAgroPOS.PL.Forms
         private List<AlisSeined> _alisSenedleri;
         private List<AnbarTransfer> _transferler;
 
-        public TedarukManagementForm()
+        public TedarukManagementForm() : base()
         {
             InitializeComponent();
             _tedarukcuService = ServiceFactory.CreateTedarukcuService();

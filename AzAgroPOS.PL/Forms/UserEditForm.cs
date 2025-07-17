@@ -10,13 +10,13 @@ using System.Windows.Forms;
 
 namespace AzAgroPOS.PL.Forms
 {
-    public partial class UserEditForm : Form
+    public partial class UserEditForm : BaseForm
     {
         private readonly IstifadeciRepository _istifadeciRepository;
         private readonly RolRepository _rolRepository;
         private readonly Istifadeci _user;
 
-        public UserEditForm(Istifadeci user)
+        public UserEditForm(Istifadeci user) : base()
         {
             InitializeComponent();
             var context = new AzAgroDbContext();
@@ -43,8 +43,7 @@ namespace AzAgroPOS.PL.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Rollar yüklənərkən xəta: {ex.Message}", "Xəta", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowError($"Rollar yüklənərkən xəta: {ex.Message}");
             }
         }
 
@@ -76,8 +75,7 @@ namespace AzAgroPOS.PL.Forms
                 {
                     if (await _istifadeciRepository.EmailExistsAsync(txtEmail.Text.Trim(), _user.Id))
                     {
-                        MessageBox.Show("Bu email ünvanı başqa istifadəçi tərəfindən istifadə olunur.", 
-                            "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        ShowWarning("Bu email ünvanı başqa istifadəçi tərəfindən istifadə olunur.");
                         return;
                     }
                 }
@@ -90,16 +88,14 @@ namespace AzAgroPOS.PL.Forms
 
                 await _istifadeciRepository.UpdateAsync(_user);
 
-                MessageBox.Show("İstifadəçi məlumatları uğurla yeniləndi.", "Uğurlu", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ShowSuccess("İstifadəçi məlumatları uğurla yeniləndi.");
                 
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Xəta baş verdi: {ex.Message}", "Xəta", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowError($"Xəta baş verdi: {ex.Message}");
             }
             finally
             {
@@ -112,29 +108,28 @@ namespace AzAgroPOS.PL.Forms
         {
             if (string.IsNullOrWhiteSpace(txtAd.Text))
             {
-                MessageBox.Show("Ad mütləqdir.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                ShowWarning("Ad mütləqdir.");
                 txtAd.Focus();
                 return false;
             }
 
             if (string.IsNullOrWhiteSpace(txtSoyad.Text))
             {
-                MessageBox.Show("Soyad mütləqdir.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                ShowWarning("Soyad mütləqdir.");
                 txtSoyad.Focus();
                 return false;
             }
 
             if (string.IsNullOrWhiteSpace(txtEmail.Text))
             {
-                MessageBox.Show("Email ünvanını daxil edin.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                ShowWarning("Email ünvanını daxil edin.");
                 txtEmail.Focus();
                 return false;
             }
 
             if (!IsValidEmail(txtEmail.Text.Trim()))
             {
-                MessageBox.Show("Email ünvanının formatı düzgün deyil.", "Xəta", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                ShowWarning("Email ünvanının formatı düzgün deyil.");
                 txtEmail.Focus();
                 txtEmail.SelectAll();
                 return false;
@@ -142,14 +137,14 @@ namespace AzAgroPOS.PL.Forms
 
             if (cmbStatus.SelectedItem == null)
             {
-                MessageBox.Show("Status seçin.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                ShowWarning("Status seçin.");
                 cmbStatus.Focus();
                 return false;
             }
 
             if (cmbRole.SelectedValue == null)
             {
-                MessageBox.Show("Rol seçin.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                ShowWarning("Rol seçin.");
                 cmbRole.Focus();
                 return false;
             }

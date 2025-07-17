@@ -9,18 +9,16 @@ using System.Windows.Forms;
 
 namespace AzAgroPOS.PL.Forms
 {
-    public partial class TamirManagementForm : Form
+    public partial class TamirManagementForm : BaseForm
     {
         private readonly TamirService _tamirService;
-        private readonly Istifadeci _currentUser;
         private readonly AzAgroDbContext _context;
 
-        public TamirManagementForm(Istifadeci currentUser)
+        public TamirManagementForm(Istifadeci currentUser) : base(currentUser)
         {
             InitializeComponent();
             _context = new AzAgroDbContext();
             _tamirService = ServiceFactory.CreateTamirService();
-            _currentUser = currentUser;
             SetupModernDesign();
         }
 

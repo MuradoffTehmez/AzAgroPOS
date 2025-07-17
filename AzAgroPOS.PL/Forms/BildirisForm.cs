@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace AzAgroPOS.PL.Forms
 {
-    public partial class BildirisForm : Form
+    public partial class BildirisForm : BaseForm
     {
         private readonly BildirisService _bildirisService;
         private readonly int _currentUserId;
@@ -23,7 +23,7 @@ namespace AzAgroPOS.PL.Forms
         private Timer refreshTimer;
 
 
-        public BildirisForm(int userId = 1)
+        public BildirisForm(int userId = 1) : base()
         {
             _bildirisService = ServiceFactory.CreateBildirisService();
             _currentUserId = userId;

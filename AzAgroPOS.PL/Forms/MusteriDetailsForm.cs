@@ -6,12 +6,12 @@ using System.Windows.Forms;
 
 namespace AzAgroPOS.PL.Forms
 {
-    public partial class MusteriDetailsForm : Form
+    public partial class MusteriDetailsForm : BaseForm
     {
         private readonly MusteriService _musteriService;
         private readonly Musteri _musteri;
 
-        public MusteriDetailsForm(int musteriId)
+        public MusteriDetailsForm(int musteriId) : base()
         {
             InitializeComponent();
             _musteriService = ServiceFactory.CreateMusteriService();

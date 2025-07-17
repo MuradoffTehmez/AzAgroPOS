@@ -7,13 +7,13 @@ using System.Windows.Forms;
 
 namespace AzAgroPOS.PL.Forms
 {
-    public partial class SalesReportForm : Form
+    public partial class SalesReportForm : BaseForm
     {
         private readonly ReportService _reportService;
         private readonly ExportService _exportService;
         private SalesReportDto _currentReport;
 
-        public SalesReportForm()
+        public SalesReportForm() : base()
         {
             _reportService = new ReportService();
             _exportService = new ExportService();

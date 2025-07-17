@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace AzAgroPOS.PL.Forms
 {
-    public partial class PrinterForm : Form
+    public partial class PrinterForm : BaseForm
     {
         private readonly PrinterService _printerService;
         private readonly int _currentUserId;
@@ -23,7 +23,7 @@ namespace AzAgroPOS.PL.Forms
         private DataGridView templatesGrid;
         private DataGridView printLogsGrid;
 
-        public PrinterForm(int userId = 1)
+        public PrinterForm(int userId = 1) : base()
         {
             _printerService = ServiceFactory.CreatePrinterService();
             _currentUserId = userId;
@@ -844,13 +844,13 @@ namespace AzAgroPOS.PL.Forms
                 try
                 {
                     await _printerService.TestPrintAsync(printerId, _currentUserId);
-                    MessageBox.Show("Test print göndərildi", "Məlumat", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    ShowInformation("Test print göndərildi");
                     await LoadPrintersData();
                     await LoadPrintLogsData();
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Test print xətası: {ex.Message}", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    ShowError($"Test print xətası: {ex.Message}");
                 }
             }
         }
@@ -863,8 +863,7 @@ namespace AzAgroPOS.PL.Forms
                 var printerId = (int)selectedRow.Cells["Id"].Value;
                 var printerName = selectedRow.Cells["PrinterAdi"].Value.ToString();
                 
-                var result = MessageBox.Show($"'{printerName}' printerini silmək istəyirsiniz?", 
-                    "Təsdiq", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                var result = ShowQuestion($"'{printerName}' printerini silmək istəyirsiniz?");
                 
                 if (result == DialogResult.Yes)
                 {
@@ -883,7 +882,7 @@ namespace AzAgroPOS.PL.Forms
                 
                 await _printerService.SetDefaultPrinterAsync(printerId);
                 await LoadPrintersData();
-                MessageBox.Show("Standart printer təyin edildi", "Uğur", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ShowSuccess("Standart printer təyin edildi");
             }
         }
 
@@ -893,13 +892,13 @@ namespace AzAgroPOS.PL.Forms
             {
                 var result = await _printerService.TestAllPrintersAsync();
                 var message = result ? "Bütün printerlər test edildi" : "Bəzi printerlər test edilmədi";
-                MessageBox.Show(message, "Test Nəticəsi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ShowInformation(message);
                 await LoadPrintersData();
                 await LoadPrintLogsData();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Test əməliyyatı xətası: {ex.Message}", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowError($"Test əməliyyatı xətası: {ex.Message}");
             }
         }
 
@@ -917,7 +916,7 @@ namespace AzAgroPOS.PL.Forms
                 string.IsNullOrWhiteSpace(productNameTextBox.Text) || string.IsNullOrWhiteSpace(barcodeTextBox.Text) ||
                 !decimal.TryParse(priceTextBox.Text, out decimal price))
             {
-                MessageBox.Show("Bütün sahələri doldurun", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                ShowWarning("Bütün sahələri doldurun");
                 return;
             }
 
@@ -935,12 +934,12 @@ namespace AzAgroPOS.PL.Forms
                     _currentUserId, 
                     (int)copiesNumericUpDown.Value);
 
-                MessageBox.Show("Print əməliyyatı başladı", "Uğur", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ShowSuccess("Print əməliyyatı başladı");
                 await LoadPrintLogsData();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Print xətası: {ex.Message}", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowError($"Print xətası: {ex.Message}");
             }
         }
 
@@ -951,7 +950,7 @@ namespace AzAgroPOS.PL.Forms
 
             if (printerComboBox.SelectedItem == null)
             {
-                MessageBox.Show("Printer seçin", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                ShowWarning("Printer seçin");
                 return;
             }
 
@@ -959,24 +958,23 @@ namespace AzAgroPOS.PL.Forms
             {
                 var printer = printerComboBox.SelectedItem as PrinterKonfiqurasiyasi;
                 await _printerService.TestPrintAsync(printer.Id, _currentUserId);
-                MessageBox.Show("Test print göndərildi", "Uğur", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ShowSuccess("Test print göndərildi");
                 await LoadPrintLogsData();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Test print xətası: {ex.Message}", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowError($"Test print xətası: {ex.Message}");
             }
         }
 
         private async void CleanupLogs_Click(object sender, EventArgs e)
         {
-            var result = MessageBox.Show("90 gündən köhnə print loglarını silmək istəyirsiniz?", 
-                "Təsdiq", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            var result = ShowQuestion("90 gündən köhnə print loglarını silmək istəyirsiniz?");
             
             if (result == DialogResult.Yes)
             {
                 var deletedCount = await _printerService.CleanupOldLogsAsync(90);
-                MessageBox.Show($"{deletedCount} köhnə log silindi", "Uğur", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ShowSuccess($"{deletedCount} köhnə log silindi");
                 await LoadPrintLogsData();
             }
         }
@@ -1020,7 +1018,7 @@ namespace AzAgroPOS.PL.Forms
         private async Task RefreshDataAsync()
         {
             await LoadData();
-            MessageBox.Show("Məlumatlar yeniləndi", "Uğur", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            ShowSuccess("Məlumatlar yeniləndi");
         }
 
         #endregion
@@ -1039,7 +1037,7 @@ namespace AzAgroPOS.PL.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Məlumatları yükləyərkən xəta: {ex.Message}", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowError($"Məlumatları yükləyərkən xəta: {ex.Message}");
             }
         }
 
@@ -1155,13 +1153,13 @@ namespace AzAgroPOS.PL.Forms
         }
     }
 
-    public partial class PrinterConfigForm : Form
+    public partial class PrinterConfigForm : BaseForm
     {
         private readonly PrinterService _printerService;
         private readonly PrinterKonfiqurasiyasi _printer;
         private readonly bool _isEditMode;
 
-        public PrinterConfigForm(PrinterService printerService, PrinterKonfiqurasiyasi printer = null)
+        public PrinterConfigForm(PrinterService printerService, PrinterKonfiqurasiyasi printer = null) : base()
         {
             _printerService = printerService;
             _printer = printer;

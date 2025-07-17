@@ -9,14 +9,13 @@ using System.Windows.Forms;
 
 namespace AzAgroPOS.PL.Forms
 {
-    public partial class BorcDetailsForm : Form
+    public partial class BorcDetailsForm : BaseForm
     {
         private readonly int _debtId;
-        private readonly Istifadeci _currentUser;
         private readonly BorcService _borcService;
         private MusteriBorc _debt;
 
-        public BorcDetailsForm(int debtId, Istifadeci currentUser)
+        public BorcDetailsForm(int debtId, Istifadeci currentUser) : base()
         {
             try
             {
@@ -246,8 +245,7 @@ namespace AzAgroPOS.PL.Forms
             try
             {
                 // Generate and print debt report
-                MessageBox.Show("Hesabat çap funksiyası tezliklə əlavə ediləcək.", "Məlumat", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ShowInfo("Hesabat çap funksiyası tezliklə əlavə ediləcək.");
             }
             catch (Exception ex)
             {

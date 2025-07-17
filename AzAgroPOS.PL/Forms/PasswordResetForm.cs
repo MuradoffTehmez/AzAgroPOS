@@ -8,12 +8,12 @@ using System.Windows.Forms;
 
 namespace AzAgroPOS.PL.Forms
 {
-    public partial class PasswordResetForm : Form
+    public partial class PasswordResetForm : BaseForm
     {
         private readonly AuthService _authService;
         private readonly Istifadeci _user;
 
-        public PasswordResetForm(Istifadeci user)
+        public PasswordResetForm(Istifadeci user) : base()
         {
             InitializeComponent();
             _authService = ServiceFactory.CreateAuthService(); // AuthService-i yaradırıq
@@ -43,19 +43,18 @@ namespace AzAgroPOS.PL.Forms
 
                 if (result.Success)
                 {
-                    MessageBox.Show(result.Message, "Uğurlu", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    ShowSuccess(result.Message);
                     this.DialogResult = DialogResult.OK;
                     this.Close();
                 }
                 else
                 {
-                    MessageBox.Show(result.Message, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    ShowWarning(result.Message);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Gözlənilməz xəta baş verdi: {ex.Message}", "Sistem Xətası",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowError($"Gözlənilməz xəta baş verdi: {ex.Message}");
             }
             finally
             {
@@ -68,15 +67,14 @@ namespace AzAgroPOS.PL.Forms
         {
             if (string.IsNullOrWhiteSpace(txtNewPassword.Text))
             {
-                MessageBox.Show("Yeni şifrəni daxil edin.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                ShowWarning("Yeni şifrəni daxil edin.");
                 txtNewPassword.Focus();
                 return false;
             }
 
             if (txtNewPassword.Text.Length < 8)
             {
-                MessageBox.Show("Şifrə ən azı 8 simvoldan ibarət olmalıdır.", "Xəta",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                ShowWarning("Şifrə ən azı 8 simvoldan ibarət olmalıdır.");
                 txtNewPassword.Focus();
                 txtNewPassword.SelectAll();
                 return false;
@@ -84,7 +82,7 @@ namespace AzAgroPOS.PL.Forms
 
             if (txtNewPassword.Text != txtConfirmPassword.Text)
             {
-                MessageBox.Show("Şifrələr eyni deyil.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                ShowWarning("Şifrələr eyni deyil.");
                 txtConfirmPassword.Focus();
                 txtConfirmPassword.SelectAll();
                 return false;
@@ -105,8 +103,7 @@ namespace AzAgroPOS.PL.Forms
             txtNewPassword.Text = generatedPassword;
             txtConfirmPassword.Text = generatedPassword;
 
-            MessageBox.Show($"Avtomatik yaradılan şifrə: {generatedPassword}\n\nLütfən bu şifrəni istifadəçiyə çatdırın.",
-                "Avtomatik Şifrə", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            ShowInformation($"Avtomatik yaradılan şifrə: {generatedPassword}\n\nLütfən bu şifrəni istifadəçiyə çatdırın.");
         }
 
         private string GenerateRandomPassword()

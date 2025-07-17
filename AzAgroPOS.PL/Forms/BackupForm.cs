@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace AzAgroPOS.PL.Forms
 {
-    public partial class BackupForm : Form
+    public partial class BackupForm : BaseForm
     {
         private readonly BackupService _backupService;
         private TabControl tabControl;
@@ -20,7 +20,7 @@ namespace AzAgroPOS.PL.Forms
         private DataGridView backupHistoryGrid;
         private DataGridView configurationGrid;
 
-        public BackupForm()
+        public BackupForm() : base()
         {
             _backupService = ServiceFactory.CreateBackupService();
             InitializeComponent();
@@ -607,12 +607,12 @@ namespace AzAgroPOS.PL.Forms
                 try
                 {
                     var result = await _backupService.CreateManualBackupAsync(1, dialog.BackupName, dialog.Description);
-                    MessageBox.Show($"Backup uğurla yaradıldı: {result.BackupAdi}", "Uğur", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    ShowSuccess($"Backup uğurla yaradıldı: {result.BackupAdi}");
                     await RefreshDataAsync();
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Backup yaradarkən xəta: {ex.Message}", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    ShowError($"Backup yaradarkən xəta: {ex.Message}");
                 }
             }
         }
@@ -622,11 +622,11 @@ namespace AzAgroPOS.PL.Forms
             try
             {
                 await LoadData();
-                MessageBox.Show("Məlumatlar yeniləndi", "Uğur", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ShowSuccess("Məlumatlar yeniləndi");
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Məlumatları yeniləyərkən xəta: {ex.Message}", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowError($"Məlumatları yeniləyərkən xəta: {ex.Message}");
             }
         }
 
@@ -644,7 +644,7 @@ namespace AzAgroPOS.PL.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Məlumatları yükləyərkən xəta: {ex.Message}", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowError($"Məlumatları yükləyərkən xəta: {ex.Message}");
             }
         }
 
@@ -716,7 +716,7 @@ namespace AzAgroPOS.PL.Forms
         }
     }
 
-    public partial class ManualBackupDialog : Form
+    public partial class ManualBackupDialog : BaseForm
     {
         public string BackupName { get; private set; }
         public string Description { get; private set; }
@@ -724,7 +724,7 @@ namespace AzAgroPOS.PL.Forms
         private TextBox nameTextBox;
         private TextBox descriptionTextBox;
 
-        public ManualBackupDialog()
+        public ManualBackupDialog() : base()
         {
             InitializeComponent();
             SetupDialog();
@@ -813,7 +813,7 @@ namespace AzAgroPOS.PL.Forms
                 
                 if (string.IsNullOrEmpty(BackupName))
                 {
-                    MessageBox.Show("Backup adı boş ola bilməz!", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    ShowWarning("Backup adı boş ola bilməz!");
                     return;
                 }
             };

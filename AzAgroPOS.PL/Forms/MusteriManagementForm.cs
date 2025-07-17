@@ -9,13 +9,12 @@ using System.Windows.Forms;
 
 namespace AzAgroPOS.PL.Forms
 {
-    public partial class MusteriManagementForm : Form
+    public partial class MusteriManagementForm : BaseForm
     {
-        private readonly Istifadeci _currentUser;
         private readonly MusteriService _musteriService;
         private bool _isLoading = false;
 
-        public MusteriManagementForm(Istifadeci currentUser)
+        public MusteriManagementForm(Istifadeci currentUser) : base()
         {
             InitializeComponent();
             _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));

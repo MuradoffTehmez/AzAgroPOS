@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace AzAgroPOS.PL.Forms
 {
-    public partial class TamirFilterForm : Form
+    public partial class TamirFilterForm : BaseForm
     {
         public string SelectedStatus { get; private set; }
         public int? SelectedCustomerId { get; private set; }
@@ -21,7 +21,7 @@ namespace AzAgroPOS.PL.Forms
         private readonly TedarukcuService _tedarukcuService;
         private readonly AuthService _authService;
 
-        public TamirFilterForm()
+        public TamirFilterForm() : base()
         {
             InitializeComponent();
             _tedarukcuService = ServiceFactory.CreateTedarukcuService();

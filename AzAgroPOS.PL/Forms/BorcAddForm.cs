@@ -9,13 +9,12 @@ using AzAgroPOS.BLL.Interfaces;
 
 namespace AzAgroPOS.PL.Forms
 {
-    public partial class BorcAddForm : Form
+    public partial class BorcAddForm : BaseForm
     {
-        private readonly Istifadeci _currentUser;
         private readonly AzAgroDbContext _context;
         private readonly BorcService _borcService;
 
-        public BorcAddForm(Istifadeci currentUser)
+        public BorcAddForm(Istifadeci currentUser) : base()
         {
             InitializeComponent();
             _currentUser = currentUser;
@@ -45,8 +44,7 @@ namespace AzAgroPOS.PL.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Müştəri məlumatları yüklənərkən xəta: {ex.Message}", "Xəta", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowError($"Müştəri məlumatları yüklənərkən xəta: {ex.Message}");
             }
         }
 
@@ -62,8 +60,7 @@ namespace AzAgroPOS.PL.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Satış sənədləri yüklənərkən xəta: {ex.Message}", "Xəta", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowError($"Satış sənədləri yüklənərkən xəta: {ex.Message}");
             }
         }
 
@@ -89,16 +86,14 @@ namespace AzAgroPOS.PL.Forms
 
                 _borcService.CreateDebt(musteriBorc);
                 
-                MessageBox.Show("Borc uğurla yaradıldı.", "Uğur", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ShowSuccess("Borc uğurla yaradıldı.");
                 
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Borc yaradılarkən xəta: {ex.Message}", "Xəta", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowError($"Borc yaradılarkən xəta: {ex.Message}");
             }
         }
 
@@ -106,29 +101,25 @@ namespace AzAgroPOS.PL.Forms
         {
             if (cmbMusteri.SelectedIndex == -1)
             {
-                MessageBox.Show("Zəhmət olmasa müştəri seçin.", "Xəbərdarlıq", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                ShowWarning("Zəhmət olmasa müştəri seçin.");
                 return false;
             }
 
             if (string.IsNullOrEmpty(cmbBorcTipi.Text))
             {
-                MessageBox.Show("Zəhmət olmasa borc tipi seçin.", "Xəbərdarlıq", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                ShowWarning("Zəhmət olmasa borc tipi seçin.");
                 return false;
             }
 
             if (numBorcMeblegi.Value <= 0)
             {
-                MessageBox.Show("Borc məbləği sıfırdan böyük olmalıdır.", "Xəbərdarlıq", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                ShowWarning("Borc məbləği sıfırdan böyük olmalıdır.");
                 return false;
             }
 
             if (dtpSonOdemeTarixi.Value <= dtpBorcTarixi.Value)
             {
-                MessageBox.Show("Son ödəmə tarixi borc tarixindən sonra olmalıdır.", "Xəbərdarlıq", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                ShowWarning("Son ödəmə tarixi borc tarixindən sonra olmalıdır.");
                 return false;
             }
 

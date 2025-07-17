@@ -6,13 +6,12 @@ using System.Windows.Forms;
 
 namespace AzAgroPOS.PL.Forms
 {
-    public partial class MusteriEditForm : Form
+    public partial class MusteriEditForm : BaseForm
     {
         private readonly MusteriService _musteriService;
-        private readonly Istifadeci _currentUser;
         private readonly Musteri _musteri;
 
-        public MusteriEditForm(int musteriId, Istifadeci currentUser)
+        public MusteriEditForm(int musteriId, Istifadeci currentUser) : base()
         {
             InitializeComponent();
             _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));

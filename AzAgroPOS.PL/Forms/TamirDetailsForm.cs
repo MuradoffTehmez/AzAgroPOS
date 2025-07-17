@@ -9,18 +9,16 @@ using System.Windows.Forms;
 
 namespace AzAgroPOS.PL.Forms
 {
-    public partial class TamirDetailsForm : Form
+    public partial class TamirDetailsForm : BaseForm
     {
         private readonly int _repairId;
-        private readonly Istifadeci _currentUser;
         private readonly TamirService _tamirService;
         private TamirIsi _repair;
 
-        public TamirDetailsForm(int repairId, Istifadeci currentUser)
+        public TamirDetailsForm(int repairId, Istifadeci currentUser) : base(currentUser)
         {
             InitializeComponent();
             _repairId = repairId;
-            _currentUser = currentUser;
             _tamirService = ServiceFactory.CreateTamirService();
             SetupForm();
             LoadRepairDetails();
@@ -59,8 +57,7 @@ namespace AzAgroPOS.PL.Forms
                 _repair = _tamirService.GetRepairById(_repairId);
                 if (_repair == null)
                 {
-                    MessageBox.Show("Təmir məlumatı tapılmadı.", "Xəta", 
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    ShowError("Təmir məlumatı tapılmadı.");
                     this.Close();
                     return;
                 }

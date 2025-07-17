@@ -9,16 +9,14 @@ using AzAgroPOS.BLL.Interfaces;
 
 namespace AzAgroPOS.PL.Forms
 {
-    public partial class TamirAddForm : Form
+    public partial class TamirAddForm : BaseForm
     {
-        private readonly Istifadeci _currentUser;
         private readonly AzAgroDbContext _context;
         private readonly TamirService _tamirService;
 
-        public TamirAddForm(Istifadeci currentUser)
+        public TamirAddForm(Istifadeci currentUser) : base(currentUser)
         {
             InitializeComponent();
-            _currentUser = currentUser;
             _context = new AzAgroDbContext();
             _tamirService = ServiceFactory.CreateTamirService();
             SetupForm();
@@ -53,8 +51,7 @@ namespace AzAgroPOS.PL.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Müştəri məlumatları yüklənərkən xəta: {ex.Message}", "Xəta", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowError($"Müştəri məlumatları yüklənərkən xəta: {ex.Message}");
             }
         }
 
@@ -70,8 +67,7 @@ namespace AzAgroPOS.PL.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Məhsul məlumatları yüklənərkən xəta: {ex.Message}", "Xəta", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowError($"Məhsul məlumatları yüklənərkən xəta: {ex.Message}");
             }
         }
 
@@ -89,8 +85,7 @@ namespace AzAgroPOS.PL.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"İşçi məlumatları yüklənərkən xəta: {ex.Message}", "Xəta", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowError($"İşçi məlumatları yüklənərkən xəta: {ex.Message}");
             }
         }
 
@@ -133,16 +128,14 @@ namespace AzAgroPOS.PL.Forms
 
                 _tamirService.CreateRepair(tamirIsi);
                 
-                MessageBox.Show("Təmir işi uğurla yaradıldı.", "Uğur", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ShowSuccess("Təmir işi uğurla yaradıldı.");
                 
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Təmir işi yaradılarkən xəta: {ex.Message}", "Xəta", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowError($"Təmir işi yaradılarkən xəta: {ex.Message}");
             }
         }
 
@@ -169,36 +162,31 @@ namespace AzAgroPOS.PL.Forms
         {
             if (cmbMusteri.SelectedIndex == -1)
             {
-                MessageBox.Show("Zəhmət olmasa müştəri seçin.", "Xəbərdarlıq", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                ShowWarning("Zəhmət olmasa müştəri seçin.");
                 return false;
             }
 
             if (string.IsNullOrWhiteSpace(txtMehsulAdi.Text))
             {
-                MessageBox.Show("Zəhmət olmasa məhsul adı daxil edin.", "Xəbərdarlıq", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                ShowWarning("Zəhmət olmasa məhsul adı daxil edin.");
                 return false;
             }
 
             if (string.IsNullOrWhiteSpace(txtProblemTasviri.Text))
             {
-                MessageBox.Show("Zəhmət olmasa problem təsviri daxil edin.", "Xəbərdarlıq", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                ShowWarning("Zəhmət olmasa problem təsviri daxil edin.");
                 return false;
             }
 
             if (dtpTaxminiBitirmeTarixi.Value <= dtpQebulTarixi.Value)
             {
-                MessageBox.Show("Təxmini bitirmə tarixi qəbul tarixindən sonra olmalıdır.", "Xəbərdarlıq", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                ShowWarning("Təxmini bitirmə tarixi qəbul tarixindən sonra olmalıdır.");
                 return false;
             }
 
             if (numTaxminQiymet.Value <= 0)
             {
-                MessageBox.Show("Təxmini qiymət sıfırdan böyük olmalıdır.", "Xəbərdarlıq", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                ShowWarning("Təxmini qiymət sıfırdan böyük olmalıdır.");
                 return false;
             }
 

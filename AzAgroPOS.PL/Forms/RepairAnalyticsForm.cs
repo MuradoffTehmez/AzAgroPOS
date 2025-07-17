@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace AzAgroPOS.PL.Forms
 {
-    public partial class RepairAnalyticsForm : Form
+    public partial class RepairAnalyticsForm : BaseForm
     {
         private readonly ReportService _reportService;
         private readonly ExportService _exportService;
@@ -27,7 +27,7 @@ namespace AzAgroPOS.PL.Forms
         private Label lblCompletionRate;
         private Label lblAverageTime;
 
-        public RepairAnalyticsForm()
+        public RepairAnalyticsForm() : base()
         {
             _reportService = new ReportService();
             _exportService = new ExportService();
@@ -319,7 +319,7 @@ namespace AzAgroPOS.PL.Forms
                 }
                 else
                 {
-                    MessageBox.Show("Təmir analitikası yaradıla bilmədi.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    ShowWarning("Təmir analitikası yaradıla bilmədi.");
                 }
             }
             catch (Exception ex)
@@ -337,7 +337,7 @@ namespace AzAgroPOS.PL.Forms
         {
             if (_currentReport == null)
             {
-                MessageBox.Show("Əvvəlcə analiz edin.", "Məlumat", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ShowInformation("Əvvəlcə analiz edin.");
                 return;
             }
 
@@ -497,8 +497,7 @@ namespace AzAgroPOS.PL.Forms
                 var workerName = dgvWorkerPerformance.SelectedRows[0].Cells["WorkerName"].Value.ToString();
                 var workerId = (int)dgvWorkerPerformance.SelectedRows[0].Tag;
 
-                MessageBox.Show($"{workerName} üçün detallı performans hesabatı açılacaq.",
-                    "İşçi Detalları", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ShowInformation($"{workerName} üçün detallı performans hesabatı açılacaq.");
             }
         }
 
@@ -508,8 +507,7 @@ namespace AzAgroPOS.PL.Forms
             {
                 var workerName = dgvWorkerPerformance.SelectedRows[0].Cells["WorkerName"].Value.ToString();
 
-                MessageBox.Show($"{workerName} üçün yeni tapşırıq təyin etmə formu açılacaq.",
-                    "Yeni Tapşırıq", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ShowInformation($"{workerName} üçün yeni tapşırıq təyin etmə formu açılacaq.");
             }
         }
 

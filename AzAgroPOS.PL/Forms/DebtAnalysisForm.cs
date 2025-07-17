@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace AzAgroPOS.PL.Forms
 {
-    public partial class DebtAnalysisForm : Form
+    public partial class DebtAnalysisForm : BaseForm
     {
         private readonly ReportService _reportService;
         private readonly ExportService _exportService;
@@ -26,7 +26,7 @@ namespace AzAgroPOS.PL.Forms
         private Label lblCollectionRate;
         private Label lblAverageDebt;
 
-        public DebtAnalysisForm()
+        public DebtAnalysisForm() : base()
         {
             _reportService = new ReportService();
             _exportService = new ExportService();
@@ -336,7 +336,7 @@ namespace AzAgroPOS.PL.Forms
         {
             if (_currentReport == null)
             {
-                MessageBox.Show("Əvvəlcə hesabat yükləyin.", "Məlumat", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ShowInformation("Əvvəlcə hesabat yükləyin.");
                 return;
             }
 
@@ -353,12 +353,10 @@ namespace AzAgroPOS.PL.Forms
                     
                     if (success)
                     {
-                        MessageBox.Show("Hesabat uğurla ixrac edildi!", "Uğur", 
-                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        ShowSuccess("Hesabat uğurla ixrac edildi!");
                         
                         // Ask if user wants to open the file
-                        if (MessageBox.Show("Faylı açmaq istəyirsiniz?", "Təsdiq", 
-                            MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                        if (ShowQuestion("Faylı açmaq istəyirsiniz?") == DialogResult.Yes)
                         {
                             System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
                             {
@@ -369,8 +367,7 @@ namespace AzAgroPOS.PL.Forms
                     }
                     else
                     {
-                        MessageBox.Show("İxrac zamanı xəta baş verdi.", "Xəta", 
-                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        ShowError("İxrac zamanı xəta baş verdi.");
                     }
                 }
             }
@@ -383,8 +380,7 @@ namespace AzAgroPOS.PL.Forms
                 var customerId = (int)dgvCustomerDebts.SelectedRows[0].Tag;
                 var customerName = dgvCustomerDebts.SelectedRows[0].Cells["CustomerName"].Value.ToString();
                 
-                MessageBox.Show($"{customerName} üçün ödəniş formu açılacaq.", "Məlumat", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ShowInformation($"{customerName} üçün ödəniş formu açılacaq.");
             }
         }
 
@@ -395,8 +391,7 @@ namespace AzAgroPOS.PL.Forms
                 var customerName = dgvCustomerDebts.SelectedRows[0].Cells["CustomerName"].Value.ToString();
                 var remainingDebt = dgvCustomerDebts.SelectedRows[0].Cells["RemainingDebt"].Value;
                 
-                MessageBox.Show($"{customerName}\nQalan Borc: {remainingDebt:C}\n\nMüştəri əlaqə məlumatları göstəriləcək.", 
-                    "Müştəri Məlumatları", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ShowInformation($"{customerName}\nQalan Borc: {remainingDebt:C}\n\nMüştəri əlaqə məlumatları göstəriləcək.");
             }
         }
 
@@ -405,8 +400,7 @@ namespace AzAgroPOS.PL.Forms
             if (dgvCustomerDebts.SelectedRows.Count > 0)
             {
                 var customerName = dgvCustomerDebts.SelectedRows[0].Cells["CustomerName"].Value.ToString();
-                MessageBox.Show($"{customerName} üçün ödəniş tarixçəsi açılacaq.", "Məlumat", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ShowInformation($"{customerName} üçün ödəniş tarixçəsi açılacaq.");
             }
         }
 
@@ -427,7 +421,7 @@ namespace AzAgroPOS.PL.Forms
                 }
                 else
                 {
-                    MessageBox.Show("Borc hesabatı alına bilmədi.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    ShowWarning("Borc hesabatı alına bilmədi.");
                 }
             }
             catch (Exception ex)

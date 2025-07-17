@@ -9,15 +9,14 @@ using System.Windows.Forms;
 
 namespace AzAgroPOS.PL.Forms
 {
-    public partial class BorcEditForm : Form
+    public partial class BorcEditForm : BaseForm
     {
         private readonly int _debtId;
-        private readonly Istifadeci _currentUser;
         private readonly AzAgroDbContext _context;
         private readonly BorcService _borcService;
         private MusteriBorc _debt;
 
-        public BorcEditForm(int debtId, Istifadeci currentUser)
+        public BorcEditForm(int debtId, Istifadeci currentUser) : base()
         {
             InitializeComponent();
             _debtId = debtId;
@@ -46,8 +45,7 @@ namespace AzAgroPOS.PL.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Müştəri məlumatları yüklənərkən xəta: {ex.Message}", "Xəta", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowError($"Müştəri məlumatları yüklənərkən xəta: {ex.Message}");
             }
         }
 
@@ -62,8 +60,7 @@ namespace AzAgroPOS.PL.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Satış sənədləri yüklənərkən xəta: {ex.Message}", "Xəta", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowError($"Satış sənədləri yüklənərkən xəta: {ex.Message}");
             }
         }
 
@@ -74,8 +71,7 @@ namespace AzAgroPOS.PL.Forms
                 _debt = _borcService.GetDebtById(_debtId);
                 if (_debt == null)
                 {
-                    MessageBox.Show("Borc məlumatı tapılmadı.", "Xəta", 
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    ShowError("Borc məlumatı tapılmadı.");
                     this.Close();
                     return;
                 }
@@ -93,8 +89,7 @@ namespace AzAgroPOS.PL.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Borc məlumatları yüklənərkən xəta: {ex.Message}", "Xəta", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowError($"Borc məlumatları yüklənərkən xəta: {ex.Message}");
             }
         }
 
@@ -116,16 +111,14 @@ namespace AzAgroPOS.PL.Forms
 
                 _borcService.UpdateDebt(_debt);
                 
-                MessageBox.Show("Borc uğurla yeniləndi.", "Uğur", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ShowSuccess("Borc uğurla yeniləndi.");
                 
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Borc yenilənərkən xəta: {ex.Message}", "Xəta", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowError($"Borc yenilənərkən xəta: {ex.Message}");
             }
         }
 
@@ -133,29 +126,25 @@ namespace AzAgroPOS.PL.Forms
         {
             if (cmbMusteri.SelectedIndex == -1)
             {
-                MessageBox.Show("Zəhmət olmasa müştəri seçin.", "Xəbərdarlıq", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                ShowWarning("Zəhmət olmasa müştəri seçin.");
                 return false;
             }
 
             if (string.IsNullOrEmpty(cmbBorcTipi.Text))
             {
-                MessageBox.Show("Zəhmət olmasa borc tipi seçin.", "Xəbərdarlıq", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                ShowWarning("Zəhmət olmasa borc tipi seçin.");
                 return false;
             }
 
             if (numBorcMeblegi.Value <= 0)
             {
-                MessageBox.Show("Borc məbləği sıfırdan böyük olmalıdır.", "Xəbərdarlıq", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                ShowWarning("Borc məbləği sıfırdan böyük olmalıdır.");
                 return false;
             }
 
             if (dtpSonOdemeTarixi.Value <= dtpBorcTarixi.Value)
             {
-                MessageBox.Show("Son ödəmə tarixi borc tarixindən sonra olmalıdır.", "Xəbərdarlıq", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                ShowWarning("Son ödəmə tarixi borc tarixindən sonra olmalıdır.");
                 return false;
             }
 

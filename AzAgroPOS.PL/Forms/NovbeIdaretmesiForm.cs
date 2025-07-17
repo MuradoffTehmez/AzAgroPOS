@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace AzAgroPOS.PL.Forms
 {
-    public partial class NovbeIdaretmesiForm : Form
+    public partial class NovbeIdaretmesiForm : BaseForm
     {
         private readonly NovbeIdaretmesiService _service;
         private TabControl tabControl;
@@ -19,7 +19,7 @@ namespace AzAgroPOS.PL.Forms
         private Panel shiftsPanel;
         private Panel leavesPanel;
 
-        public NovbeIdaretmesiForm()
+        public NovbeIdaretmesiForm() : base()
         {
             _service = ServiceFactory.CreateNovbeIdaretmesiService();
             InitializeComponent();
@@ -582,7 +582,7 @@ namespace AzAgroPOS.PL.Forms
         private void AddShift_Click(object sender, EventArgs e)
         {
             // Open shift creation form
-            MessageBox.Show("Növbə əlavə etmə formu açılacaq", "Məlumat", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            ShowInformation("Növbə əlavə etmə formu açılacaq");
         }
 
         private async Task RefreshDataAsync()
@@ -590,11 +590,11 @@ namespace AzAgroPOS.PL.Forms
             try
             {
                 await LoadDashboardData();
-                MessageBox.Show("Məlumatlar yeniləndi", "Uğur", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ShowSuccess("Məlumatlar yeniləndi");
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Məlumatları yeniləyərkən xəta: {ex.Message}", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowError($"Məlumatları yeniləyərkən xəta: {ex.Message}");
             }
         }
 
@@ -615,7 +615,7 @@ namespace AzAgroPOS.PL.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Dashboard məlumatlarını yükləyərkən xəta: {ex.Message}", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowError($"Dashboard məlumatlarını yükləyərkən xəta: {ex.Message}");
             }
         }
 

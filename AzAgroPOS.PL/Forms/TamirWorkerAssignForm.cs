@@ -9,19 +9,17 @@ using System.Windows.Forms;
 
 namespace AzAgroPOS.PL.Forms
 {
-    public partial class TamirWorkerAssignForm : Form
+    public partial class TamirWorkerAssignForm : BaseForm
     {
         private readonly int _repairId;
-        private readonly Istifadeci _currentUser;
         private readonly AzAgroDbContext _context;
         private readonly TamirService _tamirService;
         private TamirIsi _repair;
 
-        public TamirWorkerAssignForm(int repairId, Istifadeci currentUser)
+        public TamirWorkerAssignForm(int repairId, Istifadeci currentUser) : base(currentUser)
         {
             InitializeComponent();
             _repairId = repairId;
-            _currentUser = currentUser;
             _context = new AzAgroDbContext();
             _tamirService = ServiceFactory.CreateTamirService();
             SetupForm();
