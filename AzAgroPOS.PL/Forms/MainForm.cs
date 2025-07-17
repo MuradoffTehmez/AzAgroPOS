@@ -28,6 +28,52 @@ namespace AzAgroPOS.PL.Forms
             SetupModernDesign();
             // LoadUserInfo will be called after the controls are created
             this.Load += MainForm_Load;
+            
+            // MDI Container setup
+            this.IsMdiContainer = true;
+        }
+
+        /// <summary>
+        /// Memory leak problemini həll edən generic form management metodu
+        /// Eyni tipli formdan yalnız bir nüsxəni açır
+        /// </summary>
+        private void OpenMdiForm<T>() where T : Form, new()
+        {
+            // Yoxlayırıq ki, bu tipdə bir pəncərə artıq açıqdırmı
+            foreach (Form form in this.MdiChildren)
+            {
+                if (form.GetType() == typeof(T))
+                {
+                    form.Activate(); // Əgər açıqdırsa, sadəcə ön plana gətiririk
+                    return;
+                }
+            }
+
+            // Əgər açıq deyilsə, yenisini yaradırıq
+            T newForm = new T();
+            newForm.MdiParent = this;
+            newForm.Show();
+        }
+
+        /// <summary>
+        /// Constructor parametrli formlar üçün generic metod
+        /// </summary>
+        private void OpenMdiForm<T>(params object[] args) where T : Form
+        {
+            // Yoxlayırıq ki, bu tipdə bir pəncərə artıq açıqdırmı
+            foreach (Form form in this.MdiChildren)
+            {
+                if (form.GetType() == typeof(T))
+                {
+                    form.Activate(); // Əgər açıqdırsa, sadəcə ön plana gətiririk
+                    return;
+                }
+            }
+
+            // Əgər açıq deyilsə, yenisini yaradırıq
+            T newForm = (T)Activator.CreateInstance(typeof(T), args);
+            newForm.MdiParent = this;
+            newForm.Show();
         }
 
         // Backward compatibility constructor
@@ -96,52 +142,44 @@ namespace AzAgroPOS.PL.Forms
 
         private void btnCustomerAdd_Click(object sender, EventArgs e)
         {
-            var customerAddForm = new MusteriAddForm(_currentUser);
-            customerAddForm.ShowDialog();
+            OpenMdiForm<MusteriAddForm>(_currentUser);
         }
 
         private void btnCustomerList_Click(object sender, EventArgs e)
         {
-            var customerListForm = new MusteriManagementForm(_currentUser);
-            customerListForm.ShowDialog();
+            OpenMdiForm<MusteriManagementForm>(_currentUser);
         }
 
         private void btnCustomerGroups_Click(object sender, EventArgs e)
         {
-            var customerGroupsForm = new MusteriGroupManagementForm(_currentUser);
-            customerGroupsForm.ShowDialog();
+            OpenMdiForm<MusteriGroupManagementForm>(_currentUser);
         }
 
         private void btnInventory_Click(object sender, EventArgs e)
         {
-            var productManagementForm = new ProductManagementForm(_currentUser);
-            productManagementForm.ShowDialog();
+            OpenMdiForm<ProductManagementForm>(_currentUser);
         }
 
         private void btnUserManagement_Click(object sender, EventArgs e)
         {
-            var userManagementForm = new UserManagementForm(_currentUser);
-            userManagementForm.ShowDialog();
+            OpenMdiForm<UserManagementForm>(_currentUser);
         }
 
         private void btnDebtManagement_Click(object sender, EventArgs e)
         {
-            var debtManagementForm = new BorcManagementForm(_currentUser);
-            debtManagementForm.ShowDialog();
+            OpenMdiForm<BorcManagementForm>(_currentUser);
         }
 
         private void btnRepairManagement_Click(object sender, EventArgs e)
         {
-            var repairManagementForm = new TamirManagementForm(_currentUser);
-            repairManagementForm.ShowDialog();
+            OpenMdiForm<TamirManagementForm>(_currentUser);
         }
 
         private void btnExpenseManagement_Click(object sender, EventArgs e)
         {
             try
             {
-                var expenseManagementForm = new GiderManagementForm(_currentUser, _serviceProvider);
-                expenseManagementForm.ShowDialog();
+                OpenMdiForm<GiderManagementForm>(_currentUser, _serviceProvider);
             }
             catch (Exception ex)
             {
@@ -155,13 +193,7 @@ namespace AzAgroPOS.PL.Forms
         {
             try
             {
-                var settingsForm = new SistemAyarlariForm(_currentUser, _serviceProvider);
-                if (settingsForm.ShowDialog() == DialogResult.OK)
-                {
-                    // Settings have been saved, reload theme and other settings
-                    MessageBox.Show("Sistem ayarları yeniləndi. Dəyişikliklərin tam tətbiqi üçün proqramı yenidən başladın.", 
-                        "Ayarlar Yeniləndi", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
+                OpenMdiForm<SistemAyarlariForm>(_currentUser, _serviceProvider);
             }
             catch (Exception ex)
             {
@@ -174,8 +206,7 @@ namespace AzAgroPOS.PL.Forms
         {
             try
             {
-                var shiftForm = new NovbeIdaretmesiForm();
-                shiftForm.ShowDialog();
+                OpenMdiForm<NovbeIdaretmesiForm>();
             }
             catch (Exception ex)
             {
@@ -188,8 +219,7 @@ namespace AzAgroPOS.PL.Forms
         {
             try
             {
-                var backupForm = new BackupForm();
-                backupForm.ShowDialog();
+                OpenMdiForm<BackupForm>();
             }
             catch (Exception ex)
             {
@@ -202,8 +232,7 @@ namespace AzAgroPOS.PL.Forms
         {
             try
             {
-                var notificationForm = new BildirisForm(_currentUser.Id);
-                notificationForm.ShowDialog();
+                OpenMdiForm<BildirisForm>(_currentUser.Id);
             }
             catch (Exception ex)
             {
@@ -216,8 +245,7 @@ namespace AzAgroPOS.PL.Forms
         {
             try
             {
-                var printerForm = new PrinterForm(_currentUser.Id);
-                printerForm.ShowDialog();
+                OpenMdiForm<PrinterForm>(_currentUser.Id);
             }
             catch (Exception ex)
             {
@@ -242,8 +270,7 @@ namespace AzAgroPOS.PL.Forms
 
         private void btnPOS_Click(object sender, EventArgs e)
         {
-            var posForm = new POSForm();
-            posForm.ShowDialog();
+            OpenMdiForm<POSForm>();
         }
 
         private void btnReports_Click(object sender, EventArgs e)

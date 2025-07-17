@@ -61,6 +61,7 @@ namespace AzAgroPOS.Entities.Constants
             public const string Manager = "Manager";
             public const string Worker = "Worker";
             public const string Cashier = "Cashier";
+            public const string Accountant = "Accountant";
         }
 
         public static class StepStatus

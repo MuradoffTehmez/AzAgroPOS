@@ -99,7 +99,7 @@ namespace AzAgroPOS.BLL.Services
                 }
 
                 // Qrup ID yoxlaması
-                if (musteri.QrupId.HasValue && musteri.QrupId.Value <= 0)
+                if (musteri.MusteriQrupuId.HasValue && musteri.MusteriQrupuId.Value <= 0)
                 {
                     errors.Add("Müştəri qrup ID-si düzgün deyil");
                 }
@@ -158,14 +158,14 @@ namespace AzAgroPOS.BLL.Services
                     errors.Add("Məhsul adı maksimum 200 simvoldan ibarət ola bilər");
                 }
 
-                // Kod yoxlaması
-                if (string.IsNullOrWhiteSpace(mehsul.Kod))
+                // SKU yoxlaması
+                if (string.IsNullOrWhiteSpace(mehsul.SKU))
                 {
-                    errors.Add("Məhsul kodu mütləqdir");
+                    errors.Add("Məhsul SKU kodu mütləqdir");
                 }
-                else if (mehsul.Kod.Length > 50)
+                else if (mehsul.SKU.Length > 50)
                 {
-                    errors.Add("Məhsul kodu maksimum 50 simvoldan ibarət ola bilər");
+                    errors.Add("Məhsul SKU kodu maksimum 50 simvoldan ibarət ola bilər");
                 }
 
                 // Qiymət yoxlaması
@@ -185,24 +185,24 @@ namespace AzAgroPOS.BLL.Services
                 }
 
                 // Stok yoxlaması
-                if (mehsul.StokMiqdari < 0)
+                if (mehsul.MovcudMiqdar < 0)
                 {
-                    errors.Add("Stok miqdarı mənfi ola bilməz");
+                    errors.Add("Mövcud miqdar mənfi ola bilməz");
                 }
 
-                if (mehsul.MinimumStok < 0)
+                if (mehsul.MinimumMiqdar < 0)
                 {
-                    errors.Add("Minimum stok miqdarı mənfi ola bilməz");
+                    errors.Add("Minimum miqdar mənfi ola bilməz");
                 }
 
                 // Kateqoriya yoxlaması
-                if (mehsul.KateqoriyaId.HasValue && mehsul.KateqoriyaId.Value <= 0)
+                if (mehsul.KateqoriyaId <= 0)
                 {
                     errors.Add("Kateqoriya ID-si düzgün deyil");
                 }
 
                 // Vahid yoxlaması
-                if (mehsul.VahidId.HasValue && mehsul.VahidId.Value <= 0)
+                if (mehsul.VahidId <= 0)
                 {
                     errors.Add("Vahid ID-si düzgün deyil");
                 }
@@ -438,9 +438,9 @@ namespace AzAgroPOS.BLL.Services
                 }
 
                 // Qiymət yoxlaması
-                if (detal.SatisQiymeti <= 0)
+                if (detal.VahidQiymeti <= 0)
                 {
-                    errors.Add("Satış qiyməti 0-dan böyük olmalıdır");
+                    errors.Add("Vahid qiyməti 0-dan böyük olmalıdır");
                 }
 
                 if (errors.Any())

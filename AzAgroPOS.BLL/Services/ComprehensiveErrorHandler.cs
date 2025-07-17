@@ -315,7 +315,7 @@ namespace AzAgroPOS.BLL.Services
             {
                 UnauthorizedAccessException => "Bu əməliyyat üçün icazəniz yoxdur.",
                 FileNotFoundException => "Tələb olunan fayl tapılmadı.",
-                System.Data.SqlClient.SqlException => "Verilənlər bazası ilə əlaqə problemi yarandı.",
+                System.Data.Common.DbException => "Verilənlər bazası ilə əlaqə problemi yarandı.",
                 System.Net.NetworkInformation.NetworkInformationException => "Şəbəkə bağlantısı problemi yarandı.",
                 OutOfMemoryException => "Sistem yaddaşı kifayət etmir.",
                 _ => "Gözlənilməz bir xəta baş verdi."

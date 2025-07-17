@@ -38,19 +38,19 @@ namespace AzAgroPOS.BLL.Services
             _services.AddScoped<IUnitOfWork, UnitOfWork>();
             
             // Repository Pattern - Scoped lifecycle
-            _services.AddScoped<IIstifadeciRepository, IstifadeciRepository>();
-            _services.AddScoped<IMusteriRepository, MusteriRepository>();
-            _services.AddScoped<IMehsulRepository, MehsulRepository>();
-            _services.AddScoped<ISatisRepository, SatisRepository>();
-            _services.AddScoped<ISatisDetaliRepository, SatisDetaliRepository>();
-            _services.AddScoped<IAnbarRepository, AnbarRepository>();
-            _services.AddScoped<IAnbarQalikRepository, AnbarQalikRepository>();
-            _services.AddScoped<IAnbarHereketRepository, AnbarHereketRepository>();
-            _services.AddScoped<IMusteriBorcRepository, MusteriBorcRepository>();
-            _services.AddScoped<IRolRepository, RolRepository>();
-            _services.AddScoped<ITamirIsiRepository, TamirIsiRepository>();
-            _services.AddScoped<ITedarukcuRepository, TedarukcuRepository>();
-            _services.AddScoped<IGiderRepository, GiderRepository>();
+            _services.AddScoped<IstifadeciRepository>();
+            _services.AddScoped<MusteriRepository>();
+            _services.AddScoped<MehsulRepository>();
+            _services.AddScoped<SatisRepository>();
+            _services.AddScoped<SatisDetaliRepository>();
+            _services.AddScoped<AnbarRepository>();
+            _services.AddScoped<AnbarQalikRepository>();
+            _services.AddScoped<AnbarHereketRepository>();
+            _services.AddScoped<MusteriBorcRepository>();
+            _services.AddScoped<RolRepository>();
+            _services.AddScoped<TamirIsiRepository>();
+            _services.AddScoped<TedarukcuRepository>();
+            _services.AddScoped<GiderRepository>();
 
             // Business Logic Layer - Scoped lifecycle
             _services.AddScoped<AuthService>();
@@ -76,7 +76,6 @@ namespace AzAgroPOS.BLL.Services
             _services.AddScoped<AsyncUIService>();
             
             // Resource Management
-            _services.AddScoped<ResourceManagementService>();
             _services.AddScoped<ServiceLifecycleManager>();
         }
 

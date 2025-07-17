@@ -66,8 +66,8 @@ namespace AzAgroPOS.BLL.Services
                 }
 
                 // 2. Satış əməliyyatını yaradırıq (hələ bazaya yazılmır)
-                satis.SatisTarihi = DateTime.Now;
-                satis.IstifadeciId = istifadeciId;
+                satis.SatisTarixi = DateTime.Now;
+                satis.KassirId = istifadeciId;
                 satis.Status = SystemConstants.Status.Active;
                 
                 await _unitOfWork.Satislar.AddAsync(satis);
@@ -87,7 +87,7 @@ namespace AzAgroPOS.BLL.Services
                         return result;
                     }
                     
-                    totalAmount += detal.Miqdar * detal.SatisQiymeti;
+                    totalAmount += detal.Miqdar * detal.VahidQiymeti;
                     processedProducts.Add(stockChangeResult);
                 }
 
@@ -149,7 +149,7 @@ namespace AzAgroPOS.BLL.Services
             // Müştəri yoxlaması
             if (satis.MusteriId.HasValue)
             {
-                var musteri = await _unitOfWork.Musteriler.GetByIdAsync(satis.MusteriId.Value);
+                var musteri = _unitOfWork.Musteriler.GetById(satis.MusteriId.Value);
                 if (musteri == null)
                 {
                     result.IsValid = false;
@@ -177,7 +177,7 @@ namespace AzAgroPOS.BLL.Services
                 }
 
                 // Anbar qalığı yoxlaması
-                var anbarQaliq = await _unitOfWork.AnbarQaliqlari.GetByAnbarVeMehsulAsync(1, detal.MehsulId);
+                var anbarQaliq = _unitOfWork.AnbarQaliqlari.GetByAnbarVeMehsul(1, detal.MehsulId);
                 if (anbarQaliq == null || anbarQaliq.MovcudMiqdar < detal.Miqdar)
                 {
                     result.IsValid = false;
@@ -186,10 +186,10 @@ namespace AzAgroPOS.BLL.Services
                 }
 
                 // Qiymət yoxlaması
-                if (detal.SatisQiymeti <= 0)
+                if (detal.VahidQiymeti <= 0)
                 {
                     result.IsValid = false;
-                    result.ErrorMessage = $"Satış qiyməti düzgün deyil: {detal.SatisQiymeti}";
+                    result.ErrorMessage = $"Satış qiyməti düzgün deyil: {detal.VahidQiymeti}";
                     return result;
                 }
             }
@@ -215,35 +215,39 @@ namespace AzAgroPOS.BLL.Services
                 result.ProductId = detal.MehsulId;
                 result.ProductName = mehsul.Ad;
                 result.QuantitySold = detal.Miqdar;
-                result.OldStock = mehsul.StokMiqdari;
+                result.OldStock = mehsul.MovcudMiqdar;
 
                 // Anbar qalığını azalt
-                var anbarQaliq = await _unitOfWork.AnbarQaliqlari.GetByAnbarVeMehsulAsync(1, detal.MehsulId);
+                var anbarQaliq = _unitOfWork.AnbarQaliqlari.GetByAnbarVeMehsul(1, detal.MehsulId);
                 anbarQaliq.MovcudMiqdar -= detal.Miqdar;
-                anbarQaliq.SonYenilemeTarixi = DateTime.Now;
+                anbarQaliq.YenilenmeTarixi = DateTime.Now;
                 
-                await _unitOfWork.AnbarQaliqlari.UpdateAsync(anbarQaliq);
+                _unitOfWork.AnbarQaliqlari.Update(anbarQaliq);
 
                 // Məhsul stok qalığını da yenilə
-                mehsul.StokMiqdari -= detal.Miqdar;
+                mehsul.MovcudMiqdar -= detal.Miqdar;
                 await _unitOfWork.Mehsullar.UpdateAsync(mehsul);
 
-                result.NewStock = mehsul.StokMiqdari;
+                result.NewStock = mehsul.MovcudMiqdar;
                 
                 // Anbar hərəkətini qeyd et
                 var anbarHereketi = new AnbarHereketi
                 {
                     AnbarId = 1,
                     MehsulId = detal.MehsulId,
-                    EmeliyyatNovu = "Satış",
-                    Miqdar = -detal.Miqdar, // Mənfi, çünki satış
-                    Qiymet = detal.SatisQiymeti,
-                    Tarix = DateTime.Now,
-                    Qeyd = $"Satış ID: {satisId}",
-                    IstifadeciId = detal.Satis?.IstifadeciId
+                    HereketTipi = "Cixis",
+                    SenedNomresi = $"SAT-{satisId}",
+                    SenedTipi = "Satis",
+                    SenedId = satisId,
+                    Miqdar = detal.Miqdar,
+                    VahidQiymeti = detal.VahidQiymeti,
+                    UmumiMebleg = detal.Miqdar * detal.VahidQiymeti,
+                    HereketTarixi = DateTime.Now,
+                    Aciklama = $"Satış ID: {satisId}",
+                    IstifadeciId = 1 // Default user ID
                 };
                 
-                await _unitOfWork.AnbarHereketi.AddAsync(anbarHereketi);
+                _unitOfWork.AnbarHereketleri.Add(anbarHereketi);
                 
                 return result;
             }
@@ -266,13 +270,17 @@ namespace AzAgroPOS.BLL.Services
             var musteriBorc = new MusteriBorc
             {
                 MusteriId = musteriId.Value,
+                BorcNomresi = DateTime.Now.ToString("yyyyMMddHHmmss"),
+                BorcTipi = "Satis",
                 BorcMeblegi = mebleg,
                 BorcTarixi = DateTime.Now,
+                SonOdemeTarixi = DateTime.Now.AddDays(30),
                 Status = SystemConstants.DebtStatus.Open,
-                Qeyd = "Satış əməliyyatından yaranan borc"
+                Aciklama = "Satış əməliyyatından yaranan borc",
+                YaradanIstifadeciId = 1 // Default user ID
             };
 
-            await _unitOfWork.MusteriBorclar.AddAsync(musteriBorc);
+            _unitOfWork.MusteriBorclari.Add(musteriBorc);
         }
 
         /// <summary>
@@ -287,7 +295,7 @@ namespace AzAgroPOS.BLL.Services
             try
             {
                 // Satış məlumatını al
-                var satis = await _unitOfWork.Satislar.GetByIdAsync(satisId);
+                var satis = _unitOfWork.Satislar.GetById(satisId);
                 if (satis == null)
                 {
                     result.IsSuccess = false;
@@ -303,33 +311,37 @@ namespace AzAgroPOS.BLL.Services
                 }
 
                 // Satış detallarını al
-                var satisDetallari = await _unitOfWork.SatisDetallari.GetBySatisIdAsync(satisId);
+                var satisDetallari = _unitOfWork.SatisDetallari.GetBySatisId(satisId);
                 
                 // Anbar qalıqlarını geri qaytar
                 foreach (var detal in satisDetallari)
                 {
                     var mehsul = await _unitOfWork.Mehsullar.GetByIdAsync(detal.MehsulId);
-                    mehsul.StokMiqdari += detal.Miqdar;
+                    mehsul.MovcudMiqdar += detal.Miqdar;
                     await _unitOfWork.Mehsullar.UpdateAsync(mehsul);
 
-                    var anbarQaliq = await _unitOfWork.AnbarQaliqlari.GetByAnbarVeMehsulAsync(1, detal.MehsulId);
+                    var anbarQaliq = _unitOfWork.AnbarQaliqlari.GetByAnbarVeMehsul(1, detal.MehsulId);
                     anbarQaliq.MovcudMiqdar += detal.Miqdar;
-                    await _unitOfWork.AnbarQaliqlari.UpdateAsync(anbarQaliq);
+                    _unitOfWork.AnbarQaliqlari.Update(anbarQaliq);
 
                     // Storno anbar hərəkəti
                     var anbarHereketi = new AnbarHereketi
                     {
                         AnbarId = 1,
                         MehsulId = detal.MehsulId,
-                        EmeliyyatNovu = "Storno",
+                        HereketTipi = "Giris",
+                        SenedNomresi = $"STORNO-{satisId}",
+                        SenedTipi = "Storno",
+                        SenedId = satisId,
                         Miqdar = detal.Miqdar, // Müsbət, çünki geri qayıdır
-                        Qiymet = detal.SatisQiymeti,
-                        Tarix = DateTime.Now,
-                        Qeyd = $"Satış ləğvi: {reason}",
+                        VahidQiymeti = detal.VahidQiymeti,
+                        UmumiMebleg = detal.Miqdar * detal.VahidQiymeti,
+                        HereketTarixi = DateTime.Now,
+                        Aciklama = $"Satış ləğvi: {reason}",
                         IstifadeciId = istifadeciId
                     };
                     
-                    await _unitOfWork.AnbarHereketi.AddAsync(anbarHereketi);
+                    _unitOfWork.AnbarHereketleri.Add(anbarHereketi);
                 }
 
                 // Satışı ləğv et
@@ -342,13 +354,17 @@ namespace AzAgroPOS.BLL.Services
                     var musteriBorc = new MusteriBorc
                     {
                         MusteriId = satis.MusteriId.Value,
+                        BorcNomresi = DateTime.Now.ToString("yyyyMMddHHmmss"),
+                        BorcTipi = "Storno",
                         BorcMeblegi = -satis.UmumiMebleg, // Mənfi, çünki borc azalır
                         BorcTarixi = DateTime.Now,
+                        SonOdemeTarixi = DateTime.Now.AddDays(30),
                         Status = SystemConstants.DebtStatus.Open,
-                        Qeyd = $"Satış ləğvi: {reason}"
+                        Aciklama = $"Satış ləğvi: {reason}",
+                        YaradanIstifadeciId = istifadeciId
                     };
                     
-                    await _unitOfWork.MusteriBorclar.AddAsync(musteriBorc);
+                    _unitOfWork.MusteriBorclari.Add(musteriBorc);
                 }
 
                 await _unitOfWork.CompleteAsync();
