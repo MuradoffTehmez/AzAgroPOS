@@ -40,7 +40,7 @@ namespace AzAgroPOS.BLL.Services
                     }
                     catch (Exception ex)
                     {
-                        _logger?.LogError($"{GetType().Name} dispose error", ex);
+                        _logger?.LogError(new Exception($"{GetType().Name} dispose error", ex));
                     }
                 }
 

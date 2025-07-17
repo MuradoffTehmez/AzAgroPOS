@@ -85,7 +85,7 @@ namespace AzAgroPOS.BLL.Services
                 result.Message = $"Migration zamanı xəta: {ex.Message}";
                 result.Exception = ex;
                 
-                _logger.LogError("Password migration xətası", ex);
+                _logger.LogError(new Exception("Password migration xətası", ex));
             }
 
             return result;
@@ -131,7 +131,7 @@ namespace AzAgroPOS.BLL.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError("Migration status yoxlama xətası", ex);
+                _logger.LogError(new Exception("Migration status yoxlama xətası", ex));
                 return new MigrationStatus
                 {
                     TotalUsers = 0,

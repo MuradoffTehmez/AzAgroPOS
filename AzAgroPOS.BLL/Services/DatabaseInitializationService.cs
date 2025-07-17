@@ -152,12 +152,17 @@ namespace AzAgroPOS.BLL.Services
             var adminRole = await _context.Roller.FirstAsync(r => r.Ad == "Administrator");
             var lightTheme = await _context.Temalar.FirstAsync(t => t.Ad == "Açıq Tema");
 
+            // Secure password hash and salt for admin user
+            var passwordSecurityService = new PasswordSecurityService();
+            passwordSecurityService.CreatePasswordHash("Admin123!", out byte[] passwordHash, out byte[] passwordSalt);
+            
             var adminUser = new Istifadeci
             {
                 Ad = "Admin",
                 Soyad = "Sistem",
                 Email = "admin@azagropos.az",
-                ParolHash = BCrypt.Net.BCrypt.HashPassword("Admin123!", BCrypt.Net.BCrypt.GenerateSalt(12)),
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
                 RolId = adminRole.Id,
                 TemaId = lightTheme.Id,
                 Status = "Aktiv",

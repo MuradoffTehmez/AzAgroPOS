@@ -55,11 +55,11 @@ namespace AzAgroPOS.BLL.Services
 
                 try
                 {
-                    progress.Report(new ProgressInfo { Message = description, Percentage = 0 });
+                    ((IProgress<ProgressInfo>)progress).Report(new ProgressInfo { Message = description, Percentage = 0 });
                     
                     var result = await operation(progress, _cancellationTokenSource.Token);
                     
-                    progress.Report(new ProgressInfo { Message = "Tamamlandı", Percentage = 100 });
+                    ((IProgress<ProgressInfo>)progress).Report(new ProgressInfo { Message = "Tamamlandı", Percentage = 100 });
                     
                     return result;
                 }

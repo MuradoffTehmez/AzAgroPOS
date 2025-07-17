@@ -1,6 +1,7 @@
 using AzAgroPOS.BLL.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -155,7 +156,7 @@ namespace AzAgroPOS.BLL.Services
                 try
                 {
                     var logMessage = BuildLogMessage(details);
-                    _logger.LogError(logMessage, details.Exception);
+                    _logger.LogError(new Exception(logMessage, details.Exception));
                     
                     // Xüsusi xəta log faylı
                     WriteToErrorLogFile(details, logMessage);

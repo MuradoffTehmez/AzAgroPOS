@@ -248,6 +248,54 @@ namespace AzAgroPOS.BLL.Services
             Log(module, entityId, action, details, userId);
         }
 
+        public void LogError(string message, Exception exception)
+        {
+            try
+            {
+                var auditLog = new AuditLog
+                {
+                    IstifadeciId = null,
+                    Emeliyyat = "ERROR",
+                    Detal = $"{message} - {exception?.Message} - {exception?.StackTrace}",
+                    IP = "Desktop App",
+                    Browser = "Desktop App",
+                    Platform = "Windows",
+                    Tarix = DateTime.Now
+                };
+
+                _context.AuditLoglar.Add(auditLog);
+                _context.SaveChanges();
+            }
+            catch (Exception)
+            {
+                // Log xətalarını susdurmaq - sistem işləməsinə mane olmamalı
+            }
+        }
+
+        public async Task LogErrorAsync(string message, Exception exception)
+        {
+            try
+            {
+                var auditLog = new AuditLog
+                {
+                    IstifadeciId = null,
+                    Emeliyyat = "ERROR",
+                    Detal = $"{message} - {exception?.Message} - {exception?.StackTrace}",
+                    IP = "Desktop App",
+                    Browser = "Desktop App",
+                    Platform = "Windows",
+                    Tarix = DateTime.Now
+                };
+
+                _context.AuditLoglar.Add(auditLog);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                // Log xətalarını susdurmaq - sistem işləməsinə mane olmamalı
+            }
+        }
+
         public void Dispose()
         {
             _context?.Dispose();

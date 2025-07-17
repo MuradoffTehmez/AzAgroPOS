@@ -212,7 +212,7 @@ namespace AzAgroPOS.BLL.Services
                     return "İstifadəçi tapılmadı və ya şifrə yanlışdır.";
                 }
 
-                if (!VerifyPassword(password, istifadeci.ParolHash))
+                if (!VerifyPasswordHash(password, istifadeci.PasswordHash, istifadeci.PasswordSalt))
                 {
                     return "İstifadəçi tapılmadı və ya şifrə yanlışdır.";
                 }
@@ -261,12 +261,15 @@ namespace AzAgroPOS.BLL.Services
                     return (false, "Şifrə ən azı bir böyük hərf, bir kiçik hərf və bir rəqəm olmalıdır.", null);
                 }
 
+                CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
+                
                 var istifadeci = new Istifadeci
                 {
                     Ad = ad,
                     Soyad = soyad,
                     Email = email,
-                    ParolHash = HashPassword(password),
+                    PasswordHash = passwordHash,
+                    PasswordSalt = passwordSalt,
                     RolId = rolId ?? 2,
                     TemaId = temaId ?? 1,
                     Status = "Aktiv",
@@ -303,7 +306,7 @@ namespace AzAgroPOS.BLL.Services
                     return (false, "İstifadəçi tapılmadı.");
                 }
 
-                if (!VerifyPassword(oldPassword, istifadeci.ParolHash))
+                if (!VerifyPasswordHash(oldPassword, istifadeci.PasswordHash, istifadeci.PasswordSalt))
                 {
                     return (false, "Köhnə şifrə yanlışdır.");
                 }
@@ -313,7 +316,9 @@ namespace AzAgroPOS.BLL.Services
                     return (false, "Yeni şifrə ən azı 8 simvoldan, bir böyük hərfdən, bir kiçik hərfdən və bir rəqəmdən ibarət olmalıdır.");
                 }
 
-                istifadeci.ParolHash = HashPassword(newPassword);
+                CreatePasswordHash(newPassword, out byte[] newPasswordHash, out byte[] newPasswordSalt);
+                istifadeci.PasswordHash = newPasswordHash;
+                istifadeci.PasswordSalt = newPasswordSalt;
                 istifadeci.YenilenmeTarixi = DateTime.Now;
                 await _unitOfWork.Istifadeciler.UpdateAsync(istifadeci);
                 await _unitOfWork.CompleteAsync();
