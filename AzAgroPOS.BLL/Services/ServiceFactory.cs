@@ -123,6 +123,12 @@ namespace AzAgroPOS.BLL.Services
             return new HesabatService(context, _auditLogService);
         }
 
+        public static AuditLogService CreateAuditLogService()
+        {
+            EnsureInitialized();
+            return _auditLogService as AuditLogService ?? new AuditLogService();
+        }
+
         private static void EnsureInitialized()
         {
             if (_unitOfWork == null || _auditLogService == null)

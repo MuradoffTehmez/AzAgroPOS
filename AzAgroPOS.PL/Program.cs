@@ -28,6 +28,9 @@ namespace AzAgroPOS.PL
             _host = ServiceCollectionExtensions.CreateAppHost();
             _serviceProvider = _host.Services;
             
+            // ServiceFactory-ni initialize et
+            ServiceFactory.Initialize();
+            
             // Database-i initialize et
             try
             {
@@ -56,6 +59,9 @@ namespace AzAgroPOS.PL
                 Application.Run(loginForm);
             }
 
+            // ServiceFactory resources təmizlə
+            ServiceFactory.Cleanup();
+            
             _host?.Dispose();
         }
 

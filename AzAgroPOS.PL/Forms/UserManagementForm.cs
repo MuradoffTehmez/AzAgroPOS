@@ -29,7 +29,7 @@ namespace AzAgroPOS.PL.Forms
             _istifadeciRepository = new IstifadeciRepository(context);
             _rolRepository = new RolRepository(context);
             _authService = ServiceFactory.CreateAuthService();
-            _auditLogService = new AuditLogService();
+            _auditLogService = ServiceFactory.CreateAuditLogService();
             _currentUser = currentUser;
             
             SetupDataGridView();
