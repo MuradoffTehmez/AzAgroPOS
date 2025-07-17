@@ -26,9 +26,15 @@ namespace AzAgroPOS.Entities.Domain
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Parol hash mütləqdir")]
-        [StringLength(256, ErrorMessage = "Parol hash maksimum 256 simbol ola bilər")]
-        [Column(TypeName = "varchar(256)")]
-        public string ParolHash { get; set; }
+        [Column(TypeName = "varbinary(64)")]
+        public byte[] PasswordHash { get; set; }
+
+        [Required(ErrorMessage = "Parol salt mütləqdir")]
+        [Column(TypeName = "varbinary(64)")]
+        public byte[] PasswordSalt { get; set; }
+
+        [Column(TypeName = "datetime")]
+        public DateTime? SonParolDeyismeTarixi { get; set; }
 
         [ForeignKey("Rol")]
         public int? RolId { get; set; }

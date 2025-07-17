@@ -57,7 +57,7 @@ namespace AzAgroPOS.Tests.Services
                     {
                         MehsulId = 1,
                         Miqdar = 5,
-                        VahidQiymet = 20.00m,
+                        VahidQiymeti = 20.00m,
                         UmumiQiymet = 100.00m
                     }
                 }
@@ -89,7 +89,7 @@ namespace AzAgroPOS.Tests.Services
                 .Returns(testAnbarQaliq);
 
             _mockSatisDetaliRepository.Setup(x => x.AddAsync(It.IsAny<SatisDetali>()))
-                .ReturnsAsync(1);
+                .Returns(Task.FromResult(1));
 
             _mockUnitOfWork.Setup(x => x.CompleteAsync())
                 .ReturnsAsync(1);
@@ -165,7 +165,7 @@ namespace AzAgroPOS.Tests.Services
                     {
                         MehsulId = 999, // Mövcud olmayan məhsul
                         Miqdar = 1,
-                        VahidQiymet = 100,
+                        VahidQiymeti = 100,
                         UmumiQiymet = 100
                     }
                 }
@@ -198,7 +198,7 @@ namespace AzAgroPOS.Tests.Services
                     {
                         MehsulId = 1,
                         Miqdar = 150, // Mövcuddan çox
-                        VahidQiymet = 1,
+                        VahidQiymeti = 1,
                         UmumiQiymet = 150
                     }
                 }
@@ -257,7 +257,7 @@ namespace AzAgroPOS.Tests.Services
                     {
                         MehsulId = 1,
                         Miqdar = invalidQuantity, // Səhv miqdar
-                        VahidQiymet = 100,
+                        VahidQiymeti = 100,
                         UmumiQiymet = 100
                     }
                 }

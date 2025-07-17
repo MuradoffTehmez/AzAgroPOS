@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BCrypt.Net;
 
 namespace AzAgroPOS.BLL.Services
 {
@@ -16,25 +15,47 @@ namespace AzAgroPOS.BLL.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IAuditLogService _auditLogService;
+        private readonly PasswordSecurityService _passwordSecurityService;
         private bool _disposed = false;
 
         public AuthService(IUnitOfWork unitOfWork, IAuditLogService auditLogService = null)
         {
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
             _auditLogService = auditLogService;
+            _passwordSecurityService = new PasswordSecurityService();
         }
 
         /// <summary>
-        /// Hash password using BCrypt with salt
+        /// Təhlükəsiz şifrə hash və salt yaradır
         /// </summary>
-        /// <param name="password">Plain text password</param>
-        /// <returns>Hashed password with salt</returns>
-        public string HashPassword(string password)
+        /// <param name="password">Orijinal şifrə</param>
+        /// <param name="passwordHash">Çıxış: Hash dəyəri</param>
+        /// <param name="passwordSalt">Çıxış: Salt dəyəri</param>
+        public void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
-            if (string.IsNullOrWhiteSpace(password))
-                throw new ArgumentException("Password cannot be null or empty", nameof(password));
+            _passwordSecurityService.CreatePasswordHash(password, out passwordHash, out passwordSalt);
+        }
 
-            return BCrypt.Net.BCrypt.HashPassword(password, BCrypt.Net.BCrypt.GenerateSalt(12));
+        /// <summary>
+        /// Şifrənin düzgünlüyünü yoxlayır
+        /// </summary>
+        /// <param name="password">Yoxlanılacaq şifrə</param>
+        /// <param name="passwordHash">Saxlanılmış hash</param>
+        /// <param name="passwordSalt">Saxlanılmış salt</param>
+        /// <returns>Şifrə düzgündürsə true</returns>
+        public bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
+        {
+            return _passwordSecurityService.VerifyPasswordHash(password, passwordHash, passwordSalt);
+        }
+
+        /// <summary>
+        /// Şifrənin güclülüyünü yoxlayır
+        /// </summary>
+        /// <param name="password">Yoxlanılacaq şifrə</param>
+        /// <returns>Şifrə güclülük nəticəsi</returns>
+        public PasswordStrengthResult ValidatePasswordStrength(string password)
+        {
+            return _passwordSecurityService.ValidatePasswordStrength(password);
         }
 
         public async Task<(bool Success, string Message)> ResetPasswordAsync(int userId, string newPassword)
@@ -46,9 +67,11 @@ namespace AzAgroPOS.BLL.Services
                     return (false, "Yeni şifrə boş ola bilməz.");
                 }
 
-                if (!IsPasswordComplex(newPassword))
+                // Şifrə güclülüyünü yoxla
+                var strengthResult = ValidatePasswordStrength(newPassword);
+                if (!strengthResult.IsValid)
                 {
-                    return (false, "Şifrə ən azı 8 simvoldan, bir böyük hərfdən, bir kiçik hərfdən və bir rəqəmdən ibarət olmalıdır.");
+                    return (false, strengthResult.ErrorMessage);
                 }
 
                 var istifadeci = await _unitOfWork.Istifadeciler.GetByIdAsync(userId);
@@ -57,15 +80,28 @@ namespace AzAgroPOS.BLL.Services
                     return (false, "İstifadəçi tapılmadı.");
                 }
 
-                istifadeci.ParolHash = HashPassword(newPassword);
+                // Təhlükəsiz hash və salt yaradırıq
+                CreatePasswordHash(newPassword, out byte[] passwordHash, out byte[] passwordSalt);
+                
+                istifadeci.PasswordHash = passwordHash;
+                istifadeci.PasswordSalt = passwordSalt;
+                istifadeci.SonParolDeyismeTarixi = DateTime.Now;
                 istifadeci.YenilenmeTarixi = DateTime.Now;
+                
                 await _unitOfWork.Istifadeciler.UpdateAsync(istifadeci);
                 await _unitOfWork.CompleteAsync();
+
+                // Audit log - şifrə sıfırlanması
+                _auditLogService?.LogAction("Authentication", "PASSWORD_RESET", userId, 
+                    $"Şifrə sıfırlandı: {istifadeci.Email}", userId);
 
                 return (true, "Şifrə uğurla sıfırlandı.");
             }
             catch (Exception ex)
             {
+                // Audit log - xəta
+                _auditLogService?.LogError("Password reset xətası", ex);
+                
                 return (false, $"Xəta baş verdi: {ex.Message}");
             }
         }
@@ -102,22 +138,32 @@ namespace AzAgroPOS.BLL.Services
             {
                 var istifadeci = _unitOfWork.Istifadeciler.GetByEmail(email);
 
-                // Always perform hash computation to prevent timing attacks
-                string dummyHash = "$2a$12$dummyhashfortimingatnormalizedconstanttime";
-
+                // Timing attack qarşı dummy hash və salt yaradırıq
+                byte[] dummyHash = new byte[32];
+                byte[] dummySalt = new byte[32];
+                
                 if (istifadeci == null)
                 {
-                    // Perform dummy verification to normalize timing
-                    VerifyPassword(password, dummyHash);
+                    // Dummy verification to normalize timing
+                    VerifyPasswordHash(password, dummyHash, dummySalt);
                     return "İstifadəçi tapılmadı və ya şifrə yanlışdır.";
                 }
 
-                if (!VerifyPassword(password, istifadeci.ParolHash))
+                if (istifadeci.PasswordHash == null || istifadeci.PasswordSalt == null)
                 {
+                    return "İstifadəçi şifrə məlumatları düzgün deyil. Zəhmət olmasa sistem administratoru ilə əlaqə saxlayın.";
+                }
+
+                if (!VerifyPasswordHash(password, istifadeci.PasswordHash, istifadeci.PasswordSalt))
+                {
+                    // Audit log - uğursuz giriş cəhdi
+                    _auditLogService?.LogAction("Authentication", "LOGIN_FAILED", istifadeci.Id, 
+                        $"Uğursuz giriş cəhdi: {email}", istifadeci.Id);
+                    
                     return "İstifadəçi tapılmadı və ya şifrə yanlışdır.";
                 }
 
-                if (istifadeci.Status != "Aktiv")
+                if (istifadeci.Status != SystemConstants.Status.Active)
                 {
                     return $"İstifadəçi aktiv deyil. Status: {istifadeci.Status}";
                 }
@@ -127,10 +173,17 @@ namespace AzAgroPOS.BLL.Services
                 _unitOfWork.Istifadeciler.Update(istifadeci);
                 _unitOfWork.Complete();
 
+                // Audit log - uğurlu giriş
+                _auditLogService?.LogAction("Authentication", "LOGIN_SUCCESS", istifadeci.Id, 
+                    $"Uğurlu giriş: {email}", istifadeci.Id);
+
                 return $"Uğurlu giriş! Xoş gəldiniz, {istifadeci.Ad}.";
             }
             catch (Exception ex)
             {
+                // Audit log - sistem xətası
+                _auditLogService?.LogError("Authentication login xətası", ex);
+                
                 return $"Sistem xətası: {ex.Message}";
             }
         }

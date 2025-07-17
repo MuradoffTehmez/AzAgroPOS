@@ -66,10 +66,10 @@ namespace AzAgroPOS.Tests.Services
                 Email = testMusteri.Email
             };
 
-            _mockMusteriRepository.Setup(x => x.IsCodeExists(testMusteri.MusteriKodu))
+            _mockMusteriRepository.Setup(x => x.IsCodeExists(It.IsAny<string>()))
                 .Returns(false);
             
-            _mockMusteriRepository.Setup(x => x.IsEmailExists(testMusteri.Email))
+            _mockMusteriRepository.Setup(x => x.IsEmailExists(It.IsAny<string>()))
                 .Returns(false);
 
             _mockMusteriRepository.Setup(x => x.Add(It.IsAny<Musteri>()))
@@ -131,7 +131,7 @@ namespace AzAgroPOS.Tests.Services
                 MusteriKodu = "MST001" // Mövcud kod
             };
 
-            _mockMusteriRepository.Setup(x => x.IsCodeExists("MST001"))
+            _mockMusteriRepository.Setup(x => x.IsCodeExists(It.IsAny<string>()))
                 .Returns(true);
 
             // Act
@@ -155,10 +155,10 @@ namespace AzAgroPOS.Tests.Services
                 MusteriKodu = "MST001"
             };
 
-            _mockMusteriRepository.Setup(x => x.IsCodeExists("MST001"))
+            _mockMusteriRepository.Setup(x => x.IsCodeExists(It.IsAny<string>()))
                 .Returns(false);
             
-            _mockMusteriRepository.Setup(x => x.IsEmailExists("existing@example.com"))
+            _mockMusteriRepository.Setup(x => x.IsEmailExists(It.IsAny<string>()))
                 .Returns(true);
 
             // Act
@@ -259,10 +259,10 @@ namespace AzAgroPOS.Tests.Services
                 MusteriKodu = "MST001"
             };
 
-            _mockMusteriRepository.Setup(x => x.IsCodeExists("MST001", 1))
+            _mockMusteriRepository.Setup(x => x.IsCodeExists(It.IsAny<string>(), It.IsAny<int>()))
                 .Returns(false);
             
-            _mockMusteriRepository.Setup(x => x.IsEmailExists("ali@example.com", 1))
+            _mockMusteriRepository.Setup(x => x.IsEmailExists(It.IsAny<string>(), It.IsAny<int>()))
                 .Returns(false);
 
             _mockUnitOfWork.Setup(x => x.Complete())

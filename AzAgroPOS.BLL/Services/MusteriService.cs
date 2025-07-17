@@ -12,15 +12,13 @@ using System.Threading.Tasks;
 
 namespace AzAgroPOS.BLL.Services
 {
-    public class MusteriService : IDisposable
+    public class MusteriService : BaseDisposableService
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IAuditLogService _auditLogService;
-        private bool _disposed = false;
 
-        public MusteriService(IUnitOfWork unitOfWork, IAuditLogService auditLogService)
+        public MusteriService(IUnitOfWork unitOfWork, IAuditLogService auditLogService, ILoggerService logger = null) 
+            : base(unitOfWork, logger)
         {
-            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
             _auditLogService = auditLogService ?? throw new ArgumentNullException(nameof(auditLogService));
         }
 
@@ -28,6 +26,7 @@ namespace AzAgroPOS.BLL.Services
 
         public IEnumerable<Musteri> GetAllCustomers()
         {
+            ThrowIfDisposed();
             return ExecuteWithExceptionHandling(
                 () => _unitOfWork.Musteriler.GetAll().ToList(),
                 "Müştəri məlumatları alınarkən xəta");

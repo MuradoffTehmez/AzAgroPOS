@@ -54,7 +54,7 @@ namespace AzAgroPOS.Tests.Security
             // Assert  
             // Real config faylı test zamanı şifrələnməmiş ola bilər
             // Bu test environment-a bağlıdır, məntiq yoxlanılır
-            result.Should().BeOfType<bool>("çünki protected status bool dəyər qaytarmalıdır");
+            result.Should().BeOfType(typeof(bool)); // Protected status bool dəyər qaytarmalıdır
         }
 
         [Fact]
