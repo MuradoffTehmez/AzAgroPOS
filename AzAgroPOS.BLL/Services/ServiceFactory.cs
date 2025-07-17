@@ -136,6 +136,11 @@ namespace AzAgroPOS.BLL.Services
             return _auditLogService as AuditLogService ?? new AuditLogService();
         }
 
+        public static ILoggerService CreateLoggerService()
+        {
+            return CreateService(() => new FileLoggerService());
+        }
+
         /// <summary>
         /// Generic servis yaratma metodu
         /// </summary>

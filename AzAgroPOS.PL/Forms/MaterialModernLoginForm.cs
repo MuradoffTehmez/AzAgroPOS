@@ -60,6 +60,15 @@ namespace AzAgroPOS.PL.Forms
             InitializeAnimations();
             
             this.Load += async (s, e) => await TryAutoLoginAsync();
+            
+            // Login form bağlandıqda MainForm açılmayıbsa proqramı bitir
+            this.FormClosing += (s, e) =>
+            {
+                if (this.DialogResult != DialogResult.OK)
+                {
+                    Application.Exit();
+                }
+            };
         }
 
         public MaterialModernLoginForm() : this(Program.ServiceProvider)
@@ -641,14 +650,20 @@ namespace AzAgroPOS.PL.Forms
         {
             SessionManager.SetCurrentUser(user);
             
-            this.Hide();
+            // MainForm-u yarat
             var mainForm = new MainForm(user, _serviceProvider);
+            
+            // MainForm bağlandıqda bütün aplikasiyanı bağla
+            mainForm.FormClosed += (s, args) => Application.Exit();
+            
+            // MainForm-u göstər
+            mainForm.Show();
+            
+            // Login formunu gizlət
+            this.Hide();
+            
+            // Login form-un DialogResult-ını təyin et
             this.DialogResult = DialogResult.OK;
-            
-            // MainForm-u Application.Run ilə başlat
-            Application.Run(mainForm);
-            
-            SessionManager.ClearSession();
         }
 
         private async Task HandleRememberMe(Istifadeci user)

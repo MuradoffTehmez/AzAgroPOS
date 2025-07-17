@@ -72,6 +72,10 @@ namespace AzAgroPOS.PL.Services
             services.AddScoped<IAuditLogService, AuditLogService>();
             services.AddScoped<IErrorHandlingService, ErrorHandlingService>();
             services.AddScoped<IUserContext, UserContext>();
+            
+            // Loglama servisini Singleton olaraq qeydiyyatdan keçiririk
+            // Singleton - bütün proqram boyunca eyni logger obyektindən istifadə edir
+            services.AddSingleton<ILoggerService, FileLoggerService>();
 
             // Services (concrete implementations)
             services.AddScoped<AuthService>();

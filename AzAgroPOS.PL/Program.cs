@@ -1,10 +1,12 @@
 ﻿using AzAgroPOS.BLL.Services;
+using AzAgroPOS.BLL.Interfaces;
 using AzAgroPOS.DAL;
 using AzAgroPOS.PL.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -21,6 +23,11 @@ namespace AzAgroPOS.PL
         [STAThread]
         static void Main()
         {
+            // Qlobal xəta tutucularını quraşdırırıq - Kritik Məsələ №3
+            Application.ThreadException += Application_ThreadException;
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             
@@ -57,8 +64,8 @@ namespace AzAgroPOS.PL
                 using var loginScope = _serviceProvider.CreateScope();
                 var loginForm = new Forms.MaterialModernLoginForm(loginScope.ServiceProvider);
                 
-                // Login form özü MainForm-u başladacaq
-                loginForm.ShowDialog();
+                // Login form-u əsas mesaj döngüsü kimi başlat
+                Application.Run(loginForm);
             }
 
             // ServiceFactory resources təmizlə
@@ -68,6 +75,107 @@ namespace AzAgroPOS.PL
         }
 
         public static IServiceProvider ServiceProvider => _serviceProvider;
+        
+        #region Qlobal Xəta İdarəetməsi - Kritik Məsələ №3
+        
+        /// <summary>
+        /// UI thread-də baş verən tutulmamış xətalar üçün
+        /// </summary>
+        private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
+        {
+            HandleException(e.Exception, "UI Thread Exception");
+        }
+
+        /// <summary>
+        /// Arxa plan thread-lərdə baş verən tutulmamış xətalar üçün
+        /// </summary>
+        private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            HandleException(e.ExceptionObject as Exception, "AppDomain Unhandled Exception");
+        }
+
+        /// <summary>
+        /// Xətaları idarə edən mərkəzi metod
+        /// </summary>
+        private static void HandleException(Exception ex, string source = "Unknown")
+        {
+            if (ex == null) return;
+
+            try
+            {
+                // Xətanı log faylına yazırıq
+                ILoggerService logger = null;
+                
+                if (_serviceProvider != null)
+                {
+                    try
+                    {
+                        logger = _serviceProvider.GetService<ILoggerService>();
+                    }
+                    catch
+                    {
+                        // DI container-dən alına bilməzsə, manual yaradırıq
+                        logger = new FileLoggerService();
+                    }
+                }
+                else
+                {
+                    // ServiceProvider hələ hazır deyilsə, manual yaradırıq
+                    logger = new FileLoggerService();
+                }
+
+                // Xəta məlumatını əlavə kontekst ilə loglayırıq
+                logger?.LogError(new Exception($"[{source}] {ex.Message}", ex));
+                
+                // Əlavə sistem məlumatları
+                logger?.LogInfo($"System Info - OS: {Environment.OSVersion}, .NET: {Environment.Version}");
+                logger?.LogInfo($"Application: {Application.ProductName} v{Application.ProductVersion}");
+            }
+            catch (Exception loggingEx)
+            {
+                // Son çarə - Windows Event Log
+                try
+                {
+                    System.Diagnostics.EventLog.WriteEntry("AzAgroPOS", 
+                        $"Kritik xəta və loglama problemi!\nXəta: {ex?.Message}\nLoglama xətası: {loggingEx.Message}", 
+                        System.Diagnostics.EventLogEntryType.Error);
+                }
+                catch
+                {
+                    // Heç bir log mexanizmi işləmirsə, sadəcə Windows mesaj qutusu göstər
+                }
+            }
+
+            // İstifadəçiyə anlaşıqlı mesaj göstəririk
+            try
+            {
+                MessageBox.Show(
+                    "Gözlənilməz bir xəta baş verdi. Problem haqqında məlumat avtomatik olaraq qeydə alındı.\n\n" +
+                    "Xəta məlumatları 'logs' qovluğunda saxlanılıb.\n\n" +
+                    "Zəhmət olmasa proqramı yenidən başladın.",
+                    "AzAgroPOS - Sistem Xətası",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+            }
+            catch
+            {
+                // MessageBox də göstərilə bilmirsə, heç nə etmə
+            }
+
+            // Proqramı təhlükəsiz şəkildə bağlayırıq
+            try
+            {
+                Application.Exit();
+            }
+            catch
+            {
+                // Son çarə
+                Environment.Exit(1);
+            }
+        }
+        
+        #endregion
         
         private static ILogger<DatabaseInitializationService> CreateLogger()
         {

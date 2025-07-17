@@ -425,10 +425,27 @@ namespace AzAgroPOS.PL.Forms
             if (MessageBox.Show("Sistemdən çıxmaq istədiyinizə əminsiniz?", "Təsdiq", 
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
+                // Session-ı təmizlə
+                SessionManager.ClearSession();
+                
+                // MainForm-u gizlət
                 this.Hide();
-                var loginForm = new LoginForm();
-                loginForm.ShowDialog();
-                this.Close();
+                
+                // Yeni login form yarat
+                using var scope = _serviceProvider.CreateScope();
+                var loginForm = new MaterialModernLoginForm(scope.ServiceProvider);
+                
+                // Login form-u göstər və nəticəni yoxla
+                if (loginForm.ShowDialog() == DialogResult.OK)
+                {
+                    // Əgər yenidən login oldusa, MainForm-u yenilə
+                    this.Show();
+                }
+                else
+                {
+                    // Login ləğv edilibsə, proqramı bağla
+                    Application.Exit();
+                }
             }
         }
 
