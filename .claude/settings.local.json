@@ -11,7 +11,11 @@
       "Bash(dotnet clean:*)",
       "Bash(rm:*)",
       "Bash(del \"C:\\AzAgroPOS\\AzAgroPOS.PL\\Forms\\TestForm.cs\")",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(del:*)",
+      "Bash(Remove-Item \"C:\\AzAgroPOS\\AzAgroPOS.PL\\LoginForm.cs\" -Force)",
+      "Bash(Remove-Item \"C:\\AzAgroPOS\\AzAgroPOS.PL\\LoginForm.Designer.cs\" -Force)",
+      "Bash(Remove-Item \"C:\\AzAgroPOS\\AzAgroPOS.PL\\LoginForm.resx\" -Force)"
     ],
     "deny": []
   }

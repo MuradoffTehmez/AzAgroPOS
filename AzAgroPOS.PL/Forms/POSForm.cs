@@ -11,7 +11,7 @@ using AzAgroPOS.BLL.Interfaces;
 
 namespace AzAgroPOS.PL.Forms
 {
-    public partial class POSForm : Form
+    public partial class POSForm : BaseForm
     {
         private readonly MehsulService _mehsulService;
         private readonly SatisService _satisService;
@@ -21,7 +21,7 @@ namespace AzAgroPOS.PL.Forms
         private Istifadeci _currentUser;
 
 
-        public POSForm()
+        public POSForm() : base()
         {
             InitializeComponent();
             _mehsulService = ServiceFactory.CreateMehsulService();
@@ -31,7 +31,7 @@ namespace AzAgroPOS.PL.Forms
             InitializeForm();
         }
 
-        public POSForm(Istifadeci currentUser)
+        public POSForm(Istifadeci currentUser) : base()
         {
             InitializeComponent();
             _mehsulService = ServiceFactory.CreateMehsulService();

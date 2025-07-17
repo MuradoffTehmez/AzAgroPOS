@@ -3,6 +3,7 @@ using AzAgroPOS.DAL;
 using AzAgroPOS.DAL.Repositories;
 using AzAgroPOS.Entities.Domain;
 using AzAgroPOS.BLL.Interfaces;
+using AzAgroPOS.PL.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,14 +12,14 @@ using System.Windows.Forms;
 
 namespace AzAgroPOS.PL.Forms
 {
-    public partial class ProductManagementForm : Form
+    public partial class ProductManagementForm : BaseForm
     {
         private readonly MehsulService _mehsulService;
         private readonly MehsulRepository _mehsulRepository;
         private readonly MehsulKateqoriyasiRepository _kateqoriyaRepository;
         private readonly Istifadeci _currentUser;
 
-        public ProductManagementForm(Istifadeci currentUser)
+        public ProductManagementForm(Istifadeci currentUser) : base()
         {
             InitializeComponent();
             var context = new AzAgroDbContext();
@@ -38,16 +39,11 @@ namespace AzAgroPOS.PL.Forms
 
         private async Task LoadDataAsync()
         {
-            try
+            await ExecuteAsync(async () =>
             {
                 var allProducts = await _mehsulRepository.GetAllAsync();
                 dgvProducts.DataSource = allProducts;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Məhsullar yüklənərkən xəta: {ex.Message}", "Xəta",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            }, "Məhsullar yüklənərkən xəta baş verdi");
         }
 
         private void SetupDataGridView()
@@ -118,7 +114,7 @@ namespace AzAgroPOS.PL.Forms
 
         private async Task LoadFiltersAsync()
         {
-            try
+            await ExecuteAsync(async () =>
             {
                 // Categories
                 var categories = await _kateqoriyaRepository.GetAllActiveAsync();
@@ -136,17 +132,12 @@ namespace AzAgroPOS.PL.Forms
                 cmbStatus.Items.Add("Aktiv");
                 cmbStatus.Items.Add("Deaktiv");
                 cmbStatus.SelectedIndex = 0;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Filterlər yüklənərkən xəta: {ex.Message}", "Xəta",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            }, "Filterlər yüklənərkən xəta baş verdi");
         }
 
         private async Task LoadStatisticsAsync()
         {
-            try
+            await ExecuteAsync(async () =>
             {
                 var stats = await _mehsulService.GetMehsulStatistikalarAsync();
                 var stockValue = await _mehsulService.HesablaUmumiStokDegeriAsync();
@@ -155,12 +146,7 @@ namespace AzAgroPOS.PL.Forms
                 lblActiveCount.Text = $"Aktiv: {stats["AktivMehsulSayi"]}";
                 lblLowStockCount.Text = $"Az Stoklu: {stats["StoktanKenardaMehsulSayi"]}";
                 lblStockValue.Text = $"Stok Dəyəri: {stockValue:F2} AZN";
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Statistikalar yüklənərkən xəta: {ex.Message}", "Xəta",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            }, "Statistikalar yüklənərkən xəta baş verdi");
         }
 
         private async void btnSearch_Click(object sender, EventArgs e)
@@ -178,7 +164,7 @@ namespace AzAgroPOS.PL.Forms
 
         private async Task ApplyFiltersAsync()
         {
-            try
+            await ExecuteAsync(async () =>
             {
                 string searchTerm = txtSearch.Text.Trim();
                 int categoryId = (int)cmbCategory.SelectedValue;
@@ -190,12 +176,7 @@ namespace AzAgroPOS.PL.Forms
                     status == "Hamısı" ? null : status);
 
                 dgvProducts.DataSource = filteredProducts;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Filterlənərkən xəta: {ex.Message}", "Xəta",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            }, "Filterlənərkən xəta baş verdi");
         }
 
         private async void btnClearFilter_Click(object sender, EventArgs e)
@@ -220,8 +201,7 @@ namespace AzAgroPOS.PL.Forms
         {
             if (dgvProducts.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Düzəliş etmək üçün məhsul seçin.", "Məlumat",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ShowInfo("Düzəliş etmək üçün məhsul seçin.");
                 return;
             }
 
@@ -242,55 +222,49 @@ namespace AzAgroPOS.PL.Forms
         {
             if (dgvProducts.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Silmək üçün məhsul seçin.", "Məlumat",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ShowInfo("Silmək üçün məhsul seçin.");
                 return;
             }
 
             var selectedProduct = (Mehsul)dgvProducts.SelectedRows[0].DataBoundItem;
 
-            if (MessageBox.Show($"'{selectedProduct.Ad}' məhsulunu silmək istədiyinizə əminsiniz?", "Təsdiq",
-                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            if (ShowConfirmation($"'{selectedProduct.Ad}' məhsulunu silmək istədiyinizə əminsiniz?"))
             {
-                var result = await _mehsulService.DeleteMehsulAsync(selectedProduct.Id, _currentUser.Id);
+                await ExecuteAsync(async () =>
+                {
+                    var result = await _mehsulService.DeleteMehsulAsync(selectedProduct.Id, _currentUser.Id);
 
-                if (result.Success)
-                {
-                    MessageBox.Show(result.Message, "Uğurlu", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    await LoadDataAsync();
-                    await LoadStatisticsAsync();
-                }
-                else
-                {
-                    MessageBox.Show(result.Message, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
+                    if (result.Success)
+                    {
+                        ShowSuccess(result.Message);
+                        await LoadDataAsync();
+                        await LoadStatisticsAsync();
+                    }
+                    else
+                    {
+                        ShowWarning(result.Message);
+                    }
+                }, "Məhsul silinərkən xəta baş verdi");
             }
         }
 
         private async void btnLowStock_Click(object sender, EventArgs e)
         {
-            try
+            await ExecuteAsync(async () =>
             {
                 var lowStockProducts = await _mehsulService.GetStoktanKenardaMehsullarAsync();
                 dgvProducts.DataSource = lowStockProducts;
 
                 if (lowStockProducts.Count == 0)
                 {
-                    MessageBox.Show("Az stoklu məhsul tapılmadı.", "Məlumat",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    ShowInfo("Az stoklu məhsul tapılmadı.");
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Az stoklu məhsullar yüklənərkən xəta: {ex.Message}", "Xəta",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            }, "Az stoklu məhsullar yüklənərkən xəta baş verdi");
         }
 
         private void btnExport_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Excel export funksiyası tezliklə əlavə ediləcək.", "Məlumat",
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
+            ShowInfo("Excel export funksiyası tezliklə əlavə ediləcək.");
         }
 
         private void dgvProducts_CellDoubleClick(object sender, DataGridViewCellEventArgs e)

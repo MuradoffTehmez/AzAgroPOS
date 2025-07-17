@@ -2,6 +2,7 @@ using AzAgroPOS.BLL.Services;
 using AzAgroPOS.DAL;
 using AzAgroPOS.DAL.Repositories;
 using AzAgroPOS.BLL.Interfaces;
+using AzAgroPOS.PL.Services;
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -10,12 +11,12 @@ using System.Windows.Forms;
 
 namespace AzAgroPOS.PL.Forms
 {
-    public partial class UserAddForm : Form
+    public partial class UserAddForm : BaseForm
     {
         private readonly AuthService _authService;
         private readonly RolRepository _rolRepository;
 
-        public UserAddForm()
+        public UserAddForm() : base()
         {
             InitializeComponent();
             var context = new AzAgroDbContext();

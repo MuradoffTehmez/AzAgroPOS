@@ -11,14 +11,14 @@
         /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+        //protected override void Dispose(bool disposing)
+        //{
+        //    if (disposing && (components != null))
+        //    {
+        //        components.Dispose();
+        //    }
+        //    base.Dispose(disposing);
+        //}
 
         #region Windows Form Designer generated code
 
@@ -39,7 +39,7 @@
             this.lnkRegister = new System.Windows.Forms.LinkLabel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel1.SuspendLayout();
-            this.SuspendLayout();
+            //this.SuspendLayout();
             // 
             // label1
             // 
@@ -76,7 +76,7 @@
             this.btnLogin.TabIndex = 4;
             this.btnLogin.Text = "🔑 Daxil Ol";
             this.btnLogin.UseVisualStyleBackColor = false;
-            this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
+            //this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
             // 
             // txtEmail
             // 
@@ -119,7 +119,7 @@
             this.chkRememberMe.TabIndex = 3;
             this.chkRememberMe.Text = "Məni xatırla";
             this.chkRememberMe.UseVisualStyleBackColor = true;
-            this.chkRememberMe.CheckedChanged += new System.EventHandler(this.chkRememberMe_CheckedChanged);
+            //this.chkRememberMe.CheckedChanged += new System.EventHandler(this.chkRememberMe_CheckedChanged);
             // 
             // lnkForgotPassword
             // 
@@ -132,7 +132,7 @@
             this.lnkForgotPassword.TabIndex = 5;
             this.lnkForgotPassword.TabStop = true;
             this.lnkForgotPassword.Text = "Şifrəni unutmusan?";
-            this.lnkForgotPassword.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkForgotPassword_LinkClicked);
+            //this.lnkForgotPassword.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkForgotPassword_LinkClicked);
             // 
             // lnkRegister
             // 
@@ -145,7 +145,7 @@
             this.lnkRegister.TabIndex = 6;
             this.lnkRegister.TabStop = true;
             this.lnkRegister.Text = "Hesabın yoxdur? Qeydiyyat";
-            this.lnkRegister.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkRegister_LinkClicked);
+            //this.lnkRegister.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkRegister_LinkClicked);
             // 
             // panel1
             // 
@@ -159,28 +159,28 @@
             // 
             // LoginForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(404, 380);
-            this.Controls.Add(this.panel1);
-            this.Controls.Add(this.lnkRegister);
-            this.Controls.Add(this.lnkForgotPassword);
-            this.Controls.Add(this.chkRememberMe);
-            this.Controls.Add(this.txtPassword);
-            this.Controls.Add(this.txtEmail);
-            this.Controls.Add(this.btnLogin);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
-            this.Name = "LoginForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "AzAgroPOS - Sistemə Giriş";
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            //this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            //this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            //this.BackColor = System.Drawing.Color.White;
+            //this.ClientSize = new System.Drawing.Size(404, 380);
+            //this.Controls.Add(this.panel1);
+            //this.Controls.Add(this.lnkRegister);
+            //this.Controls.Add(this.lnkForgotPassword);
+            //this.Controls.Add(this.chkRememberMe);
+            //this.Controls.Add(this.txtPassword);
+            //this.Controls.Add(this.txtEmail);
+            //this.Controls.Add(this.btnLogin);
+            //this.Controls.Add(this.label2);
+            //this.Controls.Add(this.label1);
+            //this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            //this.MaximizeBox = false;
+            //this.Name = "LoginForm";
+            //this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            //this.Text = "AzAgroPOS - Sistemə Giriş";
+            //this.panel1.ResumeLayout(false);
+            //this.panel1.PerformLayout();
+            //this.ResumeLayout(false);
+            //this.PerformLayout();
 
         }
 

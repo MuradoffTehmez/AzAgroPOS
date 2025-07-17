@@ -3,6 +3,7 @@ using AzAgroPOS.DAL;
 using AzAgroPOS.DAL.Repositories;
 using AzAgroPOS.Entities.Domain;
 using AzAgroPOS.BLL.Interfaces;
+using AzAgroPOS.PL.Services;
 using System;
 using System.Globalization;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ using System.Windows.Forms;
 
 namespace AzAgroPOS.PL.Forms
 {
-    public partial class ProductEditForm : Form
+    public partial class ProductEditForm : BaseForm
     {
         private readonly MehsulService _mehsulService;
         private readonly MehsulKateqoriyasiRepository _kateqoriyaRepository;
@@ -18,7 +19,7 @@ namespace AzAgroPOS.PL.Forms
         private readonly Istifadeci _currentUser;
         private readonly Mehsul _product;
 
-        public ProductEditForm(Mehsul product, Istifadeci currentUser)
+        public ProductEditForm(Mehsul product, Istifadeci currentUser) : base()
         {
             InitializeComponent();
             var context = new AzAgroDbContext();

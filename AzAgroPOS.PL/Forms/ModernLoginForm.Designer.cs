@@ -11,14 +11,14 @@ namespace AzAgroPOS.PL.Forms
         /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+        //protected override void Dispose(bool disposing)
+        //{
+        //    if (disposing && (components != null))
+        //    {
+        //        components.Dispose();
+        //    }
+        //    base.Dispose(disposing);
+        //}
 
         #region Windows Form Designer generated code
 
@@ -28,16 +28,16 @@ namespace AzAgroPOS.PL.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            this.SuspendLayout();
-            // 
-            // ModernLoginForm
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1000, 600);
-            this.Name = "ModernLoginForm";
-            this.Text = "AzAgroPOS Giriş";
-            this.ResumeLayout(false);
+            //this.SuspendLayout();
+            //// 
+            //// ModernLoginForm
+            //// 
+            //this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            //this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            //this.ClientSize = new System.Drawing.Size(1000, 600);
+            //this.Name = "ModernLoginForm";
+            //this.Text = "AzAgroPOS Giriş";
+            //this.ResumeLayout(false);
 
         }
 
