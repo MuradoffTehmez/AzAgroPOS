@@ -643,10 +643,12 @@ namespace AzAgroPOS.PL.Forms
             
             this.Hide();
             var mainForm = new MainForm(user, _serviceProvider);
-            mainForm.ShowDialog();
+            this.DialogResult = DialogResult.OK;
+            
+            // MainForm-u Application.Run ilə başlat
+            Application.Run(mainForm);
             
             SessionManager.ClearSession();
-            this.Close();
         }
 
         private async Task HandleRememberMe(Istifadeci user)

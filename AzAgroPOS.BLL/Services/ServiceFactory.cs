@@ -2,6 +2,7 @@ using AzAgroPOS.DAL;
 using AzAgroPOS.DAL.Interfaces;
 using AzAgroPOS.DAL.Repositories;
 using AzAgroPOS.BLL.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 
 namespace AzAgroPOS.BLL.Services
@@ -12,18 +13,26 @@ namespace AzAgroPOS.BLL.Services
     /// </summary>
     public static class ServiceFactory
     {
-        private static IUnitOfWork _unitOfWork;
-        private static IAuditLogService _auditLogService;
+        private static IServiceProvider _serviceProvider;
 
         /// <summary>
-        /// Factory-ni başlat
+        /// Factory-ni ServiceProvider ilə başlat
         /// </summary>
-        public static void Initialize()
+        public static void Initialize(IServiceProvider serviceProvider = null)
         {
-            var context = new AzAgroDbContext();
-            _unitOfWork = new UnitOfWork(context);
-            _auditLogService = new AuditLogService(context);
+            _serviceProvider = serviceProvider;
+            
+            // Əgər serviceProvider verilməyibsə, legacy yolla yarad
+            if (_serviceProvider == null)
+            {
+                var context = new AzAgroDbContext();
+                _unitOfWork = new UnitOfWork(context);
+                _auditLogService = new AuditLogService(context);
+            }
         }
+
+        private static IUnitOfWork _unitOfWork;
+        private static IAuditLogService _auditLogService;
 
         /// <summary>
         /// Factory resources təmizlə
@@ -37,14 +46,12 @@ namespace AzAgroPOS.BLL.Services
         // Əsas servislər
         public static SatisService CreateSatisService()
         {
-            EnsureInitialized();
-            return new SatisService(_unitOfWork);
+            return CreateService(() => new SatisService(_unitOfWork));
         }
 
         public static MehsulService CreateMehsulService()
         {
-            EnsureInitialized();
-            return new MehsulService(_unitOfWork, _auditLogService);
+            return CreateService(() => new MehsulService(_unitOfWork, _auditLogService));
         }
 
         public static MusteriService CreateMusteriService()
@@ -127,6 +134,21 @@ namespace AzAgroPOS.BLL.Services
         {
             EnsureInitialized();
             return _auditLogService as AuditLogService ?? new AuditLogService();
+        }
+
+        /// <summary>
+        /// Generic servis yaratma metodu
+        /// </summary>
+        private static T CreateService<T>(Func<T> fallbackFactory) where T : class
+        {
+            if (_serviceProvider != null)
+            {
+                using var scope = _serviceProvider.CreateScope();
+                return scope.ServiceProvider.GetRequiredService<T>();
+            }
+            
+            EnsureInitialized();
+            return fallbackFactory();
         }
 
         private static void EnsureInitialized()

@@ -230,7 +230,7 @@ namespace AzAgroPOS.PL.Forms
             var normalColor = ModernTheme.Colors.Primary;
             var activeColor = ModernTheme.Colors.PrimaryDark;
             
-            foreach (Control control in sidebarPanel.Controls)
+            foreach (Control control in pnlSidebar.Controls)
             {
                 if (control is Button btn)
                 {
@@ -584,7 +584,6 @@ namespace AzAgroPOS.PL.Forms
 
         // Control declarations
         private Panel topPanel;
-        private Panel sidebarPanel;
         private Panel mainContentPanel;
         private Panel dashboardPanel;
         private Panel customerSubmenu;

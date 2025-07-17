@@ -28,8 +28,8 @@ namespace AzAgroPOS.PL
             _host = ServiceCollectionExtensions.CreateAppHost();
             _serviceProvider = _host.Services;
             
-            // ServiceFactory-ni initialize et
-            ServiceFactory.Initialize();
+            // ServiceFactory-ni ServiceProvider ilə initialize et
+            ServiceFactory.Initialize(_serviceProvider);
             
             // Database-i initialize et
             try
@@ -56,7 +56,9 @@ namespace AzAgroPOS.PL
                 // Start with MaterialModernLoginForm using DI
                 using var loginScope = _serviceProvider.CreateScope();
                 var loginForm = new Forms.MaterialModernLoginForm(loginScope.ServiceProvider);
-                Application.Run(loginForm);
+                
+                // Login form özü MainForm-u başladacaq
+                loginForm.ShowDialog();
             }
 
             // ServiceFactory resources təmizlə

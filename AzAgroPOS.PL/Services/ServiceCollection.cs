@@ -2,6 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using AzAgroPOS.DAL;
 using AzAgroPOS.DAL.Repositories;
+using AzAgroPOS.DAL.Interfaces;
 using AzAgroPOS.BLL.Services;
 using AzAgroPOS.PL.Services;
 using AzAgroPOS.BLL.Interfaces;
@@ -15,7 +16,10 @@ namespace AzAgroPOS.PL.Services
             // DbContext
             services.AddScoped<AzAgroDbContext>();
 
-            // Repositories
+            // Unit of Work Pattern
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            // Core Repositories
             services.AddScoped<IstifadeciRepository>();
             services.AddScoped<RolRepository>();
             services.AddScoped<MusteriRepository>();
@@ -36,6 +40,16 @@ namespace AzAgroPOS.PL.Services
             services.AddScoped<GiderRepository>();
             services.AddScoped<SistemAyarlariRepository>();
             
+            // Additional Core Repositories
+            services.AddScoped<IsciRepository>();
+            services.AddScoped<MehsulKateqoriyasiRepository>();
+            services.AddScoped<VahidRepository>();
+            services.AddScoped<AnbarTransferRepository>();
+            services.AddScoped<MusteriQrupuRepository>();
+            services.AddScoped<NovbeRepository>();
+            services.AddScoped<SatisHesabatiRepository>();
+            services.AddScoped<TedarukcuOdemeRepository>();
+            
             // Shift Management Repositories
             services.AddScoped<NovbeCedveliRepository>();
             services.AddScoped<NovbeDetaliRepository>();
@@ -54,16 +68,22 @@ namespace AzAgroPOS.PL.Services
             services.AddScoped<PrintSablonuRepository>();
             services.AddScoped<PrintLogKaydiRepository>();
 
-            // Services
+            // Services with interfaces
+            services.AddScoped<IAuditLogService, AuditLogService>();
+            services.AddScoped<IErrorHandlingService, ErrorHandlingService>();
+            services.AddScoped<IUserContext, UserContext>();
+
+            // Services (concrete implementations)
             services.AddScoped<AuthService>();
             services.AddScoped<MusteriService>();
             services.AddScoped<MehsulService>();
             services.AddScoped<SatisService>();
             services.AddScoped<BorcService>();
             services.AddScoped<TamirService>();
+            services.AddScoped<TedarukcuService>();
+            services.AddScoped<AnbarService>();
             services.AddScoped<ReportService>();
             services.AddScoped<ExportService>();
-            services.AddScoped<AuditLogService>();
             services.AddScoped<DatabaseInitializationService>();
             services.AddScoped<CustomerAnalyticsService>();
             services.AddScoped<EmployeePerformanceService>();
@@ -76,9 +96,6 @@ namespace AzAgroPOS.PL.Services
             services.AddScoped<BackupService>();
             services.AddScoped<BildirisService>();
             services.AddScoped<PrinterService>();
-
-            // Error Handling
-            services.AddScoped<IErrorHandlingService, ErrorHandlingService>();
 
             // UI Services
             services.AddScoped<IUINotificationService, UINotificationService>();
