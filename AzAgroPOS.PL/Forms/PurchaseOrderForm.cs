@@ -272,12 +272,12 @@ namespace AzAgroPOS.PL.Forms
                     Qeydler = txtNotes.Text,
                     YaradanIstifadeciId = _currentUser.Id,
                     YaradilmaTarixi = DateTime.Now,
-                    OrderDetallari = _alisDetallari.Select(item => new AlisOrderDetali
+                    SenedDetallari = _alisDetallari.Select(item => new AlisSenedDetali
                     {
                         MehsulId = item.MehsulId,
                         MehsulAdi = item.MehsulAdi,
                         Miqdar = item.Miqdar,
-                        VahidQiymeti = item.VahidQiymeti,
+                        AlisQiymeti = item.VahidQiymeti,
                         UmumiQiymet = item.UmumiQiymet
                     }).ToList()
                 };
