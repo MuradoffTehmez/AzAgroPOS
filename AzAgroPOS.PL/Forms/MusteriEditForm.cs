@@ -1,11 +1,13 @@
 using AzAgroPOS.BLL.Services;
 using AzAgroPOS.Entities.Domain;
 using AzAgroPOS.BLL.Interfaces;
+using AzAgroPOS.Entities.Constants;
 using System;
 using System.Windows.Forms;
 
 namespace AzAgroPOS.PL.Forms
 {
+    [RequirePermission(SystemConstants.Permissions.Musteri.Edit)]
     public partial class MusteriEditForm : BaseForm
     {
         private readonly MusteriService _musteriService;

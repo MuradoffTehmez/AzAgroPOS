@@ -66,6 +66,12 @@ namespace AzAgroPOS.BLL.Services
             return new AuthService(_unitOfWork, _auditLogService);
         }
 
+        public static AuthorizationService CreateAuthorizationService()
+        {
+            EnsureInitialized();
+            return new AuthorizationService();
+        }
+
         public static BorcService CreateBorcService()
         {
             EnsureInitialized();

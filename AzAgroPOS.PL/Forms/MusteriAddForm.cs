@@ -6,6 +6,7 @@ using System.Windows.Forms;
 
 namespace AzAgroPOS.PL.Forms
 {
+    [RequirePermission(SystemConstants.Permissions.Musteri.Create)]
     public partial class MusteriAddForm : BaseForm
     {
         private readonly MusteriService _musteriService;

@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace AzAgroPOS.BLL.Services
 {
@@ -323,6 +324,11 @@ namespace AzAgroPOS.BLL.Services
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        public async Task GenerateSalesReportAsync(DateTime startDate, DateTime endDate)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

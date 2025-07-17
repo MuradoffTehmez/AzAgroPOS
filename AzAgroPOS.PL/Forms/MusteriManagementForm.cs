@@ -9,6 +9,7 @@ using System.Windows.Forms;
 
 namespace AzAgroPOS.PL.Forms
 {
+    [RequirePermission(SystemConstants.Permissions.Musteri.View)]
     public partial class MusteriManagementForm : BaseForm
     {
         private readonly MusteriService _musteriService;

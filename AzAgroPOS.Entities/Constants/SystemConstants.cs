@@ -161,5 +161,162 @@ namespace AzAgroPOS.Entities.Constants
             public const string BackupPath = "BackupPath";
             public const string ReportPath = "ReportPath";
         }
+
+        /// <summary>
+        /// Mərkəzləşdirilmiş İcazə Sistemi - Magic strings-dən imtina
+        /// </summary>
+        public static class Permissions
+        {
+            // Admin tam icazələri
+            public const string AdminAccess = "Admin.FullAccess";
+            public const string SystemSettings = "System.Settings";
+            public const string UserManagement = "User.Management";
+            public const string RoleManagement = "Role.Management";
+
+            // Müştəri (Customer) İcazələri
+            public static class Musteri
+            {
+                public const string View = "Musteri.Goruntule";
+                public const string Create = "Musteri.ElaveEt";
+                public const string Edit = "Musteri.RedakteEt";
+                public const string Delete = "Musteri.Sil";
+                public const string Export = "Musteri.IxracEt";
+                public const string ViewDebt = "Musteri.BorcGoruntule";
+                public const string ManageDebt = "Musteri.BorcIdareEt";
+            }
+
+            // Məhsul (Product) İcazələri
+            public static class Mehsul
+            {
+                public const string View = "Mehsul.Goruntule";
+                public const string Create = "Mehsul.ElaveEt";
+                public const string Edit = "Mehsul.RedakteEt";
+                public const string Delete = "Mehsul.Sil";
+                public const string Export = "Mehsul.IxracEt";
+                public const string ManageStock = "Mehsul.StokIdareEt";
+                public const string ViewPrice = "Mehsul.QiymetGoruntule";
+                public const string EditPrice = "Mehsul.QiymetRedakteEt";
+            }
+
+            // Satış (Sales) İcazələri
+            public static class Satis
+            {
+                public const string View = "Satis.Goruntule";
+                public const string Create = "Satis.ElaveEt";
+                public const string Edit = "Satis.RedakteEt";
+                public const string Delete = "Satis.Sil";
+                public const string Cancel = "Satis.IptalEt";
+                public const string Refund = "Satis.GeriQaytar";
+                public const string ViewReports = "Satis.HesabatGoruntule";
+                public const string Export = "Satis.IxracEt";
+            }
+
+            // Anbar (Warehouse) İcazələri
+            public static class Anbar
+            {
+                public const string View = "Anbar.Goruntule";
+                public const string Create = "Anbar.ElaveEt";
+                public const string Edit = "Anbar.RedakteEt";
+                public const string Delete = "Anbar.Sil";
+                public const string ManageStock = "Anbar.StokIdareEt";
+                public const string StockTransfer = "Anbar.StokTransfer";
+                public const string ViewMovements = "Anbar.HereketGoruntule";
+                public const string StockReport = "Anbar.StokHesabati";
+            }
+
+            // Tədarükçü (Supplier) İcazələri
+            public static class Tedarukcu
+            {
+                public const string View = "Tedarukcu.Goruntule";
+                public const string Create = "Tedarukcu.ElaveEt";
+                public const string Edit = "Tedarukcu.RedakteEt";
+                public const string Delete = "Tedarukcu.Sil";
+                public const string ViewPayments = "Tedarukcu.OdemeGoruntule";
+                public const string ManagePayments = "Tedarukcu.OdemeIdareEt";
+            }
+
+            // Alış (Purchase) İcazələri
+            public static class Alis
+            {
+                public const string View = "Alis.Goruntule";
+                public const string Create = "Alis.ElaveEt";
+                public const string Edit = "Alis.RedakteEt";
+                public const string Delete = "Alis.Sil";
+                public const string Approve = "Alis.TesdiqEt";
+                public const string ViewReports = "Alis.HesabatGoruntule";
+                public const string CreateOrder = "Alis.SifarisYarat";
+                public const string ManageInvoice = "Alis.SenedIdareEt";
+            }
+
+            // Tamir (Repair) İcazələri
+            public static class Tamir
+            {
+                public const string View = "Tamir.Goruntule";
+                public const string Create = "Tamir.ElaveEt";
+                public const string Edit = "Tamir.RedakteEt";
+                public const string Delete = "Tamir.Sil";
+                public const string ChangeStatus = "Tamir.StatusDeyis";
+                public const string AssignWorker = "Tamir.IsciTeyinEt";
+                public const string ViewHistory = "Tamir.TarixceGoruntule";
+                public const string Analytics = "Tamir.Analitika";
+            }
+
+            // İstifadəçi (User) İcazələri
+            public static class Istifadeci
+            {
+                public const string View = "Istifadeci.Goruntule";
+                public const string Create = "Istifadeci.ElaveEt";
+                public const string Edit = "Istifadeci.RedakteEt";
+                public const string Delete = "Istifadeci.Sil";
+                public const string ChangePassword = "Istifadeci.SifreDeyi";
+                public const string ViewActivity = "Istifadeci.FealiyyetGoruntule";
+                public const string ManagePermissions = "Istifadeci.IcazeIdareEt";
+            }
+
+            // Hesabat (Reports) İcazələri
+            public static class Hesabat
+            {
+                public const string ViewSales = "Hesabat.SatisGoruntule";
+                public const string ViewFinancial = "Hesabat.MaliGoruntule";
+                public const string ViewInventory = "Hesabat.InventarGoruntule";
+                public const string ViewCustomer = "Hesabat.MusteriGoruntule";
+                public const string Export = "Hesabat.IxracEt";
+                public const string Print = "Hesabat.Cap";
+                public const string Schedule = "Hesabat.Planla";
+            }
+
+            // Mali (Financial) İcazələri
+            public static class Mali
+            {
+                public const string ViewCashFlow = "Mali.PulAxiniGoruntule";
+                public const string ManageCashFlow = "Mali.PulAxiniIdareEt";
+                public const string ViewExpenses = "Mali.XercGoruntule";
+                public const string ManageExpenses = "Mali.XercIdareEt";
+                public const string ViewProfitLoss = "Mali.MenfeetZererGoruntule";
+                public const string ViewTaxes = "Mali.VergiGoruntule";
+                public const string ManageTaxes = "Mali.VergiIdareEt";
+            }
+
+            // Sistem (System) İcazələri
+            public static class Sistem
+            {
+                public const string ViewLogs = "Sistem.LogGoruntule";
+                public const string ManageBackup = "Sistem.BackupIdareEt";
+                public const string ManageSettings = "Sistem.AyarIdareEt";
+                public const string ViewSystemInfo = "Sistem.InfoGoruntule";
+                public const string ManageDatabase = "Sistem.VebaseIdareEt";
+                public const string ManagePrinters = "Sistem.PrinterIdareEt";
+            }
+
+            // Printer və Çap İcazələri
+            public static class Printer
+            {
+                public const string View = "Printer.Goruntule";
+                public const string Configure = "Printer.Konfiqure";
+                public const string Test = "Printer.Test";
+                public const string ViewLogs = "Printer.LogGoruntule";
+                public const string ManageLogs = "Printer.LogIdareEt";
+            }
+        }
     }
 }

@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AzAgroPOS.PL.Forms
@@ -19,11 +20,13 @@ namespace AzAgroPOS.PL.Forms
     public partial class MainForm : BaseForm
     {
         private readonly IServiceProvider _serviceProvider;
+        private readonly IAuthorizationService _authorizationService;
 
         public MainForm(Istifadeci currentUser, IServiceProvider serviceProvider) : base()
         {
             InitializeComponent();
             _serviceProvider = serviceProvider;
+            _authorizationService = serviceProvider.GetRequiredService<IAuthorizationService>();
             _currentUser = currentUser;
             SetupModernDesign();
             // LoadUserInfo will be called after the controls are created
@@ -533,13 +536,90 @@ namespace AzAgroPOS.PL.Forms
         }
         #endif
 
-        private void MainForm_Load(object sender, EventArgs e)
+        private async void MainForm_Load(object sender, EventArgs e)
         {
             // Load user info after all controls are created
             LoadUserInfo();
             
+            // Menyu və düymələrin icazə yoxlaması
+            await CheckMenuPermissions();
+            
             // Initialize dashboard with mock data
             LoadDashboardData();
+        }
+
+        /// <summary>
+        /// Mərkəzləşdirilmiş İcazə Yoxlaması - Menyu və Düymələr
+        /// </summary>
+        private async Task CheckMenuPermissions()
+        {
+            try
+            {
+                // Sidebar menyu düymələri icazə yoxlaması
+                await CheckButtonPermission(btnCustomerManagement, SystemConstants.Permissions.Musteri.View);
+                await CheckButtonPermission(btnInventory, SystemConstants.Permissions.Anbar.View);
+                await CheckButtonPermission(btnPOS, SystemConstants.Permissions.Satis.Create);
+                await CheckButtonPermission(btnDebtManagement, SystemConstants.Permissions.Musteri.ViewDebt);
+                await CheckButtonPermission(btnRepairManagement, SystemConstants.Permissions.Tamir.View);
+                await CheckButtonPermission(btnReports, SystemConstants.Permissions.Hesabat.ViewSales);
+                await CheckButtonPermission(btnUserManagement, SystemConstants.Permissions.Istifadeci.View);
+                await CheckButtonPermission(btnSettings, SystemConstants.Permissions.Sistem.ManageSettings);
+
+                // Quick Action düymələri icazə yoxlaması
+                await CheckButtonPermission(btnQuickPOS, SystemConstants.Permissions.Satis.Create);
+                await CheckButtonPermission(btnQuickCustomerAdd, SystemConstants.Permissions.Musteri.Create);
+                await CheckButtonPermission(btnQuickInventory, SystemConstants.Permissions.Anbar.View);
+                await CheckButtonPermission(btnQuickReports, SystemConstants.Permissions.Hesabat.ViewSales);
+
+                // Customer submenu düymələri icazə yoxlaması
+                await CheckButtonPermission(btnCustomerAdd, SystemConstants.Permissions.Musteri.Create);
+                await CheckButtonPermission(btnCustomerList, SystemConstants.Permissions.Musteri.View);
+                await CheckButtonPermission(btnCustomerGroups, SystemConstants.Permissions.Musteri.View);
+
+                // Admin icazəsi olanlara təkmil funksiyalar
+                if (await _authorizationService.HasPermissionAsync(SystemConstants.Permissions.AdminAccess))
+                {
+                    // Admin-ə xüsusi funksiyalar aktiv et
+                    EnableAdminFeatures();
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowError($"İcazə yoxlaması zamanı xəta: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Fərdi düymə icazə yoxlaması
+        /// </summary>
+        private async Task CheckButtonPermission(Button button, string permission)
+        {
+            if (button != null)
+            {
+                bool hasPermission = await _authorizationService.HasPermissionAsync(permission);
+                button.Enabled = hasPermission;
+                
+                // Vizual göstərici: İcazəsi olmayan düymələr solğun görünür
+                if (!hasPermission)
+                {
+                    button.BackColor = Color.FromArgb(200, 200, 200); // Boz rəng
+                    button.ForeColor = Color.Gray;
+                    button.Cursor = Cursors.No;
+                    
+                    // Tooltip əlavə et
+                    var tooltip = new ToolTip();
+                    tooltip.SetToolTip(button, "Bu əməliyyat üçün icazəniz yoxdur");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Admin xüsusi funksiyalarını aktiv edir
+        /// </summary>
+        private void EnableAdminFeatures()
+        {
+            // Admin üçün əlavə menyu bəndləri və ya xüsusi düymələr aktiv et
+            // Məsələn: Database backup, system logs, advanced settings və s.
         }
 
         private void LoadDashboardData()
