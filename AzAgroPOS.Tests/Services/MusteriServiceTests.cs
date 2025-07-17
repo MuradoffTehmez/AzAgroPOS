@@ -66,10 +66,10 @@ namespace AzAgroPOS.Tests.Services
                 Email = testMusteri.Email
             };
 
-            _mockMusteriRepository.Setup(x => x.IsCodeExists(It.IsAny<string>()))
+            _mockMusteriRepository.Setup(x => x.IsCodeExists(It.IsAny<string>(), It.IsAny<int?>()))
                 .Returns(false);
             
-            _mockMusteriRepository.Setup(x => x.IsEmailExists(It.IsAny<string>()))
+            _mockMusteriRepository.Setup(x => x.IsEmailExists(It.IsAny<string>(), It.IsAny<int?>()))
                 .Returns(false);
 
             _mockMusteriRepository.Setup(x => x.Add(It.IsAny<Musteri>()))
@@ -131,7 +131,7 @@ namespace AzAgroPOS.Tests.Services
                 MusteriKodu = "MST001" // Mövcud kod
             };
 
-            _mockMusteriRepository.Setup(x => x.IsCodeExists(It.IsAny<string>()))
+            _mockMusteriRepository.Setup(x => x.IsCodeExists(It.IsAny<string>(), It.IsAny<int?>()))
                 .Returns(true);
 
             // Act
@@ -155,10 +155,10 @@ namespace AzAgroPOS.Tests.Services
                 MusteriKodu = "MST001"
             };
 
-            _mockMusteriRepository.Setup(x => x.IsCodeExists(It.IsAny<string>()))
+            _mockMusteriRepository.Setup(x => x.IsCodeExists(It.IsAny<string>(), It.IsAny<int?>()))
                 .Returns(false);
             
-            _mockMusteriRepository.Setup(x => x.IsEmailExists(It.IsAny<string>()))
+            _mockMusteriRepository.Setup(x => x.IsEmailExists(It.IsAny<string>(), It.IsAny<int?>()))
                 .Returns(true);
 
             // Act

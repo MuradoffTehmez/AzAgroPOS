@@ -92,7 +92,8 @@ namespace AzAgroPOS.BLL.Services
                 await _unitOfWork.CompleteAsync();
 
                 // Audit log - şifrə sıfırlanması
-                _auditLogService?.LogAction("Authentication", "PASSWORD_RESET", userId, 
+                _auditLogService?.LogAction(SystemConstants.EntityNames.Authentication, 
+                    SystemConstants.UserActions.PasswordReset, userId, 
                     $"Şifrə sıfırlandı: {istifadeci.Email}", userId);
 
                 return (true, "Şifrə uğurla sıfırlandı.");
@@ -157,7 +158,8 @@ namespace AzAgroPOS.BLL.Services
                 if (!VerifyPasswordHash(password, istifadeci.PasswordHash, istifadeci.PasswordSalt))
                 {
                     // Audit log - uğursuz giriş cəhdi
-                    _auditLogService?.LogAction("Authentication", "LOGIN_FAILED", istifadeci.Id, 
+                    _auditLogService?.LogAction(SystemConstants.EntityNames.Authentication, 
+                        SystemConstants.UserActions.LoginFailed, istifadeci.Id, 
                         $"Uğursuz giriş cəhdi: {email}", istifadeci.Id);
                     
                     return "İstifadəçi tapılmadı və ya şifrə yanlışdır.";
@@ -174,7 +176,8 @@ namespace AzAgroPOS.BLL.Services
                 _unitOfWork.Complete();
 
                 // Audit log - uğurlu giriş
-                _auditLogService?.LogAction("Authentication", "LOGIN_SUCCESS", istifadeci.Id, 
+                _auditLogService?.LogAction(SystemConstants.EntityNames.Authentication, 
+                    SystemConstants.UserActions.LoginSuccess, istifadeci.Id, 
                     $"Uğurlu giriş: {email}", istifadeci.Id);
 
                 return $"Uğurlu giriş! Xoş gəldiniz, {istifadeci.Ad}.";

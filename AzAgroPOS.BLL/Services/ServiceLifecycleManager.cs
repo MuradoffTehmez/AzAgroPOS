@@ -51,7 +51,7 @@ namespace AzAgroPOS.BLL.Services
             }
             catch (Exception ex)
             {
-                _logger?.LogError($"Service creation failed: {typeof(T).Name}", ex);
+                _logger?.LogError(new Exception($"Service creation failed: {typeof(T).Name}", ex));
                 throw;
             }
         }
@@ -233,7 +233,7 @@ namespace AzAgroPOS.BLL.Services
                         }
                         catch (Exception ex)
                         {
-                            _logger?.LogError($"Error disposing service: {disposable.GetType().Name}", ex);
+                            _logger?.LogError(new Exception($"Error disposing service: {disposable.GetType().Name}", ex));
                         }
                     }
                     
@@ -246,7 +246,7 @@ namespace AzAgroPOS.BLL.Services
                 }
                 catch (Exception ex)
                 {
-                    _logger?.LogError("Error during ServiceLifecycleManager disposal", ex);
+                    _logger?.LogError(new Exception("Error during ServiceLifecycleManager disposal", ex));
                 }
                 finally
                 {
