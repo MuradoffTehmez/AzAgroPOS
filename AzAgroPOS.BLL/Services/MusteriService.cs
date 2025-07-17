@@ -1,9 +1,11 @@
 using AzAgroPOS.BLL.Interfaces;
+using AzAgroPOS.BLL.Validators;
 using AzAgroPOS.DAL;
 using AzAgroPOS.DAL.Repositories;
 using AzAgroPOS.Entities.Domain;
 using AzAgroPOS.Entities.Constants;
 using AzAgroPOS.DAL.Interfaces;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,11 +17,13 @@ namespace AzAgroPOS.BLL.Services
     public class MusteriService : BaseDisposableService
     {
         private readonly IAuditLogService _auditLogService;
+        private readonly MusteriValidator _validator;
 
         public MusteriService(IUnitOfWork unitOfWork, IAuditLogService auditLogService, ILoggerService logger = null) 
             : base(unitOfWork, logger)
         {
             _auditLogService = auditLogService ?? throw new ArgumentNullException(nameof(auditLogService));
+            _validator = new MusteriValidator();
         }
 
         #region Müştəri CRUD Operations
@@ -63,10 +67,13 @@ namespace AzAgroPOS.BLL.Services
         {
             return ExecuteWithTransaction(() =>
             {
-                // Validation
-                var validationResult = ValidateCustomer(musteri);
+                // FluentValidation
+                var validationResult = _validator.Validate(musteri);
                 if (!validationResult.IsValid)
-                    return (false, validationResult.ErrorMessage, null);
+                {
+                    var errorMessage = string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage));
+                    return (false, errorMessage, null);
+                }
 
                 // Check if code exists
                 if (!string.IsNullOrEmpty(musteri.MusteriKodu) &&

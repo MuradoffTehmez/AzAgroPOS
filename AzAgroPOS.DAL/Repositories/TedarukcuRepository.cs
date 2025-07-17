@@ -75,6 +75,14 @@ namespace AzAgroPOS.DAL.Repositories
                 .ToList();
         }
 
+        public async Task<List<Tedarukcu>> GetAllActiveAsync()
+        {
+            return await _context.Tedarukciler
+                .Where(t => t.Status == "Aktiv")
+                .OrderBy(t => t.Ad)
+                .ToListAsync();
+        }
+
         public List<Tedarukcu> Search(string searchTerm)
         {
             var term = searchTerm.ToLower();
@@ -145,6 +153,9 @@ namespace AzAgroPOS.DAL.Repositories
         public List<object> GetPerformansRaporu(DateTime startDate, DateTime endDate)
         {
             return _context.Tedarukciler
+                .Include(t => t.AlisOrderleri)
+                .Include(t => t.AlisSenedleri)
+                .Include(t => t.Odemeler)
                 .Where(t => t.Status == "Aktiv")
                 .Select(t => new
                 {

@@ -54,7 +54,13 @@ namespace AzAgroPOS.DAL.Repositories
 
         public Satis GetById(int id)
         {
-            return _context.Satislar.Find(id);
+            return _context.Satislar
+                .Include(s => s.Kassir)
+                .Include(s => s.Musteri)
+                .Include(s => s.SatisDetallari)
+                    .ThenInclude(sd => sd.Mehsul)
+                .Include(s => s.SatisOdemeleri)
+                .FirstOrDefault(s => s.Id == id);
         }
 
         public Satis GetByIdWithDetails(int id)
@@ -71,6 +77,10 @@ namespace AzAgroPOS.DAL.Repositories
         {
             return _context.Satislar
                 .Include(s => s.Kassir)
+                .Include(s => s.Musteri)
+                .Include(s => s.SatisDetallari)
+                    .ThenInclude(sd => sd.Mehsul)
+                .Include(s => s.SatisOdemeleri)
                 .OrderByDescending(s => s.SatisTarixi)
                 .ToList();
         }
@@ -79,6 +89,10 @@ namespace AzAgroPOS.DAL.Repositories
         {
             return _context.Satislar
                 .Include(s => s.Kassir)
+                .Include(s => s.Musteri)
+                .Include(s => s.SatisDetallari)
+                    .ThenInclude(sd => sd.Mehsul)
+                .Include(s => s.SatisOdemeleri)
                 .Where(s => s.SatisTarixi >= startDate && s.SatisTarixi <= endDate)
                 .OrderByDescending(s => s.SatisTarixi)
                 .ToList();
@@ -88,6 +102,10 @@ namespace AzAgroPOS.DAL.Repositories
         {
             var query = _context.Satislar
                 .Include(s => s.Kassir)
+                .Include(s => s.Musteri)
+                .Include(s => s.SatisDetallari)
+                    .ThenInclude(sd => sd.Mehsul)
+                .Include(s => s.SatisOdemeleri)
                 .Where(s => s.KassirId == kassirId);
 
             if (startDate.HasValue)
@@ -103,6 +121,10 @@ namespace AzAgroPOS.DAL.Repositories
         {
             return _context.Satislar
                 .Include(s => s.Kassir)
+                .Include(s => s.Musteri)
+                .Include(s => s.SatisDetallari)
+                    .ThenInclude(sd => sd.Mehsul)
+                .Include(s => s.SatisOdemeleri)
                 .Where(s => s.SatisNomresi.Contains(satisNomresi))
                 .OrderByDescending(s => s.SatisTarixi)
                 .ToList();
@@ -112,6 +134,10 @@ namespace AzAgroPOS.DAL.Repositories
         {
             return _context.Satislar
                 .Include(s => s.Kassir)
+                .Include(s => s.Musteri)
+                .Include(s => s.SatisDetallari)
+                    .ThenInclude(sd => sd.Mehsul)
+                .Include(s => s.SatisOdemeleri)
                 .Where(s => s.Status == status)
                 .OrderByDescending(s => s.SatisTarixi)
                 .ToList();
@@ -121,6 +147,10 @@ namespace AzAgroPOS.DAL.Repositories
         {
             var query = _context.Satislar
                 .Include(s => s.Kassir)
+                .Include(s => s.Musteri)
+                .Include(s => s.SatisDetallari)
+                    .ThenInclude(sd => sd.Mehsul)
+                .Include(s => s.SatisOdemeleri)
                 .Where(s => s.OdemeNovu == odemeNovu);
 
             if (startDate.HasValue)

@@ -339,12 +339,11 @@ namespace AzAgroPOS.PL.Forms
         {
             if (_satisDetallari.Count == 0)
             {
-                MessageBox.Show("Satış üçün məhsul əlavə edin!", "Xəta",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                ShowWarning("Satış üçün məhsul əlavə edin!");
                 return;
             }
 
-            try
+            await ExecuteAsync(async () =>
             {
                 btnSatisıTamamla.Enabled = false; // Düyməni deaktiv edirik
 
@@ -361,7 +360,8 @@ namespace AzAgroPOS.PL.Forms
                     NetMebleg = decimal.Parse(lblNetMeblegValue.Text.Replace(" ₼", "").Trim()),
                     OdemeNovu = odemeNovu,
                     OdemeDetali = txtOdemeDetali.Text,
-                    KassirId = _currentUser?.Id ?? 1, // Use current user ID or fallback to 1
+                    KassirId = _currentUser?.Id ?? 1,
+                    Status = "Tamamlandı",
                     SatisDetallari = _satisDetallari.Select(item => new SatisDetali
                     {
                         MehsulId = item.MehsulId,
@@ -375,26 +375,19 @@ namespace AzAgroPOS.PL.Forms
                     }).ToList()
                 };
 
-                
+                // SatisService tranzaksiya bütövlüyünü təmin edir
                 int satisId = await _satisService.CreateSatisAsync(satis);
 
-                MessageBox.Show($"Satış uğurla tamamlandı!\nSatış nömrəsi: {satis.SatisNomresi}",
-                    "Uğurlu", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ShowSuccess($"Satış uğurla tamamlandı!\nSatış nömrəsi: {satis.SatisNomresi}");
 
                 // Qəbz çapını avtomatik çağır
                 BtnQezbCap_Click(sender, e);
 
                 // Yeni satış üçün formu təmizlə
                 BtnYeniSatis_Click(sender, e);
-            }
-            catch (Exception ex)
-            {
-                ErrorHandlingService.HandleErrorStatic(ex, "Satış tamamlanarkən xəta baş verdi");
-            }
-            finally
-            {
+                
                 btnSatisıTamamla.Enabled = true; // Düyməni yenidən aktiv edirik
-            }
+            }, "Satış tamamlanarkən xəta baş verdi");
         }
 
         private void BtnYeniSatis_Click(object sender, EventArgs e)

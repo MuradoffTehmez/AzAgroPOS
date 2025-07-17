@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using AzAgroPOS.Entities.Domain;
 
@@ -188,6 +189,71 @@ namespace AzAgroPOS.DAL.Repositories
                 query = query.Where(q => q.AnbarId == anbarId.Value);
 
             return query.Count();
+        }
+
+        public async Task<List<AnbarQalik>> GetAllWithDetailsAsync()
+        {
+            return await _context.AnbarQaliqları
+                .Include(q => q.Anbar)
+                .Include(q => q.Mehsul)
+                    .ThenInclude(m => m.Kateqoriya)
+                .Include(q => q.Mehsul)
+                    .ThenInclude(m => m.Vahid)
+                .Select(q => new AnbarQalik
+                {
+                    Id = q.Id,
+                    AnbarId = q.AnbarId,
+                    MehsulId = q.MehsulId,
+                    MovcudMiqdar = q.MovcudMiqdar,
+                    MinimumMiqdar = q.MinimumMiqdar,
+                    SonGirisTarixi = q.SonGirisTarixi,
+                    SonSatısTarixi = q.SonSatısTarixi,
+                    YenilenmeTarixi = q.YenilenmeTarixi,
+                    AnbarAdi = q.Anbar.Ad,
+                    MehsulAdi = q.Mehsul.Ad
+                })
+                .OrderBy(q => q.AnbarAdi)
+                .ThenBy(q => q.MehsulAdi)
+                .ToListAsync();
+        }
+
+        public async Task<List<AnbarQalik>> GetByWarehouseIdAsync(int warehouseId)
+        {
+            return await _context.AnbarQaliqları
+                .Include(q => q.Anbar)
+                .Include(q => q.Mehsul)
+                    .ThenInclude(m => m.Kateqoriya)
+                .Include(q => q.Mehsul)
+                    .ThenInclude(m => m.Vahid)
+                .Where(q => q.AnbarId == warehouseId)
+                .OrderBy(q => q.Mehsul.Ad)
+                .ToListAsync();
+        }
+
+        public async Task<List<AnbarQalik>> GetLowStockItemsAsync()
+        {
+            return await _context.AnbarQaliqları
+                .Include(q => q.Anbar)
+                .Include(q => q.Mehsul)
+                    .ThenInclude(m => m.Kateqoriya)
+                .Include(q => q.Mehsul)
+                    .ThenInclude(m => m.Vahid)
+                .Where(q => q.MovcudMiqdar <= q.MinimumMiqdar && q.MinimumMiqdar > 0)
+                .Select(q => new AnbarQalik
+                {
+                    Id = q.Id,
+                    AnbarId = q.AnbarId,
+                    MehsulId = q.MehsulId,
+                    MovcudMiqdar = q.MovcudMiqdar,
+                    MinimumMiqdar = q.MinimumMiqdar,
+                    SonGirisTarixi = q.SonGirisTarixi,
+                    SonSatısTarixi = q.SonSatısTarixi,
+                    YenilenmeTarixi = q.YenilenmeTarixi,
+                    AnbarAdi = q.Anbar.Ad,
+                    MehsulAdi = q.Mehsul.Ad
+                })
+                .OrderBy(q => q.MovcudMiqdar)
+                .ToListAsync();
         }
 
         public void Dispose()
