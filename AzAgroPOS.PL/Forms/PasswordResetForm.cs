@@ -103,7 +103,7 @@ namespace AzAgroPOS.PL.Forms
             txtNewPassword.Text = generatedPassword;
             txtConfirmPassword.Text = generatedPassword;
 
-            ShowInformation($"Avtomatik yaradılan şifrə: {generatedPassword}\n\nLütfən bu şifrəni istifadəçiyə çatdırın.");
+            ShowInfo($"Avtomatik yaradılan şifrə: {generatedPassword}\n\nLütfən bu şifrəni istifadəçiyə çatdırın.");
         }
 
         private string GenerateRandomPassword()

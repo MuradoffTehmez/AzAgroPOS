@@ -582,7 +582,7 @@ namespace AzAgroPOS.PL.Forms
         private void AddShift_Click(object sender, EventArgs e)
         {
             // Open shift creation form
-            ShowInformation("Növbə əlavə etmə formu açılacaq");
+            ShowInfo("Növbə əlavə etmə formu açılacaq");
         }
 
         private async Task RefreshDataAsync()

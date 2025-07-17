@@ -16,10 +16,11 @@ namespace AzAgroPOS.PL.Forms
         private readonly TamirService _tamirService;
         private TamirIsi _repair;
 
-        public TamirWorkerAssignForm(int repairId, Istifadeci currentUser) : base(currentUser)
+        public TamirWorkerAssignForm(int repairId, Istifadeci currentUser) : base()
         {
             InitializeComponent();
             _repairId = repairId;
+            _currentUser = currentUser;
             _context = new AzAgroDbContext();
             _tamirService = ServiceFactory.CreateTamirService();
             SetupForm();

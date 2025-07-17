@@ -336,7 +336,7 @@ namespace AzAgroPOS.PL.Forms
         {
             if (_currentReport == null)
             {
-                ShowInformation("Əvvəlcə hesabat yükləyin.");
+                ShowInfo("Əvvəlcə hesabat yükləyin.");
                 return;
             }
 
@@ -356,7 +356,7 @@ namespace AzAgroPOS.PL.Forms
                         ShowSuccess("Hesabat uğurla ixrac edildi!");
                         
                         // Ask if user wants to open the file
-                        if (ShowQuestion("Faylı açmaq istəyirsiniz?") == DialogResult.Yes)
+                        if (ShowConfirmation("Faylı açmaq istəyirsiniz?"))
                         {
                             System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
                             {
@@ -380,7 +380,7 @@ namespace AzAgroPOS.PL.Forms
                 var customerId = (int)dgvCustomerDebts.SelectedRows[0].Tag;
                 var customerName = dgvCustomerDebts.SelectedRows[0].Cells["CustomerName"].Value.ToString();
                 
-                ShowInformation($"{customerName} üçün ödəniş formu açılacaq.");
+                ShowInfo($"{customerName} üçün ödəniş formu açılacaq.");
             }
         }
 
@@ -391,7 +391,7 @@ namespace AzAgroPOS.PL.Forms
                 var customerName = dgvCustomerDebts.SelectedRows[0].Cells["CustomerName"].Value.ToString();
                 var remainingDebt = dgvCustomerDebts.SelectedRows[0].Cells["RemainingDebt"].Value;
                 
-                ShowInformation($"{customerName}\nQalan Borc: {remainingDebt:C}\n\nMüştəri əlaqə məlumatları göstəriləcək.");
+                ShowInfo($"{customerName}\nQalan Borc: {remainingDebt:C}\n\nMüştəri əlaqə məlumatları göstəriləcək.");
             }
         }
 
@@ -400,7 +400,7 @@ namespace AzAgroPOS.PL.Forms
             if (dgvCustomerDebts.SelectedRows.Count > 0)
             {
                 var customerName = dgvCustomerDebts.SelectedRows[0].Cells["CustomerName"].Value.ToString();
-                ShowInformation($"{customerName} üçün ödəniş tarixçəsi açılacaq.");
+                ShowInfo($"{customerName} üçün ödəniş tarixçəsi açılacaq.");
             }
         }
 

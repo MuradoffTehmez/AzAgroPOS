@@ -14,9 +14,10 @@ namespace AzAgroPOS.PL.Forms
         private readonly AzAgroDbContext _context;
         private readonly TamirService _tamirService;
 
-        public TamirAddForm(Istifadeci currentUser) : base(currentUser)
+        public TamirAddForm(Istifadeci currentUser) : base()
         {
             InitializeComponent();
+            _currentUser = currentUser;
             _context = new AzAgroDbContext();
             _tamirService = ServiceFactory.CreateTamirService();
             SetupForm();

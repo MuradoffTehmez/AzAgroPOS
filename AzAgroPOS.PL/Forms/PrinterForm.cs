@@ -844,7 +844,7 @@ namespace AzAgroPOS.PL.Forms
                 try
                 {
                     await _printerService.TestPrintAsync(printerId, _currentUserId);
-                    ShowInformation("Test print göndərildi");
+                    ShowInfo("Test print göndərildi");
                     await LoadPrintersData();
                     await LoadPrintLogsData();
                 }
@@ -863,9 +863,9 @@ namespace AzAgroPOS.PL.Forms
                 var printerId = (int)selectedRow.Cells["Id"].Value;
                 var printerName = selectedRow.Cells["PrinterAdi"].Value.ToString();
                 
-                var result = ShowQuestion($"'{printerName}' printerini silmək istəyirsiniz?");
+                var result = ShowConfirmation($"'{printerName}' printerini silmək istəyirsiniz?");
                 
-                if (result == DialogResult.Yes)
+                if (result)
                 {
                     await _printerService.DeletePrinterAsync(printerId);
                     await LoadPrintersData();
@@ -892,7 +892,7 @@ namespace AzAgroPOS.PL.Forms
             {
                 var result = await _printerService.TestAllPrintersAsync();
                 var message = result ? "Bütün printerlər test edildi" : "Bəzi printerlər test edilmədi";
-                ShowInformation(message);
+                ShowInfo(message);
                 await LoadPrintersData();
                 await LoadPrintLogsData();
             }
@@ -969,9 +969,9 @@ namespace AzAgroPOS.PL.Forms
 
         private async void CleanupLogs_Click(object sender, EventArgs e)
         {
-            var result = ShowQuestion("90 gündən köhnə print loglarını silmək istəyirsiniz?");
+            var result = ShowConfirmation("90 gündən köhnə print loglarını silmək istəyirsiniz?");
             
-            if (result == DialogResult.Yes)
+            if (result)
             {
                 var deletedCount = await _printerService.CleanupOldLogsAsync(90);
                 ShowSuccess($"{deletedCount} köhnə log silindi");

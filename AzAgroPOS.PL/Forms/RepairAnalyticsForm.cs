@@ -337,7 +337,7 @@ namespace AzAgroPOS.PL.Forms
         {
             if (_currentReport == null)
             {
-                ShowInformation("Əvvəlcə analiz edin.");
+                ShowInfo("Əvvəlcə analiz edin.");
                 return;
             }
 
@@ -497,7 +497,7 @@ namespace AzAgroPOS.PL.Forms
                 var workerName = dgvWorkerPerformance.SelectedRows[0].Cells["WorkerName"].Value.ToString();
                 var workerId = (int)dgvWorkerPerformance.SelectedRows[0].Tag;
 
-                ShowInformation($"{workerName} üçün detallı performans hesabatı açılacaq.");
+                ShowInfo($"{workerName} üçün detallı performans hesabatı açılacaq.");
             }
         }
 
@@ -507,7 +507,7 @@ namespace AzAgroPOS.PL.Forms
             {
                 var workerName = dgvWorkerPerformance.SelectedRows[0].Cells["WorkerName"].Value.ToString();
 
-                ShowInformation($"{workerName} üçün yeni tapşırıq təyin etmə formu açılacaq.");
+                ShowInfo($"{workerName} üçün yeni tapşırıq təyin etmə formu açılacaq.");
             }
         }
 

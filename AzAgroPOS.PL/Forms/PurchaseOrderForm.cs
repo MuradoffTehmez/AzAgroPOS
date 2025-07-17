@@ -14,10 +14,10 @@ namespace AzAgroPOS.PL.Forms
 {
     public partial class PurchaseOrderForm : BaseForm
     {
-        private readonly MehsulService _mehsulService;
+        private readonly MehsulRepository _mehsulRepository;
         private readonly TedarukcuRepository _tedarukcuRepository;
         private readonly AlisOrderRepository _alisOrderRepository;
-        private readonly AlisSenediRepository _alisSenediRepository;
+        private readonly AlisSenedRepository _alisSenediRepository;
         private readonly Istifadeci _currentUser;
         private List<AlisDetaliItem> _alisDetallari;
         private decimal _vergiOrani = 0.01m; // 18% vergi
@@ -26,10 +26,10 @@ namespace AzAgroPOS.PL.Forms
         {
             InitializeComponent();
             var context = new AzAgroDbContext();
-            _mehsulService = ServiceFactory.CreateMehsulService();
+            _mehsulRepository = new MehsulRepository(context);
             _tedarukcuRepository = new TedarukcuRepository(context);
             _alisOrderRepository = new AlisOrderRepository(context);
-            _alisSenediRepository = new AlisSenediRepository(context);
+            _alisSenediRepository = new AlisSenedRepository(context);
             _currentUser = currentUser;
             _alisDetallari = new List<AlisDetaliItem>();
         }
@@ -58,7 +58,7 @@ namespace AzAgroPOS.PL.Forms
         {
             await ExecuteAsync(async () =>
             {
-                var products = _mehsulService.GetAllActive();
+                var products = _mehsulRepository.GetAllActive();
                 cmbProduct.DataSource = products;
                 cmbProduct.DisplayMember = "Ad";
                 cmbProduct.ValueMember = "Id";
@@ -209,8 +209,8 @@ namespace AzAgroPOS.PL.Forms
                 
                 var order = new AlisOrder
                 {
-                    SifarisNomresi = GenerateOrderNumber(),
-                    SifarisTarixi = DateTime.Now,
+                    OrderNomresi = GenerateOrderNumber(),
+                    OrderTarixi = DateTime.Now,
                     TedarukcuId = supplier.Id,
                     Status = "Gözləmədə",
                     UmumiMebleg = _alisDetallari.Sum(x => x.UmumiQiymet),
@@ -220,7 +220,7 @@ namespace AzAgroPOS.PL.Forms
                     Qeydler = txtNotes.Text,
                     YaradanIstifadeciId = _currentUser.Id,
                     YaradilmaTarixi = DateTime.Now,
-                    AlisDetallari = _alisDetallari.Select(item => new AlisDetali
+                    OrderDetallari = _alisDetallari.Select(item => new AlisOrderDetali
                     {
                         MehsulId = item.MehsulId,
                         MehsulAdi = item.MehsulAdi,
@@ -230,10 +230,10 @@ namespace AzAgroPOS.PL.Forms
                     }).ToList()
                 };
 
-                await _alisOrderRepository.AddAsync(order);
-                await _alisOrderRepository.SaveChangesAsync();
+                _alisOrderRepository.Add(order);
+                using (var context = new AzAgroDbContext()) { context.SaveChanges(); }
 
-                ShowSuccess($"Sifariş uğurla yaradıldı! \n Sifariş nömrəsi: {order.SifarisNomresi}");
+                ShowSuccess($"Sifariş uğurla yaradıldı! \n Sifariş nömrəsi: {order.OrderNomresi}");
                 
                 // Yeni sifariş üçün formu təmizlə
                 ClearForm();
@@ -259,7 +259,7 @@ namespace AzAgroPOS.PL.Forms
             {
                 var supplier = (Tedarukcu)cmbSupplier.SelectedItem;
                 
-                var invoice = new AlisSenedi
+                var invoice = new AlisSeined
                 {
                     SenedNomresi = GenerateInvoiceNumber(),
                     SenedTarixi = DateTime.Now,
@@ -272,7 +272,7 @@ namespace AzAgroPOS.PL.Forms
                     Qeydler = txtNotes.Text,
                     YaradanIstifadeciId = _currentUser.Id,
                     YaradilmaTarixi = DateTime.Now,
-                    AlisDetallari = _alisDetallari.Select(item => new AlisDetali
+                    OrderDetallari = _alisDetallari.Select(item => new AlisOrderDetali
                     {
                         MehsulId = item.MehsulId,
                         MehsulAdi = item.MehsulAdi,
@@ -282,21 +282,21 @@ namespace AzAgroPOS.PL.Forms
                     }).ToList()
                 };
 
-                await _alisSenediRepository.AddAsync(invoice);
+                _alisSenediRepository.Add(invoice);
                 
                 // Alış sənədi yaradıldıqda anbar qalıqlarını artır
                 foreach (var item in _alisDetallari)
                 {
-                    var mehsul = _mehsulService.GetById(item.MehsulId);
+                    var mehsul = _mehsulRepository.GetById(item.MehsulId);
                     if (mehsul != null)
                     {
                         mehsul.MovcudMiqdar += item.Miqdar;
                         mehsul.YenilenmeTarixi = DateTime.Now;
-                        _mehsulService.Update(mehsul);
+                        _mehsulRepository.Update(mehsul);
                     }
                 }
 
-                await _alisSenediRepository.SaveChangesAsync();
+                using (var context = new AzAgroDbContext()) { context.SaveChanges(); }
 
                 ShowSuccess($"Alış sənədi uğurla yaradıldı! \n Sənəd nömrəsi: {invoice.SenedNomresi}");
                 
