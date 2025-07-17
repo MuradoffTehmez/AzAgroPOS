@@ -4,7 +4,6 @@ using System;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-// using System.Windows.Forms.DataVisualization.Charting;
 
 namespace AzAgroPOS.PL.Forms
 {
@@ -14,16 +13,10 @@ namespace AzAgroPOS.PL.Forms
         private readonly ExportService _exportService;
         private RepairAnalyticsDto _currentReport;
 
-        private DateTimePicker dtpStartDate;
-        private DateTimePicker dtpEndDate;
-        private Button btnGenerate;
-        private Button btnExport;
-        private Panel pnlSummary;
         private DataGridView dgvRepairTypes;
         private DataGridView dgvWorkerPerformance;
-        private Panel chartRepairAnalytics; // Chart placeholder
-        private TabControl tabControl;
-        
+        private Panel chartRepairAnalytics;
+
         // Summary labels
         private Label lblTotalRepairs;
         private Label lblCompletedRepairs;
@@ -42,112 +35,14 @@ namespace AzAgroPOS.PL.Forms
             InitializeForm();
         }
 
-        private void InitializeComponent()
+        private void InitializeForm()
         {
-            this.SuspendLayout();
-
-            // Form properties
-            this.Text = "Təmir Analitikası";
-            this.Size = new Size(1400, 900);
-            this.StartPosition = FormStartPosition.CenterScreen;
-            this.WindowState = FormWindowState.Maximized;
-
-            // Controls Panel
-            var pnlControls = new Panel
-            {
-                Dock = DockStyle.Top,
-                Height = 60,
-                BackColor = Color.LightGray
-            };
-
-            // Date controls
-            var lblStartDate = new Label
-            {
-                Text = "Başlanğıc:",
-                Location = new Point(10, 20),
-                Size = new Size(70, 20)
-            };
-
-            dtpStartDate = new DateTimePicker
-            {
-                Location = new Point(85, 18),
-                Size = new Size(120, 22),
-                Value = DateTime.Now.AddDays(-30)
-            };
-
-            var lblEndDate = new Label
-            {
-                Text = "Bitmə:",
-                Location = new Point(220, 20),
-                Size = new Size(50, 20)
-            };
-
-            dtpEndDate = new DateTimePicker
-            {
-                Location = new Point(275, 18),
-                Size = new Size(120, 22),
-                Value = DateTime.Now
-            };
-
-            // Buttons
-            btnGenerate = new Button
-            {
-                Text = "🔧 Analiz Et",
-                Location = new Point(410, 17),
-                Size = new Size(100, 25),
-                BackColor = Color.LightBlue
-            };
-            btnGenerate.Click += BtnGenerate_Click;
-
-            btnExport = new Button
-            {
-                Text = "📤 İxrac Et",
-                Location = new Point(520, 17),
-                Size = new Size(100, 25),
-                BackColor = Color.LightGreen,
-                Enabled = false
-            };
-            btnExport.Click += BtnExport_Click;
-
-            var lblTitle = new Label
-            {
-                Text = "Təmir İşləri Performans Analizi",
-                Location = new Point(640, 22),
-                Size = new Size(250, 20),
-                Font = new Font("Arial", 10, FontStyle.Bold)
-            };
-
-            pnlControls.Controls.AddRange(new Control[] 
-            { 
-                lblStartDate, dtpStartDate, lblEndDate, dtpEndDate, 
-                btnGenerate, btnExport, lblTitle 
-            });
-
-            // Summary Panel
-            pnlSummary = new Panel
-            {
-                Dock = DockStyle.Top,
-                Height = 120,
-                BackColor = Color.WhiteSmoke,
-                BorderStyle = BorderStyle.FixedSingle
-            };
-
             CreateSummaryLabels();
-
-            // Main TabControl
-            tabControl = new TabControl
-            {
-                Dock = DockStyle.Fill
-            };
-
             CreateTabs();
+            LoadDefaultReport();
 
-            // Add controls to form
-            this.Controls.Add(tabControl);
-            this.Controls.Add(pnlSummary);
-            this.Controls.Add(pnlControls);
-
-            this.ResumeLayout(false);
+            btnGenerate.Click += BtnGenerate_Click;
+            btnExport.Click += BtnExport_Click;
         }
 
         private void CreateSummaryLabels()
@@ -223,8 +118,8 @@ namespace AzAgroPOS.PL.Forms
                 Font = new Font("Arial", 9, FontStyle.Bold)
             };
 
-            pnlSummary.Controls.AddRange(new Control[] 
-            { 
+            pnlSummary.Controls.AddRange(new Control[]
+            {
                 lblTotalRepairs, lblCompletedRepairs, lblPendingRepairs, lblInProgressRepairs,
                 lblTotalCost, lblAverageCost, lblCompletionRate, lblAverageTime
             });
@@ -234,7 +129,7 @@ namespace AzAgroPOS.PL.Forms
         {
             // Tab 1: Overview and Charts
             var tabOverview = new TabPage("📊 Ümumi Baxış");
-            
+
             var splitMain = new SplitContainer
             {
                 Dock = DockStyle.Fill,
@@ -249,14 +144,13 @@ namespace AzAgroPOS.PL.Forms
                 BackColor = Color.LightGreen,
                 BorderStyle = BorderStyle.FixedSingle
             };
-            chartRepairAnalytics.Controls.Add(new Label 
-            { 
-                Text = "🔧 Təmir Analitikası (Chart kontrolları yüklənir...)", 
-                Dock = DockStyle.Fill, 
+            chartRepairAnalytics.Controls.Add(new Label
+            {
+                Text = "🔧 Təmir Analitikası (Chart kontrolları yüklənir...)",
+                Dock = DockStyle.Fill,
                 TextAlign = ContentAlignment.MiddleCenter,
                 Font = new Font("Segoe UI", 12, FontStyle.Bold)
             });
-            // InitializeChart(); // Chart yüklənəndən sonra aktiv ediləcək
 
             // Repair types grid
             dgvRepairTypes = new DataGridView
@@ -276,7 +170,7 @@ namespace AzAgroPOS.PL.Forms
 
             // Tab 2: Worker Performance
             var tabWorkers = new TabPage("👥 İşçi Performansı");
-            
+
             dgvWorkerPerformance = new DataGridView
             {
                 Dock = DockStyle.Fill,
@@ -298,109 +192,52 @@ namespace AzAgroPOS.PL.Forms
                 Font = new Font("Consolas", 10)
             };
             tabDetailed.Controls.Add(rtbDetailedReport);
-            tabDetailed.Tag = rtbDetailedReport; // Store reference for later use
+            tabDetailed.Tag = rtbDetailedReport;
 
             tabControl.TabPages.AddRange(new TabPage[] { tabOverview, tabWorkers, tabDetailed });
-        }
-
-        private void InitializeChart()
-        {
-            // Chart initialize ediləcək (Chart paketlərinin yüklənməsindən sonra)
-            /*
-            chartRepairAnalytics.Series.Clear();
-            chartRepairAnalytics.ChartAreas.Clear();
-
-            // Main chart area for repair types
-            var chartArea1 = new ChartArea("RepairTypesArea");
-            chartArea1.AxisX.Title = "Təmir Növü";
-            chartArea1.AxisY.Title = "Sayı";
-            chartArea1.Position = new ElementPosition(5, 5, 45, 90);
-            chartRepairAnalytics.ChartAreas.Add(chartArea1);
-
-            // Pie chart area for status distribution
-            var chartArea2 = new ChartArea("StatusArea");
-            chartArea2.Position = new ElementPosition(55, 5, 40, 45);
-            chartRepairAnalytics.ChartAreas.Add(chartArea2);
-
-            // Cost chart area
-            var chartArea3 = new ChartArea("CostArea");
-            chartArea3.AxisX.Title = "Təmir Növü";
-            chartArea3.AxisY.Title = "Məbləğ (AZN)";
-            chartArea3.AxisY.LabelStyle.Format = "C0";
-            chartArea3.Position = new ElementPosition(55, 55, 40, 40);
-            chartRepairAnalytics.ChartAreas.Add(chartArea3);
-
-            // Series for repair types count
-            var countSeries = new Series("Təmir Sayı")
-            {
-                ChartType = SeriesChartType.Column,
-                Color = Color.SteelBlue,
-                ChartArea = "RepairTypesArea"
-            };
-            chartRepairAnalytics.Series.Add(countSeries);
-
-            // Series for status distribution (pie)
-            var statusSeries = new Series("Status Bölgüsü")
-            {
-                ChartType = SeriesChartType.Pie,
-                ChartArea = "StatusArea"
-            };
-            chartRepairAnalytics.Series.Add(statusSeries);
-
-            // Series for cost analysis
-            var costSeries = new Series("Xərc Analizi")
-            {
-                ChartType = SeriesChartType.Column,
-                Color = Color.Coral,
-                ChartArea = "CostArea"
-            };
-            chartRepairAnalytics.Series.Add(costSeries);
-
-            chartRepairAnalytics.Legends.Add(new Legend("Legend1"));
-            */
         }
 
         private void InitializeRepairTypesGrid()
         {
             dgvRepairTypes.Columns.AddRange(new DataGridViewColumn[]
             {
-                new DataGridViewTextBoxColumn 
-                { 
-                    Name = "RepairType", 
-                    HeaderText = "Təmir Növü", 
-                    Width = 200 
+                new DataGridViewTextBoxColumn
+                {
+                    Name = "RepairType",
+                    HeaderText = "Təmir Növü",
+                    Width = 200
                 },
-                new DataGridViewTextBoxColumn 
-                { 
-                    Name = "Count", 
-                    HeaderText = "Sayı", 
-                    Width = 80 
+                new DataGridViewTextBoxColumn
+                {
+                    Name = "Count",
+                    HeaderText = "Sayı",
+                    Width = 80
                 },
-                new DataGridViewTextBoxColumn 
-                { 
-                    Name = "TotalCost", 
-                    HeaderText = "Ümumi Xərc", 
+                new DataGridViewTextBoxColumn
+                {
+                    Name = "TotalCost",
+                    HeaderText = "Ümumi Xərc",
                     Width = 120,
                     DefaultCellStyle = new DataGridViewCellStyle { Format = "C" }
                 },
-                new DataGridViewTextBoxColumn 
-                { 
-                    Name = "AverageCost", 
-                    HeaderText = "Orta Xərc", 
+                new DataGridViewTextBoxColumn
+                {
+                    Name = "AverageCost",
+                    HeaderText = "Orta Xərc",
                     Width = 100,
                     DefaultCellStyle = new DataGridViewCellStyle { Format = "C" }
                 },
-                new DataGridViewTextBoxColumn 
-                { 
-                    Name = "Percentage", 
-                    HeaderText = "Faiz", 
+                new DataGridViewTextBoxColumn
+                {
+                    Name = "Percentage",
+                    HeaderText = "Faiz",
                     Width = 80,
                     DefaultCellStyle = new DataGridViewCellStyle { Format = "P1" }
                 },
-                new DataGridViewTextBoxColumn 
-                { 
-                    Name = "AverageCompletionDays", 
-                    HeaderText = "Orta Müddət (gün)", 
+                new DataGridViewTextBoxColumn
+                {
+                    Name = "AverageCompletionDays",
+                    HeaderText = "Orta Müddət (gün)",
                     Width = 120,
                     DefaultCellStyle = new DataGridViewCellStyle { Format = "N1" }
                 }
@@ -411,42 +248,42 @@ namespace AzAgroPOS.PL.Forms
         {
             dgvWorkerPerformance.Columns.AddRange(new DataGridViewColumn[]
             {
-                new DataGridViewTextBoxColumn 
-                { 
-                    Name = "WorkerName", 
-                    HeaderText = "İşçi Adı", 
-                    Width = 200 
+                new DataGridViewTextBoxColumn
+                {
+                    Name = "WorkerName",
+                    HeaderText = "İşçi Adı",
+                    Width = 200
                 },
-                new DataGridViewTextBoxColumn 
-                { 
-                    Name = "CompletedRepairs", 
-                    HeaderText = "Tamamlanan", 
-                    Width = 100 
+                new DataGridViewTextBoxColumn
+                {
+                    Name = "CompletedRepairs",
+                    HeaderText = "Tamamlanan",
+                    Width = 100
                 },
-                new DataGridViewTextBoxColumn 
-                { 
-                    Name = "PendingRepairs", 
-                    HeaderText = "Gözləyən", 
-                    Width = 100 
+                new DataGridViewTextBoxColumn
+                {
+                    Name = "PendingRepairs",
+                    HeaderText = "Gözləyən",
+                    Width = 100
                 },
-                new DataGridViewTextBoxColumn 
-                { 
-                    Name = "TotalRevenue", 
-                    HeaderText = "Ümumi Gəlir", 
+                new DataGridViewTextBoxColumn
+                {
+                    Name = "TotalRevenue",
+                    HeaderText = "Ümumi Gəlir",
                     Width = 120,
                     DefaultCellStyle = new DataGridViewCellStyle { Format = "C" }
                 },
-                new DataGridViewTextBoxColumn 
-                { 
-                    Name = "AverageRepairTime", 
-                    HeaderText = "Orta Vaxt (gün)", 
+                new DataGridViewTextBoxColumn
+                {
+                    Name = "AverageRepairTime",
+                    HeaderText = "Orta Vaxt (gün)",
                     Width = 120,
                     DefaultCellStyle = new DataGridViewCellStyle { Format = "N1" }
                 },
-                new DataGridViewTextBoxColumn 
-                { 
-                    Name = "SuccessRate", 
-                    HeaderText = "Uğur Dərəcəsi", 
+                new DataGridViewTextBoxColumn
+                {
+                    Name = "SuccessRate",
+                    HeaderText = "Uğur Dərəcəsi",
                     Width = 120,
                     DefaultCellStyle = new DataGridViewCellStyle { Format = "P1" }
                 }
@@ -456,18 +293,12 @@ namespace AzAgroPOS.PL.Forms
             var contextMenu = new ContextMenuStrip();
             var viewDetailsMenuItem = new ToolStripMenuItem("Detalları Göstər");
             var assignTaskMenuItem = new ToolStripMenuItem("Yeni Tapşırıq");
-            
+
             viewDetailsMenuItem.Click += (s, e) => ShowWorkerDetails();
             assignTaskMenuItem.Click += (s, e) => AssignNewTask();
-            
+
             contextMenu.Items.AddRange(new ToolStripItem[] { viewDetailsMenuItem, assignTaskMenuItem });
             dgvWorkerPerformance.ContextMenuStrip = contextMenu;
-        }
-
-        private void InitializeForm()
-        {
-            // Load default report (last 30 days)
-            LoadDefaultReport();
         }
 
         private void BtnGenerate_Click(object sender, EventArgs e)
@@ -510,7 +341,6 @@ namespace AzAgroPOS.PL.Forms
                 return;
             }
 
-            // For now, export repair analytics using the existing export service
             try
             {
                 using (var saveDialog = new SaveFileDialog())
@@ -522,11 +352,11 @@ namespace AzAgroPOS.PL.Forms
                     if (saveDialog.ShowDialog() == DialogResult.OK)
                     {
                         bool success = _exportService.ExportRepairAnalyticsToExcel(_currentReport, saveDialog.FileName);
-                        
+
                         if (success)
                         {
                             ErrorHandlingService.ShowSuccess("Analitika uğurla ixrac edildi!");
-                            
+
                             if (ErrorHandlingService.ShowConfirmation("Faylı açmaq istəyirsiniz?"))
                             {
                                 System.Diagnostics.Process.Start(saveDialog.FileName);
@@ -553,41 +383,12 @@ namespace AzAgroPOS.PL.Forms
             lblCompletionRate.Text = $"Tamamlanma %: {report.CompletionRate:F1}%";
             lblAverageTime.Text = $"Orta Vaxt: {report.AverageRepairTime:F1} gün";
 
-            // Update charts
-            UpdateCharts(report);
-
             // Update grids
             UpdateRepairTypesGrid(report.RepairsByType);
             UpdateWorkerPerformanceGrid(report.WorkerPerformance);
 
             // Update detailed report
             UpdateDetailedReport(report);
-        }
-
-        private void UpdateCharts(RepairAnalyticsDto report)
-        {
-            // Chart yenilənməsi müvəqqəti deaktivdir
-            /*
-            // Clear existing data
-            chartRepairAnalytics.Series["Təmir Sayı"].Points.Clear();
-            chartRepairAnalytics.Series["Status Bölgüsü"].Points.Clear();
-            chartRepairAnalytics.Series["Xərc Analizi"].Points.Clear();
-
-            // Update repair types chart
-            if (report.RepairsByType?.Any() == true)
-            {
-                foreach (var repairType in report.RepairsByType.Take(10))
-                {
-                    chartRepairAnalytics.Series["Təmir Sayı"].Points.AddXY(repairType.RepairType, repairType.Count);
-                    chartRepairAnalytics.Series["Xərc Analizi"].Points.AddXY(repairType.RepairType, (double)repairType.TotalCost);
-                }
-            }
-
-            // Update status distribution pie chart
-            chartRepairAnalytics.Series["Status Bölgüsü"].Points.AddXY("Tamamlanmış", report.CompletedRepairs);
-            chartRepairAnalytics.Series["Status Bölgüsü"].Points.AddXY("Gözləyən", report.PendingRepairs);
-            chartRepairAnalytics.Series["Status Bölgüsü"].Points.AddXY("Davam edən", report.InProgressRepairs);
-            */
         }
 
         private void UpdateRepairTypesGrid(System.Collections.Generic.List<RepairTypeDto> repairTypes)
@@ -601,7 +402,7 @@ namespace AzAgroPOS.PL.Forms
                 foreach (var repairType in repairTypes.OrderByDescending(rt => rt.Count))
                 {
                     var percentage = totalCount > 0 ? (decimal)repairType.Count / totalCount : 0;
-                    
+
                     dgvRepairTypes.Rows.Add(
                         repairType.RepairType,
                         repairType.Count,
@@ -628,15 +429,11 @@ namespace AzAgroPOS.PL.Forms
                         worker.PendingRepairs,
                         worker.TotalRevenue,
                         worker.AverageRepairTime,
-                        worker.SuccessRate / 100 // Convert to decimal for percentage format
+                        worker.SuccessRate / 100
                     );
 
-                    // Store worker ID in row tag
                     dgvWorkerPerformance.Rows[row].Tag = worker.WorkerId;
-
-                    // Color code based on performance
-                    var rowColor = GetPerformanceColor(worker.SuccessRate);
-                    dgvWorkerPerformance.Rows[row].DefaultCellStyle.BackColor = rowColor;
+                    dgvWorkerPerformance.Rows[row].DefaultCellStyle.BackColor = GetPerformanceColor(worker.SuccessRate);
                 }
             }
         }
@@ -673,7 +470,7 @@ namespace AzAgroPOS.PL.Forms
                     rtb.SelectionFont = new Font("Consolas", 11, FontStyle.Bold);
                     rtb.AppendText("TƏMİR NÖVLƏRI ÜZRƏ DAĞILIM:\n");
                     rtb.SelectionFont = new Font("Consolas", 10);
-                    
+
                     foreach (var repairType in report.RepairsByType.OrderByDescending(rt => rt.Count))
                     {
                         rtb.AppendText($"• {repairType.RepairType}:\n");
@@ -699,8 +496,8 @@ namespace AzAgroPOS.PL.Forms
             {
                 var workerName = dgvWorkerPerformance.SelectedRows[0].Cells["WorkerName"].Value.ToString();
                 var workerId = (int)dgvWorkerPerformance.SelectedRows[0].Tag;
-                
-                MessageBox.Show($"{workerName} üçün detallı performans hesabatı açılacaq.", 
+
+                MessageBox.Show($"{workerName} üçün detallı performans hesabatı açılacaq.",
                     "İşçi Detalları", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
@@ -710,15 +507,16 @@ namespace AzAgroPOS.PL.Forms
             if (dgvWorkerPerformance.SelectedRows.Count > 0)
             {
                 var workerName = dgvWorkerPerformance.SelectedRows[0].Cells["WorkerName"].Value.ToString();
-                
-                MessageBox.Show($"{workerName} üçün yeni tapşırıq təyin etmə formu açılacaq.", 
+
+                MessageBox.Show($"{workerName} üçün yeni tapşırıq təyin etmə formu açılacaq.",
                     "Yeni Tapşırıq", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
         private void LoadDefaultReport()
         {
-            // Load last 30 days report by default
+            dtpStartDate.Value = DateTime.Now.AddDays(-30);
+            dtpEndDate.Value = DateTime.Now;
             BtnGenerate_Click(null, null);
         }
 
@@ -727,6 +525,16 @@ namespace AzAgroPOS.PL.Forms
             _reportService?.Dispose();
             _exportService?.Dispose();
             base.OnFormClosed(e);
+        }
+
+        private void btnExport_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnGenerate_Click_1(object sender, EventArgs e)
+        {
+
         }
     }
 }
