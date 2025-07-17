@@ -1,4 +1,5 @@
 using AzAgroPOS.DAL.Repositories;
+
 using System;
 
 namespace AzAgroPOS.DAL.Interfaces

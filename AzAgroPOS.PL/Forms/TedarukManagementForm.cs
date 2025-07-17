@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using AzAgroPOS.BLL.Interfaces;
 using AzAgroPOS.BLL.Services;
 using AzAgroPOS.Entities.Domain;
+
 
 namespace AzAgroPOS.PL.Forms
 {
@@ -21,9 +23,9 @@ namespace AzAgroPOS.PL.Forms
         public TedarukManagementForm()
         {
             InitializeComponent();
-            _tedarukcuService = new TedarukcuService();
-            _anbarService = new AnbarService();
-            _mehsulService = new MehsulService();
+            _tedarukcuService = ServiceFactory.CreateTedarukcuService();
+            _anbarService = ServiceFactory.CreateAnbarService();
+            _mehsulService = ServiceFactory.CreateMehsulService();
             AttachEventHandlers();
             LoadData();
         }

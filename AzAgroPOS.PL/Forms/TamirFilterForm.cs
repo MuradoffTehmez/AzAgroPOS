@@ -1,6 +1,7 @@
 using AzAgroPOS.BLL.Services;
 using AzAgroPOS.Entities.Domain;
 using AzAgroPOS.Entities.Constants;
+using AzAgroPOS.BLL.Interfaces;
 using System;
 using System.Drawing;
 using System.Linq;
@@ -23,8 +24,8 @@ namespace AzAgroPOS.PL.Forms
         public TamirFilterForm()
         {
             InitializeComponent();
-            _tedarukcuService = new TedarukcuService();
-            _authService = new AuthService();
+            _tedarukcuService = ServiceFactory.CreateTedarukcuService();
+            _authService = ServiceFactory.CreateAuthService();
             SetupForm();
         }
 

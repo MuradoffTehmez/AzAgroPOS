@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using AzAgroPOS.BLL.Interfaces;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -21,9 +22,10 @@ namespace AzAgroPOS.PL.Forms
         private DataGridView settingsGrid;
         private Timer refreshTimer;
 
+
         public BildirisForm(int userId = 1)
         {
-            _bildirisService = new BildirisService();
+            _bildirisService = ServiceFactory.CreateBildirisService();
             _currentUserId = userId;
             InitializeComponent();
             SetupForm();

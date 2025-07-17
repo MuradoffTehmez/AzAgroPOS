@@ -2,6 +2,7 @@ using AzAgroPOS.BLL.Services;
 using AzAgroPOS.DAL;
 using AzAgroPOS.DAL.Repositories;
 using AzAgroPOS.Entities.Domain;
+using AzAgroPOS.BLL.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace AzAgroPOS.PL.Forms
         {
             InitializeComponent();
             var context = new AzAgroDbContext();
-            _mehsulService = new MehsulService();
+            _mehsulService = ServiceFactory.CreateMehsulService();
             _mehsulRepository = new MehsulRepository(context);
             _kateqoriyaRepository = new MehsulKateqoriyasiRepository(context);
             _currentUser = currentUser;

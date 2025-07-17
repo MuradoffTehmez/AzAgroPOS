@@ -1,6 +1,7 @@
 using AzAgroPOS.BLL.Services;
 using AzAgroPOS.DAL;
 using AzAgroPOS.Entities.Domain;
+using AzAgroPOS.BLL.Interfaces;
 using System;
 using System.Drawing;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace AzAgroPOS.PL.Forms
         {
             InitializeComponent();
             _context = new AzAgroDbContext();
-            _tamirService = new TamirService();
+            _tamirService = ServiceFactory.CreateTamirService();
             _currentUser = currentUser;
             SetupModernDesign();
         }

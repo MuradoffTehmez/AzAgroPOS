@@ -1,5 +1,6 @@
 using AzAgroPOS.DAL.Repositories;
 using AzAgroPOS.Entities.Domain;
+using AzAgroPOS.BLL.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

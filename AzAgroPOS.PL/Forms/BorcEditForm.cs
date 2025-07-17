@@ -4,6 +4,7 @@ using AzAgroPOS.Entities.Domain;
 using System;
 using System.Drawing;
 using System.Linq;
+using AzAgroPOS.BLL.Interfaces;
 using System.Windows.Forms;
 
 namespace AzAgroPOS.PL.Forms
@@ -22,7 +23,7 @@ namespace AzAgroPOS.PL.Forms
             _debtId = debtId;
             _currentUser = currentUser;
             _context = new AzAgroDbContext();
-            _borcService = new BorcService(_context, new AuditLogService());
+            _borcService = ServiceFactory.CreateBorcService();
             SetupForm();
             LoadDebtData();
         }

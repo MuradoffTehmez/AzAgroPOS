@@ -1,4 +1,6 @@
 using AzAgroPOS.DAL.Repositories;
+using AzAgroPOS.DAL.Interfaces;
+using AzAgroPOS.BLL.Interfaces;
 using AzAgroPOS.Entities.Domain;
 using Microsoft.Data.Sqlite;
 using System;
@@ -15,14 +17,15 @@ namespace AzAgroPOS.BLL.Services
 {
     public class BackupService : IDisposable
     {
-        private readonly BackupKaydiRepository _backupRepository;
-        private readonly BackupTenzimlemeRepository _configRepository;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IAuditLogService _auditLogService;
         private readonly string _connectionString;
+        private bool _disposed = false;
 
-        public BackupService()
+        public BackupService(IUnitOfWork unitOfWork, IAuditLogService auditLogService = null)
         {
-            _backupRepository = new BackupKaydiRepository();
-            _configRepository = new BackupTenzimlemeRepository();
+            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            _auditLogService = auditLogService;
             _connectionString = "Data Source=azagropos.db";
         }
 
@@ -42,7 +45,7 @@ namespace AzAgroPOS.BLL.Services
 
             try
             {
-                backupRecord = await _backupRepository.AddAsync(backupRecord);
+                backupRecord = await _unitOfWork.BackupKayitlari.AddAsync(backupRecord);
                 
                 var stopwatch = Stopwatch.StartNew();
                 var backupPath = await PerformBackupAsync(backupRecord);
@@ -54,13 +57,13 @@ namespace AzAgroPOS.BLL.Services
                 backupRecord.MD5Hash = CalculateFileMD5Hash(backupPath);
                 backupRecord.Statusu = BackupKaydi.BackupStatuslari.Ugurlu;
 
-                return await _backupRepository.UpdateAsync(backupRecord);
+                return await _unitOfWork.BackupKayitlari.UpdateAsync(backupRecord);
             }
             catch (Exception ex)
             {
                 backupRecord.Statusu = BackupKaydi.BackupStatuslari.Ugursuz;
                 backupRecord.XetaMesaji = ex.Message;
-                await _backupRepository.UpdateAsync(backupRecord);
+                await _unitOfWork.BackupKayitlari.UpdateAsync(backupRecord);
                 throw;
             }
         }
@@ -81,7 +84,7 @@ namespace AzAgroPOS.BLL.Services
 
             try
             {
-                backupRecord = await _backupRepository.AddAsync(backupRecord);
+                backupRecord = await _unitOfWork.BackupKayitlari.AddAsync(backupRecord);
                 
                 var stopwatch = Stopwatch.StartNew();
                 var backupPath = await PerformBackupAsync(backupRecord, configuration);
@@ -93,14 +96,14 @@ namespace AzAgroPOS.BLL.Services
                 backupRecord.MD5Hash = CalculateFileMD5Hash(backupPath);
                 backupRecord.Statusu = BackupKaydi.BackupStatuslari.Ugurlu;
 
-                await _configRepository.UpdateLastBackupTimeAsync(configuration.Id, DateTime.Now);
-                return await _backupRepository.UpdateAsync(backupRecord);
+                await _unitOfWork.BackupTenzimlemeleri.UpdateLastBackupTimeAsync(configuration.Id, DateTime.Now);
+                return await _unitOfWork.BackupKayitlari.UpdateAsync(backupRecord);
             }
             catch (Exception ex)
             {
                 backupRecord.Statusu = BackupKaydi.BackupStatuslari.Ugursuz;
                 backupRecord.XetaMesaji = ex.Message;
-                await _backupRepository.UpdateAsync(backupRecord);
+                await _unitOfWork.BackupKayitlari.UpdateAsync(backupRecord);
                 throw;
             }
         }
@@ -184,7 +187,7 @@ namespace AzAgroPOS.BLL.Services
 
         public async Task<bool> RestoreBackupAsync(int backupId, string restorePath = null)
         {
-            var backup = await _backupRepository.GetByIdAsync(backupId);
+            var backup = await _unitOfWork.BackupKayitlari.GetByIdAsync(backupId);
             if (backup == null || !backup.FaylMovcuddur)
                 return false;
 
@@ -253,7 +256,7 @@ namespace AzAgroPOS.BLL.Services
 
         public async Task ProcessScheduledBackupsAsync()
         {
-            var dueBackups = await _configRepository.GetDueBackupsAsync();
+            var dueBackups = await _unitOfWork.BackupTenzimlemeleri.GetDueBackupsAsync();
             
             foreach (var config in dueBackups)
             {
@@ -271,11 +274,11 @@ namespace AzAgroPOS.BLL.Services
 
         public async Task CleanupOldBackupsAsync()
         {
-            var configurations = await _configRepository.GetConfigurationsNeedingCleanupAsync();
+            var configurations = await _unitOfWork.BackupTenzimlemeleri.GetConfigurationsNeedingCleanupAsync();
             
             foreach (var config in configurations)
             {
-                var oldBackups = await _backupRepository.GetOldBackupsAsync(config.SaxlanmaGunSayi);
+                var oldBackups = await _unitOfWork.BackupKayitlari.GetOldBackupsAsync(config.SaxlanmaGunSayi);
                 
                 foreach (var backup in oldBackups)
                 {
@@ -285,7 +288,7 @@ namespace AzAgroPOS.BLL.Services
                         {
                             File.Delete(backup.BackupYolu);
                         }
-                        await _backupRepository.DeleteAsync(backup.Id);
+                        await _unitOfWork.BackupKayitlari.DeleteAsync(backup.Id);
                     }
                     catch (Exception ex)
                     {
@@ -301,27 +304,27 @@ namespace AzAgroPOS.BLL.Services
 
         public async Task<IEnumerable<BackupTenzimleme>> GetAllConfigurationsAsync()
         {
-            return await _configRepository.GetAllAsync();
+            return await _unitOfWork.BackupTenzimlemeleri.GetAllAsync();
         }
 
         public async Task<BackupTenzimleme> GetConfigurationByIdAsync(int id)
         {
-            return await _configRepository.GetByIdAsync(id);
+            return await _unitOfWork.BackupTenzimlemeleri.GetByIdAsync(id);
         }
 
         public async Task<BackupTenzimleme> CreateConfigurationAsync(BackupTenzimleme configuration)
         {
-            return await _configRepository.AddAsync(configuration);
+            return await _unitOfWork.BackupTenzimlemeleri.AddAsync(configuration);
         }
 
         public async Task<BackupTenzimleme> UpdateConfigurationAsync(BackupTenzimleme configuration)
         {
-            return await _configRepository.UpdateAsync(configuration);
+            return await _unitOfWork.BackupTenzimlemeleri.UpdateAsync(configuration);
         }
 
         public async Task DeleteConfigurationAsync(int id)
         {
-            await _configRepository.DeleteAsync(id);
+            await _unitOfWork.BackupTenzimlemeleri.DeleteAsync(id);
         }
 
         #endregion
@@ -330,22 +333,22 @@ namespace AzAgroPOS.BLL.Services
 
         public async Task<IEnumerable<BackupKaydi>> GetAllBackupsAsync()
         {
-            return await _backupRepository.GetAllAsync();
+            return await _unitOfWork.BackupKayitlari.GetAllAsync();
         }
 
         public async Task<BackupKaydi> GetBackupByIdAsync(int id)
         {
-            return await _backupRepository.GetByIdAsync(id);
+            return await _unitOfWork.BackupKayitlari.GetByIdAsync(id);
         }
 
         public async Task<IEnumerable<BackupKaydi>> GetBackupsByDateRangeAsync(DateTime startDate, DateTime endDate)
         {
-            return await _backupRepository.GetByDateRangeAsync(startDate, endDate);
+            return await _unitOfWork.BackupKayitlari.GetByDateRangeAsync(startDate, endDate);
         }
 
         public async Task<BackupKaydi> GetLatestBackupAsync()
         {
-            return await _backupRepository.GetLatestBackupAsync();
+            return await _unitOfWork.BackupKayitlari.GetLatestBackupAsync();
         }
 
         #endregion
@@ -386,14 +389,14 @@ namespace AzAgroPOS.BLL.Services
 
         public async Task<Dictionary<string, object>> GetBackupStatisticsAsync()
         {
-            var totalBackups = (await _backupRepository.GetAllAsync()).Count();
-            var successfulBackups = (await _backupRepository.GetSuccessfulBackupsAsync()).Count();
-            var failedBackups = (await _backupRepository.GetFailedBackupsAsync()).Count();
-            var totalSize = await _backupRepository.GetTotalBackupSizeAsync();
-            var latestBackup = await _backupRepository.GetLatestBackupAsync();
+            var totalBackups = (await _unitOfWork.BackupKayitlari.GetAllAsync()).Count();
+            var successfulBackups = (await _unitOfWork.BackupKayitlari.GetSuccessfulBackupsAsync()).Count();
+            var failedBackups = (await _unitOfWork.BackupKayitlari.GetFailedBackupsAsync()).Count();
+            var totalSize = await _unitOfWork.BackupKayitlari.GetTotalBackupSizeAsync();
+            var latestBackup = await _unitOfWork.BackupKayitlari.GetLatestBackupAsync();
 
-            var typeStats = await _backupRepository.GetBackupStatisticsByTypeAsync();
-            var statusStats = await _backupRepository.GetBackupStatisticsByStatusAsync();
+            var typeStats = await _unitOfWork.BackupKayitlari.GetBackupStatisticsByTypeAsync();
+            var statusStats = await _unitOfWork.BackupKayitlari.GetBackupStatisticsByStatusAsync();
 
             return new Dictionary<string, object>
             {
@@ -409,15 +412,15 @@ namespace AzAgroPOS.BLL.Services
 
         public async Task<bool> VerifyBackupIntegrityAsync(int backupId)
         {
-            return await _backupRepository.VerifyBackupIntegrityAsync(backupId);
+            return await _unitOfWork.BackupKayitlari.VerifyBackupIntegrityAsync(backupId);
         }
 
         #endregion
 
         public void Dispose()
         {
-            _backupRepository?.Dispose();
-            _configRepository?.Dispose();
+            _unitOfWork.BackupKayitlari?.Dispose();
+            _unitOfWork.BackupTenzimlemeleri?.Dispose();
         }
     }
 }

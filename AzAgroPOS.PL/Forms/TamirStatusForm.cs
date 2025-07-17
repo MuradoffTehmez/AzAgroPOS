@@ -1,6 +1,7 @@
 using AzAgroPOS.BLL.Services;
 using AzAgroPOS.DAL;
 using AzAgroPOS.Entities.Domain;
+using AzAgroPOS.BLL.Interfaces;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -21,7 +22,7 @@ namespace AzAgroPOS.PL.Forms
             _repairId = repairId;
             _currentUser = currentUser;
             _context = new AzAgroDbContext();
-            _tamirService = new TamirService();
+            _tamirService = ServiceFactory.CreateTamirService();
             SetupForm();
             LoadRepairInfo();
         }

@@ -1,10 +1,10 @@
+using AzAgroPOS.BLL.Interfaces;
 using AzAgroPOS.DAL.Interfaces;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-// using System.Windows.Forms; // BLL layer-də MessageBox istifadə edilmir
 
 namespace AzAgroPOS.BLL.Services
 {

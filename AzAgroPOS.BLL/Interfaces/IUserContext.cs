@@ -1,4 +1,5 @@
 using System;
+using AzAgroPOS.BLL.Interfaces;
 
 namespace AzAgroPOS.BLL.Interfaces
 {

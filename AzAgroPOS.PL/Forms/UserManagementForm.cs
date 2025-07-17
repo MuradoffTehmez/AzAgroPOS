@@ -1,6 +1,7 @@
 using AzAgroPOS.BLL.Services;
 using AzAgroPOS.DAL;
 using AzAgroPOS.DAL.Repositories;
+using AzAgroPOS.BLL.Interfaces;
 using AzAgroPOS.Entities.Domain;
 using System;
 using System.Collections.Generic;
@@ -27,7 +28,7 @@ namespace AzAgroPOS.PL.Forms
             var context = new AzAgroDbContext();
             _istifadeciRepository = new IstifadeciRepository(context);
             _rolRepository = new RolRepository(context);
-            _authService = new AuthService();
+            _authService = ServiceFactory.CreateAuthService();
             _auditLogService = new AuditLogService();
             _currentUser = currentUser;
             

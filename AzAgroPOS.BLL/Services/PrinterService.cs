@@ -1,4 +1,5 @@
-using AzAgroPOS.DAL.Repositories;
+using AzAgroPOS.BLL.Interfaces;
+using AzAgroPOS.DAL.Interfaces;
 using AzAgroPOS.Entities.Domain;
 using System;
 using System.Collections.Generic;
@@ -13,62 +14,61 @@ namespace AzAgroPOS.BLL.Services
 {
     public class PrinterService : IDisposable
     {
-        private readonly PrinterKonfiqurasiyasiRepository _printerRepository;
-        private readonly PrintSablonuRepository _templateRepository;
-        private readonly PrintLogKaydiRepository _logRepository;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IAuditLogService _auditLogService;
+        private bool _disposed = false;
 
-        public PrinterService()
+        public PrinterService(IUnitOfWork unitOfWork, IAuditLogService auditLogService = null)
         {
-            _printerRepository = new PrinterKonfiqurasiyasiRepository();
-            _templateRepository = new PrintSablonuRepository();
-            _logRepository = new PrintLogKaydiRepository();
+            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            _auditLogService = auditLogService;
         }
 
         #region Printer Configuration Management
 
         public async Task<IEnumerable<PrinterKonfiqurasiyasi>> GetAllPrintersAsync()
         {
-            return await _printerRepository.GetAllAsync();
+            return await _unitOfWork.PrinterKonfiqurasiyas.GetAllAsync();
         }
 
         public async Task<PrinterKonfiqurasiyasi> GetPrinterByIdAsync(int id)
         {
-            return await _printerRepository.GetByIdAsync(id);
+            return await _unitOfWork.PrinterKonfiqurasiyas.GetByIdAsync(id);
         }
 
         public async Task<IEnumerable<PrinterKonfiqurasiyasi>> GetActivePrintersAsync()
         {
-            return await _printerRepository.GetActivePrintersAsync();
+            return await _unitOfWork.PrinterKonfiqurasiyas.GetActivePrintersAsync();
         }
 
         public async Task<PrinterKonfiqurasiyasi> GetDefaultPrinterAsync()
         {
-            return await _printerRepository.GetDefaultPrinterAsync();
+            return await _unitOfWork.PrinterKonfiqurasiyas.GetDefaultPrinterAsync();
         }
 
         public async Task<PrinterKonfiqurasiyasi> CreatePrinterAsync(PrinterKonfiqurasiyasi printer)
         {
-            return await _printerRepository.AddAsync(printer);
+            return await _unitOfWork.PrinterKonfiqurasiyas.AddAsync(printer);
         }
 
         public async Task<PrinterKonfiqurasiyasi> UpdatePrinterAsync(PrinterKonfiqurasiyasi printer)
         {
-            return await _printerRepository.UpdateAsync(printer);
+            return await _unitOfWork.PrinterKonfiqurasiyas.UpdateAsync(printer);
         }
 
         public async Task DeletePrinterAsync(int id)
         {
-            await _printerRepository.DeleteAsync(id);
+            await _unitOfWork.PrinterKonfiqurasiyas.DeleteAsync(id);
         }
 
         public async Task<bool> TestPrinterConnectionAsync(int printerId)
         {
-            return await _printerRepository.TestPrinterConnectionAsync(printerId);
+            return await _unitOfWork.PrinterKonfiqurasiyas.TestPrinterConnectionAsync(printerId);
         }
 
         public async Task<bool> SetDefaultPrinterAsync(int printerId)
         {
-            return await _printerRepository.SetAsDefaultAsync(printerId);
+            return await _unitOfWork.PrinterKonfiqurasiyas.SetAsDefaultAsync(printerId);
         }
 
         #endregion
@@ -77,37 +77,37 @@ namespace AzAgroPOS.BLL.Services
 
         public async Task<IEnumerable<PrintSablonu>> GetAllTemplatesAsync()
         {
-            return await _templateRepository.GetAllAsync();
+            return await _unitOfWork.PrintSablonlari.GetAllAsync();
         }
 
         public async Task<PrintSablonu> GetTemplateByIdAsync(int id)
         {
-            return await _templateRepository.GetByIdAsync(id);
+            return await _unitOfWork.PrintSablonlari.GetByIdAsync(id);
         }
 
         public async Task<IEnumerable<PrintSablonu>> GetActiveTemplatesAsync()
         {
-            return await _templateRepository.GetActiveTemplatesAsync();
+            return await _unitOfWork.PrintSablonlari.GetActiveTemplatesAsync();
         }
 
         public async Task<PrintSablonu> GetDefaultTemplateAsync(string templateType, string printerType)
         {
-            return await _templateRepository.GetDefaultTemplateAsync(templateType, printerType);
+            return await _unitOfWork.PrintSablonlari.GetDefaultTemplateAsync(templateType, printerType);
         }
 
         public async Task<PrintSablonu> CreateTemplateAsync(PrintSablonu template)
         {
-            return await _templateRepository.AddAsync(template);
+            return await _unitOfWork.PrintSablonlari.AddAsync(template);
         }
 
         public async Task<PrintSablonu> UpdateTemplateAsync(PrintSablonu template)
         {
-            return await _templateRepository.UpdateAsync(template);
+            return await _unitOfWork.PrintSablonlari.UpdateAsync(template);
         }
 
         public async Task DeleteTemplateAsync(int id)
         {
-            await _templateRepository.DeleteAsync(id);
+            await _unitOfWork.PrintSablonlari.DeleteAsync(id);
         }
 
         #endregion
@@ -116,8 +116,8 @@ namespace AzAgroPOS.BLL.Services
 
         public async Task<PrintLogKaydi> PrintLabelAsync(int printerId, int templateId, string mehsulAdi, string barkod, decimal qiymet, int userId, int copies = 1)
         {
-            var printer = await _printerRepository.GetByIdAsync(printerId);
-            var template = await _templateRepository.GetByIdAsync(templateId);
+            var printer = await _unitOfWork.PrinterKonfiqurasiyas.GetByIdAsync(printerId);
+            var template = await _unitOfWork.PrintSablonlari.GetByIdAsync(templateId);
 
             if (printer == null || template == null)
                 throw new ArgumentException("Printer və ya şablon tapılmadı");
@@ -139,7 +139,7 @@ namespace AzAgroPOS.BLL.Services
                 var stopwatch = Stopwatch.StartNew();
 
                 // Generate print code
-                var printCode = await _templateRepository.GenerateTemplateCodeAsync(template, mehsulAdi, barkod, qiymet);
+                var printCode = await _unitOfWork.PrintSablonlari.GenerateTemplateCodeAsync(template, mehsulAdi, barkod, qiymet);
                 logKaydi.PrintKomandasi = printCode.Length > 100 ? printCode.Substring(0, 100) + "..." : printCode;
                 logKaydi.PrintMezmunu = $"Məhsul: {mehsulAdi}, Barkod: {barkod}, Qiymət: {qiymet:C}";
 
@@ -156,13 +156,13 @@ namespace AzAgroPOS.BLL.Services
                 // Calculate paper usage (simplified)
                 logKaydi.KagizIstifadeOlcusu = template.SablonGenisligi * template.SablonUzunlugu * copies;
 
-                return await _logRepository.AddAsync(logKaydi);
+                return await _unitOfWork.PrintLogKayitlari.AddAsync(logKaydi);
             }
             catch (Exception ex)
             {
                 logKaydi.PrintStatusu = PrintLogKaydi.PrintStatuslari.Ugursuz;
                 logKaydi.XetaMesaji = ex.Message;
-                return await _logRepository.AddAsync(logKaydi);
+                return await _unitOfWork.PrintLogKayitlari.AddAsync(logKaydi);
             }
         }
 
@@ -180,13 +180,13 @@ namespace AzAgroPOS.BLL.Services
             var logKaydi = await PrintLabelAsync(actualPrinterId, actualTemplateId, mehsulAdi, barkod, qiymet, userId, copies);
             logKaydi.MehsulId = mehsulId;
             logKaydi.MenbeModul = PrintLogKaydi.PrintMenbeLeri.Mehsul;
-            return await _logRepository.UpdateAsync(logKaydi);
+            return await _unitOfWork.PrintLogKayitlari.UpdateAsync(logKaydi);
         }
 
         public async Task<PrintLogKaydi> PrintSalesReceiptAsync(int satisId, int userId, int? printerId = null)
         {
             var printer = printerId.HasValue ? 
-                await _printerRepository.GetByIdAsync(printerId.Value) : 
+                await _unitOfWork.PrinterKonfiqurasiyas.GetByIdAsync(printerId.Value) : 
                 await GetDefaultPrinterAsync();
 
             if (printer == null)
@@ -223,19 +223,19 @@ namespace AzAgroPOS.BLL.Services
                 if (!success)
                     logKaydi.XetaMesaji = "Qəbz yazdırma uğursuz oldu";
 
-                return await _logRepository.AddAsync(logKaydi);
+                return await _unitOfWork.PrintLogKayitlari.AddAsync(logKaydi);
             }
             catch (Exception ex)
             {
                 logKaydi.PrintStatusu = PrintLogKaydi.PrintStatuslari.Ugursuz;
                 logKaydi.XetaMesaji = ex.Message;
-                return await _logRepository.AddAsync(logKaydi);
+                return await _unitOfWork.PrintLogKayitlari.AddAsync(logKaydi);
             }
         }
 
         public async Task<PrintLogKaydi> TestPrintAsync(int printerId, int userId)
         {
-            var printer = await _printerRepository.GetByIdAsync(printerId);
+            var printer = await _unitOfWork.PrinterKonfiqurasiyas.GetByIdAsync(printerId);
             if (printer == null)
                 throw new ArgumentException("Printer tapılmadı");
 
@@ -270,15 +270,15 @@ namespace AzAgroPOS.BLL.Services
                     logKaydi.XetaMesaji = "Test print uğursuz oldu";
 
                 // Update printer test status
-                await _printerRepository.TestPrinterConnectionAsync(printerId);
+                await _unitOfWork.PrinterKonfiqurasiyas.TestPrinterConnectionAsync(printerId);
 
-                return await _logRepository.AddAsync(logKaydi);
+                return await _unitOfWork.PrintLogKayitlari.AddAsync(logKaydi);
             }
             catch (Exception ex)
             {
                 logKaydi.PrintStatusu = PrintLogKaydi.PrintStatuslari.Ugursuz;
                 logKaydi.XetaMesaji = ex.Message;
-                return await _logRepository.AddAsync(logKaydi);
+                return await _unitOfWork.PrintLogKayitlari.AddAsync(logKaydi);
             }
         }
 
@@ -367,22 +367,22 @@ namespace AzAgroPOS.BLL.Services
 
         public async Task<IEnumerable<PrintLogKaydi>> GetAllPrintLogsAsync()
         {
-            return await _logRepository.GetAllAsync();
+            return await _unitOfWork.PrintLogKayitlari.GetAllAsync();
         }
 
         public async Task<IEnumerable<PrintLogKaydi>> GetRecentPrintLogsAsync(int count = 50)
         {
-            return await _logRepository.GetRecentPrintsAsync(count);
+            return await _unitOfWork.PrintLogKayitlari.GetRecentPrintsAsync(count);
         }
 
         public async Task<IEnumerable<PrintLogKaydi>> GetPrintLogsByDateRangeAsync(DateTime startDate, DateTime endDate)
         {
-            return await _logRepository.GetByDateRangeAsync(startDate, endDate);
+            return await _unitOfWork.PrintLogKayitlari.GetByDateRangeAsync(startDate, endDate);
         }
 
         public async Task<IEnumerable<PrintLogKaydi>> GetFailedPrintLogsAsync()
         {
-            return await _logRepository.GetFailedPrintsAsync();
+            return await _unitOfWork.PrintLogKayitlari.GetFailedPrintsAsync();
         }
 
         #endregion
@@ -443,9 +443,9 @@ Teşekkür edirik!
 
         public async Task<Dictionary<string, object>> GetPrintStatisticsAsync()
         {
-            var stats = await _logRepository.GetDetailedPrintStatisticsAsync();
-            var printerStats = await _printerRepository.GetPrinterHealthStatisticsAsync();
-            var templateStats = await _templateRepository.GetTemplateUsageStatisticsAsync();
+            var stats = await _unitOfWork.PrintLogKayitlari.GetDetailedPrintStatisticsAsync();
+            var printerStats = await _unitOfWork.PrinterKonfiqurasiyas.GetPrinterHealthStatisticsAsync();
+            var templateStats = await _unitOfWork.PrintSablonlari.GetTemplateUsageStatisticsAsync();
 
             return new Dictionary<string, object>
             {
@@ -457,12 +457,12 @@ Teşekkür edirik!
 
         public async Task<double> GetPrintSuccessRateAsync(DateTime? startDate = null, DateTime? endDate = null)
         {
-            return await _logRepository.GetPrintSuccessRateAsync(startDate, endDate);
+            return await _unitOfWork.PrintLogKayitlari.GetPrintSuccessRateAsync(startDate, endDate);
         }
 
         public async Task<decimal> GetTotalPaperUsageAsync(DateTime? startDate = null, DateTime? endDate = null)
         {
-            return await _logRepository.GetTotalPaperUsageAsync(startDate, endDate);
+            return await _unitOfWork.PrintLogKayitlari.GetTotalPaperUsageAsync(startDate, endDate);
         }
 
         #endregion
@@ -471,21 +471,23 @@ Teşekkür edirik!
 
         public async Task<int> CleanupOldLogsAsync(int daysOld = 90)
         {
-            return await _logRepository.DeleteOldLogsAsync(daysOld);
+            return await _unitOfWork.PrintLogKayitlari.DeleteOldLogsAsync(daysOld);
         }
 
         public async Task<bool> TestAllPrintersAsync()
         {
-            return await _printerRepository.TestAllActivePrintersAsync();
+            return await _unitOfWork.PrinterKonfiqurasiyas.TestAllActivePrintersAsync();
         }
 
         #endregion
 
         public void Dispose()
         {
-            _printerRepository?.Dispose();
-            _templateRepository?.Dispose();
-            _logRepository?.Dispose();
+            if (!_disposed)
+            {
+                _unitOfWork?.Dispose();
+                _disposed = true;
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 using AzAgroPOS.BLL.Services;
 using AzAgroPOS.Entities.Domain;
+using AzAgroPOS.BLL.Interfaces;
 using AzAgroPOS.PL.Styles;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace AzAgroPOS.PL.Forms
 
         public NovbeIdaretmesiForm()
         {
-            _service = new NovbeIdaretmesiService();
+            _service = ServiceFactory.CreateNovbeIdaretmesiService();
             InitializeComponent();
             SetupForm();
             ModernTheme.ApplyModernStyle(this);

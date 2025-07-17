@@ -1,0 +1,134 @@
+using AzAgroPOS.DAL;
+using AzAgroPOS.DAL.Interfaces;
+using AzAgroPOS.DAL.Repositories;
+using AzAgroPOS.BLL.Interfaces;
+using System;
+
+namespace AzAgroPOS.BLL.Services
+{
+    /// <summary>
+    /// Servisləri yaratmaq üçün Factory pattern
+    /// UI layer üçün asanlıq yaradır və dependency injection mexanizmi təmin edir
+    /// </summary>
+    public static class ServiceFactory
+    {
+        private static IUnitOfWork _unitOfWork;
+        private static IAuditLogService _auditLogService;
+
+        /// <summary>
+        /// Factory-ni başlat
+        /// </summary>
+        public static void Initialize()
+        {
+            var context = new AzAgroDbContext();
+            _unitOfWork = new UnitOfWork(context);
+            _auditLogService = new AuditLogService(context);
+        }
+
+        /// <summary>
+        /// Factory resources təmizlə
+        /// </summary>
+        public static void Cleanup()
+        {
+            _auditLogService?.Dispose();
+            _unitOfWork?.Dispose();
+        }
+
+        // Əsas servislər
+        public static SatisService CreateSatisService()
+        {
+            EnsureInitialized();
+            return new SatisService(_unitOfWork);
+        }
+
+        public static MehsulService CreateMehsulService()
+        {
+            EnsureInitialized();
+            return new MehsulService(_unitOfWork, _auditLogService);
+        }
+
+        public static MusteriService CreateMusteriService()
+        {
+            EnsureInitialized();
+            return new MusteriService(_unitOfWork, _auditLogService);
+        }
+
+        public static AuthService CreateAuthService()
+        {
+            EnsureInitialized();
+            return new AuthService(_unitOfWork, _auditLogService);
+        }
+
+        public static BorcService CreateBorcService()
+        {
+            EnsureInitialized();
+            return new BorcService(_unitOfWork, _auditLogService);
+        }
+
+        public static AnbarService CreateAnbarService()
+        {
+            EnsureInitialized();
+            return new AnbarService(_unitOfWork);
+        }
+
+        public static TamirService CreateTamirService()
+        {
+            EnsureInitialized();
+            return new TamirService(_unitOfWork, _auditLogService);
+        }
+
+        public static TedarukcuService CreateTedarukcuService()
+        {
+            EnsureInitialized();
+            return new TedarukcuService(_unitOfWork, _auditLogService);
+        }
+
+        public static BackupService CreateBackupService()
+        {
+            EnsureInitialized();
+            return new BackupService(_unitOfWork, _auditLogService);
+        }
+
+        public static BildirisService CreateBildirisService()
+        {
+            EnsureInitialized();
+            return new BildirisService(_unitOfWork, _auditLogService);
+        }
+
+        public static NovbeIdaretmesiService CreateNovbeIdaretmesiService()
+        {
+            EnsureInitialized();
+            return new NovbeIdaretmesiService(_unitOfWork, _auditLogService);
+        }
+
+        public static PrinterService CreatePrinterService()
+        {
+            EnsureInitialized();
+            return new PrinterService(_unitOfWork, _auditLogService);
+        }
+
+        public static IsciService CreateIsciService()
+        {
+            EnsureInitialized();
+            // IsciService hələ köhnə pattern istifadə edir, ona görə DbContext veririk
+            var context = new AzAgroDbContext();
+            return new IsciService(context, _auditLogService);
+        }
+
+        public static HesabatService CreateHesabatService()
+        {
+            EnsureInitialized();
+            // HesabatService hələ köhnə pattern istifadə edir, ona görə DbContext veririk
+            var context = new AzAgroDbContext();
+            return new HesabatService(context, _auditLogService);
+        }
+
+        private static void EnsureInitialized()
+        {
+            if (_unitOfWork == null || _auditLogService == null)
+            {
+                Initialize();
+            }
+        }
+    }
+}

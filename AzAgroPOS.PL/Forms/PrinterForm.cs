@@ -1,6 +1,7 @@
 using AzAgroPOS.BLL.Services;
 using AzAgroPOS.Entities.Domain;
 using AzAgroPOS.PL.Styles;
+using AzAgroPOS.BLL.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -24,7 +25,7 @@ namespace AzAgroPOS.PL.Forms
 
         public PrinterForm(int userId = 1)
         {
-            _printerService = new PrinterService();
+            _printerService = ServiceFactory.CreatePrinterService();
             _currentUserId = userId;
             InitializeComponent();
             SetupForm();

@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using AzAgroPOS.Entities.Domain;
 
+
 namespace AzAgroPOS.DAL.Repositories
 {
     public class AlisOrderRepository : IDisposable

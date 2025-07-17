@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using AzAgroPOS.Entities.Domain;
 using AzAgroPOS.BLL.Services;
 using AzAgroPOS.PL.Services;
+using AzAgroPOS.BLL.Interfaces;
 
 namespace AzAgroPOS.PL.Forms
 {
@@ -23,8 +24,8 @@ namespace AzAgroPOS.PL.Forms
         public POSForm()
         {
             InitializeComponent();
-            _mehsulService = new MehsulService();
-            _satisService = new SatisService();
+            _mehsulService = ServiceFactory.CreateMehsulService();
+            _satisService = ServiceFactory.CreateSatisService();
             _satisDetallari = new List<SatisDetaliItem>();
             _currentUser = GetCurrentUser();
             InitializeForm();
@@ -33,8 +34,8 @@ namespace AzAgroPOS.PL.Forms
         public POSForm(Istifadeci currentUser)
         {
             InitializeComponent();
-            _mehsulService = new MehsulService();
-            _satisService = new SatisService();
+            _mehsulService = ServiceFactory.CreateMehsulService();
+            _satisService = ServiceFactory.CreateSatisService();
             _satisDetallari = new List<SatisDetaliItem>();
             _currentUser = currentUser;
             InitializeForm();

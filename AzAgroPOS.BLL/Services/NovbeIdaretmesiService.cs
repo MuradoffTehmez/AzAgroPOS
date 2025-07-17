@@ -1,4 +1,5 @@
-using AzAgroPOS.DAL.Repositories;
+using AzAgroPOS.BLL.Interfaces;
+using AzAgroPOS.DAL.Interfaces;
 using AzAgroPOS.Entities.Domain;
 using System;
 using System.Collections.Generic;
@@ -9,57 +10,56 @@ namespace AzAgroPOS.BLL.Services
 {
     public class NovbeIdaretmesiService : IDisposable
     {
-        private readonly NovbeCedveliRepository _scheduleRepository;
-        private readonly NovbeDetaliRepository _shiftRepository;
-        private readonly IsciIzniRepository _leaveRepository;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IAuditLogService _auditLogService;
+        private bool _disposed = false;
 
-        public NovbeIdaretmesiService()
+        public NovbeIdaretmesiService(IUnitOfWork unitOfWork, IAuditLogService auditLogService = null)
         {
-            _scheduleRepository = new NovbeCedveliRepository();
-            _shiftRepository = new NovbeDetaliRepository();
-            _leaveRepository = new IsciIzniRepository();
+            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            _auditLogService = auditLogService;
         }
 
         #region Schedule Management
 
         public async Task<IEnumerable<NovbeCedveli>> GetAllSchedulesAsync()
         {
-            return await _scheduleRepository.GetAllAsync();
+            return await _unitOfWork.NovbeCedvelleri.GetAllAsync();
         }
 
         public async Task<NovbeCedveli> GetScheduleByIdAsync(int id)
         {
-            return await _scheduleRepository.GetByIdAsync(id);
+            return await _unitOfWork.NovbeCedvelleri.GetByIdAsync(id);
         }
 
         public async Task<IEnumerable<NovbeCedveli>> GetActiveSchedulesAsync()
         {
-            return await _scheduleRepository.GetActiveSchedulesAsync();
+            return await _unitOfWork.NovbeCedvelleri.GetActiveSchedulesAsync();
         }
 
         public async Task<NovbeCedveli> CreateScheduleAsync(NovbeCedveli schedule)
         {
-            return await _scheduleRepository.AddAsync(schedule);
+            return await _unitOfWork.NovbeCedvelleri.AddAsync(schedule);
         }
 
         public async Task<NovbeCedveli> UpdateScheduleAsync(NovbeCedveli schedule)
         {
-            return await _scheduleRepository.UpdateAsync(schedule);
+            return await _unitOfWork.NovbeCedvelleri.UpdateAsync(schedule);
         }
 
         public async Task DeleteScheduleAsync(int id)
         {
-            await _scheduleRepository.DeleteAsync(id);
+            await _unitOfWork.NovbeCedvelleri.DeleteAsync(id);
         }
 
         public async Task<bool> DeactivateScheduleAsync(int id)
         {
-            return await _scheduleRepository.DeactivateScheduleAsync(id);
+            return await _unitOfWork.NovbeCedvelleri.DeactivateScheduleAsync(id);
         }
 
         public async Task<bool> ActivateScheduleAsync(int id)
         {
-            return await _scheduleRepository.ActivateScheduleAsync(id);
+            return await _unitOfWork.NovbeCedvelleri.ActivateScheduleAsync(id);
         }
 
         #endregion
@@ -68,43 +68,43 @@ namespace AzAgroPOS.BLL.Services
 
         public async Task<IEnumerable<NovbeDetali>> GetAllShiftsAsync()
         {
-            return await _shiftRepository.GetAllAsync();
+            return await _unitOfWork.NovbeDetallari.GetAllAsync();
         }
 
         public async Task<NovbeDetali> GetShiftByIdAsync(int id)
         {
-            return await _shiftRepository.GetByIdAsync(id);
+            return await _unitOfWork.NovbeDetallari.GetByIdAsync(id);
         }
 
         public async Task<IEnumerable<NovbeDetali>> GetShiftsByEmployeeAsync(int employeeId)
         {
-            return await _shiftRepository.GetByEmployeeIdAsync(employeeId);
+            return await _unitOfWork.NovbeDetallari.GetByEmployeeIdAsync(employeeId);
         }
 
         public async Task<IEnumerable<NovbeDetali>> GetShiftsByDateRangeAsync(DateTime startDate, DateTime endDate)
         {
-            return await _shiftRepository.GetByDateRangeAsync(startDate, endDate);
+            return await _unitOfWork.NovbeDetallari.GetByDateRangeAsync(startDate, endDate);
         }
 
         public async Task<IEnumerable<NovbeDetali>> GetTodayShiftsAsync()
         {
-            return await _shiftRepository.GetTodayShiftsAsync();
+            return await _unitOfWork.NovbeDetallari.GetTodayShiftsAsync();
         }
 
         public async Task<IEnumerable<NovbeDetali>> GetActiveShiftsAsync()
         {
-            return await _shiftRepository.GetActiveShiftsAsync();
+            return await _unitOfWork.NovbeDetallari.GetActiveShiftsAsync();
         }
 
         public async Task<IEnumerable<NovbeDetali>> GetPendingShiftApprovalsAsync()
         {
-            return await _shiftRepository.GetPendingApprovalsAsync();
+            return await _unitOfWork.NovbeDetallari.GetPendingApprovalsAsync();
         }
 
         public async Task<NovbeDetali> CreateShiftAsync(NovbeDetali shift)
         {
             // Check for conflicts before creating
-            var hasConflict = await _shiftRepository.HasConflictingShiftAsync(
+            var hasConflict = await _unitOfWork.NovbeDetallari.HasConflictingShiftAsync(
                 shift.IsciId, shift.NovbeTarixi, shift.BaslangicSaati, shift.BitisSaati);
 
             if (hasConflict)
@@ -119,13 +119,13 @@ namespace AzAgroPOS.BLL.Services
                 throw new InvalidOperationException("İşçi həmin tarixdə izindədir!");
             }
 
-            return await _shiftRepository.AddAsync(shift);
+            return await _unitOfWork.NovbeDetallari.AddAsync(shift);
         }
 
         public async Task<NovbeDetali> UpdateShiftAsync(NovbeDetali shift)
         {
             // Check for conflicts when updating
-            var hasConflict = await _shiftRepository.HasConflictingShiftAsync(
+            var hasConflict = await _unitOfWork.NovbeDetallari.HasConflictingShiftAsync(
                 shift.IsciId, shift.NovbeTarixi, shift.BaslangicSaati, shift.BitisSaati, shift.Id);
 
             if (hasConflict)
@@ -133,22 +133,22 @@ namespace AzAgroPOS.BLL.Services
                 throw new InvalidOperationException("Bu işçinin həmin tarixdə və saatda başqa növbəsi var!");
             }
 
-            return await _shiftRepository.UpdateAsync(shift);
+            return await _unitOfWork.NovbeDetallari.UpdateAsync(shift);
         }
 
         public async Task DeleteShiftAsync(int id)
         {
-            await _shiftRepository.DeleteAsync(id);
+            await _unitOfWork.NovbeDetallari.DeleteAsync(id);
         }
 
         public async Task<bool> ApproveShiftAsync(int shiftId, string approverName)
         {
-            return await _shiftRepository.ApproveShiftAsync(shiftId, approverName);
+            return await _unitOfWork.NovbeDetallari.ApproveShiftAsync(shiftId, approverName);
         }
 
         public async Task<bool> ApproveMultipleShiftsAsync(List<int> shiftIds, string approverName)
         {
-            return await _shiftRepository.ApproveMultipleShiftsAsync(shiftIds, approverName);
+            return await _unitOfWork.NovbeDetallari.ApproveMultipleShiftsAsync(shiftIds, approverName);
         }
 
         #endregion
@@ -157,33 +157,33 @@ namespace AzAgroPOS.BLL.Services
 
         public async Task<IEnumerable<IsciIzni>> GetAllLeavesAsync()
         {
-            return await _leaveRepository.GetAllAsync();
+            return await _unitOfWork.IsciIzinleri.GetAllAsync();
         }
 
         public async Task<IsciIzni> GetLeaveByIdAsync(int id)
         {
-            return await _leaveRepository.GetByIdAsync(id);
+            return await _unitOfWork.IsciIzinleri.GetByIdAsync(id);
         }
 
         public async Task<IEnumerable<IsciIzni>> GetLeavesByEmployeeAsync(int employeeId)
         {
-            return await _leaveRepository.GetByEmployeeIdAsync(employeeId);
+            return await _unitOfWork.IsciIzinleri.GetByEmployeeIdAsync(employeeId);
         }
 
         public async Task<IEnumerable<IsciIzni>> GetPendingLeavesAsync()
         {
-            return await _leaveRepository.GetPendingLeavesAsync();
+            return await _unitOfWork.IsciIzinleri.GetPendingLeavesAsync();
         }
 
         public async Task<IEnumerable<IsciIzni>> GetActiveLeavesAsync()
         {
-            return await _leaveRepository.GetActiveLeavesAsync();
+            return await _unitOfWork.IsciIzinleri.GetActiveLeavesAsync();
         }
 
         public async Task<IsciIzni> CreateLeaveRequestAsync(IsciIzni leave)
         {
             // Check for overlapping leaves
-            var hasOverlap = await _leaveRepository.HasOverlappingLeaveAsync(
+            var hasOverlap = await _unitOfWork.IsciIzinleri.HasOverlappingLeaveAsync(
                 leave.IsciId, leave.BaslangicTarixi, leave.BitisTarixi);
 
             if (hasOverlap)
@@ -191,13 +191,13 @@ namespace AzAgroPOS.BLL.Services
                 throw new InvalidOperationException("Bu tarix aralığında zaten təsdiqlənmiş izin var!");
             }
 
-            return await _leaveRepository.AddAsync(leave);
+            return await _unitOfWork.IsciIzinleri.AddAsync(leave);
         }
 
         public async Task<IsciIzni> UpdateLeaveRequestAsync(IsciIzni leave)
         {
             // Check for overlapping leaves when updating
-            var hasOverlap = await _leaveRepository.HasOverlappingLeaveAsync(
+            var hasOverlap = await _unitOfWork.IsciIzinleri.HasOverlappingLeaveAsync(
                 leave.IsciId, leave.BaslangicTarixi, leave.BitisTarixi, leave.Id);
 
             if (hasOverlap)
@@ -205,27 +205,27 @@ namespace AzAgroPOS.BLL.Services
                 throw new InvalidOperationException("Bu tarix aralığında zaten təsdiqlənmiş izin var!");
             }
 
-            return await _leaveRepository.UpdateAsync(leave);
+            return await _unitOfWork.IsciIzinleri.UpdateAsync(leave);
         }
 
         public async Task DeleteLeaveRequestAsync(int id)
         {
-            await _leaveRepository.DeleteAsync(id);
+            await _unitOfWork.IsciIzinleri.DeleteAsync(id);
         }
 
         public async Task<bool> ApproveLeaveAsync(int leaveId, string approverName, string approvalNote = null)
         {
-            return await _leaveRepository.ApproveLeaveAsync(leaveId, approverName, approvalNote);
+            return await _unitOfWork.IsciIzinleri.ApproveLeaveAsync(leaveId, approverName, approvalNote);
         }
 
         public async Task<bool> RejectLeaveAsync(int leaveId, string rejectorName, string rejectionReason)
         {
-            return await _leaveRepository.RejectLeaveAsync(leaveId, rejectorName, rejectionReason);
+            return await _unitOfWork.IsciIzinleri.RejectLeaveAsync(leaveId, rejectorName, rejectionReason);
         }
 
         public async Task<bool> CancelLeaveAsync(int leaveId)
         {
-            return await _leaveRepository.CancelLeaveAsync(leaveId);
+            return await _unitOfWork.IsciIzinleri.CancelLeaveAsync(leaveId);
         }
 
         #endregion
@@ -234,22 +234,22 @@ namespace AzAgroPOS.BLL.Services
 
         public async Task<decimal> GetEmployeeWorkingHoursAsync(int employeeId, DateTime startDate, DateTime endDate)
         {
-            return await _shiftRepository.GetTotalWorkingHoursAsync(employeeId, startDate, endDate);
+            return await _unitOfWork.NovbeDetallari.GetTotalWorkingHoursAsync(employeeId, startDate, endDate);
         }
 
         public async Task<Dictionary<int, decimal>> GetWorkingHoursReportAsync(DateTime startDate, DateTime endDate)
         {
-            return await _shiftRepository.GetEmployeeWorkingHoursReportAsync(startDate, endDate);
+            return await _unitOfWork.NovbeDetallari.GetEmployeeWorkingHoursReportAsync(startDate, endDate);
         }
 
         public async Task<Dictionary<string, int>> GetLeaveStatisticsAsync(int employeeId, int year)
         {
-            return await _leaveRepository.GetLeaveStatisticsAsync(employeeId, year);
+            return await _unitOfWork.IsciIzinleri.GetLeaveStatisticsAsync(employeeId, year);
         }
 
         public async Task<int> GetTotalLeaveDaysAsync(int employeeId, string leaveType, int year)
         {
-            return await _leaveRepository.GetTotalLeaveDaysAsync(employeeId, leaveType, year);
+            return await _unitOfWork.IsciIzinleri.GetTotalLeaveDaysAsync(employeeId, leaveType, year);
         }
 
         #endregion
@@ -258,7 +258,7 @@ namespace AzAgroPOS.BLL.Services
 
         public async Task<bool> IsEmployeeOnLeaveAsync(int employeeId, DateTime date)
         {
-            var activeLeaves = await _leaveRepository.GetActiveLeavesAsync();
+            var activeLeaves = await _unitOfWork.IsciIzinleri.GetActiveLeavesAsync();
             return activeLeaves.Any(l => l.IsciId == employeeId && 
                                        l.BaslangicTarixi.Date <= date.Date && 
                                        l.BitisTarixi.Date >= date.Date);
@@ -266,17 +266,17 @@ namespace AzAgroPOS.BLL.Services
 
         public async Task<bool> HasConflictingShiftAsync(int employeeId, DateTime shiftDate, TimeSpan startTime, TimeSpan endTime, int? excludeShiftId = null)
         {
-            return await _shiftRepository.HasConflictingShiftAsync(employeeId, shiftDate, startTime, endTime, excludeShiftId);
+            return await _unitOfWork.NovbeDetallari.HasConflictingShiftAsync(employeeId, shiftDate, startTime, endTime, excludeShiftId);
         }
 
         public async Task<bool> HasOverlappingLeaveAsync(int employeeId, DateTime startDate, DateTime endDate, int? excludeLeaveId = null)
         {
-            return await _leaveRepository.HasOverlappingLeaveAsync(employeeId, startDate, endDate, excludeLeaveId);
+            return await _unitOfWork.IsciIzinleri.HasOverlappingLeaveAsync(employeeId, startDate, endDate, excludeLeaveId);
         }
 
         public async Task<IEnumerable<NovbeDetali>> SearchShiftsAsync(string searchTerm)
         {
-            return await _shiftRepository.GetAllAsync().ContinueWith(task => 
+            return await _unitOfWork.NovbeDetallari.GetAllAsync().ContinueWith(task => 
                 task.Result.Where(s => s.Isci?.Ad.Contains(searchTerm) == true ||
                                      s.Isci?.Soyad.Contains(searchTerm) == true ||
                                      s.NovbeAdi?.Contains(searchTerm) == true));
@@ -284,7 +284,7 @@ namespace AzAgroPOS.BLL.Services
 
         public async Task<IEnumerable<IsciIzni>> SearchLeavesAsync(string searchTerm)
         {
-            return await _leaveRepository.SearchAsync(searchTerm);
+            return await _unitOfWork.IsciIzinleri.SearchAsync(searchTerm);
         }
 
         public async Task<Dictionary<string, object>> GetDashboardDataAsync()
@@ -318,9 +318,11 @@ namespace AzAgroPOS.BLL.Services
 
         public void Dispose()
         {
-            _scheduleRepository?.Dispose();
-            _shiftRepository?.Dispose();
-            _leaveRepository?.Dispose();
+            if (!_disposed)
+            {
+                _unitOfWork?.Dispose();
+                _disposed = true;
+            }
         }
     }
 }

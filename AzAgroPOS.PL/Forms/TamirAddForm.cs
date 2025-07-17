@@ -5,6 +5,7 @@ using System;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using AzAgroPOS.BLL.Interfaces;
 
 namespace AzAgroPOS.PL.Forms
 {
@@ -19,7 +20,7 @@ namespace AzAgroPOS.PL.Forms
             InitializeComponent();
             _currentUser = currentUser;
             _context = new AzAgroDbContext();
-            _tamirService = new TamirService();
+            _tamirService = ServiceFactory.CreateTamirService();
             SetupForm();
             LoadData();
         }

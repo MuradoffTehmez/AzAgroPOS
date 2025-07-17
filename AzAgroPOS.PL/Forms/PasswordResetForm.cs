@@ -1,5 +1,6 @@
 using AzAgroPOS.BLL.Services;
 using AzAgroPOS.Entities.Domain;
+using AzAgroPOS.BLL.Interfaces;
 using System;
 using System.Linq;
 using System.Text;
@@ -15,7 +16,7 @@ namespace AzAgroPOS.PL.Forms
         public PasswordResetForm(Istifadeci user)
         {
             InitializeComponent();
-            _authService = new AuthService(); // AuthService-i yaradırıq
+            _authService = ServiceFactory.CreateAuthService(); // AuthService-i yaradırıq
             _user = user;
             LoadUserInfo();
         }

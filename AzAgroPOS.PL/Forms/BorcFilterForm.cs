@@ -1,6 +1,7 @@
 using AzAgroPOS.BLL.Services;
 using AzAgroPOS.Entities.Domain;
 using AzAgroPOS.Entities.Constants;
+using AzAgroPOS.BLL.Interfaces;
 using System;
 using System.Drawing;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace AzAgroPOS.PL.Forms
         public BorcFilterForm()
         {
             InitializeComponent();
-            _tedarukcuService = new TedarukcuService();
+            _tedarukcuService = ServiceFactory.CreateTedarukcuService();
             SetupForm();
         }
 

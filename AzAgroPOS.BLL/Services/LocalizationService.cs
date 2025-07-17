@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using AzAgroPOS.BLL.Interfaces;
 
 namespace AzAgroPOS.BLL.Services
 {

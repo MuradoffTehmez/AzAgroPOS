@@ -1,4 +1,5 @@
 using AzAgroPOS.BLL.Services;
+using AzAgroPOS.BLL.Interfaces;
 using AzAgroPOS.Entities.Domain;
 using System;
 using System.Windows.Forms;
@@ -16,7 +17,7 @@ namespace AzAgroPOS.PL.Forms
         {
             InitializeComponent();
             _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
-            _musteriService = new MusteriService();
+            _musteriService = ServiceFactory.CreateMusteriService();
             
             SetupForm();
         }

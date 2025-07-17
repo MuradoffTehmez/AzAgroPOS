@@ -3,6 +3,7 @@ using AzAgroPOS.Entities.Domain;
 using AzAgroPOS.PL.Styles;
 using System;
 using System.Collections.Generic;
+using AzAgroPOS.BLL.Interfaces;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,7 +22,7 @@ namespace AzAgroPOS.PL.Forms
 
         public BackupForm()
         {
-            _backupService = new BackupService();
+            _backupService = ServiceFactory.CreateBackupService();
             InitializeComponent();
             SetupForm();
             ModernTheme.ApplyModernStyle(this);

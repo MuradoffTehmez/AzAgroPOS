@@ -1,6 +1,7 @@
 using AzAgroPOS.BLL.Services;
 using AzAgroPOS.DAL;
 using AzAgroPOS.DAL.Repositories;
+using AzAgroPOS.BLL.Interfaces;
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -18,7 +19,7 @@ namespace AzAgroPOS.PL.Forms
         {
             InitializeComponent();
             var context = new AzAgroDbContext();
-            _authService = new AuthService();
+            _authService = ServiceFactory.CreateAuthService();
             _rolRepository = new RolRepository(context);
             LoadRoles();
         }

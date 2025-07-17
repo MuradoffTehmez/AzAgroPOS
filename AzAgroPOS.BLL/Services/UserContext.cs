@@ -1,4 +1,5 @@
 using AzAgroPOS.DAL.Interfaces;
+using AzAgroPOS.BLL.Interfaces;
 using System;
 
 namespace AzAgroPOS.BLL.Services

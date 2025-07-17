@@ -1,5 +1,6 @@
 using AzAgroPOS.DAL;
 using AzAgroPOS.DAL.Repositories;
+using AzAgroPOS.BLL.Interfaces;
 using AzAgroPOS.Entities.Domain;
 using AzAgroPOS.Entities.DTO;
 using System;

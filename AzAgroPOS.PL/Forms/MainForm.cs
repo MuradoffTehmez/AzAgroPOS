@@ -4,6 +4,7 @@ using AzAgroPOS.PL.Forms;
 using AzAgroPOS.PL.Services;
 using AzAgroPOS.PL.Styles;
 using AzAgroPOS.BLL.Services;
+using AzAgroPOS.BLL.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -450,8 +451,8 @@ namespace AzAgroPOS.PL.Forms
             try
             {
                 // Real data from database - get actual statistics
-                var musteriService = new MusteriService();
-                var mehsulService = new MehsulService();
+                var musteriService = ServiceFactory.CreateMusteriService();
+                var mehsulService = ServiceFactory.CreateMehsulService();
                 
                 // Get real customer count
                 int totalCustomers = musteriService.GetAllCustomers().Count();

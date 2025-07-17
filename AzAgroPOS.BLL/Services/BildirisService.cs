@@ -1,4 +1,6 @@
 using AzAgroPOS.DAL.Repositories;
+using AzAgroPOS.DAL.Interfaces;
+using AzAgroPOS.BLL.Interfaces;
 using AzAgroPOS.Entities.Domain;
 using System;
 using System.Collections.Generic;
@@ -12,20 +14,19 @@ namespace AzAgroPOS.BLL.Services
 {
     public class BildirisService : IDisposable
     {
-        private readonly BildirisRepository _notificationRepository;
-        private readonly BildirisAyariRepository _settingsRepository;
-        private readonly IstifadeciRepository _userRepository;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IAuditLogService _auditLogService;
+        private bool _disposed = false;
 
         // Events for real-time notifications
         public event Action<Bildiris> NotificationCreated;
         public event Action<int, int> NotificationRead;
         public event Action<int> UserNotificationsCleared;
 
-        public BildirisService()
+        public BildirisService(IUnitOfWork unitOfWork, IAuditLogService auditLogService = null)
         {
-            _notificationRepository = new BildirisRepository();
-            _settingsRepository = new BildirisAyariRepository();
-            _userRepository = new IstifadeciRepository();
+            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            _auditLogService = auditLogService;
         }
 
         #region Notification Management
@@ -57,7 +58,7 @@ namespace AzAgroPOS.BLL.Services
                 GonderimeTarixi = DateTime.Now
             };
 
-            var createdNotification = await _notificationRepository.AddAsync(notification);
+            var createdNotification = await _unitOfWork.Bildirisler.AddAsync(notification);
 
             // Process notification delivery
             await ProcessNotificationDeliveryAsync(createdNotification);
@@ -116,14 +117,14 @@ namespace AzAgroPOS.BLL.Services
             if (notification.HedefIstifadeciId.HasValue)
             {
                 // Personal notification
-                var userSettings = await _settingsRepository.GetByUserIdAsync(notification.HedefIstifadeciId.Value);
+                var userSettings = await _unitOfWork.BildirisAyarlari.GetByUserIdAsync(notification.HedefIstifadeciId.Value);
                 relevantSettings = userSettings.Where(s => s.ModulAdi == notification.MenbeModulAdi && 
                                                          s.BildirisNovu == notification.BildirisNovu);
             }
             else
             {
                 // Global notification
-                relevantSettings = await _settingsRepository.GetSettingsForNotificationAsync(
+                relevantSettings = await _unitOfWork.BildirisAyarlari.GetSettingsForNotificationAsync(
                     notification.MenbeModulAdi, notification.BildirisNovu);
             }
 
@@ -159,39 +160,39 @@ namespace AzAgroPOS.BLL.Services
         public async Task<IEnumerable<Bildiris>> GetUserNotificationsAsync(int userId, bool unreadOnly = false)
         {
             if (unreadOnly)
-                return await _notificationRepository.GetUnreadByUserIdAsync(userId);
+                return await _unitOfWork.Bildirisler.GetUnreadByUserIdAsync(userId);
             else
-                return await _notificationRepository.GetByUserIdAsync(userId);
+                return await _unitOfWork.Bildirisler.GetByUserIdAsync(userId);
         }
 
         public async Task<int> GetUnreadCountAsync(int userId)
         {
-            return await _notificationRepository.GetUnreadCountByUserIdAsync(userId);
+            return await _unitOfWork.Bildirisler.GetUnreadCountByUserIdAsync(userId);
         }
 
         public async Task<IEnumerable<Bildiris>> GetRecentNotificationsAsync(int userId, int count = 10)
         {
-            return await _notificationRepository.GetRecentNotificationsAsync(userId, count);
+            return await _unitOfWork.Bildirisler.GetRecentNotificationsAsync(userId, count);
         }
 
         public async Task<Bildiris> GetNotificationByIdAsync(int id)
         {
-            return await _notificationRepository.GetByIdAsync(id);
+            return await _unitOfWork.Bildirisler.GetByIdAsync(id);
         }
 
         public async Task<IEnumerable<Bildiris>> GetNotificationsByTypeAsync(string notificationType)
         {
-            return await _notificationRepository.GetByTypeAsync(notificationType);
+            return await _unitOfWork.Bildirisler.GetByTypeAsync(notificationType);
         }
 
         public async Task<IEnumerable<Bildiris>> GetNotificationsByModuleAsync(string moduleName)
         {
-            return await _notificationRepository.GetByModuleAsync(moduleName);
+            return await _unitOfWork.Bildirisler.GetByModuleAsync(moduleName);
         }
 
         public async Task<IEnumerable<Bildiris>> SearchNotificationsAsync(string searchTerm, int? userId = null)
         {
-            return await _notificationRepository.SearchAsync(searchTerm, userId);
+            return await _unitOfWork.Bildirisler.SearchAsync(searchTerm, userId);
         }
 
         #endregion
@@ -200,7 +201,7 @@ namespace AzAgroPOS.BLL.Services
 
         public async Task<bool> MarkAsReadAsync(int notificationId, int userId)
         {
-            var result = await _notificationRepository.MarkAsReadAsync(notificationId, userId);
+            var result = await _unitOfWork.Bildirisler.MarkAsReadAsync(notificationId, userId);
             if (result)
             {
                 NotificationRead?.Invoke(notificationId, userId);
@@ -210,12 +211,12 @@ namespace AzAgroPOS.BLL.Services
 
         public async Task<bool> MarkAsUnreadAsync(int notificationId, int userId)
         {
-            return await _notificationRepository.MarkAsUnreadAsync(notificationId, userId);
+            return await _unitOfWork.Bildirisler.MarkAsUnreadAsync(notificationId, userId);
         }
 
         public async Task<int> MarkAllAsReadAsync(int userId)
         {
-            var count = await _notificationRepository.MarkAllAsReadAsync(userId);
+            var count = await _unitOfWork.Bildirisler.MarkAllAsReadAsync(userId);
             if (count > 0)
             {
                 UserNotificationsCleared?.Invoke(userId);
@@ -225,7 +226,7 @@ namespace AzAgroPOS.BLL.Services
 
         public async Task DeleteNotificationAsync(int notificationId)
         {
-            await _notificationRepository.DeleteAsync(notificationId);
+            await _unitOfWork.Bildirisler.DeleteAsync(notificationId);
         }
 
         #endregion
@@ -234,32 +235,32 @@ namespace AzAgroPOS.BLL.Services
 
         public async Task<IEnumerable<BildirisAyari>> GetUserSettingsAsync(int userId)
         {
-            return await _settingsRepository.GetByUserIdAsync(userId);
+            return await _unitOfWork.BildirisAyarlari.GetByUserIdAsync(userId);
         }
 
         public async Task<BildirisAyari> GetUserSettingAsync(int userId, string moduleName, string notificationType)
         {
-            return await _settingsRepository.GetByUserAndModuleAsync(userId, moduleName, notificationType);
+            return await _unitOfWork.BildirisAyarlari.GetByUserAndModuleAsync(userId, moduleName, notificationType);
         }
 
         public async Task<BildirisAyari> UpdateUserSettingAsync(int userId, string moduleName, string notificationType, BildirisAyari settings)
         {
-            return await _settingsRepository.CreateOrUpdateSettingAsync(userId, moduleName, notificationType, settings);
+            return await _unitOfWork.BildirisAyarlari.CreateOrUpdateSettingAsync(userId, moduleName, notificationType, settings);
         }
 
         public async Task<bool> SetDefaultSettingsAsync(int userId)
         {
-            return await _settingsRepository.SetDefaultsForUserAsync(userId);
+            return await _unitOfWork.BildirisAyarlari.SetDefaultsForUserAsync(userId);
         }
 
         public async Task<bool> EnableNotificationsAsync(int userId, string moduleName, string notificationType)
         {
-            return await _settingsRepository.EnableNotificationsForUserAsync(userId, moduleName, notificationType);
+            return await _unitOfWork.BildirisAyarlari.EnableNotificationsForUserAsync(userId, moduleName, notificationType);
         }
 
         public async Task<bool> DisableNotificationsAsync(int userId, string moduleName, string notificationType)
         {
-            return await _settingsRepository.DisableNotificationsForUserAsync(userId, moduleName, notificationType);
+            return await _unitOfWork.BildirisAyarlari.DisableNotificationsForUserAsync(userId, moduleName, notificationType);
         }
 
         #endregion
@@ -268,19 +269,19 @@ namespace AzAgroPOS.BLL.Services
 
         public async Task ProcessAutoReadNotificationsAsync()
         {
-            await _notificationRepository.ProcessAutoReadNotificationsAsync();
+            await _unitOfWork.Bildirisler.ProcessAutoReadNotificationsAsync();
         }
 
         public async Task CleanupOldNotificationsAsync()
         {
-            var userSettings = await _settingsRepository.GetAllAsync();
+            var userSettings = await _unitOfWork.BildirisAyarlari.GetAllAsync();
             var distinctCleanupDays = userSettings.Where(s => s.OtomatikSil)
                                                  .Select(s => s.OtomatikSilmeGunu)
                                                  .Distinct();
 
             foreach (var days in distinctCleanupDays)
             {
-                await _notificationRepository.DeleteOldNotificationsAsync(days);
+                await _unitOfWork.Bildirisler.DeleteOldNotificationsAsync(days);
             }
         }
 
@@ -292,7 +293,7 @@ namespace AzAgroPOS.BLL.Services
         {
             try
             {
-                var user = await _userRepository.GetByIdAsync(setting.IstifadeciId);
+                var user = await _unitOfWork.Istifadeciler.GetByIdAsync(setting.IstifadeciId);
                 if (user == null || string.IsNullOrEmpty(user.Email))
                     return;
 
@@ -382,11 +383,11 @@ namespace AzAgroPOS.BLL.Services
 
         public async Task<Dictionary<string, object>> GetNotificationStatisticsAsync()
         {
-            var typeStats = await _notificationRepository.GetNotificationStatisticsByTypeAsync();
-            var moduleStats = await _notificationRepository.GetNotificationStatisticsByModuleAsync();
-            var priorityStats = await _notificationRepository.GetNotificationStatisticsByPriorityAsync();
+            var typeStats = await _unitOfWork.Bildirisler.GetNotificationStatisticsByTypeAsync();
+            var moduleStats = await _unitOfWork.Bildirisler.GetNotificationStatisticsByModuleAsync();
+            var priorityStats = await _unitOfWork.Bildirisler.GetNotificationStatisticsByPriorityAsync();
 
-            var allNotifications = await _notificationRepository.GetAllAsync();
+            var allNotifications = await _unitOfWork.Bildirisler.GetAllAsync();
             var totalNotifications = allNotifications.Count();
             var unreadNotifications = allNotifications.Count(n => !n.Oxundu);
             var todayNotifications = allNotifications.Count(n => n.GonderimeTarixi.Date == DateTime.Today);
@@ -404,7 +405,7 @@ namespace AzAgroPOS.BLL.Services
 
         public async Task<Dictionary<string, object>> GetUserNotificationPreferencesAsync(int userId)
         {
-            return await _settingsRepository.GetUserNotificationPreferencesAsync(userId);
+            return await _unitOfWork.BildirisAyarlari.GetUserNotificationPreferencesAsync(userId);
         }
 
         #endregion
@@ -463,9 +464,9 @@ namespace AzAgroPOS.BLL.Services
 
         public void Dispose()
         {
-            _notificationRepository?.Dispose();
-            _settingsRepository?.Dispose();
-            _userRepository?.Dispose();
+            _unitOfWork.Bildirisler?.Dispose();
+            _unitOfWork.BildirisAyarlari?.Dispose();
+            _unitOfWork.Istifadeciler?.Dispose();
         }
     }
 }
