@@ -2,6 +2,7 @@
 using AzAgroPOS.BLL.Interfaces;
 using AzAgroPOS.DAL;
 using AzAgroPOS.PL.Services;
+using AzAgroPOS.PL.Security;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -30,6 +31,9 @@ namespace AzAgroPOS.PL
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            
+            // Kritik Məsələ №2: Connection String Şifrələnməsi
+            ConfigProtector.Protect();
             
             // Configure dependency injection
             _host = ServiceCollectionExtensions.CreateAppHost();

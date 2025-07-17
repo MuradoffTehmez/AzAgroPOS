@@ -3,6 +3,7 @@ using AzAgroPOS.Entities.Constants;
 using AzAgroPOS.PL.Forms;
 using AzAgroPOS.PL.Services;
 using AzAgroPOS.PL.Styles;
+using AzAgroPOS.PL.Security;
 using AzAgroPOS.BLL.Services;
 using AzAgroPOS.BLL.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
@@ -454,6 +455,57 @@ namespace AzAgroPOS.PL.Forms
             Application.Exit();
         }
 
+        #if DEBUG
+        /// <summary>
+        /// Development məqsədilə ConfigProtector test button əlavə edir
+        /// </summary>
+        private void AddConfigProtectionTestButton()
+        {
+            try
+            {
+                var testButton = new Button
+                {
+                    Text = "🔐 Config Test",
+                    Size = new Size(240, 35),
+                    Location = new Point(20, 600),
+                    Font = new Font("Segoe UI", 10F),
+                    BackColor = Color.FromArgb(230, 126, 34),
+                    ForeColor = Color.White,
+                    FlatStyle = FlatStyle.Flat,
+                    TextAlign = ContentAlignment.MiddleCenter,
+                    UseVisualStyleBackColor = false
+                };
+                
+                testButton.FlatAppearance.BorderSize = 0;
+                testButton.Click += TestButton_Click;
+                
+                // Add to sidebar panel
+                pnlSidebar.Controls.Add(testButton);
+            }
+            catch (Exception ex)
+            {
+                // Test button əlavə etmək əsas proqramı pozmamalı
+                Console.WriteLine($"Test button əlavə edilmədi: {ex.Message}");
+            }
+        }
+
+        private void TestButton_Click(object sender, EventArgs e)
+        {
+            var testMenu = new ContextMenuStrip();
+            
+            testMenu.Items.Add("🔍 Protection Status", null, (s, args) => 
+                ConfigProtectionTest.ShowProtectionStatus());
+            
+            testMenu.Items.Add("✅ Validate Config", null, (s, args) => 
+                ConfigProtectionTest.ValidateConfigFile());
+            
+            testMenu.Items.Add("🔐 Test DPAPI", null, (s, args) => 
+                ConfigProtectionTest.TestDPAPI());
+            
+            testMenu.Show(sender as Control, new Point(0, (sender as Control).Height));
+        }
+        #endif
+
         private void MainForm_Load(object sender, EventArgs e)
         {
             // Load user info after all controls are created
@@ -519,6 +571,11 @@ namespace AzAgroPOS.PL.Forms
             
             // Add expense management button if not in designer
             AddExpenseManagementButton();
+            
+            // Debug: Connection string protection test (development only)
+            #if DEBUG
+            AddConfigProtectionTestButton();
+            #endif
         }
 
         private void AddExpenseManagementButton()
