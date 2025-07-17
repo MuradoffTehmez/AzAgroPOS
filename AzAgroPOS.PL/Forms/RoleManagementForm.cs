@@ -1,10 +1,7 @@
-using AzAgroPOS.BLL.Services;
 using AzAgroPOS.DAL;
 using AzAgroPOS.DAL.Repositories;
 using AzAgroPOS.Entities.Domain;
-using AzAgroPOS.PL.Services;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -41,22 +38,22 @@ namespace AzAgroPOS.PL.Forms
                 // DataGridView sütunlarını nizamla
                 if (dgvRoles.Columns.Count > 0)
                 {
-                    dgvRoles.Columns[\"Id\"].HeaderText = \"ID\";
-                    dgvRoles.Columns[\"Ad\"].HeaderText = \"Rol Adı\";
-                    dgvRoles.Columns[\"Tesvir\"].HeaderText = \"Təsvir\";
-                    dgvRoles.Columns[\"Status\"].HeaderText = \"Status\";
-                    dgvRoles.Columns[\"YaradilmaTarixi\"].HeaderText = \"Yaradılma Tarixi\";
+                    dgvRoles.Columns["Id"].HeaderText = "ID";
+                    dgvRoles.Columns["Ad"].HeaderText = "Rol Adı";
+                    dgvRoles.Columns["Tesvir"].HeaderText = "Təsvir";
+                    dgvRoles.Columns["Status"].HeaderText = "Status";
+                    dgvRoles.Columns["YaradilmaTarixi"].HeaderText = "Yaradılma Tarixi";
                     
                     // Digər sütunları gizlə
                     foreach (DataGridViewColumn column in dgvRoles.Columns)
                     {
-                        if (!new[] { \"Id\", \"Ad\", \"Tesvir\", \"Status\", \"YaradilmaTarixi\" }.Contains(column.Name))
+                        if (!new[] { "Id", "Ad", "Tesvir", "Status", "YaradilmaTarixi" }.Contains(column.Name))
                         {
                             column.Visible = false;
                         }
                     }
                 }
-            }, \"Rollar yüklənərkən xəta baş verdi\");
+            }, "Rollar yüklənərkən xəta baş verdi");
         }
 
         private async void btnAddRole_Click(object sender, EventArgs e)
@@ -72,7 +69,7 @@ namespace AzAgroPOS.PL.Forms
         {
             if (dgvRoles.SelectedRows.Count == 0)
             {
-                ShowInfo(\"Redaktə etmək üçün rol seçin.\");
+                ShowInfo("Redaktə etmək üçün rol seçin.");
                 return;
             }
 
@@ -88,13 +85,13 @@ namespace AzAgroPOS.PL.Forms
         {
             if (dgvRoles.SelectedRows.Count == 0)
             {
-                ShowInfo(\"Silmək üçün rol seçin.\");
+                ShowInfo("Silmək üçün rol seçin.");
                 return;
             }
 
             var selectedRole = (Rol)dgvRoles.SelectedRows[0].DataBoundItem;
             
-            if (ShowConfirmation($\"'{selectedRole.Ad}' rolunu silmək istədiyinizə əminsiniz?\"))
+            if (ShowConfirmation($"'{selectedRole.Ad}' rolunu silmək istədiyinizə əminsiniz?"))
             {
                 await ExecuteAsync(async () =>
                 {
@@ -105,7 +102,7 @@ namespace AzAgroPOS.PL.Forms
                     
                     if (istifadeciler.Any())
                     {
-                        ShowWarning($\"Bu rol {istifadeciler.Count()} istifadəçiyə təyin edilib. Əvvəlcə onların rolunu dəyişdirin.\");
+                        ShowWarning($"Bu rol {istifadeciler.Count()} istifadəçiyə təyin edilib. Əvvəlcə onların rolunu dəyişdirin.");
                         return;
                     }
 
@@ -120,9 +117,9 @@ namespace AzAgroPOS.PL.Forms
                     _rolRepository.Delete(selectedRole);
                     await _rolRepository.SaveChangesAsync();
 
-                    ShowSuccess(\"Rol uğurla silindi!\");
+                    ShowSuccess("Rol uğurla silindi!");
                     await LoadRolesAsync();
-                }, \"Rol silinərkən xəta baş verdi\");
+                }, "Rol silinərkən xəta baş verdi");
             }
         }
 
@@ -130,7 +127,7 @@ namespace AzAgroPOS.PL.Forms
         {
             if (dgvRoles.SelectedRows.Count == 0)
             {
-                ShowInfo(\"İcazələri idarə etmək üçün rol seçin.\");
+                ShowInfo("İcazələri idarə etmək üçün rol seçin.");
                 return;
             }
 

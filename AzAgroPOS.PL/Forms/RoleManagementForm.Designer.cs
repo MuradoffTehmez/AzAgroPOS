@@ -48,20 +48,20 @@ namespace AzAgroPOS.PL.Forms
             this.pnlTop.Controls.Add(this.lblTitle);
             this.pnlTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlTop.Location = new System.Drawing.Point(0, 0);
-            this.pnlTop.Name = \"pnlTop\";
+            this.pnlTop.Name = "pnlTop";
             this.pnlTop.Size = new System.Drawing.Size(1000, 60);
             this.pnlTop.TabIndex = 0;
             // 
             // lblTitle
             // 
             this.lblTitle.AutoSize = true;
-            this.lblTitle.Font = new System.Drawing.Font(\"Segoe UI\", 18F, System.Drawing.FontStyle.Bold);
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
             this.lblTitle.ForeColor = System.Drawing.Color.White;
             this.lblTitle.Location = new System.Drawing.Point(20, 15);
-            this.lblTitle.Name = \"lblTitle\";
+            this.lblTitle.Name = "lblTitle";
             this.lblTitle.Size = new System.Drawing.Size(220, 32);
             this.lblTitle.TabIndex = 0;
-            this.lblTitle.Text = \"🔐 Rol İdarəetməsi\";
+            this.lblTitle.Text = "🔐 Rol İdarəetməsi";
             // 
             // pnlButtons
             // 
@@ -73,7 +73,7 @@ namespace AzAgroPOS.PL.Forms
             this.pnlButtons.Controls.Add(this.btnAddRole);
             this.pnlButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlButtons.Location = new System.Drawing.Point(0, 600);
-            this.pnlButtons.Name = \"pnlButtons\";
+            this.pnlButtons.Name = "pnlButtons";
             this.pnlButtons.Size = new System.Drawing.Size(1000, 60);
             this.pnlButtons.TabIndex = 1;
             // 
@@ -81,13 +81,13 @@ namespace AzAgroPOS.PL.Forms
             // 
             this.btnClose.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(76)))), ((int)(((byte)(60)))));
             this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnClose.Font = new System.Drawing.Font(\"Segoe UI\", 10F, System.Drawing.FontStyle.Bold);
+            this.btnClose.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnClose.ForeColor = System.Drawing.Color.White;
             this.btnClose.Location = new System.Drawing.Point(878, 15);
-            this.btnClose.Name = \"btnClose\";
+            this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(102, 35);
             this.btnClose.TabIndex = 4;
-            this.btnClose.Text = \"❌ Bağla\";
+            this.btnClose.Text = "❌ Bağla";
             this.btnClose.UseVisualStyleBackColor = false;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
@@ -95,13 +95,13 @@ namespace AzAgroPOS.PL.Forms
             // 
             this.btnManagePermissions.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(89)))), ((int)(((byte)(182)))));
             this.btnManagePermissions.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnManagePermissions.Font = new System.Drawing.Font(\"Segoe UI\", 10F, System.Drawing.FontStyle.Bold);
+            this.btnManagePermissions.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnManagePermissions.ForeColor = System.Drawing.Color.White;
             this.btnManagePermissions.Location = new System.Drawing.Point(396, 15);
-            this.btnManagePermissions.Name = \"btnManagePermissions\";
+            this.btnManagePermissions.Name = "btnManagePermissions";
             this.btnManagePermissions.Size = new System.Drawing.Size(150, 35);
             this.btnManagePermissions.TabIndex = 3;
-            this.btnManagePermissions.Text = \"🔑 İcazələr\";
+            this.btnManagePermissions.Text = "🔑 İcazələr";
             this.btnManagePermissions.UseVisualStyleBackColor = false;
             this.btnManagePermissions.Click += new System.EventHandler(this.btnManagePermissions_Click);
             // 
@@ -109,13 +109,13 @@ namespace AzAgroPOS.PL.Forms
             // 
             this.btnDeleteRole.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(76)))), ((int)(((byte)(60)))));
             this.btnDeleteRole.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDeleteRole.Font = new System.Drawing.Font(\"Segoe UI\", 10F, System.Drawing.FontStyle.Bold);
+            this.btnDeleteRole.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnDeleteRole.ForeColor = System.Drawing.Color.White;
             this.btnDeleteRole.Location = new System.Drawing.Point(276, 15);
-            this.btnDeleteRole.Name = \"btnDeleteRole\";
+            this.btnDeleteRole.Name = "btnDeleteRole";
             this.btnDeleteRole.Size = new System.Drawing.Size(110, 35);
             this.btnDeleteRole.TabIndex = 2;
-            this.btnDeleteRole.Text = \"🗑️ Sil\";
+            this.btnDeleteRole.Text = "🗑️ Sil";
             this.btnDeleteRole.UseVisualStyleBackColor = false;
             this.btnDeleteRole.Click += new System.EventHandler(this.btnDeleteRole_Click);
             // 
@@ -123,13 +123,13 @@ namespace AzAgroPOS.PL.Forms
             // 
             this.btnEditRole.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(152)))), ((int)(((byte)(219)))));
             this.btnEditRole.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnEditRole.Font = new System.Drawing.Font(\"Segoe UI\", 10F, System.Drawing.FontStyle.Bold);
+            this.btnEditRole.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnEditRole.ForeColor = System.Drawing.Color.White;
             this.btnEditRole.Location = new System.Drawing.Point(141, 15);
-            this.btnEditRole.Name = \"btnEditRole\";
+            this.btnEditRole.Name = "btnEditRole";
             this.btnEditRole.Size = new System.Drawing.Size(125, 35);
             this.btnEditRole.TabIndex = 1;
-            this.btnEditRole.Text = \"✏️ Düzəliş\";
+            this.btnEditRole.Text = "✏️ Düzəliş";
             this.btnEditRole.UseVisualStyleBackColor = false;
             this.btnEditRole.Click += new System.EventHandler(this.btnEditRole_Click);
             // 
@@ -137,13 +137,13 @@ namespace AzAgroPOS.PL.Forms
             // 
             this.btnAddRole.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(204)))), ((int)(((byte)(113)))));
             this.btnAddRole.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAddRole.Font = new System.Drawing.Font(\"Segoe UI\", 10F, System.Drawing.FontStyle.Bold);
+            this.btnAddRole.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnAddRole.ForeColor = System.Drawing.Color.White;
             this.btnAddRole.Location = new System.Drawing.Point(20, 15);
-            this.btnAddRole.Name = \"btnAddRole\";
+            this.btnAddRole.Name = "btnAddRole";
             this.btnAddRole.Size = new System.Drawing.Size(115, 35);
             this.btnAddRole.TabIndex = 0;
-            this.btnAddRole.Text = \"➕ Əlavə\";
+            this.btnAddRole.Text = "➕ Əlavə";
             this.btnAddRole.UseVisualStyleBackColor = false;
             this.btnAddRole.Click += new System.EventHandler(this.btnAddRole_Click);
             // 
@@ -157,7 +157,7 @@ namespace AzAgroPOS.PL.Forms
             this.dgvRoles.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvRoles.Location = new System.Drawing.Point(0, 60);
             this.dgvRoles.MultiSelect = false;
-            this.dgvRoles.Name = \"dgvRoles\";
+            this.dgvRoles.Name = "dgvRoles";
             this.dgvRoles.ReadOnly = true;
             this.dgvRoles.RowHeadersWidth = 25;
             this.dgvRoles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
@@ -173,12 +173,12 @@ namespace AzAgroPOS.PL.Forms
             this.Controls.Add(this.dgvRoles);
             this.Controls.Add(this.pnlButtons);
             this.Controls.Add(this.pnlTop);
-            this.Font = new System.Drawing.Font(\"Segoe UI\", 12F);
+            this.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
-            this.Name = \"RoleManagementForm\";
+            this.Name = "RoleManagementForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = \"🔐 Rol İdarəetməsi - AzAgroPOS\";
+            this.Text = "🔐 Rol İdarəetməsi - AzAgroPOS";
             this.Load += new System.EventHandler(this.RoleManagementForm_Load);
             this.pnlTop.ResumeLayout(false);
             this.pnlTop.PerformLayout();

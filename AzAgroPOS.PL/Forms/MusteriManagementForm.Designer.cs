@@ -43,7 +43,7 @@ namespace AzAgroPOS.PL.Forms
             // 
             // panel1
             // 
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(152)))), ((int)(((byte)(219)))));
+            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
             this.panel1.Controls.Add(this.lblTitle);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
@@ -54,13 +54,13 @@ namespace AzAgroPOS.PL.Forms
             // lblTitle
             // 
             this.lblTitle.AutoSize = true;
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
             this.lblTitle.ForeColor = System.Drawing.Color.White;
             this.lblTitle.Location = new System.Drawing.Point(20, 15);
             this.lblTitle.Name = "lblTitle";
             this.lblTitle.Size = new System.Drawing.Size(186, 30);
             this.lblTitle.TabIndex = 0;
-            this.lblTitle.Text = "Müştəri İdarəetmə";
+            this.lblTitle.Text = "👥 Müştəri İdarəetmə";
             // 
             // panel2
             // 
@@ -78,7 +78,7 @@ namespace AzAgroPOS.PL.Forms
             // 
             // btnManageGroups
             // 
-            this.btnManageGroups.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(68)))), ((int)(((byte)(173)))));
+            this.btnManageGroups.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(89)))), ((int)(((byte)(182)))));
             this.btnManageGroups.FlatAppearance.BorderSize = 0;
             this.btnManageGroups.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnManageGroups.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
@@ -87,7 +87,7 @@ namespace AzAgroPOS.PL.Forms
             this.btnManageGroups.Name = "btnManageGroups";
             this.btnManageGroups.Size = new System.Drawing.Size(120, 40);
             this.btnManageGroups.TabIndex = 4;
-            this.btnManageGroups.Text = "Qrup İdarəsi";
+            this.btnManageGroups.Text = "⚙️ Qrup İdarəsi";
             this.btnManageGroups.UseVisualStyleBackColor = false;
             this.btnManageGroups.Click += new System.EventHandler(this.btnManageGroups_Click);
             // 
@@ -102,7 +102,7 @@ namespace AzAgroPOS.PL.Forms
             this.btnViewDetails.Name = "btnViewDetails";
             this.btnViewDetails.Size = new System.Drawing.Size(100, 40);
             this.btnViewDetails.TabIndex = 3;
-            this.btnViewDetails.Text = "Detallar";
+            this.btnViewDetails.Text = "🔍 Detallar";
             this.btnViewDetails.UseVisualStyleBackColor = false;
             this.btnViewDetails.Click += new System.EventHandler(this.btnViewDetails_Click);
             // 
@@ -117,13 +117,13 @@ namespace AzAgroPOS.PL.Forms
             this.btnDeleteCustomer.Name = "btnDeleteCustomer";
             this.btnDeleteCustomer.Size = new System.Drawing.Size(100, 40);
             this.btnDeleteCustomer.TabIndex = 2;
-            this.btnDeleteCustomer.Text = "Sil";
+            this.btnDeleteCustomer.Text = "🗑️ Sil";
             this.btnDeleteCustomer.UseVisualStyleBackColor = false;
             this.btnDeleteCustomer.Click += new System.EventHandler(this.btnDeleteCustomer_Click);
             // 
             // btnEditCustomer
             // 
-            this.btnEditCustomer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(126)))), ((int)(((byte)(34)))));
+            this.btnEditCustomer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(152)))), ((int)(((byte)(219)))));
             this.btnEditCustomer.FlatAppearance.BorderSize = 0;
             this.btnEditCustomer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEditCustomer.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
@@ -132,7 +132,7 @@ namespace AzAgroPOS.PL.Forms
             this.btnEditCustomer.Name = "btnEditCustomer";
             this.btnEditCustomer.Size = new System.Drawing.Size(100, 40);
             this.btnEditCustomer.TabIndex = 1;
-            this.btnEditCustomer.Text = "Düzəlt";
+            this.btnEditCustomer.Text = "✏️ Düzəlt";
             this.btnEditCustomer.UseVisualStyleBackColor = false;
             this.btnEditCustomer.Click += new System.EventHandler(this.btnEditCustomer_Click);
             // 
@@ -147,13 +147,13 @@ namespace AzAgroPOS.PL.Forms
             this.btnAddCustomer.Name = "btnAddCustomer";
             this.btnAddCustomer.Size = new System.Drawing.Size(100, 40);
             this.btnAddCustomer.TabIndex = 0;
-            this.btnAddCustomer.Text = "Əlavə Et";
+            this.btnAddCustomer.Text = "➕ Əlavə Et";
             this.btnAddCustomer.UseVisualStyleBackColor = false;
             this.btnAddCustomer.Click += new System.EventHandler(this.btnAddCustomer_Click);
             // 
             // panel3
             // 
-            this.panel3.BackColor = System.Drawing.Color.White;
+            this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(240)))), ((int)(((byte)(241)))));
             this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel3.Controls.Add(this.lblTotalCustomers);
             this.panel3.Controls.Add(this.lblTotalCustomersLabel);
@@ -183,7 +183,7 @@ namespace AzAgroPOS.PL.Forms
             // lblTotalCustomersLabel
             // 
             this.lblTotalCustomersLabel.AutoSize = true;
-            this.lblTotalCustomersLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblTotalCustomersLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.lblTotalCustomersLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
             this.lblTotalCustomersLabel.Location = new System.Drawing.Point(980, 30);
             this.lblTotalCustomersLabel.Name = "lblTotalCustomersLabel";
@@ -205,7 +205,7 @@ namespace AzAgroPOS.PL.Forms
             // lblCustomerGroup
             // 
             this.lblCustomerGroup.AutoSize = true;
-            this.lblCustomerGroup.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblCustomerGroup.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.lblCustomerGroup.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
             this.lblCustomerGroup.Location = new System.Drawing.Point(750, 10);
             this.lblCustomerGroup.Name = "lblCustomerGroup";
@@ -227,7 +227,7 @@ namespace AzAgroPOS.PL.Forms
             // lblFilter
             // 
             this.lblFilter.AutoSize = true;
-            this.lblFilter.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblFilter.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.lblFilter.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
             this.lblFilter.Location = new System.Drawing.Point(500, 10);
             this.lblFilter.Name = "lblFilter";
@@ -247,13 +247,13 @@ namespace AzAgroPOS.PL.Forms
             // lblSearch
             // 
             this.lblSearch.AutoSize = true;
-            this.lblSearch.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblSearch.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.lblSearch.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
             this.lblSearch.Location = new System.Drawing.Point(20, 10);
             this.lblSearch.Name = "lblSearch";
             this.lblSearch.Size = new System.Drawing.Size(58, 19);
             this.lblSearch.TabIndex = 0;
-            this.lblSearch.Text = "Axtarış:";
+            this.lblSearch.Text = "🔍 Axtarış:";
             // 
             // dgvCustomers
             // 

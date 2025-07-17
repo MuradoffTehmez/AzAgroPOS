@@ -73,20 +73,20 @@ namespace AzAgroPOS.PL.Forms
             this.pnlTop.Controls.Add(this.lblTitle);
             this.pnlTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlTop.Location = new System.Drawing.Point(0, 0);
-            this.pnlTop.Name = \"pnlTop\";
+            this.pnlTop.Name = "pnlTop";
             this.pnlTop.Size = new System.Drawing.Size(1200, 60);
             this.pnlTop.TabIndex = 0;
             // 
             // lblTitle
             // 
             this.lblTitle.AutoSize = true;
-            this.lblTitle.Font = new System.Drawing.Font(\"Segoe UI\", 18F, System.Drawing.FontStyle.Bold);
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
             this.lblTitle.ForeColor = System.Drawing.Color.White;
             this.lblTitle.Location = new System.Drawing.Point(20, 15);
-            this.lblTitle.Name = \"lblTitle\";
+            this.lblTitle.Name = "lblTitle";
             this.lblTitle.Size = new System.Drawing.Size(230, 32);
             this.lblTitle.TabIndex = 0;
-            this.lblTitle.Text = \"📝 Alış Sənədləri\";
+            this.lblTitle.Text = "📝 Alış Sənədləri";
             // 
             // pnlSupplier
             // 
@@ -95,29 +95,29 @@ namespace AzAgroPOS.PL.Forms
             this.pnlSupplier.Controls.Add(this.lblSupplier);
             this.pnlSupplier.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlSupplier.Location = new System.Drawing.Point(0, 60);
-            this.pnlSupplier.Name = \"pnlSupplier\";
+            this.pnlSupplier.Name = "pnlSupplier";
             this.pnlSupplier.Size = new System.Drawing.Size(1200, 50);
             this.pnlSupplier.TabIndex = 1;
             // 
             // cmbSupplier
             // 
             this.cmbSupplier.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbSupplier.Font = new System.Drawing.Font(\"Segoe UI\", 12F);
+            this.cmbSupplier.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.cmbSupplier.FormattingEnabled = true;
             this.cmbSupplier.Location = new System.Drawing.Point(150, 12);
-            this.cmbSupplier.Name = \"cmbSupplier\";
+            this.cmbSupplier.Name = "cmbSupplier";
             this.cmbSupplier.Size = new System.Drawing.Size(300, 29);
             this.cmbSupplier.TabIndex = 1;
             // 
             // lblSupplier
             // 
             this.lblSupplier.AutoSize = true;
-            this.lblSupplier.Font = new System.Drawing.Font(\"Segoe UI\", 12F, System.Drawing.FontStyle.Bold);
+            this.lblSupplier.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.lblSupplier.Location = new System.Drawing.Point(20, 15);
-            this.lblSupplier.Name = \"lblSupplier\";
+            this.lblSupplier.Name = "lblSupplier";
             this.lblSupplier.Size = new System.Drawing.Size(124, 21);
             this.lblSupplier.TabIndex = 0;
-            this.lblSupplier.Text = \"🏢 Tədarükçü:\";
+            this.lblSupplier.Text = "🏢 Tədarükçü:";
             // 
             // pnlProduct
             // 
@@ -131,7 +131,7 @@ namespace AzAgroPOS.PL.Forms
             this.pnlProduct.Controls.Add(this.lblProduct);
             this.pnlProduct.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlProduct.Location = new System.Drawing.Point(0, 110);
-            this.pnlProduct.Name = \"pnlProduct\";
+            this.pnlProduct.Name = "pnlProduct";
             this.pnlProduct.Size = new System.Drawing.Size(1200, 60);
             this.pnlProduct.TabIndex = 2;
             // 
@@ -139,21 +139,21 @@ namespace AzAgroPOS.PL.Forms
             // 
             this.btnAddProduct.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(204)))), ((int)(((byte)(113)))));
             this.btnAddProduct.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAddProduct.Font = new System.Drawing.Font(\"Segoe UI\", 10F, System.Drawing.FontStyle.Bold);
+            this.btnAddProduct.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnAddProduct.ForeColor = System.Drawing.Color.White;
             this.btnAddProduct.Location = new System.Drawing.Point(1080, 15);
-            this.btnAddProduct.Name = \"btnAddProduct\";
+            this.btnAddProduct.Name = "btnAddProduct";
             this.btnAddProduct.Size = new System.Drawing.Size(100, 35);
             this.btnAddProduct.TabIndex = 6;
-            this.btnAddProduct.Text = \"➕ Əlavə\";
+            this.btnAddProduct.Text = "➕ Əlavə";
             this.btnAddProduct.UseVisualStyleBackColor = false;
             this.btnAddProduct.Click += new System.EventHandler(this.btnAddProduct_Click);
             // 
             // txtUnitPrice
             // 
-            this.txtUnitPrice.Font = new System.Drawing.Font(\"Segoe UI\", 12F);
+            this.txtUnitPrice.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.txtUnitPrice.Location = new System.Drawing.Point(920, 18);
-            this.txtUnitPrice.Name = \"txtUnitPrice\";
+            this.txtUnitPrice.Name = "txtUnitPrice";
             this.txtUnitPrice.Size = new System.Drawing.Size(120, 29);
             this.txtUnitPrice.TabIndex = 5;
             this.txtUnitPrice.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -161,18 +161,18 @@ namespace AzAgroPOS.PL.Forms
             // lblUnitPrice
             // 
             this.lblUnitPrice.AutoSize = true;
-            this.lblUnitPrice.Font = new System.Drawing.Font(\"Segoe UI\", 12F, System.Drawing.FontStyle.Bold);
+            this.lblUnitPrice.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.lblUnitPrice.Location = new System.Drawing.Point(810, 21);
-            this.lblUnitPrice.Name = \"lblUnitPrice\";
+            this.lblUnitPrice.Name = "lblUnitPrice";
             this.lblUnitPrice.Size = new System.Drawing.Size(104, 21);
             this.lblUnitPrice.TabIndex = 4;
-            this.lblUnitPrice.Text = \"💰 Qiymət:\";
+            this.lblUnitPrice.Text = "💰 Qiymət:";
             // 
             // txtQuantity
             // 
-            this.txtQuantity.Font = new System.Drawing.Font(\"Segoe UI\", 12F);
+            this.txtQuantity.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.txtQuantity.Location = new System.Drawing.Point(720, 18);
-            this.txtQuantity.Name = \"txtQuantity\";
+            this.txtQuantity.Name = "txtQuantity";
             this.txtQuantity.Size = new System.Drawing.Size(80, 29);
             this.txtQuantity.TabIndex = 3;
             this.txtQuantity.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -180,20 +180,20 @@ namespace AzAgroPOS.PL.Forms
             // lblQuantity
             // 
             this.lblQuantity.AutoSize = true;
-            this.lblQuantity.Font = new System.Drawing.Font(\"Segoe UI\", 12F, System.Drawing.FontStyle.Bold);
+            this.lblQuantity.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.lblQuantity.Location = new System.Drawing.Point(630, 21);
-            this.lblQuantity.Name = \"lblQuantity\";
+            this.lblQuantity.Name = "lblQuantity";
             this.lblQuantity.Size = new System.Drawing.Size(84, 21);
             this.lblQuantity.TabIndex = 2;
-            this.lblQuantity.Text = \"📊 Miqdar:\";
+            this.lblQuantity.Text = "📊 Miqdar:";
             // 
             // cmbProduct
             // 
             this.cmbProduct.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbProduct.Font = new System.Drawing.Font(\"Segoe UI\", 12F);
+            this.cmbProduct.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.cmbProduct.FormattingEnabled = true;
             this.cmbProduct.Location = new System.Drawing.Point(120, 18);
-            this.cmbProduct.Name = \"cmbProduct\";
+            this.cmbProduct.Name = "cmbProduct";
             this.cmbProduct.Size = new System.Drawing.Size(500, 29);
             this.cmbProduct.TabIndex = 1;
             this.cmbProduct.SelectedIndexChanged += new System.EventHandler(this.cmbProduct_SelectedIndexChanged);
@@ -201,12 +201,12 @@ namespace AzAgroPOS.PL.Forms
             // lblProduct
             // 
             this.lblProduct.AutoSize = true;
-            this.lblProduct.Font = new System.Drawing.Font(\"Segoe UI\", 12F, System.Drawing.FontStyle.Bold);
+            this.lblProduct.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.lblProduct.Location = new System.Drawing.Point(20, 21);
-            this.lblProduct.Name = \"lblProduct\";
+            this.lblProduct.Name = "lblProduct";
             this.lblProduct.Size = new System.Drawing.Size(94, 21);
             this.lblProduct.TabIndex = 0;
-            this.lblProduct.Text = \"📦 Məhsul:\";
+            this.lblProduct.Text = "📦 Məhsul:";
             // 
             // dgvOrderDetails
             // 
@@ -214,7 +214,7 @@ namespace AzAgroPOS.PL.Forms
             this.dgvOrderDetails.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvOrderDetails.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvOrderDetails.Location = new System.Drawing.Point(0, 170);
-            this.dgvOrderDetails.Name = \"dgvOrderDetails\";
+            this.dgvOrderDetails.Name = "dgvOrderDetails";
             this.dgvOrderDetails.RowHeadersWidth = 25;
             this.dgvOrderDetails.Size = new System.Drawing.Size(1200, 270);
             this.dgvOrderDetails.TabIndex = 3;
@@ -233,91 +233,91 @@ namespace AzAgroPOS.PL.Forms
             this.pnlCalculations.Controls.Add(this.lblSubtotalLabel);
             this.pnlCalculations.Dock = System.Windows.Forms.DockStyle.Right;
             this.pnlCalculations.Location = new System.Drawing.Point(800, 170);
-            this.pnlCalculations.Name = \"pnlCalculations\";
+            this.pnlCalculations.Name = "pnlCalculations";
             this.pnlCalculations.Size = new System.Drawing.Size(400, 270);
             this.pnlCalculations.TabIndex = 4;
             // 
             // lblTotal
             // 
             this.lblTotal.AutoSize = true;
-            this.lblTotal.Font = new System.Drawing.Font(\"Segoe UI\", 14F, System.Drawing.FontStyle.Bold);
+            this.lblTotal.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
             this.lblTotal.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(76)))), ((int)(((byte)(60)))));
             this.lblTotal.Location = new System.Drawing.Point(250, 150);
-            this.lblTotal.Name = \"lblTotal\";
+            this.lblTotal.Name = "lblTotal";
             this.lblTotal.Size = new System.Drawing.Size(67, 25);
             this.lblTotal.TabIndex = 7;
-            this.lblTotal.Text = \"0.00 ₼\";
+            this.lblTotal.Text = "0.00 ₼";
             // 
             // lblTotalLabel
             // 
             this.lblTotalLabel.AutoSize = true;
-            this.lblTotalLabel.Font = new System.Drawing.Font(\"Segoe UI\", 14F, System.Drawing.FontStyle.Bold);
+            this.lblTotalLabel.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
             this.lblTotalLabel.Location = new System.Drawing.Point(20, 150);
-            this.lblTotalLabel.Name = \"lblTotalLabel\";
+            this.lblTotalLabel.Name = "lblTotalLabel";
             this.lblTotalLabel.Size = new System.Drawing.Size(130, 25);
             this.lblTotalLabel.TabIndex = 6;
-            this.lblTotalLabel.Text = \"💰 Cəmi Məbləğ:\";
+            this.lblTotalLabel.Text = "💰 Cəmi Məbləğ:";
             // 
             // lblTax
             // 
             this.lblTax.AutoSize = true;
-            this.lblTax.Font = new System.Drawing.Font(\"Segoe UI\", 12F, System.Drawing.FontStyle.Bold);
+            this.lblTax.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.lblTax.Location = new System.Drawing.Point(250, 110);
-            this.lblTax.Name = \"lblTax\";
+            this.lblTax.Name = "lblTax";
             this.lblTax.Size = new System.Drawing.Size(58, 21);
             this.lblTax.TabIndex = 5;
-            this.lblTax.Text = \"0.00 ₼\";
+            this.lblTax.Text = "0.00 ₼";
             // 
             // lblTaxLabel
             // 
             this.lblTaxLabel.AutoSize = true;
-            this.lblTaxLabel.Font = new System.Drawing.Font(\"Segoe UI\", 12F, System.Drawing.FontStyle.Bold);
+            this.lblTaxLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.lblTaxLabel.Location = new System.Drawing.Point(20, 110);
-            this.lblTaxLabel.Name = \"lblTaxLabel\";
+            this.lblTaxLabel.Name = "lblTaxLabel";
             this.lblTaxLabel.Size = new System.Drawing.Size(114, 21);
             this.lblTaxLabel.TabIndex = 4;
-            this.lblTaxLabel.Text = \"🧾 Vergi (18%):\";
+            this.lblTaxLabel.Text = "🧾 Vergi (18%):";
             // 
             // txtDiscount
             // 
-            this.txtDiscount.Font = new System.Drawing.Font(\"Segoe UI\", 12F);
+            this.txtDiscount.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.txtDiscount.Location = new System.Drawing.Point(250, 70);
-            this.txtDiscount.Name = \"txtDiscount\";
+            this.txtDiscount.Name = "txtDiscount";
             this.txtDiscount.Size = new System.Drawing.Size(120, 29);
             this.txtDiscount.TabIndex = 3;
-            this.txtDiscount.Text = \"0\";
+            this.txtDiscount.Text = "0";
             this.txtDiscount.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtDiscount.TextChanged += new System.EventHandler(this.txtDiscount_TextChanged);
             // 
             // lblDiscountLabel
             // 
             this.lblDiscountLabel.AutoSize = true;
-            this.lblDiscountLabel.Font = new System.Drawing.Font(\"Segoe UI\", 12F, System.Drawing.FontStyle.Bold);
+            this.lblDiscountLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.lblDiscountLabel.Location = new System.Drawing.Point(20, 73);
-            this.lblDiscountLabel.Name = \"lblDiscountLabel\";
+            this.lblDiscountLabel.Name = "lblDiscountLabel";
             this.lblDiscountLabel.Size = new System.Drawing.Size(95, 21);
             this.lblDiscountLabel.TabIndex = 2;
-            this.lblDiscountLabel.Text = \"💸 Endirim:\";
+            this.lblDiscountLabel.Text = "💸 Endirim:";
             // 
             // lblSubtotal
             // 
             this.lblSubtotal.AutoSize = true;
-            this.lblSubtotal.Font = new System.Drawing.Font(\"Segoe UI\", 12F, System.Drawing.FontStyle.Bold);
+            this.lblSubtotal.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.lblSubtotal.Location = new System.Drawing.Point(250, 30);
-            this.lblSubtotal.Name = \"lblSubtotal\";
+            this.lblSubtotal.Name = "lblSubtotal";
             this.lblSubtotal.Size = new System.Drawing.Size(58, 21);
             this.lblSubtotal.TabIndex = 1;
-            this.lblSubtotal.Text = \"0.00 ₼\";
+            this.lblSubtotal.Text = "0.00 ₼";
             // 
             // lblSubtotalLabel
             // 
             this.lblSubtotalLabel.AutoSize = true;
-            this.lblSubtotalLabel.Font = new System.Drawing.Font(\"Segoe UI\", 12F, System.Drawing.FontStyle.Bold);
+            this.lblSubtotalLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.lblSubtotalLabel.Location = new System.Drawing.Point(20, 30);
-            this.lblSubtotalLabel.Name = \"lblSubtotalLabel\";
+            this.lblSubtotalLabel.Name = "lblSubtotalLabel";
             this.lblSubtotalLabel.Size = new System.Drawing.Size(113, 21);
             this.lblSubtotalLabel.TabIndex = 0;
-            this.lblSubtotalLabel.Text = \"📊 Ara Cəmi:\";
+            this.lblSubtotalLabel.Text = "📊 Ara Cəmi:";
             // 
             // pnlNotes
             // 
@@ -326,28 +326,28 @@ namespace AzAgroPOS.PL.Forms
             this.pnlNotes.Controls.Add(this.lblNotes);
             this.pnlNotes.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlNotes.Location = new System.Drawing.Point(0, 440);
-            this.pnlNotes.Name = \"pnlNotes\";
+            this.pnlNotes.Name = "pnlNotes";
             this.pnlNotes.Size = new System.Drawing.Size(800, 100);
             this.pnlNotes.TabIndex = 5;
             // 
             // txtNotes
             // 
-            this.txtNotes.Font = new System.Drawing.Font(\"Segoe UI\", 10F);
+            this.txtNotes.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.txtNotes.Location = new System.Drawing.Point(20, 30);
             this.txtNotes.Multiline = true;
-            this.txtNotes.Name = \"txtNotes\";
+            this.txtNotes.Name = "txtNotes";
             this.txtNotes.Size = new System.Drawing.Size(760, 60);
             this.txtNotes.TabIndex = 1;
             // 
             // lblNotes
             // 
             this.lblNotes.AutoSize = true;
-            this.lblNotes.Font = new System.Drawing.Font(\"Segoe UI\", 12F, System.Drawing.FontStyle.Bold);
+            this.lblNotes.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.lblNotes.Location = new System.Drawing.Point(20, 5);
-            this.lblNotes.Name = \"lblNotes\";
+            this.lblNotes.Name = "lblNotes";
             this.lblNotes.Size = new System.Drawing.Size(90, 21);
             this.lblNotes.TabIndex = 0;
-            this.lblNotes.Text = \"📝 Qeydlər:\";
+            this.lblNotes.Text = "📝 Qeydlər:";
             // 
             // pnlButtons
             // 
@@ -357,7 +357,7 @@ namespace AzAgroPOS.PL.Forms
             this.pnlButtons.Controls.Add(this.btnCreateOrder);
             this.pnlButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlButtons.Location = new System.Drawing.Point(0, 540);
-            this.pnlButtons.Name = \"pnlButtons\";
+            this.pnlButtons.Name = "pnlButtons";
             this.pnlButtons.Size = new System.Drawing.Size(1200, 60);
             this.pnlButtons.TabIndex = 6;
             // 
@@ -365,13 +365,13 @@ namespace AzAgroPOS.PL.Forms
             // 
             this.btnClose.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(76)))), ((int)(((byte)(60)))));
             this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnClose.Font = new System.Drawing.Font(\"Segoe UI\", 12F, System.Drawing.FontStyle.Bold);
+            this.btnClose.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.btnClose.ForeColor = System.Drawing.Color.White;
             this.btnClose.Location = new System.Drawing.Point(1050, 15);
-            this.btnClose.Name = \"btnClose\";
+            this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(130, 35);
             this.btnClose.TabIndex = 2;
-            this.btnClose.Text = \"❌ Bağla\";
+            this.btnClose.Text = "❌ Bağla";
             this.btnClose.UseVisualStyleBackColor = false;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
@@ -379,13 +379,13 @@ namespace AzAgroPOS.PL.Forms
             // 
             this.btnCreateInvoice.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(152)))), ((int)(((byte)(219)))));
             this.btnCreateInvoice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCreateInvoice.Font = new System.Drawing.Font(\"Segoe UI\", 12F, System.Drawing.FontStyle.Bold);
+            this.btnCreateInvoice.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.btnCreateInvoice.ForeColor = System.Drawing.Color.White;
             this.btnCreateInvoice.Location = new System.Drawing.Point(220, 15);
-            this.btnCreateInvoice.Name = \"btnCreateInvoice\";
+            this.btnCreateInvoice.Name = "btnCreateInvoice";
             this.btnCreateInvoice.Size = new System.Drawing.Size(180, 35);
             this.btnCreateInvoice.TabIndex = 1;
-            this.btnCreateInvoice.Text = \"📄 Alış Sənədi Yarat\";
+            this.btnCreateInvoice.Text = "📄 Alış Sənədi Yarat";
             this.btnCreateInvoice.UseVisualStyleBackColor = false;
             this.btnCreateInvoice.Click += new System.EventHandler(this.btnCreateInvoice_Click);
             // 
@@ -393,13 +393,13 @@ namespace AzAgroPOS.PL.Forms
             // 
             this.btnCreateOrder.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(204)))), ((int)(((byte)(113)))));
             this.btnCreateOrder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCreateOrder.Font = new System.Drawing.Font(\"Segoe UI\", 12F, System.Drawing.FontStyle.Bold);
+            this.btnCreateOrder.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.btnCreateOrder.ForeColor = System.Drawing.Color.White;
             this.btnCreateOrder.Location = new System.Drawing.Point(20, 15);
-            this.btnCreateOrder.Name = \"btnCreateOrder\";
+            this.btnCreateOrder.Name = "btnCreateOrder";
             this.btnCreateOrder.Size = new System.Drawing.Size(180, 35);
             this.btnCreateOrder.TabIndex = 0;
-            this.btnCreateOrder.Text = \"📋 Sifariş Yarat\";
+            this.btnCreateOrder.Text = "📋 Sifariş Yarat";
             this.btnCreateOrder.UseVisualStyleBackColor = false;
             this.btnCreateOrder.Click += new System.EventHandler(this.btnCreateOrder_Click);
             // 
@@ -415,12 +415,12 @@ namespace AzAgroPOS.PL.Forms
             this.Controls.Add(this.pnlSupplier);
             this.Controls.Add(this.pnlTop);
             this.Controls.Add(this.pnlButtons);
-            this.Font = new System.Drawing.Font(\"Segoe UI\", 12F);
+            this.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
-            this.Name = \"PurchaseOrderForm\";
+            this.Name = "PurchaseOrderForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = \"📝 Alış Sənədləri - AzAgroPOS\";
+            this.Text = "📝 Alış Sənədləri - AzAgroPOS";
             this.Load += new System.EventHandler(this.PurchaseOrderForm_Load);
             this.pnlTop.ResumeLayout(false);
             this.pnlTop.PerformLayout();

@@ -199,21 +199,8 @@ namespace AzAgroPOS.DAL.Repositories
                     .ThenInclude(m => m.Kateqoriya)
                 .Include(q => q.Mehsul)
                     .ThenInclude(m => m.Vahid)
-                .Select(q => new AnbarQalik
-                {
-                    Id = q.Id,
-                    AnbarId = q.AnbarId,
-                    MehsulId = q.MehsulId,
-                    MovcudMiqdar = q.MovcudMiqdar,
-                    MinimumMiqdar = q.MinimumMiqdar,
-                    SonGirisTarixi = q.SonGirisTarixi,
-                    SonSatısTarixi = q.SonSatısTarixi,
-                    YenilenmeTarixi = q.YenilenmeTarixi,
-                    AnbarAdi = q.Anbar.Ad,
-                    MehsulAdi = q.Mehsul.Ad
-                })
-                .OrderBy(q => q.AnbarAdi)
-                .ThenBy(q => q.MehsulAdi)
+                .OrderBy(q => q.Anbar.Ad)
+                .ThenBy(q => q.Mehsul.Ad)
                 .ToListAsync();
         }
 
@@ -239,19 +226,6 @@ namespace AzAgroPOS.DAL.Repositories
                 .Include(q => q.Mehsul)
                     .ThenInclude(m => m.Vahid)
                 .Where(q => q.MovcudMiqdar <= q.MinimumMiqdar && q.MinimumMiqdar > 0)
-                .Select(q => new AnbarQalik
-                {
-                    Id = q.Id,
-                    AnbarId = q.AnbarId,
-                    MehsulId = q.MehsulId,
-                    MovcudMiqdar = q.MovcudMiqdar,
-                    MinimumMiqdar = q.MinimumMiqdar,
-                    SonGirisTarixi = q.SonGirisTarixi,
-                    SonSatısTarixi = q.SonSatısTarixi,
-                    YenilenmeTarixi = q.YenilenmeTarixi,
-                    AnbarAdi = q.Anbar.Ad,
-                    MehsulAdi = q.Mehsul.Ad
-                })
                 .OrderBy(q => q.MovcudMiqdar)
                 .ToListAsync();
         }

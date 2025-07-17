@@ -101,12 +101,13 @@ namespace AzAgroPOS.PL.Forms
             // 
             btnClearFilter.BackColor = System.Drawing.Color.FromArgb(230, 126, 34);
             btnClearFilter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnClearFilter.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             btnClearFilter.ForeColor = System.Drawing.Color.White;
             btnClearFilter.Location = new System.Drawing.Point(1000, 25);
             btnClearFilter.Name = "btnClearFilter";
             btnClearFilter.Size = new System.Drawing.Size(111, 30);
             btnClearFilter.TabIndex = 7;
-            btnClearFilter.Text = "\U0001f9f9 Təmizlə";
+            btnClearFilter.Text = "🔄 Təmizlə";
             btnClearFilter.UseVisualStyleBackColor = false;
             btnClearFilter.Click += btnClearFilter_Click;
             // 
@@ -123,10 +124,11 @@ namespace AzAgroPOS.PL.Forms
             // 
             lblStatus.AutoSize = true;
             lblStatus.Location = new System.Drawing.Point(720, 28);
+            lblStatus.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             lblStatus.Name = "lblStatus";
             lblStatus.Size = new System.Drawing.Size(52, 21);
             lblStatus.TabIndex = 5;
-            lblStatus.Text = "Status";
+            lblStatus.Text = "⚙️ Status";
             // 
             // cmbCategory
             // 
@@ -141,15 +143,17 @@ namespace AzAgroPOS.PL.Forms
             // 
             lblCategory.AutoSize = true;
             lblCategory.Location = new System.Drawing.Point(420, 28);
+            lblCategory.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             lblCategory.Name = "lblCategory";
             lblCategory.Size = new System.Drawing.Size(84, 21);
             lblCategory.TabIndex = 3;
-            lblCategory.Text = "Kateqoriya";
+            lblCategory.Text = "📦 Kateqoriya";
             // 
             // btnSearch
             // 
-            btnSearch.BackColor = System.Drawing.Color.FromArgb(46, 204, 113);
+            btnSearch.BackColor = System.Drawing.Color.FromArgb(52, 152, 219);
             btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnSearch.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             btnSearch.ForeColor = System.Drawing.Color.White;
             btnSearch.Location = new System.Drawing.Point(330, 25);
             btnSearch.Name = "btnSearch";
@@ -171,10 +175,11 @@ namespace AzAgroPOS.PL.Forms
             // 
             lblSearch.AutoSize = true;
             lblSearch.Location = new System.Drawing.Point(20, 28);
+            lblSearch.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             lblSearch.Name = "lblSearch";
             lblSearch.Size = new System.Drawing.Size(60, 21);
             lblSearch.TabIndex = 0;
-            lblSearch.Text = "Axtarış:";
+            lblSearch.Text = "🔍 Axtarış:";
             // 
             // pnlButtons
             // 
@@ -195,6 +200,7 @@ namespace AzAgroPOS.PL.Forms
             // 
             btnClose.BackColor = System.Drawing.Color.FromArgb(231, 76, 60);
             btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnClose.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             btnClose.ForeColor = System.Drawing.Color.White;
             btnClose.Location = new System.Drawing.Point(1078, 15);
             btnClose.Name = "btnClose";
@@ -208,6 +214,7 @@ namespace AzAgroPOS.PL.Forms
             // 
             btnExport.BackColor = System.Drawing.Color.FromArgb(155, 89, 182);
             btnExport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnExport.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             btnExport.ForeColor = System.Drawing.Color.White;
             btnExport.Location = new System.Drawing.Point(480, 13);
             btnExport.Name = "btnExport";
@@ -221,6 +228,7 @@ namespace AzAgroPOS.PL.Forms
             // 
             btnLowStock.BackColor = System.Drawing.Color.FromArgb(241, 196, 15);
             btnLowStock.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnLowStock.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             btnLowStock.ForeColor = System.Drawing.Color.White;
             btnLowStock.Location = new System.Drawing.Point(330, 13);
             btnLowStock.Name = "btnLowStock";
@@ -234,6 +242,7 @@ namespace AzAgroPOS.PL.Forms
             // 
             btnDelete.BackColor = System.Drawing.Color.FromArgb(231, 76, 60);
             btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnDelete.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             btnDelete.ForeColor = System.Drawing.Color.White;
             btnDelete.Location = new System.Drawing.Point(250, 13);
             btnDelete.Name = "btnDelete";
@@ -247,6 +256,7 @@ namespace AzAgroPOS.PL.Forms
             // 
             btnEdit.BackColor = System.Drawing.Color.FromArgb(52, 152, 219);
             btnEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnEdit.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             btnEdit.ForeColor = System.Drawing.Color.White;
             btnEdit.Location = new System.Drawing.Point(121, 15);
             btnEdit.Name = "btnEdit";
@@ -260,6 +270,7 @@ namespace AzAgroPOS.PL.Forms
             // 
             btnAdd.BackColor = System.Drawing.Color.FromArgb(46, 204, 113);
             btnAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnAdd.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             btnAdd.ForeColor = System.Drawing.Color.White;
             btnAdd.Location = new System.Drawing.Point(20, 15);
             btnAdd.Name = "btnAdd";

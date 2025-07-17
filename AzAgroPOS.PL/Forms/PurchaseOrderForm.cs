@@ -20,7 +20,7 @@ namespace AzAgroPOS.PL.Forms
         private readonly AlisSenediRepository _alisSenediRepository;
         private readonly Istifadeci _currentUser;
         private List<AlisDetaliItem> _alisDetallari;
-        private decimal _vergiOrani = 0.18m; // 18% vergi
+        private decimal _vergiOrani = 0.01m; // 18% vergi
 
         public PurchaseOrderForm(Istifadeci currentUser) : base()
         {
@@ -48,10 +48,10 @@ namespace AzAgroPOS.PL.Forms
             {
                 var suppliers = await _tedarukcuRepository.GetAllActiveAsync();
                 cmbSupplier.DataSource = suppliers;
-                cmbSupplier.DisplayMember = \"Ad\";
-                cmbSupplier.ValueMember = \"Id\";
+                cmbSupplier.DisplayMember = "Ad";
+                cmbSupplier.ValueMember = "Id";
                 cmbSupplier.SelectedIndex = -1;
-            }, \"Tədarükçülər yüklənərkən xəta baş verdi\");
+            }, "Tədarükçülər yüklənərkən xəta baş verdi");
         }
 
         private async Task LoadProductsAsync()
@@ -60,25 +60,25 @@ namespace AzAgroPOS.PL.Forms
             {
                 var products = _mehsulService.GetAllActive();
                 cmbProduct.DataSource = products;
-                cmbProduct.DisplayMember = \"Ad\";
-                cmbProduct.ValueMember = \"Id\";
+                cmbProduct.DisplayMember = "Ad";
+                cmbProduct.ValueMember = "Id";
                 cmbProduct.SelectedIndex = -1;
-            }, \"Məhsullar yüklənərkən xəta baş verdi\");
+            }, "Məhsullar yüklənərkən xəta baş verdi");
         }
 
         private void InitializeDataGridView()
         {
             dgvOrderDetails.Columns.Clear();
-            dgvOrderDetails.Columns.Add(\"MehsulAdi\", \"Məhsul Adı\");
-            dgvOrderDetails.Columns.Add(\"Miqdar\", \"Miqdar\");
-            dgvOrderDetails.Columns.Add(\"VahidQiymeti\", \"Vahid Qiyməti\");
-            dgvOrderDetails.Columns.Add(\"UmumiQiymet\", \"Ümumi Qiymət\");
+            dgvOrderDetails.Columns.Add("MehsulAdi", "Məhsul Adı");
+            dgvOrderDetails.Columns.Add("Miqdar", "Miqdar");
+            dgvOrderDetails.Columns.Add("VahidQiymeti", "Vahid Qiyməti");
+            dgvOrderDetails.Columns.Add("UmumiQiymet", "Ümumi Qiymət");
             
             var deleteColumn = new DataGridViewButtonColumn
             {
-                Name = \"Delete\",
-                HeaderText = \"Əməliyyat\",
-                Text = \"Sil\",
+                Name = "Delete",
+                HeaderText = "Əməliyyat",
+                Text = "Sil",
                 UseColumnTextForButtonValue = true,
                 Width = 70
             };
@@ -94,19 +94,19 @@ namespace AzAgroPOS.PL.Forms
         {
             if (cmbProduct.SelectedValue == null)
             {
-                ShowWarning(\"Məhsul seçin!\");
+                ShowWarning("Məhsul seçin!");
                 return;
             }
 
             if (!decimal.TryParse(txtQuantity.Text, out decimal quantity) || quantity <= 0)
             {
-                ShowWarning(\"Düzgün miqdar daxil edin!\");
+                ShowWarning("Düzgün miqdar daxil edin!");
                 return;
             }
 
             if (!decimal.TryParse(txtUnitPrice.Text, out decimal unitPrice) || unitPrice <= 0)
             {
-                ShowWarning(\"Düzgün vahid qiymət daxil edin!\");
+                ShowWarning("Düzgün vahid qiymət daxil edin!");
                 return;
             }
 
@@ -144,9 +144,9 @@ namespace AzAgroPOS.PL.Forms
             {
                 dgvOrderDetails.Rows.Add(
                     item.MehsulAdi,
-                    item.Miqdar.ToString(\"F2\"),
-                    item.VahidQiymeti.ToString(\"F2\") + \" ₼\",
-                    item.UmumiQiymet.ToString(\"F2\") + \" ₼\"
+                    item.Miqdar.ToString("F2"),
+                    item.VahidQiymeti.ToString("F2") + " ₼",
+                    item.UmumiQiymet.ToString("F2") + " ₼"
                 );
             }
         }
@@ -158,9 +158,9 @@ namespace AzAgroPOS.PL.Forms
             decimal tax = (subtotal - discount) * _vergiOrani;
             decimal total = subtotal - discount + tax;
 
-            lblSubtotal.Text = subtotal.ToString(\"F2\") + \" ₼\";
-            lblTax.Text = tax.ToString(\"F2\") + \" ₼\";
-            lblTotal.Text = total.ToString(\"F2\") + \" ₼\";
+            lblSubtotal.Text = subtotal.ToString("F2") + " ₼";
+            lblTax.Text = tax.ToString("F2") + " ₼";
+            lblTotal.Text = total.ToString("F2") + " ₼";
         }
 
         private void ClearProductInputs()
@@ -173,9 +173,9 @@ namespace AzAgroPOS.PL.Forms
 
         private void dgvOrderDetails_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == dgvOrderDetails.Columns[\"Delete\"].Index && e.RowIndex >= 0)
+            if (e.ColumnIndex == dgvOrderDetails.Columns["Delete"].Index && e.RowIndex >= 0)
             {
-                if (ShowConfirmation(\"Bu məhsulu silmək istədiyinizə əminsiniz?\"))
+                if (ShowConfirmation("Bu məhsulu silmək istədiyinizə əminsiniz?"))
                 {
                     _alisDetallari.RemoveAt(e.RowIndex);
                     RefreshDataGridView();
@@ -193,13 +193,13 @@ namespace AzAgroPOS.PL.Forms
         {
             if (cmbSupplier.SelectedValue == null)
             {
-                ShowWarning(\"Tədarükçü seçin!\");
+                ShowWarning("Tədarükçü seçin!");
                 return;
             }
 
             if (_alisDetallari.Count == 0)
             {
-                ShowWarning(\"Sifariş üçün məhsul əlavə edin!\");
+                ShowWarning("Sifariş üçün məhsul əlavə edin!");
                 return;
             }
 
@@ -212,11 +212,11 @@ namespace AzAgroPOS.PL.Forms
                     SifarisNomresi = GenerateOrderNumber(),
                     SifarisTarixi = DateTime.Now,
                     TedarukcuId = supplier.Id,
-                    Status = \"Gözləmədə\",
+                    Status = "Gözləmədə",
                     UmumiMebleg = _alisDetallari.Sum(x => x.UmumiQiymet),
                     EndirimMeblegi = decimal.TryParse(txtDiscount.Text, out var discount) ? discount : 0,
-                    VergiMeblegi = decimal.Parse(lblTax.Text.Replace(\" ₼\", \"\").Trim()),
-                    NetMebleg = decimal.Parse(lblTotal.Text.Replace(\" ₼\", \"\").Trim()),
+                    VergiMeblegi = decimal.Parse(lblTax.Text.Replace(" ₼", "").Trim()),
+                    NetMebleg = decimal.Parse(lblTotal.Text.Replace(" ₼", "").Trim()),
                     Qeydler = txtNotes.Text,
                     YaradanIstifadeciId = _currentUser.Id,
                     YaradilmaTarixi = DateTime.Now,
@@ -233,25 +233,25 @@ namespace AzAgroPOS.PL.Forms
                 await _alisOrderRepository.AddAsync(order);
                 await _alisOrderRepository.SaveChangesAsync();
 
-                ShowSuccess($\"Sifariş uğurla yaradıldı!\\nSifariş nömrəsi: {order.SifarisNomresi}\");
+                ShowSuccess($"Sifariş uğurla yaradıldı! \n Sifariş nömrəsi: {order.SifarisNomresi}");
                 
                 // Yeni sifariş üçün formu təmizlə
                 ClearForm();
                 
-            }, \"Sifariş yaradılarkən xəta baş verdi\");
+            }, "Sifariş yaradılarkən xəta baş verdi");
         }
 
         private async void btnCreateInvoice_Click(object sender, EventArgs e)
         {
             if (cmbSupplier.SelectedValue == null)
             {
-                ShowWarning(\"Tədarükçü seçin!\");
+                ShowWarning("Tədarükçü seçin!");
                 return;
             }
 
             if (_alisDetallari.Count == 0)
             {
-                ShowWarning(\"Sənəd üçün məhsul əlavə edin!\");
+                ShowWarning("Sənəd üçün məhsul əlavə edin!");
                 return;
             }
 
@@ -264,11 +264,11 @@ namespace AzAgroPOS.PL.Forms
                     SenedNomresi = GenerateInvoiceNumber(),
                     SenedTarixi = DateTime.Now,
                     TedarukcuId = supplier.Id,
-                    Status = \"Tamamlandı\",
+                    Status = "Tamamlandı",
                     UmumiMebleg = _alisDetallari.Sum(x => x.UmumiQiymet),
                     EndirimMeblegi = decimal.TryParse(txtDiscount.Text, out var discount) ? discount : 0,
-                    VergiMeblegi = decimal.Parse(lblTax.Text.Replace(\" ₼\", \"\").Trim()),
-                    NetMebleg = decimal.Parse(lblTotal.Text.Replace(\" ₼\", \"\").Trim()),
+                    VergiMeblegi = decimal.Parse(lblTax.Text.Replace(" ₼", "").Trim()),
+                    NetMebleg = decimal.Parse(lblTotal.Text.Replace(" ₼", "").Trim()),
                     Qeydler = txtNotes.Text,
                     YaradanIstifadeciId = _currentUser.Id,
                     YaradilmaTarixi = DateTime.Now,
@@ -298,12 +298,12 @@ namespace AzAgroPOS.PL.Forms
 
                 await _alisSenediRepository.SaveChangesAsync();
 
-                ShowSuccess($\"Alış sənədi uğurla yaradıldı!\\nSənəd nömrəsi: {invoice.SenedNomresi}\");
+                ShowSuccess($"Alış sənədi uğurla yaradıldı! \n Sənəd nömrəsi: {invoice.SenedNomresi}");
                 
                 // Yeni sənəd üçün formu təmizlə
                 ClearForm();
                 
-            }, \"Alış sənədi yaradılarkən xəta baş verdi\");
+            }, "Alış sənədi yaradılarkən xəta baş verdi");
         }
 
         private void ClearForm()
@@ -312,19 +312,19 @@ namespace AzAgroPOS.PL.Forms
             _alisDetallari.Clear();
             RefreshDataGridView();
             UpdateCalculations();
-            txtDiscount.Text = \"0\";
+            txtDiscount.Text = "0";
             txtNotes.Clear();
             ClearProductInputs();
         }
 
         private string GenerateOrderNumber()
         {
-            return $\"ORD-{DateTime.Now:yyyyMMdd}-{DateTime.Now:HHmmss}\";
+            return $"ORD-{DateTime.Now:yyyyMMdd}-{DateTime.Now:HHmmss}";
         }
 
         private string GenerateInvoiceNumber()
         {
-            return $\"INV-{DateTime.Now:yyyyMMdd}-{DateTime.Now:HHmmss}\";
+            return $"INV-{DateTime.Now:yyyyMMdd}-{DateTime.Now:HHmmss}";
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -336,7 +336,7 @@ namespace AzAgroPOS.PL.Forms
         {
             if (cmbProduct.SelectedItem is Mehsul selectedProduct)
             {
-                txtUnitPrice.Text = selectedProduct.AlisQiymeti.ToString(\"F2\");
+                txtUnitPrice.Text = selectedProduct.AlisQiymeti.ToString("F2");
             }
         }
     }

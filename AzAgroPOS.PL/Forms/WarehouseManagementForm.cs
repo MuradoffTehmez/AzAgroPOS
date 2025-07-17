@@ -44,23 +44,23 @@ namespace AzAgroPOS.PL.Forms
                 // DataGridView sütunlarını nizamla
                 if (dgvWarehouses.Columns.Count > 0)
                 {
-                    dgvWarehouses.Columns[\"Id\"].HeaderText = \"ID\";
-                    dgvWarehouses.Columns[\"Ad\"].HeaderText = \"Anbar Adı\";
-                    dgvWarehouses.Columns[\"Unvan\"].HeaderText = \"Ünvan\";
-                    dgvWarehouses.Columns[\"Mesul\"].HeaderText = \"Məsul\";
-                    dgvWarehouses.Columns[\"Status\"].HeaderText = \"Status\";
-                    dgvWarehouses.Columns[\"YaradilmaTarixi\"].HeaderText = \"Yaradılma Tarixi\";
+                    dgvWarehouses.Columns["Id"].HeaderText = "ID";
+                    dgvWarehouses.Columns["Ad"].HeaderText = "Anbar Adı";
+                    dgvWarehouses.Columns["Unvan"].HeaderText = "Ünvan";
+                    dgvWarehouses.Columns["Mesul"].HeaderText = "Məsul";
+                    dgvWarehouses.Columns["Status"].HeaderText = "Status";
+                    dgvWarehouses.Columns["YaradilmaTarixi"].HeaderText = "Yaradılma Tarixi";
                     
                     // Digər sütunları gizlə
                     foreach (DataGridViewColumn column in dgvWarehouses.Columns)
                     {
-                        if (!new[] { \"Id\", \"Ad\", \"Unvan\", \"Mesul\", \"Status\", \"YaradilmaTarixi\" }.Contains(column.Name))
+                        if (!new[] { "Id", "Ad", "Unvan", "Mesul", "Status", "YaradilmaTarixi" }.Contains(column.Name))
                         {
                             column.Visible = false;
                         }
                     }
                 }
-            }, \"Anbarlar yüklənərkən xəta baş verdi\");
+            }, "Anbarlar yüklənərkən xəta baş verdi");
         }
 
         private async Task LoadWarehouseStockAsync()
@@ -73,25 +73,25 @@ namespace AzAgroPOS.PL.Forms
                 // DataGridView sütunlarını nizamla
                 if (dgvStock.Columns.Count > 0)
                 {
-                    dgvStock.Columns[\"Id\"].HeaderText = \"ID\";
-                    dgvStock.Columns[\"AnbarAdi\"].HeaderText = \"Anbar\";
-                    dgvStock.Columns[\"MehsulAdi\"].HeaderText = \"Məhsul\";
-                    dgvStock.Columns[\"MovcudMiqdar\"].HeaderText = \"Mövcud Miqdar\";
-                    dgvStock.Columns[\"MinimumLimit\"].HeaderText = \"Minimum Limit\";
-                    dgvStock.Columns[\"SonGirisTarixi\"].HeaderText = \"Son Giriş\";
-                    dgvStock.Columns[\"SonSatısTarixi\"].HeaderText = \"Son Satış\";
-                    dgvStock.Columns[\"YenilenmeTarixi\"].HeaderText = \"Yenilənmə Tarixi\";
+                    dgvStock.Columns["Id"].HeaderText = "ID";
+                    if (dgvStock.Columns.Contains("Anbar.Ad")) dgvStock.Columns["Anbar.Ad"].HeaderText = "Anbar";
+                    if (dgvStock.Columns.Contains("Mehsul.Ad")) dgvStock.Columns["Mehsul.Ad"].HeaderText = "Məhsul";
+                    dgvStock.Columns["MovcudMiqdar"].HeaderText = "Mövcud Miqdar";
+                    dgvStock.Columns["MinimumMiqdar"].HeaderText = "Minimum Miqdar";
+                    dgvStock.Columns["SonAlısTarixi"].HeaderText = "Son Alış";
+                    dgvStock.Columns["SonSatısTarixi"].HeaderText = "Son Satış";
+                    dgvStock.Columns["YenilenmeTarixi"].HeaderText = "Yenilənmə Tarixi";
                     
                     // Digər sütunları gizlə
                     foreach (DataGridViewColumn column in dgvStock.Columns)
                     {
-                        if (!new[] { \"Id\", \"AnbarAdi\", \"MehsulAdi\", \"MovcudMiqdar\", \"MinimumLimit\", \"SonGirisTarixi\", \"SonSatısTarixi\", \"YenilenmeTarixi\" }.Contains(column.Name))
+                        if (!new[] { "Id", "AnbarId", "MehsulId", "MovcudMiqdar", "MinimumMiqdar", "SonAlısTarixi", "SonSatısTarixi", "YenilenmeTarixi" }.Contains(column.Name))
                         {
                             column.Visible = false;
                         }
                     }
                 }
-            }, \"Anbar qalıqları yüklənərkən xəta baş verdi\");
+            }, "Anbar qalıqları yüklənərkən xəta baş verdi");
         }
 
         private async void btnAddWarehouse_Click(object sender, EventArgs e)
@@ -107,7 +107,7 @@ namespace AzAgroPOS.PL.Forms
         {
             if (dgvWarehouses.SelectedRows.Count == 0)
             {
-                ShowInfo(\"Redaktə etmək üçün anbar seçin.\");
+                ShowInfo("Redaktə etmək üçün anbar seçin.");
                 return;
             }
 
@@ -123,13 +123,13 @@ namespace AzAgroPOS.PL.Forms
         {
             if (dgvWarehouses.SelectedRows.Count == 0)
             {
-                ShowInfo(\"Silmək üçün anbar seçin.\");
+                ShowInfo("Silmək üçün anbar seçin.");
                 return;
             }
 
             var selectedWarehouse = (Anbar)dgvWarehouses.SelectedRows[0].DataBoundItem;
             
-            if (ShowConfirmation($\"'{selectedWarehouse.Ad}' anbarını silmək istədiyinizə əminsiniz?\"))
+            if (ShowConfirmation($"'{selectedWarehouse.Ad}' anbarını silmək istədiyinizə əminsiniz?"))
             {
                 await ExecuteAsync(async () =>
                 {
@@ -139,7 +139,7 @@ namespace AzAgroPOS.PL.Forms
                     
                     if (hasStock)
                     {
-                        ShowWarning(\"Bu anbarda məhsul qalığı var. Əvvəlcə məhsulları köçürün və ya bitirin.\");
+                        ShowWarning("Bu anbarda məhsul qalığı var. Əvvəlcə məhsulları köçürün və ya bitirin.");
                         return;
                     }
 
@@ -160,10 +160,10 @@ namespace AzAgroPOS.PL.Forms
                     _anbarRepository.Delete(selectedWarehouse);
                     await _anbarRepository.SaveChangesAsync();
 
-                    ShowSuccess(\"Anbar uğurla silindi!\");
+                    ShowSuccess("Anbar uğurla silindi!");
                     await LoadWarehousesAsync();
                     await LoadWarehouseStockAsync();
-                }, \"Anbar silinərkən xəta baş verdi\");
+                }, "Anbar silinərkən xəta baş verdi");
             }
         }
 
@@ -191,13 +191,13 @@ namespace AzAgroPOS.PL.Forms
                 
                 if (lowStockItems.Count == 0)
                 {
-                    ShowInfo(\"Az stoklu məhsul tapılmadı.\");
+                    ShowInfo("Az stoklu məhsul tapılmadı.");
                 }
                 else
                 {
-                    ShowInfo($\"{lowStockItems.Count} az stoklu məhsul tapıldı.\");
+                    ShowInfo($"{lowStockItems.Count} az stoklu məhsul tapıldı.");
                 }
-            }, \"Az stoklu məhsullar yüklənərkən xəta baş verdi\");
+            }, "Az stoklu məhsullar yüklənərkən xəta baş verdi");
         }
 
         private async void btnRefresh_Click(object sender, EventArgs e)

@@ -128,7 +128,7 @@ namespace AzAgroPOS.PL.Forms
             tabControl.Controls.Add(tabAlisSenedleri);
             tabControl.Controls.Add(tabAnbarTransfer);
             tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            tabControl.Font = new System.Drawing.Font("Segoe UI", 10F);
+            tabControl.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             tabControl.Location = new System.Drawing.Point(0, 0);
             tabControl.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             tabControl.Name = "tabControl";
@@ -145,7 +145,7 @@ namespace AzAgroPOS.PL.Forms
             tabTedarukciler.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
             tabTedarukciler.Size = new System.Drawing.Size(1392, 723);
             tabTedarukciler.TabIndex = 0;
-            tabTedarukciler.Text = "Tədarükçülər";
+            tabTedarukciler.Text = "🏢 Tədarükçülər";
             tabTedarukciler.UseVisualStyleBackColor = true;
             // 
             // panelTedarukcu
@@ -227,7 +227,7 @@ namespace AzAgroPOS.PL.Forms
             // 
             // panelTedarukcuButtons
             // 
-            panelTedarukcuButtons.BackColor = System.Drawing.Color.FromArgb(240, 240, 240);
+            panelTedarukcuButtons.BackColor = System.Drawing.Color.FromArgb(236, 240, 241);
             panelTedarukcuButtons.Controls.Add(btnOdemeYap);
             panelTedarukcuButtons.Controls.Add(btnSilTedarukcu);
             panelTedarukcuButtons.Controls.Add(btnDuzenleTedarukcu);
@@ -249,7 +249,7 @@ namespace AzAgroPOS.PL.Forms
             btnOdemeYap.Name = "btnOdemeYap";
             btnOdemeYap.Size = new System.Drawing.Size(117, 40);
             btnOdemeYap.TabIndex = 3;
-            btnOdemeYap.Text = "Ödəmə Yap";
+            btnOdemeYap.Text = "💳 Ödəmə Yap";
             btnOdemeYap.UseVisualStyleBackColor = false;
             // 
             // btnSilTedarukcu
@@ -262,7 +262,7 @@ namespace AzAgroPOS.PL.Forms
             btnSilTedarukcu.Name = "btnSilTedarukcu";
             btnSilTedarukcu.Size = new System.Drawing.Size(93, 40);
             btnSilTedarukcu.TabIndex = 2;
-            btnSilTedarukcu.Text = "Sil";
+            btnSilTedarukcu.Text = "🗑️ Sil";
             btnSilTedarukcu.UseVisualStyleBackColor = false;
             // 
             // btnDuzenleTedarukcu
@@ -275,7 +275,7 @@ namespace AzAgroPOS.PL.Forms
             btnDuzenleTedarukcu.Name = "btnDuzenleTedarukcu";
             btnDuzenleTedarukcu.Size = new System.Drawing.Size(117, 40);
             btnDuzenleTedarukcu.TabIndex = 1;
-            btnDuzenleTedarukcu.Text = "Düzənlə";
+            btnDuzenleTedarukcu.Text = "✏️ Düzənlə";
             btnDuzenleTedarukcu.UseVisualStyleBackColor = false;
             // 
             // btnYeniTedarukcu
@@ -288,12 +288,12 @@ namespace AzAgroPOS.PL.Forms
             btnYeniTedarukcu.Name = "btnYeniTedarukcu";
             btnYeniTedarukcu.Size = new System.Drawing.Size(140, 40);
             btnYeniTedarukcu.TabIndex = 0;
-            btnYeniTedarukcu.Text = "Yeni Tədarükçü";
+            btnYeniTedarukcu.Text = "➕ Yeni Tədarükçü";
             btnYeniTedarukcu.UseVisualStyleBackColor = false;
             // 
             // panelTedarukcuSearch
             // 
-            panelTedarukcuSearch.BackColor = System.Drawing.Color.FromArgb(248, 249, 250);
+            panelTedarukcuSearch.BackColor = System.Drawing.Color.FromArgb(236, 240, 241);
             panelTedarukcuSearch.Controls.Add(lblTedarukcuAxtaris);
             panelTedarukcuSearch.Controls.Add(txtTedarukcuAxtaris);
             panelTedarukcuSearch.Dock = System.Windows.Forms.DockStyle.Top;
@@ -311,7 +311,7 @@ namespace AzAgroPOS.PL.Forms
             lblTedarukcuAxtaris.Name = "lblTedarukcuAxtaris";
             lblTedarukcuAxtaris.Size = new System.Drawing.Size(53, 19);
             lblTedarukcuAxtaris.TabIndex = 1;
-            lblTedarukcuAxtaris.Text = "Axtarış:";
+            lblTedarukcuAxtaris.Text = "🔍 Axtarış:";
             // 
             // txtTedarukcuAxtaris
             // 
@@ -331,7 +331,7 @@ namespace AzAgroPOS.PL.Forms
             tabAlisOrderleri.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
             tabAlisOrderleri.Size = new System.Drawing.Size(1392, 723);
             tabAlisOrderleri.TabIndex = 1;
-            tabAlisOrderleri.Text = "Alış Sifarişləri";
+            tabAlisOrderleri.Text = "📋 Alış Sifarişləri";
             tabAlisOrderleri.UseVisualStyleBackColor = true;
             // 
             // panelAlisOrder
@@ -405,7 +405,7 @@ namespace AzAgroPOS.PL.Forms
             // 
             // panelOrderButtons
             // 
-            panelOrderButtons.BackColor = System.Drawing.Color.FromArgb(240, 240, 240);
+            panelOrderButtons.BackColor = System.Drawing.Color.FromArgb(236, 240, 241);
             panelOrderButtons.Controls.Add(btnOrderDetali);
             panelOrderButtons.Controls.Add(btnIptalOrder);
             panelOrderButtons.Controls.Add(btnTesdiqleOrder);
@@ -428,7 +428,7 @@ namespace AzAgroPOS.PL.Forms
             btnOrderDetali.Name = "btnOrderDetali";
             btnOrderDetali.Size = new System.Drawing.Size(117, 40);
             btnOrderDetali.TabIndex = 4;
-            btnOrderDetali.Text = "Detaylar";
+            btnOrderDetali.Text = "🔍 Detaylar";
             btnOrderDetali.UseVisualStyleBackColor = false;
             // 
             // btnIptalOrder
@@ -441,7 +441,7 @@ namespace AzAgroPOS.PL.Forms
             btnIptalOrder.Name = "btnIptalOrder";
             btnIptalOrder.Size = new System.Drawing.Size(93, 40);
             btnIptalOrder.TabIndex = 3;
-            btnIptalOrder.Text = "İptal";
+            btnIptalOrder.Text = "❌ İptal";
             btnIptalOrder.UseVisualStyleBackColor = false;
             // 
             // btnTesdiqleOrder
@@ -454,7 +454,7 @@ namespace AzAgroPOS.PL.Forms
             btnTesdiqleOrder.Name = "btnTesdiqleOrder";
             btnTesdiqleOrder.Size = new System.Drawing.Size(117, 40);
             btnTesdiqleOrder.TabIndex = 2;
-            btnTesdiqleOrder.Text = "Təsdiqlə";
+            btnTesdiqleOrder.Text = "✅ Təsdiqlə";
             btnTesdiqleOrder.UseVisualStyleBackColor = false;
             // 
             // btnDuzenleOrder
@@ -467,7 +467,7 @@ namespace AzAgroPOS.PL.Forms
             btnDuzenleOrder.Name = "btnDuzenleOrder";
             btnDuzenleOrder.Size = new System.Drawing.Size(117, 40);
             btnDuzenleOrder.TabIndex = 1;
-            btnDuzenleOrder.Text = "Düzənlə";
+            btnDuzenleOrder.Text = "✏️ Düzənlə";
             btnDuzenleOrder.UseVisualStyleBackColor = false;
             // 
             // btnYeniOrder
@@ -480,12 +480,12 @@ namespace AzAgroPOS.PL.Forms
             btnYeniOrder.Name = "btnYeniOrder";
             btnYeniOrder.Size = new System.Drawing.Size(117, 40);
             btnYeniOrder.TabIndex = 0;
-            btnYeniOrder.Text = "Yeni Order";
+            btnYeniOrder.Text = "➕ Yeni Order";
             btnYeniOrder.UseVisualStyleBackColor = false;
             // 
             // panelOrderFilter
             // 
-            panelOrderFilter.BackColor = System.Drawing.Color.FromArgb(248, 249, 250);
+            panelOrderFilter.BackColor = System.Drawing.Color.FromArgb(236, 240, 241);
             panelOrderFilter.Controls.Add(txtOrderAxtaris);
             panelOrderFilter.Controls.Add(lblOrderTarix);
             panelOrderFilter.Controls.Add(dtpOrderEnd);
@@ -509,7 +509,7 @@ namespace AzAgroPOS.PL.Forms
             txtOrderAxtaris.Name = "txtOrderAxtaris";
             txtOrderAxtaris.Size = new System.Drawing.Size(110, 29);
             txtOrderAxtaris.TabIndex = 5;
-            txtOrderAxtaris.Text = "Axtar";
+            txtOrderAxtaris.Text = "🔍 Axtar";
             txtOrderAxtaris.UseVisualStyleBackColor = false;
             // 
             // lblOrderTarix
@@ -520,7 +520,7 @@ namespace AzAgroPOS.PL.Forms
             lblOrderTarix.Name = "lblOrderTarix";
             lblOrderTarix.Size = new System.Drawing.Size(38, 19);
             lblOrderTarix.TabIndex = 4;
-            lblOrderTarix.Text = "Tarix:";
+            lblOrderTarix.Text = "📅 Tarix:";
             // 
             // dtpOrderEnd
             // 
@@ -548,7 +548,7 @@ namespace AzAgroPOS.PL.Forms
             lblOrderStatus.Name = "lblOrderStatus";
             lblOrderStatus.Size = new System.Drawing.Size(50, 19);
             lblOrderStatus.TabIndex = 1;
-            lblOrderStatus.Text = "Status:";
+            lblOrderStatus.Text = "⚙️ Status:";
             // 
             // cmbOrderStatus
             // 
@@ -568,7 +568,7 @@ namespace AzAgroPOS.PL.Forms
             tabAlisSenedleri.Name = "tabAlisSenedleri";
             tabAlisSenedleri.Size = new System.Drawing.Size(1392, 723);
             tabAlisSenedleri.TabIndex = 2;
-            tabAlisSenedleri.Text = "Alış Sənədləri";
+            tabAlisSenedleri.Text = "📄 Alış Sənədləri";
             tabAlisSenedleri.UseVisualStyleBackColor = true;
             // 
             // panelAlisSened
@@ -649,7 +649,7 @@ namespace AzAgroPOS.PL.Forms
             // 
             // panelSenedButtons
             // 
-            panelSenedButtons.BackColor = System.Drawing.Color.FromArgb(240, 240, 240);
+            panelSenedButtons.BackColor = System.Drawing.Color.FromArgb(236, 240, 241);
             panelSenedButtons.Controls.Add(btnFaktura);
             panelSenedButtons.Controls.Add(btnSenedDetali);
             panelSenedButtons.Controls.Add(btnIptalSened);
@@ -672,7 +672,7 @@ namespace AzAgroPOS.PL.Forms
             btnFaktura.Name = "btnFaktura";
             btnFaktura.Size = new System.Drawing.Size(117, 40);
             btnFaktura.TabIndex = 4;
-            btnFaktura.Text = "Faktura Çap";
+            btnFaktura.Text = "🖨️ Faktura Çap";
             btnFaktura.UseVisualStyleBackColor = false;
             // 
             // btnSenedDetali
@@ -685,7 +685,7 @@ namespace AzAgroPOS.PL.Forms
             btnSenedDetali.Name = "btnSenedDetali";
             btnSenedDetali.Size = new System.Drawing.Size(117, 40);
             btnSenedDetali.TabIndex = 3;
-            btnSenedDetali.Text = "Detaylar";
+            btnSenedDetali.Text = "🔍 Detaylar";
             btnSenedDetali.UseVisualStyleBackColor = false;
             // 
             // btnIptalSened
@@ -698,7 +698,7 @@ namespace AzAgroPOS.PL.Forms
             btnIptalSened.Name = "btnIptalSened";
             btnIptalSened.Size = new System.Drawing.Size(93, 40);
             btnIptalSened.TabIndex = 2;
-            btnIptalSened.Text = "İptal";
+            btnIptalSened.Text = "❌ İptal";
             btnIptalSened.UseVisualStyleBackColor = false;
             // 
             // btnQebulEt
@@ -711,7 +711,7 @@ namespace AzAgroPOS.PL.Forms
             btnQebulEt.Name = "btnQebulEt";
             btnQebulEt.Size = new System.Drawing.Size(117, 40);
             btnQebulEt.TabIndex = 1;
-            btnQebulEt.Text = "Qəbul Et";
+            btnQebulEt.Text = "✅ Qəbul Et";
             btnQebulEt.UseVisualStyleBackColor = false;
             // 
             // btnYeniSened
@@ -724,12 +724,12 @@ namespace AzAgroPOS.PL.Forms
             btnYeniSened.Name = "btnYeniSened";
             btnYeniSened.Size = new System.Drawing.Size(117, 40);
             btnYeniSened.TabIndex = 0;
-            btnYeniSened.Text = "Yeni Sənəd";
+            btnYeniSened.Text = "➕ Yeni Sənəd";
             btnYeniSened.UseVisualStyleBackColor = false;
             // 
             // panelSenedFilter
             // 
-            panelSenedFilter.BackColor = System.Drawing.Color.FromArgb(248, 249, 250);
+            panelSenedFilter.BackColor = System.Drawing.Color.FromArgb(236, 240, 241);
             panelSenedFilter.Controls.Add(txtSenedAxtaris);
             panelSenedFilter.Controls.Add(lblOdemeStatus);
             panelSenedFilter.Controls.Add(cmbOdemeStatus);
@@ -752,7 +752,7 @@ namespace AzAgroPOS.PL.Forms
             txtSenedAxtaris.Name = "txtSenedAxtaris";
             txtSenedAxtaris.Size = new System.Drawing.Size(110, 29);
             txtSenedAxtaris.TabIndex = 6;
-            txtSenedAxtaris.Text = "Axtar";
+            txtSenedAxtaris.Text = "🔍 Axtar";
             txtSenedAxtaris.UseVisualStyleBackColor = false;
             // 
             // lblOdemeStatus
@@ -763,7 +763,7 @@ namespace AzAgroPOS.PL.Forms
             lblOdemeStatus.Name = "lblOdemeStatus";
             lblOdemeStatus.Size = new System.Drawing.Size(76, 19);
             lblOdemeStatus.TabIndex = 3;
-            lblOdemeStatus.Text = "Ödəmə St.:";
+            lblOdemeStatus.Text = "💳 Ödəmə St.:";
             // 
             // cmbOdemeStatus
             // 
@@ -783,7 +783,7 @@ namespace AzAgroPOS.PL.Forms
             lblSenedStatus.Name = "lblSenedStatus";
             lblSenedStatus.Size = new System.Drawing.Size(50, 19);
             lblSenedStatus.TabIndex = 1;
-            lblSenedStatus.Text = "Status:";
+            lblSenedStatus.Text = "⚙️ Status:";
             // 
             // cmbSenedStatus
             // 
@@ -875,7 +875,7 @@ namespace AzAgroPOS.PL.Forms
             // 
             // panelTransferButtons
             // 
-            panelTransferButtons.BackColor = System.Drawing.Color.FromArgb(240, 240, 240);
+            panelTransferButtons.BackColor = System.Drawing.Color.FromArgb(236, 240, 241);
             panelTransferButtons.Controls.Add(txtTransferAxtaris);
             panelTransferButtons.Controls.Add(btnTransferDetali);
             panelTransferButtons.Controls.Add(btnIptalTransfer);
@@ -899,7 +899,7 @@ namespace AzAgroPOS.PL.Forms
             txtTransferAxtaris.Name = "txtTransferAxtaris";
             txtTransferAxtaris.Size = new System.Drawing.Size(113, 40);
             txtTransferAxtaris.TabIndex = 7;
-            txtTransferAxtaris.Text = "Axtar";
+            txtTransferAxtaris.Text = "🔍 Axtar";
             txtTransferAxtaris.UseVisualStyleBackColor = false;
             // 
             // btnTransferDetali
@@ -912,7 +912,7 @@ namespace AzAgroPOS.PL.Forms
             btnTransferDetali.Name = "btnTransferDetali";
             btnTransferDetali.Size = new System.Drawing.Size(117, 40);
             btnTransferDetali.TabIndex = 4;
-            btnTransferDetali.Text = "Detaylar";
+            btnTransferDetali.Text = "🔍 Detaylar";
             btnTransferDetali.UseVisualStyleBackColor = false;
             // 
             // btnIptalTransfer
@@ -925,7 +925,7 @@ namespace AzAgroPOS.PL.Forms
             btnIptalTransfer.Name = "btnIptalTransfer";
             btnIptalTransfer.Size = new System.Drawing.Size(93, 40);
             btnIptalTransfer.TabIndex = 3;
-            btnIptalTransfer.Text = "İptal";
+            btnIptalTransfer.Text = "❌ İptal";
             btnIptalTransfer.UseVisualStyleBackColor = false;
             // 
             // btnQebulTransfer
@@ -938,7 +938,7 @@ namespace AzAgroPOS.PL.Forms
             btnQebulTransfer.Name = "btnQebulTransfer";
             btnQebulTransfer.Size = new System.Drawing.Size(117, 40);
             btnQebulTransfer.TabIndex = 2;
-            btnQebulTransfer.Text = "Qəbul Et";
+            btnQebulTransfer.Text = "✅ Qəbul Et";
             btnQebulTransfer.UseVisualStyleBackColor = false;
             // 
             // btnGonderTransfer
@@ -951,7 +951,7 @@ namespace AzAgroPOS.PL.Forms
             btnGonderTransfer.Name = "btnGonderTransfer";
             btnGonderTransfer.Size = new System.Drawing.Size(117, 40);
             btnGonderTransfer.TabIndex = 1;
-            btnGonderTransfer.Text = "Göndər";
+            btnGonderTransfer.Text = "🚚 Göndər";
             btnGonderTransfer.UseVisualStyleBackColor = false;
             // 
             // btnYeniTransfer
@@ -964,7 +964,7 @@ namespace AzAgroPOS.PL.Forms
             btnYeniTransfer.Name = "btnYeniTransfer";
             btnYeniTransfer.Size = new System.Drawing.Size(128, 40);
             btnYeniTransfer.TabIndex = 0;
-            btnYeniTransfer.Text = "Yeni Transfer";
+            btnYeniTransfer.Text = "➕ Yeni Transfer";
             btnYeniTransfer.UseVisualStyleBackColor = false;
             // 
             // statusStrip
@@ -981,7 +981,7 @@ namespace AzAgroPOS.PL.Forms
             // 
             toolStripStatusLabel.Name = "toolStripStatusLabel";
             toolStripStatusLabel.Size = new System.Drawing.Size(95, 17);
-            toolStripStatusLabel.Text = "Tədarük Modulu";
+            toolStripStatusLabel.Text = "🏢 Tədarük Modulu";
             // 
             // TedarukManagementForm
             // 

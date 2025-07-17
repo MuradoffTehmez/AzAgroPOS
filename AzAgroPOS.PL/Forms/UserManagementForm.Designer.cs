@@ -54,17 +54,17 @@ namespace AzAgroPOS.PL.Forms
             // lblTitle
             // 
             this.lblTitle.AutoSize = true;
-            this.lblTitle.Font = new System.Drawing.Font("Times New Roman", 16F, System.Drawing.FontStyle.Bold);
-            this.lblTitle.ForeColor = System.Drawing.Color.DarkBlue;
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
+            this.lblTitle.ForeColor = System.Drawing.Color.White;
             this.lblTitle.Location = new System.Drawing.Point(20, 20);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(200, 25);
+            this.lblTitle.Size = new System.Drawing.Size(280, 32);
             this.lblTitle.TabIndex = 0;
-            this.lblTitle.Text = "İstifadəçi İdarəetməsi";
+            this.lblTitle.Text = "👥 İstifadəçi İdarəetməsi";
             // 
             // panel1
             // 
-            this.panel1.BackColor = System.Drawing.Color.LightGray;
+            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
             this.panel1.Controls.Add(this.btnRefresh);
             this.panel1.Controls.Add(this.btnResetPassword);
             this.panel1.Controls.Add(this.btnToggleStatus);
@@ -78,72 +78,77 @@ namespace AzAgroPOS.PL.Forms
             // 
             // btnRefresh
             // 
-            this.btnRefresh.BackColor = System.Drawing.Color.DarkSlateGray;
+            this.btnRefresh.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(152)))), ((int)(((byte)(219)))));
             this.btnRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRefresh.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnRefresh.ForeColor = System.Drawing.Color.White;
             this.btnRefresh.Location = new System.Drawing.Point(800, 20);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(120, 40);
             this.btnRefresh.TabIndex = 4;
-            this.btnRefresh.Text = "Yenilə";
+            this.btnRefresh.Text = "🔄 Yenilə";
             this.btnRefresh.UseVisualStyleBackColor = false;
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
             // btnResetPassword
             // 
-            this.btnResetPassword.BackColor = System.Drawing.Color.DarkOrange;
+            this.btnResetPassword.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(126)))), ((int)(((byte)(34)))));
             this.btnResetPassword.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnResetPassword.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnResetPassword.ForeColor = System.Drawing.Color.White;
             this.btnResetPassword.Location = new System.Drawing.Point(620, 20);
             this.btnResetPassword.Name = "btnResetPassword";
-            this.btnResetPassword.Size = new System.Drawing.Size(120, 40);
+            this.btnResetPassword.Size = new System.Drawing.Size(140, 40);
             this.btnResetPassword.TabIndex = 3;
-            this.btnResetPassword.Text = "Şifrə Sıfırla";
+            this.btnResetPassword.Text = "🔑 Şifrə Sıfırla";
             this.btnResetPassword.UseVisualStyleBackColor = false;
             this.btnResetPassword.Click += new System.EventHandler(this.btnResetPassword_Click);
             // 
             // btnToggleStatus
             // 
-            this.btnToggleStatus.BackColor = System.Drawing.Color.DarkGoldenrod;
+            this.btnToggleStatus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(196)))), ((int)(((byte)(15)))));
             this.btnToggleStatus.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnToggleStatus.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnToggleStatus.ForeColor = System.Drawing.Color.White;
             this.btnToggleStatus.Location = new System.Drawing.Point(440, 20);
             this.btnToggleStatus.Name = "btnToggleStatus";
-            this.btnToggleStatus.Size = new System.Drawing.Size(120, 40);
+            this.btnToggleStatus.Size = new System.Drawing.Size(140, 40);
             this.btnToggleStatus.TabIndex = 2;
-            this.btnToggleStatus.Text = "Status Dəyiş";
+            this.btnToggleStatus.Text = "🔄 Status Dəyiş";
             this.btnToggleStatus.UseVisualStyleBackColor = false;
             this.btnToggleStatus.Click += new System.EventHandler(this.btnToggleStatus_Click);
             // 
             // btnEditUser
             // 
-            this.btnEditUser.BackColor = System.Drawing.Color.DarkBlue;
+            this.btnEditUser.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(89)))), ((int)(((byte)(182)))));
             this.btnEditUser.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEditUser.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnEditUser.ForeColor = System.Drawing.Color.White;
             this.btnEditUser.Location = new System.Drawing.Point(260, 20);
             this.btnEditUser.Name = "btnEditUser";
-            this.btnEditUser.Size = new System.Drawing.Size(120, 40);
+            this.btnEditUser.Size = new System.Drawing.Size(140, 40);
             this.btnEditUser.TabIndex = 1;
-            this.btnEditUser.Text = "Redaktə Et";
+            this.btnEditUser.Text = "✏️ Redaktə Et";
             this.btnEditUser.UseVisualStyleBackColor = false;
             this.btnEditUser.Click += new System.EventHandler(this.btnEditUser_Click);
             // 
             // btnAddUser
             // 
-            this.btnAddUser.BackColor = System.Drawing.Color.DarkGreen;
+            this.btnAddUser.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(204)))), ((int)(((byte)(113)))));
             this.btnAddUser.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAddUser.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnAddUser.ForeColor = System.Drawing.Color.White;
             this.btnAddUser.Location = new System.Drawing.Point(80, 20);
             this.btnAddUser.Name = "btnAddUser";
-            this.btnAddUser.Size = new System.Drawing.Size(120, 40);
+            this.btnAddUser.Size = new System.Drawing.Size(140, 40);
             this.btnAddUser.TabIndex = 0;
-            this.btnAddUser.Text = "Yeni Əlavə Et";
+            this.btnAddUser.Text = "➕ Yeni İstifadəçi";
             this.btnAddUser.UseVisualStyleBackColor = false;
             this.btnAddUser.Click += new System.EventHandler(this.btnAddUser_Click);
             // 
             // panel2
             // 
-            this.panel2.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(240)))), ((int)(((byte)(241)))));
             this.panel2.Controls.Add(this.cmbRoleFilter);
             this.panel2.Controls.Add(this.lblRoleFilter);
             this.panel2.Controls.Add(this.cmbStatusFilter);
