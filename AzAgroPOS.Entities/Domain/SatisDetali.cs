@@ -68,5 +68,7 @@ namespace AzAgroPOS.Entities.Domain
         
         [NotMapped]
         public string MiqdarVeVahid => $"{Miqdar} {VahidAdi}";
+
+        public decimal UmumiMebleg { get; set; }
     }
 }
