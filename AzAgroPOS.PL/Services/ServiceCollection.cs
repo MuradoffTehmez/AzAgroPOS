@@ -78,6 +78,7 @@ namespace AzAgroPOS.PL.Services
                 var rolRepository = new RolRepository(context);
                 return new AuthorizationService(rolRepository);
             });
+            services.AddScoped<IGiderRepository, GiderRepository>();
             
             // Loglama servisini Singleton olaraq qeydiyyatdan keçiririk
             // Singleton - bütün proqram boyunca eyni logger obyektindən istifadə edir

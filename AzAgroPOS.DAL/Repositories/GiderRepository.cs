@@ -31,23 +31,22 @@ namespace AzAgroPOS.DAL.Repositories
                 .FirstOrDefaultAsync(g => g.Id == id);
         }
 
-        public async Task<Gider> AddAsync(Gider entity)
+        public async Task<int> AddAsync(Gider entity)
         {
             entity.YaranmaTarixi = DateTime.Now;
             entity.YenilenmeTarixi = DateTime.Now;
             
             _context.Giderler.Add(entity);
             await _context.SaveChangesAsync();
-            return entity;
+            return entity.Id;
         }
 
-        public async Task<Gider> UpdateAsync(Gider entity)
+        public async Task UpdateAsync(Gider entity)
         {
             entity.YenilenmeTarixi = DateTime.Now;
             
             _context.Giderler.Update(entity);
             await _context.SaveChangesAsync();
-            return entity;
         }
 
         public async Task DeleteAsync(int id)
@@ -85,6 +84,20 @@ namespace AzAgroPOS.DAL.Repositories
                 .Where(g => !g.TesdiqEdildi)
                 .OrderBy(g => g.Tarix)
                 .ToListAsync();
+        }
+
+        public async Task<decimal> GetTotalExpenseAsync()
+        {
+            return await _context.Giderler
+                .Where(g => g.TesdiqEdildi)
+                .SumAsync(g => g.Mebleg);
+        }
+
+        public async Task<decimal> GetTotalExpenseByDateRangeAsync(DateTime startDate, DateTime endDate)
+        {
+            return await _context.Giderler
+                .Where(g => g.Tarix >= startDate && g.Tarix <= endDate && g.TesdiqEdildi)
+                .SumAsync(g => g.Mebleg);
         }
 
         public async Task<decimal> GetTotalExpensesByMonthAsync(int year, int month)
@@ -157,23 +170,5 @@ namespace AzAgroPOS.DAL.Repositories
                 .ToListAsync();
         }
 
-    }
-
-    public interface IGiderRepository : IDisposable
-    {
-        Task<IEnumerable<Gider>> GetAllAsync();
-        Task<Gider> GetByIdAsync(int id);
-        Task<Gider> AddAsync(Gider entity);
-        Task<Gider> UpdateAsync(Gider entity);
-        Task DeleteAsync(int id);
-        Task<IEnumerable<Gider>> GetByDateRangeAsync(DateTime startDate, DateTime endDate);
-        Task<IEnumerable<Gider>> GetByCategoryAsync(string category);
-        Task<IEnumerable<Gider>> GetPendingApprovalAsync();
-        Task<decimal> GetTotalExpensesByMonthAsync(int year, int month);
-        Task<decimal> GetTotalExpensesByCategoryAsync(string category, DateTime? startDate = null, DateTime? endDate = null);
-        Task<Dictionary<string, decimal>> GetExpensesByCategoryAsync(DateTime startDate, DateTime endDate);
-        Task<IEnumerable<Gider>> GetByUserAsync(int userId);
-        Task ApproveExpenseAsync(int expenseId, string approverName);
-        Task<IEnumerable<Gider>> SearchAsync(string searchTerm);
     }
 }

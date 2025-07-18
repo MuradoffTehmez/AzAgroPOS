@@ -39,7 +39,9 @@ namespace AzAgroPOS.BLL.Services
             expense.YaranmaTarixi = DateTime.Now;
             expense.Tarix = expense.Tarix.Date; // Ensure only date part
 
-            return await _giderRepository.AddAsync(expense);
+            var id = await _giderRepository.AddAsync(expense);
+            expense.Id = id;
+            return expense;
         }
 
         public async Task<Gider> UpdateExpenseAsync(Gider expense)
@@ -58,7 +60,8 @@ namespace AzAgroPOS.BLL.Services
                 throw new InvalidOperationException("Təsdiqlənmiş gidər dəyişdirilə bilməz");
 
             expense.YenilenmeTarixi = DateTime.Now;
-            return await _giderRepository.UpdateAsync(expense);
+            await _giderRepository.UpdateAsync(expense);
+            return expense;
         }
 
         public async Task DeleteExpenseAsync(int id)
