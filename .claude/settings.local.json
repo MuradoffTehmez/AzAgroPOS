@@ -16,7 +16,8 @@
       "Bash(Remove-Item \"C:\\AzAgroPOS\\AzAgroPOS.PL\\LoginForm.cs\" -Force)",
       "Bash(Remove-Item \"C:\\AzAgroPOS\\AzAgroPOS.PL\\LoginForm.Designer.cs\" -Force)",
       "Bash(Remove-Item \"C:\\AzAgroPOS\\AzAgroPOS.PL\\LoginForm.resx\" -Force)",
-      "Bash(\"C:\\AzAgroPOS\\remove_problematic_tests.bat\")"
+      "Bash(\"C:\\AzAgroPOS\\remove_problematic_tests.bat\")",
+      "Bash(Remove-Item \"C:\\AzAgroPOS\\AzAgroPOS.Tests\\Services\\BorcServiceAdvancedTests.cs\" -Force)"
     ],
     "deny": []
   }

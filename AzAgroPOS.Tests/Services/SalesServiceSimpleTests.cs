@@ -81,7 +81,7 @@ namespace AzAgroPOS.Tests.Services
             saleDetail.Should().NotBeNull();
             saleDetail.Miqdar.Should().Be(5);
             saleDetail.VahidQiymeti.Should().Be(20.00m);
-            saleDetail.UmumiMebleg.Should().Be(100.00m);
+            saleDetail.UmumiQiymet.Should().Be(100.00m);
         }
 
         [Fact]

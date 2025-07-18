@@ -171,14 +171,14 @@ namespace AzAgroPOS.BLL.Services
                 }
 
                 // Additional business rule: warn for suspiciously large payments
-                if (borcOdenis.OdenisMeblegi > debt.UmumiMebleg * 0.5m)
+                if (borcOdenis.OdenisMeblegi > debt.BorcMeblegi * 0.5m)
                 {
                     // Log large payment for audit purposes
                     _auditLogService.LogAction(
                         "BorcOdenis",
                         "LARGE_PAYMENT_WARNING",
                         borcOdenis.MusteriBorcId,
-                        $"Böyük ödəniş cəhdi: {borcOdenis.OdenisMeblegi:C} (Ümumi borc: {debt.UmumiMebleg:C})",
+                        $"Böyük ödəniş cəhdi: {borcOdenis.OdenisMeblegi:C} (Ümumi borc: {debt.BorcMeblegi:C})",
                         borcOdenis.QebulEdenIstifadeciId
                     );
                 }
