@@ -148,6 +148,21 @@ namespace AzAgroPOS.BLL.Services
             return CreateService(() => new FileLoggerService());
         }
 
+        public static IErrorHandlingService CreateErrorHandlingService()
+        {
+            EnsureInitialized();
+            var logger = CreateLoggerService();
+            var userContext = CreateUserContext();
+            return new ErrorHandlingService(logger, userContext);
+        }
+
+        public static IUserContext CreateUserContext()
+        {
+            EnsureInitialized();
+            // UserContext service-ni yaradırıq
+            return new UserContext();
+        }
+
         /// <summary>
         /// Generic servis yaratma metodu
         /// </summary>

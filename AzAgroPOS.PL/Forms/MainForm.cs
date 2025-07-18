@@ -541,17 +541,110 @@ namespace AzAgroPOS.PL.Forms
             // Load user info after all controls are created
             LoadUserInfo();
             
-            // Menyu və düymələrin icazə yoxlaması
-            await CheckMenuPermissions();
-            
             // Initialize dashboard with mock data
             LoadDashboardData();
+            
+            // Menyu və düymələrin icazə yoxlaması - asinxron və optimallaşdırılmış
+            await ApplyOptimizedPermissions();
         }
 
         /// <summary>
-        /// Mərkəzləşdirilmiş İcazə Yoxlaması - Menyu və Düymələr
+        /// Yeni optimallaşdırılmış icazə tətbiqi - UI donmasını qarşısını alır
         /// </summary>
-        private async Task CheckMenuPermissions()
+        private async Task ApplyOptimizedPermissions()
+        {
+            await Task.Run(() =>
+            {
+                // UI thread-də layout-u suspend edirik
+                this.Invoke((MethodInvoker)delegate
+                {
+                    // Sidebar panelinin layout-unu dayandırır (donmanın qarşısını alır)
+                    pnlSidebar.SuspendLayout();
+                    
+                    // Sidebar düymələri üçün optimallaşdırılmış icazə yoxlaması
+                    ApplyMenuPermissionsOptimized();
+                    
+                    // Layout-u bərpa edirik
+                    pnlSidebar.ResumeLayout(true);
+                });
+            });
+        }
+
+        /// <summary>
+        /// Sidebar menyu düymələri üçün optimallaşdırılmış icazə yoxlaması
+        /// </summary>
+        private void ApplyMenuPermissionsOptimized()
+        {
+            try
+            {
+                // İcazə yoxlaması üçün istifadəçi rolunu bir dəfə əldə edirik
+                bool isAdmin = _currentUser?.Rol?.Ad == SystemConstants.Roles.Administrator;
+                bool isManager = _currentUser?.Rol?.Ad == SystemConstants.Roles.Manager || isAdmin;
+                
+                // Sidebar panelində yalnız əsas menyu düymələrini yoxlayırıq
+                ApplyButtonPermission(btnCustomerManagement, true); // Hamıya açıq
+                ApplyButtonPermission(btnInventory, isManager);
+                ApplyButtonPermission(btnPOS, true); // Hamıya açıq
+                ApplyButtonPermission(btnDebtManagement, isManager);
+                ApplyButtonPermission(btnRepairManagement, true); // Hamıya açıq
+                ApplyButtonPermission(btnReports, isManager);
+                ApplyButtonPermission(btnUserManagement, isAdmin);
+                ApplyButtonPermission(btnSettings, isAdmin);
+                ApplyButtonPermission(btnExpenseManagement, isManager);
+                
+                // Quick Action düymələri
+                ApplyButtonPermission(btnQuickPOS, true);
+                ApplyButtonPermission(btnQuickCustomerAdd, true);
+                ApplyButtonPermission(btnQuickInventory, isManager);
+                ApplyButtonPermission(btnQuickReports, isManager);
+                
+                // Customer submenu düymələri
+                ApplyButtonPermission(btnCustomerAdd, true);
+                ApplyButtonPermission(btnCustomerList, true);
+                ApplyButtonPermission(btnCustomerGroups, true);
+                
+                // Admin xüsusi funksiyalar
+                if (isAdmin)
+                {
+                    EnableAdminFeatures();
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowError($"İcazə tətbiqi zamanı xəta: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Tək düymə üçün sürətli icazə tətbiqi
+        /// </summary>
+        private void ApplyButtonPermission(Button button, bool hasPermission)
+        {
+            if (button != null)
+            {
+                button.Enabled = hasPermission;
+                button.Visible = hasPermission;
+                
+                if (!hasPermission)
+                {
+                    button.BackColor = Color.FromArgb(200, 200, 200);
+                    button.ForeColor = Color.Gray;
+                    button.Cursor = Cursors.No;
+                }
+                else
+                {
+                    // Normal rəngləri bərpa et
+                    button.BackColor = ModernTheme.Colors.Primary;
+                    button.ForeColor = Color.White;
+                    button.Cursor = Cursors.Hand;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Köhnə effektiv olmayan icazə yoxlaması metodu (istifadə edilmir)
+        /// </summary>
+        private async Task CheckMenuPermissions_OLD()
         {
             try
             {

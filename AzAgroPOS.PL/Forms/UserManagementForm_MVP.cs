@@ -245,11 +245,6 @@ namespace AzAgroPOS.PL.Forms
             }
         }
 
-        protected override async void OnFormLoad()
-        {
-            await _presenter?.InitializeAsync();
-        }
-
         private void SetupDataGridView()
         {
             if (dgvUsers == null) return;
@@ -340,6 +335,11 @@ namespace AzAgroPOS.PL.Forms
         #endregion
 
         #region Event Handlers
+
+        protected override async void OnFormLoad()
+        {
+            await _presenter?.InitializeAsync();
+        }
 
         private void btnAddUser_Click(object sender, EventArgs e)
         {

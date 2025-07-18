@@ -5,6 +5,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace AzAgroPOS.BLL.Services
 {
@@ -171,6 +172,96 @@ namespace AzAgroPOS.BLL.Services
         {
             return SanitizeErrorMessage(ex?.Message ?? "Naməlum xəta baş verdi.");
         }
+
+        #region Async Methods for Modern MVP
+
+        /// <summary>
+        /// Async version of HandleError for MVP presenters
+        /// </summary>
+        public async Task HandleErrorAsync(Exception ex, string userFriendlyMessage, bool isCritical = false)
+        {
+            await Task.Run(() => HandleError(ex, userFriendlyMessage, isCritical));
+        }
+
+        /// <summary>
+        /// Async version of LogError
+        /// </summary>
+        public async Task LogErrorAsync(Exception ex, string message = "")
+        {
+            await Task.Run(() => LogError(ex, message));
+        }
+
+        /// <summary>
+        /// Async version of LogWarning
+        /// </summary>
+        public async Task LogWarningAsync(string message)
+        {
+            await Task.Run(() => LogWarning(message));
+        }
+
+        /// <summary>
+        /// Async version of LogInfo
+        /// </summary>
+        public async Task LogInfoAsync(string message)
+        {
+            await Task.Run(() => LogInfo(message));
+        }
+
+        /// <summary>
+        /// Async version of ShowUserMessage
+        /// </summary>
+        public async Task ShowUserMessageAsync(string message, bool isError = false)
+        {
+            await Task.Run(() => ShowUserMessage(message, isError));
+        }
+
+        /// <summary>
+        /// Async version of ShowCriticalError
+        /// </summary>
+        public async Task ShowCriticalErrorAsync(string message)
+        {
+            await Task.Run(() => ShowCriticalError(message));
+        }
+
+        /// <summary>
+        /// Handle validation errors with user-friendly messages
+        /// </summary>
+        public async Task<bool> HandleValidationErrorAsync(string message)
+        {
+            if (string.IsNullOrWhiteSpace(message))
+                throw new ArgumentException("Message cannot be empty", nameof(message));
+
+            await LogWarningAsync($"Validation Error: {message}");
+            await ShowUserMessageAsync($"Yoxlama xətası: {message}", true);
+            return false;
+        }
+
+        /// <summary>
+        /// Handle business logic errors
+        /// </summary>
+        public async Task<bool> HandleBusinessLogicErrorAsync(string message)
+        {
+            if (string.IsNullOrWhiteSpace(message))
+                throw new ArgumentException("Message cannot be empty", nameof(message));
+
+            await LogWarningAsync($"Business Logic Error: {message}");
+            await ShowUserMessageAsync($"Biznes məntiqi xətası: {message}", true);
+            return false;
+        }
+
+        /// <summary>
+        /// Show success message
+        /// </summary>
+        public async Task ShowSuccessAsync(string message)
+        {
+            if (string.IsNullOrWhiteSpace(message))
+                throw new ArgumentException("Message cannot be empty", nameof(message));
+
+            await LogInfoAsync($"Success: {message}");
+            await ShowUserMessageAsync(message, false);
+        }
+
+        #endregion
 
         #region Private Methods
 
