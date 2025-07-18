@@ -171,13 +171,13 @@ namespace AzAgroPOS.PL.Presenters
             try
             {
                 var auditService = ServiceFactory.CreateAuditLogService();
+                var detailsWithEntityId = entityId.HasValue ? $"EntityId: {entityId}, {details}" : details;
                 await auditService.LogAsync(
                     _currentUser.Id, 
                     entityType, 
                     action, 
                     GetClientInfo(), 
-                    entityId, 
-                    details);
+                    detailsWithEntityId);
             }
             catch (Exception ex)
             {

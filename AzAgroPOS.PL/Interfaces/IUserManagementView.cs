@@ -52,15 +52,4 @@ namespace AzAgroPOS.PL.Interfaces
         void OpenPasswordResetDialog(Istifadeci user);
     }
     
-    /// <summary>
-    /// Mesaj tipləri
-    /// </summary>
-    public enum MessageType
-    {
-        Information,
-        Warning,
-        Error,
-        Success,
-        Question
-    }
 }

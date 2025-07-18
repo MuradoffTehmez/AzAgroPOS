@@ -11,10 +11,10 @@ namespace AzAgroPOS.BLL.Services
 {
     public class ErrorHandlingService : IErrorHandlingService
     {
-        private readonly ILogger _logger;
+        private readonly ILoggerService _logger;
         private readonly IUserContext _userContext;
 
-        public ErrorHandlingService(ILogger logger, IUserContext userContext)
+        public ErrorHandlingService(ILoggerService logger, IUserContext userContext)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
@@ -114,11 +114,15 @@ namespace AzAgroPOS.BLL.Services
         {
             try
             {
-                var logMessage = BuildLogMessage(ex, false);
                 if (!string.IsNullOrEmpty(message))
-                    logMessage = $"{message}: {logMessage}";
-                
-                _logger.LogError(logMessage);
+                {
+                    var combinedException = new Exception($"{message}: {ex.Message}", ex);
+                    _logger.LogError(combinedException);
+                }
+                else
+                {
+                    _logger.LogError(ex);
+                }
             }
             catch (Exception logEx)
             {
@@ -143,7 +147,7 @@ namespace AzAgroPOS.BLL.Services
         {
             try
             {
-                _logger.LogInformation(message);
+                _logger.LogInfo(message);
             }
             catch (Exception ex)
             {
@@ -269,11 +273,18 @@ namespace AzAgroPOS.BLL.Services
         {
             try
             {
-                var logMessage = BuildLogMessage(ex, isCritical);
-                _logger.LogError(logMessage);
+                if (isCritical)
+                {
+                    var criticalEx = new Exception($"CRITICAL: {ex.Message}", ex);
+                    _logger.LogError(criticalEx);
+                }
+                else
+                {
+                    _logger.LogError(ex);
+                }
 
                 // Also write to debug output for development
-                Debug.WriteLine(logMessage);
+                Debug.WriteLine($"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] {(isCritical ? "CRITICAL " : "")}ERROR: {ex.Message}");
             }
             catch (Exception loggingEx)
             {

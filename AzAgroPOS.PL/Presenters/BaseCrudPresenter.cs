@@ -248,7 +248,7 @@ namespace AzAgroPOS.PL.Presenters
         /// </summary>
         protected virtual async Task ShowEntityDetailsAsync(TEntity entity)
         {
-            _view.ShowMessage($"{_entityName} detalları:\nID: {entity.Id}\nYaradılma tarixi: {entity.YaradilmaTarixi}");
+            _view.ShowMessage($"{_entityName} detalları:\nID: {entity.Id}\nYaradılma tarixi: {entity.YaranmaTarixi}");
             await Task.CompletedTask;
         }
 

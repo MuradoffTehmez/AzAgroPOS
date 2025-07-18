@@ -2,6 +2,7 @@ using AzAgroPOS.BLL.Interfaces;
 using System;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace AzAgroPOS.BLL.Services
 {
@@ -117,5 +118,36 @@ namespace AzAgroPOS.BLL.Services
                 Console.WriteLine($"Warning log xətası: {ex.Message}");
             }
         }
+
+        #region Async Methods
+
+        public async Task LogErrorAsync(Exception ex, string message = "")
+        {
+            await Task.Run(() =>
+            {
+                if (!string.IsNullOrEmpty(message))
+                {
+                    // Create a combined exception message
+                    var combinedException = new Exception($"{message}: {ex.Message}", ex);
+                    LogError(combinedException);
+                }
+                else
+                {
+                    LogError(ex);
+                }
+            });
+        }
+
+        public async Task LogInfoAsync(string message)
+        {
+            await Task.Run(() => LogInfo(message));
+        }
+
+        public async Task LogWarningAsync(string message)
+        {
+            await Task.Run(() => LogWarning(message));
+        }
+
+        #endregion
     }
 }

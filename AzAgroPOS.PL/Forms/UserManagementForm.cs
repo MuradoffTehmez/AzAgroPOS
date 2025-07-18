@@ -387,22 +387,5 @@ namespace AzAgroPOS.PL.Forms
         }
 
         #endregion
-
-        #region IDisposable
-
-        protected override void Dispose(bool disposing)
-        {
-            if (!_disposed)
-            {
-                if (disposing)
-                {
-                    _presenter?.Dispose();
-                }
-                _disposed = true;
-            }
-            base.Dispose(disposing);
-        }
-
-        #endregion
     }
 }
