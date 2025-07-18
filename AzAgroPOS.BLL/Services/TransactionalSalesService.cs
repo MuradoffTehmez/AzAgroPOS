@@ -2,6 +2,7 @@ using AzAgroPOS.BLL.Interfaces;
 using AzAgroPOS.DAL.Interfaces;
 using AzAgroPOS.Entities.Constants;
 using AzAgroPOS.Entities.Domain;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -119,6 +120,19 @@ namespace AzAgroPOS.BLL.Services
                 result.Message = "Satış uğurla tamamlandı";
 
                 _logger?.LogInfo($"Kompleks satış əməliyyatı uğurla tamamlandı: ID {satis.Id}, Məbləğ: {totalAmount:C}");
+                
+                return result;
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                // Optimistic Concurrency Exception - race condition detected
+                _auditLogService?.LogError("Race condition detected in sales transaction", ex);
+                
+                result.IsSuccess = false;
+                result.ErrorMessage = "Başqa istifadəçi eyni məhsulda dəyişiklik edib. Yenidən cəhd edin.";
+                result.Exception = ex;
+                
+                _logger?.LogError(new Exception("Race condition in sales transaction", ex));
                 
                 return result;
             }

@@ -92,8 +92,8 @@ namespace AzAgroPOS.BLL.Services
 
                 // Rol icazələrini siyahıya çevir
                 return role.RolIcazeleri
-                    .Where(ri => ri.Icaze != null)
-                    .Select(ri => ri.Icaze.IcazeAdi)
+                    .Where(ri => ri.IcazeVerilib)
+                    .Select(ri => $"{ri.Modul}.{ri.Emeliyyat}")
                     .ToArray();
             }
             catch (Exception)

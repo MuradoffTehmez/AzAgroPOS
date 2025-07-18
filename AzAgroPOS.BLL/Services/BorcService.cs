@@ -157,8 +157,31 @@ namespace AzAgroPOS.BLL.Services
                 if (debt == null)
                     throw new ArgumentException("Borc tapılmadı");
 
+                // Overpayment validation - prevent paying more than remaining debt
                 if (borcOdenis.OdenisMeblegi > debt.QalanBorc)
-                    throw new ArgumentException("Ödəniş məbləği qalan borcu aşa bilməz");
+                {
+                    throw new InvalidOperationException(
+                        $"Ödəniş məbləği qalan borcu aşa bilməz. Qalan borc: {debt.QalanBorc:C}, Ödəniş: {borcOdenis.OdenisMeblegi:C}");
+                }
+
+                // Zero or negative payment validation
+                if (borcOdenis.OdenisMeblegi <= 0)
+                {
+                    throw new ArgumentException("Ödəniş məbləği müsbət olmalıdır");
+                }
+
+                // Additional business rule: warn for suspiciously large payments
+                if (borcOdenis.OdenisMeblegi > debt.UmumiMebleg * 0.5m)
+                {
+                    // Log large payment for audit purposes
+                    _auditLogService.LogAction(
+                        "BorcOdenis",
+                        "LARGE_PAYMENT_WARNING",
+                        borcOdenis.MusteriBorcId,
+                        $"Böyük ödəniş cəhdi: {borcOdenis.OdenisMeblegi:C} (Ümumi borc: {debt.UmumiMebleg:C})",
+                        borcOdenis.QebulEdenIstifadeciId
+                    );
+                }
 
                 borcOdenis.OdenisNomresi = _unitOfWork.BorcOdenisleri.GenerateOdenisNomresi();
                 borcOdenis.YaradilmaTarixi = DateTime.Now;
