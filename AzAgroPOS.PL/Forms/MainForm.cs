@@ -711,14 +711,6 @@ namespace AzAgroPOS.PL.Forms
             }
         }
 
-        // Designer-generated controls are used instead
-
-        // Designer-generated controls are used instead
-
-        // Designer-generated buttons are used instead
-
-        // All methods removed - Designer-generated controls are used instead
-
         private void ShowDashboard()
         {
             if (pnlDashboard != null)

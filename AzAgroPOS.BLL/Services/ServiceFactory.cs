@@ -69,7 +69,8 @@ namespace AzAgroPOS.BLL.Services
         public static AuthorizationService CreateAuthorizationService()
         {
             EnsureInitialized();
-            return new AuthorizationService();
+            var rolRepository = new RolRepository(new AzAgroDbContext());
+            return new AuthorizationService(rolRepository);
         }
 
         public static BorcService CreateBorcService()

@@ -72,6 +72,12 @@ namespace AzAgroPOS.PL.Services
             services.AddScoped<IAuditLogService, AuditLogService>();
             services.AddScoped<IErrorHandlingService, ErrorHandlingService>();
             services.AddScoped<IUserContext, UserContext>();
+            services.AddScoped<IAuthorizationService>(provider =>
+            {
+                var context = provider.GetRequiredService<AzAgroDbContext>();
+                var rolRepository = new RolRepository(context);
+                return new AuthorizationService(rolRepository);
+            });
             
             // Loglama servisini Singleton olaraq qeydiyyatdan keçiririk
             // Singleton - bütün proqram boyunca eyni logger obyektindən istifadə edir
