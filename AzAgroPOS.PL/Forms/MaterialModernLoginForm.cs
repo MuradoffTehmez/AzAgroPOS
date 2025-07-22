@@ -1,74 +1,53 @@
-using MaterialSkin;
-using MaterialSkin.Controls;
-using FontAwesome.Sharp;
 using AzAgroPOS.BLL.Services;
-using AzAgroPOS.DAL.Repositories;
 using AzAgroPOS.Entities.Domain;
 using AzAgroPOS.PL.Services;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Win32;
+using AzAgroPOS.PL.Styles;
+using MaterialSkin;
+using MaterialSkin.Controls;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace AzAgroPOS.PL.Forms
 {
     public partial class MaterialModernLoginForm : MaterialForm
     {
-        private readonly AuthService _authService;
-        private readonly IstifadeciRepository _istifadeciRepository;
         private readonly IServiceProvider _serviceProvider;
+        private readonly AuthService _authService;
         private bool _isAutoLoginAttempted = false;
-
-        // UI Controls
-        private Panel pnlMain;
         private Panel pnlLeft;
-        private Panel pnlRight;
         private Panel pnlLoginCard;
-        private MaterialLabel lblWelcome;
-        private MaterialLabel lblSubtitle;
-        private MaterialTextBox txtEmail;
-        private MaterialTextBox txtPassword;
+        private TextBox txtEmail; // Changed from MaterialTextBox to TextBox
+        private TextBox txtPassword; // Changed from MaterialTextBox to TextBox
         private MaterialCheckbox chkRememberMe;
         private MaterialButton btnLogin;
         private MaterialButton btnClose;
         private MaterialButton btnMinimize;
-        private MaterialLabel lblTitle;
-        private MaterialLabel lblVersion;
-        private IconPictureBox picLogo;
-        private Timer animationTimer;
-        private float animationProgress = 0f;
+        private MaterialProgressBar progressBar;
+        private System.Windows.Forms.Timer _animationTimer;
+        private float _animationProgress = 0;
 
         // Round corners
-        [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
+        [System.Runtime.InteropServices.DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
         private static extern IntPtr CreateRoundRectRgn(int nLeftRect, int nTopRect, int nRightRect, int nBottomRect, int nWidthEllipse, int nHeightEllipse);
 
-        public MaterialModernLoginForm(IServiceProvider serviceProvider)
+        public MaterialModernLoginForm(IServiceProvider serviceProvider) 
         {
             InitializeComponent();
             _serviceProvider = serviceProvider;
-            _authService = serviceProvider.GetRequiredService<AuthService>();
-            _istifadeciRepository = serviceProvider.GetRequiredService<IstifadeciRepository>();
-            
+            _authService = _serviceProvider.GetRequiredService<AuthService>(); // Fixed GetService to GetRequiredService
+
             InitializeMaterialDesign();
             InitializeCustomComponents();
+            CreateTitleBarControls();
+            CreateLeftPanelContent();
+            CreateLoginControls();
             InitializeAnimations();
-            
+
             this.Load += async (s, e) => await TryAutoLoginAsync();
-            
-            // Login form bağlandıqda MainForm açılmayıbsa proqramı bitir
-            this.FormClosing += (s, e) =>
-            {
-                if (this.DialogResult != DialogResult.OK)
-                {
-                    Application.Exit();
-                }
-            };
         }
 
         public MaterialModernLoginForm() : this(Program.ServiceProvider)
@@ -77,99 +56,26 @@ namespace AzAgroPOS.PL.Forms
 
         private void InitializeMaterialDesign()
         {
-            var materialSkinManager = MaterialSkinManager.Instance;
+            var materialSkinManager = MaterialTheme.MaterialSkinManager;
             materialSkinManager.AddFormToManage(this);
             materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
             materialSkinManager.ColorScheme = new ColorScheme(
-                Primary.Indigo500, Primary.Indigo700,
-                Primary.Indigo100, Accent.Pink200,
-                TextShade.WHITE);
+                Primary.Indigo500,
+                Primary.Indigo700,
+                Primary.Indigo100,
+                Accent.Pink200,
+                TextShade.WHITE
+            );
         }
 
         private void InitializeCustomComponents()
         {
-            // Form settings
-            this.Text = "AzAgroPOS - Modern Giriş";
-            this.Size = new Size(1000, 650);
+            this.FormStyle = FormStyles.ActionBar_None;
+            this.BackColor = MaterialTheme.Colors.DarkBackground;
             this.StartPosition = FormStartPosition.CenterScreen;
+            this.Size = new Size(900, 600);
             this.FormBorderStyle = FormBorderStyle.None;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.BackColor = Color.FromArgb(45, 45, 48);
-            
-            // Apply rounded corners after form is shown to prevent shaking
-            this.Shown += (s, e) => {
-                try
-                {
-                    this.Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
-                }
-                catch (Exception ex)
-                {
-                    // Fallback if rounded corners fail
-                    System.Diagnostics.Debug.WriteLine($"Rounded corners failed: {ex.Message}");
-                }
-            };
-
-            // Main container
-            pnlMain = new Panel
-            {
-                Name = "pnlMain",
-                Location = new Point(0, 0),
-                Size = new Size(1000, 650),
-                BackColor = Color.FromArgb(45, 45, 48)
-            };
-
-            // Left panel with branding
-            pnlLeft = new Panel
-            {
-                Name = "pnlLeft",
-                Location = new Point(0, 0),
-                Size = new Size(500, 650),
-                BackColor = Color.FromArgb(63, 81, 181) // Material Indigo
-            };
-            pnlLeft.Paint += PnlLeft_Paint;
-
-            // Right panel with login form
-            pnlRight = new Panel
-            {
-                Name = "pnlRight",
-                Location = new Point(500, 0),
-                Size = new Size(500, 650),
-                BackColor = Color.FromArgb(55, 55, 58)
-            };
-
-            // Login card with rounded corners
-            pnlLoginCard = new Panel
-            {
-                Name = "pnlLoginCard",
-                Location = new Point(50, 75),
-                Size = new Size(400, 500),
-                BackColor = Color.FromArgb(69, 69, 72)
-            };
-            pnlLoginCard.Paint += PnlLoginCard_Paint;
-
-            // Title and window controls
-            CreateTitleBarControls();
-            CreateLeftPanelContent();
-            CreateLoginControls();
-
-            // Add controls to login card
-            pnlLoginCard.Controls.AddRange(new Control[]
-            {
-                lblWelcome, lblSubtitle, txtEmail, txtPassword, chkRememberMe, btnLogin
-            });
-
-            // Add controls to right panel
-            pnlRight.Controls.Add(pnlLoginCard);
-
-            // Add panels to main
-            pnlMain.Controls.AddRange(new Control[] { pnlLeft, pnlRight });
-
-            // Add main panel to form
-            this.Controls.Add(pnlMain);
-
-            // Load last user email
-            LoadLastUserEmail();
+            this.Text = "AzAgroPOS Giriş";
         }
 
         private void CreateTitleBarControls()
@@ -177,341 +83,208 @@ namespace AzAgroPOS.PL.Forms
             // Close button
             btnClose = new MaterialButton
             {
-                Name = "btnClose",
-                Size = new Size(40, 30),
-                Location = new Point(950, 10),
                 Text = "✕",
-                BackColor = Color.FromArgb(232, 17, 35),
-                ForeColor = Color.White,
-                FlatStyle = FlatStyle.Flat,
-                Font = new Font("Segoe UI", 12, FontStyle.Bold)
+                Width = 46,
+                Height = 30,
+                TextAlign = ContentAlignment.MiddleCenter,
+                UseAccentColor = true,
+                Location = new Point(this.Width - 46, 0)
             };
-            btnClose.Click += (s, e) => this.Close();
-            btnClose.MouseEnter += (s, e) => btnClose.BackColor = Color.FromArgb(255, 50, 50);
-            btnClose.MouseLeave += (s, e) => btnClose.BackColor = Color.FromArgb(232, 17, 35);
+            btnClose.Click += (s, e) => Application.Exit();
 
             // Minimize button
             btnMinimize = new MaterialButton
             {
-                Name = "btnMinimize",
-                Size = new Size(40, 30),
-                Location = new Point(905, 10),
-                Text = "−",
-                BackColor = Color.FromArgb(80, 80, 80),
-                ForeColor = Color.White,
-                FlatStyle = FlatStyle.Flat,
-                Font = new Font("Segoe UI", 12, FontStyle.Bold)
+                Text = "—",
+                Width = 46,
+                Height = 30,
+                TextAlign = ContentAlignment.MiddleCenter,
+                Location = new Point(this.Width - 92, 0)
             };
             btnMinimize.Click += (s, e) => this.WindowState = FormWindowState.Minimized;
-            btnMinimize.MouseEnter += (s, e) => btnMinimize.BackColor = Color.FromArgb(100, 100, 100);
-            btnMinimize.MouseLeave += (s, e) => btnMinimize.BackColor = Color.FromArgb(80, 80, 80);
 
-            pnlMain.Controls.AddRange(new Control[] { btnClose, btnMinimize });
+            this.Controls.AddRange(new Control[] { btnClose, btnMinimize });
         }
 
         private void CreateLeftPanelContent()
         {
-            // Logo
-            picLogo = new IconPictureBox
+            pnlLeft = new Panel
             {
-                Name = "picLogo",
-                Size = new Size(80, 80),
-                Location = new Point(50, 80),
-                IconChar = IconChar.Seedling,
-                IconColor = Color.White,
-                IconSize = 80,
-                BackColor = Color.Transparent
+                Width = this.Width / 2,
+                Dock = DockStyle.Left,
+                BackColor = MaterialTheme.Colors.DarkBackground
             };
 
-            // Title
-            lblTitle = new MaterialLabel
+            var lblTitle = new MaterialLabel
             {
-                Name = "lblTitle",
-                Text = "AzAgroPOS",
+                Text = "🌾 AzAgroPOS",
                 Font = new Font("Segoe UI", 32, FontStyle.Bold),
                 ForeColor = Color.White,
                 AutoSize = true,
-                Location = new Point(50, 180),
-                BackColor = Color.Transparent
+                Location = new Point(40, 100)
             };
 
-            // Version
-            lblVersion = new MaterialLabel
+            var lblSubtitle = new MaterialLabel
             {
-                Name = "lblVersion",
-                Text = "Versiya 2.0 - Müasir Kənd Təsərrüfatı İdarəetmə Sistemi",
-                Font = new Font("Segoe UI", 11, FontStyle.Regular),
-                ForeColor = Color.FromArgb(200, 255, 255, 255),
-                AutoSize = false,
-                Size = new Size(400, 50),
-                Location = new Point(50, 240),
-                BackColor = Color.Transparent
+                Text = "Kənd Təsərrüfatı İdarəetmə Sistemi",
+                Font = new Font("Segoe UI", 14),
+                ForeColor = Color.FromArgb(200, 200, 200),
+                AutoSize = true,
+                Location = new Point(40, lblTitle.Bottom + 10)
             };
 
-            // Features with icons
-            var features = new[]
-            {
-                new { Icon = IconChar.ShoppingCart, Text = "Satış və anbar idarəetməsi" },
-                new { Icon = IconChar.Users, Text = "Müştəri və tədarükçü bazası" },
-                new { Icon = IconChar.ChartBar, Text = "Maliyyə hesabatları" },
-                new { Icon = IconChar.Tools, Text = "Təmir xidməti modulu" },
-                new { Icon = IconChar.Shield, Text = "Təhlükəsiz çoxistifadəçili sistem" }
-            };
-
-            int yPos = 320;
-            foreach (var feature in features)
-            {
-                var iconPic = new IconPictureBox
-                {
-                    Name = $"iconFeature{yPos}",
-                    Size = new Size(18, 18),
-                    Location = new Point(50, yPos),
-                    IconChar = feature.Icon,
-                    IconColor = Color.FromArgb(129, 199, 132),
-                    IconSize = 18,
-                    BackColor = Color.Transparent
-                };
-
-                var lblFeature = new MaterialLabel
-                {
-                    Name = $"lblFeature{yPos}",
-                    Text = feature.Text,
-                    Font = new Font("Segoe UI", 10, FontStyle.Regular),
-                    ForeColor = Color.FromArgb(230, 255, 255, 255),
-                    AutoSize = true,
-                    Location = new Point(75, yPos),
-                    BackColor = Color.Transparent
-                };
-
-                pnlLeft.Controls.AddRange(new Control[] { iconPic, lblFeature });
-                yPos += 35;
-            }
-
-            pnlLeft.Controls.AddRange(new Control[] { picLogo, lblTitle, lblVersion });
+            pnlLeft.Paint += PnlLeft_Paint;
+            pnlLeft.Controls.AddRange(new Control[] { lblTitle, lblSubtitle });
+            this.Controls.Add(pnlLeft);
         }
 
         private void CreateLoginControls()
         {
-            // Welcome label
-            lblWelcome = new MaterialLabel
+            pnlLoginCard = new Panel
             {
-                Name = "lblWelcome",
-                Text = "Xoş gəldiniz!",
+                Width = 350,
+                Height = 400,
+                Location = new Point(pnlLeft.Right + 75, (this.Height - 400) / 2),
+                BackColor = MaterialTheme.Colors.DarkCard
+            };
+            pnlLoginCard.Paint += PnlLoginCard_Paint;
+
+            var lblWelcome = new MaterialLabel
+            {
+                Text = "Xoş gəlmisiniz!",
                 Font = new Font("Segoe UI", 24, FontStyle.Bold),
                 ForeColor = Color.White,
                 AutoSize = true,
-                Location = new Point(40, 40),
-                BackColor = Color.Transparent
+                Location = new Point(30, 30)
             };
 
-            // Subtitle
-            lblSubtitle = new MaterialLabel
+            txtEmail = new TextBox
             {
-                Name = "lblSubtitle",
-                Text = "Hesabınıza daxil olmaq üçün məlumatlarınızı daxil edin",
-                Font = new Font("Segoe UI", 10, FontStyle.Regular),
-                ForeColor = Color.FromArgb(180, 180, 180),
-                AutoSize = false,
-                Size = new Size(320, 30),
-                Location = new Point(40, 85),
-                BackColor = Color.Transparent
+                Location = new Point(30, lblWelcome.Bottom + 40),
+                Size = new Size(290, 50),
+                Font = new Font("Segoe UI", 10),
+                BorderStyle = BorderStyle.FixedSingle
             };
-
-            // Email textbox
-            txtEmail = new MaterialTextBox
-            {
-                Name = "txtEmail",
-                Size = new Size(320, 45),
-                Location = new Point(40, 140),
-                Font = new Font("Segoe UI", 11, FontStyle.Regular),
-                Hint = "   Email adresi",
-                BackColor = Color.FromArgb(69, 69, 72),
-                ForeColor = Color.White
-            };
+            ModernTheme.ApplyTextBoxStyle(txtEmail);
             txtEmail.KeyDown += TxtEmail_KeyDown;
-            
-            // Add email icon
-            var emailIcon = new IconPictureBox
-            {
-                Name = "emailIcon",
-                Size = new Size(18, 18),
-                Location = new Point(50, (txtEmail.Location.Y + (txtEmail.Height - 18) / 2)),
-                IconChar = IconChar.Envelope,
-                IconColor = Color.FromArgb(150, 150, 150),
-                IconSize = 18,
-                BackColor = Color.Transparent
-            };
-            pnlLoginCard.Controls.Add(emailIcon);
 
-            // Password textbox
-            txtPassword = new MaterialTextBox
+            txtPassword = new TextBox
             {
-                Name = "txtPassword",
-                Size = new Size(320, 45),
-                Location = new Point(40, 210),
-                Font = new Font("Segoe UI", 11, FontStyle.Regular),
-                Hint = "   Şifrə",
-                Password = true,
-                BackColor = Color.FromArgb(69, 69, 72),
-                ForeColor = Color.White
+                Location = new Point(30, txtEmail.Bottom + 20),
+                Size = new Size(290, 50),
+                Font = new Font("Segoe UI", 10),
+                UseSystemPasswordChar = true,
+                BorderStyle = BorderStyle.FixedSingle
             };
+            ModernTheme.ApplyTextBoxStyle(txtPassword);
             txtPassword.KeyDown += TxtPassword_KeyDown;
-            
-            // Add password icon
-            var passwordIcon = new IconPictureBox
-            {
-                Name = "passwordIcon",
-                Size = new Size(18, 18),
-                Location = new Point(50, (txtPassword.Location.Y + (txtPassword.Height - 18) / 2)),
-                IconChar = IconChar.Lock,
-                IconColor = Color.FromArgb(150, 150, 150),
-                IconSize = 18,
-                BackColor = Color.Transparent
-            };
-            pnlLoginCard.Controls.Add(passwordIcon);
 
-            // Remember me checkbox
             chkRememberMe = new MaterialCheckbox
             {
-                Name = "chkRememberMe",
                 Text = "Məni xatırla",
-                Location = new Point(40, 280),
-                Font = new Font("Segoe UI", 10, FontStyle.Regular),
-                ForeColor = Color.FromArgb(200, 200, 200),
-                AutoSize = true
+                Location = new Point(30, txtPassword.Bottom + 20),
+                Font = new Font("Segoe UI", 10)
             };
 
-            // Login button
-            btnLogin = new MaterialButton
-            {
-                Name = "btnLogin",
-                Text = "  Daxil Ol",
-                Size = new Size(320, 45),
-                Location = new Point(40, 330),
-                Font = new Font("Segoe UI", 11, FontStyle.Bold),
-                BackColor = Color.FromArgb(63, 81, 181),
-                ForeColor = Color.White,
-                FlatStyle = FlatStyle.Flat,
-                Cursor = Cursors.Hand,
-                UseVisualStyleBackColor = false
-            };
-            btnLogin.Click += BtnLogin_Click;
-            btnLogin.MouseEnter += (s, e) => btnLogin.BackColor = Color.FromArgb(83, 101, 201);
-            btnLogin.MouseLeave += (s, e) => btnLogin.BackColor = Color.FromArgb(63, 81, 181);
+            btnLogin = MaterialTheme.CreateMaterialButton("Daxil ol", FontAwesome.Sharp.IconChar.SignInAlt,
+                MaterialTheme.Colors.Primary, new Point(30, chkRememberMe.Bottom + 30), new Size(290, 45));
+            btnLogin.Click += async (s, e) => await BtnLogin_Click(s, e);
 
-            // Add login icon to button
-            var loginIcon = new IconPictureBox
+            progressBar = new MaterialProgressBar
             {
-                Name = "loginIcon",
-                Size = new Size(18, 18),
-                Location = new Point(12, (btnLogin.Height - 18) / 2),
-                IconChar = IconChar.SignInAlt,
-                IconColor = Color.White,
-                IconSize = 18,
-                BackColor = Color.Transparent
+                Location = new Point(30, btnLogin.Bottom + 20),
+                Size = new Size(290, 2),
+                Visible = false
             };
-            btnLogin.Controls.Add(loginIcon);
+
+            pnlLoginCard.Controls.AddRange(new Control[] 
+            { 
+                lblWelcome, txtEmail, txtPassword, chkRememberMe, btnLogin, progressBar 
+            });
+
+            this.Controls.Add(pnlLoginCard);
+
+            LoadLastUserEmail();
         }
 
         private void InitializeAnimations()
         {
-            animationTimer = new Timer();
-            animationTimer.Interval = 100; // Slower animation to prevent shaking
-            animationTimer.Tick += AnimationTimer_Tick;
-            
-            // Start animation after form is fully loaded
-            this.Shown += (s, e) => animationTimer.Start();
+            _animationTimer = new System.Windows.Forms.Timer
+            {
+                Interval = 16 // ~60 FPS
+            };
+            _animationTimer.Tick += AnimationTimer_Tick;
+            _animationTimer.Start();
         }
 
         private void AnimationTimer_Tick(object sender, EventArgs e)
         {
-            animationProgress += 0.01f; // Slower progression
-            if (animationProgress > 1f) animationProgress = 0f;
-            
-            // Only invalidate if form is visible and stable
-            if (this.Visible && this.WindowState != FormWindowState.Minimized)
-            {
-                pnlLeft?.Invalidate();
-            }
+            _animationProgress += 0.02f;
+            if (_animationProgress > 1) _animationProgress = 0;
+            pnlLeft.Invalidate();
         }
 
         private void PnlLeft_Paint(object sender, PaintEventArgs e)
         {
-            // Create animated gradient background
-            var rect = pnlLeft.ClientRectangle;
-            var color1 = Color.FromArgb(63, 81, 181);
-            var color2 = Color.FromArgb(48, 63, 159);
-            var color3 = Color.FromArgb(26, 35, 126);
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
 
-            using (var brush = new LinearGradientBrush(rect, color1, color2, LinearGradientMode.Vertical))
+            // Gradient background
+            using (var brush = new LinearGradientBrush(
+                pnlLeft.ClientRectangle,
+                MaterialTheme.Colors.Primary,
+                MaterialTheme.Colors.PrimaryDark,
+                45f))
             {
-                e.Graphics.FillRectangle(brush, rect);
+                e.Graphics.FillRectangle(brush, pnlLeft.ClientRectangle);
             }
 
-            // Add animated circles
-            var graphics = e.Graphics;
-            graphics.SmoothingMode = SmoothingMode.AntiAlias;
-
-            // Floating circles animation
-            for (int i = 0; i < 5; i++)
+            // Animated pattern
+            using (var pen = new Pen(Color.FromArgb(50, Color.White), 1))
             {
-                var alpha = (int)(50 + 30 * Math.Sin(animationProgress * Math.PI * 2 + i));
-                var radius = 30 + i * 10;
-                var x = 100 + i * 80 + (int)(20 * Math.Sin(animationProgress * Math.PI + i));
-                var y = 400 + i * 30 + (int)(15 * Math.Cos(animationProgress * Math.PI + i));
-
-                using (var brush = new SolidBrush(Color.FromArgb(alpha, 255, 255, 255)))
+                for (int i = -pnlLeft.Height; i < pnlLeft.Width; i += 30)
                 {
-                    graphics.FillEllipse(brush, x, y, radius, radius);
+                    var y = i + (pnlLeft.Height * _animationProgress);
+                    e.Graphics.DrawLine(pen, new Point(-100, (int)y), 
+                        new Point(pnlLeft.Width + 100, (int)y + 300));
                 }
-            }
-
-            // Decorative line
-            using (var pen = new Pen(Color.FromArgb(100, 255, 255, 255), 3))
-            {
-                graphics.DrawLine(pen, 60, 300, 300, 300);
             }
         }
 
         private void PnlLoginCard_Paint(object sender, PaintEventArgs e)
         {
-            var graphics = e.Graphics;
-            graphics.SmoothingMode = SmoothingMode.AntiAlias;
+            var path = GetRoundedRectPath(pnlLoginCard.ClientRectangle, 10);
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
 
-            // Draw rounded rectangle
-            var rect = new Rectangle(0, 0, pnlLoginCard.Width, pnlLoginCard.Height);
-            using (var path = GetRoundedRectPath(rect, 15))
+            // Draw shadow
+            using (var shadowBrush = new SolidBrush(Color.FromArgb(30, 0, 0, 0)))
             {
-                // Card shadow
-                var shadowRect = new Rectangle(5, 5, pnlLoginCard.Width, pnlLoginCard.Height);
-                using (var shadowBrush = new SolidBrush(Color.FromArgb(40, 0, 0, 0)))
-                using (var shadowPath = GetRoundedRectPath(shadowRect, 15))
-                {
-                    graphics.FillPath(shadowBrush, shadowPath);
-                }
+                var shadowRect = pnlLoginCard.ClientRectangle;
+                shadowRect.Offset(3, 3);
+                var shadowPath = GetRoundedRectPath(shadowRect, 10);
+                e.Graphics.FillPath(shadowBrush, shadowPath);
+            }
 
-                // Card background
-                using (var cardBrush = new SolidBrush(Color.FromArgb(69, 69, 72)))
-                {
-                    graphics.FillPath(cardBrush, path);
-                }
+            // Draw card
+            using (var cardBrush = new SolidBrush(pnlLoginCard.BackColor))
+            {
+                e.Graphics.FillPath(cardBrush, path);
+            }
 
-                // Card border
-                using (var borderPen = new Pen(Color.FromArgb(90, 90, 90), 1))
-                {
-                    graphics.DrawPath(borderPen, path);
-                }
+            // Draw border
+            using (var borderPen = new Pen(Color.FromArgb(60, 60, 60), 1))
+            {
+                e.Graphics.DrawPath(borderPen, path);
             }
         }
 
         private GraphicsPath GetRoundedRectPath(Rectangle rect, int radius)
         {
             var path = new GraphicsPath();
-            path.AddArc(rect.X, rect.Y, radius, radius, 180, 90);
-            path.AddArc(rect.X + rect.Width - radius, rect.Y, radius, radius, 270, 90);
-            path.AddArc(rect.X + rect.Width - radius, rect.Y + rect.Height - radius, radius, radius, 0, 90);
-            path.AddArc(rect.X, rect.Y + rect.Height - radius, radius, radius, 90, 90);
-            path.CloseAllFigures();
+            path.AddArc(rect.X, rect.Y, radius * 2, radius * 2, 180, 90);
+            path.AddArc(rect.Right - radius * 2, rect.Y, radius * 2, radius * 2, 270, 90);
+            path.AddArc(rect.Right - radius * 2, rect.Bottom - radius * 2, radius * 2, radius * 2, 0, 90);
+            path.AddArc(rect.X, rect.Bottom - radius * 2, radius * 2, radius * 2, 90, 90);
+            path.CloseFigure();
             return path;
         }
 
@@ -520,6 +293,7 @@ namespace AzAgroPOS.PL.Forms
             if (e.KeyCode == Keys.Enter)
             {
                 txtPassword.Focus();
+                e.Handled = true;
                 e.SuppressKeyPress = true;
             }
         }
@@ -528,7 +302,8 @@ namespace AzAgroPOS.PL.Forms
         {
             if (e.KeyCode == Keys.Enter)
             {
-                BtnLogin_Click(sender, e);
+                btnLogin.PerformClick();
+                e.Handled = true;
                 e.SuppressKeyPress = true;
             }
         }
@@ -538,79 +313,85 @@ namespace AzAgroPOS.PL.Forms
             if (_isAutoLoginAttempted) return;
             _isAutoLoginAttempted = true;
 
-            var savedToken = GetSavedToken();
-            if (!string.IsNullOrEmpty(savedToken))
+            try
             {
-                this.Enabled = false;
-                lblSubtitle.Text = "Avtomatik giriş yoxlanılır...";
+                var token = GetSavedToken();
+                if (string.IsNullOrEmpty(token)) return;
 
-                var (success, user) = await _authService.LoginWithTokenAsync(savedToken);
-                if (success)
+                progressBar.Visible = true;
+                var (success, user) = await _authService.LoginWithTokenAsync(token);
+
+                if (success && user != null)
                 {
                     ShowMainForm(user);
                 }
                 else
                 {
                     ClearSavedToken();
-                    LoadLastUserEmail();
                 }
-
-                this.Enabled = true;
-                lblSubtitle.Text = "Hesabınıza daxil olmaq üçün məlumatlarınızı daxil edin";
             }
-            else
+            catch
             {
-                LoadLastUserEmail();
+                ClearSavedToken();
+            }
+            finally
+            {
+                progressBar.Visible = false;
             }
         }
 
-        private async void BtnLogin_Click(object sender, EventArgs e)
+        private async 
+        Task
+BtnLogin_Click(object sender, EventArgs e)
         {
+            string email = txtEmail.Text.Trim();
+            string password = txtPassword.Text;
+
+            if (!ValidateInput(email, password))
+            {
+                return;
+            }
+
             try
             {
-                string email = txtEmail.Text.Trim();
-                string password = txtPassword.Text;
-
-                if (!ValidateInput(email, password)) return;
-
                 btnLogin.Enabled = false;
-                btnLogin.Text = "Yoxlanılır...";
+                progressBar.Visible = true;
 
-                string loginResult = await _authService.LoginAsync(email, password);
-
-                if (loginResult.Contains("Uğurlu"))
+                var token = await _authService.LoginAsync(email, password);
+                if (string.IsNullOrEmpty(token))
                 {
-                    var user = await _istifadeciRepository.GetByEmailAsync(email);
-                    if (user != null)
-                    {
-                        if (chkRememberMe.Checked)
-                        {
-                            await HandleRememberMe(user);
-                        }
-                        else
-                        {
-                            await ClearRememberMe(user);
-                        }
+                    ShowMaterialError("E-poçt və ya şifrə yanlışdır");
+                    return;
+                }
 
+                var (success, user) = await _authService.LoginWithTokenAsync(token);
+                if (success && user != null)
+                {
+                    if (chkRememberMe.Checked)
+                    {
+                        SaveTokenToRegistry(token);
                         SaveLastUserEmail(email);
-                        ShowMainForm(user);
                     }
+                    else
+                    {
+                        ClearSavedToken();
+                    }
+
+                    ShowMainForm(user);
                 }
                 else
                 {
-                    ShowMaterialError(loginResult);
-                    txtPassword.Clear();
-                    txtPassword.Focus();
+                    ShowMaterialError("Giriş zamanı xəta baş verdi");
                 }
             }
             catch (Exception ex)
             {
-                ShowMaterialError($"Xəta baş verdi: {ex.Message}");
+                ShowMaterialError($"Sistem xətası: {ex.Message}");
             }
             finally
             {
                 btnLogin.Enabled = true;
-                btnLogin.Text = "  Daxil Ol";
+                progressBar.Visible = false;
             }
         }
 
@@ -618,21 +399,21 @@ namespace AzAgroPOS.PL.Forms
         {
             if (string.IsNullOrWhiteSpace(email))
             {
-                ShowMaterialError("Email mütləqdir!");
+                ShowMaterialError("E-poçt daxil edin");
                 txtEmail.Focus();
                 return false;
             }
 
-            if (!IsValidEmail(email))
+            if (!email.Contains("@"))
             {
-                ShowMaterialError("Düzgün email formatı daxil edin!");
+                ShowMaterialError("Düzgün e-poçt daxil edin");
                 txtEmail.Focus();
                 return false;
             }
 
             if (string.IsNullOrWhiteSpace(password))
             {
-                ShowMaterialError("Şifrə mütləqdir!");
+                ShowMaterialError("Şifrə daxil edin");
                 txtPassword.Focus();
                 return false;
             }
@@ -640,86 +421,43 @@ namespace AzAgroPOS.PL.Forms
             return true;
         }
 
-        private bool IsValidEmail(string email)
-        {
-            var pattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
-            return Regex.IsMatch(email, pattern);
-        }
-
         private void ShowMainForm(Istifadeci user)
         {
-            SessionManager.SetCurrentUser(user);
-            
-            // MainForm-u yarat
-            var mainForm = new MainForm(user, _serviceProvider);
-            
-            // MainForm bağlandıqda bütün aplikasiyanı bağla
-            mainForm.FormClosed += (s, args) => Application.Exit();
-            
-            // MainForm-u göstər
-            mainForm.Show();
-            
-            // Login formunu gizlət
             this.Hide();
-            
-            // Login form-un DialogResult-ını təyin et
-            this.DialogResult = DialogResult.OK;
-        }
-
-        private async Task HandleRememberMe(Istifadeci user)
-        {
-            var token = GenerateSecureToken();
-            user.RememberMeToken = token;
-            user.RememberMeTokenExpiry = DateTime.Now.AddDays(30);
-            await _istifadeciRepository.UpdateAsync(user);
-            SaveTokenToRegistry(token);
-        }
-
-        private async Task ClearRememberMe(Istifadeci user)
-        {
-            user.RememberMeToken = null;
-            user.RememberMeTokenExpiry = null;
-            await _istifadeciRepository.UpdateAsync(user);
-            ClearSavedToken();
+            var mainForm = new MainForm(user, _serviceProvider);
+            mainForm.FormClosed += (s, args) => this.Close();
+            mainForm.Show();
         }
 
         private string GenerateSecureToken()
         {
-            using (var rng = RandomNumberGenerator.Create())
+            var random = new byte[32];
+            using (var rng = new System.Security.Cryptography.RNGCryptoServiceProvider())
             {
-                byte[] tokenBytes = new byte[32];
-                rng.GetBytes(tokenBytes);
-                return Convert.ToBase64String(tokenBytes);
+                rng.GetBytes(random);
             }
+            return Convert.ToBase64String(random);
         }
 
         private void SaveTokenToRegistry(string token)
         {
             try
             {
-                using (var key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\AzAgroPOS"))
-                {
-                    key?.SetValue("RememberMeToken", token);
-                }
+                Microsoft.Win32.Registry.CurrentUser.CreateSubKey(@"SOFTWARE\AzAgroPOS")
+                    .SetValue("RememberMeToken", token);
             }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"Token qeyd edilərkən xəta: {ex.Message}");
-            }
+            catch { }
         }
 
         private string GetSavedToken()
         {
             try
             {
-                using (var key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\AzAgroPOS"))
-                {
-                    return key?.GetValue("RememberMeToken")?.ToString();
-                }
+                return Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"SOFTWARE\AzAgroPOS")
+                    ?.GetValue("RememberMeToken") as string;
             }
-            catch (Exception ex)
+            catch
             {
-                System.Diagnostics.Debug.WriteLine($"Token oxunarkən xəta: {ex.Message}");
                 return null;
             }
         }
@@ -728,145 +466,68 @@ namespace AzAgroPOS.PL.Forms
         {
             try
             {
-                using (var key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\AzAgroPOS", true))
-                {
-                    key?.DeleteValue("RememberMeToken", false);
-                }
+                Microsoft.Win32.Registry.CurrentUser.CreateSubKey(@"SOFTWARE\AzAgroPOS")
+                    .DeleteValue("RememberMeToken", false);
             }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"Token silinərkən xəta: {ex.Message}");
-            }
+            catch { }
         }
 
         private void SaveLastUserEmail(string email)
         {
             try
             {
-                using (var key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\AzAgroPOS"))
-                {
-                    key?.SetValue("LastUserEmail", email);
-                }
+                Microsoft.Win32.Registry.CurrentUser.CreateSubKey(@"SOFTWARE\AzAgroPOS")
+                    .SetValue("LastUserEmail", email);
             }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"Email qeyd edilərkən xəta: {ex.Message}");
-            }
+            catch { }
         }
 
         private void LoadLastUserEmail()
         {
             try
             {
-                using (var key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\AzAgroPOS"))
+                var email = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"SOFTWARE\AzAgroPOS")
+                    ?.GetValue("LastUserEmail") as string;
+                if (!string.IsNullOrEmpty(email))
                 {
-                    var lastEmail = key?.GetValue("LastUserEmail")?.ToString();
-                    if (!string.IsNullOrEmpty(lastEmail))
-                    {
-                        txtEmail.Text = lastEmail;
-                        txtPassword.Focus();
-                    }
-                    else
-                    {
-                        txtEmail.Focus();
-                    }
+                    txtEmail.Text = email;
+                    txtPassword.Focus();
                 }
             }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"Email oxunarkən xəta: {ex.Message}");
-                txtEmail.Focus();
-            }
+            catch { }
         }
 
         private void ShowMaterialError(string message)
         {
-            // Create modern material error dialog
-            var errorDialog = new MaterialForm
-            {
-                Text = "Xəta",
-                Size = new Size(450, 220),
-                StartPosition = FormStartPosition.CenterParent,
-                MaximizeBox = false,
-                MinimizeBox = false,
-                BackColor = Color.FromArgb(55, 55, 58)
-            };
-
-            var materialSkinManager = MaterialSkinManager.Instance;
-            materialSkinManager.AddFormToManage(errorDialog);
-
-            var iconPic = new IconPictureBox
-            {
-                Size = new Size(40, 40),
-                Location = new Point(30, 50),
-                IconChar = IconChar.ExclamationTriangle,
-                IconColor = Color.FromArgb(255, 152, 0),
-                IconSize = 40,
-                BackColor = Color.Transparent
-            };
-
-            var messageLabel = new MaterialLabel
-            {
-                Text = message,
-                Font = new Font("Segoe UI", 12, FontStyle.Regular),
-                ForeColor = Color.White,
-                AutoSize = false,
-                Size = new Size(350, 60),
-                Location = new Point(80, 60),
-                BackColor = Color.Transparent
-            };
-
-            var okButton = new MaterialButton
-            {
-                Text = "Tamam",
-                Size = new Size(100, 40),
-                Location = new Point(175, 140),
-                Font = new Font("Segoe UI", 11, FontStyle.Bold),
-                BackColor = Color.FromArgb(63, 81, 181),
-                ForeColor = Color.White,
-                FlatStyle = FlatStyle.Flat,
-                DialogResult = DialogResult.OK
-            };
-
-            errorDialog.Controls.AddRange(new Control[] { iconPic, messageLabel, okButton });
-            errorDialog.AcceptButton = okButton;
-            errorDialog.ShowDialog(this);
+            MessageBox.Show(message, "Xəta",
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            animationTimer?.Stop();
-            animationTimer?.Dispose();
+            _animationTimer?.Stop();
+            _animationTimer?.Dispose();
             base.OnFormClosing(e);
         }
 
         // Allow form to be dragged by clicking anywhere on the form
         protected override void WndProc(ref Message m)
         {
-            try
-            {
-                const int WM_NCHITTEST = 0x84;
-                const int HTCLIENT = 0x1;
-                const int HTCAPTION = 0x2;
+            const int WM_NCHITTEST = 0x84;
+            const int HTCLIENT = 0x1;
+            const int HTCAPTION = 0x2;
 
-                if (m.Msg == WM_NCHITTEST)
-                {
-                    base.WndProc(ref m);
-                    if ((int)m.Result == HTCLIENT)
-                    {
-                        m.Result = (IntPtr)HTCAPTION;
-                    }
-                }
-                else
-                {
-                    base.WndProc(ref m);
-                }
-            }
-            catch (Exception ex)
+            if (m.Msg == WM_NCHITTEST)
             {
-                System.Diagnostics.Debug.WriteLine($"WndProc error: {ex.Message}");
-                base.WndProc(ref m);
+                var pos = new Point(m.LParam.ToInt32());
+                pos = this.PointToClient(pos);
+                if (pos.Y < 32)
+                {
+                    m.Result = (IntPtr)HTCAPTION;
+                    return;
+                }
             }
+            base.WndProc(ref m);
         }
     }
 }

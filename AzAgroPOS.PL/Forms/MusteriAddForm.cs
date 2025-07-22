@@ -26,9 +26,15 @@ namespace AzAgroPOS.PL.Forms
         {
             // Initialize form controls
             Text = "Yeni Müştəri Əlavə Et";
-            
-            // TODO: Add form controls and event handlers
-            // This is a placeholder implementation
+            Size = new System.Drawing.Size(500, 400);
+            // Additional configuration for controls can be done here if needed
+            SetupEventHandlers();
+        }
+
+        private void SetupEventHandlers()
+        {
+            btnSave.Click += btnSave_Click;
+            btnCancel.Click += btnCancel_Click;
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -56,11 +62,11 @@ namespace AzAgroPOS.PL.Forms
                     Soyad = txtSoyad.Text.Trim(),
                     MobilTelefon = txtTelefon.Text.Trim(),
                     Email = txtEmail.Text.Trim(),
-                    MusteriKodu = GenerateCustomerCode()
+                    MusteriKodu = string.IsNullOrWhiteSpace(txtKod.Text) ? null : txtKod.Text.Trim()
                 };
 
                 var result = _musteriService.CreateCustomer(musteri, _currentUser.Id);
-                
+
                 if (result.Success)
                 {
                     CreatedCustomer = result.Customer;
@@ -76,11 +82,6 @@ namespace AzAgroPOS.PL.Forms
             {
                 ErrorHandlingService.HandleErrorStatic(ex, "Müştəri yaradılarkən xəta baş verdi.");
             }
-        }
-
-        private string GenerateCustomerCode()
-        {
-            return "MST" + DateTime.Now.ToString("yyyyMMddHHmmss");
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

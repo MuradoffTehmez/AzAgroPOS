@@ -16,6 +16,8 @@ namespace AzAgroPOS.PL.Forms
         private System.Windows.Forms.TextBox txtTelefon;
         private System.Windows.Forms.Label lblEmail;
         private System.Windows.Forms.TextBox txtEmail;
+        private System.Windows.Forms.Label lblKod;
+        private System.Windows.Forms.TextBox txtKod;
 
         protected override void Dispose(bool disposing)
         {
@@ -41,6 +43,8 @@ namespace AzAgroPOS.PL.Forms
             this.txtTelefon = new System.Windows.Forms.TextBox();
             this.lblEmail = new System.Windows.Forms.Label();
             this.txtEmail = new System.Windows.Forms.TextBox();
+            this.lblKod = new System.Windows.Forms.Label();
+            this.txtKod = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -168,11 +172,30 @@ namespace AzAgroPOS.PL.Forms
             this.txtEmail.Size = new System.Drawing.Size(200, 25);
             this.txtEmail.TabIndex = 9;
             
+            // lblKod
+            this.lblKod.AutoSize = true;
+            this.lblKod.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblKod.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
+            this.lblKod.Location = new System.Drawing.Point(30, 210);
+            this.lblKod.Name = "lblKod";
+            this.lblKod.Size = new System.Drawing.Size(38, 19);
+            this.lblKod.TabIndex = 10;
+            this.lblKod.Text = "Kod:";
+            
+            // txtKod
+            this.txtKod.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtKod.Location = new System.Drawing.Point(30, 235);
+            this.txtKod.Name = "txtKod";
+            this.txtKod.Size = new System.Drawing.Size(200, 25);
+            this.txtKod.TabIndex = 11;
+            
             // MusteriAddForm
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(500, 410);
+            this.Controls.Add(this.txtKod);
+            this.Controls.Add(this.lblKod);
             this.Controls.Add(this.txtEmail);
             this.Controls.Add(this.lblEmail);
             this.Controls.Add(this.txtTelefon);
