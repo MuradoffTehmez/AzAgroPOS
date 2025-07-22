@@ -133,17 +133,17 @@ namespace AzAgroPOS.PL.Forms
             tabControl.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             tabControl.Name = "tabControl";
             tabControl.SelectedIndex = 0;
-            tabControl.Size = new System.Drawing.Size(1400, 753);
+            tabControl.Size = new System.Drawing.Size(1400, 856);
             tabControl.TabIndex = 0;
             // 
             // tabTedarukciler
             // 
             tabTedarukciler.Controls.Add(panelTedarukcu);
-            tabTedarukciler.Location = new System.Drawing.Point(4, 26);
+            tabTedarukciler.Location = new System.Drawing.Point(4, 30);
             tabTedarukciler.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             tabTedarukciler.Name = "tabTedarukciler";
             tabTedarukciler.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            tabTedarukciler.Size = new System.Drawing.Size(1392, 723);
+            tabTedarukciler.Size = new System.Drawing.Size(1392, 822);
             tabTedarukciler.TabIndex = 0;
             tabTedarukciler.Text = "🏢 Tədarükçülər";
             tabTedarukciler.UseVisualStyleBackColor = true;
@@ -157,7 +157,7 @@ namespace AzAgroPOS.PL.Forms
             panelTedarukcu.Location = new System.Drawing.Point(4, 3);
             panelTedarukcu.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             panelTedarukcu.Name = "panelTedarukcu";
-            panelTedarukcu.Size = new System.Drawing.Size(1384, 717);
+            panelTedarukcu.Size = new System.Drawing.Size(1384, 816);
             panelTedarukcu.TabIndex = 0;
             // 
             // dgvTedarukciler
@@ -168,13 +168,13 @@ namespace AzAgroPOS.PL.Forms
             dgvTedarukciler.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvTedarukciler.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { colTedarukcuKod, colTedarukcuAd, colTelefon, colEmail, colCariBorc, colKreditLimiti, colStatus });
             dgvTedarukciler.Dock = System.Windows.Forms.DockStyle.Fill;
-            dgvTedarukciler.Location = new System.Drawing.Point(0, 69);
+            dgvTedarukciler.Location = new System.Drawing.Point(0, 78);
             dgvTedarukciler.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             dgvTedarukciler.MultiSelect = false;
             dgvTedarukciler.Name = "dgvTedarukciler";
             dgvTedarukciler.ReadOnly = true;
             dgvTedarukciler.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            dgvTedarukciler.Size = new System.Drawing.Size(1384, 579);
+            dgvTedarukciler.Size = new System.Drawing.Size(1384, 660);
             dgvTedarukciler.TabIndex = 0;
             // 
             // colTedarukcuKod
@@ -233,10 +233,10 @@ namespace AzAgroPOS.PL.Forms
             panelTedarukcuButtons.Controls.Add(btnDuzenleTedarukcu);
             panelTedarukcuButtons.Controls.Add(btnYeniTedarukcu);
             panelTedarukcuButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
-            panelTedarukcuButtons.Location = new System.Drawing.Point(0, 648);
+            panelTedarukcuButtons.Location = new System.Drawing.Point(0, 738);
             panelTedarukcuButtons.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             panelTedarukcuButtons.Name = "panelTedarukcuButtons";
-            panelTedarukcuButtons.Size = new System.Drawing.Size(1384, 69);
+            panelTedarukcuButtons.Size = new System.Drawing.Size(1384, 78);
             panelTedarukcuButtons.TabIndex = 1;
             // 
             // btnOdemeYap
@@ -244,10 +244,10 @@ namespace AzAgroPOS.PL.Forms
             btnOdemeYap.BackColor = System.Drawing.Color.FromArgb(155, 89, 182);
             btnOdemeYap.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             btnOdemeYap.ForeColor = System.Drawing.Color.White;
-            btnOdemeYap.Location = new System.Drawing.Point(385, 17);
+            btnOdemeYap.Location = new System.Drawing.Point(385, 19);
             btnOdemeYap.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnOdemeYap.Name = "btnOdemeYap";
-            btnOdemeYap.Size = new System.Drawing.Size(117, 40);
+            btnOdemeYap.Size = new System.Drawing.Size(117, 45);
             btnOdemeYap.TabIndex = 3;
             btnOdemeYap.Text = "💳 Ödəmə Yap";
             btnOdemeYap.UseVisualStyleBackColor = false;
@@ -257,10 +257,10 @@ namespace AzAgroPOS.PL.Forms
             btnSilTedarukcu.BackColor = System.Drawing.Color.FromArgb(231, 76, 60);
             btnSilTedarukcu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             btnSilTedarukcu.ForeColor = System.Drawing.Color.White;
-            btnSilTedarukcu.Location = new System.Drawing.Point(285, 17);
+            btnSilTedarukcu.Location = new System.Drawing.Point(285, 19);
             btnSilTedarukcu.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnSilTedarukcu.Name = "btnSilTedarukcu";
-            btnSilTedarukcu.Size = new System.Drawing.Size(93, 40);
+            btnSilTedarukcu.Size = new System.Drawing.Size(93, 45);
             btnSilTedarukcu.TabIndex = 2;
             btnSilTedarukcu.Text = "🗑️ Sil";
             btnSilTedarukcu.UseVisualStyleBackColor = false;
@@ -270,10 +270,10 @@ namespace AzAgroPOS.PL.Forms
             btnDuzenleTedarukcu.BackColor = System.Drawing.Color.FromArgb(52, 152, 219);
             btnDuzenleTedarukcu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             btnDuzenleTedarukcu.ForeColor = System.Drawing.Color.White;
-            btnDuzenleTedarukcu.Location = new System.Drawing.Point(161, 17);
+            btnDuzenleTedarukcu.Location = new System.Drawing.Point(161, 19);
             btnDuzenleTedarukcu.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnDuzenleTedarukcu.Name = "btnDuzenleTedarukcu";
-            btnDuzenleTedarukcu.Size = new System.Drawing.Size(117, 40);
+            btnDuzenleTedarukcu.Size = new System.Drawing.Size(117, 45);
             btnDuzenleTedarukcu.TabIndex = 1;
             btnDuzenleTedarukcu.Text = "✏️ Düzənlə";
             btnDuzenleTedarukcu.UseVisualStyleBackColor = false;
@@ -283,10 +283,10 @@ namespace AzAgroPOS.PL.Forms
             btnYeniTedarukcu.BackColor = System.Drawing.Color.FromArgb(46, 204, 113);
             btnYeniTedarukcu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             btnYeniTedarukcu.ForeColor = System.Drawing.Color.White;
-            btnYeniTedarukcu.Location = new System.Drawing.Point(14, 17);
+            btnYeniTedarukcu.Location = new System.Drawing.Point(14, 19);
             btnYeniTedarukcu.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnYeniTedarukcu.Name = "btnYeniTedarukcu";
-            btnYeniTedarukcu.Size = new System.Drawing.Size(140, 40);
+            btnYeniTedarukcu.Size = new System.Drawing.Size(140, 45);
             btnYeniTedarukcu.TabIndex = 0;
             btnYeniTedarukcu.Text = "➕ Yeni Tədarükçü";
             btnYeniTedarukcu.UseVisualStyleBackColor = false;
@@ -300,23 +300,23 @@ namespace AzAgroPOS.PL.Forms
             panelTedarukcuSearch.Location = new System.Drawing.Point(0, 0);
             panelTedarukcuSearch.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             panelTedarukcuSearch.Name = "panelTedarukcuSearch";
-            panelTedarukcuSearch.Size = new System.Drawing.Size(1384, 69);
+            panelTedarukcuSearch.Size = new System.Drawing.Size(1384, 78);
             panelTedarukcuSearch.TabIndex = 2;
             // 
             // lblTedarukcuAxtaris
             // 
             lblTedarukcuAxtaris.AutoSize = true;
-            lblTedarukcuAxtaris.Location = new System.Drawing.Point(14, 28);
+            lblTedarukcuAxtaris.Location = new System.Drawing.Point(14, 32);
             lblTedarukcuAxtaris.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblTedarukcuAxtaris.Name = "lblTedarukcuAxtaris";
-            lblTedarukcuAxtaris.Size = new System.Drawing.Size(53, 19);
+            lblTedarukcuAxtaris.Size = new System.Drawing.Size(94, 21);
             lblTedarukcuAxtaris.TabIndex = 1;
             lblTedarukcuAxtaris.Text = "🔍 Axtarış:";
             // 
             // txtTedarukcuAxtaris
             // 
             txtTedarukcuAxtaris.Font = new System.Drawing.Font("Segoe UI", 11F);
-            txtTedarukcuAxtaris.Location = new System.Drawing.Point(117, 23);
+            txtTedarukcuAxtaris.Location = new System.Drawing.Point(117, 26);
             txtTedarukcuAxtaris.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtTedarukcuAxtaris.Name = "txtTedarukcuAxtaris";
             txtTedarukcuAxtaris.Size = new System.Drawing.Size(349, 27);
@@ -325,11 +325,11 @@ namespace AzAgroPOS.PL.Forms
             // tabAlisOrderleri
             // 
             tabAlisOrderleri.Controls.Add(panelAlisOrder);
-            tabAlisOrderleri.Location = new System.Drawing.Point(4, 26);
+            tabAlisOrderleri.Location = new System.Drawing.Point(4, 30);
             tabAlisOrderleri.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             tabAlisOrderleri.Name = "tabAlisOrderleri";
             tabAlisOrderleri.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            tabAlisOrderleri.Size = new System.Drawing.Size(1392, 723);
+            tabAlisOrderleri.Size = new System.Drawing.Size(1392, 822);
             tabAlisOrderleri.TabIndex = 1;
             tabAlisOrderleri.Text = "📋 Alış Sifarişləri";
             tabAlisOrderleri.UseVisualStyleBackColor = true;
@@ -343,7 +343,7 @@ namespace AzAgroPOS.PL.Forms
             panelAlisOrder.Location = new System.Drawing.Point(4, 3);
             panelAlisOrder.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             panelAlisOrder.Name = "panelAlisOrder";
-            panelAlisOrder.Size = new System.Drawing.Size(1384, 717);
+            panelAlisOrder.Size = new System.Drawing.Size(1384, 816);
             panelAlisOrder.TabIndex = 0;
             // 
             // dgvAlisOrderleri
@@ -354,12 +354,12 @@ namespace AzAgroPOS.PL.Forms
             dgvAlisOrderleri.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvAlisOrderleri.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { colOrderNomresi, colOrderTarixi, colTedarukcu, colOrderMebleg, colOrderStatus, colTeslimTarixi });
             dgvAlisOrderleri.Dock = System.Windows.Forms.DockStyle.Fill;
-            dgvAlisOrderleri.Location = new System.Drawing.Point(0, 69);
+            dgvAlisOrderleri.Location = new System.Drawing.Point(0, 78);
             dgvAlisOrderleri.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             dgvAlisOrderleri.Name = "dgvAlisOrderleri";
             dgvAlisOrderleri.ReadOnly = true;
             dgvAlisOrderleri.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            dgvAlisOrderleri.Size = new System.Drawing.Size(1384, 579);
+            dgvAlisOrderleri.Size = new System.Drawing.Size(1384, 660);
             dgvAlisOrderleri.TabIndex = 0;
             // 
             // colOrderNomresi
@@ -412,10 +412,10 @@ namespace AzAgroPOS.PL.Forms
             panelOrderButtons.Controls.Add(btnDuzenleOrder);
             panelOrderButtons.Controls.Add(btnYeniOrder);
             panelOrderButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
-            panelOrderButtons.Location = new System.Drawing.Point(0, 648);
+            panelOrderButtons.Location = new System.Drawing.Point(0, 738);
             panelOrderButtons.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             panelOrderButtons.Name = "panelOrderButtons";
-            panelOrderButtons.Size = new System.Drawing.Size(1384, 69);
+            panelOrderButtons.Size = new System.Drawing.Size(1384, 78);
             panelOrderButtons.TabIndex = 1;
             // 
             // btnOrderDetali
@@ -423,10 +423,10 @@ namespace AzAgroPOS.PL.Forms
             btnOrderDetali.BackColor = System.Drawing.Color.FromArgb(149, 165, 166);
             btnOrderDetali.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             btnOrderDetali.ForeColor = System.Drawing.Color.White;
-            btnOrderDetali.Location = new System.Drawing.Point(485, 17);
+            btnOrderDetali.Location = new System.Drawing.Point(485, 19);
             btnOrderDetali.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnOrderDetali.Name = "btnOrderDetali";
-            btnOrderDetali.Size = new System.Drawing.Size(117, 40);
+            btnOrderDetali.Size = new System.Drawing.Size(117, 45);
             btnOrderDetali.TabIndex = 4;
             btnOrderDetali.Text = "🔍 Detaylar";
             btnOrderDetali.UseVisualStyleBackColor = false;
@@ -436,10 +436,10 @@ namespace AzAgroPOS.PL.Forms
             btnIptalOrder.BackColor = System.Drawing.Color.FromArgb(231, 76, 60);
             btnIptalOrder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             btnIptalOrder.ForeColor = System.Drawing.Color.White;
-            btnIptalOrder.Location = new System.Drawing.Point(385, 17);
+            btnIptalOrder.Location = new System.Drawing.Point(385, 19);
             btnIptalOrder.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnIptalOrder.Name = "btnIptalOrder";
-            btnIptalOrder.Size = new System.Drawing.Size(93, 40);
+            btnIptalOrder.Size = new System.Drawing.Size(93, 45);
             btnIptalOrder.TabIndex = 3;
             btnIptalOrder.Text = "❌ İptal";
             btnIptalOrder.UseVisualStyleBackColor = false;
@@ -449,10 +449,10 @@ namespace AzAgroPOS.PL.Forms
             btnTesdiqleOrder.BackColor = System.Drawing.Color.FromArgb(155, 89, 182);
             btnTesdiqleOrder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             btnTesdiqleOrder.ForeColor = System.Drawing.Color.White;
-            btnTesdiqleOrder.Location = new System.Drawing.Point(261, 17);
+            btnTesdiqleOrder.Location = new System.Drawing.Point(261, 19);
             btnTesdiqleOrder.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnTesdiqleOrder.Name = "btnTesdiqleOrder";
-            btnTesdiqleOrder.Size = new System.Drawing.Size(117, 40);
+            btnTesdiqleOrder.Size = new System.Drawing.Size(117, 45);
             btnTesdiqleOrder.TabIndex = 2;
             btnTesdiqleOrder.Text = "✅ Təsdiqlə";
             btnTesdiqleOrder.UseVisualStyleBackColor = false;
@@ -462,10 +462,10 @@ namespace AzAgroPOS.PL.Forms
             btnDuzenleOrder.BackColor = System.Drawing.Color.FromArgb(52, 152, 219);
             btnDuzenleOrder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             btnDuzenleOrder.ForeColor = System.Drawing.Color.White;
-            btnDuzenleOrder.Location = new System.Drawing.Point(138, 17);
+            btnDuzenleOrder.Location = new System.Drawing.Point(138, 19);
             btnDuzenleOrder.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnDuzenleOrder.Name = "btnDuzenleOrder";
-            btnDuzenleOrder.Size = new System.Drawing.Size(117, 40);
+            btnDuzenleOrder.Size = new System.Drawing.Size(117, 45);
             btnDuzenleOrder.TabIndex = 1;
             btnDuzenleOrder.Text = "✏️ Düzənlə";
             btnDuzenleOrder.UseVisualStyleBackColor = false;
@@ -475,10 +475,10 @@ namespace AzAgroPOS.PL.Forms
             btnYeniOrder.BackColor = System.Drawing.Color.FromArgb(46, 204, 113);
             btnYeniOrder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             btnYeniOrder.ForeColor = System.Drawing.Color.White;
-            btnYeniOrder.Location = new System.Drawing.Point(14, 17);
+            btnYeniOrder.Location = new System.Drawing.Point(14, 19);
             btnYeniOrder.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnYeniOrder.Name = "btnYeniOrder";
-            btnYeniOrder.Size = new System.Drawing.Size(117, 40);
+            btnYeniOrder.Size = new System.Drawing.Size(117, 45);
             btnYeniOrder.TabIndex = 0;
             btnYeniOrder.Text = "➕ Yeni Order";
             btnYeniOrder.UseVisualStyleBackColor = false;
@@ -496,7 +496,7 @@ namespace AzAgroPOS.PL.Forms
             panelOrderFilter.Location = new System.Drawing.Point(0, 0);
             panelOrderFilter.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             panelOrderFilter.Name = "panelOrderFilter";
-            panelOrderFilter.Size = new System.Drawing.Size(1384, 69);
+            panelOrderFilter.Size = new System.Drawing.Size(1384, 78);
             panelOrderFilter.TabIndex = 2;
             // 
             // txtOrderAxtaris
@@ -504,10 +504,10 @@ namespace AzAgroPOS.PL.Forms
             txtOrderAxtaris.BackColor = System.Drawing.Color.FromArgb(46, 204, 113);
             txtOrderAxtaris.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             txtOrderAxtaris.ForeColor = System.Drawing.Color.White;
-            txtOrderAxtaris.Location = new System.Drawing.Point(676, 23);
+            txtOrderAxtaris.Location = new System.Drawing.Point(676, 26);
             txtOrderAxtaris.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtOrderAxtaris.Name = "txtOrderAxtaris";
-            txtOrderAxtaris.Size = new System.Drawing.Size(110, 29);
+            txtOrderAxtaris.Size = new System.Drawing.Size(110, 33);
             txtOrderAxtaris.TabIndex = 5;
             txtOrderAxtaris.Text = "🔍 Axtar";
             txtOrderAxtaris.UseVisualStyleBackColor = false;
@@ -515,38 +515,38 @@ namespace AzAgroPOS.PL.Forms
             // lblOrderTarix
             // 
             lblOrderTarix.AutoSize = true;
-            lblOrderTarix.Location = new System.Drawing.Point(280, 28);
+            lblOrderTarix.Location = new System.Drawing.Point(280, 32);
             lblOrderTarix.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblOrderTarix.Name = "lblOrderTarix";
-            lblOrderTarix.Size = new System.Drawing.Size(38, 19);
+            lblOrderTarix.Size = new System.Drawing.Size(78, 21);
             lblOrderTarix.TabIndex = 4;
             lblOrderTarix.Text = "📅 Tarix:";
             // 
             // dtpOrderEnd
             // 
             dtpOrderEnd.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            dtpOrderEnd.Location = new System.Drawing.Point(490, 23);
+            dtpOrderEnd.Location = new System.Drawing.Point(490, 26);
             dtpOrderEnd.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             dtpOrderEnd.Name = "dtpOrderEnd";
-            dtpOrderEnd.Size = new System.Drawing.Size(139, 25);
+            dtpOrderEnd.Size = new System.Drawing.Size(139, 29);
             dtpOrderEnd.TabIndex = 3;
             // 
             // dtpOrderStart
             // 
             dtpOrderStart.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            dtpOrderStart.Location = new System.Drawing.Point(338, 23);
+            dtpOrderStart.Location = new System.Drawing.Point(338, 26);
             dtpOrderStart.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             dtpOrderStart.Name = "dtpOrderStart";
-            dtpOrderStart.Size = new System.Drawing.Size(139, 25);
+            dtpOrderStart.Size = new System.Drawing.Size(139, 29);
             dtpOrderStart.TabIndex = 2;
             // 
             // lblOrderStatus
             // 
             lblOrderStatus.AutoSize = true;
-            lblOrderStatus.Location = new System.Drawing.Point(14, 28);
+            lblOrderStatus.Location = new System.Drawing.Point(14, 32);
             lblOrderStatus.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblOrderStatus.Name = "lblOrderStatus";
-            lblOrderStatus.Size = new System.Drawing.Size(50, 19);
+            lblOrderStatus.Size = new System.Drawing.Size(88, 21);
             lblOrderStatus.TabIndex = 1;
             lblOrderStatus.Text = "⚙️ Status:";
             // 
@@ -554,19 +554,19 @@ namespace AzAgroPOS.PL.Forms
             // 
             cmbOrderStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             cmbOrderStatus.FormattingEnabled = true;
-            cmbOrderStatus.Location = new System.Drawing.Point(82, 23);
+            cmbOrderStatus.Location = new System.Drawing.Point(82, 26);
             cmbOrderStatus.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             cmbOrderStatus.Name = "cmbOrderStatus";
-            cmbOrderStatus.Size = new System.Drawing.Size(174, 25);
+            cmbOrderStatus.Size = new System.Drawing.Size(174, 29);
             cmbOrderStatus.TabIndex = 0;
             // 
             // tabAlisSenedleri
             // 
             tabAlisSenedleri.Controls.Add(panelAlisSened);
-            tabAlisSenedleri.Location = new System.Drawing.Point(4, 26);
+            tabAlisSenedleri.Location = new System.Drawing.Point(4, 30);
             tabAlisSenedleri.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             tabAlisSenedleri.Name = "tabAlisSenedleri";
-            tabAlisSenedleri.Size = new System.Drawing.Size(1392, 723);
+            tabAlisSenedleri.Size = new System.Drawing.Size(1392, 822);
             tabAlisSenedleri.TabIndex = 2;
             tabAlisSenedleri.Text = "📄 Alış Sənədləri";
             tabAlisSenedleri.UseVisualStyleBackColor = true;
@@ -580,7 +580,7 @@ namespace AzAgroPOS.PL.Forms
             panelAlisSened.Location = new System.Drawing.Point(0, 0);
             panelAlisSened.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             panelAlisSened.Name = "panelAlisSened";
-            panelAlisSened.Size = new System.Drawing.Size(1392, 723);
+            panelAlisSened.Size = new System.Drawing.Size(1392, 822);
             panelAlisSened.TabIndex = 0;
             // 
             // dgvAlisSenedleri
@@ -591,12 +591,12 @@ namespace AzAgroPOS.PL.Forms
             dgvAlisSenedleri.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvAlisSenedleri.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { colSenedNomresi, colSenedTarixi, colSenedTedarukcu, colSenedAnbar, colSenedMebleg, colSenedStatus, colOdemeStatus });
             dgvAlisSenedleri.Dock = System.Windows.Forms.DockStyle.Fill;
-            dgvAlisSenedleri.Location = new System.Drawing.Point(0, 69);
+            dgvAlisSenedleri.Location = new System.Drawing.Point(0, 78);
             dgvAlisSenedleri.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             dgvAlisSenedleri.Name = "dgvAlisSenedleri";
             dgvAlisSenedleri.ReadOnly = true;
             dgvAlisSenedleri.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            dgvAlisSenedleri.Size = new System.Drawing.Size(1392, 585);
+            dgvAlisSenedleri.Size = new System.Drawing.Size(1392, 666);
             dgvAlisSenedleri.TabIndex = 0;
             // 
             // colSenedNomresi
@@ -656,10 +656,10 @@ namespace AzAgroPOS.PL.Forms
             panelSenedButtons.Controls.Add(btnQebulEt);
             panelSenedButtons.Controls.Add(btnYeniSened);
             panelSenedButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
-            panelSenedButtons.Location = new System.Drawing.Point(0, 654);
+            panelSenedButtons.Location = new System.Drawing.Point(0, 744);
             panelSenedButtons.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             panelSenedButtons.Name = "panelSenedButtons";
-            panelSenedButtons.Size = new System.Drawing.Size(1392, 69);
+            panelSenedButtons.Size = new System.Drawing.Size(1392, 78);
             panelSenedButtons.TabIndex = 1;
             // 
             // btnFaktura
@@ -667,10 +667,10 @@ namespace AzAgroPOS.PL.Forms
             btnFaktura.BackColor = System.Drawing.Color.FromArgb(52, 152, 219);
             btnFaktura.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             btnFaktura.ForeColor = System.Drawing.Color.White;
-            btnFaktura.Location = new System.Drawing.Point(485, 17);
+            btnFaktura.Location = new System.Drawing.Point(485, 19);
             btnFaktura.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnFaktura.Name = "btnFaktura";
-            btnFaktura.Size = new System.Drawing.Size(117, 40);
+            btnFaktura.Size = new System.Drawing.Size(117, 45);
             btnFaktura.TabIndex = 4;
             btnFaktura.Text = "🖨️ Faktura Çap";
             btnFaktura.UseVisualStyleBackColor = false;
@@ -680,10 +680,10 @@ namespace AzAgroPOS.PL.Forms
             btnSenedDetali.BackColor = System.Drawing.Color.FromArgb(149, 165, 166);
             btnSenedDetali.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             btnSenedDetali.ForeColor = System.Drawing.Color.White;
-            btnSenedDetali.Location = new System.Drawing.Point(362, 17);
+            btnSenedDetali.Location = new System.Drawing.Point(362, 19);
             btnSenedDetali.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnSenedDetali.Name = "btnSenedDetali";
-            btnSenedDetali.Size = new System.Drawing.Size(117, 40);
+            btnSenedDetali.Size = new System.Drawing.Size(117, 45);
             btnSenedDetali.TabIndex = 3;
             btnSenedDetali.Text = "🔍 Detaylar";
             btnSenedDetali.UseVisualStyleBackColor = false;
@@ -693,10 +693,10 @@ namespace AzAgroPOS.PL.Forms
             btnIptalSened.BackColor = System.Drawing.Color.FromArgb(231, 76, 60);
             btnIptalSened.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             btnIptalSened.ForeColor = System.Drawing.Color.White;
-            btnIptalSened.Location = new System.Drawing.Point(261, 17);
+            btnIptalSened.Location = new System.Drawing.Point(261, 19);
             btnIptalSened.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnIptalSened.Name = "btnIptalSened";
-            btnIptalSened.Size = new System.Drawing.Size(93, 40);
+            btnIptalSened.Size = new System.Drawing.Size(93, 45);
             btnIptalSened.TabIndex = 2;
             btnIptalSened.Text = "❌ İptal";
             btnIptalSened.UseVisualStyleBackColor = false;
@@ -706,10 +706,10 @@ namespace AzAgroPOS.PL.Forms
             btnQebulEt.BackColor = System.Drawing.Color.FromArgb(155, 89, 182);
             btnQebulEt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             btnQebulEt.ForeColor = System.Drawing.Color.White;
-            btnQebulEt.Location = new System.Drawing.Point(138, 17);
+            btnQebulEt.Location = new System.Drawing.Point(138, 19);
             btnQebulEt.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnQebulEt.Name = "btnQebulEt";
-            btnQebulEt.Size = new System.Drawing.Size(117, 40);
+            btnQebulEt.Size = new System.Drawing.Size(117, 45);
             btnQebulEt.TabIndex = 1;
             btnQebulEt.Text = "✅ Qəbul Et";
             btnQebulEt.UseVisualStyleBackColor = false;
@@ -719,10 +719,10 @@ namespace AzAgroPOS.PL.Forms
             btnYeniSened.BackColor = System.Drawing.Color.FromArgb(46, 204, 113);
             btnYeniSened.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             btnYeniSened.ForeColor = System.Drawing.Color.White;
-            btnYeniSened.Location = new System.Drawing.Point(14, 17);
+            btnYeniSened.Location = new System.Drawing.Point(14, 19);
             btnYeniSened.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnYeniSened.Name = "btnYeniSened";
-            btnYeniSened.Size = new System.Drawing.Size(117, 40);
+            btnYeniSened.Size = new System.Drawing.Size(117, 45);
             btnYeniSened.TabIndex = 0;
             btnYeniSened.Text = "➕ Yeni Sənəd";
             btnYeniSened.UseVisualStyleBackColor = false;
@@ -739,7 +739,7 @@ namespace AzAgroPOS.PL.Forms
             panelSenedFilter.Location = new System.Drawing.Point(0, 0);
             panelSenedFilter.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             panelSenedFilter.Name = "panelSenedFilter";
-            panelSenedFilter.Size = new System.Drawing.Size(1392, 69);
+            panelSenedFilter.Size = new System.Drawing.Size(1392, 78);
             panelSenedFilter.TabIndex = 2;
             // 
             // txtSenedAxtaris
@@ -747,10 +747,10 @@ namespace AzAgroPOS.PL.Forms
             txtSenedAxtaris.BackColor = System.Drawing.Color.FromArgb(46, 204, 113);
             txtSenedAxtaris.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             txtSenedAxtaris.ForeColor = System.Drawing.Color.White;
-            txtSenedAxtaris.Location = new System.Drawing.Point(588, 21);
+            txtSenedAxtaris.Location = new System.Drawing.Point(588, 24);
             txtSenedAxtaris.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtSenedAxtaris.Name = "txtSenedAxtaris";
-            txtSenedAxtaris.Size = new System.Drawing.Size(110, 29);
+            txtSenedAxtaris.Size = new System.Drawing.Size(110, 33);
             txtSenedAxtaris.TabIndex = 6;
             txtSenedAxtaris.Text = "🔍 Axtar";
             txtSenedAxtaris.UseVisualStyleBackColor = false;
@@ -758,10 +758,10 @@ namespace AzAgroPOS.PL.Forms
             // lblOdemeStatus
             // 
             lblOdemeStatus.AutoSize = true;
-            lblOdemeStatus.Location = new System.Drawing.Point(280, 28);
+            lblOdemeStatus.Location = new System.Drawing.Point(280, 32);
             lblOdemeStatus.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblOdemeStatus.Name = "lblOdemeStatus";
-            lblOdemeStatus.Size = new System.Drawing.Size(76, 19);
+            lblOdemeStatus.Size = new System.Drawing.Size(119, 21);
             lblOdemeStatus.TabIndex = 3;
             lblOdemeStatus.Text = "💳 Ödəmə St.:";
             // 
@@ -769,19 +769,19 @@ namespace AzAgroPOS.PL.Forms
             // 
             cmbOdemeStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             cmbOdemeStatus.FormattingEnabled = true;
-            cmbOdemeStatus.Location = new System.Drawing.Point(373, 23);
+            cmbOdemeStatus.Location = new System.Drawing.Point(373, 26);
             cmbOdemeStatus.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             cmbOdemeStatus.Name = "cmbOdemeStatus";
-            cmbOdemeStatus.Size = new System.Drawing.Size(174, 25);
+            cmbOdemeStatus.Size = new System.Drawing.Size(174, 29);
             cmbOdemeStatus.TabIndex = 2;
             // 
             // lblSenedStatus
             // 
             lblSenedStatus.AutoSize = true;
-            lblSenedStatus.Location = new System.Drawing.Point(14, 28);
+            lblSenedStatus.Location = new System.Drawing.Point(14, 32);
             lblSenedStatus.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblSenedStatus.Name = "lblSenedStatus";
-            lblSenedStatus.Size = new System.Drawing.Size(50, 19);
+            lblSenedStatus.Size = new System.Drawing.Size(88, 21);
             lblSenedStatus.TabIndex = 1;
             lblSenedStatus.Text = "⚙️ Status:";
             // 
@@ -789,19 +789,19 @@ namespace AzAgroPOS.PL.Forms
             // 
             cmbSenedStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             cmbSenedStatus.FormattingEnabled = true;
-            cmbSenedStatus.Location = new System.Drawing.Point(82, 23);
+            cmbSenedStatus.Location = new System.Drawing.Point(82, 26);
             cmbSenedStatus.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             cmbSenedStatus.Name = "cmbSenedStatus";
-            cmbSenedStatus.Size = new System.Drawing.Size(174, 25);
+            cmbSenedStatus.Size = new System.Drawing.Size(174, 29);
             cmbSenedStatus.TabIndex = 0;
             // 
             // tabAnbarTransfer
             // 
             tabAnbarTransfer.Controls.Add(panelTransfer);
-            tabAnbarTransfer.Location = new System.Drawing.Point(4, 26);
+            tabAnbarTransfer.Location = new System.Drawing.Point(4, 30);
             tabAnbarTransfer.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             tabAnbarTransfer.Name = "tabAnbarTransfer";
-            tabAnbarTransfer.Size = new System.Drawing.Size(1392, 723);
+            tabAnbarTransfer.Size = new System.Drawing.Size(1392, 822);
             tabAnbarTransfer.TabIndex = 3;
             tabAnbarTransfer.Text = "Anbar Transferləri";
             tabAnbarTransfer.UseVisualStyleBackColor = true;
@@ -814,7 +814,7 @@ namespace AzAgroPOS.PL.Forms
             panelTransfer.Location = new System.Drawing.Point(0, 0);
             panelTransfer.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             panelTransfer.Name = "panelTransfer";
-            panelTransfer.Size = new System.Drawing.Size(1392, 723);
+            panelTransfer.Size = new System.Drawing.Size(1392, 822);
             panelTransfer.TabIndex = 0;
             // 
             // dgvTransferler
@@ -830,7 +830,7 @@ namespace AzAgroPOS.PL.Forms
             dgvTransferler.Name = "dgvTransferler";
             dgvTransferler.ReadOnly = true;
             dgvTransferler.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            dgvTransferler.Size = new System.Drawing.Size(1392, 654);
+            dgvTransferler.Size = new System.Drawing.Size(1392, 744);
             dgvTransferler.TabIndex = 0;
             // 
             // colTransferNomresi
@@ -883,10 +883,10 @@ namespace AzAgroPOS.PL.Forms
             panelTransferButtons.Controls.Add(btnGonderTransfer);
             panelTransferButtons.Controls.Add(btnYeniTransfer);
             panelTransferButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
-            panelTransferButtons.Location = new System.Drawing.Point(0, 654);
+            panelTransferButtons.Location = new System.Drawing.Point(0, 744);
             panelTransferButtons.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             panelTransferButtons.Name = "panelTransferButtons";
-            panelTransferButtons.Size = new System.Drawing.Size(1392, 69);
+            panelTransferButtons.Size = new System.Drawing.Size(1392, 78);
             panelTransferButtons.TabIndex = 1;
             // 
             // txtTransferAxtaris
@@ -894,10 +894,10 @@ namespace AzAgroPOS.PL.Forms
             txtTransferAxtaris.BackColor = System.Drawing.Color.FromArgb(46, 204, 113);
             txtTransferAxtaris.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             txtTransferAxtaris.ForeColor = System.Drawing.Color.White;
-            txtTransferAxtaris.Location = new System.Drawing.Point(637, 17);
+            txtTransferAxtaris.Location = new System.Drawing.Point(637, 19);
             txtTransferAxtaris.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtTransferAxtaris.Name = "txtTransferAxtaris";
-            txtTransferAxtaris.Size = new System.Drawing.Size(113, 40);
+            txtTransferAxtaris.Size = new System.Drawing.Size(113, 45);
             txtTransferAxtaris.TabIndex = 7;
             txtTransferAxtaris.Text = "🔍 Axtar";
             txtTransferAxtaris.UseVisualStyleBackColor = false;
@@ -907,10 +907,10 @@ namespace AzAgroPOS.PL.Forms
             btnTransferDetali.BackColor = System.Drawing.Color.FromArgb(149, 165, 166);
             btnTransferDetali.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             btnTransferDetali.ForeColor = System.Drawing.Color.White;
-            btnTransferDetali.Location = new System.Drawing.Point(497, 17);
+            btnTransferDetali.Location = new System.Drawing.Point(497, 19);
             btnTransferDetali.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnTransferDetali.Name = "btnTransferDetali";
-            btnTransferDetali.Size = new System.Drawing.Size(117, 40);
+            btnTransferDetali.Size = new System.Drawing.Size(117, 45);
             btnTransferDetali.TabIndex = 4;
             btnTransferDetali.Text = "🔍 Detaylar";
             btnTransferDetali.UseVisualStyleBackColor = false;
@@ -920,10 +920,10 @@ namespace AzAgroPOS.PL.Forms
             btnIptalTransfer.BackColor = System.Drawing.Color.FromArgb(231, 76, 60);
             btnIptalTransfer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             btnIptalTransfer.ForeColor = System.Drawing.Color.White;
-            btnIptalTransfer.Location = new System.Drawing.Point(397, 17);
+            btnIptalTransfer.Location = new System.Drawing.Point(397, 19);
             btnIptalTransfer.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnIptalTransfer.Name = "btnIptalTransfer";
-            btnIptalTransfer.Size = new System.Drawing.Size(93, 40);
+            btnIptalTransfer.Size = new System.Drawing.Size(93, 45);
             btnIptalTransfer.TabIndex = 3;
             btnIptalTransfer.Text = "❌ İptal";
             btnIptalTransfer.UseVisualStyleBackColor = false;
@@ -933,10 +933,10 @@ namespace AzAgroPOS.PL.Forms
             btnQebulTransfer.BackColor = System.Drawing.Color.FromArgb(155, 89, 182);
             btnQebulTransfer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             btnQebulTransfer.ForeColor = System.Drawing.Color.White;
-            btnQebulTransfer.Location = new System.Drawing.Point(273, 17);
+            btnQebulTransfer.Location = new System.Drawing.Point(273, 19);
             btnQebulTransfer.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnQebulTransfer.Name = "btnQebulTransfer";
-            btnQebulTransfer.Size = new System.Drawing.Size(117, 40);
+            btnQebulTransfer.Size = new System.Drawing.Size(117, 45);
             btnQebulTransfer.TabIndex = 2;
             btnQebulTransfer.Text = "✅ Qəbul Et";
             btnQebulTransfer.UseVisualStyleBackColor = false;
@@ -946,10 +946,10 @@ namespace AzAgroPOS.PL.Forms
             btnGonderTransfer.BackColor = System.Drawing.Color.FromArgb(52, 152, 219);
             btnGonderTransfer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             btnGonderTransfer.ForeColor = System.Drawing.Color.White;
-            btnGonderTransfer.Location = new System.Drawing.Point(149, 17);
+            btnGonderTransfer.Location = new System.Drawing.Point(149, 19);
             btnGonderTransfer.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnGonderTransfer.Name = "btnGonderTransfer";
-            btnGonderTransfer.Size = new System.Drawing.Size(117, 40);
+            btnGonderTransfer.Size = new System.Drawing.Size(117, 45);
             btnGonderTransfer.TabIndex = 1;
             btnGonderTransfer.Text = "🚚 Göndər";
             btnGonderTransfer.UseVisualStyleBackColor = false;
@@ -959,10 +959,10 @@ namespace AzAgroPOS.PL.Forms
             btnYeniTransfer.BackColor = System.Drawing.Color.FromArgb(46, 204, 113);
             btnYeniTransfer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             btnYeniTransfer.ForeColor = System.Drawing.Color.White;
-            btnYeniTransfer.Location = new System.Drawing.Point(14, 17);
+            btnYeniTransfer.Location = new System.Drawing.Point(14, 19);
             btnYeniTransfer.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnYeniTransfer.Name = "btnYeniTransfer";
-            btnYeniTransfer.Size = new System.Drawing.Size(128, 40);
+            btnYeniTransfer.Size = new System.Drawing.Size(128, 45);
             btnYeniTransfer.TabIndex = 0;
             btnYeniTransfer.Text = "➕ Yeni Transfer";
             btnYeniTransfer.UseVisualStyleBackColor = false;
@@ -970,7 +970,7 @@ namespace AzAgroPOS.PL.Forms
             // statusStrip
             // 
             statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripStatusLabel });
-            statusStrip.Location = new System.Drawing.Point(0, 753);
+            statusStrip.Location = new System.Drawing.Point(0, 856);
             statusStrip.Name = "statusStrip";
             statusStrip.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
             statusStrip.Size = new System.Drawing.Size(1400, 22);
@@ -980,19 +980,19 @@ namespace AzAgroPOS.PL.Forms
             // toolStripStatusLabel
             // 
             toolStripStatusLabel.Name = "toolStripStatusLabel";
-            toolStripStatusLabel.Size = new System.Drawing.Size(95, 17);
+            toolStripStatusLabel.Size = new System.Drawing.Size(110, 17);
             toolStripStatusLabel.Text = "🏢 Tədarük Modulu";
             // 
             // TedarukManagementForm
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(1400, 775);
+            ClientSize = new System.Drawing.Size(1400, 878);
             Controls.Add(tabControl);
             Controls.Add(statusStrip);
             Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            MinimumSize = new System.Drawing.Size(800, 675);
             Name = "TedarukManagementForm";
-            StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             Text = "Tədarük və Anbar İdarəetməsi";
             WindowState = System.Windows.Forms.FormWindowState.Maximized;
             tabControl.ResumeLayout(false);

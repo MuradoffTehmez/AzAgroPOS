@@ -473,19 +473,19 @@ namespace AzAgroPOS.PL.Forms
         {
             try
             {
-                var debts = _borcService.GetAllDebts().AsQueryable();
+                var debts = _borcService.GetAllDebts().ToList();
 
                 if (!string.IsNullOrEmpty(status))
-                    debts = debts.Where(d => d.Status == status);
+                    debts = debts.Where(d => d.Status == status).ToList();
 
                 if (customerId.HasValue)
-                    debts = debts.Where(d => d.MusteriId == customerId.Value);
+                    debts = debts.Where(d => d.MusteriId == customerId.Value).ToList();
 
                 if (startDate.HasValue)
-                    debts = debts.Where(d => d.BorcTarixi >= startDate.Value);
+                    debts = debts.Where(d => d.BorcTarixi >= startDate.Value).ToList();
 
                 if (endDate.HasValue)
-                    debts = debts.Where(d => d.BorcTarixi <= endDate.Value);
+                    debts = debts.Where(d => d.BorcTarixi <= endDate.Value).ToList();
 
                 var filteredDebts = debts.Select(d => new
                 {

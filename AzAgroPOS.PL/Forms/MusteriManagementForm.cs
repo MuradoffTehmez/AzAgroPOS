@@ -3,6 +3,7 @@ using AzAgroPOS.Entities.Domain;
 using AzAgroPOS.Entities.Constants;
 using AzAgroPOS.BLL.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -162,46 +163,47 @@ namespace AzAgroPOS.PL.Forms
             }
         }
 
-        private IQueryable<Musteri> GetFilteredCustomers()
+        private List<Musteri> GetFilteredCustomers()
         {
             var selectedFilter = cmbFilter.SelectedItem?.ToString();
             var selectedGroup = cmbCustomerGroup.SelectedIndex > 0 ? 
                                ((MusteriQrupu)cmbCustomerGroup.SelectedItem).Id : (int?)null;
             var searchTerm = txtSearch.Text.Trim();
 
-            var customers = _musteriService.GetActiveCustomers().AsQueryable();
+            // Start with materialized data to avoid Entity Framework translation issues
+            var customers = _musteriService.GetActiveCustomers().ToList();
 
             // Apply group filter
             if (selectedGroup.HasValue)
             {
-                customers = customers.Where(m => m.MusteriQrupuId == selectedGroup.Value);
+                customers = customers.Where(m => m.MusteriQrupuId == selectedGroup.Value).ToList();
             }
 
             // Apply search filter
             if (!string.IsNullOrEmpty(searchTerm))
             {
-                customers = _musteriService.SearchCustomers(searchTerm).AsQueryable();
+                customers = _musteriService.SearchCustomers(searchTerm).ToList();
             }
 
-            // Apply special filters
+            // Apply special filters on materialized data
             switch (selectedFilter)
             {
                 case "VIP Müştərilər":
-                    customers = customers.Where(m => m.UmumiAlis > 10000);
+                    customers = customers.Where(m => m.UmumiAlis > 10000).ToList();
                     break;
                 case "Yeni Müştərilər (30 gün)":
                     var newDate = DateTime.Now.AddDays(-30);
-                    customers = customers.Where(m => m.YaradilmaTarixi >= newDate);
+                    customers = customers.Where(m => m.YaradilmaTarixi >= newDate).ToList();
                     break;
                 case "Passiv Müştərilər (90 gün)":
                     var passiveDate = DateTime.Now.AddDays(-90);
-                    customers = customers.Where(m => !m.SonZiyaretTarixi.HasValue || m.SonZiyaretTarixi < passiveDate);
+                    customers = customers.Where(m => !m.SonZiyaretTarixi.HasValue || m.SonZiyaretTarixi < passiveDate).ToList();
                     break;
                 case "Borcu Olan Müştərilər":
-                    customers = customers.Where(m => m.CariBorc > 0);
+                    customers = customers.Where(m => m.CariBorc > 0).ToList();
                     break;
                 case "Kredit Limiti Aşılan":
-                    customers = customers.Where(m => m.CariBorc > m.KreditLimiti && m.KreditLimiti > 0);
+                    customers = customers.Where(m => m.CariBorc > m.KreditLimiti && m.KreditLimiti > 0).ToList();
                     break;
             }
 

@@ -301,24 +301,24 @@ namespace AzAgroPOS.PL.Forms
         {
             try
             {
-                var repairs = _tamirService.GetAllRepairs().AsQueryable();
+                var repairs = _tamirService.GetAllRepairs().ToList();
 
                 if (!string.IsNullOrEmpty(status))
-                    repairs = repairs.Where(r => r.Status == status);
+                    repairs = repairs.Where(r => r.Status == status).ToList();
 
                 if (customerId.HasValue)
-                    repairs = repairs.Where(r => r.MusteriId == customerId.Value);
+                    repairs = repairs.Where(r => r.MusteriId == customerId.Value).ToList();
 
                 if (!string.IsNullOrEmpty(priority))
-                    repairs = repairs.Where(r => r.Prioritet == priority);
+                    repairs = repairs.Where(r => r.Prioritet == priority).ToList();
 
                 if (startDate.HasValue)
-                    repairs = repairs.Where(r => r.QebulTarixi >= startDate.Value);
+                    repairs = repairs.Where(r => r.QebulTarixi >= startDate.Value).ToList();
 
                 if (endDate.HasValue)
-                    repairs = repairs.Where(r => r.QebulTarixi <= endDate.Value);
+                    repairs = repairs.Where(r => r.QebulTarixi <= endDate.Value).ToList();
 
-                var filteredRepairs = repairs.ToList().Select(r => new
+                var filteredRepairs = repairs.Select(r => new
                 {
                     r.Id,
                     TamirNomresi = r.TamirNomresiFormatli,
