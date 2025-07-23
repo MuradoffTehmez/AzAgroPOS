@@ -56,8 +56,8 @@ namespace AzAgroPOS.PL
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Database initialization xətası: {ex.Message}\n\nInner Exception: {ex.InnerException?.Message}", 
-                    "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Database initialization error: {ex.Message}\n\nInner Exception: {ex.InnerException?.Message}", 
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             // Show splash screen first
