@@ -108,10 +108,13 @@ namespace AzAgroPOS.BLL.Services
         {
             return ExecuteWithTransaction(() =>
             {
-                // Validation
-                var validationResult = ValidateCustomer(musteri, musteri.Id);
+                // FluentValidation
+                var validationResult = _validator.Validate(musteri);
                 if (!validationResult.IsValid)
-                    return (false, validationResult.ErrorMessage);
+                {
+                    var errorMessage = string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage));
+                    return (false, errorMessage);
+                }
 
                 // Check if code exists
                 if (!string.IsNullOrEmpty(musteri.MusteriKodu) &&
@@ -289,39 +292,6 @@ namespace AzAgroPOS.BLL.Services
         #endregion
 
         #region Helper Methods
-
-        private (bool IsValid, string ErrorMessage) ValidateCustomer(Musteri musteri, int? excludeId = null)
-        {
-            if (string.IsNullOrEmpty(musteri.Ad))
-                return (false, "Ad mütləqdir.");
-
-            if (string.IsNullOrEmpty(musteri.Soyad))
-                return (false, "Soyad mütləqdir.");
-
-            if (!string.IsNullOrEmpty(musteri.Email) && !IsValidEmail(musteri.Email))
-                return (false, "Email formatı düzgün deyil.");
-
-            if (musteri.KreditLimiti < 0)
-                return (false, "Kredit limiti mənfi ola bilməz.");
-
-            if (musteri.DogumTarixi.HasValue && musteri.DogumTarixi.Value > DateTime.Now)
-                return (false, "Doğum tarixi gələcəkdə ola bilməz.");
-
-            return (true, "");
-        }
-
-        private bool IsValidEmail(string email)
-        {
-            try
-            {
-                var addr = new MailAddress(email);
-                return addr.Address == email;
-            }
-            catch
-            {
-                return false;
-            }
-        }
 
         private T ExecuteWithExceptionHandling<T>(Func<T> action, string errorMessage)
         {

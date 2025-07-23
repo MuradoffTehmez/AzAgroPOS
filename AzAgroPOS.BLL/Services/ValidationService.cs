@@ -30,96 +30,11 @@ namespace AzAgroPOS.BLL.Services
         /// </summary>
         /// <param name="musteri">Müştəri obyekti</param>
         /// <returns>Validasiya nəticəsi</returns>
-        public ValidationResult ValidateMusteri(Musteri musteri)
-        {
-            var result = new ValidationResult { IsValid = true };
-            var errors = new List<string>();
-
-            try
-            {
-                if (musteri == null)
-                {
-                    result.IsValid = false;
-                    result.ErrorMessage = "Müştəri məlumatları boş ola bilməz";
-                    return result;
-                }
-
-                // Ad yoxlaması
-                if (string.IsNullOrWhiteSpace(musteri.Ad))
-                {
-                    errors.Add("Müştəri adı mütləqdir");
-                }
-                else if (musteri.Ad.Length < 2)
-                {
-                    errors.Add("Müştəri adı minimum 2 simvoldan ibarət olmalıdır");
-                }
-                else if (musteri.Ad.Length > 100)
-                {
-                    errors.Add("Müştəri adı maksimum 100 simvoldan ibarət ola bilər");
-                }
-
-                // Soyad yoxlaması
-                if (string.IsNullOrWhiteSpace(musteri.Soyad))
-                {
-                    errors.Add("Müştəri soyadı mütləqdir");
-                }
-                else if (musteri.Soyad.Length < 2)
-                {
-                    errors.Add("Müştəri soyadı minimum 2 simvoldan ibarət olmalıdır");
-                }
-                else if (musteri.Soyad.Length > 100)
-                {
-                    errors.Add("Müştəri soyadı maksimum 100 simvoldan ibarət ola bilər");
-                }
-
-                // Telefon yoxlaması
-                if (!string.IsNullOrWhiteSpace(musteri.Telefon))
-                {
-                    var phoneValidation = ValidatePhoneNumber(musteri.Telefon);
-                    if (!phoneValidation.IsValid)
-                    {
-                        errors.Add(phoneValidation.ErrorMessage);
-                    }
-                }
-
-                // Email yoxlaması
-                if (!string.IsNullOrWhiteSpace(musteri.Email))
-                {
-                    var emailValidation = ValidateEmail(musteri.Email);
-                    if (!emailValidation.IsValid)
-                    {
-                        errors.Add(emailValidation.ErrorMessage);
-                    }
-                }
-
-                // Ünvan yoxlaması
-                if (!string.IsNullOrWhiteSpace(musteri.Unvan) && musteri.Unvan.Length > 500)
-                {
-                    errors.Add("Ünvan maksimum 500 simvoldan ibarət ola bilər");
-                }
-
-                // Qrup ID yoxlaması
-                if (musteri.MusteriQrupuId.HasValue && musteri.MusteriQrupuId.Value <= 0)
-                {
-                    errors.Add("Müştəri qrup ID-si düzgün deyil");
-                }
-
-                if (errors.Any())
-                {
-                    result.IsValid = false;
-                    result.ErrorMessage = string.Join("; ", errors);
-                }
-
-                return result;
-            }
-            catch (Exception ex)
-            {
-                _logger?.LogError(new Exception("Müştəri validasiya xətası", ex));
-                result.IsValid = false;
-                result.ErrorMessage = "Validasiya zamanı xəta baş verdi";
-                return result;
-            }
-        }
+        // FluentValidation istifadə olunduğu üçün bu metod artıq lazım deyil və silinir
+        // public ValidationResult ValidateMusteri(Musteri musteri)
+        // {
+        //     ...
+        // }
 
         #endregion
 
