@@ -1,11 +1,11 @@
-﻿using AzAgroPOS.Verilenler;
+﻿// Fayl: AzAgroPOS.Verilenler/Realizasialar/RolRepozitori.cs
+namespace AzAgroPOS.Verilenler.Realizasialar;
+
+using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using AzAgroPOS.Verilenler.Kontekst;
-using AzAgroPOS.Verilenler.Realizasialar;
 
-public class RolRepozitori : Repozitori<Rol>, IRolRepozitori 
-{ public RolRepozitori(AzAgroPOSDbContext kontekst) : base(kontekst) 
-    {
-        // Burada əlavə konfiqurasiyalar və ya metodlar əlavə edilə bilər
-    }
+public class RolRepozitori : Repozitori<Rol>, IRolRepozitori
+{
+    public RolRepozitori(AzAgroPOSDbContext kontekst) : base(kontekst) { }
 }

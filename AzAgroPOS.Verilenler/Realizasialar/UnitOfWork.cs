@@ -4,6 +4,7 @@ namespace AzAgroPOS.Verilenler.Realizasialar;
 using System.Threading.Tasks;
 using AzAgroPOS.Verilenler.Interfeysler;
 using AzAgroPOS.Verilenler.Kontekst;
+using AzAgroPOS.Varliglar;
 
 public class UnitOfWork : IUnitOfWork
 {
