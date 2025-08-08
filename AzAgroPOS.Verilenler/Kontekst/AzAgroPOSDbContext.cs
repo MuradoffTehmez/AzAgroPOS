@@ -2,7 +2,9 @@
 namespace AzAgroPOS.Verilenler.Kontekst;
 
 using AzAgroPOS.Varliglar;
+using BCrypt;
 using Microsoft.EntityFrameworkCore;
+
 
 public class AzAgroPOSDbContext : DbContext
 {
@@ -82,6 +84,7 @@ public class AzAgroPOSDbContext : DbContext
         SeedData(modelBuilder);
     }
 
+    
     private void SeedData(ModelBuilder modelBuilder)
     {
         // 1. Rolları yarat
@@ -89,24 +92,71 @@ public class AzAgroPOSDbContext : DbContext
         var kassirRolu = new Rol { Id = 2, Ad = "Kassir" };
         modelBuilder.Entity<Rol>().HasData(adminRolu, kassirRolu);
 
-        // 2. Admin istifadəçisini yarat
-        // DİQQƏT: Əsl tətbiqdə parol mütləq BCrypt kimi alqoritmlə hash-lənməlidir!
-        // Bu nümunədə sadəlik üçün "12345" parolu hash-lənmiş kimi saxlanılır.
+        // 2. Admin istifadəçisini yarad (Parolu BCrypt ilə hash-lənmiş şəkildə)
+        // Əsl parol: "12345"
         var adminIstifadeci = new Istifadeci
         {
             Id = 1,
             IstifadeciAdi = "admin",
-            ParolHash = "admin_parolu_hash_formatinda_olmalidir", //TODO: Hashing implementasiyası
+            ParolHash = BCrypt.Net.BCrypt.HashPassword("12345"),
             TamAd = "Sistem Administratoru",
             RolId = adminRolu.Id
         };
         modelBuilder.Entity<Istifadeci>().HasData(adminIstifadeci);
 
-        // 3. Bir neçə nümunə məhsul yarat
+        // 3. Nümunə məhsullar
         modelBuilder.Entity<Mehsul>().HasData(
-            new Mehsul { Id = 1, Ad = "Çörək", StokKodu = "SK001", Barkod = "869000000001", SatisQiymeti = 0.70m, AlisQiymeti = 0.50m, MovcudSay = 100 },
-            new Mehsul { Id = 2, Ad = "Süd 1L", StokKodu = "SK002", Barkod = "869000000002", SatisQiymeti = 2.50m, AlisQiymeti = 2.00m, MovcudSay = 50 },
-            new Mehsul { Id = 3, Ad = "Yumurta (10 ədəd)", StokKodu = "SK003", Barkod = "869000000003", SatisQiymeti = 3.20m, AlisQiymeti = 2.80m, MovcudSay = 200 }
+            new Mehsul
+            {
+                Id = 1,
+                Ad = "Çörək",
+                StokKodu = "SK001",
+                Barkod = "869000000001",
+                SatisQiymeti = 0.70m,
+                AlisQiymeti = 0.50m,
+                MovcudSay = 100
+            },
+            new Mehsul
+            {
+                Id = 2,
+                Ad = "Süd 1L",
+                StokKodu = "SK002",
+                Barkod = "869000000002",
+                SatisQiymeti = 2.50m,
+                AlisQiymeti = 2.00m,
+                MovcudSay = 50
+            },
+            new Mehsul
+            {
+                Id = 3,
+                Ad = "Yumurta (10 ədəd)",
+                StokKodu = "SK003",
+                Barkod = "869000000003",
+                SatisQiymeti = 3.20m,
+                AlisQiymeti = 2.80m,
+                MovcudSay = 200
+            },
+            new Mehsul
+            {
+                Id = 4,
+                Ad = "Un (1 kq)",
+                StokKodu = "SK004",
+                Barkod = "869000000004",
+                SatisQiymeti = 1.00m,
+                AlisQiymeti = 0.80m,
+                MovcudSay = 150
+            },
+            new Mehsul
+            {
+                Id = 5,
+                Ad = "Duz (1 kq)",
+                StokKodu = "SK005",
+                Barkod = "869000000005",
+                SatisQiymeti = 5.50m,
+                AlisQiymeti = 1.30m,
+                MovcudSay = 120
+            }
         );
     }
+
 }

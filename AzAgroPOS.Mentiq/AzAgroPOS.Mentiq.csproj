@@ -4,6 +4,10 @@
     <ProjectReference Include="..\AzAgroPOS.Verilenler\AzAgroPOS.Verilenler.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
