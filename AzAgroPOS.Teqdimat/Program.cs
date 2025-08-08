@@ -10,6 +10,7 @@ internal static class Program
         loginFormu.ShowDialog();
         if (loginFormu.UgurluDaxilOlundu)
         {
+            // Application.Run(new LoginFormu());-nu şərhə alıb bunu yazın:
             Application.Run(new AnaMenuFormu());
         }
     }
