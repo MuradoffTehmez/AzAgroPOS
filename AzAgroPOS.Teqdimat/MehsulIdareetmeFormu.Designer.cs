@@ -356,10 +356,10 @@ namespace AzAgroPOS.Teqdimat
             materialCard1.Depth = 0;
             materialCard1.ForeColor = Color.FromArgb(222, 0, 0, 0);
             materialCard1.Location = new Point(20, 83);
-            materialCard1.Margin = new Padding(16, 16, 16, 16);
+            materialCard1.Margin = new Padding(16);
             materialCard1.MouseState = MaterialSkin.MouseState.HOVER;
             materialCard1.Name = "materialCard1";
-            materialCard1.Padding = new Padding(16, 16, 16, 16);
+            materialCard1.Padding = new Padding(16);
             materialCard1.Size = new Size(373, 636);
             materialCard1.TabIndex = 12;
             // 
