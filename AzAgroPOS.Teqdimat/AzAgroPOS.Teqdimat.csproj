@@ -4,6 +4,10 @@
     <ProjectReference Include="..\AzAgroPOS.Mentiq\AzAgroPOS.Mentiq.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="MaterialSkin.2" Version="2.3.1" />
+  </ItemGroup>
+
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
