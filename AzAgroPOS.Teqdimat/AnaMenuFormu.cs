@@ -21,4 +21,9 @@ public partial class AnaMenuFormu : BazaForm
         var satisFormu = new SatisFormu();
         satisFormu.ShowDialog();
     }
+    private void btnNisyeIdareetme_Click(object sender, EventArgs e)
+    {
+        var nisyeFormu = new NisyeIdareetmeFormu();
+        nisyeFormu.ShowDialog();
+    }
 }

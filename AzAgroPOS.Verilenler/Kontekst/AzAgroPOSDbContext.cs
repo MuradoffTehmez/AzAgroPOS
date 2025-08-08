@@ -13,6 +13,7 @@ public class AzAgroPOSDbContext : DbContext
     public DbSet<SatisDetali> SatisDetallari { get; set; }
     public DbSet<Istifadeci> Istifadeciler { get; set; }
     public DbSet<Rol> Rollar { get; set; }
+    public DbSet<NisyeHereketi> NisyeHereketleri { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

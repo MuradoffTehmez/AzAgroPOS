@@ -3,15 +3,8 @@ namespace AzAgroPOS.Teqdimat
 {
     partial class AnaMenuFormu
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -22,15 +15,11 @@ namespace AzAgroPOS.Teqdimat
         }
 
         #region Windows Form Designer generated code
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
             btnMehsulIdareetme = new MaterialSkin.Controls.MaterialButton();
             btnYeniSatis = new MaterialSkin.Controls.MaterialButton();
+            btnNisyeIdareetme = new MaterialSkin.Controls.MaterialButton();
             SuspendLayout();
             // 
             // btnMehsulIdareetme
@@ -44,12 +33,12 @@ namespace AzAgroPOS.Teqdimat
             btnMehsulIdareetme.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnMehsulIdareetme.HighEmphasis = true;
             btnMehsulIdareetme.Icon = null;
-            btnMehsulIdareetme.Location = new Point(231, 164);
-            btnMehsulIdareetme.Margin = new Padding(5, 7, 5, 7);
+            btnMehsulIdareetme.Location = new Point(198, 105);
+            btnMehsulIdareetme.Margin = new Padding(4, 6, 4, 6);
             btnMehsulIdareetme.MouseState = MaterialSkin.MouseState.HOVER;
             btnMehsulIdareetme.Name = "btnMehsulIdareetme";
             btnMehsulIdareetme.NoAccentTextColor = Color.Empty;
-            btnMehsulIdareetme.Size = new Size(472, 78);
+            btnMehsulIdareetme.Size = new Size(405, 68);
             btnMehsulIdareetme.TabIndex = 0;
             btnMehsulIdareetme.Text = "Məhsulları İdarə Et";
             btnMehsulIdareetme.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -68,12 +57,12 @@ namespace AzAgroPOS.Teqdimat
             btnYeniSatis.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnYeniSatis.HighEmphasis = true;
             btnYeniSatis.Icon = null;
-            btnYeniSatis.Location = new Point(231, 256);
-            btnYeniSatis.Margin = new Padding(5, 7, 5, 7);
+            btnYeniSatis.Location = new Point(198, 185);
+            btnYeniSatis.Margin = new Padding(4, 6, 4, 6);
             btnYeniSatis.MouseState = MaterialSkin.MouseState.HOVER;
             btnYeniSatis.Name = "btnYeniSatis";
             btnYeniSatis.NoAccentTextColor = Color.Empty;
-            btnYeniSatis.Size = new Size(472, 78);
+            btnYeniSatis.Size = new Size(405, 68);
             btnYeniSatis.TabIndex = 1;
             btnYeniSatis.Text = "Yeni Satış";
             btnYeniSatis.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -81,25 +70,46 @@ namespace AzAgroPOS.Teqdimat
             btnYeniSatis.UseVisualStyleBackColor = false;
             btnYeniSatis.Click += btnYeniSatis_Click;
             // 
+            // btnNisyeIdareetme
+            // 
+            btnNisyeIdareetme.Anchor = AnchorStyles.None;
+            btnNisyeIdareetme.AutoSize = false;
+            btnNisyeIdareetme.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnNisyeIdareetme.BackColor = Color.FromArgb(242, 242, 242);
+            btnNisyeIdareetme.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnNisyeIdareetme.Depth = 0;
+            btnNisyeIdareetme.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            btnNisyeIdareetme.HighEmphasis = true;
+            btnNisyeIdareetme.Icon = null;
+            btnNisyeIdareetme.Location = new Point(198, 265);
+            btnNisyeIdareetme.Margin = new Padding(4, 6, 4, 6);
+            btnNisyeIdareetme.MouseState = MaterialSkin.MouseState.HOVER;
+            btnNisyeIdareetme.Name = "btnNisyeIdareetme";
+            btnNisyeIdareetme.NoAccentTextColor = Color.Empty;
+            btnNisyeIdareetme.Size = new Size(405, 68);
+            btnNisyeIdareetme.TabIndex = 2;
+            btnNisyeIdareetme.Text = "Nisyə / Borc İdarəetməsi";
+            btnNisyeIdareetme.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnNisyeIdareetme.UseAccentColor = false;
+            btnNisyeIdareetme.UseVisualStyleBackColor = false;
+            btnNisyeIdareetme.Click += btnNisyeIdareetme_Click;
+            // 
             // AnaMenuFormu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(933, 519);
+            ClientSize = new Size(800, 450);
+            Controls.Add(btnNisyeIdareetme);
             Controls.Add(btnYeniSatis);
             Controls.Add(btnMehsulIdareetme);
-            Margin = new Padding(4, 3, 4, 3);
             Name = "AnaMenuFormu";
-            Padding = new Padding(4, 74, 4, 3);
             StartPosition = FormStartPosition.CenterScreen;
             Text = "AzAgroPOS - Ana Menyu";
             ResumeLayout(false);
-
         }
-
         #endregion
 
         private MaterialSkin.Controls.MaterialButton btnMehsulIdareetme;
         private MaterialSkin.Controls.MaterialButton btnYeniSatis;
+        private MaterialSkin.Controls.MaterialButton btnNisyeIdareetme;
     }
 }
