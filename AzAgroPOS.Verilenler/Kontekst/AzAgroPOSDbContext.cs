@@ -2,9 +2,8 @@
 namespace AzAgroPOS.Verilenler.Kontekst;
 
 using AzAgroPOS.Varliglar;
-using BCrypt;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.Extensions.Options;
 
 public class AzAgroPOSDbContext : DbContext
 {
@@ -22,7 +21,6 @@ public class AzAgroPOSDbContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         // Verilənlər bazasına qoşulma sətrini (connection string) burada təyin edirik.
-        // **DİQQƏT:** Bu sətri öz SQL Server konfiqurasiyanıza uyğun dəyişin!
         if (!optionsBuilder.IsConfigured)
         {
             optionsBuilder.UseSqlServer("Server=MURADOV-TAHMAZ\\TAHMAZ_MURADOV;Database=AzAgroPOS_DB;Trusted_Connection=True;TrustServerCertificate=True;");
@@ -34,56 +32,30 @@ public class AzAgroPOSDbContext : DbContext
         base.OnModelCreating(modelBuilder);
 
         // Model konfiqurasiyaları (pul vahidləri üçün dəqiqlik)
-        modelBuilder.Entity<Mehsul>()
-            .Property(m => m.SatisQiymeti)
-            .HasColumnType("decimal(18, 2)");
+        modelBuilder.Entity<Mehsul>().Property(m => m.SatisQiymeti).HasColumnType("decimal(18, 2)");
+        modelBuilder.Entity<Mehsul>().Property(m => m.AlisQiymeti).HasColumnType("decimal(18, 2)");
+        modelBuilder.Entity<Satis>().Property(s => s.UmumiMebleg).HasColumnType("decimal(18, 2)");
+        modelBuilder.Entity<SatisDetali>().Property(sd => sd.Qiymet).HasColumnType("decimal(18, 2)");
+        modelBuilder.Entity<Musteri>().Property(m => m.UmumiBorc).HasColumnType("decimal(18, 2)");
+        modelBuilder.Entity<Temir>().Property(t => t.TemirXerci).HasColumnType("decimal(18, 2)");
+        modelBuilder.Entity<Temir>().Property(t => t.YekunMebleg).HasColumnType("decimal(18, 2)");
+        modelBuilder.Entity<NisyeHereketi>().Property(n => n.Mebleg).HasColumnType("decimal(18, 2)");
 
-        modelBuilder.Entity<Mehsul>()
-            .Property(m => m.AlisQiymeti)
-            .HasColumnType("decimal(18, 2)");
-
-        modelBuilder.Entity<Satis>()
-            .Property(s => s.UmumiMebleg)
-            .HasColumnType("decimal(18, 2)");
-
-        modelBuilder.Entity<SatisDetali>()
-            .Property(sd => sd.Qiymet)
-            .HasColumnType("decimal(18, 2)");
-
-        modelBuilder.Entity<Musteri>()
-            .Property(m => m.UmumiBorc)
-            .HasColumnType("decimal(18, 2)");
-
-        modelBuilder.Entity<Temir>()
-            .Property(t => t.TemirXerci)
-            .HasColumnType("decimal(18, 2)");
-
-        modelBuilder.Entity<Temir>()
-            .Property(t => t.YekunMebleg)
-            .HasColumnType("decimal(18, 2)");
-
-        modelBuilder.Entity<NisyeHereketi>()
-            .Property(n => n.Mebleg)
-            .HasColumnType("decimal(18, 2)");
-
-        // 1. Rol və Istifadeci arasındakı əlaqə:
+        // Əlaqələrin dəqiq təyin edilməsi (Fluent API)
         modelBuilder.Entity<Istifadeci>()
-            .HasOne(i => i.Rol)               // Hər Istifadeci-nin bir Rol-u var.
-            .WithMany(r => r.Istifadeciler)   // Hər Rol-un isə çox Istifadeci-si var (Rol sinfindəki kolleksiya).
-            .HasForeignKey(i => i.RolId);     // Xarici açar Istifadeci.RolId-dir.
+            .HasOne(i => i.Rol)
+            .WithMany(r => r.Istifadeciler)
+            .HasForeignKey(i => i.RolId);
 
-        // 2. Temir və Istifadeci arasındakı əlaqə:
         modelBuilder.Entity<Temir>()
-            .HasOne(t => t.Isci)              // Hər Təmirin bir İşçisi var.
-            .WithMany(i => i.TemirSifarisleri) // Bu işçinin "TemirSifarisleri" kolleksiyasına aiddir.
-            .HasForeignKey(t => t.IsciId)     // Xarici açar Temir.IsciId-dir.
-            .OnDelete(DeleteBehavior.Restrict); // Vacib: Bir işçini silsək, ona bağlı təmir sifarişləri silinməsin.
-
+            .HasOne(t => t.Isci)
+            .WithMany(i => i.TemirSifarisleri)
+            .HasForeignKey(t => t.IsciId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         // İlkin məlumatların (Seed Data) əlavə edilməsi
         SeedData(modelBuilder);
     }
-
     
     private void SeedData(ModelBuilder modelBuilder)
     {
@@ -92,71 +64,23 @@ public class AzAgroPOSDbContext : DbContext
         var kassirRolu = new Rol { Id = 2, Ad = "Kassir" };
         modelBuilder.Entity<Rol>().HasData(adminRolu, kassirRolu);
 
-        // 2. Admin istifadəçisini yarad (Parolu BCrypt ilə hash-lənmiş şəkildə)
-        // Əsl parol: "12345"
+        // 2. Admin istifadəçisini yarat
         var adminIstifadeci = new Istifadeci
         {
             Id = 1,
             IstifadeciAdi = "admin",
+            // DİQQƏT: Dinamik funksiya yerinə, statik hash-i birbaşa yazırıq
             ParolHash = "$2a$12$7k.z0VbLveS04B26Sg6Xoel5d1k3e.d6eJd.r4zGuL/l0U8h5V2qC",
             TamAd = "Sistem Administratoru",
             RolId = adminRolu.Id
         };
         modelBuilder.Entity<Istifadeci>().HasData(adminIstifadeci);
-
-        // 3. Nümunə məhsullar
+        
+        // 3. Bir neçə nümunə məhsul yarat
         modelBuilder.Entity<Mehsul>().HasData(
-            new Mehsul
-            {
-                Id = 1,
-                Ad = "Çörək",
-                StokKodu = "SK001",
-                Barkod = "869000000001",
-                SatisQiymeti = 0.70m,
-                AlisQiymeti = 0.50m,
-                MovcudSay = 100
-            },
-            new Mehsul
-            {
-                Id = 2,
-                Ad = "Süd 1L",
-                StokKodu = "SK002",
-                Barkod = "869000000002",
-                SatisQiymeti = 2.50m,
-                AlisQiymeti = 2.00m,
-                MovcudSay = 50
-            },
-            new Mehsul
-            {
-                Id = 3,
-                Ad = "Yumurta (10 ədəd)",
-                StokKodu = "SK003",
-                Barkod = "869000000003",
-                SatisQiymeti = 3.20m,
-                AlisQiymeti = 2.80m,
-                MovcudSay = 200
-            },
-            new Mehsul
-            {
-                Id = 4,
-                Ad = "Un (1 kq)",
-                StokKodu = "SK004",
-                Barkod = "869000000004",
-                SatisQiymeti = 1.00m,
-                AlisQiymeti = 0.80m,
-                MovcudSay = 150
-            },
-            new Mehsul
-            {
-                Id = 5,
-                Ad = "Duz (1 kq)",
-                StokKodu = "SK005",
-                Barkod = "869000000005",
-                SatisQiymeti = 5.50m,
-                AlisQiymeti = 1.30m,
-                MovcudSay = 120
-            }
+            new Mehsul { Id = 1, Ad = "Çörək", StokKodu = "SK001", Barkod = "869000000001", SatisQiymeti = 0.70m, AlisQiymeti = 0.50m, MovcudSay = 100 },
+            new Mehsul { Id = 2, Ad = "Süd 1L", StokKodu = "SK002", Barkod = "869000000002", SatisQiymeti = 2.50m, AlisQiymeti = 2.00m, MovcudSay = 50 },
+            new Mehsul { Id = 3, Ad = "Yumurta (10 ədəd)", StokKodu = "SK003", Barkod = "869000000003", SatisQiymeti = 3.20m, AlisQiymeti = 2.80m, MovcudSay = 200 }
         );
     }
-
 }
