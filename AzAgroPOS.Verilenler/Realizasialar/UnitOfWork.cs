@@ -18,6 +18,7 @@ public class UnitOfWork : IUnitOfWork
     public IRolRepozitori Rollar { get; private set; }
     public INisyeHereketiRepozitori NisyeHereketleri { get; private set; }
     public ITemirRepozitori TemirSifarisleri { get; private set; }
+    public INovbeRepozitori Novbeler { get; private set; }
 
     public UnitOfWork(AzAgroPOSDbContext kontekst)
     {
@@ -31,6 +32,7 @@ public class UnitOfWork : IUnitOfWork
         Rollar = new RolRepozitori(_kontekst);
         NisyeHereketleri = new NisyeHereketiRepozitori(_kontekst);
         TemirSifarisleri = new TemirRepozitori(_kontekst);
+        Novbeler = new NovbeRepozitori(_kontekst);
     }
 
     public async Task<int> EmeliyyatiTesdiqleAsync()

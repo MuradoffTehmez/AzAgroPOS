@@ -8,6 +8,9 @@ using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Verilenler.Kontekst;
 using AzAgroPOS.Verilenler.Realizasialar;
 using AzAgroPOS.Varliglar;
+using AzAgroPOS.Teqdimat.Yardimcilar;
+using System;
+
 
 public class SatisPresenter
 {
@@ -64,17 +67,23 @@ public class SatisPresenter
 
     private async Task SatisiTesdiqle()
     {
-        var netice = await _satisManager.SatisiTesdiqleAsync(_sebet, OdenisMetodu.Nağd); // Hələlik Nağd
+        if (!AktivSessiya.AktivNovbeId.HasValue)
+        {
+            _view.MesajGoster("Aktiv növbə yoxdur. Satış etmək mümkün deyil.", "Xəta", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            return;
+        }
+
+        var netice = await _satisManager.SatisiTesdiqleAsync(_sebet, OdenisMetodu.Nağd, AktivSessiya.AktivNovbeId.Value);
         if (netice.UgurluDur)
         {
-            _view.MesajGoster("Satış uğurla tamamlandı!", "Uğurlu Əməliyyat", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            _view.MesajGoster("Satış uğurla tamamlandı!", "Uğurlu Əməliyyat", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
             _sebet.Clear();
             GosterisleriYenile();
             _view.FormuSifirla();
         }
         else
         {
-            _view.MesajGoster(netice.Mesaj, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            _view.MesajGoster(netice.Mesaj, "Xəta", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
         }
     }
 

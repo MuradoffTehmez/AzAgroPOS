@@ -16,6 +16,7 @@ public class AzAgroPOSDbContext : DbContext
     public DbSet<Rol> Rollar { get; set; }
     public DbSet<NisyeHereketi> NisyeHereketleri { get; set; }
     public DbSet<Temir> TemirSifarisleri { get; set; }
+    public DbSet<Novbe> Novbeler { get; set; }
 
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -40,7 +41,11 @@ public class AzAgroPOSDbContext : DbContext
         modelBuilder.Entity<Temir>().Property(t => t.TemirXerci).HasColumnType("decimal(18, 2)");
         modelBuilder.Entity<Temir>().Property(t => t.YekunMebleg).HasColumnType("decimal(18, 2)");
         modelBuilder.Entity<NisyeHereketi>().Property(n => n.Mebleg).HasColumnType("decimal(18, 2)");
-
+        modelBuilder.Entity<Satis>()
+            .HasOne(s => s.Novbe)
+            .WithMany(n => n.Satislar)
+            .HasForeignKey(s => s.NovbeId)
+            .OnDelete(DeleteBehavior.Restrict);
         // Əlaqələrin dəqiq təyin edilməsi (Fluent API)
         modelBuilder.Entity<Istifadeci>()
             .HasOne(i => i.Rol)

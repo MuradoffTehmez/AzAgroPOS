@@ -56,6 +56,7 @@ public partial class AnaMenuFormu : BazaForm
             btnYeniSatis.Enabled = false;
             btnNisyeIdareetme.Enabled = false;
             btnTemirIdareetme.Enabled = false;
+            btnNovbeIdareetme.Enabled = false;
         }
     }
 
@@ -93,5 +94,10 @@ public partial class AnaMenuFormu : BazaForm
         {
             temirFormu.ShowDialog();
         }
+    }
+    private void btnNovbeIdareetme_Click(object sender, EventArgs e)
+    {
+        using (var form = new NovbeIdareetmesiFormu()) { form.ShowDialog(); }
+        IcazeleriYoxla(); 
     }
 }

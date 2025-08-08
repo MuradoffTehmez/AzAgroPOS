@@ -15,6 +15,7 @@ public interface IUnitOfWork : IAsyncDisposable
     IRolRepozitori Rollar { get; }
     INisyeHereketiRepozitori NisyeHereketleri { get; }
     ITemirRepozitori TemirSifarisleri { get; }
+    INovbeRepozitori Novbeler { get; }
 
     /// <summary>
     /// Edilmiş bütün dəyişiklikləri vahid bir tranzaksiya kimi verilənlər bazasına tətbiq edir.
