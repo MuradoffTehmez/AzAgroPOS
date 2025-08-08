@@ -26,4 +26,11 @@ public partial class AnaMenuFormu : BazaForm
         var nisyeFormu = new NisyeIdareetmeFormu();
         nisyeFormu.ShowDialog();
     }
+
+    private void btnTemirIdareetme_Click(object sender, EventArgs e)
+    {
+        // Təmir idarəetmə pəncərəsini açırıq
+        var temirFormu = new TemirIdareetmeFormu();
+        temirFormu.ShowDialog();
+    }
 }

@@ -30,4 +30,9 @@ public class Istifadeci : BazaVarligi
     /// Naviqasiya xüsusiyyəti: İstifadəçinin rolu.
     /// </summary>
     public Rol? Rol { get; set; }
+
+    /// <summary>
+    /// Bu işçiyə təyin edilmiş təmir sifarişlərinin siyahısı.
+    /// </summary>
+    public ICollection<Temir> TemirSifarisleri { get; set; } = new List<Temir>();
 }

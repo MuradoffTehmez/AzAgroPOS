@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 public class AzAgroPOSDbContext : DbContext
 {
-    // Hər bir varlıq üçün DbSet təyin edirik. Bunlar cədvəlləri təmsil edəcək.
+    // Hər bir varlıq üçün DbSet təyin edirik. Bunlar verilənlər bazasındakı cədvəlləri təmsil edəcək.
     public DbSet<Mehsul> Mehsullar { get; set; }
     public DbSet<Musteri> Musteriler { get; set; }
     public DbSet<Satis> Satislar { get; set; }
@@ -14,22 +14,24 @@ public class AzAgroPOSDbContext : DbContext
     public DbSet<Istifadeci> Istifadeciler { get; set; }
     public DbSet<Rol> Rollar { get; set; }
     public DbSet<NisyeHereketi> NisyeHereketleri { get; set; }
+    public DbSet<Temir> TemirSifarisleri { get; set; }
+
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         // Verilənlər bazasına qoşulma sətrini (connection string) burada təyin edirik.
+        // **DİQQƏT:** Bu sətri öz SQL Server konfiqurasiyanıza uyğun dəyişin!
         if (!optionsBuilder.IsConfigured)
         {
             optionsBuilder.UseSqlServer("Server=MURADOV-TAHMAZ\\TAHMAZ_MURADOV;Database=AzAgroPOS_DB;Trusted_Connection=True;TrustServerCertificate=True;");
         }
-
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
-        // Model konfiqurasiyaları (məsələn, qiymət üçün dəqiqlik)
+        // Model konfiqurasiyaları (pul vahidləri üçün dəqiqlik)
         modelBuilder.Entity<Mehsul>()
             .Property(m => m.SatisQiymeti)
             .HasColumnType("decimal(18, 2)");
@@ -49,6 +51,32 @@ public class AzAgroPOSDbContext : DbContext
         modelBuilder.Entity<Musteri>()
             .Property(m => m.UmumiBorc)
             .HasColumnType("decimal(18, 2)");
+
+        modelBuilder.Entity<Temir>()
+            .Property(t => t.TemirXerci)
+            .HasColumnType("decimal(18, 2)");
+
+        modelBuilder.Entity<Temir>()
+            .Property(t => t.YekunMebleg)
+            .HasColumnType("decimal(18, 2)");
+
+        modelBuilder.Entity<NisyeHereketi>()
+            .Property(n => n.Mebleg)
+            .HasColumnType("decimal(18, 2)");
+
+        // 1. Rol və Istifadeci arasındakı əlaqə:
+        modelBuilder.Entity<Istifadeci>()
+            .HasOne(i => i.Rol)               // Hər Istifadeci-nin bir Rol-u var.
+            .WithMany(r => r.Istifadeciler)   // Hər Rol-un isə çox Istifadeci-si var (Rol sinfindəki kolleksiya).
+            .HasForeignKey(i => i.RolId);     // Xarici açar Istifadeci.RolId-dir.
+
+        // 2. Temir və Istifadeci arasındakı əlaqə:
+        modelBuilder.Entity<Temir>()
+            .HasOne(t => t.Isci)              // Hər Təmirin bir İşçisi var.
+            .WithMany(i => i.TemirSifarisleri) // Bu işçinin "TemirSifarisleri" kolleksiyasına aiddir.
+            .HasForeignKey(t => t.IsciId)     // Xarici açar Temir.IsciId-dir.
+            .OnDelete(DeleteBehavior.Restrict); // Vacib: Bir işçini silsək, ona bağlı təmir sifarişləri silinməsin.
+
 
         // İlkin məlumatların (Seed Data) əlavə edilməsi
         SeedData(modelBuilder);
