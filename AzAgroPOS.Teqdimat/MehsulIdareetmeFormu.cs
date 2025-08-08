@@ -36,14 +36,24 @@ public partial class MehsulIdareetmeFormu : BazaForm, IMehsulIdareetmeView
 
     public void MehsullariGoster(IEnumerable<MehsulDto> mehsullar)
     {
-        dgvMehsullar.DataSource = mehsullar.ToList();
-        // Cədvəlin sütunlarını daha oxunaqlı etmək
-        dgvMehsullar.Columns["Id"].Visible = false;
-        dgvMehsullar.Columns["Ad"].HeaderText = "Məhsulun Adı";
-        dgvMehsullar.Columns["StokKodu"].HeaderText = "Stok Kodu";
-        dgvMehsullar.Columns["SatisQiymetiStr"].HeaderText = "Satış Qiyməti";
-        dgvMehsullar.Columns["MevcudSay"].HeaderText = "Mövcud Say";
-        dgvMehsullar.Columns["SatisQiymeti"].Visible = false;
+        // Mümkün null vəziyyətlərinə qarşı DataSource-u təhlükəsiz şəkildə təyin edirik.
+        // Əgər "mehsullar" null-dırsa, boş bir siyahı yaradırıq.
+        var mehsulSiyahisi = mehsullar?.ToList() ?? new List<MehsulDto>();
+        dgvMehsullar.DataSource = mehsulSiyahisi;
+
+        // DİQQƏT: Yalnız cədvəldə sütunlar həqiqətən yaranıbsa, onlara müraciət edirik.
+        if (dgvMehsullar.Columns.Count > 0)
+        {
+            // Cədvəlin sütunlarını daha oxunaqlı etmək
+            dgvMehsullar.Columns["Id"].Visible = false;
+            dgvMehsullar.Columns["Ad"].HeaderText = "Məhsulun Adı";
+            dgvMehsullar.Columns["StokKodu"].HeaderText = "Stok Kodu";
+            dgvMehsullar.Columns["SatisQiymetiStr"].HeaderText = "Satış Qiyməti";
+            dgvMehsullar.Columns["MovcudSay"].HeaderText = "Mövcud Say";
+
+            // Bu sütunu gizlədirik, çünki formatlanmış "SatisQiymetiStr" sütununu istifadə edirik.
+            dgvMehsullar.Columns["SatisQiymeti"].Visible = false;
+        }
     }
 
     public DialogResult MesajGoster(string mesaj, string basliq, MessageBoxButtons düymələr, MessageBoxIcon ikon)
