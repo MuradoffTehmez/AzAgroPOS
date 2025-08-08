@@ -7,6 +7,6 @@ internal static class Program
     static void Main()
     {
         ApplicationConfiguration.Initialize();
-        Application.Run(new MehsulIdareetmeFormu());
+        Application.Run(new AnaMenuFormu());
     }
 }
