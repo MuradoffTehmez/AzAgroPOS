@@ -24,7 +24,7 @@ public class IstifadeciPresenter
     private async Task FormuYukle()
     {
         var rollar = await _unitOfWork.Rollar.ButununuGetirAsync();
-        _view.RollarGoster(rollar.ToList());
+        _view.RollariGoster(rollar.ToList());
         await IstifadecileriYenile();
     }
     private async Task IstifadecileriYenile()

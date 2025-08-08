@@ -3,140 +3,139 @@ namespace AzAgroPOS.Teqdimat
 {
     partial class LoginFormu
     {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
         private System.ComponentModel.IContainer components = null;
-        protected override void Dispose(bool disposing) { if (disposing && (components != null)) { components.Dispose(); } base.Dispose(disposing); }
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
         #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
         private void InitializeComponent()
         {
-            txtIstifadeciAdi = new MaterialSkin.Controls.MaterialTextBox2();
-            txtParol = new MaterialSkin.Controls.MaterialTextBox2();
-            btnDaxilOl = new MaterialSkin.Controls.MaterialButton();
-            btnTest = new MaterialSkin.Controls.MaterialButton();
-            SuspendLayout();
+            this.txtIstifadeciAdi = new MaterialSkin.Controls.MaterialTextBox2();
+            this.txtParol = new MaterialSkin.Controls.MaterialTextBox2();
+            this.btnDaxilOl = new MaterialSkin.Controls.MaterialButton();
+            this.SuspendLayout();
             // 
             // txtIstifadeciAdi
             // 
-            txtIstifadeciAdi.AnimateReadOnly = false;
-            txtIstifadeciAdi.BackColor = Color.FromArgb(242, 242, 242);
-            txtIstifadeciAdi.BackgroundImageLayout = ImageLayout.None;
-            txtIstifadeciAdi.CharacterCasing = CharacterCasing.Normal;
-            txtIstifadeciAdi.Depth = 0;
-            txtIstifadeciAdi.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
-            txtIstifadeciAdi.HideSelection = true;
-            txtIstifadeciAdi.Hint = "İstifadəçi Adı";
-            txtIstifadeciAdi.LeadingIcon = null;
-            txtIstifadeciAdi.Location = new Point(45, 96);
-            txtIstifadeciAdi.MaxLength = 32767;
-            txtIstifadeciAdi.MouseState = MaterialSkin.MouseState.OUT;
-            txtIstifadeciAdi.Name = "txtIstifadeciAdi";
-            txtIstifadeciAdi.PasswordChar = '\0';
-            txtIstifadeciAdi.PrefixSuffixText = null;
-            txtIstifadeciAdi.ReadOnly = false;
-            txtIstifadeciAdi.RightToLeft = RightToLeft.No;
-            txtIstifadeciAdi.SelectedText = "";
-            txtIstifadeciAdi.SelectionLength = 0;
-            txtIstifadeciAdi.SelectionStart = 0;
-            txtIstifadeciAdi.ShortcutsEnabled = true;
-            txtIstifadeciAdi.Size = new Size(350, 48);
-            txtIstifadeciAdi.TabIndex = 0;
-            txtIstifadeciAdi.TabStop = false;
-            txtIstifadeciAdi.TextAlign = HorizontalAlignment.Left;
-            txtIstifadeciAdi.TrailingIcon = null;
-            txtIstifadeciAdi.UseSystemPasswordChar = false;
+            this.txtIstifadeciAdi.AnimateReadOnly = false;
+            this.txtIstifadeciAdi.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.txtIstifadeciAdi.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
+            this.txtIstifadeciAdi.Depth = 0;
+            this.txtIstifadeciAdi.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.txtIstifadeciAdi.HideSelection = true;
+            this.txtIstifadeciAdi.Hint = "İstifadəçi Adı";
+            this.txtIstifadeciAdi.LeadingIcon = null;
+            this.txtIstifadeciAdi.Location = new System.Drawing.Point(45, 96);
+            this.txtIstifadeciAdi.MaxLength = 32767;
+            this.txtIstifadeciAdi.MouseState = MaterialSkin.MouseState.OUT;
+            this.txtIstifadeciAdi.Name = "txtIstifadeciAdi";
+            this.txtIstifadeciAdi.PasswordChar = '\0';
+            this.txtIstifadeciAdi.PrefixSuffixText = null;
+            this.txtIstifadeciAdi.ReadOnly = false;
+            this.txtIstifadeciAdi.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.txtIstifadeciAdi.SelectedText = "";
+            this.txtIstifadeciAdi.SelectionLength = 0;
+            this.txtIstifadeciAdi.SelectionStart = 0;
+            this.txtIstifadeciAdi.ShortcutsEnabled = true;
+            this.txtIstifadeciAdi.Size = new System.Drawing.Size(350, 48);
+            this.txtIstifadeciAdi.TabIndex = 0;
+            this.txtIstifadeciAdi.TabStop = false;
+            this.txtIstifadeciAdi.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.txtIstifadeciAdi.TrailingIcon = null;
+            this.txtIstifadeciAdi.UseSystemPasswordChar = false;
             // 
             // txtParol
             // 
-            txtParol.AnimateReadOnly = false;
-            txtParol.BackColor = Color.FromArgb(242, 242, 242);
-            txtParol.BackgroundImageLayout = ImageLayout.None;
-            txtParol.CharacterCasing = CharacterCasing.Normal;
-            txtParol.Depth = 0;
-            txtParol.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
-            txtParol.HideSelection = true;
-            txtParol.Hint = "Parol";
-            txtParol.LeadingIcon = null;
-            txtParol.Location = new Point(45, 161);
-            txtParol.MaxLength = 32767;
-            txtParol.MouseState = MaterialSkin.MouseState.OUT;
-            txtParol.Name = "txtParol";
-            txtParol.PasswordChar = '●';
-            txtParol.PrefixSuffixText = null;
-            txtParol.ReadOnly = false;
-            txtParol.RightToLeft = RightToLeft.No;
-            txtParol.SelectedText = "";
-            txtParol.SelectionLength = 0;
-            txtParol.SelectionStart = 0;
-            txtParol.ShortcutsEnabled = true;
-            txtParol.Size = new Size(350, 48);
-            txtParol.TabIndex = 1;
-            txtParol.TabStop = false;
-            txtParol.TextAlign = HorizontalAlignment.Left;
-            txtParol.TrailingIcon = null;
-            txtParol.UseSystemPasswordChar = true;
+            this.txtParol.AnimateReadOnly = false;
+            this.txtParol.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.txtParol.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
+            this.txtParol.Depth = 0;
+            this.txtParol.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.txtParol.HideSelection = true;
+            this.txtParol.Hint = "Parol";
+            this.txtParol.LeadingIcon = null;
+            this.txtParol.Location = new System.Drawing.Point(45, 161);
+            this.txtParol.MaxLength = 32767;
+            this.txtParol.MouseState = MaterialSkin.MouseState.OUT;
+            this.txtParol.Name = "txtParol";
+            this.txtParol.PasswordChar = '●';
+            this.txtParol.PrefixSuffixText = null;
+            this.txtParol.ReadOnly = false;
+            this.txtParol.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.txtParol.SelectedText = "";
+            this.txtParol.SelectionLength = 0;
+            this.txtParol.SelectionStart = 0;
+            this.txtParol.ShortcutsEnabled = true;
+            this.txtParol.Size = new System.Drawing.Size(350, 48);
+            this.txtParol.TabIndex = 1;
+            this.txtParol.TabStop = false;
+            this.txtParol.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.txtParol.TrailingIcon = null;
+            this.txtParol.UseSystemPasswordChar = true;
             // 
             // btnDaxilOl
             // 
-            btnDaxilOl.AutoSize = false;
-            btnDaxilOl.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnDaxilOl.BackColor = Color.FromArgb(242, 242, 242);
-            btnDaxilOl.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            btnDaxilOl.Depth = 0;
-            btnDaxilOl.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            btnDaxilOl.HighEmphasis = true;
-            btnDaxilOl.Icon = null;
-            btnDaxilOl.Location = new Point(45, 230);
-            btnDaxilOl.Margin = new Padding(4, 6, 4, 6);
-            btnDaxilOl.MouseState = MaterialSkin.MouseState.HOVER;
-            btnDaxilOl.Name = "btnDaxilOl";
-            btnDaxilOl.NoAccentTextColor = Color.Empty;
-            btnDaxilOl.Size = new Size(350, 45);
-            btnDaxilOl.TabIndex = 2;
-            btnDaxilOl.Text = "Daxil Ol";
-            btnDaxilOl.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            btnDaxilOl.UseAccentColor = false;
-            btnDaxilOl.UseVisualStyleBackColor = false;
-            btnDaxilOl.Click += btnDaxilOl_Click;
-            // 
-            // btnTest
-            // 
-            btnTest.AutoSize = false;
-            btnTest.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnTest.BackColor = Color.FromArgb(242, 242, 242);
-            btnTest.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            btnTest.Depth = 0;
-            btnTest.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            btnTest.HighEmphasis = false;
-            btnTest.Icon = null;
-            btnTest.Location = new Point(45, 287);
-            btnTest.Margin = new Padding(4, 6, 4, 6);
-            btnTest.MouseState = MaterialSkin.MouseState.HOVER;
-            btnTest.Name = "btnTest";
-            btnTest.NoAccentTextColor = Color.Empty;
-            btnTest.Size = new Size(350, 36);
-            btnTest.TabIndex = 3;
-            btnTest.Text = "TEST";
-            btnTest.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
-            btnTest.UseAccentColor = true;
-            btnTest.UseVisualStyleBackColor = false;
+            this.btnDaxilOl.AutoSize = false;
+            this.btnDaxilOl.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnDaxilOl.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.btnDaxilOl.Depth = 0;
+            this.btnDaxilOl.HighEmphasis = true;
+            this.btnDaxilOl.Icon = null;
+            this.btnDaxilOl.Location = new System.Drawing.Point(45, 230);
+            this.btnDaxilOl.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btnDaxilOl.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnDaxilOl.Name = "btnDaxilOl";
+            this.btnDaxilOl.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.btnDaxilOl.Size = new System.Drawing.Size(350, 45);
+            this.btnDaxilOl.TabIndex = 2;
+            this.btnDaxilOl.Text = "Daxil Ol";
+            this.btnDaxilOl.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.btnDaxilOl.UseAccentColor = false;
+            this.btnDaxilOl.UseVisualStyleBackColor = true;
+            this.btnDaxilOl.Click += new System.EventHandler(this.btnDaxilOl_Click);
             // 
             // LoginFormu
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            ClientSize = new Size(440, 350);
-            Controls.Add(btnTest);
-            Controls.Add(btnDaxilOl);
-            Controls.Add(txtParol);
-            Controls.Add(txtIstifadeciAdi);
-            Name = "LoginFormu";
-            StartPosition = FormStartPosition.CenterScreen;
-            Text = "Sistemə Giriş";
-            ResumeLayout(false);
-
+            this.AcceptButton = this.btnDaxilOl;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(440, 320);
+            this.Controls.Add(this.btnDaxilOl);
+            this.Controls.Add(this.txtParol);
+            this.Controls.Add(this.txtIstifadeciAdi);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "LoginFormu";
+            this.Padding = new System.Windows.Forms.Padding(3, 64, 3, 3);
+            this.Sizable = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Sistemə Giriş";
+            this.ResumeLayout(false);
         }
+
         #endregion
+
         private MaterialSkin.Controls.MaterialTextBox2 txtIstifadeciAdi;
         private MaterialSkin.Controls.MaterialTextBox2 txtParol;
         private MaterialSkin.Controls.MaterialButton btnDaxilOl;
-        private MaterialSkin.Controls.MaterialButton btnTest; // YENİ DÜYMƏ
     }
 }

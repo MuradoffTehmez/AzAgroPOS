@@ -15,7 +15,7 @@ public interface IIstifadeciView
     int SecilmisRolId { get; }
 
     void IstifadecileriGoster(List<IstifadeciDto> istifadeciler);
-    void RollariGoster(List<Rol> rollar); // <-- SƏHVİN SƏBƏBİ BU SƏTRİN OLMAMASIDIR
+    void RollariGoster(List<Rol> rollar); // <-- XƏTANIN SƏBƏBİ BU SƏTRİN OLMAMASIDIR
 
     event EventHandler FormYuklendi;
     event EventHandler IstifadeciYarat_Istek;

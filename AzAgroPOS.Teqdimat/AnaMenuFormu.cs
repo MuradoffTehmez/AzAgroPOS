@@ -29,22 +29,25 @@ public partial class AnaMenuFormu : BazaForm
         }
 
         this.Text = $"AzAgroPOS - Ana Menyu (İstifadəçi: {istifadeci.TamAd})";
+        
+        // Növbənin vəziyyətinə görə Satış düyməsini aktiv/deaktiv edirik
         btnYeniSatis.Enabled = AktivSessiya.AktivNovbeId.HasValue;
 
+        // Admin roluna görə icazələr (Admin hər şeyi görə bilər)
         if (istifadeci.RolAdi == "Admin")
         {
-            // Admin üçün bütün düymələr aktivdir
             return;
         }
 
+        // Kassir roluna görə icazələr
         if (istifadeci.RolAdi == "Kassir")
         {
             btnMehsulIdareetme.Enabled = false;
             btnNisyeIdareetme.Enabled = false;
             btnTemirIdareetme.Enabled = false;
-            btnIstifadeciIdareetme.Enabled = false;
+            btnIstifadeciIdareetme.Enabled = false; 
         }
-        else
+        else // Digər bütün rollar üçün hər şeyi bağlayırıq
         {
             btnMehsulIdareetme.Enabled = false;
             btnYeniSatis.Enabled = false;
@@ -78,6 +81,7 @@ public partial class AnaMenuFormu : BazaForm
     private void btnNovbeIdareetme_Click(object sender, EventArgs e)
     {
         using (var form = new NovbeIdareetmesiFormu()) { form.ShowDialog(); }
+        // Növbə pəncərəsi bağlananda menyudakı düymələrin vəziyyətini yeniləyirik
         IcazeleriYoxla(); 
     }
 
