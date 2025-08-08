@@ -7,6 +7,13 @@ internal static class Program
     static void Main()
     {
         ApplicationConfiguration.Initialize();
-        Application.Run(new AnaMenuFormu());
+
+        var loginFormu = new LoginFormu();
+        loginFormu.ShowDialog();
+
+        if (loginFormu.UgurluDaxilOlundu)
+        {
+            Application.Run(new AnaMenuFormu());
+        }
     }
 }

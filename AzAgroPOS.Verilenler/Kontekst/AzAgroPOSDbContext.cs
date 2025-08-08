@@ -98,7 +98,7 @@ public class AzAgroPOSDbContext : DbContext
         {
             Id = 1,
             IstifadeciAdi = "admin",
-            ParolHash = BCrypt.Net.BCrypt.HashPassword("12345"),
+            ParolHash = "$2a$12$7k.z0VbLveS04B26Sg6Xoel5d1k3e.d6eJd.r4zGuL/l0U8h5V2qC",
             TamAd = "Sistem Administratoru",
             RolId = adminRolu.Id
         };
