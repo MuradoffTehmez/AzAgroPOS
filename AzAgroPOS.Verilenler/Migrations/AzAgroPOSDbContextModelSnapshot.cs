@@ -56,7 +56,7 @@ namespace AzAgroPOS.Verilenler.Migrations
                         {
                             Id = 1,
                             IstifadeciAdi = "admin",
-                            ParolHash = "$2a$12$7k.z0VbLveS04B26Sg6Xoel5d1k3e.d6eJd.r4zGuL/l0U8h5V2qC",
+                            ParolHash = "$2a$11$wvv2PHlk9LWlv4vuz3eEBl.ynUDwxFQSIHWle5nHfS3sL7hTkTQPG",
                             RolId = 1,
                             TamAd = "Sistem Administratoru"
                         });
@@ -205,13 +205,13 @@ namespace AzAgroPOS.Verilenler.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("BaslangicMebleg")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<decimal>("FaktikiMebleg")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<decimal>("GozlenilenMebleg")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<int>("IsciId")
                         .HasColumnType("int");

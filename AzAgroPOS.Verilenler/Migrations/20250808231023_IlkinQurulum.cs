@@ -61,27 +61,6 @@ namespace AzAgroPOS.Verilenler.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Satislar",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Tarix = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UmumiMebleg = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    OdenisMetodu = table.Column<int>(type: "int", nullable: false),
-                    MusteriId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Satislar", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Satislar_Musteriler_MusteriId",
-                        column: x => x.MusteriId,
-                        principalTable: "Musteriler",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Istifadeciler",
                 columns: table => new
                 {
@@ -101,6 +80,116 @@ namespace AzAgroPOS.Verilenler.Migrations
                         principalTable: "Rollar",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Novbeler",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IsciId = table.Column<int>(type: "int", nullable: false),
+                    AcilmaTarixi = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    BaglanmaTarixi = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    BaslangicMebleg = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    GozlenilenMebleg = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    FaktikiMebleg = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Novbeler", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Novbeler_Istifadeciler_IsciId",
+                        column: x => x.IsciId,
+                        principalTable: "Istifadeciler",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TemirSifarisleri",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MusteriAdi = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MusteriTelefonu = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CihazAdi = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProblemTesviri = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    QebulTarixi = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TamamlanmaTarixi = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    TemirXerci = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    YekunMebleg = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    IsciId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TemirSifarisleri", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TemirSifarisleri_Istifadeciler_IsciId",
+                        column: x => x.IsciId,
+                        principalTable: "Istifadeciler",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Satislar",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Tarix = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UmumiMebleg = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    OdenisMetodu = table.Column<int>(type: "int", nullable: false),
+                    MusteriId = table.Column<int>(type: "int", nullable: true),
+                    NovbeId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Satislar", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Satislar_Musteriler_MusteriId",
+                        column: x => x.MusteriId,
+                        principalTable: "Musteriler",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Satislar_Novbeler_NovbeId",
+                        column: x => x.NovbeId,
+                        principalTable: "Novbeler",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "NisyeHereketleri",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MusteriId = table.Column<int>(type: "int", nullable: false),
+                    Tarix = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EmeliyyatNovu = table.Column<int>(type: "int", nullable: false),
+                    Mebleg = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    SatisId = table.Column<int>(type: "int", nullable: true),
+                    Qeyd = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_NisyeHereketleri", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_NisyeHereketleri_Musteriler_MusteriId",
+                        column: x => x.MusteriId,
+                        principalTable: "Musteriler",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_NisyeHereketleri_Satislar_SatisId",
+                        column: x => x.SatisId,
+                        principalTable: "Satislar",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -153,12 +242,27 @@ namespace AzAgroPOS.Verilenler.Migrations
             migrationBuilder.InsertData(
                 table: "Istifadeciler",
                 columns: new[] { "Id", "IstifadeciAdi", "ParolHash", "RolId", "TamAd" },
-                values: new object[] { 1, "admin", "admin_parolu_hash_formatinda_olmalidir", 1, "Sistem Administratoru" });
+                values: new object[] { 1, "admin", "$2a$11$wvv2PHlk9LWlv4vuz3eEBl.ynUDwxFQSIHWle5nHfS3sL7hTkTQPG", 1, "Sistem Administratoru" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Istifadeciler_RolId",
                 table: "Istifadeciler",
                 column: "RolId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_NisyeHereketleri_MusteriId",
+                table: "NisyeHereketleri",
+                column: "MusteriId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_NisyeHereketleri_SatisId",
+                table: "NisyeHereketleri",
+                column: "SatisId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Novbeler_IsciId",
+                table: "Novbeler",
+                column: "IsciId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SatisDetallari_MehsulId",
@@ -174,19 +278,29 @@ namespace AzAgroPOS.Verilenler.Migrations
                 name: "IX_Satislar_MusteriId",
                 table: "Satislar",
                 column: "MusteriId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Satislar_NovbeId",
+                table: "Satislar",
+                column: "NovbeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TemirSifarisleri_IsciId",
+                table: "TemirSifarisleri",
+                column: "IsciId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Istifadeciler");
+                name: "NisyeHereketleri");
 
             migrationBuilder.DropTable(
                 name: "SatisDetallari");
 
             migrationBuilder.DropTable(
-                name: "Rollar");
+                name: "TemirSifarisleri");
 
             migrationBuilder.DropTable(
                 name: "Mehsullar");
@@ -196,6 +310,15 @@ namespace AzAgroPOS.Verilenler.Migrations
 
             migrationBuilder.DropTable(
                 name: "Musteriler");
+
+            migrationBuilder.DropTable(
+                name: "Novbeler");
+
+            migrationBuilder.DropTable(
+                name: "Istifadeciler");
+
+            migrationBuilder.DropTable(
+                name: "Rollar");
         }
     }
 }

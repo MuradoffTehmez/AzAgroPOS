@@ -28,11 +28,12 @@ public class AzAgroPOSDbContext : DbContext
         }
     }
 
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
-        // Model konfiqurasiyaları (pul vahidləri üçün dəqiqlik)
+        // Bütün decimal property-lər üçün konfiqurasiyalar
         modelBuilder.Entity<Mehsul>().Property(m => m.SatisQiymeti).HasColumnType("decimal(18, 2)");
         modelBuilder.Entity<Mehsul>().Property(m => m.AlisQiymeti).HasColumnType("decimal(18, 2)");
         modelBuilder.Entity<Satis>().Property(s => s.UmumiMebleg).HasColumnType("decimal(18, 2)");
@@ -41,27 +42,21 @@ public class AzAgroPOSDbContext : DbContext
         modelBuilder.Entity<Temir>().Property(t => t.TemirXerci).HasColumnType("decimal(18, 2)");
         modelBuilder.Entity<Temir>().Property(t => t.YekunMebleg).HasColumnType("decimal(18, 2)");
         modelBuilder.Entity<NisyeHereketi>().Property(n => n.Mebleg).HasColumnType("decimal(18, 2)");
-        modelBuilder.Entity<Satis>()
-            .HasOne(s => s.Novbe)
-            .WithMany(n => n.Satislar)
-            .HasForeignKey(s => s.NovbeId)
-            .OnDelete(DeleteBehavior.Restrict);
-        // Əlaqələrin dəqiq təyin edilməsi (Fluent API)
-        modelBuilder.Entity<Istifadeci>()
-            .HasOne(i => i.Rol)
-            .WithMany(r => r.Istifadeciler)
-            .HasForeignKey(i => i.RolId);
 
-        modelBuilder.Entity<Temir>()
-            .HasOne(t => t.Isci)
-            .WithMany(i => i.TemirSifarisleri)
-            .HasForeignKey(t => t.IsciId)
-            .OnDelete(DeleteBehavior.Restrict);
+        
+        modelBuilder.Entity<Novbe>().Property(n => n.BaslangicMebleg).HasColumnType("decimal(18, 2)");
+        modelBuilder.Entity<Novbe>().Property(n => n.GozlenilenMebleg).HasColumnType("decimal(18, 2)");
+        modelBuilder.Entity<Novbe>().Property(n => n.FaktikiMebleg).HasColumnType("decimal(18, 2)");
 
-        // İlkin məlumatların (Seed Data) əlavə edilməsi
+        
+        modelBuilder.Entity<Istifadeci>().HasOne(i => i.Rol).WithMany(r => r.Istifadeciler).HasForeignKey(i => i.RolId);
+        modelBuilder.Entity<Temir>().HasOne(t => t.Isci).WithMany(i => i.TemirSifarisleri).HasForeignKey(t => t.IsciId).OnDelete(DeleteBehavior.Restrict);
+        modelBuilder.Entity<Satis>().HasOne(s => s.Novbe).WithMany(n => n.Satislar).HasForeignKey(s => s.NovbeId).OnDelete(DeleteBehavior.Restrict);
+
+        
         SeedData(modelBuilder);
     }
-    
+
     private void SeedData(ModelBuilder modelBuilder)
     {
         // 1. Rolları yarat
@@ -75,7 +70,7 @@ public class AzAgroPOSDbContext : DbContext
             Id = 1,
             IstifadeciAdi = "admin",
             // DİQQƏT: Dinamik funksiya yerinə, statik hash-i birbaşa yazırıq
-            ParolHash = "$2a$12$7k.z0VbLveS04B26Sg6Xoel5d1k3e.d6eJd.r4zGuL/l0U8h5V2qC",
+            ParolHash = "$2a$11$wvv2PHlk9LWlv4vuz3eEBl.ynUDwxFQSIHWle5nHfS3sL7hTkTQPG",
             TamAd = "Sistem Administratoru",
             RolId = adminRolu.Id
         };

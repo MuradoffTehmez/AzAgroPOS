@@ -4,7 +4,8 @@ namespace AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Verilenler.Interfeysler;
-using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading.Tasks;
 
 public class TehlukesizlikManager
 {
@@ -16,24 +17,25 @@ public class TehlukesizlikManager
 
     public async Task<EmeliyyatNeticesi<IstifadeciDto>> DaxilOlAsync(string istifadeciAdi, string parol)
     {
-        if (string.IsNullOrWhiteSpace(istifadeciAdi) || string.IsNullOrWhiteSpace(parol))
+        // ƏSAS DÜZƏLİŞ: Gələn dəyərləri hər cür artıq simvoldan təmizləyirik
+        var temizlenmisAd = istifadeciAdi.Trim();
+        var temizlenmisParol = parol.Trim();
+
+        if (string.IsNullOrWhiteSpace(temizlenmisAd) || string.IsNullOrWhiteSpace(temizlenmisParol))
             return EmeliyyatNeticesi<IstifadeciDto>.Ugursuz("İstifadəçi adı və parol boş ola bilməz.");
 
-        // İstifadəçini tapırıq və rolunu da birlikdə gətiririk
-        var istifadeci = (await _unitOfWork.Istifadeciler.AxtarAsync(i => i.IstifadeciAdi == istifadeciAdi)).FirstOrDefault();
+        var istifadeci = (await _unitOfWork.Istifadeciler.AxtarAsync(i => i.IstifadeciAdi == temizlenmisAd)).FirstOrDefault();
 
         if (istifadeci == null)
             return EmeliyyatNeticesi<IstifadeciDto>.Ugursuz("İstifadəçi adı və ya parol yanlışdır.");
 
-        // Parolu yoxlayırıq
-        bool parolDogrudur = BCrypt.Net.BCrypt.Verify(parol, istifadeci.ParolHash);
+        // Yoxlamanı təmizlənmiş parol ilə edirik
+        bool parolDogrudur = BCrypt.Net.BCrypt.Verify(temizlenmisParol, istifadeci.ParolHash);
 
         if (!parolDogrudur)
             return EmeliyyatNeticesi<IstifadeciDto>.Ugursuz("İstifadəçi adı və ya parol yanlışdır.");
 
-        // Rol adını da əldə edək
         var rol = await _unitOfWork.Rollar.GetirAsync(istifadeci.RolId);
-
         var istifadeciDto = new IstifadeciDto
         {
             Id = istifadeci.Id,
