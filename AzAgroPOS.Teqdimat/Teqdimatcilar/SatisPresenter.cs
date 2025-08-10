@@ -79,15 +79,13 @@ public class SatisPresenter
         {
             _view.MesajGoster("Satış uğurla tamamlandı!", "Uğurlu Əməliyyat", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-            // Çap etmək istəyib-istəmədiyini soruşuruq
             var cavab = _view.MesajGoster("Qəbz çap edilsinmi?", "Çap", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (cavab == DialogResult.Yes)
             {
                 var qebzDto = new SatisQebzDto
                 {
-                    // SatisId-ni bazadan götürmək lazımdır, hələlik 0 veririk
-                    SatisId = 0,
-                    Tarix = System.DateTime.Now,
+                    SatisId = netice.Data.Id,
+                    Tarix = netice.Data.Tarix,
                     KassirAdi = AktivSessiya.AktivIstifadeci?.TamAd ?? "Naməlum",
                     SatilanMehsullar = new List<SatisSebetiElementiDto>(_sebet)
                 };

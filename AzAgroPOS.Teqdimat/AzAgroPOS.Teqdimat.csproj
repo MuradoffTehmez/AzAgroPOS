@@ -12,6 +12,12 @@
     <Folder Include="AzAgroPOS\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EmbeddedResource Update="Resurslar\Lang.az-AZ.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>

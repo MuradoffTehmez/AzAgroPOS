@@ -18,13 +18,12 @@ public class CapServisi
         _satisMelumatlari = satisMelumatlari;
 
         PrintDocument printDocument = new PrintDocument();
-        // Hansı printerdə çap ediləcəyini təyin etmək üçün PrintDialog göstəririk
         PrintDialog printDialog = new PrintDialog { Document = printDocument };
 
         // PrintPage hadisəsinə abunə oluruq. Əsas çap məntiqi bu hadisədə baş verir.
         printDocument.PrintPage += new PrintPageEventHandler(printDocument_PrintPage);
 
-        // İstifadəçi OK klikləyərsə, çap prosesini başlat
+        // İstifadəçi printer seçib OK klikləyərsə, çap prosesini başlat
         if (printDialog.ShowDialog() == DialogResult.OK)
         {
             printDocument.Print();
@@ -45,54 +44,57 @@ public class CapServisi
         Font kicikFont = new Font("Courier New", 8, FontStyle.Regular);
 
         float yPos = 0;
-        int count = 0;
-        float solEsneme = 10;
-        float ustEsneme = 10;
-        float xettUzunlugu = 280;
+        float solMesafe = 10;
+        float ustMesafe = 10;
+        float qebzEni = 280; // Qəbzin təxmini eni
 
-        // Başlıq
-        g.DrawString("AzAgroPOS", basliqFontu, Brushes.Black, solEsneme + 80, ustEsneme + yPos);
-        yPos += basliqFontu.GetHeight();
-        g.DrawString("------------------------------", normalFont, Brushes.Black, solEsneme, ustEsneme + yPos);
+        // Başlıq hissəsi
+        string sirketAdi = "AzAgroPOS Satış Sistemi";
+        var olcu = g.MeasureString(sirketAdi, basliqFontu);
+        g.DrawString(sirketAdi, basliqFontu, Brushes.Black, solMesafe + (qebzEni - olcu.Width) / 2, ustMesafe + yPos);
+        yPos += olcu.Height;
+
+        string ayiriciXett = "------------------------------";
+        g.DrawString(ayiriciXett, normalFont, Brushes.Black, solMesafe, ustMesafe + yPos);
         yPos += normalFont.GetHeight();
 
         // Məlumatlar
-        g.DrawString($"Qəbz ID: {_satisMelumatlari.SatisId}", kicikFont, Brushes.Black, solEsneme, ustEsneme + yPos);
+        g.DrawString($"Qəbz ID: {_satisMelumatlari.SatisId}", kicikFont, Brushes.Black, solMesafe, ustMesafe + yPos);
         yPos += kicikFont.GetHeight();
-        g.DrawString($"Kassir: {_satisMelumatlari.KassirAdi}", kicikFont, Brushes.Black, solEsneme, ustEsneme + yPos);
+        g.DrawString($"Kassir: {_satisMelumatlari.KassirAdi}", kicikFont, Brushes.Black, solMesafe, ustMesafe + yPos);
         yPos += kicikFont.GetHeight();
-        g.DrawString($"Tarix: {_satisMelumatlari.Tarix:dd.MM.yyyy HH:mm:ss}", kicikFont, Brushes.Black, solEsneme, ustEsneme + yPos);
+        g.DrawString($"Tarix: {_satisMelumatlari.Tarix:dd.MM.yyyy HH:mm:ss}", kicikFont, Brushes.Black, solMesafe, ustMesafe + yPos);
         yPos += kicikFont.GetHeight();
-        g.DrawString("------------------------------", normalFont, Brushes.Black, solEsneme, ustEsneme + yPos);
+        g.DrawString(ayiriciXett, normalFont, Brushes.Black, solMesafe, ustMesafe + yPos);
         yPos += normalFont.GetHeight() + 10;
 
-        // Satılan məhsullar
+        // Satılan məhsulların siyahısı
         foreach (var mehsul in _satisMelumatlari.SatilanMehsullar)
         {
-            // Məhsulun adını və sayını yaz
-            g.DrawString($"{mehsul.Miqdar} x {mehsul.MehsulAdi}", normalFont, Brushes.Black, solEsneme, ustEsneme + yPos);
+            // Məhsulun adını və sayını yazırıq
+            g.DrawString($"{mehsul.Miqdar} x {mehsul.MehsulAdi}", normalFont, Brushes.Black, solMesafe, ustMesafe + yPos);
 
-            // Məbləği sağa düzləndirərək yaz
+            // Məbləği sağa düzləndirərək yazırıq
             string meblegStr = $"{mehsul.UmumiMebleg:N2}";
             var meblegOlcusu = g.MeasureString(meblegStr, normalFont);
-            g.DrawString(meblegStr, normalFont, Brushes.Black, solEsneme + xettUzunlugu - meblegOlcusu.Width, ustEsneme + yPos);
+            g.DrawString(meblegStr, normalFont, Brushes.Black, solMesafe + qebzEni - meblegOlcusu.Width, ustMesafe + yPos);
 
             yPos += normalFont.GetHeight();
         }
 
         yPos += 10;
-        g.DrawString("------------------------------", normalFont, Brushes.Black, solEsneme, ustEsneme + yPos);
+        g.DrawString(ayiriciXett, normalFont, Brushes.Black, solMesafe, ustMesafe + yPos);
         yPos += normalFont.GetHeight();
 
         // Yekun məbləğ
         string yekunStr = $"CƏMİ: {_satisMelumatlari.CemiMebleg:N2} AZN";
         var yekunOlcu = g.MeasureString(yekunStr, basliqFontu);
-        g.DrawString(yekunStr, basliqFontu, Brushes.Black, solEsneme + xettUzunlugu - yekunOlcu.Width, ustEsneme + yPos);
+        g.DrawString(yekunStr, basliqFontu, Brushes.Black, solMesafe + qebzEni - yekunOlcu.Width, ustMesafe + yPos);
         yPos += basliqFontu.GetHeight() + 20;
 
         // Alt hissə
-        g.DrawString("Bizi seçdiyiniz üçün", normalFont, Brushes.Black, solEsneme + 50, ustEsneme + yPos);
-        yPos += normalFont.GetHeight();
-        g.DrawString("təşəkkür edirik!", normalFont, Brushes.Black, solEsneme + 60, ustEsneme + yPos);
+        string tesekkur = "Bizi seçdiyiniz üçün təşəkkür edirik!";
+        olcu = g.MeasureString(tesekkur, normalFont);
+        g.DrawString(tesekkur, normalFont, Brushes.Black, solMesafe + (qebzEni - olcu.Width) / 2, ustMesafe + yPos);
     }
 }
