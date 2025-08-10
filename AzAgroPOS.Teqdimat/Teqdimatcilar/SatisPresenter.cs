@@ -1,16 +1,18 @@
 ﻿// Fayl: AzAgroPOS.Teqdimat/Teqdimatcilar/SatisPresenter.cs
 namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 
-// Gərəkli using-lər
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
+using AzAgroPOS.Teqdimat.Yardimcilar;
 using AzAgroPOS.Verilenler.Kontekst;
 using AzAgroPOS.Verilenler.Realizasialar;
 using AzAgroPOS.Varliglar;
-using AzAgroPOS.Teqdimat.Yardimcilar;
-using System;
-
+using AzAgroPOS.Teqdimat.Servisler;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 public class SatisPresenter
 {
@@ -45,13 +47,12 @@ public class SatisPresenter
             return;
         }
 
-        // Səbətdə eyni məhsul varsa, sayını artır
         var sebettekiElement = _sebet.FirstOrDefault(e => e.MehsulId == tapilanMehsul.Id);
         if (sebettekiElement != null)
         {
             sebettekiElement.Miqdar++;
         }
-        else // Yoxdursa, səbətə yeni əlavə et
+        else
         {
             _sebet.Add(new SatisSebetiElementiDto
             {
@@ -61,7 +62,6 @@ public class SatisPresenter
                 VahidinQiymeti = tapilanMehsul.SatisQiymeti
             });
         }
-
         GosterisleriYenile();
     }
 
@@ -69,21 +69,40 @@ public class SatisPresenter
     {
         if (!AktivSessiya.AktivNovbeId.HasValue)
         {
-            _view.MesajGoster("Aktiv növbə yoxdur. Satış etmək mümkün deyil.", "Xəta", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            _view.MesajGoster("Aktiv növbə yoxdur. Satış etmək mümkün deyil.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
             return;
         }
 
         var netice = await _satisManager.SatisiTesdiqleAsync(_sebet, OdenisMetodu.Nağd, AktivSessiya.AktivNovbeId.Value);
+
         if (netice.UgurluDur)
         {
-            _view.MesajGoster("Satış uğurla tamamlandı!", "Uğurlu Əməliyyat", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+            _view.MesajGoster("Satış uğurla tamamlandı!", "Uğurlu Əməliyyat", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            // Çap etmək istəyib-istəmədiyini soruşuruq
+            var cavab = _view.MesajGoster("Qəbz çap edilsinmi?", "Çap", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (cavab == DialogResult.Yes)
+            {
+                var qebzDto = new SatisQebzDto
+                {
+                    // SatisId-ni bazadan götürmək lazımdır, hələlik 0 veririk
+                    SatisId = 0,
+                    Tarix = System.DateTime.Now,
+                    KassirAdi = AktivSessiya.AktivIstifadeci?.TamAd ?? "Naməlum",
+                    SatilanMehsullar = new List<SatisSebetiElementiDto>(_sebet)
+                };
+
+                CapServisi capServisi = new CapServisi();
+                capServisi.SatisiCapEt(qebzDto);
+            }
+
             _sebet.Clear();
             GosterisleriYenile();
             _view.FormuSifirla();
         }
         else
         {
-            _view.MesajGoster(netice.Mesaj, "Xəta", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            _view.MesajGoster(netice.Mesaj, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
