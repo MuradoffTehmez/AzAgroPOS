@@ -10,12 +10,7 @@
 
   <ItemGroup>
     <Folder Include="AzAgroPOS\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Resurslar\Lang.az-AZ.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
+    <Folder Include="Resurslar\" />
   </ItemGroup>
 
   <PropertyGroup>
