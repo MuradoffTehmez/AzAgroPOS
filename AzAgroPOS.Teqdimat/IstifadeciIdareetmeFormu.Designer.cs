@@ -102,7 +102,7 @@ namespace AzAgroPOS.Teqdimat
             cmbRollar.DropDownHeight = 174;
             cmbRollar.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbRollar.DropDownWidth = 121;
-            cmbRollar.Font = new Font("Roboto Medium", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
+            cmbRollar.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
             cmbRollar.ForeColor = Color.FromArgb(222, 0, 0, 0);
             cmbRollar.Hint = "Rol";
             cmbRollar.IntegralHeight = false;
@@ -122,7 +122,7 @@ namespace AzAgroPOS.Teqdimat
             txtParol.BackgroundImageLayout = ImageLayout.None;
             txtParol.CharacterCasing = CharacterCasing.Normal;
             txtParol.Depth = 0;
-            txtParol.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            txtParol.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             txtParol.HideSelection = true;
             txtParol.Hint = "Parol";
             txtParol.LeadingIcon = null;
@@ -152,7 +152,7 @@ namespace AzAgroPOS.Teqdimat
             txtTamAd.BackgroundImageLayout = ImageLayout.None;
             txtTamAd.CharacterCasing = CharacterCasing.Normal;
             txtTamAd.Depth = 0;
-            txtTamAd.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            txtTamAd.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             txtTamAd.HideSelection = true;
             txtTamAd.Hint = "Tam Ad";
             txtTamAd.LeadingIcon = null;
@@ -182,7 +182,7 @@ namespace AzAgroPOS.Teqdimat
             txtIstifadeciAdi.BackgroundImageLayout = ImageLayout.None;
             txtIstifadeciAdi.CharacterCasing = CharacterCasing.Normal;
             txtIstifadeciAdi.Depth = 0;
-            txtIstifadeciAdi.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            txtIstifadeciAdi.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             txtIstifadeciAdi.HideSelection = true;
             txtIstifadeciAdi.Hint = "İstifadəçi Adı";
             txtIstifadeciAdi.LeadingIcon = null;
