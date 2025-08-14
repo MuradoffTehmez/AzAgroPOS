@@ -1,6 +1,6 @@
 ﻿// Fayl: AzAgroPOS.Teqdimat/Teqdimatcilar/NovbePresenter.cs
 namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
-// Gərəkli using-lər...
+// Gərəkli using-lər
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Yardimcilar;
@@ -49,9 +49,14 @@ public class NovbePresenter
             _view.NovbeAciqdirGoster(AktivSessiya.AktivIstifadeci.TamAd, _aktivNovbe.AcilmaTarixi);
         }
     }
-
+    /// <summary>
+    ///  çek  dizayn kodu
+    /// </summary>
+    /// <returns>j</returns>
     private async Task NovbeBagla()
     {
+        
+
         var netice = await _manager.NovbeBaglaAsync(_aktivNovbe.Id, _view.FaktikiMebleg);
         if (netice.UgurluDur)
         {
