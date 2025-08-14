@@ -54,7 +54,7 @@ public class NisyePresenter
         if (netice.UgurluDur)
         {
             _view.MesajGoster("Ödəniş uğurla qeydə alındı.", "Uğurlu Əməliyyat");
-            // Formları yeniləmə kodu
+            // Formları yeniləmə
             await FormuYukle();
             await MusteriHereketleriniYukle();
             _view.FormuTemizle();
