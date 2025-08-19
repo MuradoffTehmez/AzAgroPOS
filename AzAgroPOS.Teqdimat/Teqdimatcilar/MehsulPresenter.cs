@@ -6,13 +6,28 @@ using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Verilenler.Kontekst;
 using AzAgroPOS.Verilenler.Realizasialar;
-
+/// <summary>
+/// bu presenter, məhsul idarəetmə əməliyyatlarını idarə etmək üçün istifadə olunur.
+/// </summary>
 public class MehsulPresenter
 {
+    /// <summary>
+    /// istifadəçi interfeysini təmsil edən view obyektidir.
+    /// </summary>
     private readonly IMehsulIdareetmeView _view;
+    /// <summary>
+    /// məhsul idarəetmə əməliyyatlarını həyata keçirmək üçün istifadə olunan MehsulManager obyektidir.
+    /// </summary>
     private readonly MehsulManager _mehsulManager;
+    /// <summary>
+    /// bütün məhsulları saxlamaq üçün istifadə olunan cache.
+    /// </summary>
     private IEnumerable<MehsulDto>? _butunMehsullarCache;
-
+    /// <summary>
+    /// bu presenter, məhsul idarəetmə əməliyyatlarını idarə etmək üçün istifadə olunur.
+    /// məhsul əlavə etmək, yeniləmək, silmək və axtarış etmək kimi əməliyyatları həyata keçirir.
+    /// </summary>
+    /// <param name="view"></param>
     public MehsulPresenter(IMehsulIdareetmeView view)
     {
         _view = view;
@@ -30,7 +45,11 @@ public class MehsulPresenter
         _view.CedvelSecimiDeyisdi_Istek += (s, e) => CedvelSeciminiDoldur();
         _view.Axtaris_Istek += (s, e) => AxtarisEt();
     }
-
+    /// <summary>
+    /// bu metod, form yükləndikdə bütün məhsulları yükləyir və göstərir.
+    /// </summary>
+    /// <returns> async asixron bir şəkildə bütün məhsulları yükləyir və göstərir.
+    /// </returns>
     private async Task FormuYukle()
     {
         var netice = await _mehsulManager.ButunMehsullariGetirAsync();
@@ -44,7 +63,13 @@ public class MehsulPresenter
             _view.MesajGoster(netice.Mesaj, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
-
+    /// <summary>
+    /// AxtarisEt metodu, istifadəçinin axtarış mətninə əsasən məhsulları süzür.
+    /// axtarış mətnini kiçik hərflərə çevirir və məhsul adını, stok kodunu və barkodu yoxlayır.
+    /// agər axtarış mətninə uyğun məhsul tapılarsa, onları göstərir.
+    /// filterlenmiş məhsulları göstərmək üçün _view.MehsullariGoster metodunu çağırır.
+    /// məhsulgostermek üçün _butunMehsullarCache dəyişənini istifadə edir.
+    /// </summary>
     private void AxtarisEt()
     {
         if (_butunMehsullarCache == null) return;
@@ -64,6 +89,10 @@ public class MehsulPresenter
         _view.MehsullariGoster(filterlenmis);
     }
 
+    /// <summary>
+    /// cedvelSeciminiDoldur metodu, istifadəçi cədvəldəki bir məhsulu seçdiyində çağırılır.
+    /// bu metod dəqiq məhsulun məlumatlarını form sahələrinə doldurur.
+    /// </summary>
     private void CedvelSeciminiDoldur()
     {
         // View-dan gələn Id boş deyilsə, formadakı sahələri doldur.
@@ -80,7 +109,11 @@ public class MehsulPresenter
             }
         }
     }
-
+    /// <summary>
+    /// Məhsul əlavə etmək üçün istifadə olunur.
+    /// əgər məhsul uğurla əlavə edilərsə, cədvəli yeniləyir və formu təmizləyir. əgər məhsul əlavə edilə bilməzsə, istifadəçiyə xəta mesajı göstərir.
+    /// </summary>
+    /// <returns></returns>
     private async Task MehsulElaveEt()
     {
         var yeniMehsul = new MehsulDto
@@ -104,7 +137,16 @@ public class MehsulPresenter
             _view.MesajGoster(netice.Mesaj, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
     }
-
+    /// <summary>
+    ///  məhsulu yeniləmək üçün istifadə olunur.
+    ///  adətən, məhsulun ID-sini alır və istifadəçidən yeni məlumatları alır.
+    ///  agər məhsul uğurla yenilənərsə, cədvəli yeniləyir və formu təmizləyir.
+    ///  agər məhsul yenilənməzsə, istifadəçiyə xəta mesajı göstərir.
+    ///  əgər məhsul ID-si boşdursa, istifadəçiyə xəbərdarlıq mesajı göstərir ki, əvvəlcə məhsul seçməlidir.
+    ///  əgər məhsul ID-si boş deyilsə, məhsulun yeni məlumatlarını alır və yeniləmə əməliyyatını həyata keçirir.
+    /// </summary>
+    /// <returns>Async bir şəkildə məhsulu yeniləyir və cədvəli yeniləyir.
+    /// </returns>
     private async Task MehsulYenile()
     {
         if (string.IsNullOrEmpty(_view.MehsulId))
@@ -135,7 +177,14 @@ public class MehsulPresenter
             _view.MesajGoster(netice.Mesaj, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
-
+    /// <summary>
+    /// məhsulu silmək üçün istifadə olunur.
+    /// adətən, məhsulun ID-sini alır və istifadəçidən təsdiq soruşur.
+    /// əgər istifadəçi təsdiq edərsə, məhsulu silir və cədvəli yeniləyir.
+    /// 
+    /// </summary>
+    /// <returns> Async bir şəkildə məhsulu silir və cədvəli yeniləyir.
+    /// </returns>
     private async Task MehsulSil()
     {
         if (string.IsNullOrEmpty(_view.MehsulId))
@@ -161,7 +210,9 @@ public class MehsulPresenter
             }
         }
     }
-
+    /// <summary>
+    /// formu təmizləyir, yəni bütün sahələri boşaldır.
+    /// </summary>
     private void FormuTemizle()
     {
         _view.MehsulId = string.Empty;

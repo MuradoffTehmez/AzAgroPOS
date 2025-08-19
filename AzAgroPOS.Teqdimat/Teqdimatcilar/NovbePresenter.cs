@@ -9,12 +9,22 @@ using AzAgroPOS.Verilenler.Realizasialar;
 using System;
 using System.Text;
 using System.Threading.Tasks;
+
+
+/// <summary>
+/// Class NovbePresenter, INovbeView interfeysini alır və növbə əməliyyatlarını idarə etmək üçün NovbeManager ilə əlaqələndirir.
+/// </summary>
 public class NovbePresenter
 {
     private readonly INovbeView _view;
     private readonly NovbeManager _manager;
     private AzAgroPOS.Varliglar.Novbe? _aktivNovbe;
 
+    /// <summary>
+    /// NovbePresenter, INovbeView interfeysini alır və NovbeManager ilə əlaqələndirir. 
+    /// Novbemanager, növbə əməliyyatlarını idarə etmək üçün istifadə olunur.
+    /// </summary>
+    /// <param name="view"></param>
     public NovbePresenter(INovbeView view)
     {
         _view = view;
@@ -24,6 +34,10 @@ public class NovbePresenter
         Task.Run(async () => await FormuYukle());
     }
 
+    /// <summary>
+    /// FormuYukle metodu, form yükləndikdə aktiv növbəni yükləyir və göstərir. Dəyişikliklər varsa, istifadəçiyə aktiv növbənin açıq olduğunu və açılma tarixini göstərir.
+    /// </summary>
+    /// <returns></returns>
     private async Task FormuYukle()
     {
         _aktivNovbe = await _manager.AktivNovbeniGetirAsync(AktivSessiya.AktivIstifadeci.Id);
@@ -39,6 +53,10 @@ public class NovbePresenter
         }
     }
 
+    /// <summary>
+    /// NovbeAc metodu, yeni bir növbə açmaq üçün istifadə olunur.
+    /// </summary>
+    /// <returns></returns>
     private async Task NovbeAc()
     {
         var netice = await _manager.NovbeAcAsync(AktivSessiya.AktivIstifadeci.Id, _view.BaslangicMebleg);
@@ -50,13 +68,12 @@ public class NovbePresenter
         }
     }
     /// <summary>
-    ///  çek  dizayn kodu
-    /// </summary>
+    ///  bu metod, aktiv növbəni bağlayır və hesabatı göstərir.
+    ///  Z-hesabatı, kassir adı, açılış və bağlanma tarixləri, başlanğıc məbləği, nağd və kart satışları, gözlənilən və faktiki məbləğlər daxil olmaqla məlumatları ehtiva edir.
+    ///  </summary>
     /// <returns>j</returns>
     private async Task NovbeBagla()
     {
-        
-
         var netice = await _manager.NovbeBaglaAsync(_aktivNovbe.Id, _view.FaktikiMebleg);
         if (netice.UgurluDur)
         {

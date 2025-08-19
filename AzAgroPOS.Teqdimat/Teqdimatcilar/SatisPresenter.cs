@@ -103,7 +103,10 @@ public class SatisPresenter
             _view.MesajGoster(netice.Mesaj, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
-
+    /// <summary>
+    /// bu metod, satış sebetini yeniləyir və istifadəçiyə göstərir.
+    /// səbətdəki bütün məhsulları və onların ümumi məbləğini hesablayır və göstərir.
+    /// </summary>
     private void GosterisleriYenile()
     {
         _view.SebeteMehsulGoster(_sebet);

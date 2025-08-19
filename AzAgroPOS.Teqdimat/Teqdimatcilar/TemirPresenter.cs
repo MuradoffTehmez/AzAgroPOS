@@ -7,11 +7,19 @@ using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Verilenler.Kontekst;
 using AzAgroPOS.Verilenler.Realizasialar;
 
+/// <summary>
+///  temir presenter class. 
+///  bu presenter, temir sifarişlərinin idarə olunması üçün istifadə olunur.
+/// </summary>
 public class TemirPresenter
 {
     private readonly ITemirView _view;
     private readonly TemirManager _temirManager;
 
+    /// <summary>
+    ///  bu presenter, temir view interfeysini alır və temir manager ilə əlaqələndirir.
+    /// </summary>
+    /// <param name="view"></param>
     public TemirPresenter(ITemirView view)
     {
         _view = view;
@@ -21,7 +29,10 @@ public class TemirPresenter
         _view.FormYuklendi += async (s, e) => await FormuYukle();
         _view.YeniSifarisYarat_Istek += async (s, e) => await YeniSifarisYarat();
     }
-
+    /// <summary>
+    /// bu metod, form yükləndikdə bütün sifarişləri yükləyir və göstərir.
+    /// </summary>
+    /// <returns></returns>
     private async Task FormuYukle()
     {
         var netice = await _temirManager.ButunSifarisleriGetirAsync();
@@ -29,6 +40,10 @@ public class TemirPresenter
             _view.SifarisleriGoster(netice.Data);
     }
 
+    /// <summary>
+    /// bu metod, yeni təmir sifarişi yaratmaq üçün istifadə olunur.
+    /// </summary>
+    /// <returns></returns>
     private async Task YeniSifarisYarat()
     {
         var yeniSifarisDto = new TemirDto

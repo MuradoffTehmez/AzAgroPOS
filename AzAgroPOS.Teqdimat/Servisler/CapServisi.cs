@@ -6,18 +6,27 @@ using System.Drawing;
 using System.Drawing.Printing;
 using System.Windows.Forms;
 
+/// <summary>
+/// cap servisi, satış qəbzlərini çap etmək üçün istifadə olunur.
+/// </summary>
 public class CapServisi
 {
+    /// <summary>
+    /// satış məlumatlarını saxlayan dəyişən.
+    /// Dto obyektini istifadə edərək satış məlumatlarını saxlayır.
+    /// </summary>
     private SatisQebzDto? _satisMelumatlari;
 
     /// <summary>
-    /// Verilmiş satış məlumatları əsasında qəbzi çap edir.
+    /// bu metod, satış məlumatlarını alır və çap etmə prosesini başlatır.
     /// </summary>
     public void SatisiCapEt(SatisQebzDto satisMelumatlari)
     {
+        // Əgər satış məlumatları null-dursa, heç nə etmirik
         _satisMelumatlari = satisMelumatlari;
-
+        // Çap üçün PrintDocument və PrintDialog obyektlərini yaradırıq
         PrintDocument printDocument = new PrintDocument();
+        // Çap üçün PrintDialog obyektini yaradırıq
         PrintDialog printDialog = new PrintDialog { Document = printDocument };
 
         // PrintPage hadisəsinə abunə oluruq. Əsas çap məntiqi bu hadisədə baş verir.
@@ -32,6 +41,11 @@ public class CapServisi
 
     /// <summary>
     /// Bu metod hər səhifə çap edilərkən çağırılır və səhifənin "rəsmini" çəkir.
+    /// printDocument obyektinin PrintPage hadisəsinə abunə olunmuşdur.
+    /// və çap ediləcək qəbzin bütün məlumatlarını burada göstəririk.
+    /// səhifənin ölçüləri və qrafik obyektləri ilə işləyirik.
+    /// dəyişən _satisMelumatlari istifadə edərək satış məlumatlarını çap edirik.
+    /// məsələn, şirkət adı, kassir adı, tarix və satılan məhsulların siyahısı kimi məlumatları göstəririk.
     /// </summary>
     private void printDocument_PrintPage(object sender, PrintPageEventArgs e)
     {
@@ -67,6 +81,7 @@ public class CapServisi
         yPos += kicikFont.GetHeight();
         g.DrawString(ayiriciXett, normalFont, Brushes.Black, solMesafe, ustMesafe + yPos);
         yPos += normalFont.GetHeight() + 10;
+
 
         // Satılan məhsulların siyahısı
         foreach (var mehsul in _satisMelumatlari.SatilanMehsullar)

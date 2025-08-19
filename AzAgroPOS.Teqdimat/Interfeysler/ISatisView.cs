@@ -3,6 +3,9 @@ namespace AzAgroPOS.Teqdimat.Interfeysler;
 
 using AzAgroPOS.Mentiq.DTOs;
 
+/// <summary>
+///  Satis view interfeysi.
+/// </summary>
 public interface ISatisView
 {
     // View-dan datanı oxumaq

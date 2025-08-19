@@ -7,6 +7,9 @@ using AzAgroPOS.Teqdimat.Yardimcilar;
 using AzAgroPOS.Verilenler.Kontekst;
 using AzAgroPOS.Verilenler.Realizasialar;
 
+/// <summary>
+/// Class LoginPresenter, ILoginView interfeysini alır və istifadəçi giriş əməliyyatlarını idarə etmək üçün TehlukesizlikManager ilə əlaqələndirir.
+/// </summary>
 public class LoginPresenter
 {
     private readonly ILoginView _view;
@@ -18,7 +21,11 @@ public class LoginPresenter
         _manager = new TehlukesizlikManager(new UnitOfWork(new AzAgroPOSDbContext()));
         _view.DaxilOl_Istek += async (s, e) => await DaxilOl();
     }
-
+    /// <summary>
+    /// DaxilOl metodu, istifadəçi giriş əməliyyatını həyata keçirir.
+    /// istifadəçi adı və parol daxil edildikdə, TehlukesizlikManager vasitəsilə giriş yoxlanılır.
+    /// </summary>
+    /// <returns></returns>
     private async Task DaxilOl()
     {
         var netice = await _manager.DaxilOlAsync(_view.IstifadeciAdi, _view.Parol);

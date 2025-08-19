@@ -3,11 +3,11 @@ namespace AzAgroPOS.Teqdimat.Interfeysler;
 
 using AzAgroPOS.Mentiq.DTOs;
 using System.Collections.Generic;
-// Bu using direktivini əlavə edin, çünki DialogResult burada yerləşir
 using System.Windows.Forms;
 
 /// <summary>
 /// MehsulIdareetmeFormu üçün "müqavilə". Presenter-in View ilə necə əlaqə quracağını təyin edir.
+/// Detallı olaraq, mehsul idarəetmə əməliyyatlarını (əlavə etmə, yeniləmə, silmə və axtarış) idarə etmək üçün istifadə olunur.
 /// </summary>
 public interface IMehsulIdareetmeView
 {
@@ -32,7 +32,7 @@ public interface IMehsulIdareetmeView
     event EventHandler CedvelSecimiDeyisdi_Istek;
     event EventHandler Axtaris_Istek;
 
-    // DƏYİŞİKLİK BURADADIR: void yerinə DialogResult
+    
     /// <summary>
     /// Presenter-in View-da mesaj göstərməsini və istifadəçi reaksiyasını almasını təmin edir.
     /// </summary>
