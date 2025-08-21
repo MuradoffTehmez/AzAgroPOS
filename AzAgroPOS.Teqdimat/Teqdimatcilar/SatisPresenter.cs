@@ -14,13 +14,32 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+/// <summary>
+/// bu presenter, satış əməliyyatlarını idarə etmək üçün istifadə olunur.
+/// </summary>
 public class SatisPresenter
 {
+    /// <summary>
+    /// İstifadəçi interfeysini təmsil edən görünüş interfeysidir.
+    /// </summary>
     private readonly ISatisView _view;
+    /// <summary>
+    /// Məhsul idarəetmə əməliyyatlarını həyata keçirmək üçün istifadə olunan MehsulManager obyektidir.
+    /// </summary>
     private readonly MehsulManager _mehsulManager;
+    /// <summary>
+    /// Satış əməliyyatlarını idarə etmək üçün istifadə olunan SatisManager obyektidir.
+    /// </summary>
     private readonly SatisManager _satisManager;
+    /// <summary>
+    /// Satış sebetini təmsil edən SatisSebetiElementiDto obyektlərinin siyahısıdır.
+    /// </summary>
     private readonly List<SatisSebetiElementiDto> _sebet;
 
+    /// <summary>
+    /// SatisPresenter, satış əməliyyatlarını idarə etmək üçün istifadə olunur.
+    /// </summary>
+    /// <param name="view"></param>
     public SatisPresenter(ISatisView view)
     {
         _view = view;
@@ -33,6 +52,10 @@ public class SatisPresenter
         _view.SatisiTesdiqle_Istek += async (s, e) => await SatisiTesdiqle();
     }
 
+    /// <summary>
+    /// Barkodla məhsul tapmaq üçün istifadə olunur.
+    /// </summary>
+    /// <returns></returns>
     private async Task BarkodlaMehsulTap()
     {
         var barkod = _view.BarkodAxtaris;
@@ -65,6 +88,10 @@ public class SatisPresenter
         GosterisleriYenile();
     }
 
+    /// <summary>
+    /// satış əməliyyatını təsdiqləyir və sebetdəki məhsulları satışa bağlayır.
+    /// </summary>
+    /// <returns></returns>
     private async Task SatisiTesdiqle()
     {
         if (!AktivSessiya.AktivNovbeId.HasValue)
