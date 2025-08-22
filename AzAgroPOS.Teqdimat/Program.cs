@@ -1,13 +1,21 @@
 // Fayl: AzAgroPOS.Teqdimat/Program.cs
 namespace AzAgroPOS.Teqdimat;
 
+/// <summary>
+/// 
+/// </summary>
 internal static class Program
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [STAThread]
+    
     static void Main()
     {
+        
         ApplicationConfiguration.Initialize();
-
+        
         var loginFormu = new LoginFormu();
         loginFormu.ShowDialog();
 
