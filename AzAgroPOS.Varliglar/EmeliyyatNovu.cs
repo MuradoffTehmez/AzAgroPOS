@@ -6,6 +6,20 @@ namespace AzAgroPOS.Varliglar;
 /// </summary>
 public enum EmeliyyatNovu
 {
+    /// <summary>
+    /// satis - Nisyə satış (borcu artırır).
+    /// diqqət: Bu əməliyyat, müştərinin məhsulu nisyə ilə almasını və borcunun artmasını təmsil edir.
+    /// qeyd: Nisyə satış, müştərinin məhsulu alıb, amma ödənişi gələcəkdə etməsini göstərir, məsələn, "300.00" AZN nisyə ilə satış.
+    /// referans: Bu əməliyyat, müştərinin məhsulu nisyə ilə alması və borcunun artması ilə əlaqəlidir.
+    /// rol: Bu əməliyyat, müştərinin nisyə ilə məhsul alması və borcunun artması üçün istifadə olunur.
+    /// </summary>
     Satis = 1,  // Nisyə satış (borcu artırır)
+    /// <summary>
+    /// odenis - Nisyə ödənişi (borcu azaldır).
+    /// diqqət: Bu əməliyyat, müştərinin nisyə borcunu ödəməsini və borcun azalmasını təmsil edir.
+    /// qeyd: Nisyə ödənişi, müştərinin nisyə borcunu ödəməsi və borcun azalması ilə əlaqəlidir, məsələn, "150.00" AZN nisyə ödənişi.
+    /// referans: Bu əməliyyat, müştərinin nisyə borcunu ödəməsi və borcun azalması ilə əlaqəlidir.
+    /// rol: Bu əməliyyat, müştərinin nisyə borcunu ödəməsi və borcun azalması üçün istifadə olunur.
+    /// </summary>
     Odenis = 2 // Borc ödənişi (borcu azaldır)
 }

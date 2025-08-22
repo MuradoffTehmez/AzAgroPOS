@@ -3,6 +3,8 @@ namespace AzAgroPOS.Varliglar;
 
 /// <summary>
 /// Nisyə və ya digər əməliyyatlar üçün qeydiyyata alınan müştəriləri təmsil edir.
+/// 
+/// 
 /// </summary>
 public class Musteri : BazaVarligi
 {
@@ -13,6 +15,7 @@ public class Musteri : BazaVarligi
 
     /// <summary>
     /// Müştərinin telefon nömrəsi.
+    /// 
     /// </summary>
     public string TelefonNomresi { get; set; } = string.Empty;
 
