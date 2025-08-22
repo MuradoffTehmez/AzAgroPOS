@@ -9,6 +9,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+/// <summary>
+/// İstifadəçilərlə bağlı əməliyyatları idarə edən menecer.
+/// </summary>
 public class IstifadeciManager
 {
     private readonly IUnitOfWork _unitOfWork;
@@ -17,8 +20,15 @@ public class IstifadeciManager
         _unitOfWork = unitOfWork;
     }
 
+    /// <summary>
+    ///  İstifadəçilərin siyahısını DTO formatında gətirir.
+    ///  diqqət: Bu metod bütün istifadəçiləri gətirir, lakin əsas admini (id = 1) istisna edir.
+    ///  burada istifadəçilərin rollarını da əlavə edirik ki, hansı istifadəçinin hansı rolda olduğunu görə bilək.
+    /// </summary>
+    /// <returns></returns>
     public async Task<EmeliyyatNeticesi<List<IstifadeciDto>>> IstifadecileriGetirAsync()
     {
+        
         var istifadeciler = await _unitOfWork.Istifadeciler.ButununuGetirAsync();
         var rollar = await _unitOfWork.Rollar.ButununuGetirAsync();
 
@@ -33,6 +43,16 @@ public class IstifadeciManager
         return EmeliyyatNeticesi<List<IstifadeciDto>>.Ugurlu(dtolar);
     }
 
+    /// <summary>
+    /// İstifadəçi yaratmaq üçün metod. Asinxron olaraq işləyir və yeni istifadəçi məlumatlarını alır.
+    /// diqqət: İstifadəçi adı və parol boş olmamalıdır, və istifadəçi adı unikal olmalıdır.
+    /// Əsas admini (id = 1) yaratmaq mümkün deyil.
+    /// Parol hash formatında saxlanılır.
+    /// bcrypt kitabxanasından istifadə olunur.
+    /// </summary>
+    /// <param name="yeniIstifadeci"></param>
+    /// <param name="parol"></param>
+    /// <returns></returns>
     public async Task<EmeliyyatNeticesi> IstifadeciYaratAsync(IstifadeciDto yeniIstifadeci, string parol)
     {
         if (string.IsNullOrWhiteSpace(yeniIstifadeci.IstifadeciAdi) || string.IsNullOrWhiteSpace(parol))
@@ -55,7 +75,15 @@ public class IstifadeciManager
 
         return EmeliyyatNeticesi.Ugurlu();
     }
-
+    /// <summary>
+    ///  İstifadəçi məlumatlarını yeniləmək üçün metod. Asinxron olaraq işləyir.
+    ///  diqqət: İstifadəçi adı və parol boş olmamalıdır, və istifadəçi adı unikal olmalıdır.
+    ///  əsas admini (id = 1) yeniləmək mümkün deyil.
+    ///  dəqiq istifadəçi ID-si verilməlidir.
+    ///  Administratoru yeniləmək üçün istifadəçi ID-si 1 olmamalıdır.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     public async Task<EmeliyyatNeticesi> IstifadeciSilAsync(int id)
     {
         if (id == 1) // Əsas admini silməyin qarşısını alırıq
