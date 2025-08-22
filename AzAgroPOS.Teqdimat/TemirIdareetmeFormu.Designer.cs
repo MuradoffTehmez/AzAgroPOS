@@ -139,7 +139,7 @@ namespace AzAgroPOS.Teqdimat
             txtCihazAdi.Depth = 0;
             txtCihazAdi.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             txtCihazAdi.HideSelection = true;
-            txtCihazAdi.Hint = "Cihaz Adı (məs: iPhone 13)";
+            txtCihazAdi.Hint = "Cihaz Adı (məs: iPhone)";
             txtCihazAdi.LeadingIcon = null;
             txtCihazAdi.Location = new Point(17, 133);
             txtCihazAdi.MaxLength = 32767;
