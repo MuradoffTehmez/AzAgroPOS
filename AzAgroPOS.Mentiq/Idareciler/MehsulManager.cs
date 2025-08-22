@@ -20,6 +20,8 @@ public class MehsulManager
 
     /// <summary>
     /// Bütün məhsulları DTO formatında gətirir.
+    /// diqqət: Bu metod məhsulun ID, adı, stok kodu, barkodu, satış qiyməti və mövcud sayını gətirir.
+    /// task : Asinxron olaraq işləyir və məhsul məlumatlarını gətirir.
     /// </summary>
     public async Task<EmeliyyatNeticesi<IEnumerable<MehsulDto>>> ButunMehsullariGetirAsync()
     {
@@ -39,7 +41,10 @@ public class MehsulManager
     }
 
     /// <summary>
-    /// Yeni bir məhsul yaradır.
+    /// Mövcud olmayan yeni bir məhsul yaradır.
+    /// Validasiya və unikal stok kodu yoxlamaları ilə birlikdə.
+    /// 
+    /// Diqqət: Alış qiyməti sıfır olaraq təyin edilir, çünki bu modul üçün təyin ediləcək.
     /// </summary>
     public async Task<EmeliyyatNeticesi<int>> MehsulYaratAsync(MehsulDto yeniMehsulDto)
     {
@@ -73,7 +78,10 @@ public class MehsulManager
     }
 
     /// <summary>
-    /// Mövcud məhsulu yeniləyir.
+    /// Bu metod mövcud məhsulun məlumatlarını yeniləmək üçün istifadə olunur.
+    /// diqqət: Məhsulun ID-si ilə mövcud məhsul tapılır və onun məlumatları yenilənir.
+    /// Stok kodunun unikal olmasını yoxlayır.
+    /// yoxlayır ki, məhsulun adı və stok kodu boş olmasın.
     /// </summary>
     public async Task<EmeliyyatNeticesi> MehsulYenileAsync(MehsulDto mehsulDto)
     {
@@ -99,7 +107,10 @@ public class MehsulManager
     }
 
     /// <summary>
-    /// Məhsulu ID-sinə görə silir.
+    /// Mövcud məhsulu silir.
+    /// silinəcək məhsulun mövcud olub-olmadığını yoxlayır.
+    /// diqqət: Məhsul silindikdən sonra onun bütün satış və alış tarixçələri silinmir, yalnız məhsulun özü silinir.
+    /// Əgər məhsul satış və ya alış tarixçələrində istifadə olunubsa, bu əməliyyat uğursuz olacaq.
     /// </summary>
     public async Task<EmeliyyatNeticesi> MehsulSilAsync(int id)
     {
