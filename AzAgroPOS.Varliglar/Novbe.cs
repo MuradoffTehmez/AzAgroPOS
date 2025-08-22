@@ -5,7 +5,9 @@ using System;
 using System.Collections.Generic;
 
 /// <summary>
-/// Kassirin iş növbəsini təmsil edir.
+/// Kassirin iş növbəsini təmsil edir. Hər bir növbə, müəyyən bir işçi tərəfindən açılır və bağlanır.
+/// Diqqət: Növbə açıldıqda, işçi növbəni idarə edir və satış əməliyyatlarını həyata keçirir.
+/// Qeyd: Növbə bağlandıqda, işçi növbəni bağlayır və növbə ilə əlaqəli satış əməliyyatları qeydə alınır.
 /// </summary>
 public class Novbe : BazaVarligi
 {
