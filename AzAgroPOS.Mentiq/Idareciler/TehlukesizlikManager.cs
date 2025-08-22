@@ -7,6 +7,9 @@ using AzAgroPOS.Verilenler.Interfeysler;
 using System.Linq;
 using System.Threading.Tasks;
 
+/// <summary>
+/// TehlukesizlikManager, istifadəçi girişini və təhlükəsizlik yoxlamalarını idarə edən menecer.
+/// </summary>
 public class TehlukesizlikManager
 {
     private readonly IUnitOfWork _unitOfWork;
@@ -14,10 +17,20 @@ public class TehlukesizlikManager
     {
         _unitOfWork = unitOfWork;
     }
-
+    /// <summary>
+    /// DaxilOlAsync metodu istifadəçi adı və parol ilə istifadəçi girişini yoxlayır
+    /// uğurlu giriş halında istifadəçi məlumatlarını IstifadeciDto formatında qaytarır.
+    /// uğursuz giriş halında isə müvafiq xətanı bildirir.
+    /// rol: Bu metod asinxron olaraq işləyir və istifadəçi adı və parolun düzgünlüyünü yoxlayır.
+    /// diqqət: İstifadəçi adı və parol boş ola bilməz, əgər boşdursa müvafiq xəta mesajı qaytarılır.
+    /// qeyd: İstifadəçi adı və parol yoxlanarkən, istifadəçi adı ilə verilən parolun hash dəyəri müqayisə edilir.
+    /// </summary>
+    /// <param name="istifadeciAdi"></param>
+    /// <param name="parol"></param>
+    /// <returns></returns>
     public async Task<EmeliyyatNeticesi<IstifadeciDto>> DaxilOlAsync(string istifadeciAdi, string parol)
     {
-        // ƏSAS DÜZƏLİŞ: Gələn dəyərləri hər cür artıq simvoldan təmizləyirik
+        
         var temizlenmisAd = istifadeciAdi.Trim();
         var temizlenmisParol = parol.Trim();
 

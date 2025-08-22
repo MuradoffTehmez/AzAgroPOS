@@ -8,6 +8,9 @@ using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using Microsoft.EntityFrameworkCore;
 
+/// <summary>
+/// Nisye (borc) əməliyyatlarını idarə edən menecer.
+/// </summary>
 public class NisyeManager
 {
     private readonly IUnitOfWork _unitOfWork;
@@ -17,6 +20,13 @@ public class NisyeManager
         _unitOfWork = unitOfWork;
     }
 
+    /// <summary>
+    /// Müştərilərin siyahısını DTO formatında gətirir.
+    /// bu metod bütün müştəriləri gətirir və onların ID, tam adı, telefon nömrəsi, ünvanı və ümumi borcunu göstərir.
+    /// diqqət: Müştərilərin borcunu hesablamaq üçün NisyeHereketleri cədvəlindən istifadə olunur.
+    /// listəki hər müştəri üçün ümumi borc, onun bütün borc əməliyyatlarının cəmi ilə hesablanır.
+    /// </summary>
+    /// <returns></returns>
     public async Task<EmeliyyatNeticesi<List<MusteriDto>>> MusterileriGetirAsync()
     {
         var musteriler = await _unitOfWork.Musteriler.ButununuGetirAsync();
@@ -31,6 +41,14 @@ public class NisyeManager
         return EmeliyyatNeticesi<List<MusteriDto>>.Ugurlu(dtolar);
     }
 
+    /// <summary>
+    /// Müştəriyə yeni borc əməliyyatı əlavə edir.
+    /// Diqqət: Bu metod müştərinin ID-sini, əməliyyat növünü (borc və ya ödəniş), məbləği və qeydi alır.
+    /// Qeyd: Əməliyyat növü "Borc" və ya "Odenis" olmalıdır.
+    /// listəki hər müştəri üçün ümumi borc, onun bütün borc əməliyyatlarının cəmi ilə hesablanır.
+    /// </summary>
+    /// <param name="musteriId"></param>
+    /// <returns></returns>
     public async Task<EmeliyyatNeticesi<List<NisyeHereketiDto>>> MusteriHereketleriniGetirAsync(int musteriId)
     {
         var hereketler = await _unitOfWork.NisyeHereketleri
@@ -48,6 +66,17 @@ public class NisyeManager
         return EmeliyyatNeticesi<List<NisyeHereketiDto>>.Ugurlu(dtolar);
     }
 
+    /// <summary>
+    /// Borc əməliyyatını müştəri üçün qeydə alır.
+    /// bu metod müştərinin ID-sini, əməliyyat növünü (borc və ya ödəniş), məbləği və qeydi alır.
+    /// ödəniş məbləği müsbət olmalıdır və müştərinin ümumi borcundan çox olmamalıdır.
+    /// ödəniş əməliyyatı üçün müştərinin ümumi borcu azaldılır və yeni hərəkət qeydə alınır.
+    /// borc əməliyyatı üçün müştərinin ümumi borcu artırılır və yeni hərəkət qeydə alınır.
+    /// diqqət: Əməliyyat növü "Borc" və ya "Odenis" olmalıdır.
+    /// </summary>
+    /// <param name="musteriId"></param>
+    /// <param name="odenenMebleg"></param>
+    /// <returns></returns>
     public async Task<EmeliyyatNeticesi> BorcOdenisiEtAsync(int musteriId, decimal odenenMebleg)
     {
         if (odenenMebleg <= 0)

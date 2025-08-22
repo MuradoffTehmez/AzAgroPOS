@@ -9,11 +9,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+/// <summary>
+/// Satışlarla bağlı əməliyyatları idarə edən menecer.
+/// diqqət : Bu menecer satış təsdiqləmə, stok yoxlaması və satış detalları ilə bağlı əməliyyatları həyata keçirir.
+/// qeyd: Satış təsdiqləmə əməliyyatı, satış səbəti elementlərini yoxlayır, stokda kifayət qədər məhsul olub olmadığını təsdiqləyir və satış əməliyyatını həyata keçirir.
+/// </summary>
 public class SatisManager
 {
     private readonly IUnitOfWork _unitOfWork;
     public SatisManager(IUnitOfWork unitOfWork) { _unitOfWork = unitOfWork; }
 
+    /// <summary>
+    /// bu metod satış təsdiqləmə əməliyyatını həyata keçirir.
+    /// diqqət: Satış təsdiqləmə zamanı satış səbəti elementləri, ödəniş metodu və növbə ID-si tələb olunur.
+    /// səbət elementləri - satış üçün seçilmiş məhsul və miqdarları, ödəniş metodu - nağd, kart və s. ola bilər,
+    /// task : Asinxron olaraq işləyir və satış əməliyyatını təsdiqləyir.
+    /// qeyd: Əgər səbət boşdursa və ya stokda kifayət qədər məhsul yoxdursa, əməliyyat uğursuz olur və müvafiq mesaj qaytarılır.
+    /// </summary>
+    /// <param name="sebetElementleri"></param>
+    /// <param name="odenisMetodu"></param>
+    /// <param name="novbeId"></param>
+    /// <returns></returns>
     public async Task<EmeliyyatNeticesi<Satis>> SatisiTesdiqleAsync(List<SatisSebetiElementiDto> sebetElementleri, OdenisMetodu odenisMetodu, int novbeId)
     {
         if (sebetElementleri == null || !sebetElementleri.Any())
