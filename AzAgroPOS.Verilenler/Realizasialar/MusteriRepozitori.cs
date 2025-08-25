@@ -16,6 +16,6 @@ public class MusteriRepozitori : Repozitori<AzAgroPOS.Varliglar.Musteri>, IMuste
     /// <param name="kontekst"></param>
     public MusteriRepozitori(AzAgroPOSDbContext kontekst) : base(kontekst) 
     {
-        
+        // burda əlavə konfiqurasiya və ya başlanğıc əməliyyatları həyata keçirilə bilər
     }
 }

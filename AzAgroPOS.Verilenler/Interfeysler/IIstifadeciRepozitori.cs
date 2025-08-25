@@ -5,7 +5,7 @@ using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler;
 /// <summary>
 /// Bütün istifadəçi verilənlər bazası əməliyyatları üçün interfeys.
-/// Uzunluğu IRepozitori<Istifadeci> interfeysindən miras alır və istifadəçi ilə əlaqəli xüsusi əməliyyatları əlavə etmək üçün genişləndirilə bilər.
+/// Uzunluğu IRepozitori interfeysindən miras alır və istifadəçi ilə əlaqəli xüsusi əməliyyatları əlavə etmək üçün genişləndirilə bilər.
 /// </summary>
 public interface IIstifadeciRepozitori : IRepozitori<Istifadeci> 
 {

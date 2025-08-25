@@ -5,7 +5,19 @@ using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using AzAgroPOS.Verilenler.Kontekst;
 
+/// <summary>
+/// bu sinif, Rol üçün CRUD əməliyyatlarını həyata keçirən repozitoriyadır.
+/// bu siniflə CRUD əməliyyatlarını (Yarat, Oxu, Yenilə, Sil) ümumi şəkildə həyata keçirir.
+/// </summary>
 public class RolRepozitori : Repozitori<Rol>, IRolRepozitori
 {
-    public RolRepozitori(AzAgroPOSDbContext kontekst) : base(kontekst) { }
+    /// <summary>
+    /// rolRepozitoriyasını yaratmaq üçün konstruktordur və verilənlər bazası kontekstini bazaya ötürür.
+    /// qeyd: Bu konstruktor, konkret varlıq repozitoriyaları üçün istifadə olunur və əlavə konfiqurasiya və ya başlanğıc əməliyyatları həyata keçirmək üçün istifadə oluna bilər.
+    /// </summary>
+    /// <param name="kontekst"></param>
+    public RolRepozitori(AzAgroPOSDbContext kontekst) : base(kontekst) 
+    {
+        // burda əlavə konfiqurasiya və ya başlanğıc əməliyyatları həyata keçirilə bilər
+    }
 }

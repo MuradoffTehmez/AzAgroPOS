@@ -7,7 +7,7 @@ using AzAgroPOS.Verilenler;
 /// bütün rol verilənlər bazası əməliyyatları üçün interfeys.
 /// diqqət: Hal-hazırda xüsusi əməliyyatlar əlavə edilməyib, amma gələcəkdə əlavə edilə bilər.
 /// qeyd: Bu interfeys, rol verilənlər bazası əməliyyatlarını idarə etmək üçün istifadə olunur və rol ilə əlaqəli əməliyyatları asanlaşdırır.
-/// uzunluğu IRepozitori<Rol> interfeysindən miras alır və rol ilə əlaqəli xüsusi əməliyyatları əlavə etmək üçün genişləndirilə bilər.
+/// uzunluğu IRepozitori Rol interfeysindən miras alır və rol ilə əlaqəli xüsusi əməliyyatları əlavə etmək üçün genişləndirilə bilər.
 /// </summary>
 public interface IRolRepozitori : IRepozitori<Rol> 
 {

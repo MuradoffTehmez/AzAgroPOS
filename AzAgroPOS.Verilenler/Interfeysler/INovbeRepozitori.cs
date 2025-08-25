@@ -5,7 +5,7 @@ using AzAgroPOS.Varliglar;
 /// Bütün növbə verilənlər bazası əməliyyatları üçün interfeys.
 /// diqqət: Hal-hazırda xüsusi əməliyyatlar əlavə edilməyib, amma gələcəkdə əlavə edilə bilər.
 /// qeyd: Bu interfeys, növbə verilənlər bazası əməliyyatlarını idarə etmək üçün istifadə olunur və növbə ilə əlaqəli əməliyyatları asanlaşdırır.
-/// uzunluğu IRepozitori<Novbe> interfeysindən miras alır və növbə ilə əlaqəli xüsusi əməliyyatları əlavə etmək üçün genişləndirilə bilər.
+/// uzunluğu IRepozitori  interfeysindən miras alır və növbə ilə əlaqəli xüsusi əməliyyatları əlavə etmək üçün genişləndirilə bilər.
 /// </summary>
 public interface INovbeRepozitori : IRepozitori<Novbe> 
 {

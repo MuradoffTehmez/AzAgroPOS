@@ -14,7 +14,7 @@ public interface IRepozitori<T> where T : BazaVarligi
     /// <summary>
     /// Göstərilən id-yə malik varlığı asinxron olaraq gətirir.
     /// diqqət: Bu metod yalnız mövcud olan varlıqları gətirir, əgər id ilə uyğun varlıq tapılmazsa, null qaytarır.
-    /// qeyd: Bu metod asinxron işləyir və Task<T?> tipində nəticə qaytarır.
+    /// qeyd: Bu metod asinxron işləyir və Task T? tipində nəticə qaytarır.
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -22,14 +22,14 @@ public interface IRepozitori<T> where T : BazaVarligi
     /// <summary>
     /// Bütün varlıqları asinxron olaraq gətirir.
     /// diqqət: Bu metod bütün varlıqları gətirir, əgər heç bir varlıq tapılmazsa, boş kolleksiya qaytarır.
-    /// qeyd: Bu metod asinxron işləyir və Task<IEnumerable<T>> tipində nəticə qaytarır.
+    /// qeyd: Bu metod asinxron işləyir və Task  tipində nəticə qaytarır.
     /// </summary>
     /// <returns></returns>
     Task<IEnumerable<T>> ButununuGetirAsync();
     /// <summary>
     /// Axtarış əməliyyatı üçün asinxron metod.
     /// diqqət: Bu metod göstərilən şərtə uyğun olan bütün varlıqları gətirir.
-    /// qeyd: Bu metod asinxron işləyir və Task<IEnumerable<T>> tipində nəticə qaytarır.
+    /// qeyd: Bu metod asinxron işləyir və Task  tipində nəticə qaytarır.
     /// </summary>
     /// <param name="predicate"></param>
     /// <returns></returns>

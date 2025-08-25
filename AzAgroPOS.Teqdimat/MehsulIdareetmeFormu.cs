@@ -7,17 +7,23 @@ using AzAgroPOS.Teqdimat.Teqdimatcilar;
 using System.Data;
 
 /// <summary>
-/// B
+/// bu forma məhsul idarəetmə əməliyyatlarını həyata keçirmək üçün istifadə olunur.
+/// diqqət: bu forma MaterialSkin kitabxanasından MaterialForm-dan miras alır.
+/// qeyd: bu forma IMehsulIdareetmeView interfeysini implementasiya edir.
 /// </summary>
 public partial class MehsulIdareetmeFormu : BazaForm, IMehsulIdareetmeView
 {
     /// <summary>
-    /// 
+    /// mehsul idarəetmə əməliyyatlarını həyata keçirmək üçün istifadə olunan presenter obyektidir.
+    /// diqqət: bu obyekt formun konstruktorunda yaradılır.
+    /// qeyd: bu obyekt IMehsulIdareetmeView interfeysini implementasiya edən formu qəbul edir.
     /// </summary>
     private MehsulPresenter _presenter;
 
     /// <summary>
-    ///  
+    ///  mehsul idarəetmə formunun konstruktoru.
+    ///  diqqət: bu konstruktor InitializeComponent metodunu çağırır.
+    ///  qeyd: bu konstruktor MehsulPresenter obyektini yaradır və formu ona ötürür.
     /// </summary>
     public MehsulIdareetmeFormu()
     {
@@ -28,65 +34,95 @@ public partial class MehsulIdareetmeFormu : BazaForm, IMehsulIdareetmeView
     // IMehsulIdareetmeView interfeysinin implementasiyası
     #region View Implementasiyası
     /// <summary>
-    /// 
+    /// məhsulun unikal identifikatoru (ID).
+    /// diqqət: bu xüsusiyyət txtId TextBox-un mətnini oxuyur və yazır.
+    /// qeyd: bu xüsusiyyət string tipindədir.
     /// </summary>
     public string MehsulId { get => txtId.Text; set => txtId.Text = value; }
     /// <summary>
-    /// 
+    /// mehsulun adını təyin edir textbox vasitəsilə.
+    /// diqqət: bu xüsusiyyət txtAd TextBox-un mətnini oxuyur və yazır.
+    /// qeyd: bu xüsusiyyət string tipindədir.
     /// </summary>
     public string MehsulAdi { get => txtAd.Text; set => txtAd.Text = value; }
     /// <summary>
-    /// 
+    /// stok kodunu təyin edir və ya alır.
+    /// diqqət: bu xüsusiyyət txtStokKodu TextBox-un mətnini oxuyur və yazır.
+    /// qeyd: bu xüsusiyyət string tipindədir.
     /// </summary>
     public string StokKodu { get => txtStokKodu.Text; set => txtStokKodu.Text = value; }
     /// <summary>
-    /// 
+    /// barkodu təyin edir və ya alır.
+    /// diqət: bu xüsusiyyət txtBarkod TextBox-un mətnini oxuyur və yazır.
+    /// qeyd: bu xüsusiyyət string tipindədir.
     /// </summary>
     public string Barkod { get => txtBarkod.Text; set => txtBarkod.Text = value; }
     /// <summary>
-    /// 
+    /// satış qiymətini təyin edir və ya alır.
+    /// diqət: bu xüsusiyyət txtSatisQiymeti TextBox-un mətnini oxuyur və yazır.
+    /// qeyd: bu xüsusiyyət string tipindədir.
     /// </summary>
     public string SatisQiymeti { get => txtSatisQiymeti.Text; set => txtSatisQiymeti.Text = value; }
     /// <summary>
-    /// 
+    /// mövcud sayını təyin edir və ya alır.
+    /// diqət: bu xüsusiyyət txtMevcudSay TextBox-un mətnini oxuyur və yazır.
+    /// qeyd: bu xüsusiyyət string tipindədir.
     /// </summary>
     public string MovcudSay { get => txtMevcudSay.Text; set => txtMevcudSay.Text = value; }
     /// <summary>
-    /// 
+    /// axtarış mətnini təyin edir və ya alır.
+    /// diqət: bu xüsusiyyət txtAxtar TextBox-un mətnini oxuyur və yazır.
+    /// qeyd: bu xüsusiyyət string tipindədir.
     /// </summary>
     public string AxtarisMetni { get => txtAxtar.Text; set => txtAxtar.Text = value; }
 
     /// <summary>
-    /// 
+    /// form yükləndikdə baş verən hadisə.
+    /// diqət: bu hadisə FormYuklendi_Istek adlı EventHandler tipindədir.
+    /// qeyd: bu hadisə presenter tərəfindən istifadə olunur.
     /// </summary>
     public event EventHandler FormYuklendi_Istek;
     /// <summary>
-    /// 
+    /// məhsul əlavə etmək istənildikdə baş verən hadisə.
+    /// diqət: bu hadisə MehsulElaveEt_Istek adlı EventHandler tipindədir.
+    /// qeyd: bu hadisə presenter tərəfindən istifadə olunur.
     /// </summary>
     public event EventHandler MehsulElaveEt_Istek;
     /// <summary>
-    /// 
+    /// məhsul yeniləmək istənildikdə baş verən hadisə.
+    /// diqət: bu hadisə MehsulYenile_Istek adlı EventHandler tipindədir.
+    /// qeyd: bu hadisə presenter tərəfindən istifadə olunur.
     /// </summary>
     public event EventHandler MehsulYenile_Istek;
     /// <summary>
-    /// 
+    /// Məhsul silmək istənildikdə baş verən hadisə.
+    /// diqət: bu hadisə MehsulSil_Istek adlı EventHandler tipindədir.
+    /// qeyd: bu hadisə presenter tərəfindən istifadə olunur.
     /// </summary>
     public event EventHandler MehsulSil_Istek;
     /// <summary>
-    /// 
+    /// Formu təmizləmək istənildikdə baş verən hadisə.
+    /// diqət: bu hadisə FormuTemizle_Istek adlı EventHandler tipindədir.
+    /// qeyd: bu hadisə presenter tərəfindən istifadə olunur.
     /// </summary>
     public event EventHandler FormuTemizle_Istek;
     /// <summary>
-    /// 
+    /// Cədvəl seçimində dəyişiklik olduqda baş verən hadisə.
+    /// diqət: bu hadisə CedvelSecimiDeyisdi_Istek adlı EventHandler tipindədir.
+    /// qeyd: bu hadisə presenter tərəfindən istifadə olunur.
     /// </summary>
     public event EventHandler CedvelSecimiDeyisdi_Istek;
     /// <summary>
-    /// 
+    /// Axtarış istəyi baş verdikdə tetiklenen hadisə.
+    /// Diqət: bu hadisə Axtaris_Istek adlı EventHandler tipindədir.
+    /// Qeyd: bu hadisə presenter tərəfindən istifadə olunur.
     /// </summary>
     public event EventHandler Axtaris_Istek;
 
     /// <summary>
-    /// 
+    /// məhsulları DataGridView-də göstərmək üçün istifadə olunur.
+    /// Diqqət: bu metod DataGridView-nin DataSource xüsusiyyətini təyin edir.
+    /// QEYD - DataSource null ola bilməz, buna görə də null yoxlaması aparılır. Cədvəl boş olduqda belə işləyir.
     /// </summary>
     /// <param name="mehsullar"></param>
     public void MehsullariGoster(IEnumerable<MehsulDto> mehsullar)
@@ -112,7 +148,9 @@ public partial class MehsulIdareetmeFormu : BazaForm, IMehsulIdareetmeView
     }
 
     /// <summary>
-    /// 
+    /// mesaj göstərmək və istifadəçi reaksiyasını almaq üçün istifadə olunur.
+    /// diqət: bu metod MessageBox.Show metodunu çağırır. və nəticəni qaytarır. bu nəticə DialogResult tipindədir.
+    /// qeyd - bu metod presenter tərəfindən istifadə olunur.
     /// </summary>
     /// <param name="mesaj"></param>
     /// <param name="basliq"></param>
@@ -128,7 +166,9 @@ public partial class MehsulIdareetmeFormu : BazaForm, IMehsulIdareetmeView
     // Form hadisələrini Presenter-ə ötürmək
     #region Hadisə Ötürücüləri
     /// <summary>
-    /// 
+    /// MehsulIdareetmeFormu yükləndikdə baş verən hadisə.
+    /// diqət: bu hadisə FormYuklendi_Istek adlı EventHandler tipindədir.
+    /// qeyd: bu hadisə presenter tərəfindən istifadə olunur.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -138,7 +178,9 @@ public partial class MehsulIdareetmeFormu : BazaForm, IMehsulIdareetmeView
     }
 
     /// <summary>
-    /// 
+    /// btnElaveEt düyməsinə kliklənildikdə baş verən hadisə.
+    /// diqət: bu hadisə MehsulElaveEt_Istek adlı EventHandler tipindədir.
+    /// qeyd: bu hadisə presenter tərəfindən istifadə olunur.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -148,7 +190,9 @@ public partial class MehsulIdareetmeFormu : BazaForm, IMehsulIdareetmeView
     }
 
     /// <summary>
-    /// 
+    /// btnYenile düyməsinə kliklənildikdə baş verən hadisə.
+    /// diqət: bu hadisə MehsulYenile_Istek adlı EventHandler tipindədir.
+    /// qeyd: bu hadisə presenter tərəfindən istifadə olunur.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -158,7 +202,9 @@ public partial class MehsulIdareetmeFormu : BazaForm, IMehsulIdareetmeView
     }
 
     /// <summary>
-    /// 
+    /// btnSil düyməsinə kliklənildikdə baş verən hadisə.
+    /// diqət: bu hadisə MehsulSil_Istek adlı EventHandler tipindədir.
+    /// qeyd: bu hadisə presenter tərəfindən istifadə olunur.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -168,7 +214,9 @@ public partial class MehsulIdareetmeFormu : BazaForm, IMehsulIdareetmeView
     }
 
     /// <summary>
-    /// 
+    /// btnTemizle düyməsinə kliklənildikdə baş verən hadisə.
+    /// diqət: bu hadisə FormuTemizle_Istek adlı EventHandler tipindədir.
+    /// qeyd: bu hadisə presenter tərəfindən istifadə olunur.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -178,7 +226,9 @@ public partial class MehsulIdareetmeFormu : BazaForm, IMehsulIdareetmeView
     }
 
     /// <summary>
-    /// 
+    /// dgvMehsullar cədvəlində seçim dəyişdikdə baş verən hadisə.
+    /// diqət: bu hadisə CedvelSecimiDeyisdi_Istek adlı EventHandler tipindədir.
+    /// qeyd: bu hadisə presenter tərəfindən istifadə olunur.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -192,7 +242,9 @@ public partial class MehsulIdareetmeFormu : BazaForm, IMehsulIdareetmeView
     }
 
     /// <summary>
-    /// 
+    /// txtAxtar mətnində dəyişiklik olduqda baş verən hadisə.
+    /// diqət: bu hadisə Axtaris_Istek adlı EventHandler tipindədir.
+    /// qeyd: bu hadisə presenter tərəfindən istifadə olunur.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
