@@ -121,4 +121,38 @@ public class HesabatManager
             return EmeliyyatNeticesi<List<MehsulUzreSatisDetayDto>>.Ugursuz($"Hesabat hazırlanarkən xəta baş verdi: {ex.Message}");
         }
     }
+
+
+    /// <summary>
+    /// Anbarda miqdarı göstərilən limitdən az və ya bərabər olan məhsulları tapır.
+    /// </summary>
+    /// <param name="limitSay">Anbar qalığı üçün maksimum limit.</param>
+    public async Task<EmeliyyatNeticesi<List<AnbarQaliqDetayDto>>> AnbarQaliqHesabatiGetirAsync(int limitSay)
+    {
+        try
+        {
+            var mehsullar = await _unitOfWork.Mehsullar.AxtarAsync(m => m.MovcudSay <= limitSay);
+
+            if (!mehsullar.Any())
+            {
+                return EmeliyyatNeticesi<List<AnbarQaliqDetayDto>>.Ugursuz($"Anbarda sayı {limitSay}-dən az olan məhsul tapılmadı.");
+            }
+
+            var hesabat = mehsullar
+                .Select(m => new AnbarQaliqDetayDto
+                {
+                    StokKodu = m.StokKodu,
+                    MehsulAdi = m.Ad,
+                    MovcudSay = m.MovcudSay
+                })
+                .OrderBy(r => r.MovcudSay) 
+                .ToList();
+
+            return EmeliyyatNeticesi<List<AnbarQaliqDetayDto>>.Ugurlu(hesabat);
+        }
+        catch (Exception ex)
+        {
+            return EmeliyyatNeticesi<List<AnbarQaliqDetayDto>>.Ugursuz($"Hesabat hazırlanarkən xəta baş verdi: {ex.Message}");
+        }
+    }
 }

@@ -16,6 +16,7 @@ namespace AzAgroPOS.Teqdimat
             btnIstifadeciIdareetme = new MaterialSkin.Controls.MaterialButton();
             btnHesabatlar = new MaterialSkin.Controls.MaterialButton();
             btnMehsulSatisHesabati = new MaterialSkin.Controls.MaterialButton();
+            btnAnbarQaliqHesabati = new MaterialSkin.Controls.MaterialButton();
             SuspendLayout();
             // 
             // btnMehsulIdareetme
@@ -29,7 +30,7 @@ namespace AzAgroPOS.Teqdimat
             btnMehsulIdareetme.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnMehsulIdareetme.HighEmphasis = true;
             btnMehsulIdareetme.Icon = null;
-            btnMehsulIdareetme.Location = new Point(320, 90);
+            btnMehsulIdareetme.Location = new Point(323, 157);
             btnMehsulIdareetme.Margin = new Padding(4, 6, 4, 6);
             btnMehsulIdareetme.MouseState = MaterialSkin.MouseState.HOVER;
             btnMehsulIdareetme.Name = "btnMehsulIdareetme";
@@ -53,7 +54,7 @@ namespace AzAgroPOS.Teqdimat
             btnYeniSatis.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnYeniSatis.HighEmphasis = true;
             btnYeniSatis.Icon = null;
-            btnYeniSatis.Location = new Point(50, 170);
+            btnYeniSatis.Location = new Point(581, 157);
             btnYeniSatis.Margin = new Padding(4, 6, 4, 6);
             btnYeniSatis.MouseState = MaterialSkin.MouseState.HOVER;
             btnYeniSatis.Name = "btnYeniSatis";
@@ -77,7 +78,7 @@ namespace AzAgroPOS.Teqdimat
             btnNisyeIdareetme.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnNisyeIdareetme.HighEmphasis = true;
             btnNisyeIdareetme.Icon = null;
-            btnNisyeIdareetme.Location = new Point(320, 170);
+            btnNisyeIdareetme.Location = new Point(65, 237);
             btnNisyeIdareetme.Margin = new Padding(4, 6, 4, 6);
             btnNisyeIdareetme.MouseState = MaterialSkin.MouseState.HOVER;
             btnNisyeIdareetme.Name = "btnNisyeIdareetme";
@@ -101,7 +102,7 @@ namespace AzAgroPOS.Teqdimat
             btnTemirIdareetme.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnTemirIdareetme.HighEmphasis = true;
             btnTemirIdareetme.Icon = null;
-            btnTemirIdareetme.Location = new Point(50, 250);
+            btnTemirIdareetme.Location = new Point(323, 237);
             btnTemirIdareetme.Margin = new Padding(4, 6, 4, 6);
             btnTemirIdareetme.MouseState = MaterialSkin.MouseState.HOVER;
             btnTemirIdareetme.Name = "btnTemirIdareetme";
@@ -125,7 +126,7 @@ namespace AzAgroPOS.Teqdimat
             btnNovbeIdareetme.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnNovbeIdareetme.HighEmphasis = true;
             btnNovbeIdareetme.Icon = null;
-            btnNovbeIdareetme.Location = new Point(50, 90);
+            btnNovbeIdareetme.Location = new Point(65, 157);
             btnNovbeIdareetme.Margin = new Padding(4, 6, 4, 6);
             btnNovbeIdareetme.MouseState = MaterialSkin.MouseState.HOVER;
             btnNovbeIdareetme.Name = "btnNovbeIdareetme";
@@ -149,7 +150,7 @@ namespace AzAgroPOS.Teqdimat
             btnIstifadeciIdareetme.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnIstifadeciIdareetme.HighEmphasis = true;
             btnIstifadeciIdareetme.Icon = null;
-            btnIstifadeciIdareetme.Location = new Point(320, 250);
+            btnIstifadeciIdareetme.Location = new Point(581, 237);
             btnIstifadeciIdareetme.Margin = new Padding(4, 6, 4, 6);
             btnIstifadeciIdareetme.MouseState = MaterialSkin.MouseState.HOVER;
             btnIstifadeciIdareetme.Name = "btnIstifadeciIdareetme";
@@ -173,7 +174,7 @@ namespace AzAgroPOS.Teqdimat
             btnHesabatlar.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnHesabatlar.HighEmphasis = true;
             btnHesabatlar.Icon = null;
-            btnHesabatlar.Location = new Point(50, 323);
+            btnHesabatlar.Location = new Point(65, 317);
             btnHesabatlar.Margin = new Padding(4, 6, 4, 6);
             btnHesabatlar.MouseState = MaterialSkin.MouseState.HOVER;
             btnHesabatlar.Name = "btnHesabatlar";
@@ -197,7 +198,7 @@ namespace AzAgroPOS.Teqdimat
             btnMehsulSatisHesabati.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnMehsulSatisHesabati.HighEmphasis = true;
             btnMehsulSatisHesabati.Icon = null;
-            btnMehsulSatisHesabati.Location = new Point(320, 323);
+            btnMehsulSatisHesabati.Location = new Point(323, 317);
             btnMehsulSatisHesabati.Margin = new Padding(4, 6, 4, 6);
             btnMehsulSatisHesabati.MouseState = MaterialSkin.MouseState.HOVER;
             btnMehsulSatisHesabati.Name = "btnMehsulSatisHesabati";
@@ -210,10 +211,34 @@ namespace AzAgroPOS.Teqdimat
             btnMehsulSatisHesabati.UseVisualStyleBackColor = false;
             btnMehsulSatisHesabati.Click += btnMehsulSatisHesabati_Click;
             // 
+            // btnAnbarQaliqHesabati
+            // 
+            btnAnbarQaliqHesabati.Anchor = AnchorStyles.None;
+            btnAnbarQaliqHesabati.AutoSize = false;
+            btnAnbarQaliqHesabati.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnAnbarQaliqHesabati.BackColor = Color.FromArgb(242, 242, 242);
+            btnAnbarQaliqHesabati.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnAnbarQaliqHesabati.Depth = 0;
+            btnAnbarQaliqHesabati.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            btnAnbarQaliqHesabati.HighEmphasis = true;
+            btnAnbarQaliqHesabati.Icon = null;
+            btnAnbarQaliqHesabati.Location = new Point(581, 317);
+            btnAnbarQaliqHesabati.Margin = new Padding(4, 6, 4, 6);
+            btnAnbarQaliqHesabati.MouseState = MaterialSkin.MouseState.HOVER;
+            btnAnbarQaliqHesabati.Name = "btnAnbarQaliqHesabati";
+            btnAnbarQaliqHesabati.NoAccentTextColor = Color.Empty;
+            btnAnbarQaliqHesabati.Size = new Size(250, 68);
+            btnAnbarQaliqHesabati.TabIndex = 8;
+            btnAnbarQaliqHesabati.Text = "Anbar qalığı";
+            btnAnbarQaliqHesabati.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnAnbarQaliqHesabati.UseAccentColor = false;
+            btnAnbarQaliqHesabati.UseVisualStyleBackColor = false;
+            // 
             // AnaMenuFormu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
-            ClientSize = new Size(620, 400);
+            ClientSize = new Size(928, 534);
+            Controls.Add(btnAnbarQaliqHesabati);
             Controls.Add(btnMehsulSatisHesabati);
             Controls.Add(btnHesabatlar);
             Controls.Add(btnIstifadeciIdareetme);
@@ -237,5 +262,6 @@ namespace AzAgroPOS.Teqdimat
         private MaterialSkin.Controls.MaterialButton btnIstifadeciIdareetme;
         private MaterialSkin.Controls.MaterialButton btnHesabatlar;
         private MaterialSkin.Controls.MaterialButton btnMehsulSatisHesabati;
+        private MaterialSkin.Controls.MaterialButton btnAnbarQaliqHesabati;
     }
 }
