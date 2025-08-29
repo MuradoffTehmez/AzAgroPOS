@@ -108,4 +108,34 @@ public class NisyeManager
 
         return EmeliyyatNeticesi.Ugurlu();
     }
+    
+    /// <summary>
+    /// Nisyə olaraq həyata keçirilən satışı müştərinin borc hesabına əlavə edir.
+    /// Diqqət: Bu metod SatisManager tərəfindən vahid tranzaksiya daxilində çağırılmalıdır.
+    /// </summary>
+    public async Task<EmeliyyatNeticesi> NisyeyeSatisElaveEtAsync(Satis satis)
+    {
+        if (!satis.MusteriId.HasValue)
+            return EmeliyyatNeticesi.Ugursuz("Nisyə satış üçün müştəri seçilməlidir.");
+
+        var musteri = await _unitOfWork.Musteriler.GetirAsync(satis.MusteriId.Value);
+        if (musteri == null)
+            return EmeliyyatNeticesi.Ugursuz("Müştəri tapılmadı.");
+
+        musteri.UmumiBorc += satis.UmumiMebleg;
+        _unitOfWork.Musteriler.Yenile(musteri);
+
+        var hereket = new NisyeHereketi
+        {
+            MusteriId = musteri.Id,
+            Tarix = satis.Tarix,
+            EmeliyyatNovu = EmeliyyatNovu.Satis,
+            Mebleg = satis.UmumiMebleg,
+            SatisId = satis.Id,
+            Qeyd = $"Satış #{satis.Id}"
+        };
+        await _unitOfWork.NisyeHereketleri.ElaveEtAsync(hereket);
+
+        return EmeliyyatNeticesi.Ugurlu();
+    }
 }
