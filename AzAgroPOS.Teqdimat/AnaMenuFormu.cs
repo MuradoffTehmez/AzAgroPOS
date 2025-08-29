@@ -99,4 +99,9 @@ public partial class AnaMenuFormu : BazaForm
     {
         using (var form = new MehsulSatisHesabatFormu()) { form.ShowDialog(); }
     }
+
+    private void btnZHesabatArxivi_Click(object sender, EventArgs e)
+    {
+        using (var form = new ZHesabatArxivFormu()) { form.ShowDialog(); }
+    }
 }

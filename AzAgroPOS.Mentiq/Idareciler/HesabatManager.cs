@@ -155,4 +155,73 @@ public class HesabatManager
             return EmeliyyatNeticesi<List<AnbarQaliqDetayDto>>.Ugursuz($"Hesabat hazırlanarkən xəta baş verdi: {ex.Message}");
         }
     }
+    /// <summary>
+    /// Bütün bağlanmış növbələrin siyahısını gətirir.
+    /// </summary>
+    public async Task<EmeliyyatNeticesi<List<BaglanmisNovbeDto>>> BaglanmisNovbeleriGetirAsync()
+    {
+        try
+        {
+            var novbeler = await _unitOfWork.Novbeler.AxtarAsync(n => n.Status == NovbeStatusu.Bagli);
+
+            var isciIds = novbeler.Select(n => n.IsciId).Distinct().ToList();
+            var isciler = (await _unitOfWork.Istifadeciler.AxtarAsync(i => isciIds.Contains(i.Id)))
+                          .ToDictionary(i => i.Id, i => i.TamAd);
+
+            if (!novbeler.Any())
+                return EmeliyyatNeticesi<List<BaglanmisNovbeDto>>.Ugursuz("Heç bir bağlanmış növbə tapılmadı.");
+
+            var dtoSiyahisi = novbeler
+                .Select(n => new BaglanmisNovbeDto
+                {
+                    NovbeId = n.Id,
+                    KassirAdi = isciler.ContainsKey(n.IsciId) ? isciler[n.IsciId] : "Naməlum",
+                    BaglanmaTarixi = n.BaglanmaTarixi.GetValueOrDefault()
+                })
+                .OrderByDescending(n => n.BaglanmaTarixi)
+                .ToList();
+
+            return EmeliyyatNeticesi<List<BaglanmisNovbeDto>>.Ugurlu(dtoSiyahisi);
+        }
+        catch (Exception ex)
+        {
+            return EmeliyyatNeticesi<List<BaglanmisNovbeDto>>.Ugursuz($"Növbələr gətirilərkən xəta baş verdi: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Seçilmiş bir növbənin Z-Hesabatını yenidən yaradır.
+    /// </summary>
+    /// <param name="novbeId">Hesabatı tələb olunan növbənin ID-si.</param>
+    public async Task<EmeliyyatNeticesi<ZHesabatDto>> ZHesabatTekrarGetirAsync(int novbeId)
+    {
+        try
+        {
+            var novbe = await _unitOfWork.Novbeler.GetirAsync(novbeId);
+            if (novbe == null || novbe.Status == NovbeStatusu.Aciq)
+                return EmeliyyatNeticesi<ZHesabatDto>.Ugursuz("Bağlanmış növbə tapılmadı.");
+
+            var novbeSatislar = await _unitOfWork.Satislar.AxtarAsync(s => s.NovbeId == novbeId);
+            var isci = await _unitOfWork.Istifadeciler.GetirAsync(novbe.IsciId);
+
+            var hesabat = new ZHesabatDto
+            {
+                AcilmaTarixi = novbe.AcilmaTarixi,
+                BaglanmaTarixi = novbe.BaglanmaTarixi.Value,
+                KassirAdi = isci?.TamAd ?? "Naməlum",
+                BaslangicMebleg = novbe.BaslangicMebleg,
+                SatisSayi = novbeSatislar.Count(),
+                NagdSatislar = novbeSatislar.Where(s => s.OdenisMetodu == OdenisMetodu.Nağd).Sum(s => s.UmumiMebleg),
+                KartSatislar = novbeSatislar.Where(s => s.OdenisMetodu == OdenisMetodu.Kart).Sum(s => s.UmumiMebleg),
+                GozlenilenMebleg = novbe.GozlenilenMebleg,
+                FaktikiMebleg = novbe.FaktikiMebleg
+            };
+
+            return EmeliyyatNeticesi<ZHesabatDto>.Ugurlu(hesabat);
+        }
+        catch (Exception ex)
+        {
+            return EmeliyyatNeticesi<ZHesabatDto>.Ugursuz($"Z-Hesabat hazırlanarkən xəta baş verdi: {ex.Message}");
+        }
+    }
 }

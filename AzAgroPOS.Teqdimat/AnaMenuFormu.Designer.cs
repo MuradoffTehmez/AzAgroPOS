@@ -17,6 +17,7 @@ namespace AzAgroPOS.Teqdimat
             btnHesabatlar = new MaterialSkin.Controls.MaterialButton();
             btnMehsulSatisHesabati = new MaterialSkin.Controls.MaterialButton();
             btnAnbarQaliqHesabati = new MaterialSkin.Controls.MaterialButton();
+            btnZHesabatArxivi = new MaterialSkin.Controls.MaterialButton();
             SuspendLayout();
             // 
             // btnMehsulIdareetme
@@ -234,10 +235,35 @@ namespace AzAgroPOS.Teqdimat
             btnAnbarQaliqHesabati.UseAccentColor = false;
             btnAnbarQaliqHesabati.UseVisualStyleBackColor = false;
             // 
+            // btnZHesabatArxivi
+            // 
+            btnZHesabatArxivi.Anchor = AnchorStyles.None;
+            btnZHesabatArxivi.AutoSize = false;
+            btnZHesabatArxivi.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnZHesabatArxivi.BackColor = Color.FromArgb(242, 242, 242);
+            btnZHesabatArxivi.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnZHesabatArxivi.Depth = 0;
+            btnZHesabatArxivi.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            btnZHesabatArxivi.HighEmphasis = true;
+            btnZHesabatArxivi.Icon = null;
+            btnZHesabatArxivi.Location = new Point(65, 397);
+            btnZHesabatArxivi.Margin = new Padding(4, 6, 4, 6);
+            btnZHesabatArxivi.MouseState = MaterialSkin.MouseState.HOVER;
+            btnZHesabatArxivi.Name = "btnZHesabatArxivi";
+            btnZHesabatArxivi.NoAccentTextColor = Color.Empty;
+            btnZHesabatArxivi.Size = new Size(250, 68);
+            btnZHesabatArxivi.TabIndex = 9;
+            btnZHesabatArxivi.Text = "Z-Hesabat";
+            btnZHesabatArxivi.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnZHesabatArxivi.UseAccentColor = false;
+            btnZHesabatArxivi.UseVisualStyleBackColor = false;
+            btnZHesabatArxivi.Click += btnZHesabatArxivi_Click;
+            // 
             // AnaMenuFormu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             ClientSize = new Size(928, 534);
+            Controls.Add(btnZHesabatArxivi);
             Controls.Add(btnAnbarQaliqHesabati);
             Controls.Add(btnMehsulSatisHesabati);
             Controls.Add(btnHesabatlar);
@@ -263,5 +289,6 @@ namespace AzAgroPOS.Teqdimat
         private MaterialSkin.Controls.MaterialButton btnHesabatlar;
         private MaterialSkin.Controls.MaterialButton btnMehsulSatisHesabati;
         private MaterialSkin.Controls.MaterialButton btnAnbarQaliqHesabati;
+        private MaterialSkin.Controls.MaterialButton btnZHesabatArxivi;
     }
 }
