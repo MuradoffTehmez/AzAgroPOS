@@ -3,15 +3,8 @@ namespace AzAgroPOS.Teqdimat
 {
     partial class SatisFormu
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -23,26 +16,24 @@ namespace AzAgroPOS.Teqdimat
 
         #region Windows Form Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
             txtBarkodAxtaris = new MaterialSkin.Controls.MaterialTextBox2();
             dgvSebet = new DataGridView();
-            materialCard1 = new MaterialSkin.Controls.MaterialCard();
-            btnSatisiTesdiqle = new MaterialSkin.Controls.MaterialButton();
+            materialCardOdenis = new MaterialSkin.Controls.MaterialCard();
+            cmbMusteriler = new MaterialSkin.Controls.MaterialComboBox();
+            btnNisye = new MaterialSkin.Controls.MaterialButton();
+            btnKart = new MaterialSkin.Controls.MaterialButton();
+            btnNagd = new MaterialSkin.Controls.MaterialButton();
             lblUmumiMebleg = new MaterialSkin.Controls.MaterialLabel();
             ((System.ComponentModel.ISupportInitialize)dgvSebet).BeginInit();
-            materialCard1.SuspendLayout();
+            materialCardOdenis.SuspendLayout();
             SuspendLayout();
             // 
             // txtBarkodAxtaris
             // 
             txtBarkodAxtaris.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtBarkodAxtaris.AnimateReadOnly = false;
-            txtBarkodAxtaris.BackColor = Color.FromArgb(242, 242, 242);
             txtBarkodAxtaris.BackgroundImageLayout = ImageLayout.None;
             txtBarkodAxtaris.CharacterCasing = CharacterCasing.Normal;
             txtBarkodAxtaris.Depth = 0;
@@ -51,7 +42,6 @@ namespace AzAgroPOS.Teqdimat
             txtBarkodAxtaris.Hint = "Barkod və ya Stok Kodu daxil edib ENTER basın";
             txtBarkodAxtaris.LeadingIcon = null;
             txtBarkodAxtaris.Location = new Point(20, 90);
-            txtBarkodAxtaris.Margin = new Padding(4, 3, 4, 3);
             txtBarkodAxtaris.MaxLength = 32767;
             txtBarkodAxtaris.MouseState = MaterialSkin.MouseState.OUT;
             txtBarkodAxtaris.Name = "txtBarkodAxtaris";
@@ -80,65 +70,130 @@ namespace AzAgroPOS.Teqdimat
             dgvSebet.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvSebet.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             dgvSebet.Location = new Point(20, 152);
-            dgvSebet.Margin = new Padding(4, 3, 4, 3);
             dgvSebet.Name = "dgvSebet";
             dgvSebet.ReadOnly = true;
-            dgvSebet.Size = new Size(1010, 517);
+            dgvSebet.RowTemplate.Height = 25;
+            dgvSebet.Size = new Size(1010, 481);
             dgvSebet.TabIndex = 1;
             // 
-            // materialCard1
+            // materialCardOdenis
             // 
-            materialCard1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            materialCard1.BackColor = Color.FromArgb(255, 255, 255);
-            materialCard1.Controls.Add(btnSatisiTesdiqle);
-            materialCard1.Controls.Add(lblUmumiMebleg);
-            materialCard1.Depth = 0;
-            materialCard1.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            materialCard1.Location = new Point(20, 676);
-            materialCard1.Margin = new Padding(16);
-            materialCard1.MouseState = MaterialSkin.MouseState.HOVER;
-            materialCard1.Name = "materialCard1";
-            materialCard1.Padding = new Padding(16);
-            materialCard1.Size = new Size(1010, 102);
-            materialCard1.TabIndex = 2;
+            materialCardOdenis.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            materialCardOdenis.BackColor = Color.FromArgb(255, 255, 255);
+            materialCardOdenis.Controls.Add(cmbMusteriler);
+            materialCardOdenis.Controls.Add(btnNisye);
+            materialCardOdenis.Controls.Add(btnKart);
+            materialCardOdenis.Controls.Add(btnNagd);
+            materialCardOdenis.Controls.Add(lblUmumiMebleg);
+            materialCardOdenis.Depth = 0;
+            materialCardOdenis.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            materialCardOdenis.Location = new Point(20, 642);
+            materialCardOdenis.Margin = new Padding(14);
+            materialCardOdenis.MouseState = MaterialSkin.MouseState.HOVER;
+            materialCardOdenis.Name = "materialCardOdenis";
+            materialCardOdenis.Padding = new Padding(14);
+            materialCardOdenis.Size = new Size(1010, 151);
+            materialCardOdenis.TabIndex = 2;
             // 
-            // btnSatisiTesdiqle
+            // cmbMusteriler
             // 
-            btnSatisiTesdiqle.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnSatisiTesdiqle.AutoSize = false;
-            btnSatisiTesdiqle.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnSatisiTesdiqle.BackColor = Color.FromArgb(242, 242, 242);
-            btnSatisiTesdiqle.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            btnSatisiTesdiqle.Depth = 0;
-            btnSatisiTesdiqle.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            btnSatisiTesdiqle.HighEmphasis = true;
-            btnSatisiTesdiqle.Icon = null;
-            btnSatisiTesdiqle.Location = new Point(705, 20);
-            btnSatisiTesdiqle.Margin = new Padding(5, 7, 5, 7);
-            btnSatisiTesdiqle.MouseState = MaterialSkin.MouseState.HOVER;
-            btnSatisiTesdiqle.Name = "btnSatisiTesdiqle";
-            btnSatisiTesdiqle.NoAccentTextColor = Color.Empty;
-            btnSatisiTesdiqle.Size = new Size(286, 62);
-            btnSatisiTesdiqle.TabIndex = 1;
-            btnSatisiTesdiqle.Text = "Satışı Təsdiqlə";
-            btnSatisiTesdiqle.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            btnSatisiTesdiqle.UseAccentColor = true;
-            btnSatisiTesdiqle.UseVisualStyleBackColor = false;
-            btnSatisiTesdiqle.Click += btnSatisiTesdiqle_Click;
+            cmbMusteriler.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            cmbMusteriler.AutoResize = false;
+            cmbMusteriler.BackColor = Color.FromArgb(255, 255, 255);
+            cmbMusteriler.Depth = 0;
+            cmbMusteriler.DrawMode = DrawMode.OwnerDrawVariable;
+            cmbMusteriler.DropDownHeight = 174;
+            cmbMusteriler.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbMusteriler.DropDownWidth = 121;
+            cmbMusteriler.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
+            cmbMusteriler.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            cmbMusteriler.Hint = "Nisyə üçün Müştəri Seçin";
+            cmbMusteriler.IntegralHeight = false;
+            cmbMusteriler.ItemHeight = 43;
+            cmbMusteriler.Location = new Point(694, 91);
+            cmbMusteriler.MaxDropDownItems = 4;
+            cmbMusteriler.MouseState = MaterialSkin.MouseState.OUT;
+            cmbMusteriler.Name = "cmbMusteriler";
+            cmbMusteriler.Size = new Size(300, 49);
+            cmbMusteriler.StartIndex = 0;
+            cmbMusteriler.TabIndex = 4;
+            // 
+            // btnNisye
+            // 
+            btnNisye.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnNisye.AutoSize = false;
+            btnNisye.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnNisye.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnNisye.Depth = 0;
+            btnNisye.HighEmphasis = true;
+            btnNisye.Icon = null;
+            btnNisye.Location = new Point(854, 18);
+            btnNisye.Margin = new Padding(4, 6, 4, 6);
+            btnNisye.MouseState = MaterialSkin.MouseState.HOVER;
+            btnNisye.Name = "btnNisye";
+            btnNisye.NoAccentTextColor = Color.Empty;
+            btnNisye.Size = new Size(140, 55);
+            btnNisye.TabIndex = 3;
+            btnNisye.Text = "Nisyə";
+            btnNisye.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnNisye.UseAccentColor = true;
+            btnNisye.UseVisualStyleBackColor = true;
+            btnNisye.Click += btnNisye_Click;
+            // 
+            // btnKart
+            // 
+            btnKart.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnKart.AutoSize = false;
+            btnKart.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnKart.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnKart.Depth = 0;
+            btnKart.HighEmphasis = true;
+            btnKart.Icon = null;
+            btnKart.Location = new Point(694, 18);
+            btnKart.Margin = new Padding(4, 6, 4, 6);
+            btnKart.MouseState = MaterialSkin.MouseState.HOVER;
+            btnKart.Name = "btnKart";
+            btnKart.NoAccentTextColor = Color.Empty;
+            btnKart.Size = new Size(140, 55);
+            btnKart.TabIndex = 2;
+            btnKart.Text = "Kart";
+            btnKart.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnKart.UseAccentColor = false;
+            btnKart.UseVisualStyleBackColor = true;
+            btnKart.Click += btnKart_Click;
+            // 
+            // btnNagd
+            // 
+            btnNagd.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnNagd.AutoSize = false;
+            btnNagd.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnNagd.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnNagd.Depth = 0;
+            btnNagd.HighEmphasis = true;
+            btnNagd.Icon = null;
+            btnNagd.Location = new Point(534, 18);
+            btnNagd.Margin = new Padding(4, 6, 4, 6);
+            btnNagd.MouseState = MaterialSkin.MouseState.HOVER;
+            btnNagd.Name = "btnNagd";
+            btnNagd.NoAccentTextColor = Color.Empty;
+            btnNagd.Size = new Size(140, 55);
+            btnNagd.TabIndex = 1;
+            btnNagd.Text = "Nağd";
+            btnNagd.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnNagd.UseAccentColor = false;
+            btnNagd.UseVisualStyleBackColor = true;
+            btnNagd.Click += btnNagd_Click;
             // 
             // lblUmumiMebleg
             // 
             lblUmumiMebleg.AutoSize = true;
-            lblUmumiMebleg.BackColor = Color.FromArgb(242, 242, 242);
             lblUmumiMebleg.Depth = 0;
             lblUmumiMebleg.Font = new Font("Roboto", 34F, FontStyle.Bold, GraphicsUnit.Pixel);
             lblUmumiMebleg.FontType = MaterialSkin.MaterialSkinManager.fontType.H4;
-            lblUmumiMebleg.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblUmumiMebleg.Location = new Point(20, 28);
-            lblUmumiMebleg.Margin = new Padding(4, 0, 4, 0);
+            lblUmumiMebleg.Location = new Point(17, 30);
             lblUmumiMebleg.MouseState = MaterialSkin.MouseState.HOVER;
             lblUmumiMebleg.Name = "lblUmumiMebleg";
-            lblUmumiMebleg.Size = new Size(416, 41);
+            lblUmumiMebleg.Size = new Size(323, 41);
             lblUmumiMebleg.TabIndex = 0;
             lblUmumiMebleg.Text = "ÜMUMİ MƏBLƏĞ: 0.00 AZN";
             // 
@@ -147,27 +202,28 @@ namespace AzAgroPOS.Teqdimat
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1050, 808);
-            Controls.Add(materialCard1);
+            Controls.Add(materialCardOdenis);
             Controls.Add(dgvSebet);
             Controls.Add(txtBarkodAxtaris);
-            Margin = new Padding(4, 3, 4, 3);
             Name = "SatisFormu";
-            Padding = new Padding(4, 74, 4, 3);
+            Padding = new Padding(3, 64, 3, 3);
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Yeni Satış";
             ((System.ComponentModel.ISupportInitialize)dgvSebet).EndInit();
-            materialCard1.ResumeLayout(false);
-            materialCard1.PerformLayout();
+            materialCardOdenis.ResumeLayout(false);
+            materialCardOdenis.PerformLayout();
             ResumeLayout(false);
-
         }
 
         #endregion
 
         private MaterialSkin.Controls.MaterialTextBox2 txtBarkodAxtaris;
         private System.Windows.Forms.DataGridView dgvSebet;
-        private MaterialSkin.Controls.MaterialCard materialCard1;
-        private MaterialSkin.Controls.MaterialButton btnSatisiTesdiqle;
+        private MaterialSkin.Controls.MaterialCard materialCardOdenis;
+        private MaterialSkin.Controls.MaterialButton btnNagd;
         private MaterialSkin.Controls.MaterialLabel lblUmumiMebleg;
+        private MaterialSkin.Controls.MaterialComboBox cmbMusteriler;
+        private MaterialSkin.Controls.MaterialButton btnNisye;
+        private MaterialSkin.Controls.MaterialButton btnKart;
     }
 }
