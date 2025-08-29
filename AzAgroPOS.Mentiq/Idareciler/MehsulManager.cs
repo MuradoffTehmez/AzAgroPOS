@@ -5,6 +5,7 @@ using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
+using System.Text.RegularExpressions;
 
 /// <summary>
 /// Məhsullarla bağlı biznes məntiqini, validasiyaları və əməliyyatları idarə edir.
@@ -127,6 +128,52 @@ public class MehsulManager
         return EmeliyyatNeticesi.Ugurlu();
     }
     /// <summary>
+    /// Verilmiş məhsul adına əsasən unikal Stok Kodu (SKU) yaradır.
+    /// Məsələn: "Süd 1L" -> "SUD-12345"
+    /// </summary>
+    /// <param name="mehsulAdi">Stok kodu yaradılacaq məhsulun adı.</param>
+    public async Task<EmeliyyatNeticesi<string>> StokKoduGeneralasiyaEtAsync(string mehsulAdi)
+    {
+        if (string.IsNullOrWhiteSpace(mehsulAdi))
+            return EmeliyyatNeticesi<string>.Ugursuz("Stok Kodu yaratmaq üçün məhsul adı daxil edilməlidir.");
+
+        string yeniStokKodu;
+        Random random = new Random();
+
+        // Məhsul adından prefiks yarat (ilk sözün ilk 3 hərfi)
+        var hisseler = mehsulAdi.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        string prefix = hisseler.Length > 0 ? new string(hisseler[0].Take(3).ToArray()).ToUpper() : "SKU";
+
+        // Yalnız hərflərdən ibarət olduğundan əmin ol
+        prefix = Regex.Replace(prefix, @"[^A-Z]", "");
+        if (prefix.Length == 0) prefix = "SKU";
+
+        do
+        {
+            yeniStokKodu = $"{prefix}-{random.Next(10000, 99999)}";
+        } while ((await _unitOfWork.Mehsullar.AxtarAsync(m => m.StokKodu == yeniStokKodu)).Any());
+
+        return EmeliyyatNeticesi<string>.Ugurlu(yeniStokKodu);
+    }
+
+    /// <summary>
+    /// Daxili istifadə üçün unikal Barkod yaradır.
+    /// </summary>
+    public async Task<EmeliyyatNeticesi<string>> BarkodGeneralasiyaEtAsync()
+    {
+        string yeniBarkod;
+        Random random = new Random();
+
+        do
+        {
+            yeniBarkod = "2" + random.NextInt64(100_000_000_000, 999_999_999_999).ToString();
+        } while ((await _unitOfWork.Mehsullar.AxtarAsync(m => m.Barkod == yeniBarkod)).Any());
+
+        return EmeliyyatNeticesi<string>.Ugurlu(yeniBarkod);
+    }
+
+    /*
+    /// <summary>
     /// Məhsul üçün unikal Stok Kodu və Barkod yaradır.
     /// </summary>
     /// <returns>Yaradılmış unikal kodları olan DTO.</returns>
@@ -159,4 +206,5 @@ public class MehsulManager
 
         return EmeliyyatNeticesi<GeneratedCodesDto>.Ugurlu(generatedCodes);
     }
+    */
 }

@@ -22,7 +22,7 @@ internal static class Program
          //Yalnız giriş uğurlu olduqda ana menyunu açırıq
         //if (loginFormu.UgurluDaxilOlundu)
         //{
-            Application.Run(new SatisFormu());
+            Application.Run(new MehsulIdareetmeFormu());
         //}
     }
 }

@@ -44,7 +44,10 @@ public class MehsulPresenter
         _view.FormuTemizle_Istek += (s, e) => FormuTemizle();
         _view.CedvelSecimiDeyisdi_Istek += (s, e) => CedvelSeciminiDoldur();
         _view.Axtaris_Istek += (s, e) => AxtarisEt();
-        _view.KodGeneralasiyaIstek += async (s, e) => await KodlariGeneralasiyaEt();
+        _view.StokKoduGeneralasiyaIstek += async (s, e) => await StokKoduGeneralasiyaEt();
+        _view.BarkodGeneralasiyaIstek += async (s, e) => await BarkodGeneralasiyaEt();
+
+        //_view.KodGeneralasiyaIstek += async (s, e) => await KodlariGeneralasiyaEt();
     }
 
     /// <summary>
@@ -232,6 +235,34 @@ public class MehsulPresenter
         _view.AlisQiymeti = string.Empty;
         _view.MovcudSay = string.Empty;
     }
+
+    private async Task StokKoduGeneralasiyaEt()
+    {
+        var netice = await _mehsulManager.StokKoduGeneralasiyaEtAsync(_view.MehsulAdi);
+        if (netice.UgurluDur)
+        {
+            _view.StokKodu = netice.Data;
+        }
+        else
+        {
+            _view.MesajGoster(netice.Mesaj, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+    }
+
+    private async Task BarkodGeneralasiyaEt()
+    {
+        var netice = await _mehsulManager.BarkodGeneralasiyaEtAsync();
+        if (netice.UgurluDur)
+        {
+            _view.Barkod = netice.Data;
+        }
+        else
+        {
+            _view.MesajGoster(netice.Mesaj, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+    /*
+
     /// <summary>
     /// KodlarıGenerasiyaEt metodu, məhsul üçün unikal stok kodu və barkod generasiya edir.
     /// </summary>
@@ -249,4 +280,6 @@ public class MehsulPresenter
             _view.MesajGoster(netice.Mesaj, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
+
+    */
 }

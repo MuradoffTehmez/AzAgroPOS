@@ -33,7 +33,10 @@ public interface IMehsulIdareetmeView
     event EventHandler FormuTemizle_Istek;
     event EventHandler CedvelSecimiDeyisdi_Istek;
     event EventHandler Axtaris_Istek;
-    event EventHandler KodGeneralasiyaIstek;
+    event EventHandler StokKoduGeneralasiyaIstek; 
+    event EventHandler BarkodGeneralasiyaIstek;
+
+    //event EventHandler KodGeneralasiyaIstek;
 
 
     /// <summary>

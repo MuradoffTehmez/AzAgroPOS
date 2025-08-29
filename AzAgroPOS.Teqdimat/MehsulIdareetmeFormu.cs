@@ -6,12 +6,9 @@ using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
 using System.Data;
 
-/// <summary>
-/// məhsul idarəetmə formu, məhsul əlavə etmək, yeniləmək, silmək və axtarış etmək üçün istifadə olunur.
-/// </summary>
 public partial class MehsulIdareetmeFormu : BazaForm, IMehsulIdareetmeView
 {
-    private MehsulPresenter _presenter;
+    private readonly MehsulPresenter _presenter;
 
     public MehsulIdareetmeFormu()
     {
@@ -36,13 +33,9 @@ public partial class MehsulIdareetmeFormu : BazaForm, IMehsulIdareetmeView
     public event EventHandler FormuTemizle_Istek;
     public event EventHandler CedvelSecimiDeyisdi_Istek;
     public event EventHandler Axtaris_Istek;
-    public event EventHandler KodGeneralasiyaIstek;
+    public event EventHandler StokKoduGeneralasiyaIstek;
+    public event EventHandler BarkodGeneralasiyaIstek;
 
-
-    /// <summary>
-    /// məhsulları DataGridView-də göstərir.
-    /// </summary>
-    /// <param name="mehsullar"></param>
     public void MehsullariGoster(IEnumerable<MehsulDto> mehsullar)
     {
         var mehsulSiyahisi = mehsullar?.ToList() ?? new List<MehsulDto>();
@@ -59,14 +52,7 @@ public partial class MehsulIdareetmeFormu : BazaForm, IMehsulIdareetmeView
             dgvMehsullar.Columns["AlisQiymeti"].Visible = false;
         }
     }
-    /// <summary>
-    /// mesaj qutusu göstərir.
-    /// </summary>
-    /// <param name="mesaj"></param>
-    /// <param name="basliq"></param>
-    /// <param name="düymələr"></param>
-    /// <param name="ikon"></param>
-    /// <returns></returns>
+
     public DialogResult MesajGoster(string mesaj, string basliq, MessageBoxButtons düymələr, MessageBoxIcon ikon)
     {
         return MessageBox.Show(mesaj, basliq, düymələr, ikon);
@@ -74,12 +60,6 @@ public partial class MehsulIdareetmeFormu : BazaForm, IMehsulIdareetmeView
     #endregion
 
     #region Hadisə Ötürücüləri
-
-    /// <summary>
-    /// məhsul idarəetmə formu yüklənəndə çağırılır.
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
     private void MehsulIdareetmeFormu_Load(object sender, EventArgs e)
     {
         FormYuklendi_Istek?.Invoke(this, EventArgs.Empty);
@@ -105,9 +85,14 @@ public partial class MehsulIdareetmeFormu : BazaForm, IMehsulIdareetmeView
         FormuTemizle_Istek?.Invoke(this, EventArgs.Empty);
     }
 
-    private void btnKodGeneralasiyaEt_Click(object sender, EventArgs e)
+    private void btnStokKoduYarat_Click(object sender, EventArgs e)
     {
-        KodGeneralasiyaIstek?.Invoke(this, EventArgs.Empty);
+        StokKoduGeneralasiyaIstek?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void btnBarkodYarat_Click(object sender, EventArgs e)
+    {
+        BarkodGeneralasiyaIstek?.Invoke(this, EventArgs.Empty);
     }
 
     private void dgvMehsullar_SelectionChanged(object sender, EventArgs e)
@@ -124,4 +109,9 @@ public partial class MehsulIdareetmeFormu : BazaForm, IMehsulIdareetmeView
         Axtaris_Istek?.Invoke(this, EventArgs.Empty);
     }
     #endregion
+
+    private void txtId_TextChanged(object sender, EventArgs e)
+    {
+
+    }
 }
