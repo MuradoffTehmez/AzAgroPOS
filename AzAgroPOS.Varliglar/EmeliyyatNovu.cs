@@ -11,7 +11,7 @@ public enum EmeliyyatNovu
     /// diqqət: Bu əməliyyat, müştərinin məhsulu nisyə ilə almasını və borcunun artmasını təmsil edir.
     /// qeyd: Nisyə satış, müştərinin məhsulu alıb, amma ödənişi gələcəkdə etməsini göstərir, məsələn, "300.00" AZN nisyə ilə satış.
     /// referans: Bu əməliyyat, müştərinin məhsulu nisyə ilə alması və borcunun artması ilə əlaqəlidir.
-    /// rol: Bu əməliyyat, müştərinin nisyə ilə məhsul alması və borcunun artması üçün istifadə olunur.
+    /// rol: Bu əməliyyat, müştərinin nisyə ilə məhsul alması və borcunun artması üçün istifadə olunur..
     /// </summary>
     Satis = 1,  // Nisyə satış (borcu artırır)
     /// <summary>
