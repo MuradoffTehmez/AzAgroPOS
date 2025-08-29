@@ -16,13 +16,13 @@ internal static class Program
         
         ApplicationConfiguration.Initialize();
         
-        var loginFormu = new LoginFormu();
-        loginFormu.ShowDialog();
+        //var loginFormu = new LoginFormu();
+        //loginFormu.ShowDialog();
 
         // Yalnız giriş uğurlu olduqda ana menyunu açırıq
-        if (loginFormu.UgurluDaxilOlundu)
-        {
-            Application.Run(new AnaMenuFormu());
-        }
+        //if (loginFormu.UgurluDaxilOlundu)
+        //{
+            Application.Run(new MehsulIdareetmeFormu());
+        //}
     }
 }

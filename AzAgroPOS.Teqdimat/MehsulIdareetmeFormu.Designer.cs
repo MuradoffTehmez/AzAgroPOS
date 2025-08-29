@@ -34,6 +34,7 @@ namespace AzAgroPOS.Teqdimat
             txtStokKodu = new MaterialSkin.Controls.MaterialTextBox2();
             txtBarkod = new MaterialSkin.Controls.MaterialTextBox2();
             txtSatisQiymeti = new MaterialSkin.Controls.MaterialTextBox2();
+            txtAlisQiymeti = new MaterialSkin.Controls.MaterialTextBox2(); // Yeni sahə
             txtMevcudSay = new MaterialSkin.Controls.MaterialTextBox2();
             btnElaveEt = new MaterialSkin.Controls.MaterialButton();
             btnYenile = new MaterialSkin.Controls.MaterialButton();
@@ -188,6 +189,37 @@ namespace AzAgroPOS.Teqdimat
             txtSatisQiymeti.TrailingIcon = null;
             txtSatisQiymeti.UseSystemPasswordChar = false;
             // 
+            // txtAlisQiymeti
+            // 
+            txtAlisQiymeti.AnimateReadOnly = false;
+            txtAlisQiymeti.BackColor = Color.FromArgb(255, 255, 255);
+            txtAlisQiymeti.BackgroundImageLayout = ImageLayout.None;
+            txtAlisQiymeti.CharacterCasing = CharacterCasing.Normal;
+            txtAlisQiymeti.Depth = 0;
+            txtAlisQiymeti.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            txtAlisQiymeti.HideSelection = true;
+            txtAlisQiymeti.Hint = "Alış Qiyməti";
+            txtAlisQiymeti.LeadingIcon = null;
+            txtAlisQiymeti.Location = new Point(20, 293);
+            txtAlisQiymeti.Margin = new Padding(4, 3, 4, 3);
+            txtAlisQiymeti.MaxLength = 32767;
+            txtAlisQiymeti.MouseState = MaterialSkin.MouseState.OUT;
+            txtAlisQiymeti.Name = "txtAlisQiymeti";
+            txtAlisQiymeti.PasswordChar = '\0';
+            txtAlisQiymeti.PrefixSuffixText = null;
+            txtAlisQiymeti.ReadOnly = false;
+            txtAlisQiymeti.RightToLeft = RightToLeft.No;
+            txtAlisQiymeti.SelectedText = "";
+            txtAlisQiymeti.SelectionLength = 0;
+            txtAlisQiymeti.SelectionStart = 0;
+            txtAlisQiymeti.ShortcutsEnabled = true;
+            txtAlisQiymeti.Size = new Size(334, 48);
+            txtAlisQiymeti.TabIndex = 4;
+            txtAlisQiymeti.TabStop = false;
+            txtAlisQiymeti.TextAlign = HorizontalAlignment.Left;
+            txtAlisQiymeti.TrailingIcon = null;
+            txtAlisQiymeti.UseSystemPasswordChar = false;
+            // 
             // txtMevcudSay
             // 
             txtMevcudSay.AnimateReadOnly = false;
@@ -199,7 +231,7 @@ namespace AzAgroPOS.Teqdimat
             txtMevcudSay.HideSelection = true;
             txtMevcudSay.Hint = "Mövcud Say";
             txtMevcudSay.LeadingIcon = null;
-            txtMevcudSay.Location = new Point(20, 312);
+            txtMevcudSay.Location = new Point(20, 347);
             txtMevcudSay.Margin = new Padding(4, 3, 4, 3);
             txtMevcudSay.MaxLength = 32767;
             txtMevcudSay.MouseState = MaterialSkin.MouseState.OUT;
@@ -213,7 +245,7 @@ namespace AzAgroPOS.Teqdimat
             txtMevcudSay.SelectionStart = 0;
             txtMevcudSay.ShortcutsEnabled = true;
             txtMevcudSay.Size = new Size(334, 48);
-            txtMevcudSay.TabIndex = 4;
+            txtMevcudSay.TabIndex = 5;
             txtMevcudSay.TabStop = false;
             txtMevcudSay.TextAlign = HorizontalAlignment.Left;
             txtMevcudSay.TrailingIcon = null;
@@ -228,13 +260,13 @@ namespace AzAgroPOS.Teqdimat
             btnElaveEt.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnElaveEt.HighEmphasis = true;
             btnElaveEt.Icon = null;
-            btnElaveEt.Location = new Point(140, 387);
+            btnElaveEt.Location = new Point(140, 420);
             btnElaveEt.Margin = new Padding(5, 7, 5, 7);
             btnElaveEt.MouseState = MaterialSkin.MouseState.HOVER;
             btnElaveEt.Name = "btnElaveEt";
             btnElaveEt.NoAccentTextColor = Color.Empty;
             btnElaveEt.Size = new Size(90, 36);
-            btnElaveEt.TabIndex = 5;
+            btnElaveEt.TabIndex = 6;
             btnElaveEt.Text = "Əlavə Et";
             btnElaveEt.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnElaveEt.UseAccentColor = false;
@@ -250,13 +282,13 @@ namespace AzAgroPOS.Teqdimat
             btnYenile.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnYenile.HighEmphasis = true;
             btnYenile.Icon = null;
-            btnYenile.Location = new Point(261, 387);
+            btnYenile.Location = new Point(261, 420);
             btnYenile.Margin = new Padding(5, 7, 5, 7);
             btnYenile.MouseState = MaterialSkin.MouseState.HOVER;
             btnYenile.Name = "btnYenile";
             btnYenile.NoAccentTextColor = Color.Empty;
             btnYenile.Size = new Size(72, 36);
-            btnYenile.TabIndex = 6;
+            btnYenile.TabIndex = 7;
             btnYenile.Text = "Yenilə";
             btnYenile.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnYenile.UseAccentColor = false;
@@ -272,13 +304,13 @@ namespace AzAgroPOS.Teqdimat
             btnSil.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnSil.HighEmphasis = true;
             btnSil.Icon = null;
-            btnSil.Location = new Point(20, 450);
+            btnSil.Location = new Point(20, 483);
             btnSil.Margin = new Padding(5, 7, 5, 7);
             btnSil.MouseState = MaterialSkin.MouseState.HOVER;
             btnSil.Name = "btnSil";
             btnSil.NoAccentTextColor = Color.Empty;
             btnSil.Size = new Size(64, 36);
-            btnSil.TabIndex = 7;
+            btnSil.TabIndex = 8;
             btnSil.Text = "Sil";
             btnSil.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnSil.UseAccentColor = true;
@@ -294,13 +326,13 @@ namespace AzAgroPOS.Teqdimat
             btnTemizle.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnTemizle.HighEmphasis = false;
             btnTemizle.Icon = null;
-            btnTemizle.Location = new Point(255, 450);
+            btnTemizle.Location = new Point(255, 483);
             btnTemizle.Margin = new Padding(5, 7, 5, 7);
             btnTemizle.MouseState = MaterialSkin.MouseState.HOVER;
             btnTemizle.Name = "btnTemizle";
             btnTemizle.NoAccentTextColor = Color.Empty;
             btnTemizle.Size = new Size(85, 36);
-            btnTemizle.TabIndex = 8;
+            btnTemizle.TabIndex = 9;
             btnTemizle.Text = "Təmizlə";
             btnTemizle.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
             btnTemizle.UseAccentColor = false;
@@ -318,14 +350,14 @@ namespace AzAgroPOS.Teqdimat
             txtId.HideSelection = true;
             txtId.Hint = "ID";
             txtId.LeadingIcon = null;
-            txtId.Location = new Point(20, 528);
+            txtId.Location = new Point(20, 560);
             txtId.Margin = new Padding(4, 3, 4, 3);
             txtId.MaxLength = 32767;
             txtId.MouseState = MaterialSkin.MouseState.OUT;
             txtId.Name = "txtId";
             txtId.PasswordChar = '\0';
             txtId.PrefixSuffixText = null;
-            txtId.ReadOnly = false;
+            txtId.ReadOnly = true;
             txtId.RightToLeft = RightToLeft.No;
             txtId.SelectedText = "";
             txtId.SelectionLength = 0;
@@ -350,6 +382,7 @@ namespace AzAgroPOS.Teqdimat
             materialCard1.Controls.Add(txtBarkod);
             materialCard1.Controls.Add(btnSil);
             materialCard1.Controls.Add(txtSatisQiymeti);
+            materialCard1.Controls.Add(txtAlisQiymeti);
             materialCard1.Controls.Add(btnYenile);
             materialCard1.Controls.Add(txtMevcudSay);
             materialCard1.Controls.Add(btnElaveEt);
@@ -413,7 +446,6 @@ namespace AzAgroPOS.Teqdimat
             materialCard1.ResumeLayout(false);
             materialCard1.PerformLayout();
             ResumeLayout(false);
-
         }
 
         #endregion
@@ -423,6 +455,7 @@ namespace AzAgroPOS.Teqdimat
         private MaterialSkin.Controls.MaterialTextBox2 txtStokKodu;
         private MaterialSkin.Controls.MaterialTextBox2 txtBarkod;
         private MaterialSkin.Controls.MaterialTextBox2 txtSatisQiymeti;
+        private MaterialSkin.Controls.MaterialTextBox2 txtAlisQiymeti; 
         private MaterialSkin.Controls.MaterialTextBox2 txtMevcudSay;
         private MaterialSkin.Controls.MaterialButton btnElaveEt;
         private MaterialSkin.Controls.MaterialButton btnYenile;

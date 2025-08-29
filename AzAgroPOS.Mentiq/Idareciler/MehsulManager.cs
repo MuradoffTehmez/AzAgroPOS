@@ -34,6 +34,7 @@ public class MehsulManager
             StokKodu = m.StokKodu,
             Barkod = m.Barkod,
             SatisQiymeti = m.SatisQiymeti,
+            AlisQiymeti = m.AlisQiymeti,
             MovcudSay = m.MovcudSay
         });
 
@@ -68,7 +69,7 @@ public class MehsulManager
             Barkod = yeniMehsulDto.Barkod,
             SatisQiymeti = yeniMehsulDto.SatisQiymeti,
             MovcudSay = yeniMehsulDto.MovcudSay,
-            AlisQiymeti = 0 // Alış modulu üçün bu dəyər təyin ediləcək
+            AlisQiymeti = yeniMehsulDto.AlisQiymeti
         };
 
         await _unitOfWork.Mehsullar.ElaveEtAsync(yeniMehsul);
@@ -98,7 +99,9 @@ public class MehsulManager
         movcudMehsul.StokKodu = mehsulDto.StokKodu;
         movcudMehsul.Barkod = mehsulDto.Barkod;
         movcudMehsul.SatisQiymeti = mehsulDto.SatisQiymeti;
+        movcudMehsul.AlisQiymeti = mehsulDto.AlisQiymeti;
         movcudMehsul.MovcudSay = mehsulDto.MovcudSay;
+
 
         _unitOfWork.Mehsullar.Yenile(movcudMehsul);
         await _unitOfWork.EmeliyyatiTesdiqleAsync();

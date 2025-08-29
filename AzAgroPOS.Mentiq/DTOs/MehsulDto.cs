@@ -15,6 +15,10 @@ public class MehsulDto
     /// </summary>
     public string Ad { get; set; } = string.Empty;
     /// <summary>
+    /// Alış qiyməti (müəyyən məhsulun alış qiyməti).
+    /// </summary>
+    public decimal AlisQiymeti { get; set; }
+    /// <summary>
     /// Stok kodu (müəyyən məhsulu tanımaq üçün istifadə olunan unikal kod).
     /// </summary>
     public string StokKodu { get; set; } = string.Empty;

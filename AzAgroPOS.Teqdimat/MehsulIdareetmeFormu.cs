@@ -63,6 +63,14 @@ public partial class MehsulIdareetmeFormu : BazaForm, IMehsulIdareetmeView
     /// qeyd: bu xüsusiyyət string tipindədir.
     /// </summary>
     public string SatisQiymeti { get => txtSatisQiymeti.Text; set => txtSatisQiymeti.Text = value; }
+
+    /// <summary>
+    /// alış qiymətini təyin edir və ya alır.
+    /// diqət: bu xüsusiyyət txtAlisQiymeti TextBox-un mətnini oxuyur və yazır.
+    /// qeyd: bu xüsusiyyət string tipindədir.
+    /// </summary>
+    public string AlisQiymeti { get => txtAlisQiymeti.Text; set => txtAlisQiymeti.Text = value; } 
+
     /// <summary>
     /// mövcud sayını təyin edir və ya alır.
     /// diqət: bu xüsusiyyət txtMevcudSay TextBox-un mətnini oxuyur və yazır.
@@ -142,8 +150,9 @@ public partial class MehsulIdareetmeFormu : BazaForm, IMehsulIdareetmeView
             dgvMehsullar.Columns["SatisQiymetiStr"].HeaderText = "Satış Qiyməti";
             dgvMehsullar.Columns["MovcudSay"].HeaderText = "Mövcud Say";
 
-            // Bu sütunu gizlədirik, çünki formatlanmış "SatisQiymetiStr" sütununu istifadə edirik.
+            // Bu sütunları gizlədirik, çünki formatlanmış "SatisQiymetiStr" sütununu istifadə edirik.
             dgvMehsullar.Columns["SatisQiymeti"].Visible = false;
+            dgvMehsullar.Columns["AlisQiymeti"].Visible = false;
         }
     }
 

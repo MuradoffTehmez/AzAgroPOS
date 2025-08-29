@@ -17,6 +17,7 @@ public interface IMehsulIdareetmeView
     string StokKodu { get; set; }
     string Barkod { get; set; }
     string SatisQiymeti { get; set; }
+    string AlisQiymeti { get; set; }
     string MovcudSay { get; set; }
     string AxtarisMetni { get; set; }
 

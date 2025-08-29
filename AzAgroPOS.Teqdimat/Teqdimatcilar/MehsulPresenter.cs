@@ -105,6 +105,7 @@ public class MehsulPresenter
                 _view.StokKodu = secilmisMehsul.StokKodu;
                 _view.Barkod = secilmisMehsul.Barkod;
                 _view.SatisQiymeti = secilmisMehsul.SatisQiymeti.ToString("F2");
+                _view.AlisQiymeti = secilmisMehsul.AlisQiymeti.ToString("F2");
                 _view.MovcudSay = secilmisMehsul.MovcudSay.ToString();
             }
         }
@@ -122,6 +123,7 @@ public class MehsulPresenter
             StokKodu = _view.StokKodu,
             Barkod = _view.Barkod,
             SatisQiymeti = decimal.TryParse(_view.SatisQiymeti, out var qiymet) ? qiymet : 0,
+            AlisQiymeti = decimal.TryParse(_view.AlisQiymeti, out var alisQiymeti) ? alisQiymeti : 0,
             MovcudSay = int.TryParse(_view.MovcudSay, out var say) ? say : 0
         };
 
@@ -162,6 +164,7 @@ public class MehsulPresenter
             StokKodu = _view.StokKodu,
             Barkod = _view.Barkod,
             SatisQiymeti = decimal.TryParse(_view.SatisQiymeti, out var qiymet) ? qiymet : 0,
+            AlisQiymeti = decimal.TryParse(_view.AlisQiymeti, out var alisQiymeti) ? alisQiymeti : 0,
             MovcudSay = int.TryParse(_view.MovcudSay, out var say) ? say : 0
         };
 
@@ -220,6 +223,7 @@ public class MehsulPresenter
         _view.StokKodu = string.Empty;
         _view.Barkod = string.Empty;
         _view.SatisQiymeti = string.Empty;
+        _view.AlisQiymeti = string.Empty;
         _view.MovcudSay = string.Empty;
     }
 }
