@@ -6,6 +6,7 @@ using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -74,6 +75,50 @@ public class HesabatManager
         {
             
             return EmeliyyatNeticesi<GunlukSatisHesabatDto>.Ugursuz($"Hesabat hazırlanarkən xəta baş verdi: {ex.Message}");
+        }
+    }
+    /// <summary>
+    /// Verilmiş tarix aralığı üçün məhsul üzrə satış hesabatını hazırlayır.
+    /// </summary>
+    /// <param name="baslangic">Hesabatın başlanğıc tarixi.</param>
+    /// <param name="bitis">Hesabatın bitiş tarixi.</param>
+    public async Task<EmeliyyatNeticesi<List<MehsulUzreSatisDetayDto>>> MehsulUzreSatisHesabatiGetirAsync(DateTime baslangic, DateTime bitis)
+    {
+        try
+        {
+            var baslangicTarixi = baslangic.Date;
+            var bitisTarixi = bitis.Date.AddDays(1).AddTicks(-1);
+
+            var satisDetallari = await _unitOfWork.Satislar.AxtarAsync(s => s.Tarix >= baslangicTarixi && s.Tarix <= bitisTarixi);
+
+            var mehsulIds = satisDetallari.SelectMany(s => s.SatisDetallari).Select(d => d.MehsulId).Distinct().ToList();
+            var mehsullar = (await _unitOfWork.Mehsullar.AxtarAsync(m => mehsulIds.Contains(m.Id)))
+                            .ToDictionary(m => m.Id);
+
+
+            if (!satisDetallari.Any())
+            {
+                return EmeliyyatNeticesi<List<MehsulUzreSatisDetayDto>>.Ugursuz("Seçilmiş tarix aralığı üçün heç bir satış tapılmadı.");
+            }
+
+            var hesabat = satisDetallari
+                .SelectMany(s => s.SatisDetallari)
+                .GroupBy(d => d.MehsulId)
+                .Select(g => new MehsulUzreSatisDetayDto
+                {
+                    StokKodu = mehsullar.ContainsKey(g.Key) ? mehsullar[g.Key].StokKodu : "Bilinmir",
+                    MehsulAdi = mehsullar.ContainsKey(g.Key) ? mehsullar[g.Key].Ad : "Silinmiş Məhsul",
+                    CemiSatilanMiqdar = g.Sum(d => d.Miqdar),
+                    CemiMebleg = g.Sum(d => d.Miqdar * d.Qiymet)
+                })
+                .OrderByDescending(x => x.CemiMebleg)
+                .ToList();
+
+            return EmeliyyatNeticesi<List<MehsulUzreSatisDetayDto>>.Ugurlu(hesabat);
+        }
+        catch (Exception ex)
+        {
+            return EmeliyyatNeticesi<List<MehsulUzreSatisDetayDto>>.Ugursuz($"Hesabat hazırlanarkən xəta baş verdi: {ex.Message}");
         }
     }
 }
