@@ -34,6 +34,7 @@ namespace AzAgroPOS.Teqdimat
             // 
             txtBarkodAxtaris.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtBarkodAxtaris.AnimateReadOnly = false;
+            txtBarkodAxtaris.BackColor = Color.FromArgb(242, 242, 242);
             txtBarkodAxtaris.BackgroundImageLayout = ImageLayout.None;
             txtBarkodAxtaris.CharacterCasing = CharacterCasing.Normal;
             txtBarkodAxtaris.Depth = 0;
@@ -72,7 +73,6 @@ namespace AzAgroPOS.Teqdimat
             dgvSebet.Location = new Point(20, 152);
             dgvSebet.Name = "dgvSebet";
             dgvSebet.ReadOnly = true;
-            dgvSebet.RowTemplate.Height = 25;
             dgvSebet.Size = new Size(1010, 481);
             dgvSebet.TabIndex = 1;
             // 
@@ -99,7 +99,7 @@ namespace AzAgroPOS.Teqdimat
             // 
             cmbMusteriler.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             cmbMusteriler.AutoResize = false;
-            cmbMusteriler.BackColor = Color.FromArgb(255, 255, 255);
+            cmbMusteriler.BackColor = Color.FromArgb(242, 242, 242);
             cmbMusteriler.Depth = 0;
             cmbMusteriler.DrawMode = DrawMode.OwnerDrawVariable;
             cmbMusteriler.DropDownHeight = 174;
@@ -123,8 +123,10 @@ namespace AzAgroPOS.Teqdimat
             btnNisye.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnNisye.AutoSize = false;
             btnNisye.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnNisye.BackColor = Color.FromArgb(242, 242, 242);
             btnNisye.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             btnNisye.Depth = 0;
+            btnNisye.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnNisye.HighEmphasis = true;
             btnNisye.Icon = null;
             btnNisye.Location = new Point(854, 18);
@@ -137,7 +139,7 @@ namespace AzAgroPOS.Teqdimat
             btnNisye.Text = "Nisyə";
             btnNisye.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnNisye.UseAccentColor = true;
-            btnNisye.UseVisualStyleBackColor = true;
+            btnNisye.UseVisualStyleBackColor = false;
             btnNisye.Click += btnNisye_Click;
             // 
             // btnKart
@@ -145,8 +147,10 @@ namespace AzAgroPOS.Teqdimat
             btnKart.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnKart.AutoSize = false;
             btnKart.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnKart.BackColor = Color.FromArgb(242, 242, 242);
             btnKart.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             btnKart.Depth = 0;
+            btnKart.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnKart.HighEmphasis = true;
             btnKart.Icon = null;
             btnKart.Location = new Point(694, 18);
@@ -159,7 +163,7 @@ namespace AzAgroPOS.Teqdimat
             btnKart.Text = "Kart";
             btnKart.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnKart.UseAccentColor = false;
-            btnKart.UseVisualStyleBackColor = true;
+            btnKart.UseVisualStyleBackColor = false;
             btnKart.Click += btnKart_Click;
             // 
             // btnNagd
@@ -167,8 +171,10 @@ namespace AzAgroPOS.Teqdimat
             btnNagd.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnNagd.AutoSize = false;
             btnNagd.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnNagd.BackColor = Color.FromArgb(242, 242, 242);
             btnNagd.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             btnNagd.Depth = 0;
+            btnNagd.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnNagd.HighEmphasis = true;
             btnNagd.Icon = null;
             btnNagd.Location = new Point(534, 18);
@@ -181,19 +187,21 @@ namespace AzAgroPOS.Teqdimat
             btnNagd.Text = "Nağd";
             btnNagd.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnNagd.UseAccentColor = false;
-            btnNagd.UseVisualStyleBackColor = true;
+            btnNagd.UseVisualStyleBackColor = false;
             btnNagd.Click += btnNagd_Click;
             // 
             // lblUmumiMebleg
             // 
             lblUmumiMebleg.AutoSize = true;
+            lblUmumiMebleg.BackColor = Color.FromArgb(242, 242, 242);
             lblUmumiMebleg.Depth = 0;
             lblUmumiMebleg.Font = new Font("Roboto", 34F, FontStyle.Bold, GraphicsUnit.Pixel);
             lblUmumiMebleg.FontType = MaterialSkin.MaterialSkinManager.fontType.H4;
+            lblUmumiMebleg.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblUmumiMebleg.Location = new Point(17, 30);
             lblUmumiMebleg.MouseState = MaterialSkin.MouseState.HOVER;
             lblUmumiMebleg.Name = "lblUmumiMebleg";
-            lblUmumiMebleg.Size = new Size(323, 41);
+            lblUmumiMebleg.Size = new Size(416, 41);
             lblUmumiMebleg.TabIndex = 0;
             lblUmumiMebleg.Text = "ÜMUMİ MƏBLƏĞ: 0.00 AZN";
             // 
@@ -206,7 +214,6 @@ namespace AzAgroPOS.Teqdimat
             Controls.Add(dgvSebet);
             Controls.Add(txtBarkodAxtaris);
             Name = "SatisFormu";
-            Padding = new Padding(3, 64, 3, 3);
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Yeni Satış";
             ((System.ComponentModel.ISupportInitialize)dgvSebet).EndInit();

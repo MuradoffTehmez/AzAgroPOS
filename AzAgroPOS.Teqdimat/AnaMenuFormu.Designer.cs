@@ -14,6 +14,7 @@ namespace AzAgroPOS.Teqdimat
             btnTemirIdareetme = new MaterialSkin.Controls.MaterialButton();
             btnNovbeIdareetme = new MaterialSkin.Controls.MaterialButton();
             btnIstifadeciIdareetme = new MaterialSkin.Controls.MaterialButton();
+            btnHesabatlar = new MaterialSkin.Controls.MaterialButton();
             SuspendLayout();
             // 
             // btnMehsulIdareetme
@@ -160,10 +161,35 @@ namespace AzAgroPOS.Teqdimat
             btnIstifadeciIdareetme.UseVisualStyleBackColor = false;
             btnIstifadeciIdareetme.Click += btnIstifadeciIdareetme_Click;
             // 
+            // btnHesabatlar
+            // 
+            btnHesabatlar.Anchor = AnchorStyles.None;
+            btnHesabatlar.AutoSize = false;
+            btnHesabatlar.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnHesabatlar.BackColor = Color.FromArgb(242, 242, 242);
+            btnHesabatlar.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnHesabatlar.Depth = 0;
+            btnHesabatlar.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            btnHesabatlar.HighEmphasis = true;
+            btnHesabatlar.Icon = null;
+            btnHesabatlar.Location = new Point(50, 323);
+            btnHesabatlar.Margin = new Padding(4, 6, 4, 6);
+            btnHesabatlar.MouseState = MaterialSkin.MouseState.HOVER;
+            btnHesabatlar.Name = "btnHesabatlar";
+            btnHesabatlar.NoAccentTextColor = Color.Empty;
+            btnHesabatlar.Size = new Size(250, 68);
+            btnHesabatlar.TabIndex = 6;
+            btnHesabatlar.Text = "Günlük hesabat";
+            btnHesabatlar.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnHesabatlar.UseAccentColor = false;
+            btnHesabatlar.UseVisualStyleBackColor = false;
+            btnHesabatlar.Click += btnHesabatlar_Click;
+            // 
             // AnaMenuFormu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             ClientSize = new Size(620, 400);
+            Controls.Add(btnHesabatlar);
             Controls.Add(btnIstifadeciIdareetme);
             Controls.Add(btnTemirIdareetme);
             Controls.Add(btnNisyeIdareetme);
@@ -183,5 +209,6 @@ namespace AzAgroPOS.Teqdimat
         private MaterialSkin.Controls.MaterialButton btnTemirIdareetme;
         private MaterialSkin.Controls.MaterialButton btnNovbeIdareetme;
         private MaterialSkin.Controls.MaterialButton btnIstifadeciIdareetme;
+        private MaterialSkin.Controls.MaterialButton btnHesabatlar;
     }
 }

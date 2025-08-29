@@ -19,10 +19,10 @@ internal static class Program
         //var loginFormu = new LoginFormu();
         //loginFormu.ShowDialog();
 
-        // Yalnız giriş uğurlu olduqda ana menyunu açırıq
+         //Yalnız giriş uğurlu olduqda ana menyunu açırıq
         //if (loginFormu.UgurluDaxilOlundu)
         //{
-            Application.Run(new MehsulIdareetmeFormu());
+            Application.Run(new HesabatFormu());
         //}
     }
 }
