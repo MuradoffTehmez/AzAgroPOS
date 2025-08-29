@@ -14,7 +14,10 @@ public class HesabatPresenter
 {
     private readonly IHesabatView _view;
     private readonly HesabatManager _hesabatManager;
-
+    /// <summary>
+    /// hesabatPresenter konstruktoru, HesabatView və HesabatManager nümunələrini qəbul edir və hadisə abunəliyini təyin edir.
+    /// </summary>
+    /// <param name="view"></param>
     public HesabatPresenter(IHesabatView view)
     {
         _view = view;
@@ -23,7 +26,10 @@ public class HesabatPresenter
 
         _view.HesabatiGosterIstek += async (s, e) => await GunlukHesabatiGoster();
     }
-
+    /// <summary>
+    /// Günlük satış hesabatını göstərir.
+    /// </summary>
+    /// <returns></returns>
     private async Task GunlukHesabatiGoster()
     {
         _view.PanelləriSıfırla();

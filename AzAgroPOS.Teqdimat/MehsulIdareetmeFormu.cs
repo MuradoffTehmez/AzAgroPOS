@@ -6,6 +6,9 @@ using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
 using System.Data;
 
+/// <summary>
+/// məhsul idarəetmə formu, məhsul əlavə etmək, yeniləmək, silmək və axtarış etmək üçün istifadə olunur.
+/// </summary>
 public partial class MehsulIdareetmeFormu : BazaForm, IMehsulIdareetmeView
 {
     private MehsulPresenter _presenter;
@@ -35,6 +38,11 @@ public partial class MehsulIdareetmeFormu : BazaForm, IMehsulIdareetmeView
     public event EventHandler Axtaris_Istek;
     public event EventHandler KodGeneralasiyaIstek;
 
+
+    /// <summary>
+    /// məhsulları DataGridView-də göstərir.
+    /// </summary>
+    /// <param name="mehsullar"></param>
     public void MehsullariGoster(IEnumerable<MehsulDto> mehsullar)
     {
         var mehsulSiyahisi = mehsullar?.ToList() ?? new List<MehsulDto>();
@@ -51,7 +59,14 @@ public partial class MehsulIdareetmeFormu : BazaForm, IMehsulIdareetmeView
             dgvMehsullar.Columns["AlisQiymeti"].Visible = false;
         }
     }
-
+    /// <summary>
+    /// mesaj qutusu göstərir.
+    /// </summary>
+    /// <param name="mesaj"></param>
+    /// <param name="basliq"></param>
+    /// <param name="düymələr"></param>
+    /// <param name="ikon"></param>
+    /// <returns></returns>
     public DialogResult MesajGoster(string mesaj, string basliq, MessageBoxButtons düymələr, MessageBoxIcon ikon)
     {
         return MessageBox.Show(mesaj, basliq, düymələr, ikon);
@@ -59,6 +74,12 @@ public partial class MehsulIdareetmeFormu : BazaForm, IMehsulIdareetmeView
     #endregion
 
     #region Hadisə Ötürücüləri
+
+    /// <summary>
+    /// məhsul idarəetmə formu yüklənəndə çağırılır.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void MehsulIdareetmeFormu_Load(object sender, EventArgs e)
     {
         FormYuklendi_Istek?.Invoke(this, EventArgs.Empty);

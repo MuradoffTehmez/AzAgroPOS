@@ -232,7 +232,10 @@ public class MehsulPresenter
         _view.AlisQiymeti = string.Empty;
         _view.MovcudSay = string.Empty;
     }
-
+    /// <summary>
+    /// KodlarıGenerasiyaEt metodu, məhsul üçün unikal stok kodu və barkod generasiya edir.
+    /// </summary>
+    /// <returns></returns>
     private async Task KodlariGeneralasiyaEt()
     {
         var netice = await _mehsulManager.KodlariGeneralasiyaEtAsync();

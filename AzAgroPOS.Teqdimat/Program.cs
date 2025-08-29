@@ -2,12 +2,12 @@
 namespace AzAgroPOS.Teqdimat;
 
 /// <summary>
-///  
+///  əsas proqram sinfidir
 /// </summary>
 internal static class Program
 {
     /// <summary>
-    /// 
+    /// baş proqram giriş nöqtəsidir.
     /// </summary>
     [STAThread]
     
