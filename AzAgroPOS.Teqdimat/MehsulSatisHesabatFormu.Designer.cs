@@ -20,25 +20,31 @@ namespace AzAgroPOS.Teqdimat
             // 
             // dtpBaslangic
             // 
-            dtpBaslangic.Font = new Font("Microsoft Sans Serif", 12F);
+            dtpBaslangic.BackColor = Color.FromArgb(242, 242, 242);
+            dtpBaslangic.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            dtpBaslangic.ForeColor = Color.FromArgb(222, 0, 0, 0);
             dtpBaslangic.Location = new Point(32, 107);
             dtpBaslangic.Name = "dtpBaslangic";
-            dtpBaslangic.Size = new Size(280, 26);
+            dtpBaslangic.Size = new Size(280, 24);
             dtpBaslangic.TabIndex = 0;
             // 
             // dtpBitis
             // 
-            dtpBitis.Font = new Font("Microsoft Sans Serif", 12F);
+            dtpBitis.BackColor = Color.FromArgb(242, 242, 242);
+            dtpBitis.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            dtpBitis.ForeColor = Color.FromArgb(222, 0, 0, 0);
             dtpBitis.Location = new Point(342, 107);
             dtpBitis.Name = "dtpBitis";
-            dtpBitis.Size = new Size(280, 26);
+            dtpBitis.Size = new Size(280, 24);
             dtpBitis.TabIndex = 1;
             // 
             // btnGoster
             // 
             btnGoster.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnGoster.BackColor = Color.FromArgb(242, 242, 242);
             btnGoster.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             btnGoster.Depth = 0;
+            btnGoster.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnGoster.HighEmphasis = true;
             btnGoster.Icon = null;
             btnGoster.Location = new Point(646, 103);
@@ -46,12 +52,12 @@ namespace AzAgroPOS.Teqdimat
             btnGoster.MouseState = MaterialSkin.MouseState.HOVER;
             btnGoster.Name = "btnGoster";
             btnGoster.NoAccentTextColor = Color.Empty;
-            btnGoster.Size = new Size(76, 36);
+            btnGoster.Size = new Size(79, 36);
             btnGoster.TabIndex = 2;
             btnGoster.Text = "Göstər";
             btnGoster.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnGoster.UseAccentColor = false;
-            btnGoster.UseVisualStyleBackColor = true;
+            btnGoster.UseVisualStyleBackColor = false;
             btnGoster.Click += btnGoster_Click;
             // 
             // dgvHesabat
@@ -61,19 +67,21 @@ namespace AzAgroPOS.Teqdimat
             dgvHesabat.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvHesabat.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvHesabat.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvHesabat.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             dgvHesabat.Location = new Point(32, 160);
             dgvHesabat.Name = "dgvHesabat";
             dgvHesabat.ReadOnly = true;
-            dgvHesabat.RowTemplate.Height = 25;
             dgvHesabat.Size = new Size(1120, 560);
             dgvHesabat.TabIndex = 3;
             // 
             // lblMesaj
             // 
             lblMesaj.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            lblMesaj.BackColor = Color.FromArgb(242, 242, 242);
             lblMesaj.Depth = 0;
             lblMesaj.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             lblMesaj.FontType = MaterialSkin.MaterialSkinManager.fontType.Subtitle1;
+            lblMesaj.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblMesaj.Location = new Point(32, 160);
             lblMesaj.MouseState = MaterialSkin.MouseState.HOVER;
             lblMesaj.Name = "lblMesaj";
@@ -86,26 +94,30 @@ namespace AzAgroPOS.Teqdimat
             // materialLabel1
             // 
             materialLabel1.AutoSize = true;
+            materialLabel1.BackColor = Color.FromArgb(242, 242, 242);
             materialLabel1.Depth = 0;
-            materialLabel1.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            materialLabel1.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
             materialLabel1.FontType = MaterialSkin.MaterialSkinManager.fontType.Body2;
+            materialLabel1.ForeColor = Color.FromArgb(222, 0, 0, 0);
             materialLabel1.Location = new Point(32, 85);
             materialLabel1.MouseState = MaterialSkin.MouseState.HOVER;
             materialLabel1.Name = "materialLabel1";
-            materialLabel1.Size = new Size(106, 17);
+            materialLabel1.Size = new Size(99, 17);
             materialLabel1.TabIndex = 5;
             materialLabel1.Text = "Başlanğıc Tarixi";
             // 
             // materialLabel2
             // 
             materialLabel2.AutoSize = true;
+            materialLabel2.BackColor = Color.FromArgb(242, 242, 242);
             materialLabel2.Depth = 0;
-            materialLabel2.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            materialLabel2.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
             materialLabel2.FontType = MaterialSkin.MaterialSkinManager.fontType.Body2;
+            materialLabel2.ForeColor = Color.FromArgb(222, 0, 0, 0);
             materialLabel2.Location = new Point(342, 85);
             materialLabel2.MouseState = MaterialSkin.MouseState.HOVER;
             materialLabel2.Name = "materialLabel2";
-            materialLabel2.Size = new Size(70, 17);
+            materialLabel2.Size = new Size(65, 17);
             materialLabel2.TabIndex = 6;
             materialLabel2.Text = "Bitiş Tarixi";
             // 

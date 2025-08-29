@@ -94,4 +94,9 @@ public partial class AnaMenuFormu : BazaForm
     {
         using (var form = new HesabatFormu()) { form.ShowDialog(); }
     }
+
+    private void btnMehsulSatisHesabati_Click(object sender, EventArgs e)
+    {
+        using (var form = new MehsulSatisHesabatFormu()) { form.ShowDialog(); }
+    }
 }

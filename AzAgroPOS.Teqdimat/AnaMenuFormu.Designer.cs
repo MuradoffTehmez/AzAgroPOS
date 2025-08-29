@@ -15,6 +15,7 @@ namespace AzAgroPOS.Teqdimat
             btnNovbeIdareetme = new MaterialSkin.Controls.MaterialButton();
             btnIstifadeciIdareetme = new MaterialSkin.Controls.MaterialButton();
             btnHesabatlar = new MaterialSkin.Controls.MaterialButton();
+            btnMehsulSatisHesabati = new MaterialSkin.Controls.MaterialButton();
             SuspendLayout();
             // 
             // btnMehsulIdareetme
@@ -185,10 +186,35 @@ namespace AzAgroPOS.Teqdimat
             btnHesabatlar.UseVisualStyleBackColor = false;
             btnHesabatlar.Click += btnHesabatlar_Click;
             // 
+            // btnMehsulSatisHesabati
+            // 
+            btnMehsulSatisHesabati.Anchor = AnchorStyles.None;
+            btnMehsulSatisHesabati.AutoSize = false;
+            btnMehsulSatisHesabati.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnMehsulSatisHesabati.BackColor = Color.FromArgb(242, 242, 242);
+            btnMehsulSatisHesabati.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnMehsulSatisHesabati.Depth = 0;
+            btnMehsulSatisHesabati.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            btnMehsulSatisHesabati.HighEmphasis = true;
+            btnMehsulSatisHesabati.Icon = null;
+            btnMehsulSatisHesabati.Location = new Point(320, 323);
+            btnMehsulSatisHesabati.Margin = new Padding(4, 6, 4, 6);
+            btnMehsulSatisHesabati.MouseState = MaterialSkin.MouseState.HOVER;
+            btnMehsulSatisHesabati.Name = "btnMehsulSatisHesabati";
+            btnMehsulSatisHesabati.NoAccentTextColor = Color.Empty;
+            btnMehsulSatisHesabati.Size = new Size(250, 68);
+            btnMehsulSatisHesabati.TabIndex = 7;
+            btnMehsulSatisHesabati.Text = "Məhsul Hesabati";
+            btnMehsulSatisHesabati.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnMehsulSatisHesabati.UseAccentColor = false;
+            btnMehsulSatisHesabati.UseVisualStyleBackColor = false;
+            btnMehsulSatisHesabati.Click += btnMehsulSatisHesabati_Click;
+            // 
             // AnaMenuFormu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             ClientSize = new Size(620, 400);
+            Controls.Add(btnMehsulSatisHesabati);
             Controls.Add(btnHesabatlar);
             Controls.Add(btnIstifadeciIdareetme);
             Controls.Add(btnTemirIdareetme);
@@ -210,5 +236,6 @@ namespace AzAgroPOS.Teqdimat
         private MaterialSkin.Controls.MaterialButton btnNovbeIdareetme;
         private MaterialSkin.Controls.MaterialButton btnIstifadeciIdareetme;
         private MaterialSkin.Controls.MaterialButton btnHesabatlar;
+        private MaterialSkin.Controls.MaterialButton btnMehsulSatisHesabati;
     }
 }
