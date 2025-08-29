@@ -36,7 +36,8 @@ public class MehsulManager
             Barkod = m.Barkod,
             SatisQiymeti = m.SatisQiymeti,
             AlisQiymeti = m.AlisQiymeti,
-            MovcudSay = m.MovcudSay
+            MovcudSay = m.MovcudSay,
+            OlcuVahidi = m.OlcuVahidi
         });
 
         return EmeliyyatNeticesi<IEnumerable<MehsulDto>>.Ugurlu(mehsulDtolar);
@@ -70,7 +71,8 @@ public class MehsulManager
             Barkod = yeniMehsulDto.Barkod,
             SatisQiymeti = yeniMehsulDto.SatisQiymeti,
             MovcudSay = yeniMehsulDto.MovcudSay,
-            AlisQiymeti = yeniMehsulDto.AlisQiymeti
+            AlisQiymeti = yeniMehsulDto.AlisQiymeti,
+            OlcuVahidi = yeniMehsulDto.OlcuVahidi
         };
 
         await _unitOfWork.Mehsullar.ElaveEtAsync(yeniMehsul);
@@ -102,6 +104,7 @@ public class MehsulManager
         movcudMehsul.SatisQiymeti = mehsulDto.SatisQiymeti;
         movcudMehsul.AlisQiymeti = mehsulDto.AlisQiymeti;
         movcudMehsul.MovcudSay = mehsulDto.MovcudSay;
+        movcudMehsul.OlcuVahidi = mehsulDto.OlcuVahidi;
 
 
         _unitOfWork.Mehsullar.Yenile(movcudMehsul);

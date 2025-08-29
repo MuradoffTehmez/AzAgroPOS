@@ -4,6 +4,7 @@ namespace AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Mentiq.DTOs;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using AzAgroPOS.Varliglar;
 
 
 /// <summary>
@@ -21,9 +22,11 @@ public interface IMehsulIdareetmeView
     string AlisQiymeti { get; set; }
     string MovcudSay { get; set; }
     string AxtarisMetni { get; set; }
+    OlcuVahidi SecilmisOlcuVahidi { get; }
 
     // Cədvəli (DataGridView) məlumatla doldurmaq üçün metod
     void MehsullariGoster(IEnumerable<MehsulDto> mehsullar);
+    void OlcuVahidleriniGoster(Array olcuVahidleri);
 
     // View-da baş verən hadisələri Presenter-ə bildirmək üçün
     event EventHandler FormYuklendi_Istek;

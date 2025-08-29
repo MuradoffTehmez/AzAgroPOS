@@ -1,4 +1,6 @@
 ﻿// Fayl: AzAgroPOS.Mentiq/DTOs/MehsulDto.cs
+using AzAgroPOS.Varliglar;
+
 namespace AzAgroPOS.Mentiq.DTOs;
 
 /// <summary>
@@ -35,7 +37,15 @@ public class MehsulDto
     /// </summary>
     public int MovcudSay { get; set; }
     /// <summary>
+    /// olcu vahidi (müəyyən məhsulun ölçü vahidi, məsələn, ədəd, kiloqram, litr və s.).
+    /// </summary>
+    public OlcuVahidi OlcuVahidi { get; set; }
+    /// <summary>
     /// Satış qiymətinin formatlanmış versiyası (istifadəçi interfeysində göstəriləcək).
     /// </summary>
     public string SatisQiymetiStr => $"{SatisQiymeti:N2} AZN";
+    /// <summary>
+    /// olcu vahidinin formatlanmış versiyası (istifadəçi interfeysində göstəriləcək).
+    /// </summary>
+    public string OlcuVahidiStr => OlcuVahidi.ToString();
 }

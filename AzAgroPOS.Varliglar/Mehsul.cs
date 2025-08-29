@@ -23,6 +23,11 @@ public class Mehsul : BazaVarligi
     public string StokKodu { get; set; } = string.Empty;
 
     /// <summary>
+    /// Məhsulun ölçü vahidi (ədəd, kq, litr və s.).
+    /// </summary>
+    public OlcuVahidi OlcuVahidi { get; set; }
+
+    /// <summary>
     /// Məhsulun barkodu. Skanerlə oxunmaq üçün istifadə olunur.
     /// diqqət: Barkod, məhsulun sürətli və asan tanınması üçün istifadə olunur və məhsulun satış və anbar əməliyyatlarında skanerlə oxunmasını təmin edir.
     /// qeyd: Barkod, məhsulun unikal identifikatorudur və məhsulun sürətli və asan tanınması üçün istifadə olunur. Məsələn, "1234567890123" və ya "9876543210987" kimi dəyərlər alır. Bu barkod, məhsulun satış və anbar əməliyyatlarında skanerlə oxunmasını təmin edir.
