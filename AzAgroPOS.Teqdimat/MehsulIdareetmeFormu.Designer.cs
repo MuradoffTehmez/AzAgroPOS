@@ -34,7 +34,7 @@ namespace AzAgroPOS.Teqdimat
             txtStokKodu = new MaterialSkin.Controls.MaterialTextBox2();
             txtBarkod = new MaterialSkin.Controls.MaterialTextBox2();
             txtSatisQiymeti = new MaterialSkin.Controls.MaterialTextBox2();
-            txtAlisQiymeti = new MaterialSkin.Controls.MaterialTextBox2(); // Yeni sahə
+            txtAlisQiymeti = new MaterialSkin.Controls.MaterialTextBox2();
             txtMevcudSay = new MaterialSkin.Controls.MaterialTextBox2();
             btnElaveEt = new MaterialSkin.Controls.MaterialButton();
             btnYenile = new MaterialSkin.Controls.MaterialButton();

@@ -95,7 +95,7 @@ public class MehsulPresenter
     /// </summary>
     private void CedvelSeciminiDoldur()
     {
-        // View-dan gələn Id boş deyilsə, formadakı sahələri doldur.
+
         if (!string.IsNullOrEmpty(_view.MehsulId) && _butunMehsullarCache != null)
         {
             var secilmisMehsul = _butunMehsullarCache.FirstOrDefault(m => m.Id == int.Parse(_view.MehsulId));
