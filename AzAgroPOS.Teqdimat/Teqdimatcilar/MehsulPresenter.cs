@@ -6,6 +6,7 @@ using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Verilenler.Kontekst;
 using AzAgroPOS.Verilenler.Realizasialar;
+
 /// <summary>
 /// bu presenter, məhsul idarəetmə əməliyyatlarını idarə etmək üçün istifadə olunur.
 /// </summary>
@@ -23,6 +24,7 @@ public class MehsulPresenter
     /// bütün məhsulları saxlamaq üçün istifadə olunan cache.
     /// </summary>
     private IEnumerable<MehsulDto>? _butunMehsullarCache;
+
     /// <summary>
     /// bu presenter, məhsul idarəetmə əməliyyatlarını idarə etmək üçün istifadə olunur.
     /// məhsul əlavə etmək, yeniləmək, silmək və axtarış etmək kimi əməliyyatları həyata keçirir.
@@ -31,8 +33,6 @@ public class MehsulPresenter
     public MehsulPresenter(IMehsulIdareetmeView view)
     {
         _view = view;
-        // İdealda, bu obyektlər Dependency Injection ilə ötürülməlidir.
-        // Hələlik sadəlik üçün birbaşa yaradırıq.
         var unitOfWork = new UnitOfWork(new AzAgroPOSDbContext());
         _mehsulManager = new MehsulManager(unitOfWork);
 
@@ -44,7 +44,9 @@ public class MehsulPresenter
         _view.FormuTemizle_Istek += (s, e) => FormuTemizle();
         _view.CedvelSecimiDeyisdi_Istek += (s, e) => CedvelSeciminiDoldur();
         _view.Axtaris_Istek += (s, e) => AxtarisEt();
+        _view.KodGeneralasiyaIstek += async (s, e) => await KodlariGeneralasiyaEt();
     }
+
     /// <summary>
     /// bu metod, form yükləndikdə bütün məhsulları yükləyir və göstərir.
     /// </summary>
@@ -63,6 +65,7 @@ public class MehsulPresenter
             _view.MesajGoster(netice.Mesaj, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
+
     /// <summary>
     /// AxtarisEt metodu, istifadəçinin axtarış mətninə əsasən məhsulları süzür.
     /// axtarış mətnini kiçik hərflərə çevirir və məhsul adını, stok kodunu və barkodu yoxlayır.
@@ -95,7 +98,6 @@ public class MehsulPresenter
     /// </summary>
     private void CedvelSeciminiDoldur()
     {
-
         if (!string.IsNullOrEmpty(_view.MehsulId) && _butunMehsullarCache != null)
         {
             var secilmisMehsul = _butunMehsullarCache.FirstOrDefault(m => m.Id == int.Parse(_view.MehsulId));
@@ -110,6 +112,7 @@ public class MehsulPresenter
             }
         }
     }
+
     /// <summary>
     /// Məhsul əlavə etmək üçün istifadə olunur.
     /// əgər məhsul uğurla əlavə edilərsə, cədvəli yeniləyir və formu təmizləyir. əgər məhsul əlavə edilə bilməzsə, istifadəçiyə xəta mesajı göstərir.
@@ -131,7 +134,7 @@ public class MehsulPresenter
         if (netice.UgurluDur)
         {
             _view.MesajGoster("Məhsul uğurla əlavə edildi.", "Uğurlu Əməliyyat", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            await FormuYukle(); // Cədvəli yenilə
+            await FormuYukle();
             FormuTemizle();
         }
         else
@@ -139,6 +142,7 @@ public class MehsulPresenter
             _view.MesajGoster(netice.Mesaj, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
     }
+
     /// <summary>
     ///  məhsulu yeniləmək üçün istifadə olunur.
     ///  adətən, məhsulun ID-sini alır və istifadəçidən yeni məlumatları alır.
@@ -180,6 +184,7 @@ public class MehsulPresenter
             _view.MesajGoster(netice.Mesaj, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
+
     /// <summary>
     /// məhsulu silmək üçün istifadə olunur.
     /// adətən, məhsulun ID-sini alır və istifadəçidən təsdiq soruşur.
@@ -213,6 +218,7 @@ public class MehsulPresenter
             }
         }
     }
+
     /// <summary>
     /// formu təmizləyir, yəni bütün sahələri boşaldır.
     /// </summary>
@@ -225,5 +231,19 @@ public class MehsulPresenter
         _view.SatisQiymeti = string.Empty;
         _view.AlisQiymeti = string.Empty;
         _view.MovcudSay = string.Empty;
+    }
+
+    private async Task KodlariGeneralasiyaEt()
+    {
+        var netice = await _mehsulManager.KodlariGeneralasiyaEtAsync();
+        if (netice.UgurluDur)
+        {
+            _view.StokKodu = netice.Data.StokKodu;
+            _view.Barkod = netice.Data.Barkod;
+        }
+        else
+        {
+            _view.MesajGoster(netice.Mesaj, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
     }
 }

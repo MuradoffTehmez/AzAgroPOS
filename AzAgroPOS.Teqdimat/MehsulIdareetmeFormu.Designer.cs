@@ -42,6 +42,7 @@ namespace AzAgroPOS.Teqdimat
             btnTemizle = new MaterialSkin.Controls.MaterialButton();
             txtId = new MaterialSkin.Controls.MaterialTextBox2();
             materialCard1 = new MaterialSkin.Controls.MaterialCard();
+            btnKodGeneralasiyaEt = new MaterialSkin.Controls.MaterialButton();
             txtAxtar = new MaterialSkin.Controls.MaterialTextBox2();
             ((System.ComponentModel.ISupportInitialize)dgvMehsullar).BeginInit();
             materialCard1.SuspendLayout();
@@ -260,7 +261,7 @@ namespace AzAgroPOS.Teqdimat
             btnElaveEt.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnElaveEt.HighEmphasis = true;
             btnElaveEt.Icon = null;
-            btnElaveEt.Location = new Point(140, 420);
+            btnElaveEt.Location = new Point(140, 483);
             btnElaveEt.Margin = new Padding(5, 7, 5, 7);
             btnElaveEt.MouseState = MaterialSkin.MouseState.HOVER;
             btnElaveEt.Name = "btnElaveEt";
@@ -282,7 +283,7 @@ namespace AzAgroPOS.Teqdimat
             btnYenile.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnYenile.HighEmphasis = true;
             btnYenile.Icon = null;
-            btnYenile.Location = new Point(261, 420);
+            btnYenile.Location = new Point(261, 483);
             btnYenile.Margin = new Padding(5, 7, 5, 7);
             btnYenile.MouseState = MaterialSkin.MouseState.HOVER;
             btnYenile.Name = "btnYenile";
@@ -304,7 +305,7 @@ namespace AzAgroPOS.Teqdimat
             btnSil.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnSil.HighEmphasis = true;
             btnSil.Icon = null;
-            btnSil.Location = new Point(20, 483);
+            btnSil.Location = new Point(20, 530);
             btnSil.Margin = new Padding(5, 7, 5, 7);
             btnSil.MouseState = MaterialSkin.MouseState.HOVER;
             btnSil.Name = "btnSil";
@@ -326,7 +327,7 @@ namespace AzAgroPOS.Teqdimat
             btnTemizle.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnTemizle.HighEmphasis = false;
             btnTemizle.Icon = null;
-            btnTemizle.Location = new Point(255, 483);
+            btnTemizle.Location = new Point(255, 530);
             btnTemizle.Margin = new Padding(5, 7, 5, 7);
             btnTemizle.MouseState = MaterialSkin.MouseState.HOVER;
             btnTemizle.Name = "btnTemizle";
@@ -375,6 +376,7 @@ namespace AzAgroPOS.Teqdimat
             // 
             materialCard1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             materialCard1.BackColor = Color.FromArgb(255, 255, 255);
+            materialCard1.Controls.Add(btnKodGeneralasiyaEt);
             materialCard1.Controls.Add(txtAd);
             materialCard1.Controls.Add(txtId);
             materialCard1.Controls.Add(txtStokKodu);
@@ -395,6 +397,28 @@ namespace AzAgroPOS.Teqdimat
             materialCard1.Padding = new Padding(16);
             materialCard1.Size = new Size(373, 636);
             materialCard1.TabIndex = 12;
+            // 
+            // btnKodGeneralasiyaEt
+            // 
+            btnKodGeneralasiyaEt.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnKodGeneralasiyaEt.BackColor = Color.FromArgb(242, 242, 242);
+            btnKodGeneralasiyaEt.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnKodGeneralasiyaEt.Depth = 0;
+            btnKodGeneralasiyaEt.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            btnKodGeneralasiyaEt.HighEmphasis = false;
+            btnKodGeneralasiyaEt.Icon = null;
+            btnKodGeneralasiyaEt.Location = new Point(20, 420);
+            btnKodGeneralasiyaEt.Margin = new Padding(4, 6, 4, 6);
+            btnKodGeneralasiyaEt.MouseState = MaterialSkin.MouseState.HOVER;
+            btnKodGeneralasiyaEt.Name = "btnKodGeneralasiyaEt";
+            btnKodGeneralasiyaEt.NoAccentTextColor = Color.Empty;
+            btnKodGeneralasiyaEt.Size = new Size(132, 36);
+            btnKodGeneralasiyaEt.TabIndex = 12;
+            btnKodGeneralasiyaEt.Text = "Kodları Yarat";
+            btnKodGeneralasiyaEt.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
+            btnKodGeneralasiyaEt.UseAccentColor = false;
+            btnKodGeneralasiyaEt.UseVisualStyleBackColor = false;
+            btnKodGeneralasiyaEt.Click += btnKodGeneralasiyaEt_Click;
             // 
             // txtAxtar
             // 
@@ -455,7 +479,7 @@ namespace AzAgroPOS.Teqdimat
         private MaterialSkin.Controls.MaterialTextBox2 txtStokKodu;
         private MaterialSkin.Controls.MaterialTextBox2 txtBarkod;
         private MaterialSkin.Controls.MaterialTextBox2 txtSatisQiymeti;
-        private MaterialSkin.Controls.MaterialTextBox2 txtAlisQiymeti; 
+        private MaterialSkin.Controls.MaterialTextBox2 txtAlisQiymeti;
         private MaterialSkin.Controls.MaterialTextBox2 txtMevcudSay;
         private MaterialSkin.Controls.MaterialButton btnElaveEt;
         private MaterialSkin.Controls.MaterialButton btnYenile;
@@ -464,5 +488,6 @@ namespace AzAgroPOS.Teqdimat
         private MaterialSkin.Controls.MaterialTextBox2 txtId;
         private MaterialSkin.Controls.MaterialCard materialCard1;
         private MaterialSkin.Controls.MaterialTextBox2 txtAxtar;
+        private MaterialSkin.Controls.MaterialButton btnKodGeneralasiyaEt;
     }
 }

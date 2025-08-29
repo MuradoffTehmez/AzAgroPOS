@@ -5,6 +5,7 @@ using AzAgroPOS.Mentiq.DTOs;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
+
 /// <summary>
 /// MehsulIdareetmeFormu üçün "müqavilə". Presenter-in View ilə necə əlaqə quracağını təyin edir.
 /// Detallı olaraq, mehsul idarəetmə əməliyyatlarını (əlavə etmə, yeniləmə, silmə və axtarış) idarə etmək üçün istifadə olunur.
@@ -32,8 +33,9 @@ public interface IMehsulIdareetmeView
     event EventHandler FormuTemizle_Istek;
     event EventHandler CedvelSecimiDeyisdi_Istek;
     event EventHandler Axtaris_Istek;
+    event EventHandler KodGeneralasiyaIstek;
 
-    
+
     /// <summary>
     /// Presenter-in View-da mesaj göstərməsini və istifadəçi reaksiyasını almasını təmin edir.
     /// </summary>

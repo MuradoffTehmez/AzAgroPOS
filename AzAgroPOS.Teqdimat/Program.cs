@@ -2,7 +2,7 @@
 namespace AzAgroPOS.Teqdimat;
 
 /// <summary>
-/// 
+///  
 /// </summary>
 internal static class Program
 {
@@ -22,7 +22,7 @@ internal static class Program
          //Yalnız giriş uğurlu olduqda ana menyunu açırıq
         //if (loginFormu.UgurluDaxilOlundu)
         //{
-            Application.Run(new AnbarQaliqHesabatFormu());
+            Application.Run(new SatisFormu());
         //}
     }
 }

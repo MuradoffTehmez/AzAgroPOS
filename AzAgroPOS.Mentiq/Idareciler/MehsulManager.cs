@@ -126,4 +126,37 @@ public class MehsulManager
 
         return EmeliyyatNeticesi.Ugurlu();
     }
+    /// <summary>
+    /// Məhsul üçün unikal Stok Kodu və Barkod yaradır.
+    /// </summary>
+    /// <returns>Yaradılmış unikal kodları olan DTO.</returns>
+    public async Task<EmeliyyatNeticesi<GeneratedCodesDto>> KodlariGeneralasiyaEtAsync()
+    {
+        string yeniStokKodu;
+        string yeniBarkod;
+        Random random = new Random();
+
+        // Unikal Stok Kodu yarat
+        do
+        {
+            // Zaman damğası əsasında unikal bir kod yaradırıq (məsələn: SKU1661800000123)
+            yeniStokKodu = "SKU" + DateTimeOffset.Now.ToUnixTimeMilliseconds().ToString();
+        } while ((await _unitOfWork.Mehsullar.AxtarAsync(m => m.StokKodu == yeniStokKodu)).Any());
+
+        // Unikal Barkod yarat
+        do
+        {
+            // Daxili istifadə üçün 12 rəqəmli təsadüfi bir kod yaradırıq.
+            // "2" prefiksi adətən daxili, mağaza tərəfindən yaradılan barkodlar üçün istifadə olunur.
+            yeniBarkod = "2" + random.NextInt64(100_000_000_000, 999_999_999_999).ToString();
+        } while ((await _unitOfWork.Mehsullar.AxtarAsync(m => m.Barkod == yeniBarkod)).Any());
+
+        var generatedCodes = new GeneratedCodesDto
+        {
+            StokKodu = yeniStokKodu,
+            Barkod = yeniBarkod
+        };
+
+        return EmeliyyatNeticesi<GeneratedCodesDto>.Ugurlu(generatedCodes);
+    }
 }

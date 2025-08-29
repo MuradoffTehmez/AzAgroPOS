@@ -20,11 +20,11 @@ namespace AzAgroPOS.Teqdimat
             dgvNovbeler.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvNovbeler.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvNovbeler.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvNovbeler.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             dgvNovbeler.Location = new Point(23, 85);
             dgvNovbeler.MultiSelect = false;
             dgvNovbeler.Name = "dgvNovbeler";
             dgvNovbeler.ReadOnly = true;
-            dgvNovbeler.RowTemplate.Height = 25;
             dgvNovbeler.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvNovbeler.Size = new Size(938, 510);
             dgvNovbeler.TabIndex = 0;
@@ -33,21 +33,23 @@ namespace AzAgroPOS.Teqdimat
             // 
             btnGoster.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnGoster.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnGoster.BackColor = Color.FromArgb(242, 242, 242);
             btnGoster.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             btnGoster.Depth = 0;
+            btnGoster.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnGoster.HighEmphasis = true;
             btnGoster.Icon = null;
-            btnGoster.Location = new Point(781, 615);
+            btnGoster.Location = new Point(740, 615);
             btnGoster.Margin = new Padding(4, 6, 4, 6);
             btnGoster.MouseState = MaterialSkin.MouseState.HOVER;
             btnGoster.Name = "btnGoster";
             btnGoster.NoAccentTextColor = Color.Empty;
-            btnGoster.Size = new Size(180, 36);
+            btnGoster.Size = new Size(221, 36);
             btnGoster.TabIndex = 1;
             btnGoster.Text = "Seçilmiş Hesabatı Göstər";
             btnGoster.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnGoster.UseAccentColor = false;
-            btnGoster.UseVisualStyleBackColor = true;
+            btnGoster.UseVisualStyleBackColor = false;
             btnGoster.Click += btnGoster_Click;
             // 
             // ZHesabatArxivFormu
