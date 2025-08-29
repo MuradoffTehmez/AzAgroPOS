@@ -4,60 +4,52 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
+using AzAgroPOS.Teqdimat.Servisler;
 using AzAgroPOS.Teqdimat.Yardimcilar;
 using AzAgroPOS.Verilenler.Kontekst;
 using AzAgroPOS.Verilenler.Realizasialar;
 using AzAgroPOS.Varliglar;
-using AzAgroPOS.Teqdimat.Servisler;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-/// <summary>
-/// bu presenter, satış əməliyyatlarını idarə etmək üçün istifadə olunur.
-/// </summary>
 public class SatisPresenter
 {
-    /// <summary>
-    /// İstifadəçi interfeysini təmsil edən görünüş interfeysidir.
-    /// </summary>
     private readonly ISatisView _view;
-    /// <summary>
-    /// Məhsul idarəetmə əməliyyatlarını həyata keçirmək üçün istifadə olunan MehsulManager obyektidir.
-    /// </summary>
     private readonly MehsulManager _mehsulManager;
-    /// <summary>
-    /// Satış əməliyyatlarını idarə etmək üçün istifadə olunan SatisManager obyektidir.
-    /// </summary>
     private readonly SatisManager _satisManager;
-    /// <summary>
-    /// Satış sebetini təmsil edən SatisSebetiElementiDto obyektlərinin siyahısıdır.
-    /// </summary>
+    private readonly NisyeManager _nisyeManager;
     private readonly List<SatisSebetiElementiDto> _sebet;
 
-    /// <summary>
-    /// SatisPresenter, satış əməliyyatlarını idarə etmək üçün istifadə olunur.
-    /// </summary>
-    /// <param name="view"></param>
     public SatisPresenter(ISatisView view)
     {
         _view = view;
         var unitOfWork = new UnitOfWork(new AzAgroPOSDbContext());
         _mehsulManager = new MehsulManager(unitOfWork);
         _satisManager = new SatisManager(unitOfWork);
+        _nisyeManager = new NisyeManager(unitOfWork);
         _sebet = new List<SatisSebetiElementiDto>();
 
         _view.BarkodDaxilEdildi_Istek += async (s, e) => await BarkodlaMehsulTap();
-        _view.SatisiTesdiqle_Istek += async (s, e) => await SatisiTesdiqle();
+        _view.SatisiTesdiqle_Istek += async (s, odenisMetodu) => await SatisiTesdiqle(odenisMetodu);
+
+        // Form açılan kimi müştəriləri yükləyirik
+        Task.Run(async () => await MusterileriYukle());
     }
 
-    /// <summary>
-    /// Barkodla məhsul tapmaq üçün istifadə olunur.
-    /// </summary>
-    /// <returns></returns>
+    private async Task MusterileriYukle()
+    {
+        var netice = await _nisyeManager.MusterileriGetirAsync();
+        if (netice.UgurluDur)
+        {
+            _view.MusteriSiyahisiniGoster(netice.Data);
+        }
+    }
+
     private async Task BarkodlaMehsulTap()
     {
+
         var barkod = _view.BarkodAxtaris;
         if (string.IsNullOrWhiteSpace(barkod)) return;
 
@@ -88,11 +80,7 @@ public class SatisPresenter
         GosterisleriYenile();
     }
 
-    /// <summary>
-    /// satış əməliyyatını təsdiqləyir və sebetdəki məhsulları satışa bağlayır.
-    /// </summary>
-    /// <returns></returns>
-    private async Task SatisiTesdiqle()
+    private async Task SatisiTesdiqle(OdenisMetodu odenisMetodu)
     {
         if (!AktivSessiya.AktivNovbeId.HasValue)
         {
@@ -100,7 +88,28 @@ public class SatisPresenter
             return;
         }
 
-        var netice = await _satisManager.SatisiTesdiqleAsync(_sebet, OdenisMetodu.Nağd, AktivSessiya.AktivNovbeId.Value);
+        if (_sebet.Count == 0)
+        {
+            _view.MesajGoster("Satış üçün səbət boşdur.", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
+        }
+
+        // Nisyə satışı üçün müştəri seçilibmi yoxlayırıq
+        if (odenisMetodu == OdenisMetodu.Nisyə && !_view.SecilmisMusteriId.HasValue)
+        {
+            _view.MesajGoster("Nisyə satış üçün zəhmət olmasa müştəri seçin.", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
+        }
+
+        var satisDto = new SatisYaratDto
+        {
+            SebetElementleri = _sebet,
+            OdenisMetodu = odenisMetodu,
+            NovbeId = AktivSessiya.AktivNovbeId.Value,
+            MusteriId = _view.SecilmisMusteriId
+        };
+
+        var netice = await _satisManager.SatisYaratAsync(satisDto);
 
         if (netice.UgurluDur)
         {
@@ -130,10 +139,7 @@ public class SatisPresenter
             _view.MesajGoster(netice.Mesaj, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
-    /// <summary>
-    /// bu metod, satış sebetini yeniləyir və istifadəçiyə göstərir.
-    /// səbətdəki bütün məhsulları və onların ümumi məbləğini hesablayır və göstərir.
-    /// </summary>
+
     private void GosterisleriYenile()
     {
         _view.SebeteMehsulGoster(_sebet);
