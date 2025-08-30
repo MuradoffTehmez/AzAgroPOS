@@ -16,8 +16,12 @@ public class Mehsul : BazaVarligi
     public decimal TekEdedSatisQiymeti { get; set; }
     
     public decimal AlisQiymeti { get; set; }
-    
-    public OlcuVahidi OlcuVahidi { get; set; }
-    
+
+    /// <summary>
+    /// Məhsulun ölçü vahidi (ədəd, kq, litr və s.).
+    /// </summary>
+    public OlcuVahidi OlcuVahidi { get; set; } = OlcuVahidi.Ədəd;
+
+
     public int MovcudSay { get; set; }
 }

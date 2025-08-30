@@ -18,6 +18,7 @@ namespace AzAgroPOS.Teqdimat
             btnMehsulSatisHesabati = new MaterialSkin.Controls.MaterialButton();
             btnAnbarQaliqHesabati = new MaterialSkin.Controls.MaterialButton();
             btnZHesabatArxivi = new MaterialSkin.Controls.MaterialButton();
+            btnBarkodCapi = new MaterialSkin.Controls.MaterialButton();
             SuspendLayout();
             // 
             // btnMehsulIdareetme
@@ -259,10 +260,35 @@ namespace AzAgroPOS.Teqdimat
             btnZHesabatArxivi.UseVisualStyleBackColor = false;
             btnZHesabatArxivi.Click += btnZHesabatArxivi_Click;
             // 
+            // btnBarkodCapi
+            // 
+            btnBarkodCapi.Anchor = AnchorStyles.None;
+            btnBarkodCapi.AutoSize = false;
+            btnBarkodCapi.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnBarkodCapi.BackColor = Color.FromArgb(242, 242, 242);
+            btnBarkodCapi.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnBarkodCapi.Depth = 0;
+            btnBarkodCapi.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            btnBarkodCapi.HighEmphasis = true;
+            btnBarkodCapi.Icon = null;
+            btnBarkodCapi.Location = new Point(323, 397);
+            btnBarkodCapi.Margin = new Padding(4, 6, 4, 6);
+            btnBarkodCapi.MouseState = MaterialSkin.MouseState.HOVER;
+            btnBarkodCapi.Name = "btnBarkodCapi";
+            btnBarkodCapi.NoAccentTextColor = Color.Empty;
+            btnBarkodCapi.Size = new Size(250, 68);
+            btnBarkodCapi.TabIndex = 10;
+            btnBarkodCapi.Text = "BArkod Çapı";
+            btnBarkodCapi.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnBarkodCapi.UseAccentColor = false;
+            btnBarkodCapi.UseVisualStyleBackColor = false;
+            btnBarkodCapi.Click += btnBarkodCapi_Click;
+            // 
             // AnaMenuFormu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             ClientSize = new Size(928, 534);
+            Controls.Add(btnBarkodCapi);
             Controls.Add(btnZHesabatArxivi);
             Controls.Add(btnAnbarQaliqHesabati);
             Controls.Add(btnMehsulSatisHesabati);
@@ -290,5 +316,6 @@ namespace AzAgroPOS.Teqdimat
         private MaterialSkin.Controls.MaterialButton btnMehsulSatisHesabati;
         private MaterialSkin.Controls.MaterialButton btnAnbarQaliqHesabati;
         private MaterialSkin.Controls.MaterialButton btnZHesabatArxivi;
+        private MaterialSkin.Controls.MaterialButton btnBarkodCapi;
     }
 }

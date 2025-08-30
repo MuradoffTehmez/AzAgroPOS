@@ -104,4 +104,9 @@ public partial class AnaMenuFormu : BazaForm
     {
         using (var form = new ZHesabatArxivFormu()) { form.ShowDialog(); }
     }
+
+    private void btnBarkodCapi_Click(object sender, EventArgs e)
+    {
+        using (var form = new BarkodCapiFormu()) { form.ShowDialog(); }
+    }
 }
