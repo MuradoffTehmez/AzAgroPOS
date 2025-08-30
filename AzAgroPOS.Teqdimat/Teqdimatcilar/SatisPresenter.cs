@@ -34,7 +34,6 @@ public class SatisPresenter
 
         _view.SebeteMehsullariGoster(_aktivSebet);
 
-        // Hadisələrə abunə oluruq
         _view.MehsulAxtarIstek += async (s, e) => await MehsulAxtar();
         _view.SebeteElaveEtIstek += (s, e) => SebeteElaveEt();
         _view.SebetdenSilIstek += (s, e) => SebetdenSil();
@@ -182,8 +181,18 @@ public class SatisPresenter
         if (netice.UgurluDur)
         {
             _view.MesajGoster("Satış uğurla tamamlandı!", "Uğurlu", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            // Qəbz çapı məntiqi...
-            _view.FormuTamSifirla();
+
+            var qebzDto = new SatisQebzDto
+            {
+                SatisId = netice.Data.Id,
+                Tarix = netice.Data.Tarix,
+                KassirAdi = AktivSessiya.AktivIstifadeci?.TamAd ?? "Naməlum",
+                SatilanMehsullar = new List<SatisSebetiElementiDto>(_aktivSebet) 
+            };
+            CapServisi capServisi = new CapServisi();
+            capServisi.AftomatikCapaGonder(qebzDto);
+
+            _view.FormuTamSifirla(); 
         }
         else
         {
