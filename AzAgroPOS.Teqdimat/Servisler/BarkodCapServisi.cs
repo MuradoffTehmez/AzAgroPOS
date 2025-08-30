@@ -12,6 +12,9 @@ public class BarkodCapServisi
     private int _hazirkiEtiketIndexi;
     private int _hazirkiKopyaIndexi;
 
+    // Çap ofseti (mərkəzdən sola sürüşdürmə)
+    private readonly float _leftOffset = -20f;
+
     // Fontlar konfiqurasiya olunmuş halda saxlanır
     private readonly Font _adFontu = new("Arial", 8, FontStyle.Regular);
     private readonly Font _qiymetFontu = new("Arial", 11, FontStyle.Bold);
@@ -65,14 +68,14 @@ public class BarkodCapServisi
 
     private float CekAdiniCek(Graphics g, string ad, float en, float y)
     {
-        RectangleF rect = new(0, y, en, 30);
+        RectangleF rect = new(_leftOffset, y, en, 30);
         g.DrawString(ad, _adFontu, Brushes.Black, rect, _centerFormat);
         return y + 25;
     }
 
     private float QiymetiCek(Graphics g, string qiymet, float en, float y)
     {
-        RectangleF rect = new(0, y, en, 25);
+        RectangleF rect = new(_leftOffset, y, en, 25);
         g.DrawString(qiymet, _qiymetFontu, Brushes.Black, rect, _centerFormat);
         return y + 30;
     }
@@ -81,12 +84,12 @@ public class BarkodCapServisi
     {
         // Barkod
         string barkodData = $"*{barkod}*";
-        RectangleF barkodRect = new(0, y, en, 60);
+        RectangleF barkodRect = new(_leftOffset, y, en, 60);
         g.DrawString(barkodData, _barkodFontu, Brushes.Black, barkodRect, _centerFormat);
         y += 55;
 
         // Barkod rəqəmləri
-        RectangleF reqemRect = new(0, y, en, 20);
+        RectangleF reqemRect = new(_leftOffset, y, en, 20);
         g.DrawString(barkod, _barkodReqemFontu, Brushes.Black, reqemRect, _centerFormat);
         return y + 20;
     }
