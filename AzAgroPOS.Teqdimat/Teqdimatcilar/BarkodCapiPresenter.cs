@@ -48,9 +48,14 @@ public class BarkodCapiPresenter
             return;
         }
 
-        // Burada CapServisi-nə bənzər yeni bir BarkodCapServisi yaradılmalıdır.
-        // Hələlik sadəlik üçün birbaşa mesaj çıxarırıq.
-        // Gələcəkdə bu hissə həqiqi çap məntiqi ilə əvəz olunacaq.
-        _view.MesajGoster($"{siyahı.Sum(x => x.CapEdilecekSay)} ədəd etiket çapa göndərildi (simulyasiya).", "Uğurlu");
+        try
+        {
+            BarkodCapServisi capServisi = new BarkodCapServisi();
+            capServisi.EtiketleriCapaGonder(siyahı);
+        }
+        catch (System.Exception ex)
+        {
+            _view.MesajGoster($"Çap zamanı xəta baş verdi: {ex.Message}", "Xəta");
+        }
     }
 }

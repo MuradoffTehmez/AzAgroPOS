@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 /// <summary>
 /// Barkod çapı ilə bağlı axtarış və məlumat hazırlama əməliyyatlarını idarə edir.
 /// </summary>
-public class BarkodCapiManager
+public class BarkodCapiManager 
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IUnitOfWork _unitOfWork; 
 
-    public BarkodCapiManager(IUnitOfWork unitOfWork)
+    public BarkodCapiManager(IUnitOfWork unitOfWork) 
     {
         _unitOfWork = unitOfWork;
     }
@@ -51,7 +51,13 @@ public class BarkodCapiManager
             Ad = m.Ad,
             StokKodu = m.StokKodu,
             Barkod = m.Barkod,
-            PerakendeSatisQiymeti = m.PerakendeSatisQiymeti
+            PerakendeSatisQiymeti = m.PerakendeSatisQiymeti,
+            // Xətaların qarşısını almaq üçün bütün DTO sahələrini doldururuq
+            TopdanSatisQiymeti = m.TopdanSatisQiymeti,
+            TekEdedSatisQiymeti = m.TekEdedSatisQiymeti,
+            AlisQiymeti = m.AlisQiymeti,
+            MovcudSay = m.MovcudSay,
+            OlcuVahidi = m.OlcuVahidi
         }).ToList();
 
         return EmeliyyatNeticesi<List<MehsulDto>>.Ugurlu(dtolar);
