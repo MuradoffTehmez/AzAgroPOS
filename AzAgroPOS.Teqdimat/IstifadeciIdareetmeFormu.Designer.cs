@@ -10,8 +10,9 @@
             splitContainer1 = new SplitContainer();
             dgvIstifadeciler = new DataGridView();
             materialCard1 = new MaterialSkin.Controls.MaterialCard();
+            btnYeni = new MaterialSkin.Controls.MaterialButton();
             btnSil = new MaterialSkin.Controls.MaterialButton();
-            btnYarat = new MaterialSkin.Controls.MaterialButton();
+            btnYaddaSaxla = new MaterialSkin.Controls.MaterialButton();
             cmbRollar = new MaterialSkin.Controls.MaterialComboBox();
             txtParol = new MaterialSkin.Controls.MaterialTextBox2();
             txtTamAd = new MaterialSkin.Controls.MaterialTextBox2();
@@ -62,8 +63,9 @@
             // materialCard1
             // 
             materialCard1.BackColor = Color.FromArgb(255, 255, 255);
+            materialCard1.Controls.Add(btnYeni);
             materialCard1.Controls.Add(btnSil);
-            materialCard1.Controls.Add(btnYarat);
+            materialCard1.Controls.Add(btnYaddaSaxla);
             materialCard1.Controls.Add(cmbRollar);
             materialCard1.Controls.Add(txtParol);
             materialCard1.Controls.Add(txtTamAd);
@@ -80,6 +82,28 @@
             materialCard1.Size = new Size(424, 517);
             materialCard1.TabIndex = 2;
             // 
+            // btnYeni
+            // 
+            btnYeni.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnYeni.AutoSize = false;
+            btnYeni.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnYeni.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnYeni.Depth = 0;
+            btnYeni.HighEmphasis = false;
+            btnYeni.Icon = null;
+            btnYeni.Location = new Point(18, 461);
+            btnYeni.Margin = new Padding(4, 6, 4, 6);
+            btnYeni.MouseState = MaterialSkin.MouseState.HOVER;
+            btnYeni.Name = "btnYeni";
+            btnYeni.NoAccentTextColor = Color.Empty;
+            btnYeni.Size = new Size(120, 40);
+            btnYeni.TabIndex = 7;
+            btnYeni.Text = "Yeni / Ləğv et";
+            btnYeni.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
+            btnYeni.UseAccentColor = false;
+            btnYeni.UseVisualStyleBackColor = true;
+            btnYeni.Click += btnTemizle_Click;
+            // 
             // btnSil
             // 
             btnSil.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
@@ -89,40 +113,40 @@
             btnSil.Depth = 0;
             btnSil.HighEmphasis = true;
             btnSil.Icon = null;
-            btnSil.Location = new Point(17, 461);
+            btnSil.Location = new Point(146, 461);
             btnSil.Margin = new Padding(4, 6, 4, 6);
             btnSil.MouseState = MaterialSkin.MouseState.HOVER;
             btnSil.Name = "btnSil";
             btnSil.NoAccentTextColor = Color.Empty;
-            btnSil.Size = new Size(180, 40);
+            btnSil.Size = new Size(120, 40);
             btnSil.TabIndex = 5;
-            btnSil.Text = "Seçilmişi Sil";
+            btnSil.Text = "Sil";
             btnSil.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnSil.UseAccentColor = true;
             btnSil.UseVisualStyleBackColor = true;
             btnSil.Click += btnSil_Click;
             // 
-            // btnYarat
+            // btnYaddaSaxla
             // 
-            btnYarat.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnYarat.AutoSize = false;
-            btnYarat.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnYarat.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            btnYarat.Depth = 0;
-            btnYarat.HighEmphasis = true;
-            btnYarat.Icon = null;
-            btnYarat.Location = new Point(218, 461);
-            btnYarat.Margin = new Padding(4, 6, 4, 6);
-            btnYarat.MouseState = MaterialSkin.MouseState.HOVER;
-            btnYarat.Name = "btnYarat";
-            btnYarat.NoAccentTextColor = Color.Empty;
-            btnYarat.Size = new Size(180, 40);
-            btnYarat.TabIndex = 4;
-            btnYarat.Text = "Yarat / Yenilə";
-            btnYarat.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            btnYarat.UseAccentColor = false;
-            btnYarat.UseVisualStyleBackColor = true;
-            btnYarat.Click += btnYarat_Click;
+            btnYaddaSaxla.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnYaddaSaxla.AutoSize = false;
+            btnYaddaSaxla.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnYaddaSaxla.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnYaddaSaxla.Depth = 0;
+            btnYaddaSaxla.HighEmphasis = true;
+            btnYaddaSaxla.Icon = null;
+            btnYaddaSaxla.Location = new Point(274, 461);
+            btnYaddaSaxla.Margin = new Padding(4, 6, 4, 6);
+            btnYaddaSaxla.MouseState = MaterialSkin.MouseState.HOVER;
+            btnYaddaSaxla.Name = "btnYaddaSaxla";
+            btnYaddaSaxla.NoAccentTextColor = Color.Empty;
+            btnYaddaSaxla.Size = new Size(124, 40);
+            btnYaddaSaxla.TabIndex = 4;
+            btnYaddaSaxla.Text = "Yadda Saxla";
+            btnYaddaSaxla.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnYaddaSaxla.UseAccentColor = false;
+            btnYaddaSaxla.UseVisualStyleBackColor = true;
+            btnYaddaSaxla.Click += btnYarat_Click;
             // 
             // cmbRollar
             // 
@@ -272,11 +296,12 @@
         private DataGridView dgvIstifadeciler;
         private MaterialSkin.Controls.MaterialCard materialCard1;
         private MaterialSkin.Controls.MaterialButton btnSil;
-        private MaterialSkin.Controls.MaterialButton btnYarat;
+        private MaterialSkin.Controls.MaterialButton btnYaddaSaxla;
         private MaterialSkin.Controls.MaterialComboBox cmbRollar;
         private MaterialSkin.Controls.MaterialTextBox2 txtParol;
         private MaterialSkin.Controls.MaterialTextBox2 txtTamAd;
         private MaterialSkin.Controls.MaterialTextBox2 txtIstifadeciAdi;
         private TextBox txtId;
+        private MaterialSkin.Controls.MaterialButton btnYeni;
     }
 }

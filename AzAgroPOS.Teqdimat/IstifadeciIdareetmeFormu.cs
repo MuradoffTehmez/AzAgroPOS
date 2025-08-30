@@ -31,9 +31,25 @@ public partial class IstifadeciIdareetmeFormu : BazaForm, IIstifadeciView
 
     public void IstifadecileriGoster(List<IstifadeciDto> istifadeciler)
     {
-        // Məlumatlar yenilənərkən seçimin dəyişməsi hadisəsini müvəqqəti dayandırırıq
         dgvIstifadeciler.SelectionChanged -= dgvIstifadeciler_SelectionChanged;
+        // Cədvəli yeniləmədən əvvəl seçimi qorumaq üçün
+        var secilmisId = string.IsNullOrEmpty(txtId.Text) ? -1 : int.Parse(txtId.Text);
+
         dgvIstifadeciler.DataSource = istifadeciler;
+
+        // Seçimi bərpa etməyə çalışırıq
+        if (secilmisId != -1)
+        {
+            foreach (DataGridViewRow row in dgvIstifadeciler.Rows)
+            {
+                if (row.DataBoundItem is IstifadeciDto dto && dto.Id == secilmisId)
+                {
+                    row.Selected = true;
+                    break;
+                }
+            }
+        }
+
         dgvIstifadeciler.SelectionChanged += dgvIstifadeciler_SelectionChanged;
 
         if (dgvIstifadeciler.Columns.Count > 0)
@@ -43,11 +59,6 @@ public partial class IstifadeciIdareetmeFormu : BazaForm, IIstifadeciView
             dgvIstifadeciler.Columns["IstifadeciAdi"].HeaderText = "İstifadəçi Adı";
             dgvIstifadeciler.Columns["TamAd"].HeaderText = "Tam Ad";
             dgvIstifadeciler.Columns["RolAdi"].HeaderText = "Rol";
-
-            foreach (DataGridViewColumn column in dgvIstifadeciler.Columns)
-            {
-                column.SortMode = DataGridViewColumnSortMode.Automatic;
-            }
         }
     }
 
@@ -76,18 +87,17 @@ public partial class IstifadeciIdareetmeFormu : BazaForm, IIstifadeciView
         }
         dgvIstifadeciler.ClearSelection();
         txtIstifadeciAdi.Focus();
-        btnYarat.Text = "Yarat";
+        btnSil.Enabled = false; // "Yeni" rejimində "Sil" düyməsi deaktiv olsun
     }
 
     private void IstifadeciIdareetmeFormu_Load(object sender, EventArgs e)
     {
         FormYuklendi?.Invoke(this, EventArgs.Empty);
-        FormuTemizle(); // Form açılan kimi təmiz rejimdə olsun
+        FormuTemizle();
     }
 
     private void btnYarat_Click(object sender, EventArgs e)
     {
-        // Əgər ID varsa, bu "Yenilə" əmridir, yoxdursa "Yarat"
         if (string.IsNullOrEmpty(txtId.Text))
         {
             IstifadeciYarat_Istek?.Invoke(this, EventArgs.Empty);
@@ -103,23 +113,22 @@ public partial class IstifadeciIdareetmeFormu : BazaForm, IIstifadeciView
         IstifadeciSil_Istek?.Invoke(this, EventArgs.Empty);
     }
 
+    private void btnTemizle_Click(object sender, EventArgs e)
+    {
+        FormuTemizle_Istek?.Invoke(this, EventArgs.Empty);
+    }
+
     private void dgvIstifadeciler_SelectionChanged(object sender, EventArgs e)
     {
         if (dgvIstifadeciler.CurrentRow?.DataBoundItem is IstifadeciDto istifadeci)
         {
             txtId.Text = istifadeci.Id.ToString();
             txtIstifadeciAdi.Text = istifadeci.IstifadeciAdi;
-            txtIstifadeciAdi.ReadOnly = true; // Redaktə zamanı istifadəçi adını dəyişməyə icazə vermirik
+            txtIstifadeciAdi.ReadOnly = true;
             txtTamAd.Text = istifadeci.TamAd;
             cmbRollar.SelectedValue = istifadeci.RolId;
-            txtParol.Clear(); // Təhlükəsizlik üçün parolu göstərmirik
-            btnYarat.Text = "Yenilə";
+            txtParol.Clear();
+            btnSil.Enabled = true; // "Redaktə" rejimində "Sil" düyməsi aktiv olsun
         }
-    }
-
-    // Təmizlə butonu üçün yeni bir Click hadisəsi (Designer-də yoxdursa, əlavə edin)
-    private void btnTemizle_Click(object sender, EventArgs e)
-    {
-        FormuTemizle_Istek?.Invoke(this, EventArgs.Empty);
     }
 }

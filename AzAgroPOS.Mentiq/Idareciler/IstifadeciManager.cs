@@ -98,4 +98,37 @@ public class IstifadeciManager
 
         return EmeliyyatNeticesi.Ugurlu();
     }
+    /// <summary>
+    /// Mövcud istifadəçinin məlumatlarını (Tam Ad, Rol, Parol) yeniləyir.
+    /// </summary>
+    /// <param name="istifadeciDto">Yenilənəcək məlumatları daşıyan DTO.</param>
+    /// <param name="yeniParol">Əgər dəyişdirilirsə, yeni parol. Boş olarsa, parol dəyişməz.</param>
+    /// <returns>Əməliyyatın nəticəsi.</returns>
+    public async Task<EmeliyyatNeticesi> IstifadeciYenileAsync(IstifadeciDto istifadeciDto, string? yeniParol)
+    {
+        if (string.IsNullOrWhiteSpace(istifadeciDto.TamAd))
+            return EmeliyyatNeticesi.Ugursuz("Tam ad boş ola bilməz.");
+
+        var movcudIstifadeci = await _unitOfWork.Istifadeciler.GetirAsync(istifadeciDto.Id);
+        if (movcudIstifadeci == null)
+            return EmeliyyatNeticesi.Ugursuz("Yenilənmək üçün istifadəçi tapılmadı.");
+
+        // Əsas adminin məlumatlarının dəyişdirilməsinin qarşısını alırıq
+        if (movcudIstifadeci.Id == 1 && istifadeciDto.RolId != 1)
+            return EmeliyyatNeticesi.Ugursuz("Əsas Administratorun rolu dəyişdirilə bilməz.");
+
+        movcudIstifadeci.TamAd = istifadeciDto.TamAd;
+        movcudIstifadeci.RolId = istifadeciDto.RolId;
+
+        // Əgər yeni parol daxil edilibsə, onu hash-ləyib yeniləyirik
+        if (!string.IsNullOrWhiteSpace(yeniParol))
+        {
+            movcudIstifadeci.ParolHash = BCrypt.Net.BCrypt.HashPassword(yeniParol);
+        }
+
+        _unitOfWork.Istifadeciler.Yenile(movcudIstifadeci);
+        await _unitOfWork.EmeliyyatiTesdiqleAsync();
+
+        return EmeliyyatNeticesi.Ugurlu();
+    }
 }
