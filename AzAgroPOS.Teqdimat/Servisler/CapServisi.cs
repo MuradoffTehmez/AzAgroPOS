@@ -2,40 +2,46 @@
 namespace AzAgroPOS.Teqdimat.Servisler;
 
 using AzAgroPOS.Mentiq.DTOs;
+using System.Drawing;
 using System.Drawing.Printing;
+using System.Windows.Forms;
 
 public class CapServisi
 {
     private SatisQebzDto? _satisMelumatlari;
 
-    // 80mm kağız üçün optimallaşdırılmış fontlar və formatlar
-    private readonly Font _basliqFontu = new("Calibri", 12, FontStyle.Bold);
-    private readonly Font _normalFont = new("Calibri", 10, FontStyle.Regular);
-    private readonly Font _kicikFont = new("Calibri", 9, FontStyle.Italic);
-    private readonly StringFormat _centerFormat = new() { Alignment = StringAlignment.Center };
-    private readonly StringFormat _rightFormat = new() { Alignment = StringAlignment.Far };
+    // Fontlar
+    private readonly Font _titleFont = new("Segoe UI", 14, FontStyle.Bold);
+    private readonly Font _subtitleFont = new("Segoe UI", 9, FontStyle.Italic);
+    private readonly Font _headerFont = new("Segoe UI", 10, FontStyle.Bold);
+    private readonly Font _normalFont = new("Segoe UI", 9, FontStyle.Regular);
+    private readonly Font _footerFont = new("Segoe UI", 9, FontStyle.Bold);
+
+    private readonly StringFormat _center = new() { Alignment = StringAlignment.Center };
+    private readonly StringFormat _right = new() { Alignment = StringAlignment.Far };
+    private readonly StringFormat _left = new() { Alignment = StringAlignment.Near };
 
     /// <summary>
-    /// Sual vermədən, birbaşa sistemdəki standart (default) printerə çap əmri göndərir.
+    /// Default printerə avtomatik çap göndərir.
     /// </summary>
     public void AftomatikCapaGonder(SatisQebzDto satisMelumatlari)
     {
         _satisMelumatlari = satisMelumatlari;
 
         using PrintDocument pd = new();
+        // 80mm (72.1mm) kağız eni və 297mm hündürlük
+        pd.DefaultPageSettings.PaperSize = new PaperSize("Custom80mm", 284, 1169);
+
         pd.PrintPage += PrintDocument_PrintPage;
 
-        try
-        {
-            pd.Print();
-        }
+        try { pd.Print(); }
         catch (InvalidPrinterException)
         {
-            MessageBox.Show("Sistemdə standart printer tapılmadı və ya düzgün qurulmayıb. Zəhmət olmasa, Windows ayarlarından bir printeri standart olaraq təyin edin.", "Çap Xətası", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show("Sistemdə standart printer tapılmadı.", "Çap Xətası", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"Çap zamanı naməlum xəta baş verdi: {ex.Message}", "Çap Xətası", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show($"Çap zamanı xəta: {ex.Message}", "Çap Xətası", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -44,102 +50,81 @@ public class CapServisi
         if (_satisMelumatlari == null || e.Graphics == null) return;
 
         Graphics g = e.Graphics;
-        float yPos = e.MarginBounds.Top;
-        float solMesafe = e.MarginBounds.Left;
-        float qebzEni = e.MarginBounds.Width;
-        string ayiriciXett = new string('=', (int)(qebzEni / _normalFont.Size * 2.2f));
+        float y = 20;
+        float w = e.MarginBounds.Width;
+        float x = e.MarginBounds.Left;
 
-        // --- Başlıq Hissəsi ---
-        yPos = BasligiCapEt(g, yPos, qebzEni, solMesafe);
+        // --- Başlıq ---
+        g.DrawString("AZAGROPOS MARKET", _titleFont, Brushes.Black, new RectangleF(x, y, w, 25), _center);
+        y += 28;
+        g.DrawString("Bakı şəh., Nizami küç. 123", _subtitleFont, Brushes.Black, new RectangleF(x, y, w, 20), _center);
+        y += 15;
+        g.DrawString("VÖEN: 1234567890", _subtitleFont, Brushes.Black, new RectangleF(x, y, w, 20), _center);
+        y += 25;
 
-        // --- Qəbz Məlumatları ---
-        yPos = QebzMəlumatlariniCapEt(g, yPos, qebzEni, solMesafe);
+        DrawSeparator(g, ref y, w, x);
 
-        // --- Məhsul Siyahısı ---
-        g.DrawString(ayiriciXett, _normalFont, Brushes.Black, new RectangleF(solMesafe, yPos, qebzEni, _normalFont.GetHeight()), _centerFormat);
-        yPos += _normalFont.GetHeight();
-        yPos = MehsulBasliqlariniCapEt(g, yPos, qebzEni, solMesafe);
-        g.DrawString(ayiriciXett, _normalFont, Brushes.Black, new RectangleF(solMesafe, yPos, qebzEni, _normalFont.GetHeight()), _centerFormat);
-        yPos += _normalFont.GetHeight() + 3;
+        // --- Qəbz məlumatları ---
+        g.DrawString("Satış çeki", _headerFont, Brushes.Black, new RectangleF(x, y, w, 20), _center);
+        y += 22;
+        g.DrawString($"Qəbz №: {_satisMelumatlari.SatisId}", _normalFont, Brushes.Black, x, y);
+        g.DrawString($"{_satisMelumatlari.Tarix:dd.MM.yyyy HH:mm}", _normalFont, Brushes.Black, new RectangleF(x, y, w, 20), _right);
+        y += 20;
+        g.DrawString($"Kassir: {_satisMelumatlari.KassirAdi}", _normalFont, Brushes.Black, x, y);
+        y += 25;
 
-        yPos = MehsullariCapEt(g, yPos, qebzEni, solMesafe);
+        DrawLine(g, ref y, w, x);
+
+        // --- Məhsul Siyahısı Başlıqları ---
+        g.DrawString("Məhsul", _headerFont, Brushes.Black, x, y);
+        g.DrawString("Miq", _headerFont, Brushes.Black, x + w * 0.45f, y);
+        g.DrawString("Qiymət", _headerFont, Brushes.Black, x + w * 0.65f, y);
+        g.DrawString("Məbləğ", _headerFont, Brushes.Black, new RectangleF(x, y, w, 20), _right);
+        y += 20;
+
+        DrawLine(g, ref y, w, x);
+
+        // --- Məhsullar ---
+        foreach (var m in _satisMelumatlari.SatilanMehsullar)
+        {
+            g.DrawString(m.MehsulAdi, _normalFont, Brushes.Black, new RectangleF(x, y, w * 0.43f, 20), _left);
+            g.DrawString(m.Miqdar.ToString(), _normalFont, Brushes.Black, x + w * 0.45f, y);
+            g.DrawString($"{m.VahidinQiymeti:N2}", _normalFont, Brushes.Black, x + w * 0.65f, y);
+            g.DrawString($"{m.UmumiMebleg:N2}", _normalFont, Brushes.Black, new RectangleF(x, y, w, 20), _right);
+            y += 18;
+        }
+
+        DrawSeparator(g, ref y, w, x);
 
         // --- Yekun ---
-        g.DrawString(ayiriciXett, _normalFont, Brushes.Black, new RectangleF(solMesafe, yPos, qebzEni, _normalFont.GetHeight()), _centerFormat);
-        yPos += _normalFont.GetHeight();
-        yPos = YekunuCapEt(g, yPos, qebzEni, solMesafe);
+        g.DrawString("YEKUN:", _headerFont, Brushes.Black, x + w * 0.55f, y);
+        g.DrawString($"{_satisMelumatlari.CemiMebleg:N2} AZN", _headerFont, Brushes.Black, new RectangleF(x, y, w, 20), _right);
+        y += 25;
+
+        g.DrawString("Ödəniş: Nağd", _normalFont, Brushes.Black, x, y);
+        y += 18;
+        g.DrawString("ƏDV (18%): daxildir", _normalFont, Brushes.Black, x, y);
+        y += 25;
+
+        DrawSeparator(g, ref y, w, x);
 
         // --- Alt Mesaj ---
-        string tesekkur = "Bizi seçdiyiniz üçün təşəkkür edirik!";
-        g.DrawString(tesekkur, _basliqFontu, Brushes.Black, new RectangleF(solMesafe, yPos, qebzEni, _basliqFontu.GetHeight()), _centerFormat);
+        g.DrawString("Bizi seçdiyiniz üçün təşəkkür edirik!", _footerFont, Brushes.Black, new RectangleF(x, y, w, 20), _center);
+        y += 22;
+        g.DrawString("Oktay Hüseynoglu MMC", _subtitleFont, Brushes.Black, new RectangleF(x, y, w, 20), _center);
 
         e.HasMorePages = false;
     }
 
-    private float BasligiCapEt(Graphics g, float yPos, float qebzEni, float solMesafe)
+    private void DrawSeparator(Graphics g, ref float y, float w, float x)
     {
-        g.DrawString("AzAgroPOS Market", new Font("Calibri", 14, FontStyle.Bold), Brushes.Black, new RectangleF(solMesafe, yPos, qebzEni, 25), _centerFormat);
-        yPos += 25;
-        g.DrawString("Bakı şəh., Nizami küç. 123", _kicikFont, Brushes.Black, new RectangleF(solMesafe, yPos, qebzEni, 15), _centerFormat);
-        yPos += 15;
-        g.DrawString("VÖEN: 1234567890", _kicikFont, Brushes.Black, new RectangleF(solMesafe, yPos, qebzEni, 15), _centerFormat);
-        yPos += 15 + 10;
-        return yPos;
+        g.DrawString(new string('=', 42), _normalFont, Brushes.Black, new RectangleF(x, y, w, 15), _center);
+        y += 18;
     }
 
-    private float QebzMəlumatlariniCapEt(Graphics g, float yPos, float qebzEni, float solMesafe)
+    private void DrawLine(Graphics g, ref float y, float w, float x)
     {
-        g.DrawString($"Qəbz ID: {_satisMelumatlari.SatisId}", _normalFont, Brushes.Black, solMesafe, yPos);
-        g.DrawString($"Tarix: {_satisMelumatlari.Tarix:dd.MM.yy HH:mm}", _normalFont, Brushes.Black, new RectangleF(solMesafe, yPos, qebzEni, _normalFont.GetHeight()), _rightFormat);
-        yPos += _normalFont.GetHeight();
-        g.DrawString($"Kassir: {_satisMelumatlari.KassirAdi}", _normalFont, Brushes.Black, solMesafe, yPos);
-        yPos += _normalFont.GetHeight() + 5;
-        return yPos;
-    }
-
-    private float MehsulBasliqlariniCapEt(Graphics g, float yPos, float qebzEni, float solMesafe)
-    {
-        float adX = solMesafe;
-        float miqdarX = solMesafe + (qebzEni * 0.50f);
-        float vahidQiymetX = solMesafe + (qebzEni * 0.65f);
-
-        g.DrawString("Məhsul Adı", _basliqFontu, Brushes.Black, adX, yPos);
-        g.DrawString("Miqdar", _basliqFontu, Brushes.Black, miqdarX, yPos);
-        g.DrawString("Qiymət", _basliqFontu, Brushes.Black, vahidQiymetX, yPos);
-        g.DrawString("Məbləğ", _basliqFontu, Brushes.Black, new RectangleF(solMesafe, yPos, qebzEni, _basliqFontu.GetHeight()), _rightFormat);
-        yPos += _basliqFontu.GetHeight();
-        return yPos;
-    }
-
-    private float MehsullariCapEt(Graphics g, float yPos, float qebzEni, float solMesafe)
-    {
-        float adSutunuEni = qebzEni * 0.48f;
-        float miqdarX = solMesafe + (qebzEni * 0.50f);
-        float vahidQiymetX = solMesafe + (qebzEni * 0.65f);
-
-        foreach (var mehsul in _satisMelumatlari.SatilanMehsullar)
-        {
-            RectangleF mehsulAdRect = new RectangleF(solMesafe, yPos, adSutunuEni, 40);
-            g.DrawString(mehsul.MehsulAdi, _normalFont, Brushes.Black, mehsulAdRect);
-
-            float mehsulHundurluk = g.MeasureString(mehsul.MehsulAdi, _normalFont, (int)adSutunuEni).Height;
-
-            g.DrawString(mehsul.Miqdar.ToString(), _normalFont, Brushes.Black, miqdarX, yPos);
-            g.DrawString($"{mehsul.VahidinQiymeti:N2}", _normalFont, Brushes.Black, vahidQiymetX, yPos);
-            g.DrawString($"{mehsul.UmumiMebleg:N2}", _normalFont, Brushes.Black, new RectangleF(solMesafe, yPos, qebzEni, _normalFont.GetHeight()), _rightFormat);
-
-            yPos += Math.Max(_normalFont.GetHeight(), mehsulHundurluk) + 2;
-        }
-        return yPos;
-    }
-
-    private float YekunuCapEt(Graphics g, float yPos, float qebzEni, float solMesafe)
-    {
-        yPos += 5;
-
-        string yekunStr = $"YEKUN MƏBLƏĞ: {_satisMelumatlari.CemiMebleg:N2} AZN";
-        g.DrawString(yekunStr, _basliqFontu, Brushes.Black, new RectangleF(solMesafe, yPos, qebzEni, _basliqFontu.GetHeight()), _rightFormat);
-        yPos += _basliqFontu.GetHeight() + 20;
-        return yPos;
+        g.DrawLine(Pens.Black, x, y, x + w, y);
+        y += 3;
     }
 }
