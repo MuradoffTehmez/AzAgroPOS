@@ -24,14 +24,6 @@ public class BarkodCapServisi
         _hazirkiKopyaIndexi = 0;
 
         PrintDocument pd = new PrintDocument();
-
-        // --- YENİ HİSSƏ: Kağız ölçüsünü təyin edirik ---
-        // Ölçüləri 1/100 inch olaraq təyin edirik (6cm x 4cm)
-        int en = 236; // 6cm
-        int hundurluk = 157; // 4cm
-        pd.DefaultPageSettings.PaperSize = new PaperSize("Custom Label", en, hundurluk);
-        // ---------------------------------------------
-
         pd.PrintPage += Pd_PrintPage;
 
         PrintDialog pDialog = new PrintDialog();
@@ -39,6 +31,12 @@ public class BarkodCapServisi
 
         if (pDialog.ShowDialog() == DialogResult.OK)
         {
+            pd.PrinterSettings = pDialog.PrinterSettings;
+
+            // Dəyişiklik: Printerin öz standart kağızını istifadə etməsinə icazə veririk.
+            // Bizim 6x4cm ölçümüz printerin drayverində artıq "Stock" olaraq qurulub.
+            // Bu, uyğunsuzluq riskini azaldır.
+
             pd.Print();
         }
     }
@@ -49,44 +47,48 @@ public class BarkodCapServisi
 
         Graphics g = e.Graphics;
 
-        // --- YENİ HİSSƏ: Elementlərin ölçü və yerlərini yeni kağıza uyğunlaşdırırıq ---
-        Font adFontu = new Font("Arial", 8, FontStyle.Bold); // Şrift ölçüsü kiçildildi
-        Font qiymetFontu = new Font("Arial", 10, FontStyle.Bold); // Şrift ölçüsü kiçildildi
-        Font barkodFontu = new Font("Libre Barcode 39", 24, FontStyle.Regular); // Şrift ölçüsü kiçildildi
+        // --- DƏYİŞİKLİK VƏ TƏKMİLLƏŞDİRMƏLƏR ---
 
-        float yPos = 5;
-        float solMesafe = 5;
-        float etiketEni = e.PageBounds.Width - (solMesafe * 2);
+        // Printerin icazə verdiyi real çap sahəsini (kənar boşluqlar çıxılmış) əldə edirik.
+        RectangleF capSahəsi = e.MarginBounds;
+
+        // Şriftləri təyin edirik
+        Font adFontu = new Font("Arial", 8, FontStyle.Regular);
+        Font qiymetFontu = new Font("Arial", 10, FontStyle.Bold);
+        Font barkodFontu = new Font("Libre Barcode 39", 32, FontStyle.Regular);
+        Font barkodReqemFontu = new Font("Arial", 8, FontStyle.Regular);
 
         var hazirkiEtiket = _etiketler[_hazirkiEtiketIndexi];
 
-        // Mərkəzə düzləmək üçün StringFormat obyekti
-        StringFormat centerFormat = new StringFormat();
-        centerFormat.Alignment = StringAlignment.Center;
+        // Mərkəzə düzləmək üçün obyekt
+        StringFormat centerFormat = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
 
-        // Məhsulun adını çək (mərkəzə düzlənmiş)
-        RectangleF adRect = new RectangleF(solMesafe, yPos, etiketEni, 20);
+        // Y oxu üzrə mövqeni dinamik hesablamaq üçün
+        float yPosition = capSahəsi.Top;
+
+        // 1. Məhsul Adı
+        // Məhsul adının hündürlüyünü hesablayaq ki, uzun adlar bir neçə sətirə bölünsün
+        SizeF adOlcusu = g.MeasureString(hazirkiEtiket.MehsulAdi, adFontu, (int)capSahəsi.Width);
+        RectangleF adRect = new RectangleF(capSahəsi.Left, yPosition, capSahəsi.Width, adOlcusu.Height);
         g.DrawString(hazirkiEtiket.MehsulAdi, adFontu, Brushes.Black, adRect, centerFormat);
-        yPos += 20;
+        yPosition += adOlcusu.Height + 2; // Boşluq
 
-        // Qiyməti çək (mərkəzə düzlənmiş)
-        RectangleF qiymetRect = new RectangleF(solMesafe, yPos, etiketEni, 25);
+        // 2. Qiymət
+        RectangleF qiymetRect = new RectangleF(capSahəsi.Left, yPosition, capSahəsi.Width, 20);
         g.DrawString(hazirkiEtiket.QiymetStr, qiymetFontu, Brushes.Black, qiymetRect, centerFormat);
-        yPos += 30;
+        yPosition += 20 + 2; // Boşluq
 
-        // Barkodu çək (mərkəzə düzlənmiş)
+        // 3. Barkod
         string barkodData = $"*{hazirkiEtiket.Barkod}*";
-        RectangleF barkodRect = new RectangleF(solMesafe, yPos, etiketEni, 40);
+        RectangleF barkodRect = new RectangleF(capSahəsi.Left, yPosition, capSahəsi.Width, 40);
         g.DrawString(barkodData, barkodFontu, Brushes.Black, barkodRect, centerFormat);
-        yPos += 45;
+        yPosition += 40; // Barkodun hündürlüyü
 
-        // Barkodun altındakı rəqəmləri çək (mərkəzə düzlənmiş)
-        Font barkodReqemFontu = new Font("Arial", 8, FontStyle.Regular);
-        RectangleF barkodReqemRect = new RectangleF(solMesafe, yPos, etiketEni, 15);
+        // 4. Barkodun altındakı rəqəmlər
+        RectangleF barkodReqemRect = new RectangleF(capSahəsi.Left, yPosition, capSahəsi.Width, 15);
         g.DrawString(hazirkiEtiket.Barkod, barkodReqemFontu, Brushes.Black, barkodReqemRect, centerFormat);
-        // ---------------------------------------------------------------------------------
 
-        // Növbəti kopyaya və ya etiketə keçid məntiqi (dəyişməz qalıb)
+        // Növbəti səhifə məntiqi
         _hazirkiKopyaIndexi++;
         if (_hazirkiKopyaIndexi < hazirkiEtiket.CapEdilecekSay)
         {
@@ -96,14 +98,7 @@ public class BarkodCapServisi
         {
             _hazirkiKopyaIndexi = 0;
             _hazirkiEtiketIndexi++;
-            if (_hazirkiEtiketIndexi < _etiketler.Count)
-            {
-                e.HasMorePages = true;
-            }
-            else
-            {
-                e.HasMorePages = false;
-            }
+            e.HasMorePages = _hazirkiEtiketIndexi < _etiketler.Count;
         }
     }
 }
