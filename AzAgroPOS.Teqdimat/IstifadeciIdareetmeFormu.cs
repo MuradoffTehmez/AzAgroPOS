@@ -5,9 +5,6 @@ using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
 using AzAgroPOS.Varliglar;
-using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
 
 public partial class IstifadeciIdareetmeFormu : BazaForm, IIstifadeciView
 {
@@ -17,13 +14,6 @@ public partial class IstifadeciIdareetmeFormu : BazaForm, IIstifadeciView
     {
         InitializeComponent();
         _presenter = new IstifadeciPresenter(this);
-        dgvIstifadeciler.SelectionChanged += (s, e) =>
-        {
-            if (dgvIstifadeciler.CurrentRow != null && dgvIstifadeciler.CurrentRow.DataBoundItem is IstifadeciDto dto)
-            {
-                txtId.Text = dto.Id.ToString();
-            }
-        };
     }
 
     public string IstifadeciId { get => txtId.Text; set => txtId.Text = value; }
@@ -34,14 +24,33 @@ public partial class IstifadeciIdareetmeFormu : BazaForm, IIstifadeciView
 
     public event EventHandler FormYuklendi;
     public event EventHandler IstifadeciYarat_Istek;
+    public event EventHandler IstifadeciYenile_Istek;
     public event EventHandler IstifadeciSil_Istek;
+    public event EventHandler FormuTemizle_Istek;
+
 
     public void IstifadecileriGoster(List<IstifadeciDto> istifadeciler)
     {
+        // Məlumatlar yenilənərkən seçimin dəyişməsi hadisəsini müvəqqəti dayandırırıq
+        dgvIstifadeciler.SelectionChanged -= dgvIstifadeciler_SelectionChanged;
         dgvIstifadeciler.DataSource = istifadeciler;
+        dgvIstifadeciler.SelectionChanged += dgvIstifadeciler_SelectionChanged;
+
+        if (dgvIstifadeciler.Columns.Count > 0)
+        {
+            dgvIstifadeciler.Columns["Id"].Visible = false;
+            dgvIstifadeciler.Columns["RolId"].Visible = false;
+            dgvIstifadeciler.Columns["IstifadeciAdi"].HeaderText = "İstifadəçi Adı";
+            dgvIstifadeciler.Columns["TamAd"].HeaderText = "Tam Ad";
+            dgvIstifadeciler.Columns["RolAdi"].HeaderText = "Rol";
+
+            foreach (DataGridViewColumn column in dgvIstifadeciler.Columns)
+            {
+                column.SortMode = DataGridViewColumnSortMode.Automatic;
+            }
+        }
     }
 
-    
     public void RollariGoster(List<Rol> rollar)
     {
         cmbRollar.DataSource = rollar;
@@ -56,16 +65,61 @@ public partial class IstifadeciIdareetmeFormu : BazaForm, IIstifadeciView
 
     public void FormuTemizle()
     {
+        txtId.Clear();
         txtIstifadeciAdi.Clear();
+        txtIstifadeciAdi.ReadOnly = false;
         txtTamAd.Clear();
         txtParol.Clear();
         if (cmbRollar.Items.Count > 0)
         {
             cmbRollar.SelectedIndex = 0;
         }
+        dgvIstifadeciler.ClearSelection();
+        txtIstifadeciAdi.Focus();
+        btnYarat.Text = "Yarat";
     }
 
-    private void IstifadeciIdareetmeFormu_Load(object sender, EventArgs e) => FormYuklendi?.Invoke(this, EventArgs.Empty);
-    private void btnYarat_Click(object sender, EventArgs e) => IstifadeciYarat_Istek?.Invoke(this, EventArgs.Empty);
-    private void btnSil_Click(object sender, EventArgs e) => IstifadeciSil_Istek?.Invoke(this, EventArgs.Empty);
+    private void IstifadeciIdareetmeFormu_Load(object sender, EventArgs e)
+    {
+        FormYuklendi?.Invoke(this, EventArgs.Empty);
+        FormuTemizle(); // Form açılan kimi təmiz rejimdə olsun
+    }
+
+    private void btnYarat_Click(object sender, EventArgs e)
+    {
+        // Əgər ID varsa, bu "Yenilə" əmridir, yoxdursa "Yarat"
+        if (string.IsNullOrEmpty(txtId.Text))
+        {
+            IstifadeciYarat_Istek?.Invoke(this, EventArgs.Empty);
+        }
+        else
+        {
+            IstifadeciYenile_Istek?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    private void btnSil_Click(object sender, EventArgs e)
+    {
+        IstifadeciSil_Istek?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void dgvIstifadeciler_SelectionChanged(object sender, EventArgs e)
+    {
+        if (dgvIstifadeciler.CurrentRow?.DataBoundItem is IstifadeciDto istifadeci)
+        {
+            txtId.Text = istifadeci.Id.ToString();
+            txtIstifadeciAdi.Text = istifadeci.IstifadeciAdi;
+            txtIstifadeciAdi.ReadOnly = true; // Redaktə zamanı istifadəçi adını dəyişməyə icazə vermirik
+            txtTamAd.Text = istifadeci.TamAd;
+            cmbRollar.SelectedValue = istifadeci.RolId;
+            txtParol.Clear(); // Təhlükəsizlik üçün parolu göstərmirik
+            btnYarat.Text = "Yenilə";
+        }
+    }
+
+    // Təmizlə butonu üçün yeni bir Click hadisəsi (Designer-də yoxdursa, əlavə edin)
+    private void btnTemizle_Click(object sender, EventArgs e)
+    {
+        FormuTemizle_Istek?.Invoke(this, EventArgs.Empty);
+    }
 }
