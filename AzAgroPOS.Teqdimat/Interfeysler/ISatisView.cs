@@ -1,29 +1,38 @@
 ﻿// Fayl: AzAgroPOS.Teqdimat/Interfeysler/ISatisView.cs
-namespace AzAgroPOS.Teqdimat.Interfeysler;
-
 using AzAgroPOS.Mentiq.DTOs;
+using AzAgroPOS.Teqdimat.Yardimcilar;
 using AzAgroPOS.Varliglar;
 using System.Collections.Generic;
+using System.ComponentModel;
 
-/// <summary>
-///  Satis view interfeysi.
-/// </summary>
-public interface ISatisView
+namespace AzAgroPOS.Teqdimat.Interfeysler
 {
-    // View-dan datanı oxumaq
-    string BarkodAxtaris { get; }
-    int? SecilmisMusteriId { get; }
+    public interface ISatisView
+    {
+        // View-dan məlumat oxumaq üçün
+        string AxtarisMetni { get; }
+        string SecilmisMehsulMiqdari { get; }
+        MehsulDto? SecilmisAxtarisMehsulu { get; }
+        SatisSebetiElementiDto? SecilmisSebetElementi { get; }
+        int? SecilmisMusteriId { get; }
 
-    // View-a məlumat göndərmək
-    void SebeteMehsulGoster(IEnumerable<SatisSebetiElementiDto> sebet);
-    void UmumiMebligiGoster(decimal mebleg);
-    void MusteriSiyahisiniGoster(List<MusteriDto> musteriler);
-    void FormuSifirla();
+        // Hadisələr
+        event EventHandler MehsulAxtarIstek;
+        event EventHandler SebeteElaveEtIstek;
+        event EventHandler SebetdenSilIstek;
+        event EventHandler MiqdariDeyisIstek;
+        event EventHandler SatisiGozletIstek;
+        event EventHandler GozleyenSatisiAcIstek;
+        event EventHandler<OdenisMetodu> SatisiTesdiqleIstek;
 
-    // Hadisələr (Köhnəni yeni ilə əvəz edirik)
-    event EventHandler BarkodDaxilEdildi_Istek;
-    event EventHandler<OdenisMetodu> SatisiTesdiqle_Istek; // Ödəniş metodunu parametr kimi ötürürük
-
-    // Mesajlaşma
-    DialogResult MesajGoster(string mesaj, string basliq, MessageBoxButtons düymələr, MessageBoxIcon ikon);
+        // View-a məlumat göndərmək üçün
+        void AxtarisNeticeleriniGoster(List<MehsulDto> mehsullar);
+        void AxtarisPaneliniSifirla();
+        void SebeteMehsullariGoster(BindingList<SatisSebetiElementiDto> sebet);
+        void UmumiMebligiGoster(decimal mebleg);
+        void MusteriSiyahisiniGoster(List<MusteriDto> musteriler);
+        void GozleyenSatislarMenyusunuGoster(List<GozleyenSatis> gozleyenSatislar);
+        void FormuTamSifirla();
+        DialogResult MesajGoster(string mesaj, string basliq, MessageBoxButtons düymələr, MessageBoxIcon ikon);
+    }
 }

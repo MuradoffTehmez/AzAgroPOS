@@ -9,36 +9,44 @@ using AzAgroPOS.Teqdimat.Yardimcilar;
 using AzAgroPOS.Verilenler.Kontekst;
 using AzAgroPOS.Verilenler.Realizasialar;
 using AzAgroPOS.Varliglar;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using System.ComponentModel;
 
 public class SatisPresenter
 {
     private readonly ISatisView _view;
-    private readonly MehsulManager _mehsulManager;
     private readonly SatisManager _satisManager;
+    private readonly MehsulManager _mehsulManager;
     private readonly NisyeManager _nisyeManager;
-    private readonly List<SatisSebetiElementiDto> _sebet;
+
+    private BindingList<SatisSebetiElementiDto> _aktivSebet;
+    private readonly List<GozleyenSatis> _gozleyenSebetler;
 
     public SatisPresenter(ISatisView view)
     {
         _view = view;
         var unitOfWork = new UnitOfWork(new AzAgroPOSDbContext());
-        _mehsulManager = new MehsulManager(unitOfWork);
         _satisManager = new SatisManager(unitOfWork);
+        _mehsulManager = new MehsulManager(unitOfWork);
         _nisyeManager = new NisyeManager(unitOfWork);
-        _sebet = new List<SatisSebetiElementiDto>();
 
-        _view.BarkodDaxilEdildi_Istek += async (s, e) => await BarkodlaMehsulTap();
-        _view.SatisiTesdiqle_Istek += async (s, odenisMetodu) => await SatisiTesdiqle(odenisMetodu);
+        _aktivSebet = new BindingList<SatisSebetiElementiDto>();
+        _gozleyenSebetler = new List<GozleyenSatis>();
 
-        // Form açılan kimi müştəriləri yükləyirik
-        Task.Run(async () => await MusterileriYukle());
+        _view.SebeteMehsullariGoster(_aktivSebet);
+
+        // Hadisələrə abunə oluruq
+        _view.MehsulAxtarIstek += async (s, e) => await MehsulAxtar();
+        _view.SebeteElaveEtIstek += (s, e) => SebeteElaveEt();
+        _view.SebetdenSilIstek += (s, e) => SebetdenSil();
+        _view.MiqdariDeyisIstek += (s, e) => MiqdariDeyis();
+        _view.SatisiGozletIstek += (s, e) => SatisiGozlet();
+        _view.GozleyenSatisiAcIstek += (s, e) => _view.GozleyenSatislarMenyusunuGoster(_gozleyenSebetler);
+        _view.SatisiTesdiqleIstek += async (s, odenisMetodu) => await SatisiTesdiqle(odenisMetodu);
+
+        Task.Run(async () => await IlkinYukleme());
     }
 
-    private async Task MusterileriYukle()
+    private async Task IlkinYukleme()
     {
         var netice = await _nisyeManager.MusterileriGetirAsync();
         if (netice.UgurluDur)
@@ -47,36 +55,97 @@ public class SatisPresenter
         }
     }
 
-    private async Task BarkodlaMehsulTap()
+    private async Task MehsulAxtar()
     {
-
-        var barkod = _view.BarkodAxtaris;
-        if (string.IsNullOrWhiteSpace(barkod)) return;
-
-        var butunMehsullar = (await _mehsulManager.ButunMehsullariGetirAsync()).Data;
-        var tapilanMehsul = butunMehsullar?.FirstOrDefault(m => m.Barkod == barkod || m.StokKodu == barkod);
-
-        if (tapilanMehsul == null)
+        var netice = await _mehsulManager.ButunMehsullariGetirAsync();
+        if (netice.UgurluDur)
         {
-            _view.MesajGoster("Bu barkodla məhsul tapılmadı.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            return;
+            var axtarisMetni = _view.AxtarisMetni.ToLower();
+            if (string.IsNullOrWhiteSpace(axtarisMetni))
+            {
+                _view.AxtarisNeticeleriniGoster(netice.Data.ToList());
+                return;
+            }
+
+            var filterlenmis = netice.Data.Where(m =>
+                m.Ad.ToLower().Contains(axtarisMetni) ||
+                m.StokKodu.ToLower().Contains(axtarisMetni) ||
+                m.Barkod.ToLower().Contains(axtarisMetni)
+            ).ToList();
+            _view.AxtarisNeticeleriniGoster(filterlenmis);
+        }
+    }
+
+    private void SebeteElaveEt()
+    {
+        var secilmisMehsul = _view.SecilmisAxtarisMehsulu;
+        if (secilmisMehsul == null) return;
+
+        if (!int.TryParse(_view.SecilmisMehsulMiqdari, out int miqdar) || miqdar <= 0)
+        {
+            miqdar = 1;
         }
 
-        var sebettekiElement = _sebet.FirstOrDefault(e => e.MehsulId == tapilanMehsul.Id);
-        if (sebettekiElement != null)
+        var movcudElement = _aktivSebet.FirstOrDefault(e => e.MehsulId == secilmisMehsul.Id);
+        if (movcudElement != null)
         {
-            sebettekiElement.Miqdar++;
+            movcudElement.Miqdar += miqdar;
         }
         else
         {
-            _sebet.Add(new SatisSebetiElementiDto
+            _aktivSebet.Add(new SatisSebetiElementiDto
             {
-                MehsulId = tapilanMehsul.Id,
-                MehsulAdi = tapilanMehsul.Ad,
-                Miqdar = 1,
-                VahidinQiymeti = tapilanMehsul.PerakendeSatisQiymeti
+                MehsulId = secilmisMehsul.Id,
+                MehsulAdi = secilmisMehsul.Ad,
+                Miqdar = miqdar,
+                VahidinQiymeti = secilmisMehsul.PerakendeSatisQiymeti,
+                QiymetNövü = "Pərakəndə"
             });
         }
+        _aktivSebet.ResetBindings();
+        GosterisleriYenile();
+        _view.AxtarisPaneliniSifirla();
+    }
+
+    private void SebetdenSil()
+    {
+        var secilmisSebetElementi = _view.SecilmisSebetElementi;
+        if (secilmisSebetElementi != null)
+        {
+            _aktivSebet.Remove(secilmisSebetElementi);
+            GosterisleriYenile();
+        }
+    }
+
+    private void MiqdariDeyis()
+    {
+        _aktivSebet.ResetBindings();
+        GosterisleriYenile();
+    }
+
+    private void SatisiGozlet()
+    {
+        if (!_aktivSebet.Any())
+        {
+            _view.MesajGoster("Gözlətmək üçün səbət boşdur.", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
+        }
+
+        string ad = $"Satış {DateTime.Now:HH:mm:ss}";
+        _gozleyenSebetler.Add(new GozleyenSatis(ad, _aktivSebet.ToList()));
+        _view.FormuTamSifirla();
+    }
+
+    public void GozleyenSatisiSec(GozleyenSatis satis)
+    {
+        if (_aktivSebet.Any())
+        {
+            var cavab = _view.MesajGoster("Aktiv səbət mövcuddur. Dəyişikliklər itəcək. Davam etmək istəyirsiniz?", "Xəbərdarlıq", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (cavab == DialogResult.No) return;
+        }
+        _aktivSebet = new BindingList<SatisSebetiElementiDto>(satis.Sebet);
+        _gozleyenSebetler.Remove(satis);
+        _view.SebeteMehsullariGoster(_aktivSebet);
         GosterisleriYenile();
     }
 
@@ -88,22 +157,21 @@ public class SatisPresenter
             return;
         }
 
-        if (_sebet.Count == 0)
+        if (!_aktivSebet.Any())
         {
             _view.MesajGoster("Satış üçün səbət boşdur.", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             return;
         }
 
-        // Nisyə satışı üçün müştəri seçilibmi yoxlayırıq
         if (odenisMetodu == OdenisMetodu.Nisyə && !_view.SecilmisMusteriId.HasValue)
         {
-            _view.MesajGoster("Nisyə satış üçün zəhmət olmasa müştəri seçin.", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            _view.MesajGoster("Nisyə satış üçün müştəri seçin.", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             return;
         }
 
         var satisDto = new SatisYaratDto
         {
-            SebetElementleri = _sebet,
+            SebetElementleri = _aktivSebet.ToList(),
             OdenisMetodu = odenisMetodu,
             NovbeId = AktivSessiya.AktivNovbeId.Value,
             MusteriId = _view.SecilmisMusteriId
@@ -113,26 +181,9 @@ public class SatisPresenter
 
         if (netice.UgurluDur)
         {
-            _view.MesajGoster("Satış uğurla tamamlandı!", "Uğurlu Əməliyyat", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-            var cavab = _view.MesajGoster("Qəbz çap edilsinmi?", "Çap", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (cavab == DialogResult.Yes)
-            {
-                var qebzDto = new SatisQebzDto
-                {
-                    SatisId = netice.Data.Id,
-                    Tarix = netice.Data.Tarix,
-                    KassirAdi = AktivSessiya.AktivIstifadeci?.TamAd ?? "Naməlum",
-                    SatilanMehsullar = new List<SatisSebetiElementiDto>(_sebet)
-                };
-
-                CapServisi capServisi = new CapServisi();
-                capServisi.SatisiCapEt(qebzDto);
-            }
-
-            _sebet.Clear();
-            GosterisleriYenile();
-            _view.FormuSifirla();
+            _view.MesajGoster("Satış uğurla tamamlandı!", "Uğurlu", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            // Qəbz çapı məntiqi...
+            _view.FormuTamSifirla();
         }
         else
         {
@@ -142,7 +193,6 @@ public class SatisPresenter
 
     private void GosterisleriYenile()
     {
-        _view.SebeteMehsulGoster(_sebet);
-        _view.UmumiMebligiGoster(_sebet.Sum(e => e.UmumiMebleg));
+        _view.UmumiMebligiGoster(_aktivSebet.Sum(e => e.UmumiMebleg));
     }
 }
