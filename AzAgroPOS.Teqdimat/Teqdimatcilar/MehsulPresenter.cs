@@ -39,35 +39,24 @@ public class MehsulPresenter
     private async Task FormuYukle()
     {
         _view.OlcuVahidleriniGoster(Enum.GetValues(typeof(OlcuVahidi)));
-
         var netice = await _mehsulManager.ButunMehsullariGetirAsync();
         if (netice.UgurluDur && netice.Data != null)
         {
             _butunMehsullarCache = netice.Data;
             _view.MehsullariGoster(_butunMehsullarCache);
         }
-        else
-        {
-            _view.MesajGoster(netice.Mesaj, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
     }
 
     private void AxtarisEt()
     {
         if (_butunMehsullarCache == null) return;
-
         var axtarisMetni = _view.AxtarisMetni.ToLower();
-        if (string.IsNullOrWhiteSpace(axtarisMetni))
-        {
-            _view.MehsullariGoster(_butunMehsullarCache);
-            return;
-        }
-
-        var filterlenmis = _butunMehsullarCache.Where(m =>
-            m.Ad.ToLower().Contains(axtarisMetni) ||
-            m.StokKodu.ToLower().Contains(axtarisMetni) ||
-            m.Barkod.ToLower().Contains(axtarisMetni)
-        );
+        var filterlenmis = string.IsNullOrWhiteSpace(axtarisMetni)
+            ? _butunMehsullarCache
+            : _butunMehsullarCache.Where(m =>
+                m.Ad.ToLower().Contains(axtarisMetni) ||
+                m.StokKodu.ToLower().Contains(axtarisMetni) ||
+                m.Barkod.ToLower().Contains(axtarisMetni));
         _view.MehsullariGoster(filterlenmis);
     }
 
@@ -81,15 +70,17 @@ public class MehsulPresenter
                 _view.MehsulAdi = secilmisMehsul.Ad;
                 _view.StokKodu = secilmisMehsul.StokKodu;
                 _view.Barkod = secilmisMehsul.Barkod;
-                _view.SatisQiymeti = secilmisMehsul.SatisQiymeti.ToString("F2");
+                _view.PerakendeSatisQiymeti = secilmisMehsul.PerakendeSatisQiymeti.ToString("F2");
+                _view.TopdanSatisQiymeti = secilmisMehsul.TopdanSatisQiymeti.ToString("F2");
+                _view.TekEdedSatisQiymeti = secilmisMehsul.TekEdedSatisQiymeti.ToString("F2");
                 _view.AlisQiymeti = secilmisMehsul.AlisQiymeti.ToString("F2");
                 _view.MovcudSay = secilmisMehsul.MovcudSay.ToString();
-                // Bu kodun işləməsi üçün Form tərəfində ComboBox-un SelectedItem xüsusiyyətini
-                // birbaşa dəyişə biləcək bir metod və ya xüsusiyyət olmalıdır.
-                // Biz bunu birbaşa Formun özündə həll edəcəyik.
             }
         }
     }
+
+    private decimal ParseDecimal(string value) => decimal.TryParse(value, out var result) ? result : 0;
+    private int ParseInt(string value) => int.TryParse(value, out var result) ? result : 0;
 
     private async Task MehsulElaveEt()
     {
@@ -98,81 +89,71 @@ public class MehsulPresenter
             Ad = _view.MehsulAdi,
             StokKodu = _view.StokKodu,
             Barkod = _view.Barkod,
-            SatisQiymeti = decimal.TryParse(_view.SatisQiymeti, out var qiymet) ? qiymet : 0,
-            AlisQiymeti = decimal.TryParse(_view.AlisQiymeti, out var alisQiymeti) ? alisQiymeti : 0,
-            MovcudSay = int.TryParse(_view.MovcudSay, out var say) ? say : 0,
+            PerakendeSatisQiymeti = ParseDecimal(_view.PerakendeSatisQiymeti),
+            TopdanSatisQiymeti = ParseDecimal(_view.TopdanSatisQiymeti),
+            TekEdedSatisQiymeti = ParseDecimal(_view.TekEdedSatisQiymeti),
+            AlisQiymeti = ParseDecimal(_view.AlisQiymeti),
+            MovcudSay = ParseInt(_view.MovcudSay),
             OlcuVahidi = _view.SecilmisOlcuVahidi
         };
-
         var netice = await _mehsulManager.MehsulYaratAsync(yeniMehsul);
         if (netice.UgurluDur)
         {
-            _view.MesajGoster("Məhsul uğurla əlavə edildi.", "Uğurlu Əməliyyat", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            _view.MesajGoster("Məhsul uğurla əlavə edildi.", "Uğurlu", MessageBoxButtons.OK, MessageBoxIcon.Information);
             await FormuYukle();
             FormuTemizle();
         }
-        else
-        {
-            _view.MesajGoster(netice.Mesaj, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        }
+        else _view.MesajGoster(netice.Mesaj, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
     }
 
     private async Task MehsulYenile()
     {
         if (string.IsNullOrEmpty(_view.MehsulId))
         {
-            _view.MesajGoster("Zəhmət olmasa, yeniləmək üçün bir məhsul seçin.", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            _view.MesajGoster("Yeniləmək üçün cədvəldən məhsul seçin.", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             return;
         }
 
         var yenilenmisMehsul = new MehsulDto
         {
-            Id = int.Parse(_view.MehsulId),
+            Id = ParseInt(_view.MehsulId),
             Ad = _view.MehsulAdi,
             StokKodu = _view.StokKodu,
             Barkod = _view.Barkod,
-            SatisQiymeti = decimal.TryParse(_view.SatisQiymeti, out var qiymet) ? qiymet : 0,
-            AlisQiymeti = decimal.TryParse(_view.AlisQiymeti, out var alisQiymeti) ? alisQiymeti : 0,
-            MovcudSay = int.TryParse(_view.MovcudSay, out var say) ? say : 0,
+            PerakendeSatisQiymeti = ParseDecimal(_view.PerakendeSatisQiymeti),
+            TopdanSatisQiymeti = ParseDecimal(_view.TopdanSatisQiymeti),
+            TekEdedSatisQiymeti = ParseDecimal(_view.TekEdedSatisQiymeti),
+            AlisQiymeti = ParseDecimal(_view.AlisQiymeti),
+            MovcudSay = ParseInt(_view.MovcudSay),
             OlcuVahidi = _view.SecilmisOlcuVahidi
         };
-
         var netice = await _mehsulManager.MehsulYenileAsync(yenilenmisMehsul);
         if (netice.UgurluDur)
         {
-            _view.MesajGoster("Məhsul uğurla yeniləndi.", "Uğurlu Əməliyyat", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            _view.MesajGoster("Məhsul uğurla yeniləndi.", "Uğurlu", MessageBoxButtons.OK, MessageBoxIcon.Information);
             await FormuYukle();
             FormuTemizle();
         }
-        else
-        {
-            _view.MesajGoster(netice.Mesaj, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
+        else _view.MesajGoster(netice.Mesaj, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
     }
 
     private async Task MehsulSil()
     {
         if (string.IsNullOrEmpty(_view.MehsulId))
         {
-            _view.MesajGoster("Zəhmət olmasa, silmək üçün bir məhsul seçin.", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            _view.MesajGoster("Silmək üçün cədvəldən məhsul seçin.", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             return;
         }
-
         var sual = _view.MesajGoster($"'{_view.MehsulAdi}' adlı məhsulu silməyə əminsinizmi?", "Silməni Təsdiqlə", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
         if (sual == DialogResult.Yes)
         {
-            var netice = await _mehsulManager.MehsulSilAsync(int.Parse(_view.MehsulId));
+            var netice = await _mehsulManager.MehsulSilAsync(ParseInt(_view.MehsulId));
             if (netice.UgurluDur)
             {
-                _view.MesajGoster("Məhsul uğurla silindi.", "Uğurlu Əməliyyat", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 await FormuYukle();
                 FormuTemizle();
             }
-            else
-            {
-                _view.MesajGoster(netice.Mesaj, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            else _view.MesajGoster(netice.Mesaj, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -182,35 +163,28 @@ public class MehsulPresenter
         _view.MehsulAdi = string.Empty;
         _view.StokKodu = string.Empty;
         _view.Barkod = string.Empty;
-        _view.SatisQiymeti = string.Empty;
+        _view.PerakendeSatisQiymeti = string.Empty;
+        _view.TopdanSatisQiymeti = string.Empty;
+        _view.TekEdedSatisQiymeti = string.Empty;
         _view.AlisQiymeti = string.Empty;
         _view.MovcudSay = string.Empty;
-        // ComboBox-un sıfırlanması Formun öz daxilində idarə olunacaq.
     }
 
     private async Task StokKoduGeneralasiyaEt()
     {
         var netice = await _mehsulManager.StokKoduGeneralasiyaEtAsync(_view.MehsulAdi);
         if (netice.UgurluDur)
-        {
             _view.StokKodu = netice.Data;
-        }
         else
-        {
             _view.MesajGoster(netice.Mesaj, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        }
     }
 
     private async Task BarkodGeneralasiyaEt()
     {
         var netice = await _mehsulManager.BarkodGeneralasiyaEtAsync();
         if (netice.UgurluDur)
-        {
             _view.Barkod = netice.Data;
-        }
         else
-        {
             _view.MesajGoster(netice.Mesaj, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
     }
 }

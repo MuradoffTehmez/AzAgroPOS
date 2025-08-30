@@ -34,7 +34,9 @@ public class MehsulManager
             Ad = m.Ad,
             StokKodu = m.StokKodu,
             Barkod = m.Barkod,
-            SatisQiymeti = m.SatisQiymeti,
+            PerakendeSatisQiymeti = m.PerakendeSatisQiymeti,
+            TopdanSatisQiymeti = m.TopdanSatisQiymeti,
+            TekEdedSatisQiymeti = m.TekEdedSatisQiymeti,
             AlisQiymeti = m.AlisQiymeti,
             MovcudSay = m.MovcudSay,
             OlcuVahidi = m.OlcuVahidi
@@ -69,7 +71,9 @@ public class MehsulManager
             Ad = yeniMehsulDto.Ad,
             StokKodu = yeniMehsulDto.StokKodu,
             Barkod = yeniMehsulDto.Barkod,
-            SatisQiymeti = yeniMehsulDto.SatisQiymeti,
+            PerakendeSatisQiymeti = yeniMehsulDto.PerakendeSatisQiymeti,
+            TopdanSatisQiymeti = yeniMehsulDto.TopdanSatisQiymeti,
+            TekEdedSatisQiymeti = yeniMehsulDto.TekEdedSatisQiymeti,
             MovcudSay = yeniMehsulDto.MovcudSay,
             AlisQiymeti = yeniMehsulDto.AlisQiymeti,
             OlcuVahidi = yeniMehsulDto.OlcuVahidi
@@ -101,7 +105,9 @@ public class MehsulManager
         movcudMehsul.Ad = mehsulDto.Ad;
         movcudMehsul.StokKodu = mehsulDto.StokKodu;
         movcudMehsul.Barkod = mehsulDto.Barkod;
-        movcudMehsul.SatisQiymeti = mehsulDto.SatisQiymeti;
+        movcudMehsul.PerakendeSatisQiymeti = mehsulDto.PerakendeSatisQiymeti;
+        movcudMehsul.TopdanSatisQiymeti = mehsulDto.TopdanSatisQiymeti;
+        movcudMehsul.TekEdedSatisQiymeti = mehsulDto.TekEdedSatisQiymeti;
         movcudMehsul.AlisQiymeti = mehsulDto.AlisQiymeti;
         movcudMehsul.MovcudSay = mehsulDto.MovcudSay;
         movcudMehsul.OlcuVahidi = mehsulDto.OlcuVahidi;

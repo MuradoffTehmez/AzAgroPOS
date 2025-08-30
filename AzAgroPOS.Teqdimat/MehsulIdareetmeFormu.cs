@@ -130,5 +130,14 @@ public partial class MehsulIdareetmeFormu : BazaForm, IMehsulIdareetmeView
     {
         Axtaris_Istek?.Invoke(this, EventArgs.Empty);
     }
+
+    private void dgvMehsullar_DoubleClick(object sender, EventArgs e)
+    {
+        // Cədvəldəki məhsula iki dəfə kliklədikdə avtomatik redaktə vərəqinə keç
+        if (dgvMehsullar.CurrentRow != null)
+        {
+            materialTabControl1.SelectedTab = tabPage2;
+        }
+    }
     #endregion
 }

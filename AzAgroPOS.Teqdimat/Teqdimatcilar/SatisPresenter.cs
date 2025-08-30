@@ -74,7 +74,7 @@ public class SatisPresenter
                 MehsulId = tapilanMehsul.Id,
                 MehsulAdi = tapilanMehsul.Ad,
                 Miqdar = 1,
-                VahidinQiymeti = tapilanMehsul.SatisQiymeti
+                VahidinQiymeti = tapilanMehsul.PerakendeSatisQiymeti
             });
         }
         GosterisleriYenile();
