@@ -17,10 +17,14 @@
 
         private void InitializeComponent()
         {
-            materialTabControl1 = new MaterialSkin.Controls.MaterialTabControl();
-            tabPage1 = new TabPage();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+            splitContainer1 = new SplitContainer();
             dgvMehsullar = new DataGridView();
             txtAxtar = new MaterialSkin.Controls.MaterialTextBox2();
+            materialTabControl1 = new MaterialSkin.Controls.MaterialTabControl();
             tabPage2 = new TabPage();
             materialCard1 = new MaterialSkin.Controls.MaterialCard();
             txtTekEdedSatisQiymeti = new MaterialSkin.Controls.MaterialTextBox2();
@@ -39,38 +43,46 @@
             txtStokKodu = new MaterialSkin.Controls.MaterialTextBox2();
             txtAd = new MaterialSkin.Controls.MaterialTextBox2();
             txtId = new TextBox();
-            materialTabControl1.SuspendLayout();
-            tabPage1.SuspendLayout();
+            tabPage1 = new TabPage();
+            dgvAlisTarixcesi = new DataGridView();
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
+            splitContainer1.Panel1.SuspendLayout();
+            splitContainer1.Panel2.SuspendLayout();
+            splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvMehsullar).BeginInit();
+            materialTabControl1.SuspendLayout();
             tabPage2.SuspendLayout();
             materialCard1.SuspendLayout();
+            tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvAlisTarixcesi).BeginInit();
             SuspendLayout();
             // 
-            // materialTabControl1
+            // splitContainer1
             // 
-            materialTabControl1.Controls.Add(tabPage1);
-            materialTabControl1.Controls.Add(tabPage2);
-            materialTabControl1.Depth = 0;
-            materialTabControl1.Dock = DockStyle.Fill;
-            materialTabControl1.Location = new Point(3, 64);
-            materialTabControl1.MouseState = MaterialSkin.MouseState.HOVER;
-            materialTabControl1.Multiline = true;
-            materialTabControl1.Name = "materialTabControl1";
-            materialTabControl1.SelectedIndex = 0;
-            materialTabControl1.Size = new Size(1281, 671);
-            materialTabControl1.TabIndex = 0;
+            splitContainer1.BackColor = Color.FromArgb(242, 242, 242);
+            splitContainer1.Dock = DockStyle.Fill;
+            splitContainer1.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            splitContainer1.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            splitContainer1.Location = new Point(3, 64);
+            splitContainer1.Name = "splitContainer1";
             // 
-            // tabPage1
+            // splitContainer1.Panel1
             // 
-            tabPage1.Controls.Add(dgvMehsullar);
-            tabPage1.Controls.Add(txtAxtar);
-            tabPage1.Location = new Point(4, 24);
-            tabPage1.Name = "tabPage1";
-            tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(1273, 643);
-            tabPage1.TabIndex = 0;
-            tabPage1.Text = "Məhsul Siyahısı";
-            tabPage1.UseVisualStyleBackColor = true;
+            splitContainer1.Panel1.BackColor = Color.FromArgb(242, 242, 242);
+            splitContainer1.Panel1.Controls.Add(dgvMehsullar);
+            splitContainer1.Panel1.Controls.Add(txtAxtar);
+            splitContainer1.Panel1.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            splitContainer1.Panel1.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            // 
+            // splitContainer1.Panel2
+            // 
+            splitContainer1.Panel2.BackColor = Color.FromArgb(242, 242, 242);
+            splitContainer1.Panel2.Controls.Add(materialTabControl1);
+            splitContainer1.Panel2.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            splitContainer1.Panel2.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            splitContainer1.Size = new Size(1281, 671);
+            splitContainer1.SplitterDistance = 750;
+            splitContainer1.TabIndex = 0;
             // 
             // dgvMehsullar
             // 
@@ -78,30 +90,46 @@
             dgvMehsullar.AllowUserToDeleteRows = false;
             dgvMehsullar.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvMehsullar.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Control;
+            dataGridViewCellStyle1.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dgvMehsullar.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgvMehsullar.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvMehsullar.Location = new Point(6, 58);
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            dataGridViewCellStyle2.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            dgvMehsullar.DefaultCellStyle = dataGridViewCellStyle2;
+            dgvMehsullar.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            dgvMehsullar.Location = new Point(3, 57);
             dgvMehsullar.MultiSelect = false;
             dgvMehsullar.Name = "dgvMehsullar";
             dgvMehsullar.ReadOnly = true;
-            dgvMehsullar.RowTemplate.Height = 25;
             dgvMehsullar.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvMehsullar.Size = new Size(1261, 579);
+            dgvMehsullar.Size = new Size(744, 611);
             dgvMehsullar.TabIndex = 1;
             dgvMehsullar.SelectionChanged += dgvMehsullar_SelectionChanged;
-            dgvMehsullar.DoubleClick += dgvMehsullar_DoubleClick;
             // 
             // txtAxtar
             // 
             txtAxtar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtAxtar.AnimateReadOnly = false;
+            txtAxtar.BackColor = Color.FromArgb(242, 242, 242);
             txtAxtar.BackgroundImageLayout = ImageLayout.None;
             txtAxtar.CharacterCasing = CharacterCasing.Normal;
             txtAxtar.Depth = 0;
             txtAxtar.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             txtAxtar.HideSelection = true;
-            txtAxtar.Hint = "Ada, Stok Koduna və ya Barkoda Görə Axtar";
+            txtAxtar.Hint = "Məhsul Siyahısında Axtar...";
             txtAxtar.LeadingIcon = null;
-            txtAxtar.Location = new Point(6, 6);
+            txtAxtar.Location = new Point(3, 3);
             txtAxtar.MaxLength = 32767;
             txtAxtar.MouseState = MaterialSkin.MouseState.OUT;
             txtAxtar.Name = "txtAxtar";
@@ -113,7 +141,7 @@
             txtAxtar.SelectionLength = 0;
             txtAxtar.SelectionStart = 0;
             txtAxtar.ShortcutsEnabled = true;
-            txtAxtar.Size = new Size(1261, 48);
+            txtAxtar.Size = new Size(744, 48);
             txtAxtar.TabIndex = 0;
             txtAxtar.TabStop = false;
             txtAxtar.TextAlign = HorizontalAlignment.Left;
@@ -121,20 +149,34 @@
             txtAxtar.UseSystemPasswordChar = false;
             txtAxtar.TextChanged += txtAxtar_TextChanged;
             // 
+            // materialTabControl1
+            // 
+            materialTabControl1.Controls.Add(tabPage2);
+            materialTabControl1.Controls.Add(tabPage1);
+            materialTabControl1.Depth = 0;
+            materialTabControl1.Dock = DockStyle.Fill;
+            materialTabControl1.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            materialTabControl1.Location = new Point(0, 0);
+            materialTabControl1.MouseState = MaterialSkin.MouseState.HOVER;
+            materialTabControl1.Multiline = true;
+            materialTabControl1.Name = "materialTabControl1";
+            materialTabControl1.SelectedIndex = 0;
+            materialTabControl1.Size = new Size(527, 671);
+            materialTabControl1.TabIndex = 0;
+            // 
             // tabPage2
             // 
+            tabPage2.BackColor = Color.FromArgb(242, 242, 242);
             tabPage2.Controls.Add(materialCard1);
-            tabPage2.Location = new Point(4, 24);
+            tabPage2.Location = new Point(4, 26);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(1273, 643);
+            tabPage2.Size = new Size(519, 641);
             tabPage2.TabIndex = 1;
-            tabPage2.Text = "Yeni Məhsul / Redaktə";
-            tabPage2.UseVisualStyleBackColor = true;
+            tabPage2.Text = "Əsas Məlumatlar";
             // 
             // materialCard1
             // 
-            materialCard1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             materialCard1.BackColor = Color.FromArgb(255, 255, 255);
             materialCard1.Controls.Add(txtTekEdedSatisQiymeti);
             materialCard1.Controls.Add(txtTopdanSatisQiymeti);
@@ -153,19 +195,21 @@
             materialCard1.Controls.Add(txtAd);
             materialCard1.Controls.Add(txtId);
             materialCard1.Depth = 0;
+            materialCard1.Dock = DockStyle.Fill;
             materialCard1.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            materialCard1.Location = new Point(16, 16);
+            materialCard1.Location = new Point(3, 3);
             materialCard1.Margin = new Padding(14);
             materialCard1.MouseState = MaterialSkin.MouseState.HOVER;
             materialCard1.Name = "materialCard1";
             materialCard1.Padding = new Padding(14);
-            materialCard1.Size = new Size(500, 610);
-            materialCard1.TabIndex = 1;
+            materialCard1.Size = new Size(513, 635);
+            materialCard1.TabIndex = 2;
             // 
             // txtTekEdedSatisQiymeti
             // 
             txtTekEdedSatisQiymeti.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtTekEdedSatisQiymeti.AnimateReadOnly = false;
+            txtTekEdedSatisQiymeti.BackColor = Color.FromArgb(255, 255, 255);
             txtTekEdedSatisQiymeti.BackgroundImageLayout = ImageLayout.None;
             txtTekEdedSatisQiymeti.CharacterCasing = CharacterCasing.Normal;
             txtTekEdedSatisQiymeti.Depth = 0;
@@ -185,7 +229,7 @@
             txtTekEdedSatisQiymeti.SelectionLength = 0;
             txtTekEdedSatisQiymeti.SelectionStart = 0;
             txtTekEdedSatisQiymeti.ShortcutsEnabled = true;
-            txtTekEdedSatisQiymeti.Size = new Size(464, 48);
+            txtTekEdedSatisQiymeti.Size = new Size(478, 48);
             txtTekEdedSatisQiymeti.TabIndex = 18;
             txtTekEdedSatisQiymeti.TabStop = false;
             txtTekEdedSatisQiymeti.TextAlign = HorizontalAlignment.Left;
@@ -196,6 +240,7 @@
             // 
             txtTopdanSatisQiymeti.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtTopdanSatisQiymeti.AnimateReadOnly = false;
+            txtTopdanSatisQiymeti.BackColor = Color.FromArgb(255, 255, 255);
             txtTopdanSatisQiymeti.BackgroundImageLayout = ImageLayout.None;
             txtTopdanSatisQiymeti.CharacterCasing = CharacterCasing.Normal;
             txtTopdanSatisQiymeti.Depth = 0;
@@ -215,7 +260,7 @@
             txtTopdanSatisQiymeti.SelectionLength = 0;
             txtTopdanSatisQiymeti.SelectionStart = 0;
             txtTopdanSatisQiymeti.ShortcutsEnabled = true;
-            txtTopdanSatisQiymeti.Size = new Size(464, 48);
+            txtTopdanSatisQiymeti.Size = new Size(478, 48);
             txtTopdanSatisQiymeti.TabIndex = 17;
             txtTopdanSatisQiymeti.TabStop = false;
             txtTopdanSatisQiymeti.TextAlign = HorizontalAlignment.Left;
@@ -226,7 +271,7 @@
             // 
             cmbOlcuVahidi.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             cmbOlcuVahidi.AutoResize = false;
-            cmbOlcuVahidi.BackColor = Color.FromArgb(255, 255, 255);
+            cmbOlcuVahidi.BackColor = Color.FromArgb(242, 242, 242);
             cmbOlcuVahidi.Depth = 0;
             cmbOlcuVahidi.DrawMode = DrawMode.OwnerDrawVariable;
             cmbOlcuVahidi.DropDownHeight = 174;
@@ -241,7 +286,7 @@
             cmbOlcuVahidi.MaxDropDownItems = 4;
             cmbOlcuVahidi.MouseState = MaterialSkin.MouseState.OUT;
             cmbOlcuVahidi.Name = "cmbOlcuVahidi";
-            cmbOlcuVahidi.Size = new Size(464, 49);
+            cmbOlcuVahidi.Size = new Size(478, 49);
             cmbOlcuVahidi.StartIndex = 0;
             cmbOlcuVahidi.TabIndex = 16;
             // 
@@ -250,21 +295,23 @@
             btnYenile.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             btnYenile.AutoSize = false;
             btnYenile.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnYenile.BackColor = Color.FromArgb(242, 242, 242);
             btnYenile.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             btnYenile.Depth = 0;
+            btnYenile.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnYenile.HighEmphasis = true;
             btnYenile.Icon = null;
-            btnYenile.Location = new Point(252, 498);
+            btnYenile.Location = new Point(258, 525);
             btnYenile.Margin = new Padding(4, 6, 4, 6);
             btnYenile.MouseState = MaterialSkin.MouseState.HOVER;
             btnYenile.Name = "btnYenile";
             btnYenile.NoAccentTextColor = Color.Empty;
-            btnYenile.Size = new Size(230, 40);
+            btnYenile.Size = new Size(236, 40);
             btnYenile.TabIndex = 15;
             btnYenile.Text = "Yenilə";
             btnYenile.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnYenile.UseAccentColor = false;
-            btnYenile.UseVisualStyleBackColor = true;
+            btnYenile.UseVisualStyleBackColor = false;
             btnYenile.Click += btnYenile_Click;
             // 
             // btnElaveEt
@@ -272,21 +319,23 @@
             btnElaveEt.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnElaveEt.AutoSize = false;
             btnElaveEt.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnElaveEt.BackColor = Color.FromArgb(242, 242, 242);
             btnElaveEt.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             btnElaveEt.Depth = 0;
+            btnElaveEt.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnElaveEt.HighEmphasis = true;
             btnElaveEt.Icon = null;
-            btnElaveEt.Location = new Point(18, 498);
+            btnElaveEt.Location = new Point(18, 525);
             btnElaveEt.Margin = new Padding(4, 6, 4, 6);
             btnElaveEt.MouseState = MaterialSkin.MouseState.HOVER;
             btnElaveEt.Name = "btnElaveEt";
             btnElaveEt.NoAccentTextColor = Color.Empty;
-            btnElaveEt.Size = new Size(226, 40);
+            btnElaveEt.Size = new Size(233, 40);
             btnElaveEt.TabIndex = 14;
-            btnElaveEt.Text = "Əlavə Et";
+            btnElaveEt.Text = "Yeni Məhsulu Yadda Saxla";
             btnElaveEt.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnElaveEt.UseAccentColor = false;
-            btnElaveEt.UseVisualStyleBackColor = true;
+            btnElaveEt.UseVisualStyleBackColor = false;
             btnElaveEt.Click += btnElaveEt_Click;
             // 
             // btnTemizle
@@ -294,21 +343,23 @@
             btnTemizle.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             btnTemizle.AutoSize = false;
             btnTemizle.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnTemizle.BackColor = Color.FromArgb(242, 242, 242);
             btnTemizle.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             btnTemizle.Depth = 0;
+            btnTemizle.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnTemizle.HighEmphasis = false;
             btnTemizle.Icon = null;
-            btnTemizle.Location = new Point(252, 550);
+            btnTemizle.Location = new Point(258, 577);
             btnTemizle.Margin = new Padding(4, 6, 4, 6);
             btnTemizle.MouseState = MaterialSkin.MouseState.HOVER;
             btnTemizle.Name = "btnTemizle";
             btnTemizle.NoAccentTextColor = Color.Empty;
-            btnTemizle.Size = new Size(230, 40);
+            btnTemizle.Size = new Size(236, 40);
             btnTemizle.TabIndex = 13;
-            btnTemizle.Text = "Təmizlə";
+            btnTemizle.Text = "Formu Təmizlə";
             btnTemizle.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
             btnTemizle.UseAccentColor = false;
-            btnTemizle.UseVisualStyleBackColor = true;
+            btnTemizle.UseVisualStyleBackColor = false;
             btnTemizle.Click += btnTemizle_Click;
             // 
             // btnSil
@@ -316,21 +367,23 @@
             btnSil.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnSil.AutoSize = false;
             btnSil.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnSil.BackColor = Color.FromArgb(242, 242, 242);
             btnSil.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             btnSil.Depth = 0;
+            btnSil.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnSil.HighEmphasis = true;
             btnSil.Icon = null;
-            btnSil.Location = new Point(18, 550);
+            btnSil.Location = new Point(18, 577);
             btnSil.Margin = new Padding(4, 6, 4, 6);
             btnSil.MouseState = MaterialSkin.MouseState.HOVER;
             btnSil.Name = "btnSil";
             btnSil.NoAccentTextColor = Color.Empty;
-            btnSil.Size = new Size(226, 40);
+            btnSil.Size = new Size(233, 40);
             btnSil.TabIndex = 9;
-            btnSil.Text = "Sil";
+            btnSil.Text = "Seçilmişi Sil";
             btnSil.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnSil.UseAccentColor = true;
-            btnSil.UseVisualStyleBackColor = true;
+            btnSil.UseVisualStyleBackColor = false;
             btnSil.Click += btnSil_Click;
             // 
             // btnBarkodYarat
@@ -338,21 +391,23 @@
             btnBarkodYarat.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnBarkodYarat.AutoSize = false;
             btnBarkodYarat.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnBarkodYarat.BackColor = Color.FromArgb(242, 242, 242);
             btnBarkodYarat.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             btnBarkodYarat.Depth = 0;
+            btnBarkodYarat.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnBarkodYarat.HighEmphasis = false;
             btnBarkodYarat.Icon = null;
-            btnBarkodYarat.Location = new Point(370, 162);
+            btnBarkodYarat.Location = new Point(380, 162);
             btnBarkodYarat.Margin = new Padding(4, 6, 4, 6);
             btnBarkodYarat.MouseState = MaterialSkin.MouseState.HOVER;
             btnBarkodYarat.Name = "btnBarkodYarat";
             btnBarkodYarat.NoAccentTextColor = Color.Empty;
-            btnBarkodYarat.Size = new Size(112, 36);
+            btnBarkodYarat.Size = new Size(102, 36);
             btnBarkodYarat.TabIndex = 12;
             btnBarkodYarat.Text = "Yarat";
             btnBarkodYarat.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
             btnBarkodYarat.UseAccentColor = false;
-            btnBarkodYarat.UseVisualStyleBackColor = true;
+            btnBarkodYarat.UseVisualStyleBackColor = false;
             btnBarkodYarat.Click += btnBarkodYarat_Click;
             // 
             // btnStokKoduYarat
@@ -360,27 +415,30 @@
             btnStokKoduYarat.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnStokKoduYarat.AutoSize = false;
             btnStokKoduYarat.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnStokKoduYarat.BackColor = Color.FromArgb(242, 242, 242);
             btnStokKoduYarat.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             btnStokKoduYarat.Depth = 0;
+            btnStokKoduYarat.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnStokKoduYarat.HighEmphasis = false;
             btnStokKoduYarat.Icon = null;
-            btnStokKoduYarat.Location = new Point(370, 90);
+            btnStokKoduYarat.Location = new Point(380, 90);
             btnStokKoduYarat.Margin = new Padding(4, 6, 4, 6);
             btnStokKoduYarat.MouseState = MaterialSkin.MouseState.HOVER;
             btnStokKoduYarat.Name = "btnStokKoduYarat";
             btnStokKoduYarat.NoAccentTextColor = Color.Empty;
-            btnStokKoduYarat.Size = new Size(112, 36);
+            btnStokKoduYarat.Size = new Size(102, 36);
             btnStokKoduYarat.TabIndex = 11;
             btnStokKoduYarat.Text = "Yarat";
             btnStokKoduYarat.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
             btnStokKoduYarat.UseAccentColor = false;
-            btnStokKoduYarat.UseVisualStyleBackColor = true;
+            btnStokKoduYarat.UseVisualStyleBackColor = false;
             btnStokKoduYarat.Click += btnStokKoduYarat_Click;
             // 
             // txtMevcudSay
             // 
             txtMevcudSay.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             txtMevcudSay.AnimateReadOnly = false;
+            txtMevcudSay.BackColor = Color.FromArgb(255, 255, 255);
             txtMevcudSay.BackgroundImageLayout = ImageLayout.None;
             txtMevcudSay.CharacterCasing = CharacterCasing.Normal;
             txtMevcudSay.Depth = 0;
@@ -410,6 +468,7 @@
             // txtAlisQiymeti
             // 
             txtAlisQiymeti.AnimateReadOnly = false;
+            txtAlisQiymeti.BackColor = Color.FromArgb(255, 255, 255);
             txtAlisQiymeti.BackgroundImageLayout = ImageLayout.None;
             txtAlisQiymeti.CharacterCasing = CharacterCasing.Normal;
             txtAlisQiymeti.Depth = 0;
@@ -440,6 +499,7 @@
             // 
             txtPerakendeSatisQiymeti.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtPerakendeSatisQiymeti.AnimateReadOnly = false;
+            txtPerakendeSatisQiymeti.BackColor = Color.FromArgb(255, 255, 255);
             txtPerakendeSatisQiymeti.BackgroundImageLayout = ImageLayout.None;
             txtPerakendeSatisQiymeti.CharacterCasing = CharacterCasing.Normal;
             txtPerakendeSatisQiymeti.Depth = 0;
@@ -470,6 +530,7 @@
             // 
             txtBarkod.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtBarkod.AnimateReadOnly = false;
+            txtBarkod.BackColor = Color.FromArgb(255, 255, 255);
             txtBarkod.BackgroundImageLayout = ImageLayout.None;
             txtBarkod.CharacterCasing = CharacterCasing.Normal;
             txtBarkod.Depth = 0;
@@ -500,6 +561,7 @@
             // 
             txtStokKodu.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtStokKodu.AnimateReadOnly = false;
+            txtStokKodu.BackColor = Color.FromArgb(255, 255, 255);
             txtStokKodu.BackgroundImageLayout = ImageLayout.None;
             txtStokKodu.CharacterCasing = CharacterCasing.Normal;
             txtStokKodu.Depth = 0;
@@ -530,6 +592,7 @@
             // 
             txtAd.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtAd.AnimateReadOnly = false;
+            txtAd.BackColor = Color.FromArgb(255, 255, 255);
             txtAd.BackgroundImageLayout = ImageLayout.None;
             txtAd.CharacterCasing = CharacterCasing.Normal;
             txtAd.Depth = 0;
@@ -558,42 +621,90 @@
             // 
             // txtId
             // 
+            txtId.BackColor = Color.FromArgb(255, 255, 255);
+            txtId.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            txtId.ForeColor = Color.FromArgb(222, 0, 0, 0);
             txtId.Location = new Point(18, 558);
             txtId.Name = "txtId";
-            txtId.Size = new Size(100, 23);
+            txtId.Size = new Size(100, 24);
             txtId.TabIndex = 0;
             txtId.Visible = false;
+            // 
+            // tabPage1
+            // 
+            tabPage1.BackColor = Color.FromArgb(242, 242, 242);
+            tabPage1.Controls.Add(dgvAlisTarixcesi);
+            tabPage1.Location = new Point(4, 26);
+            tabPage1.Name = "tabPage1";
+            tabPage1.Padding = new Padding(3);
+            tabPage1.Size = new Size(519, 641);
+            tabPage1.TabIndex = 2;
+            tabPage1.Text = "Alış Tarixçəsi";
+            // 
+            // dgvAlisTarixcesi
+            // 
+            dgvAlisTarixcesi.AllowUserToAddRows = false;
+            dgvAlisTarixcesi.AllowUserToDeleteRows = false;
+            dgvAlisTarixcesi.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = SystemColors.Control;
+            dataGridViewCellStyle3.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            dgvAlisTarixcesi.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dgvAlisTarixcesi.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = SystemColors.Window;
+            dataGridViewCellStyle4.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            dataGridViewCellStyle4.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.False;
+            dgvAlisTarixcesi.DefaultCellStyle = dataGridViewCellStyle4;
+            dgvAlisTarixcesi.Dock = DockStyle.Fill;
+            dgvAlisTarixcesi.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            dgvAlisTarixcesi.Location = new Point(3, 3);
+            dgvAlisTarixcesi.Name = "dgvAlisTarixcesi";
+            dgvAlisTarixcesi.ReadOnly = true;
+            dgvAlisTarixcesi.Size = new Size(513, 635);
+            dgvAlisTarixcesi.TabIndex = 0;
             // 
             // MehsulIdareetmeFormu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1287, 738);
-            Controls.Add(materialTabControl1);
-            DrawerShowIconsWhenHidden = true;
-            DrawerTabControl = materialTabControl1;
+            Controls.Add(splitContainer1);
             Name = "MehsulIdareetmeFormu";
-            Padding = new Padding(3, 64, 3, 3);
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Məhsul İdarəetməsi";
             Load += MehsulIdareetmeFormu_Load;
-            materialTabControl1.ResumeLayout(false);
-            tabPage1.ResumeLayout(false);
+            splitContainer1.Panel1.ResumeLayout(false);
+            splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
+            splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvMehsullar).EndInit();
+            materialTabControl1.ResumeLayout(false);
             tabPage2.ResumeLayout(false);
             materialCard1.ResumeLayout(false);
             materialCard1.PerformLayout();
+            tabPage1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dgvAlisTarixcesi).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
 
-        private MaterialSkin.Controls.MaterialTabControl materialTabControl1;
-        private TabPage tabPage1;
-        private TabPage tabPage2;
+        private SplitContainer splitContainer1;
         private DataGridView dgvMehsullar;
         private MaterialSkin.Controls.MaterialTextBox2 txtAxtar;
+        private MaterialSkin.Controls.MaterialTabControl materialTabControl1;
+        private TabPage tabPage2;
         private MaterialSkin.Controls.MaterialCard materialCard1;
+        private MaterialSkin.Controls.MaterialTextBox2 txtTekEdedSatisQiymeti;
+        private MaterialSkin.Controls.MaterialTextBox2 txtTopdanSatisQiymeti;
         private MaterialSkin.Controls.MaterialComboBox cmbOlcuVahidi;
         private MaterialSkin.Controls.MaterialButton btnYenile;
         private MaterialSkin.Controls.MaterialButton btnElaveEt;
@@ -608,7 +719,7 @@
         private MaterialSkin.Controls.MaterialTextBox2 txtStokKodu;
         private MaterialSkin.Controls.MaterialTextBox2 txtAd;
         private TextBox txtId;
-        private MaterialSkin.Controls.MaterialTextBox2 txtTekEdedSatisQiymeti;
-        private MaterialSkin.Controls.MaterialTextBox2 txtTopdanSatisQiymeti;
+        private TabPage tabPage1;
+        private DataGridView dgvAlisTarixcesi;
     }
 }

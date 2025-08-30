@@ -6,22 +6,21 @@ namespace AzAgroPOS.Mentiq.DTOs;
 /// </summary>
 public class SatisSebetiElementiDto
 {
-    /// <summary>
-    /// Məhsulun unikal identifikatoru.
-    /// </summary>
     public int MehsulId { get; set; }
-    /// <summary>
-    /// məhsulun adı (istifadəçi interfeysində göstəriləcək).
-    /// </summary>
     public string MehsulAdi { get; set; } = string.Empty;
-    /// <summary>
-    /// Miqdar (satılan məhsulun miqdarı).
-    /// </summary>
     public int Miqdar { get; set; }
+
     /// <summary>
-    /// Vahidin qiyməti (satılan məhsulun vahid qiyməti).
+    /// Satış zamanı tətbiq edilən konkret vahid qiyməti.
     /// </summary>
     public decimal VahidinQiymeti { get; set; }
+
+    /// <summary>
+    /// Hansı qiymət növünün (Pərakəndə, Topdan və s.) tətbiq edildiyini göstərir.
+    /// Qəbzdə və hesabatlarda göstərmək üçün faydalıdır.
+    /// </summary>
+    public string QiymetNövü { get; set; } = "Pərakəndə";
+
     /// <summary>
     /// Umumi məbləğ (satılan məhsulun miqdarı ilə vahidin qiymətinin hasilidir).
     /// </summary>

@@ -3,7 +3,7 @@ namespace AzAgroPOS.Teqdimat;
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
-
+//... using-lər
 using AzAgroPOS.Varliglar;
 
 public partial class MehsulIdareetmeFormu : BazaForm, IMehsulIdareetmeView
@@ -55,8 +55,7 @@ public partial class MehsulIdareetmeFormu : BazaForm, IMehsulIdareetmeView
 
         if (dgvMehsullar.Columns.Count > 0)
         {
-            // Cədvəli daha anlaşıqlı etmək üçün bəzi sütunları gizlədirik
-            string[] gorunenSutunlar = { "Ad", "StokKodu", "Barkod", "MovcudSay", "PerakendeSatisQiymetiStr", "OlcuVahidiStr" };
+            string[] gorunenSutunlar = { "Ad", "StokKodu", "PerakendeSatisQiymetiStr", "MovcudSay", "OlcuVahidiStr" };
             foreach (DataGridViewColumn column in dgvMehsullar.Columns)
             {
                 if (!gorunenSutunlar.Contains(column.Name))
@@ -66,7 +65,6 @@ public partial class MehsulIdareetmeFormu : BazaForm, IMehsulIdareetmeView
                 column.SortMode = DataGridViewColumnSortMode.Automatic;
             }
 
-            // Başlıqları təyin edirik
             dgvMehsullar.Columns["Ad"].HeaderText = "Məhsulun Adı";
             dgvMehsullar.Columns["StokKodu"].HeaderText = "Stok Kodu";
             dgvMehsullar.Columns["PerakendeSatisQiymetiStr"].HeaderText = "Pərakəndə Qiymət";
@@ -82,10 +80,7 @@ public partial class MehsulIdareetmeFormu : BazaForm, IMehsulIdareetmeView
     #endregion
 
     #region Hadisə Ötürücüləri
-    private void MehsulIdareetmeFormu_Load(object sender, EventArgs e)
-    {
-        FormYuklendi_Istek?.Invoke(this, EventArgs.Empty);
-    }
+    private void MehsulIdareetmeFormu_Load(object sender, EventArgs e) => FormYuklendi_Istek?.Invoke(this, EventArgs.Empty);
     private void btnElaveEt_Click(object sender, EventArgs e) => MehsulElaveEt_Istek?.Invoke(this, EventArgs.Empty);
     private void btnYenile_Click(object sender, EventArgs e) => MehsulYenile_Istek?.Invoke(this, EventArgs.Empty);
     private void btnSil_Click(object sender, EventArgs e) => MehsulSil_Istek?.Invoke(this, EventArgs.Empty);
@@ -95,6 +90,7 @@ public partial class MehsulIdareetmeFormu : BazaForm, IMehsulIdareetmeView
         dgvMehsullar.ClearSelection();
         if (cmbOlcuVahidi.Items.Count > 0) cmbOlcuVahidi.SelectedIndex = 0;
         txtAd.Focus();
+        btnElaveEt.Text = "Yeni Məhsulu Yadda Saxla";
     }
     private void btnStokKoduYarat_Click(object sender, EventArgs e) => StokKoduGeneralasiyaIstek?.Invoke(this, EventArgs.Empty);
     private void btnBarkodYarat_Click(object sender, EventArgs e) => BarkodGeneralasiyaIstek?.Invoke(this, EventArgs.Empty);
@@ -105,15 +101,9 @@ public partial class MehsulIdareetmeFormu : BazaForm, IMehsulIdareetmeView
             txtId.Text = secilmisMehsul.Id.ToString();
             cmbOlcuVahidi.SelectedItem = secilmisMehsul.OlcuVahidi;
             CedvelSecimiDeyisdi_Istek?.Invoke(this, EventArgs.Empty);
+            btnElaveEt.Text = "Yeni Məhsul";
         }
     }
     private void txtAxtar_TextChanged(object sender, EventArgs e) => Axtaris_Istek?.Invoke(this, EventArgs.Empty);
-    private void dgvMehsullar_DoubleClick(object sender, EventArgs e)
-    {
-        if (dgvMehsullar.CurrentRow != null)
-        {
-            materialTabControl1.SelectedTab = tabPage2;
-        }
-    }
     #endregion
 }
