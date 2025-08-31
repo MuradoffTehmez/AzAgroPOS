@@ -1,112 +1,135 @@
 ﻿// Fayl: AzAgroPOS.Teqdimat/AnaMenuFormu.cs
-namespace AzAgroPOS.Teqdimat;
-
 using System;
+using System.Linq;
 using System.Windows.Forms;
 using AzAgroPOS.Teqdimat.Yardimcilar;
 
-public partial class AnaMenuFormu : BazaForm
+namespace AzAgroPOS.Teqdimat
 {
-    public AnaMenuFormu()
+    public partial class AnaMenuFormu : BazaForm
     {
-        InitializeComponent();
-        this.Load += AnaMenuFormu_Load;
-    }
-
-    private void AnaMenuFormu_Load(object sender, EventArgs e)
-    {
-        IcazeleriYoxla();
-    }
-
-    private void IcazeleriYoxla()
-    {
-        var istifadeci = AktivSessiya.AktivIstifadeci;
-        if (istifadeci == null)
+        public AnaMenuFormu()
         {
-            MessageBox.Show("Aktiv istifadəçi sessiyası tapılmadı. Tətbiq bağlanır.", "Kritik Xəta", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-            Application.Exit();
-            return;
+            InitializeComponent();
+            this.Load += AnaMenuFormu_Load;
+
+            // Formu MDI Konteynerinə çeviririk
+            this.IsMdiContainer = true;
         }
 
-        this.Text = $"AzAgroPOS - Ana Menyu (İstifadəçi: {istifadeci.TamAd})";
-
-        // Növbənin vəziyyətinə görə Satış düyməsini aktiv/deaktiv edirik
-        btnYeniSatis.Enabled = AktivSessiya.AktivNovbeId.HasValue;
-
-        // Admin roluna görə icazələr (Admin hər şeyi görə bilər)
-        if (istifadeci.RolAdi == "Admin")
+        private void AnaMenuFormu_Load(object sender, EventArgs e)
         {
-            return;
+            IcazeleriYoxla();
         }
 
-        // Kassir roluna görə icazələr
-        if (istifadeci.RolAdi == "Kassir")
+        private void UsaqFormuAc<T>() where T : Form, new()
         {
-            btnMehsulIdareetme.Enabled = false;
-            btnNisyeIdareetme.Enabled = false;
-            btnTemirIdareetme.Enabled = false;
-            btnIstifadeciIdareetme.Enabled = false;
+            var aciqForm = this.MdiChildren.FirstOrDefault(f => f is T);
+
+            if (aciqForm != null)
+            {
+                aciqForm.BringToFront();
+            }
+            else
+            {
+                T yeniForm = new T
+                {
+                    MdiParent = this,
+                    WindowState = FormWindowState.Maximized
+                };
+                yeniForm.Show();
+                this.LayoutMdi(MdiLayout.Cascade);
+            }
         }
-        else // Digər bütün rollar üçün hər şeyi bağlayırıq
+
+        private void IcazeleriYoxla()
         {
-            btnMehsulIdareetme.Enabled = false;
-            btnYeniSatis.Enabled = false;
-            btnNisyeIdareetme.Enabled = false;
-            btnTemirIdareetme.Enabled = false;
-            btnNovbeIdareetme.Enabled = false;
-            btnIstifadeciIdareetme.Enabled = false;
+            var istifadeci = AktivSessiya.AktivIstifadeci;
+            if (istifadeci == null)
+            {
+                MessageBox.Show("Aktiv istifadəçi sessiyası tapılmadı. Tətbiq bağlanır.", "Kritik Xəta", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                Application.Exit();
+                return;
+            }
+
+            this.Text = $"AzAgroPOS - Ana Menyu (İstifadəçi: {istifadeci.TamAd})";
+            btnYeniSatis.Enabled = AktivSessiya.AktivNovbeId.HasValue;
+
+            if (istifadeci.RolAdi == "Admin")
+            {
+                return;
+            }
+
+            if (istifadeci.RolAdi == "Kassir")
+            {
+                btnMehsulIdareetme.Enabled = false;
+                btnNisyeIdareetme.Enabled = false;
+                btnTemirIdareetme.Enabled = false;
+                btnIstifadeciIdareetme.Enabled = false;
+            }
+            else
+            {
+                btnMehsulIdareetme.Enabled = false;
+                btnYeniSatis.Enabled = false;
+                btnNisyeIdareetme.Enabled = false;
+                btnTemirIdareetme.Enabled = false;
+                btnNovbeIdareetme.Enabled = false;
+                btnIstifadeciIdareetme.Enabled = false;
+            }
         }
-    }
 
-    private void btnMehsulIdareetme_Click(object sender, EventArgs e)
-    {
-        using (var form = new MehsulIdareetmeFormu()) { form.ShowDialog(); }
-    }
+        private void btnMehsulIdareetme_Click(object sender, EventArgs e)
+        {
+            UsaqFormuAc<MehsulIdareetmeFormu>();
+        }
 
-    private void btnYeniSatis_Click(object sender, EventArgs e)
-    {
-        using (var form = new SatisFormu()) { form.ShowDialog(); }
-    }
+        private void btnYeniSatis_Click(object sender, EventArgs e)
+        {
+            UsaqFormuAc<SatisFormu>();
+        }
 
-    private void btnNisyeIdareetme_Click(object sender, EventArgs e)
-    {
-        using (var form = new NisyeIdareetmeFormu()) { form.ShowDialog(); }
-    }
+        private void btnNisyeIdareetme_Click(object sender, EventArgs e)
+        {
+            UsaqFormuAc<NisyeIdareetmeFormu>();
+        }
 
-    private void btnTemirIdareetme_Click(object sender, EventArgs e)
-    {
-        using (var form = new TemirIdareetmeFormu()) { form.ShowDialog(); }
-    }
+        private void btnTemirIdareetme_Click(object sender, EventArgs e)
+        {
+            UsaqFormuAc<TemirIdareetmeFormu>();
+        }
 
-    private void btnNovbeIdareetme_Click(object sender, EventArgs e)
-    {
-        using (var form = new NovbeIdareetmesiFormu()) { form.ShowDialog(); }
-        // Növbə pəncərəsi bağlananda menyudakı düymələrin vəziyyətini yeniləyirik
-        IcazeleriYoxla();
-    }
+        private void btnNovbeIdareetme_Click(object sender, EventArgs e)
+        {
+            using (var form = new NovbeIdareetmesiFormu())
+            {
+                form.ShowDialog();
+            }
+            IcazeleriYoxla();
+        }
 
-    private void btnIstifadeciIdareetme_Click(object sender, EventArgs e)
-    {
-        using (var form = new IstifadeciIdareetmeFormu()) { form.ShowDialog(); }
-    }
+        private void btnIstifadeciIdareetme_Click(object sender, EventArgs e)
+        {
+            UsaqFormuAc<IstifadeciIdareetmeFormu>();
+        }
 
-    private void btnHesabatlar_Click(object sender, EventArgs e)
-    {
-        using (var form = new HesabatFormu()) { form.ShowDialog(); }
-    }
+        private void btnHesabatlar_Click(object sender, EventArgs e)
+        {
+            UsaqFormuAc<HesabatFormu>();
+        }
 
-    private void btnMehsulSatisHesabati_Click(object sender, EventArgs e)
-    {
-        using (var form = new MehsulSatisHesabatFormu()) { form.ShowDialog(); }
-    }
+        private void btnMehsulSatisHesabati_Click(object sender, EventArgs e)
+        {
+            UsaqFormuAc<MehsulSatisHesabatFormu>();
+        }
 
-    private void btnZHesabatArxivi_Click(object sender, EventArgs e)
-    {
-        using (var form = new ZHesabatArxivFormu()) { form.ShowDialog(); }
-    }
+        private void btnZHesabatArxivi_Click(object sender, EventArgs e)
+        {
+            UsaqFormuAc<ZHesabatArxivFormu>();
+        }
 
-    private void btnBarkodCapi_Click(object sender, EventArgs e)
-    {
-        using (var form = new BarkodCapiFormu()) { form.ShowDialog(); }
+        private void btnBarkodCapi_Click(object sender, EventArgs e)
+        {
+            UsaqFormuAc<BarkodCapiFormu>();
+        }
     }
 }
