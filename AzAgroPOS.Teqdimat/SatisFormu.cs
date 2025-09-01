@@ -181,36 +181,62 @@ namespace AzAgroPOS.Teqdimat
         #region UI Konfiqurasiyası
         private void ConfigureDataGridViewStyles()
         {
-            // Axtarış Cədvəli Stili
-            var searchGrid = dgvAxtarisNeticeleri;
-            searchGrid.BackgroundColor = Color.FromArgb(245, 245, 245);
-            searchGrid.BorderStyle = BorderStyle.None;
-            searchGrid.RowHeadersVisible = false;
-            searchGrid.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(63, 81, 181);
-            searchGrid.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            searchGrid.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            searchGrid.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            searchGrid.EnableHeadersVisualStyles = false;
-            searchGrid.DefaultCellStyle.SelectionBackColor = Color.FromArgb(200, 200, 230);
-            searchGrid.DefaultCellStyle.SelectionForeColor = Color.Black;
-            searchGrid.AlternatingRowsDefaultCellStyle.BackColor = Color.WhiteSmoke;
-            searchGrid.RowTemplate.Height = 30;
+            // Ümumi GridView Parametrləri üçün metod
+            void ApplyCommonGridStyle(DataGridView grid, Color headerBack, Color selectionBack, Color altRow)
+            {
+                grid.BackgroundColor = Color.White;
+                grid.BorderStyle = BorderStyle.None;
+                grid.RowHeadersVisible = false;
+                grid.AllowUserToResizeRows = false;
+                grid.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+                grid.GridColor = Color.FromArgb(230, 230, 230);
 
-            // Səbət Cədvəli Stili
-            var cartGrid = dgvSebet;
-            cartGrid.BackgroundColor = Color.FromArgb(245, 245, 245);
-            cartGrid.BorderStyle = BorderStyle.None;
-            cartGrid.RowHeadersVisible = false;
-            cartGrid.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(76, 175, 80);
-            cartGrid.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            cartGrid.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            cartGrid.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            cartGrid.EnableHeadersVisualStyles = false;
-            cartGrid.DefaultCellStyle.SelectionBackColor = Color.FromArgb(200, 230, 201);
-            cartGrid.DefaultCellStyle.SelectionForeColor = Color.Black;
-            cartGrid.AlternatingRowsDefaultCellStyle.BackColor = Color.WhiteSmoke;
-            cartGrid.RowTemplate.Height = 30;
+                // Header
+                grid.ColumnHeadersDefaultCellStyle.BackColor = headerBack;
+                grid.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+                grid.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+                grid.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                grid.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+                grid.EnableHeadersVisualStyles = false;
+                grid.ColumnHeadersHeight = 40;
+
+                // Hüceyrələr
+                grid.DefaultCellStyle.BackColor = Color.White;
+                grid.DefaultCellStyle.ForeColor = Color.Black;
+                grid.DefaultCellStyle.SelectionBackColor = selectionBack;
+                grid.DefaultCellStyle.SelectionForeColor = Color.Black;
+                grid.DefaultCellStyle.Font = new Font("Segoe UI", 9.5F, FontStyle.Regular);
+                grid.DefaultCellStyle.Padding = new Padding(5, 3, 5, 3); 
+
+                // Alternativ sətirlər
+                grid.AlternatingRowsDefaultCellStyle.BackColor = altRow;
+
+                // Sətir parametrləri
+                grid.RowTemplate.Height = 35;
+            }
+
+            // Axtarış Cədvəli Stili (mavi tonlar)
+            ApplyCommonGridStyle(
+                dgvAxtarisNeticeleri,
+                Color.FromArgb(33, 150, 243), // header rəngi (blue)
+                Color.FromArgb(187, 222, 251), // selection rəngi (light blue)
+                Color.FromArgb(245, 245, 245)  // alternating rəng
+            );
+
+            // Səbət Cədvəli Stili (yaşıl tonlar)
+            ApplyCommonGridStyle(
+                dgvSebet,
+                Color.FromArgb(76, 175, 80),  // header rəngi (green)
+                Color.FromArgb(200, 230, 201), // selection rəngi (light green)
+                Color.FromArgb(245, 245, 245)  // alternating rəng
+            );
         }
         #endregion
+
+
+        private void btnIndirim_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
