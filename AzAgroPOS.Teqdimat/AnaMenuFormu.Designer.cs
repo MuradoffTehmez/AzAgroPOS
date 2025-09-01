@@ -4,364 +4,367 @@ namespace AzAgroPOS.Teqdimat
     partial class AnaMenuFormu
     {
         private System.ComponentModel.IContainer components = null;
-        protected override void Dispose(bool disposing) { if (disposing && (components != null)) { components.Dispose(); } base.Dispose(disposing); }
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
         #region Windows Form Designer generated code
         private void InitializeComponent()
         {
-            pnlMenu = new Panel();
-            btnBarkodCapi = new MaterialSkin.Controls.MaterialButton();
-            btnZHesabatArxivi = new MaterialSkin.Controls.MaterialButton();
-            btnAnbarQaliqHesabati = new MaterialSkin.Controls.MaterialButton();
-            btnMehsulSatisHesabati = new MaterialSkin.Controls.MaterialButton();
-            btnHesabatlar = new MaterialSkin.Controls.MaterialButton();
-            btnIstifadeciIdareetme = new MaterialSkin.Controls.MaterialButton();
-            btnTemirIdareetme = new MaterialSkin.Controls.MaterialButton();
-            btnNisyeIdareetme = new MaterialSkin.Controls.MaterialButton();
-            btnYeniSatis = new MaterialSkin.Controls.MaterialButton();
-            btnMehsulIdareetme = new MaterialSkin.Controls.MaterialButton();
-            btnNovbeIdareetme = new MaterialSkin.Controls.MaterialButton();
-            mdiTabControl = new MaterialSkin.Controls.MaterialTabControl();
-            tabContextMenu = new MaterialSkin.Controls.MaterialContextMenuStrip();
-            baglaToolStripMenuItem = new ToolStripMenuItem();
-            pnlMenu.SuspendLayout();
-            tabContextMenu.SuspendLayout();
-            SuspendLayout();
+            this.components = new System.ComponentModel.Container();
+
+            // Ana panellər
+            this.pnlSidebar = new System.Windows.Forms.Panel();
+            this.pnlLogo = new System.Windows.Forms.Panel();
+            this.lblCompanyName = new System.Windows.Forms.Label();
+            this.picLogo = new System.Windows.Forms.PictureBox();
+            this.pnlUserInfo = new System.Windows.Forms.Panel();
+            this.lblUserName = new System.Windows.Forms.Label();
+            this.lblUserRole = new System.Windows.Forms.Label();
+            this.picUserAvatar = new System.Windows.Forms.PictureBox();
+
+            // Menyu düymələri
+            this.btnNovbeIdareetme = new MaterialSkin.Controls.MaterialButton();
+            this.btnMehsulIdareetme = new MaterialSkin.Controls.MaterialButton();
+            this.btnYeniSatis = new MaterialSkin.Controls.MaterialButton();
+            this.btnNisyeIdareetme = new MaterialSkin.Controls.MaterialButton();
+            this.btnTemirIdareetme = new MaterialSkin.Controls.MaterialButton();
+            this.btnIstifadeciIdareetme = new MaterialSkin.Controls.MaterialButton();
+            this.btnHesabatlar = new MaterialSkin.Controls.MaterialButton();
+            this.btnMehsulSatisHesabati = new MaterialSkin.Controls.MaterialButton();
+            this.btnAnbarQaliqHesabati = new MaterialSkin.Controls.MaterialButton();
+            this.btnZHesabatArxivi = new MaterialSkin.Controls.MaterialButton();
+            this.btnBarkodCapi = new MaterialSkin.Controls.MaterialButton();
+
+            // Tab control və context menu
+            this.mdiTabControl = new MaterialSkin.Controls.MaterialTabControl();
+            this.tabContextMenu = new MaterialSkin.Controls.MaterialContextMenuStrip();
+            this.baglaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hamisiCloseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+
+            // Menyu bölücüləri
+            this.separator1 = new System.Windows.Forms.Panel();
+            this.separator2 = new System.Windows.Forms.Panel();
+            this.separator3 = new System.Windows.Forms.Panel();
+
+            // Footer
+            this.pnlFooter = new System.Windows.Forms.Panel();
+            this.lblVersion = new System.Windows.Forms.Label();
+
+            // Animasiya timeri
+            this.animationTimer = new System.Windows.Forms.Timer(this.components);
+
+            this.pnlSidebar.SuspendLayout();
+            this.pnlLogo.SuspendLayout();
+            this.pnlUserInfo.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picLogo)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picUserAvatar)).BeginInit();
+            this.tabContextMenu.SuspendLayout();
+            this.pnlFooter.SuspendLayout();
+            this.SuspendLayout();
+
             // 
-            // pnlMenu
+            // pnlSidebar
             // 
-            pnlMenu.BackColor = Color.FromArgb(242, 242, 242);
-            pnlMenu.Controls.Add(btnBarkodCapi);
-            pnlMenu.Controls.Add(btnZHesabatArxivi);
-            pnlMenu.Controls.Add(btnAnbarQaliqHesabati);
-            pnlMenu.Controls.Add(btnMehsulSatisHesabati);
-            pnlMenu.Controls.Add(btnHesabatlar);
-            pnlMenu.Controls.Add(btnIstifadeciIdareetme);
-            pnlMenu.Controls.Add(btnTemirIdareetme);
-            pnlMenu.Controls.Add(btnNisyeIdareetme);
-            pnlMenu.Controls.Add(btnYeniSatis);
-            pnlMenu.Controls.Add(btnMehsulIdareetme);
-            pnlMenu.Controls.Add(btnNovbeIdareetme);
-            pnlMenu.Dock = DockStyle.Left;
-            pnlMenu.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            pnlMenu.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            pnlMenu.Location = new Point(3, 64);
-            pnlMenu.Name = "pnlMenu";
-            pnlMenu.Padding = new Padding(10);
-            pnlMenu.Size = new Size(181, 673);
-            pnlMenu.TabIndex = 1;
+            this.pnlSidebar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(38)))));
+            this.pnlSidebar.Controls.Add(this.pnlFooter);
+            this.pnlSidebar.Controls.Add(this.btnBarkodCapi);
+            this.pnlSidebar.Controls.Add(this.btnZHesabatArxivi);
+            this.pnlSidebar.Controls.Add(this.btnAnbarQaliqHesabati);
+            this.pnlSidebar.Controls.Add(this.btnMehsulSatisHesabati);
+            this.pnlSidebar.Controls.Add(this.separator3);
+            this.pnlSidebar.Controls.Add(this.btnHesabatlar);
+            this.pnlSidebar.Controls.Add(this.separator2);
+            this.pnlSidebar.Controls.Add(this.btnIstifadeciIdareetme);
+            this.pnlSidebar.Controls.Add(this.btnTemirIdareetme);
+            this.pnlSidebar.Controls.Add(this.btnNisyeIdareetme);
+            this.pnlSidebar.Controls.Add(this.btnYeniSatis);
+            this.pnlSidebar.Controls.Add(this.btnMehsulIdareetme);
+            this.pnlSidebar.Controls.Add(this.separator1);
+            this.pnlSidebar.Controls.Add(this.btnNovbeIdareetme);
+            this.pnlSidebar.Controls.Add(this.pnlUserInfo);
+            this.pnlSidebar.Controls.Add(this.pnlLogo);
+            this.pnlSidebar.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pnlSidebar.Location = new System.Drawing.Point(3, 64);
+            this.pnlSidebar.Name = "pnlSidebar";
+            this.pnlSidebar.Padding = new System.Windows.Forms.Padding(0, 10, 0, 0);
+            this.pnlSidebar.Size = new System.Drawing.Size(260, 673);
+            this.pnlSidebar.TabIndex = 1;
+
             // 
-            // btnBarkodCapi
+            // pnlLogo
             // 
-            btnBarkodCapi.AutoSize = false;
-            btnBarkodCapi.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnBarkodCapi.BackColor = Color.FromArgb(242, 242, 242);
-            btnBarkodCapi.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            btnBarkodCapi.Depth = 0;
-            btnBarkodCapi.Dock = DockStyle.Top;
-            btnBarkodCapi.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            btnBarkodCapi.HighEmphasis = true;
-            btnBarkodCapi.Icon = null;
-            btnBarkodCapi.Location = new Point(10, 410);
-            btnBarkodCapi.Margin = new Padding(4, 6, 4, 6);
-            btnBarkodCapi.MouseState = MaterialSkin.MouseState.HOVER;
-            btnBarkodCapi.Name = "btnBarkodCapi";
-            btnBarkodCapi.NoAccentTextColor = Color.Empty;
-            btnBarkodCapi.Size = new Size(161, 40);
-            btnBarkodCapi.TabIndex = 10;
-            btnBarkodCapi.Text = "Barkod Çapı";
-            btnBarkodCapi.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            btnBarkodCapi.UseAccentColor = false;
-            btnBarkodCapi.UseVisualStyleBackColor = false;
-            btnBarkodCapi.Click += btnBarkodCapi_Click;
+            this.pnlLogo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.pnlLogo.Controls.Add(this.lblCompanyName);
+            this.pnlLogo.Controls.Add(this.picLogo);
+            this.pnlLogo.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlLogo.Location = new System.Drawing.Point(0, 10);
+            this.pnlLogo.Name = "pnlLogo";
+            this.pnlLogo.Padding = new System.Windows.Forms.Padding(15, 10, 15, 10);
+            this.pnlLogo.Size = new System.Drawing.Size(260, 80);
+            this.pnlLogo.TabIndex = 0;
+
             // 
-            // btnZHesabatArxivi
+            // picLogo
             // 
-            btnZHesabatArxivi.AutoSize = false;
-            btnZHesabatArxivi.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnZHesabatArxivi.BackColor = Color.FromArgb(242, 242, 242);
-            btnZHesabatArxivi.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            btnZHesabatArxivi.Depth = 0;
-            btnZHesabatArxivi.Dock = DockStyle.Top;
-            btnZHesabatArxivi.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            btnZHesabatArxivi.HighEmphasis = true;
-            btnZHesabatArxivi.Icon = null;
-            btnZHesabatArxivi.Location = new Point(10, 370);
-            btnZHesabatArxivi.Margin = new Padding(4, 6, 4, 6);
-            btnZHesabatArxivi.MouseState = MaterialSkin.MouseState.HOVER;
-            btnZHesabatArxivi.Name = "btnZHesabatArxivi";
-            btnZHesabatArxivi.NoAccentTextColor = Color.Empty;
-            btnZHesabatArxivi.Size = new Size(161, 40);
-            btnZHesabatArxivi.TabIndex = 9;
-            btnZHesabatArxivi.Text = "Z-Hesabat Arxivi";
-            btnZHesabatArxivi.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            btnZHesabatArxivi.UseAccentColor = false;
-            btnZHesabatArxivi.UseVisualStyleBackColor = false;
-            btnZHesabatArxivi.Click += btnZHesabatArxivi_Click;
+            this.picLogo.BackgroundImage = null;
+            this.picLogo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.picLogo.Location = new System.Drawing.Point(15, 15);
+            this.picLogo.Name = "picLogo";
+            this.picLogo.Size = new System.Drawing.Size(50, 50);
+            this.picLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picLogo.TabIndex = 0;
+            this.picLogo.TabStop = false;
+
             // 
-            // btnAnbarQaliqHesabati
+            // lblCompanyName
             // 
-            btnAnbarQaliqHesabati.AutoSize = false;
-            btnAnbarQaliqHesabati.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnAnbarQaliqHesabati.BackColor = Color.FromArgb(242, 242, 242);
-            btnAnbarQaliqHesabati.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            btnAnbarQaliqHesabati.Depth = 0;
-            btnAnbarQaliqHesabati.Dock = DockStyle.Top;
-            btnAnbarQaliqHesabati.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            btnAnbarQaliqHesabati.HighEmphasis = true;
-            btnAnbarQaliqHesabati.Icon = null;
-            btnAnbarQaliqHesabati.Location = new Point(10, 330);
-            btnAnbarQaliqHesabati.Margin = new Padding(4, 6, 4, 6);
-            btnAnbarQaliqHesabati.MouseState = MaterialSkin.MouseState.HOVER;
-            btnAnbarQaliqHesabati.Name = "btnAnbarQaliqHesabati";
-            btnAnbarQaliqHesabati.NoAccentTextColor = Color.Empty;
-            btnAnbarQaliqHesabati.Size = new Size(161, 40);
-            btnAnbarQaliqHesabati.TabIndex = 8;
-            btnAnbarQaliqHesabati.Text = "Anbar Qalığı";
-            btnAnbarQaliqHesabati.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            btnAnbarQaliqHesabati.UseAccentColor = false;
-            btnAnbarQaliqHesabati.UseVisualStyleBackColor = false;
+            this.lblCompanyName.AutoSize = true;
+            this.lblCompanyName.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lblCompanyName.ForeColor = System.Drawing.Color.White;
+            this.lblCompanyName.Location = new System.Drawing.Point(75, 20);
+            this.lblCompanyName.Name = "lblCompanyName";
+            this.lblCompanyName.Size = new System.Drawing.Size(110, 27);
+            this.lblCompanyName.TabIndex = 1;
+            this.lblCompanyName.Text = "AzAgroPOS";
+
             // 
-            // btnMehsulSatisHesabati
+            // pnlUserInfo
             // 
-            btnMehsulSatisHesabati.AutoSize = false;
-            btnMehsulSatisHesabati.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnMehsulSatisHesabati.BackColor = Color.FromArgb(242, 242, 242);
-            btnMehsulSatisHesabati.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            btnMehsulSatisHesabati.Depth = 0;
-            btnMehsulSatisHesabati.Dock = DockStyle.Top;
-            btnMehsulSatisHesabati.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            btnMehsulSatisHesabati.HighEmphasis = true;
-            btnMehsulSatisHesabati.Icon = null;
-            btnMehsulSatisHesabati.Location = new Point(10, 290);
-            btnMehsulSatisHesabati.Margin = new Padding(4, 6, 4, 6);
-            btnMehsulSatisHesabati.MouseState = MaterialSkin.MouseState.HOVER;
-            btnMehsulSatisHesabati.Name = "btnMehsulSatisHesabati";
-            btnMehsulSatisHesabati.NoAccentTextColor = Color.Empty;
-            btnMehsulSatisHesabati.Size = new Size(161, 40);
-            btnMehsulSatisHesabati.TabIndex = 7;
-            btnMehsulSatisHesabati.Text = "Məhsul Hesabatı";
-            btnMehsulSatisHesabati.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            btnMehsulSatisHesabati.UseAccentColor = false;
-            btnMehsulSatisHesabati.UseVisualStyleBackColor = false;
-            btnMehsulSatisHesabati.Click += btnMehsulSatisHesabati_Click;
+            this.pnlUserInfo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(45)))));
+            this.pnlUserInfo.Controls.Add(this.lblUserRole);
+            this.pnlUserInfo.Controls.Add(this.lblUserName);
+            this.pnlUserInfo.Controls.Add(this.picUserAvatar);
+            this.pnlUserInfo.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlUserInfo.Location = new System.Drawing.Point(0, 90);
+            this.pnlUserInfo.Name = "pnlUserInfo";
+            this.pnlUserInfo.Padding = new System.Windows.Forms.Padding(15, 15, 15, 10);
+            this.pnlUserInfo.Size = new System.Drawing.Size(260, 75);
+            this.pnlUserInfo.TabIndex = 1;
+
             // 
-            // btnHesabatlar
+            // picUserAvatar
             // 
-            btnHesabatlar.AutoSize = false;
-            btnHesabatlar.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnHesabatlar.BackColor = Color.FromArgb(242, 242, 242);
-            btnHesabatlar.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            btnHesabatlar.Depth = 0;
-            btnHesabatlar.Dock = DockStyle.Top;
-            btnHesabatlar.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            btnHesabatlar.HighEmphasis = true;
-            btnHesabatlar.Icon = null;
-            btnHesabatlar.Location = new Point(10, 250);
-            btnHesabatlar.Margin = new Padding(4, 6, 4, 6);
-            btnHesabatlar.MouseState = MaterialSkin.MouseState.HOVER;
-            btnHesabatlar.Name = "btnHesabatlar";
-            btnHesabatlar.NoAccentTextColor = Color.Empty;
-            btnHesabatlar.Size = new Size(161, 40);
-            btnHesabatlar.TabIndex = 6;
-            btnHesabatlar.Text = "Günlük Hesabat";
-            btnHesabatlar.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            btnHesabatlar.UseAccentColor = false;
-            btnHesabatlar.UseVisualStyleBackColor = false;
-            btnHesabatlar.Click += btnHesabatlar_Click;
+            this.picUserAvatar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(81)))), ((int)(((byte)(181)))));
+            this.picUserAvatar.Location = new System.Drawing.Point(15, 15);
+            this.picUserAvatar.Name = "picUserAvatar";
+            this.picUserAvatar.Size = new System.Drawing.Size(45, 45);
+            this.picUserAvatar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picUserAvatar.TabIndex = 0;
+            this.picUserAvatar.TabStop = false;
+
             // 
-            // btnIstifadeciIdareetme
+            // lblUserName
             // 
-            btnIstifadeciIdareetme.AutoSize = false;
-            btnIstifadeciIdareetme.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnIstifadeciIdareetme.BackColor = Color.FromArgb(242, 242, 242);
-            btnIstifadeciIdareetme.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            btnIstifadeciIdareetme.Depth = 0;
-            btnIstifadeciIdareetme.Dock = DockStyle.Top;
-            btnIstifadeciIdareetme.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            btnIstifadeciIdareetme.HighEmphasis = true;
-            btnIstifadeciIdareetme.Icon = null;
-            btnIstifadeciIdareetme.Location = new Point(10, 210);
-            btnIstifadeciIdareetme.Margin = new Padding(4, 6, 4, 6);
-            btnIstifadeciIdareetme.MouseState = MaterialSkin.MouseState.HOVER;
-            btnIstifadeciIdareetme.Name = "btnIstifadeciIdareetme";
-            btnIstifadeciIdareetme.NoAccentTextColor = Color.Empty;
-            btnIstifadeciIdareetme.Size = new Size(161, 40);
-            btnIstifadeciIdareetme.TabIndex = 0;
-            btnIstifadeciIdareetme.Text = "İstifadəçilər";
-            btnIstifadeciIdareetme.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            btnIstifadeciIdareetme.UseAccentColor = false;
-            btnIstifadeciIdareetme.UseVisualStyleBackColor = false;
-            btnIstifadeciIdareetme.Click += btnIstifadeciIdareetme_Click;
+            this.lblUserName.AutoSize = true;
+            this.lblUserName.Font = new System.Drawing.Font("Roboto", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lblUserName.ForeColor = System.Drawing.Color.White;
+            this.lblUserName.Location = new System.Drawing.Point(70, 18);
+            this.lblUserName.Name = "lblUserName";
+            this.lblUserName.Size = new System.Drawing.Size(91, 19);
+            this.lblUserName.TabIndex = 1;
+            this.lblUserName.Text = "İstifadəçi";
+
             // 
-            // btnTemirIdareetme
+            // lblUserRole
             // 
-            btnTemirIdareetme.AutoSize = false;
-            btnTemirIdareetme.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnTemirIdareetme.BackColor = Color.FromArgb(242, 242, 242);
-            btnTemirIdareetme.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            btnTemirIdareetme.Depth = 0;
-            btnTemirIdareetme.Dock = DockStyle.Top;
-            btnTemirIdareetme.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            btnTemirIdareetme.HighEmphasis = true;
-            btnTemirIdareetme.Icon = null;
-            btnTemirIdareetme.Location = new Point(10, 170);
-            btnTemirIdareetme.Margin = new Padding(4, 6, 4, 6);
-            btnTemirIdareetme.MouseState = MaterialSkin.MouseState.HOVER;
-            btnTemirIdareetme.Name = "btnTemirIdareetme";
-            btnTemirIdareetme.NoAccentTextColor = Color.Empty;
-            btnTemirIdareetme.Size = new Size(161, 40);
-            btnTemirIdareetme.TabIndex = 1;
-            btnTemirIdareetme.Text = "Təmir";
-            btnTemirIdareetme.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            btnTemirIdareetme.UseAccentColor = false;
-            btnTemirIdareetme.UseVisualStyleBackColor = false;
-            btnTemirIdareetme.Click += btnTemirIdareetme_Click;
+            this.lblUserRole.AutoSize = true;
+            this.lblUserRole.Font = new System.Drawing.Font("Roboto", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblUserRole.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.lblUserRole.Location = new System.Drawing.Point(70, 40);
+            this.lblUserRole.Name = "lblUserRole";
+            this.lblUserRole.Size = new System.Drawing.Size(31, 17);
+            this.lblUserRole.TabIndex = 2;
+            this.lblUserRole.Text = "Rol";
+
+            // Menyu düymələri
+            CreateMenuButton(this.btnNovbeIdareetme, "Növbəni İdarə Et", 165, true, "🎯");
+            CreateMenuButton(this.btnMehsulIdareetme, "Məhsullar", 215, false, "📦");
+            CreateMenuButton(this.btnYeniSatis, "Yeni Satış", 265, false, "🛒");
+            CreateMenuButton(this.btnNisyeIdareetme, "Nisyə / Borc", 315, false, "💳");
+            CreateMenuButton(this.btnTemirIdareetme, "Təmir", 365, false, "🔧");
+            CreateMenuButton(this.btnIstifadeciIdareetme, "İstifadəçilər", 415, false, "👥");
+            CreateMenuButton(this.btnHesabatlar, "Günlük Hesabat", 485, false, "📊");
+            CreateMenuButton(this.btnMehsulSatisHesabati, "Məhsul Hesabatı", 535, false, "📈");
+            CreateMenuButton(this.btnAnbarQaliqHesabati, "Anbar Qalığı", 585, false, "📋");
+            CreateMenuButton(this.btnZHesabatArxivi, "Z-Hesabat Arxivi", 635, false, "🗂️");
+            CreateMenuButton(this.btnBarkodCapi, "Barkod Çapı", 685, false, "🏷️");
+
+            // Bölücülər
+            CreateSeparator(this.separator1, 190);
+            CreateSeparator(this.separator2, 460);
+            CreateSeparator(this.separator3, 510);
+
             // 
-            // btnNisyeIdareetme
+            // pnlFooter
             // 
-            btnNisyeIdareetme.AutoSize = false;
-            btnNisyeIdareetme.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnNisyeIdareetme.BackColor = Color.FromArgb(242, 242, 242);
-            btnNisyeIdareetme.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            btnNisyeIdareetme.Depth = 0;
-            btnNisyeIdareetme.Dock = DockStyle.Top;
-            btnNisyeIdareetme.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            btnNisyeIdareetme.HighEmphasis = true;
-            btnNisyeIdareetme.Icon = null;
-            btnNisyeIdareetme.Location = new Point(10, 130);
-            btnNisyeIdareetme.Margin = new Padding(4, 6, 4, 6);
-            btnNisyeIdareetme.MouseState = MaterialSkin.MouseState.HOVER;
-            btnNisyeIdareetme.Name = "btnNisyeIdareetme";
-            btnNisyeIdareetme.NoAccentTextColor = Color.Empty;
-            btnNisyeIdareetme.Size = new Size(161, 40);
-            btnNisyeIdareetme.TabIndex = 2;
-            btnNisyeIdareetme.Text = "Nisyə / Borc";
-            btnNisyeIdareetme.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            btnNisyeIdareetme.UseAccentColor = false;
-            btnNisyeIdareetme.UseVisualStyleBackColor = false;
-            btnNisyeIdareetme.Click += btnNisyeIdareetme_Click;
+            this.pnlFooter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(35)))));
+            this.pnlFooter.Controls.Add(this.lblVersion);
+            this.pnlFooter.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pnlFooter.Location = new System.Drawing.Point(0, 643);
+            this.pnlFooter.Name = "pnlFooter";
+            this.pnlFooter.Padding = new System.Windows.Forms.Padding(15, 8, 15, 8);
+            this.pnlFooter.Size = new System.Drawing.Size(260, 30);
+            this.pnlFooter.TabIndex = 12;
+
             // 
-            // btnYeniSatis
+            // lblVersion
             // 
-            btnYeniSatis.AutoSize = false;
-            btnYeniSatis.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnYeniSatis.BackColor = Color.FromArgb(242, 242, 242);
-            btnYeniSatis.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            btnYeniSatis.Depth = 0;
-            btnYeniSatis.Dock = DockStyle.Top;
-            btnYeniSatis.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            btnYeniSatis.HighEmphasis = true;
-            btnYeniSatis.Icon = null;
-            btnYeniSatis.Location = new Point(10, 90);
-            btnYeniSatis.Margin = new Padding(4, 6, 4, 6);
-            btnYeniSatis.MouseState = MaterialSkin.MouseState.HOVER;
-            btnYeniSatis.Name = "btnYeniSatis";
-            btnYeniSatis.NoAccentTextColor = Color.Empty;
-            btnYeniSatis.Size = new Size(161, 40);
-            btnYeniSatis.TabIndex = 4;
-            btnYeniSatis.Text = "Yeni Satış";
-            btnYeniSatis.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            btnYeniSatis.UseAccentColor = false;
-            btnYeniSatis.UseVisualStyleBackColor = false;
-            btnYeniSatis.Click += btnYeniSatis_Click;
-            // 
-            // btnMehsulIdareetme
-            // 
-            btnMehsulIdareetme.AutoSize = false;
-            btnMehsulIdareetme.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnMehsulIdareetme.BackColor = Color.FromArgb(242, 242, 242);
-            btnMehsulIdareetme.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            btnMehsulIdareetme.Depth = 0;
-            btnMehsulIdareetme.Dock = DockStyle.Top;
-            btnMehsulIdareetme.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            btnMehsulIdareetme.HighEmphasis = true;
-            btnMehsulIdareetme.Icon = null;
-            btnMehsulIdareetme.Location = new Point(10, 50);
-            btnMehsulIdareetme.Margin = new Padding(4, 6, 4, 6);
-            btnMehsulIdareetme.MouseState = MaterialSkin.MouseState.HOVER;
-            btnMehsulIdareetme.Name = "btnMehsulIdareetme";
-            btnMehsulIdareetme.NoAccentTextColor = Color.Empty;
-            btnMehsulIdareetme.Size = new Size(161, 40);
-            btnMehsulIdareetme.TabIndex = 3;
-            btnMehsulIdareetme.Text = "Məhsullar";
-            btnMehsulIdareetme.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            btnMehsulIdareetme.UseAccentColor = false;
-            btnMehsulIdareetme.UseVisualStyleBackColor = false;
-            btnMehsulIdareetme.Click += btnMehsulIdareetme_Click;
-            // 
-            // btnNovbeIdareetme
-            // 
-            btnNovbeIdareetme.AutoSize = false;
-            btnNovbeIdareetme.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnNovbeIdareetme.BackColor = Color.FromArgb(242, 242, 242);
-            btnNovbeIdareetme.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            btnNovbeIdareetme.Depth = 0;
-            btnNovbeIdareetme.Dock = DockStyle.Top;
-            btnNovbeIdareetme.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            btnNovbeIdareetme.HighEmphasis = true;
-            btnNovbeIdareetme.Icon = null;
-            btnNovbeIdareetme.Location = new Point(10, 10);
-            btnNovbeIdareetme.Margin = new Padding(4, 6, 4, 6);
-            btnNovbeIdareetme.MouseState = MaterialSkin.MouseState.HOVER;
-            btnNovbeIdareetme.Name = "btnNovbeIdareetme";
-            btnNovbeIdareetme.NoAccentTextColor = Color.Empty;
-            btnNovbeIdareetme.Size = new Size(161, 40);
-            btnNovbeIdareetme.TabIndex = 5;
-            btnNovbeIdareetme.Text = "Növbəni İdarə Et";
-            btnNovbeIdareetme.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            btnNovbeIdareetme.UseAccentColor = true;
-            btnNovbeIdareetme.UseVisualStyleBackColor = false;
-            btnNovbeIdareetme.Click += btnNovbeIdareetme_Click;
+            this.lblVersion.AutoSize = true;
+            this.lblVersion.Font = new System.Drawing.Font("Roboto", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblVersion.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.lblVersion.Location = new System.Drawing.Point(15, 8);
+            this.lblVersion.Name = "lblVersion";
+            this.lblVersion.Size = new System.Drawing.Size(77, 14);
+            this.lblVersion.TabIndex = 0;
+            this.lblVersion.Text = "Versiya 2.0.0";
+
             // 
             // mdiTabControl
             // 
-            mdiTabControl.Depth = 0;
-            mdiTabControl.Dock = DockStyle.Fill;
-            mdiTabControl.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            mdiTabControl.Location = new Point(184, 64);
-            mdiTabControl.MouseState = MaterialSkin.MouseState.HOVER;
-            mdiTabControl.Multiline = true;
-            mdiTabControl.Name = "mdiTabControl";
-            mdiTabControl.SelectedIndex = 0;
-            mdiTabControl.Size = new Size(1286, 673);
-            mdiTabControl.TabIndex = 2;
-            mdiTabControl.MouseClick += mdiTabControl_MouseClick;
+            this.mdiTabControl.Depth = 0;
+            this.mdiTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mdiTabControl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.mdiTabControl.Location = new System.Drawing.Point(263, 64);
+            this.mdiTabControl.MouseState = MaterialSkin.MouseState.HOVER;
+            this.mdiTabControl.Multiline = true;
+            this.mdiTabControl.Name = "mdiTabControl";
+            this.mdiTabControl.SelectedIndex = 0;
+            this.mdiTabControl.Size = new System.Drawing.Size(1210, 673);
+            this.mdiTabControl.TabIndex = 2;
+            this.mdiTabControl.MouseClick += this.mdiTabControl_MouseClick;
+
             // 
             // tabContextMenu
             // 
-            tabContextMenu.BackColor = Color.FromArgb(255, 255, 255);
-            tabContextMenu.Depth = 0;
-            tabContextMenu.Items.AddRange(new ToolStripItem[] { baglaToolStripMenuItem });
-            tabContextMenu.MouseState = MaterialSkin.MouseState.HOVER;
-            tabContextMenu.Name = "tabContextMenu";
-            tabContextMenu.Size = new Size(104, 26);
+            this.tabContextMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.tabContextMenu.Depth = 0;
+            this.tabContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+                this.baglaToolStripMenuItem,
+                this.hamisiCloseToolStripMenuItem
+            });
+            this.tabContextMenu.MouseState = MaterialSkin.MouseState.HOVER;
+            this.tabContextMenu.Name = "tabContextMenu";
+            this.tabContextMenu.Size = new System.Drawing.Size(180, 48);
+
             // 
             // baglaToolStripMenuItem
             // 
-            baglaToolStripMenuItem.Name = "baglaToolStripMenuItem";
-            baglaToolStripMenuItem.Size = new Size(103, 22);
-            baglaToolStripMenuItem.Text = "Bağla";
-            baglaToolStripMenuItem.Click += baglaToolStripMenuItem_Click;
+            this.baglaToolStripMenuItem.Name = "baglaToolStripMenuItem";
+            this.baglaToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.baglaToolStripMenuItem.Text = "Bağla";
+            this.baglaToolStripMenuItem.Click += this.baglaToolStripMenuItem_Click;
+
+            // 
+            // hamisiCloseToolStripMenuItem
+            // 
+            this.hamisiCloseToolStripMenuItem.Name = "hamisiCloseToolStripMenuItem";
+            this.hamisiCloseToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.hamisiCloseToolStripMenuItem.Text = "Hamısını Bağla";
+            this.hamisiCloseToolStripMenuItem.Click += this.hamisiCloseToolStripMenuItem_Click;
+
+            // 
+            // animationTimer
+            // 
+            this.animationTimer.Interval = 16;
+            this.animationTimer.Tick += this.animationTimer_Tick;
+
             // 
             // AnaMenuFormu
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            ClientSize = new Size(1473, 740);
-            Controls.Add(mdiTabControl);
-            Controls.Add(pnlMenu);
-            DrawerShowIconsWhenHidden = true;
-            Name = "AnaMenuFormu";
-            StartPosition = FormStartPosition.CenterScreen;
-            Text = "AzAgroPOS - Ana Menyu";
-            WindowState = FormWindowState.Maximized;
-            pnlMenu.ResumeLayout(false);
-            tabContextMenu.ResumeLayout(false);
-            ResumeLayout(false);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.ClientSize = new System.Drawing.Size(1473, 740);
+            this.Controls.Add(this.mdiTabControl);
+            this.Controls.Add(this.pnlSidebar);
+            this.DrawerShowIconsWhenHidden = true;
+            this.Name = "AnaMenuFormu";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "AzAgroPOS - Ana Menyu";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
 
+            this.pnlSidebar.ResumeLayout(false);
+            this.pnlLogo.ResumeLayout(false);
+            this.pnlLogo.PerformLayout();
+            this.pnlUserInfo.ResumeLayout(false);
+            this.pnlUserInfo.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picLogo)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picUserAvatar)).EndInit();
+            this.tabContextMenu.ResumeLayout(false);
+            this.pnlFooter.ResumeLayout(false);
+            this.pnlFooter.PerformLayout();
+            this.ResumeLayout(false);
         }
+
+        private void CreateMenuButton(MaterialSkin.Controls.MaterialButton btn, string text, int top, bool isAccent, string icon)
+        {
+            btn.AutoSize = false;
+            btn.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            btn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(38)))));
+            btn.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btn.Depth = 0;
+            btn.ForeColor = System.Drawing.Color.White;
+            btn.HighEmphasis = true;
+            btn.Icon = null;
+            btn.Location = new System.Drawing.Point(10, top);
+            btn.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            btn.MouseState = MaterialSkin.MouseState.HOVER;
+            btn.Name = btn.Name;
+            btn.NoAccentTextColor = System.Drawing.Color.Empty;
+            btn.Size = new System.Drawing.Size(240, 45);
+            btn.TabIndex = 0;
+            btn.Text = $"{icon}  {text}";
+            btn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            btn.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
+            btn.UseAccentColor = isAccent;
+            btn.UseVisualStyleBackColor = false;
+
+            // Hover efekti üçün
+            btn.MouseEnter += MenuButton_MouseEnter;
+            btn.MouseLeave += MenuButton_MouseLeave;
+        }
+
+        private void CreateSeparator(System.Windows.Forms.Panel separator, int top)
+        {
+            separator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(63)))));
+            separator.Location = new System.Drawing.Point(20, top);
+            separator.Name = separator.Name;
+            separator.Size = new System.Drawing.Size(220, 1);
+            separator.TabIndex = 0;
+        }
+
+        private void MenuButton_MouseEnter(object sender, EventArgs e)
+        {
+            if (sender is MaterialSkin.Controls.MaterialButton btn)
+            {
+                btn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(55)))), ((int)(((byte)(58)))));
+            }
+        }
+
+        private void MenuButton_MouseLeave(object sender, EventArgs e)
+        {
+            if (sender is MaterialSkin.Controls.MaterialButton btn)
+            {
+                btn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(38)))));
+            }
+        }
+
         #endregion
 
-        private System.Windows.Forms.Panel pnlMenu;
+        // Kontrol dəyişənləri
+        private System.Windows.Forms.Panel pnlSidebar;
+        private System.Windows.Forms.Panel pnlLogo;
+        private System.Windows.Forms.Label lblCompanyName;
+        private System.Windows.Forms.PictureBox picLogo;
+        private System.Windows.Forms.Panel pnlUserInfo;
+        private System.Windows.Forms.Label lblUserName;
+        private System.Windows.Forms.Label lblUserRole;
+        private System.Windows.Forms.PictureBox picUserAvatar;
+
         private MaterialSkin.Controls.MaterialButton btnNovbeIdareetme;
         private MaterialSkin.Controls.MaterialButton btnMehsulIdareetme;
         private MaterialSkin.Controls.MaterialButton btnYeniSatis;
@@ -373,8 +376,19 @@ namespace AzAgroPOS.Teqdimat
         private MaterialSkin.Controls.MaterialButton btnAnbarQaliqHesabati;
         private MaterialSkin.Controls.MaterialButton btnZHesabatArxivi;
         private MaterialSkin.Controls.MaterialButton btnBarkodCapi;
+
         private MaterialSkin.Controls.MaterialTabControl mdiTabControl;
         private MaterialSkin.Controls.MaterialContextMenuStrip tabContextMenu;
         private System.Windows.Forms.ToolStripMenuItem baglaToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem hamisiCloseToolStripMenuItem;
+
+        private System.Windows.Forms.Panel separator1;
+        private System.Windows.Forms.Panel separator2;
+        private System.Windows.Forms.Panel separator3;
+
+        private System.Windows.Forms.Panel pnlFooter;
+        private System.Windows.Forms.Label lblVersion;
+
+        private System.Windows.Forms.Timer animationTimer;
     }
 }
