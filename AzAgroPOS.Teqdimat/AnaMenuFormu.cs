@@ -1,6 +1,8 @@
 ﻿// Fayl: AzAgroPOS.Teqdimat/AnaMenuFormu.cs
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
 using AzAgroPOS.Teqdimat.Yardimcilar;
@@ -10,7 +12,6 @@ namespace AzAgroPOS.Teqdimat
 {
     public partial class AnaMenuFormu : BazaForm
     {
-        // Aktiv düyməni izləmək üçün düymələri və onlara bağlı form tiplərini saxlayaq
         private readonly Dictionary<Type, MaterialButton> _formButtonMap;
 
         public AnaMenuFormu()
@@ -18,7 +19,6 @@ namespace AzAgroPOS.Teqdimat
             InitializeComponent();
             this.Load += AnaMenuFormu_Load;
 
-            // Form tiplərini müvafiq düymələrlə əlaqələndiririk
             _formButtonMap = new Dictionary<Type, MaterialButton>
             {
                 { typeof(MehsulIdareetmeFormu), btnMehsulIdareetme },
@@ -41,6 +41,7 @@ namespace AzAgroPOS.Teqdimat
             UpdateActiveButtonHighlight();
         }
 
+        #region Tab İdarəetməsi
         private void UsaqFormuAc<T>() where T : Form, new()
         {
             var mövcudSehife = mdiTabControl.TabPages.OfType<TabPage>().FirstOrDefault(p => p.Tag is T);
@@ -58,11 +59,7 @@ namespace AzAgroPOS.Teqdimat
                     Dock = DockStyle.Fill
                 };
 
-                var yeniSehife = new TabPage(yeniForm.Text)
-                {
-                    Tag = yeniForm
-                };
-
+                var yeniSehife = new TabPage(yeniForm.Text) { Tag = yeniForm };
                 yeniSehife.Controls.Add(yeniForm);
                 mdiTabControl.TabPages.Add(yeniSehife);
                 mdiTabControl.SelectedTab = yeniSehife;
@@ -90,30 +87,42 @@ namespace AzAgroPOS.Teqdimat
         {
             if (mdiTabControl.SelectedTab != null)
             {
-                var secilmisSehife = mdiTabControl.SelectedTab;
-                if (secilmisSehife.Controls.Count > 0 && secilmisSehife.Controls[0] is Form form)
-                {
-                    form.Close();
-                }
-                mdiTabControl.TabPages.Remove(secilmisSehife);
+                CloseTab(mdiTabControl.SelectedTab);
             }
+        }
+
+        private void hamisiniBaglaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            while (mdiTabControl.TabPages.Count > 0)
+            {
+                CloseTab(mdiTabControl.TabPages[0]);
+            }
+        }
+
+        private void CloseTab(TabPage tab)
+        {
+            if (tab.Controls.Count > 0 && tab.Controls[0] is Form form)
+            {
+                form.Close();
+            }
+            mdiTabControl.TabPages.Remove(tab);
         }
 
         private void mdiTabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
             UpdateActiveButtonHighlight();
         }
+        #endregion
 
+        #region UI Təkmilləşdirmələri
         private void UpdateActiveButtonHighlight()
         {
-            // Bütün düymələrin vurğulanmasını sıfırlayırıq
             foreach (var btn in _formButtonMap.Values)
             {
                 btn.HighEmphasis = false;
                 btn.Type = MaterialButton.MaterialButtonType.Text;
             }
 
-            // Əgər aktiv tab varsa, ona uyğun düyməni vurğulayırıq
             if (mdiTabControl.SelectedTab?.Tag is Form aktivForm)
             {
                 var formTipi = aktivForm.GetType();
@@ -126,40 +135,71 @@ namespace AzAgroPOS.Teqdimat
             }
         }
 
-        #region Düymə Klik Hadisələri və İcazələr
+        private Image CreateInitialsAvatar(string fullName, Color backColor)
+        {
+            var initials = string.Concat(fullName.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s[0])).ToUpper();
+            if (initials.Length > 2)
+            {
+                initials = initials.Substring(0, 2);
+            }
+
+            var bmp = new Bitmap(50, 50);
+            using (var g = Graphics.FromImage(bmp))
+            {
+                g.SmoothingMode = SmoothingMode.AntiAlias;
+                using (var brush = new SolidBrush(backColor))
+                {
+                    g.FillEllipse(brush, 0, 0, 50, 50);
+                }
+
+                using (var font = new Font("Segoe UI", 14, FontStyle.Bold))
+                {
+                    var textSize = g.MeasureString(initials, font);
+                    var textPoint = new PointF((50 - textSize.Width) / 2, (50 - textSize.Height) / 2);
+                    g.DrawString(initials, font, Brushes.White, textPoint);
+                }
+            }
+            return bmp;
+        }
+        #endregion
+
+        #region İcazələr və Düymə Klikləri
         private void IcazeleriYoxla()
         {
             var istifadeci = AktivSessiya.AktivIstifadeci;
             if (istifadeci == null)
             {
-                MessageBox.Show("Aktiv istifadəçi sessiyası tapılmadı. Tətbiq bağlanır.", "Kritik Xəta", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                MessageBox.Show("Aktiv istifadəçi sessiyası tapılmadı.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 Application.Exit();
                 return;
             }
 
             this.Text = $"AzAgroPOS - (İstifadəçi: {istifadeci.TamAd})";
             lblUserName.Text = istifadeci.TamAd;
-            // Burada bir istifadəçi ikonasını resurslardan yükləyə bilərsiniz
-            // picUserIcon.Image = Properties.Resources.user_icon;
 
-            btnYeniSatis.Enabled = AktivSessiya.AktivNovbeId.HasValue;
-
-            if (istifadeci.RolAdi == "Admin") return;
-
-            if (istifadeci.RolAdi == "Kassir")
+            Color panelColor;
+            if (istifadeci.RolAdi == "Admin")
             {
-                btnMehsulIdareetme.Enabled = false;
-                btnNisyeIdareetme.Enabled = false;
-                btnTemirIdareetme.Enabled = false;
+                panelColor = Color.FromArgb(192, 57, 43); // Tünd qırmızı
+            }
+            else if (istifadeci.RolAdi == "Kassir")
+            {
+                panelColor = Color.FromArgb(243, 156, 18); // Narıncı/Sarı
                 btnIstifadeciIdareetme.Enabled = false;
             }
             else
             {
+                panelColor = Color.FromArgb(44, 62, 80); // Neytral
                 foreach (Control c in pnlMenu.Controls)
                 {
                     if (c is MaterialButton button) button.Enabled = false;
                 }
             }
+
+            pnlUserInfo.BackColor = panelColor;
+            picUserIcon.Image = CreateInitialsAvatar(istifadeci.TamAd, panelColor);
+
+            btnYeniSatis.Enabled = AktivSessiya.AktivNovbeId.HasValue;
         }
 
         private void btnMehsulIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<MehsulIdareetmeFormu>();

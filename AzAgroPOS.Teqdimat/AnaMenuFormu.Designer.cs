@@ -9,8 +9,10 @@ namespace AzAgroPOS.Teqdimat
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AnaMenuFormu));
             this.pnlMenu = new System.Windows.Forms.Panel();
             this.btnBarkodCapi = new MaterialSkin.Controls.MaterialButton();
+            this.sidebarImageList = new System.Windows.Forms.ImageList(this.components);
             this.separator2 = new System.Windows.Forms.Panel();
             this.btnZHesabatArxivi = new MaterialSkin.Controls.MaterialButton();
             this.btnAnbarQaliqHesabati = new MaterialSkin.Controls.MaterialButton();
@@ -29,6 +31,8 @@ namespace AzAgroPOS.Teqdimat
             this.mdiTabControl = new MaterialSkin.Controls.MaterialTabControl();
             this.tabContextMenu = new MaterialSkin.Controls.MaterialContextMenuStrip();
             this.baglaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.hamisiniBaglaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pnlMenu.SuspendLayout();
             this.pnlUserInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picUserIcon)).BeginInit();
@@ -67,6 +71,9 @@ namespace AzAgroPOS.Teqdimat
             this.btnBarkodCapi.Dock = System.Windows.Forms.DockStyle.Top;
             this.btnBarkodCapi.HighEmphasis = false;
             this.btnBarkodCapi.Icon = null;
+            this.btnBarkodCapi.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnBarkodCapi.ImageIndex = 10;
+            this.btnBarkodCapi.ImageList = this.sidebarImageList;
             this.btnBarkodCapi.Location = new System.Drawing.Point(0, 527);
             this.btnBarkodCapi.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnBarkodCapi.MouseState = MaterialSkin.MouseState.HOVER;
@@ -79,6 +86,12 @@ namespace AzAgroPOS.Teqdimat
             this.btnBarkodCapi.UseAccentColor = false;
             this.btnBarkodCapi.UseVisualStyleBackColor = true;
             this.btnBarkodCapi.Click += new System.EventHandler(this.btnBarkodCapi_Click);
+            // 
+            // sidebarImageList
+            // 
+            this.sidebarImageList.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
+            this.sidebarImageList.ImageSize = new System.Drawing.Size(24, 24);
+            this.sidebarImageList.TransparentColor = System.Drawing.Color.Transparent;
             // 
             // separator2
             // 
@@ -98,6 +111,9 @@ namespace AzAgroPOS.Teqdimat
             this.btnZHesabatArxivi.Dock = System.Windows.Forms.DockStyle.Top;
             this.btnZHesabatArxivi.HighEmphasis = false;
             this.btnZHesabatArxivi.Icon = null;
+            this.btnZHesabatArxivi.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnZHesabatArxivi.ImageIndex = 9;
+            this.btnZHesabatArxivi.ImageList = this.sidebarImageList;
             this.btnZHesabatArxivi.Location = new System.Drawing.Point(0, 481);
             this.btnZHesabatArxivi.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnZHesabatArxivi.MouseState = MaterialSkin.MouseState.HOVER;
@@ -120,6 +136,9 @@ namespace AzAgroPOS.Teqdimat
             this.btnAnbarQaliqHesabati.Dock = System.Windows.Forms.DockStyle.Top;
             this.btnAnbarQaliqHesabati.HighEmphasis = false;
             this.btnAnbarQaliqHesabati.Icon = null;
+            this.btnAnbarQaliqHesabati.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnAnbarQaliqHesabati.ImageIndex = 8;
+            this.btnAnbarQaliqHesabati.ImageList = this.sidebarImageList;
             this.btnAnbarQaliqHesabati.Location = new System.Drawing.Point(0, 436);
             this.btnAnbarQaliqHesabati.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnAnbarQaliqHesabati.MouseState = MaterialSkin.MouseState.HOVER;
@@ -141,6 +160,9 @@ namespace AzAgroPOS.Teqdimat
             this.btnMehsulSatisHesabati.Dock = System.Windows.Forms.DockStyle.Top;
             this.btnMehsulSatisHesabati.HighEmphasis = false;
             this.btnMehsulSatisHesabati.Icon = null;
+            this.btnMehsulSatisHesabati.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnMehsulSatisHesabati.ImageIndex = 7;
+            this.btnMehsulSatisHesabati.ImageList = this.sidebarImageList;
             this.btnMehsulSatisHesabati.Location = new System.Drawing.Point(0, 391);
             this.btnMehsulSatisHesabati.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnMehsulSatisHesabati.MouseState = MaterialSkin.MouseState.HOVER;
@@ -163,6 +185,9 @@ namespace AzAgroPOS.Teqdimat
             this.btnHesabatlar.Dock = System.Windows.Forms.DockStyle.Top;
             this.btnHesabatlar.HighEmphasis = false;
             this.btnHesabatlar.Icon = null;
+            this.btnHesabatlar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnHesabatlar.ImageIndex = 6;
+            this.btnHesabatlar.ImageList = this.sidebarImageList;
             this.btnHesabatlar.Location = new System.Drawing.Point(0, 346);
             this.btnHesabatlar.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnHesabatlar.MouseState = MaterialSkin.MouseState.HOVER;
@@ -185,6 +210,9 @@ namespace AzAgroPOS.Teqdimat
             this.btnIstifadeciIdareetme.Dock = System.Windows.Forms.DockStyle.Top;
             this.btnIstifadeciIdareetme.HighEmphasis = false;
             this.btnIstifadeciIdareetme.Icon = null;
+            this.btnIstifadeciIdareetme.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnIstifadeciIdareetme.ImageIndex = 5;
+            this.btnIstifadeciIdareetme.ImageList = this.sidebarImageList;
             this.btnIstifadeciIdareetme.Location = new System.Drawing.Point(0, 301);
             this.btnIstifadeciIdareetme.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnIstifadeciIdareetme.MouseState = MaterialSkin.MouseState.HOVER;
@@ -216,6 +244,9 @@ namespace AzAgroPOS.Teqdimat
             this.btnTemirIdareetme.Dock = System.Windows.Forms.DockStyle.Top;
             this.btnTemirIdareetme.HighEmphasis = false;
             this.btnTemirIdareetme.Icon = null;
+            this.btnTemirIdareetme.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnTemirIdareetme.ImageIndex = 4;
+            this.btnTemirIdareetme.ImageList = this.sidebarImageList;
             this.btnTemirIdareetme.Location = new System.Drawing.Point(0, 255);
             this.btnTemirIdareetme.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnTemirIdareetme.MouseState = MaterialSkin.MouseState.HOVER;
@@ -238,6 +269,9 @@ namespace AzAgroPOS.Teqdimat
             this.btnNisyeIdareetme.Dock = System.Windows.Forms.DockStyle.Top;
             this.btnNisyeIdareetme.HighEmphasis = false;
             this.btnNisyeIdareetme.Icon = null;
+            this.btnNisyeIdareetme.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnNisyeIdareetme.ImageIndex = 3;
+            this.btnNisyeIdareetme.ImageList = this.sidebarImageList;
             this.btnNisyeIdareetme.Location = new System.Drawing.Point(0, 210);
             this.btnNisyeIdareetme.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnNisyeIdareetme.MouseState = MaterialSkin.MouseState.HOVER;
@@ -260,6 +294,9 @@ namespace AzAgroPOS.Teqdimat
             this.btnYeniSatis.Dock = System.Windows.Forms.DockStyle.Top;
             this.btnYeniSatis.HighEmphasis = false;
             this.btnYeniSatis.Icon = null;
+            this.btnYeniSatis.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnYeniSatis.ImageIndex = 2;
+            this.btnYeniSatis.ImageList = this.sidebarImageList;
             this.btnYeniSatis.Location = new System.Drawing.Point(0, 165);
             this.btnYeniSatis.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnYeniSatis.MouseState = MaterialSkin.MouseState.HOVER;
@@ -282,6 +319,9 @@ namespace AzAgroPOS.Teqdimat
             this.btnMehsulIdareetme.Dock = System.Windows.Forms.DockStyle.Top;
             this.btnMehsulIdareetme.HighEmphasis = false;
             this.btnMehsulIdareetme.Icon = null;
+            this.btnMehsulIdareetme.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnMehsulIdareetme.ImageIndex = 1;
+            this.btnMehsulIdareetme.ImageList = this.sidebarImageList;
             this.btnMehsulIdareetme.Location = new System.Drawing.Point(0, 120);
             this.btnMehsulIdareetme.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnMehsulIdareetme.MouseState = MaterialSkin.MouseState.HOVER;
@@ -304,6 +344,9 @@ namespace AzAgroPOS.Teqdimat
             this.btnNovbeIdareetme.Dock = System.Windows.Forms.DockStyle.Top;
             this.btnNovbeIdareetme.HighEmphasis = true;
             this.btnNovbeIdareetme.Icon = null;
+            this.btnNovbeIdareetme.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnNovbeIdareetme.ImageIndex = 0;
+            this.btnNovbeIdareetme.ImageList = this.sidebarImageList;
             this.btnNovbeIdareetme.Location = new System.Drawing.Point(0, 75);
             this.btnNovbeIdareetme.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnNovbeIdareetme.MouseState = MaterialSkin.MouseState.HOVER;
@@ -367,17 +410,31 @@ namespace AzAgroPOS.Teqdimat
             this.tabContextMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.tabContextMenu.Depth = 0;
             this.tabContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.baglaToolStripMenuItem});
+            this.baglaToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.hamisiniBaglaToolStripMenuItem});
             this.tabContextMenu.MouseState = MaterialSkin.MouseState.HOVER;
             this.tabContextMenu.Name = "tabContextMenu";
-            this.tabContextMenu.Size = new System.Drawing.Size(105, 26);
+            this.tabContextMenu.Size = new System.Drawing.Size(181, 76);
             // 
             // baglaToolStripMenuItem
             // 
             this.baglaToolStripMenuItem.Name = "baglaToolStripMenuItem";
-            this.baglaToolStripMenuItem.Size = new System.Drawing.Size(104, 22);
+            this.baglaToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.baglaToolStripMenuItem.Text = "Bağla";
             this.baglaToolStripMenuItem.Click += new System.EventHandler(this.baglaToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            // 
+            // hamisiniBaglaToolStripMenuItem
+            // 
+            this.hamisiniBaglaToolStripMenuItem.Name = "hamisiniBaglaToolStripMenuItem";
+            this.hamisiniBaglaToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.hamisiniBaglaToolStripMenuItem.Text = "Hamısını Bağla";
+            this.hamisiniBaglaToolStripMenuItem.Click += new System.EventHandler(this.hamisiniBaglaToolStripMenuItem_Click);
             // 
             // AnaMenuFormu
             // 
@@ -421,5 +478,8 @@ namespace AzAgroPOS.Teqdimat
         private System.Windows.Forms.PictureBox picUserIcon;
         private System.Windows.Forms.Panel separator2;
         private System.Windows.Forms.Panel separator1;
+        private System.Windows.Forms.ImageList sidebarImageList;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem hamisiniBaglaToolStripMenuItem;
     }
 }
