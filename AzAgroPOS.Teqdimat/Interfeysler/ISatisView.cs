@@ -4,6 +4,7 @@ using AzAgroPOS.Teqdimat.Yardimcilar;
 using AzAgroPOS.Varliglar;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Windows.Forms; // DialogResult üçün əlavə edildi
 
 namespace AzAgroPOS.Teqdimat.Interfeysler
 {
@@ -17,9 +18,11 @@ namespace AzAgroPOS.Teqdimat.Interfeysler
         int? SecilmisMusteriId { get; }
 
         // Hadisələr
+        event EventHandler FormYuklendiIstek;
         event EventHandler MehsulAxtarIstek;
         event EventHandler SebeteElaveEtIstek;
         event EventHandler SebetdenSilIstek;
+        event EventHandler SebetiTemizleIstek;
         event EventHandler MiqdariDeyisIstek;
         event EventHandler SatisiGozletIstek;
         event EventHandler GozleyenSatisiAcIstek;
