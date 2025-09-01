@@ -1,31 +1,21 @@
-﻿// Fayl: AzAgroPOS.Mentiq/DTOs/SatisYaratDto.cs
-namespace AzAgroPOS.Mentiq.DTOs;
-
-using AzAgroPOS.Varliglar;
+﻿using AzAgroPOS.Varliglar;
 using System.Collections.Generic;
 
-/// <summary>
-/// Yeni bir satış yaratmaq üçün Təqdimat qatından Məntiq qatına ötürülən məlumatları saxlayır.
-/// </summary>
-public class SatisYaratDto
+namespace AzAgroPOS.Mentiq.DTOs
 {
-    /// <summary>
-    /// Satış səbətindəki məhsulların siyahısı.
-    /// </summary>
-    public List<SatisSebetiElementiDto> SebetElementleri { get; set; } = new();
+    public class SatisYaratDto
+    {
+        public List<SatisSebetiElementiDto> SebetElementleri { get; set; } = new List<SatisSebetiElementiDto>();
+        public OdenisMetodu OdenisMetodu { get; set; }
 
-    /// <summary>
-    /// Həyata keçirilən ödənişin metodu (Nağd, Kart, Nisyə).
-    /// </summary>
-    public OdenisMetodu OdenisMetodu { get; set; }
-
-    /// <summary>
-    /// Satışın aid olduğu növbənin ID-si.
-    /// </summary>
-    public int NovbeId { get; set; }
-
-    /// <summary>
-    /// Əgər satış nisyədirsə, aid olduğu müştərinin ID-si.
-    /// </summary>
-    public int? MusteriId { get; set; }
+        public int NovbeId { get; set; }
+        
+        public int? MusteriId { get; set; }
+        
+        public decimal UmumiMebleg { get; set; }
+        
+        public decimal Endirim { get; set; }
+        
+        public decimal YekunMebleg { get; set; }
+    }
 }

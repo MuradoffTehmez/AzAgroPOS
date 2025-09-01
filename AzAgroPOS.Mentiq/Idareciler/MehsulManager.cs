@@ -181,39 +181,33 @@ public class MehsulManager
         return EmeliyyatNeticesi<string>.Ugurlu(yeniBarkod);
     }
 
-    /*
-    /// <summary>
-    /// Məhsul üçün unikal Stok Kodu və Barkod yaradır.
-    /// </summary>
-    /// <returns>Yaradılmış unikal kodları olan DTO.</returns>
-    public async Task<EmeliyyatNeticesi<GeneratedCodesDto>> KodlariGeneralasiyaEtAsync()
+    public async Task<EmeliyyatNeticesi<List<MehsulDto>>> AxtarAsync(string axtarisMetni, int sayLimit = 100)
     {
-        string yeniStokKodu;
-        string yeniBarkod;
-        Random random = new Random();
+        var butunMehsullar = await _unitOfWork.Mehsullar.AxtarAsync(m => m.Aktivdir, new[] { "OlcuVahidi" });
 
-        // Unikal Stok Kodu yarat
-        do
+        if (!string.IsNullOrWhiteSpace(axtarisMetni))
         {
-            // Zaman damğası əsasında unikal bir kod yaradırıq (məsələn: SKU1661800000123)
-            yeniStokKodu = "SKU" + DateTimeOffset.Now.ToUnixTimeMilliseconds().ToString();
-        } while ((await _unitOfWork.Mehsullar.AxtarAsync(m => m.StokKodu == yeniStokKodu)).Any());
+            axtarisMetni = axtarisMetni.ToLower();
+            butunMehsullar = butunMehsullar.Where(m =>
+                m.Ad.ToLower().Contains(axtarisMetni) ||
+                (m.StokKodu != null && m.StokKodu.ToLower().Contains(axtarisMetni)) ||
+                (m.Barkod != null && m.Barkod.Contains(axtarisMetni))
+            );
+        }
 
-        // Unikal Barkod yarat
-        do
+        var dtolar = butunMehsullar.Take(sayLimit).Select(m => new MehsulDto
         {
-            // Daxili istifadə üçün 12 rəqəmli təsadüfi bir kod yaradırıq.
-            // "2" prefiksi adətən daxili, mağaza tərəfindən yaradılan barkodlar üçün istifadə olunur.
-            yeniBarkod = "2" + random.NextInt64(100_000_000_000, 999_999_999_999).ToString();
-        } while ((await _unitOfWork.Mehsullar.AxtarAsync(m => m.Barkod == yeniBarkod)).Any());
+            Id = m.Id,
+            Ad = m.Ad,
+            Barkod = m.Barkod,
+            StokKodu = m.StokKodu,
+            PerakendeSatisQiymeti = m.PerakendeSatisQiymeti, // DÜZƏLDİLDİ
+            AnbarMiqdari = m.AnbarMiqdari, // DÜZƏLDİLDİ
+            Aktivdir = m.Aktivdir,
+            OlcuVahidiId = m.OlcuVahidiId,
+            OlcuVahidiAdi = m.OlcuVahidi.Ad // DÜZƏLDİLDİ
+        }).ToList();
 
-        var generatedCodes = new GeneratedCodesDto
-        {
-            StokKodu = yeniStokKodu,
-            Barkod = yeniBarkod
-        };
-
-        return EmeliyyatNeticesi<GeneratedCodesDto>.Ugurlu(generatedCodes);
+        return EmeliyyatNeticesi<List<MehsulDto>>.Ugurlu(dtolar);
     }
-    */
 }

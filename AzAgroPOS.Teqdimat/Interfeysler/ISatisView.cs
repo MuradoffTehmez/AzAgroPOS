@@ -1,38 +1,45 @@
-﻿// Fayl: AzAgroPOS.Teqdimat/Interfeysler/ISatisView.cs
-using AzAgroPOS.Mentiq.DTOs;
+﻿using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Teqdimat.Yardimcilar;
 using AzAgroPOS.Varliglar;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Windows.Forms; // DialogResult üçün əlavə edildi
+using System.Windows.Forms;
 
 namespace AzAgroPOS.Teqdimat.Interfeysler
 {
     public interface ISatisView
     {
-        // View-dan məlumat oxumaq üçün
+        // View-dan məlumat oxumaq
         string AxtarisMetni { get; }
         string SecilmisMehsulMiqdari { get; }
         MehsulDto? SecilmisAxtarisMehsulu { get; }
         SatisSebetiElementiDto? SecilmisSebetElementi { get; }
         int? SecilmisMusteriId { get; }
 
-        // Hadisələr
+        // Hadisələr (Events)
         event EventHandler FormYuklendiIstek;
         event EventHandler MehsulAxtarIstek;
+        event EventHandler<MehsulDto> SuretliSatisIstek;
         event EventHandler SebeteElaveEtIstek;
         event EventHandler SebetdenSilIstek;
         event EventHandler SebetiTemizleIstek;
-        event EventHandler MiqdariDeyisIstek;
         event EventHandler SatisiGozletIstek;
         event EventHandler GozleyenSatisiAcIstek;
         event EventHandler<OdenisMetodu> SatisiTesdiqleIstek;
+        event EventHandler<decimal> IndirimIstek;
+        event EventHandler<int> SebetMiqdarArtirIstek;
+        event EventHandler<int> SebetMiqdarAzaltIstek;
+        event EventHandler YeniMusteriFormuAcIstek;
+        event EventHandler MusteriSiyahisiniYenileIstek;
 
-        // View-a məlumat göndərmək üçün
+        // View-a məlumat göndərmək
+        void SuretliSatisMehsullariniGoster(List<MehsulDto> mehsullar);
+        void GozleyenSatislarSayiniGuncelle(int say);
         void AxtarisNeticeleriniGoster(List<MehsulDto> mehsullar);
         void AxtarisPaneliniSifirla();
         void SebeteMehsullariGoster(BindingList<SatisSebetiElementiDto> sebet);
-        void UmumiMebligiGoster(decimal mebleg);
+        void UmumiMebligiGoster(decimal umumiMebleg, decimal endirim, decimal yekunMebleg);
         void MusteriSiyahisiniGoster(List<MusteriDto> musteriler);
         void GozleyenSatislarMenyusunuGoster(List<GozleyenSatis> gozleyenSatislar);
         void FormuTamSifirla();
