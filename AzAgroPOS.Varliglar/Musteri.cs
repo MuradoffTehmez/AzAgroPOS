@@ -35,4 +35,9 @@ public class Musteri : BazaVarligi
     /// qeyd: Ümumi borc sahəsi, müştərinin nisyə əməliyyatları və maliyyə vəziyyətini izləmək üçün vacibdir.
     /// </summary>
     public decimal UmumiBorc { get; set; }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public decimal KreditLimiti { get; set; } = 0;
 }

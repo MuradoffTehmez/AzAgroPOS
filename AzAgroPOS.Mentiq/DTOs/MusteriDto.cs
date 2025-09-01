@@ -25,4 +25,8 @@ public class MusteriDto
     /// Umumi borc (istifadəçi interfeysində göstəriləcək müştərinin ümumi borcu).
     /// </summary>
     public decimal UmumiBorc { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
+    public decimal KreditLimiti { get; set; }
 }
