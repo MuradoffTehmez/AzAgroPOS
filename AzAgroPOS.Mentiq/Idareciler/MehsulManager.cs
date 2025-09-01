@@ -183,7 +183,7 @@ public class MehsulManager
 
     public async Task<EmeliyyatNeticesi<List<MehsulDto>>> AxtarAsync(string axtarisMetni, int sayLimit = 100)
     {
-        var butunMehsullar = await _unitOfWork.Mehsullar.AxtarAsync(m => m.Aktivdir, new[] { "OlcuVahidi" });
+        var butunMehsullar = await _unitOfWork.Mehsullar.AxtarAsync(m => m.Aktivdir);
 
         if (!string.IsNullOrWhiteSpace(axtarisMetni))
         {
