@@ -8,6 +8,17 @@ using MaterialSkin.Controls;
 
 namespace AzAgroPOS.Teqdimat
 {
+    // Demo üçün AktivSessiya sinifi (əgər mövcud deyilsə)
+    public static class AktivSessiya
+    {
+        public static dynamic AktivIstifadeci { get; set; } = new
+        {
+            TamAd = "Demo İstifadəçi",
+            RolAdi = "Admin"
+        };
+        public static long? AktivNovbeId { get; set; } = null;
+    }
+
     public partial class AnaMenuFormu : BazaForm
     {
         private int animationStep = 0;
@@ -153,47 +164,317 @@ namespace AzAgroPOS.Teqdimat
 
         private void UsaqFormuAc<T>() where T : Form, new()
         {
-            // Mövcud səhifəni yoxlamaq
-            var mövcudSehife = mdiTabControl.TabPages.OfType<TabPage>()
-                .FirstOrDefault(p => p.Tag is T);
-
-            if (mövcudSehife != null)
+            try
             {
-                mdiTabControl.SelectedTab = mövcudSehife;
-                // Aktiv düymə efekti
-                HighlightActiveButton();
+                // Mövcud səhifəni yoxlamaq
+                var mövcudSehife = mdiTabControl.TabPages.OfType<TabPage>()
+                    .FirstOrDefault(p => p.Tag?.GetType() == typeof(T));
+
+                if (mövcudSehife != null)
+                {
+                    mdiTabControl.SelectedTab = mövcudSehife;
+                    HighlightActiveButton();
+                }
+                else
+                {
+                    var yeniForm = new T
+                    {
+                        TopLevel = false,
+                        FormBorderStyle = FormBorderStyle.None,
+                        Dock = DockStyle.Fill
+                    };
+
+                    var yeniSehife = new TabPage(yeniForm.Text ?? typeof(T).Name)
+                    {
+                        Tag = yeniForm,
+                        BackColor = Color.White
+                    };
+
+                    // Tab səhifəsinə form əlavə etmək
+                    yeniSehife.Controls.Add(yeniForm);
+                    mdiTabControl.TabPages.Add(yeniSehife);
+                    mdiTabControl.SelectedTab = yeniSehife;
+                    yeniForm.Show();
+
+                    // Form bağlandıqda tab-ı da silmək
+                    yeniForm.FormClosed += (s, e) =>
+                    {
+                        if (mdiTabControl.TabPages.Contains(yeniSehife))
+                            mdiTabControl.TabPages.Remove(yeniSehife);
+                    };
+
+                    HighlightActiveButton();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                var yeniForm = new T
-                {
-                    TopLevel = false,
-                    FormBorderStyle = FormBorderStyle.None,
-                    Dock = DockStyle.Fill
-                };
-
-                var yeniSehife = new TabPage(yeniForm.Text)
-                {
-                    Tag = yeniForm,
-                    BackColor = Color.White
-                };
-
-                // Tab səhifəsinə form əlavə etmək
-                yeniSehife.Controls.Add(yeniForm);
-                mdiTabControl.TabPages.Add(yeniSehife);
-                mdiTabControl.SelectedTab = yeniSehife;
-                yeniForm.Show();
-
-                // Form bağlandıqda tab-ı da silmək
-                yeniForm.FormClosed += (s, e) =>
-                {
-                    if (mdiTabControl.TabPages.Contains(yeniSehife))
-                        mdiTabControl.TabPages.Remove(yeniSehife);
-                };
-
-                // Aktiv düymə efekti
-                HighlightActiveButton();
+                MessageBox.Show($"Form açılarkən xəta baş verdi: {ex.Message}",
+                    "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        // Demo formu yaratmaq üçün helper metod
+        private void DemoFormuAc(string formAdi)
+        {
+            try
+            {
+                // Mövcud səhifəni yoxlamaq
+                var mövcudSehife = mdiTabControl.TabPages.OfType<TabPage>()
+                    .FirstOrDefault(p => p.Text == formAdi);
+
+                if (mövcudSehife != null)
+                {
+                    mdiTabControl.SelectedTab = mövcudSehife;
+                    HighlightActiveButton();
+                }
+                else
+                {
+                    // Demo form yaratmaq
+                    var demoForm = CreateDemoForm(formAdi);
+
+                    var yeniSehife = new TabPage(formAdi)
+                    {
+                        Tag = demoForm,
+                        BackColor = Color.White
+                    };
+
+                    yeniSehife.Controls.Add(demoForm);
+                    mdiTabControl.TabPages.Add(yeniSehife);
+                    mdiTabControl.SelectedTab = yeniSehife;
+                    demoForm.Show();
+
+                    HighlightActiveButton();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Demo form açılarkən xəta: {ex.Message}",
+                    "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private Form CreateDemoForm(string formAdi)
+        {
+            var demoForm = new Form
+            {
+                Text = formAdi,
+                TopLevel = false,
+                FormBorderStyle = FormBorderStyle.None,
+                Dock = DockStyle.Fill,
+                BackColor = Color.White
+            };
+
+            // Demo məzmun əlavə etmək
+            var mainPanel = new Panel
+            {
+                Dock = DockStyle.Fill,
+                Padding = new Padding(20),
+                BackColor = Color.FromArgb(245, 245, 245)
+            };
+
+            var titleLabel = new Label
+            {
+                Text = formAdi,
+                Font = new Font("Roboto", 24, FontStyle.Bold),
+                ForeColor = Color.FromArgb(33, 33, 33),
+                AutoSize = true,
+                Location = new Point(20, 20)
+            };
+
+            var descLabel = new Label
+            {
+                Text = $"Bu {formAdi} bölməsidir.\nBurada əlaqədar əməliyyatlar həyata keçirilə bilər.",
+                Font = new Font("Roboto", 12),
+                ForeColor = Color.FromArgb(117, 117, 117),
+                AutoSize = true,
+                Location = new Point(20, 70)
+            };
+
+            var demoButton = new MaterialButton
+            {
+                Text = "Demo Əməliyyat",
+                Size = new Size(150, 40),
+                Location = new Point(20, 130),
+                Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained,
+                UseAccentColor = true
+            };
+
+            demoButton.Click += (s, e) =>
+            {
+                MessageBox.Show($"{formAdi} bölməsində demo əməliyyat yerinə yetirildi!",
+                    "Məlumat", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            };
+
+            // Xüsusi məzmun əlavə etmək
+            AddSpecificContent(formAdi, mainPanel);
+
+            mainPanel.Controls.AddRange(new Control[] { titleLabel, descLabel, demoButton });
+            demoForm.Controls.Add(mainPanel);
+
+            return demoForm;
+        }
+
+        private void AddSpecificContent(string formAdi, Panel mainPanel)
+        {
+            switch (formAdi)
+            {
+                case "Növbəni İdarə Et":
+                    AddNovbeContent(mainPanel);
+                    break;
+                case "Məhsullar":
+                    AddMehsulContent(mainPanel);
+                    break;
+                case "Yeni Satış":
+                    AddSatisContent(mainPanel);
+                    break;
+                case "Nisyə / Borc":
+                    AddNisyeContent(mainPanel);
+                    break;
+                case "Təmir":
+                    AddTemirContent(mainPanel);
+                    break;
+                case "İstifadəçilər":
+                    AddIstifadeciContent(mainPanel);
+                    break;
+                default:
+                    AddDefaultContent(mainPanel, formAdi);
+                    break;
+            }
+        }
+
+        private void AddNovbeContent(Panel panel)
+        {
+            var statusLabel = new Label
+            {
+                Text = $"Növbə Vəziyyəti: {(AktivSessiya.AktivNovbeId.HasValue ? "Açıq" : "Bağlı")}",
+                Font = new Font("Roboto", 14, FontStyle.Bold),
+                ForeColor = AktivSessiya.AktivNovbeId.HasValue ? Color.Green : Color.Red,
+                Location = new Point(20, 180),
+                AutoSize = true
+            };
+            panel.Controls.Add(statusLabel);
+        }
+
+        private void AddMehsulContent(Panel panel)
+        {
+            var infoLabel = new Label
+            {
+                Text = "• Məhsul əlavə et\n• Məhsul məlumatlarını yenilə\n• Qiymətləri idarə et\n• Kateqoriya təyin et",
+                Font = new Font("Roboto", 11),
+                ForeColor = Color.FromArgb(85, 85, 85),
+                Location = new Point(20, 180),
+                AutoSize = true
+            };
+            panel.Controls.Add(infoLabel);
+        }
+
+        private void AddSatisContent(Panel panel)
+        {
+            var enabledText = AktivSessiya.AktivNovbeId.HasValue
+                ? "Satış əməliyyatları mövcuddur"
+                : "Əvvəlcə növbə açın";
+
+            var statusLabel = new Label
+            {
+                Text = enabledText,
+                Font = new Font("Roboto", 12),
+                ForeColor = AktivSessiya.AktivNovbeId.HasValue ? Color.Green : Color.Orange,
+                Location = new Point(20, 180),
+                AutoSize = true
+            };
+            panel.Controls.Add(statusLabel);
+        }
+
+        private void AddNisyeContent(Panel panel)
+        {
+            var infoLabel = new Label
+            {
+                Text = "• Müştəri borc məlumatları\n• Ödəniş tarixçəsi\n• Nisyə limitləri\n• Xatırlatmalar",
+                Font = new Font("Roboto", 11),
+                ForeColor = Color.FromArgb(85, 85, 85),
+                Location = new Point(20, 180),
+                AutoSize = true
+            };
+            panel.Controls.Add(infoLabel);
+        }
+
+        private void AddTemirContent(Panel panel)
+        {
+            var infoLabel = new Label
+            {
+                Text = "• Təmir sifarişləri\n• Təmir tarixçəsi\n• Ehtiyat hissələri\n• Xərc hesabatları",
+                Font = new Font("Roboto", 11),
+                ForeColor = Color.FromArgb(85, 85, 85),
+                Location = new Point(20, 180),
+                AutoSize = true
+            };
+            panel.Controls.Add(infoLabel);
+        }
+
+        private void AddIstifadeciContent(Panel panel)
+        {
+            var infoLabel = new Label
+            {
+                Text = "• Yeni istifadəçi əlavə et\n• İcazələri idarə et\n• Parol dəyişikliyi\n• Aktivlik logları",
+                Font = new Font("Roboto", 11),
+                ForeColor = Color.FromArgb(85, 85, 85),
+                Location = new Point(20, 180),
+                AutoSize = true
+            };
+            panel.Controls.Add(infoLabel);
+        }
+
+        private void AddDefaultContent(Panel panel, string formAdi)
+        {
+            var infoLabel = new Label
+            {
+                Text = $"{formAdi} bölməsi hazırlanır...\nTezliklə istifadəyə veriləcək.",
+                Font = new Font("Roboto", 11),
+                ForeColor = Color.FromArgb(117, 117, 117),
+                Location = new Point(20, 180),
+                AutoSize = true
+            };
+            panel.Controls.Add(infoLabel);
+        }
+
+        //private void HighlightActiveButton()
+        //{
+        //    // Əvvəlki aktiv düyməni normal vəziyyətə gətirmək
+        //    if (activeButton != null)
+        //    {
+        //        ResetButtonStyle(activeButton);
+        //    }
+
+        //    // Yeni aktiv düyməni müəyyən etmək
+        //    var selectedTab = mdiTabControl.SelectedTab;
+        //    if (selectedTab?.Tag is Form form)
+        //    {
+        //        string formType = form.GetType().Name;
+        //        activeButton = GetButtonByFormType(formType);
+
+        //        if (activeButton != null)
+        //        {
+        //            SetActiveButtonStyle(activeButton);
+        //        }
+        //    }
+        //}
+
+        private MaterialButton GetButtonByFormType(string formType)
+        {
+            return formType switch
+            {
+                "Məhsullar" => btnMehsulIdareetme,
+                "Yeni Satış" => btnYeniSatis,
+                "Nisyə / Borc" => btnNisyeIdareetme,
+                "Təmir" => btnTemirIdareetme,
+                "İstifadəçilər" => btnIstifadeciIdareetme,
+                "Günlük Hesabat" => btnHesabatlar,
+                "Məhsul Hesabatı" => btnMehsulSatisHesabati,
+                "Z-Hesabat Arxivi" => btnZHesabatArxivi,
+                "Barkod Çapı" => btnBarkodCapi,
+                "Anbar Qalığı" => btnAnbarQaliqHesabati,
+                _ => null
+            };
         }
 
         private void HighlightActiveButton()
@@ -206,33 +487,16 @@ namespace AzAgroPOS.Teqdimat
 
             // Yeni aktiv düyməni müəyyən etmək
             var selectedTab = mdiTabControl.SelectedTab;
-            if (selectedTab?.Tag is Form form)
+            if (selectedTab != null)
             {
-                string formType = form.GetType().Name;
-                activeButton = GetButtonByFormType(formType);
+                string tabText = selectedTab.Text;
+                activeButton = GetButtonByFormType(tabText);
 
                 if (activeButton != null)
                 {
                     SetActiveButtonStyle(activeButton);
                 }
             }
-        }
-
-        private MaterialButton GetButtonByFormType(string formType)
-        {
-            return formType switch
-            {
-                "MehsulIdareetmeFormu" => btnMehsulIdareetme,
-                "SatisFormu" => btnYeniSatis,
-                "NisyeIdareetmeFormu" => btnNisyeIdareetme,
-                "TemirIdareetmeFormu" => btnTemirIdareetme,
-                "IstifadeciIdareetmeFormu" => btnIstifadeciIdareetme,
-                "HesabatFormu" => btnHesabatlar,
-                "MehsulSatisHesabatFormu" => btnMehsulSatisHesabati,
-                "ZHesabatArxivFormu" => btnZHesabatArxivi,
-                "BarkodCapiFormu" => btnBarkodCapi,
-                _ => null
-            };
         }
 
         private void SetActiveButtonStyle(MaterialButton btn)
