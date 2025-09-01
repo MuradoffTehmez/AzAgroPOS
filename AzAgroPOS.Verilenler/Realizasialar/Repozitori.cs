@@ -1,6 +1,7 @@
 ﻿using AzAgroPOS.Verilenler.Kontekst;
 using AzAgroPOS.Verilenler.Interfeysler;
 using Microsoft.EntityFrameworkCore;
+using AzAgroPOS.Varliglar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace AzAgroPOS.Verilenler.Realizasialar
 {
-    public class Repozitori<T> : IRepozitori<T> where T : class
+    public class Repozitori<T> : IRepozitori<T> where T : BazaVarligi
     {
         protected readonly AzAgroPOSDbContext _kontekst;
         private readonly DbSet<T> _dbSet;

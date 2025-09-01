@@ -8,7 +8,7 @@ public class MehsulUzreSatisDetayDto
 {
     public string StokKodu { get; set; } = string.Empty;
     public string MehsulAdi { get; set; } = string.Empty;
-    public int CemiSatilanMiqdar { get; set; }
+    public decimal CemiSatilanMiqdar { get; set; }
     public decimal CemiMebleg { get; set; }
 
     // Cədvəldə daha səliqəli görünsün deyə formatlanmış xüsusiyyət

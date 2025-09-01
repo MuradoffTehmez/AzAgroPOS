@@ -57,7 +57,7 @@ public class SatisManager
             var mehsul = await _unitOfWork.Mehsullar.GetirAsync(element.MehsulId);
             if (mehsul != null)
             {
-                mehsul.MovcudSay -= element.Miqdar;
+                mehsul.MovcudSay -= (int)element.Miqdar;
                 _unitOfWork.Mehsullar.Yenile(mehsul);
             }
         }
