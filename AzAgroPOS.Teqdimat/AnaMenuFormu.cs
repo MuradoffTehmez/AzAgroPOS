@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using System.Windows.Forms;
 using AzAgroPOS.Teqdimat.Yardimcilar;
+using MaterialSkin.Controls;
 
 namespace AzAgroPOS.Teqdimat
 {
@@ -12,36 +13,77 @@ namespace AzAgroPOS.Teqdimat
         {
             InitializeComponent();
             this.Load += AnaMenuFormu_Load;
-
-            // Formu MDI Konteynerinə çeviririk
-            this.IsMdiContainer = true;
         }
 
         private void AnaMenuFormu_Load(object sender, EventArgs e)
         {
             IcazeleriYoxla();
+            mdiTabControl.TabPages.Clear();
         }
 
         private void UsaqFormuAc<T>() where T : Form, new()
         {
-            var aciqForm = this.MdiChildren.FirstOrDefault(f => f is T);
+           
+            var mövcudSehife = mdiTabControl.TabPages.OfType<TabPage>().FirstOrDefault(p => p.Tag is T);
 
-            if (aciqForm != null)
+            if (mövcudSehife != null)
             {
-                aciqForm.BringToFront();
+                mdiTabControl.SelectedTab = mövcudSehife;
             }
             else
             {
-                T yeniForm = new T
+                var yeniForm = new T
                 {
-                    MdiParent = this,
-                    WindowState = FormWindowState.Maximized
+                    TopLevel = false,
+                    FormBorderStyle = FormBorderStyle.None, 
+                    Dock = DockStyle.Fill 
                 };
-                yeniForm.Show();
-                this.LayoutMdi(MdiLayout.Cascade);
+
+                var yeniSehife = new TabPage(yeniForm.Text) 
+                {
+                    Tag = yeniForm 
+                };
+
+                yeniSehife.Controls.Add(yeniForm); 
+                mdiTabControl.TabPages.Add(yeniSehife);
+                mdiTabControl.SelectedTab = yeniSehife;
+                yeniForm.Show(); 
             }
         }
 
+        
+        private void mdiTabControl_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                for (int i = 0; i < mdiTabControl.TabCount; i++)
+                {
+                    Rectangle r = mdiTabControl.GetTabRect(i);
+                    if (r.Contains(e.Location))
+                    {
+                        mdiTabControl.SelectedIndex = i;
+                        tabContextMenu.Show(mdiTabControl, e.Location);
+                    }
+                }
+            }
+        }
+
+        private void baglaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (mdiTabControl.SelectedIndex != -1)
+            {
+                var secilmisSehife = mdiTabControl.SelectedTab;
+               
+                if (secilmisSehife.Controls.Count > 0 && secilmisSehife.Controls[0] is Form form)
+                {
+                    form.Close();
+                }
+                
+                mdiTabControl.TabPages.Remove(secilmisSehife);
+            }
+        }
+
+        #region Düymə Klik Hadisələri (dəyişməyib)
         private void IcazeleriYoxla()
         {
             var istifadeci = AktivSessiya.AktivIstifadeci;
@@ -52,13 +94,10 @@ namespace AzAgroPOS.Teqdimat
                 return;
             }
 
-            this.Text = $"AzAgroPOS - Ana Menyu (İstifadəçi: {istifadeci.TamAd})";
+            this.Text = $"AzAgroPOS - (İstifadəçi: {istifadeci.TamAd})";
             btnYeniSatis.Enabled = AktivSessiya.AktivNovbeId.HasValue;
 
-            if (istifadeci.RolAdi == "Admin")
-            {
-                return;
-            }
+            if (istifadeci.RolAdi == "Admin") return;
 
             if (istifadeci.RolAdi == "Kassir")
             {
@@ -69,67 +108,27 @@ namespace AzAgroPOS.Teqdimat
             }
             else
             {
-                btnMehsulIdareetme.Enabled = false;
-                btnYeniSatis.Enabled = false;
-                btnNisyeIdareetme.Enabled = false;
-                btnTemirIdareetme.Enabled = false;
-                btnNovbeIdareetme.Enabled = false;
-                btnIstifadeciIdareetme.Enabled = false;
+                foreach (Control c in pnlMenu.Controls)
+                {
+                    if (c is MaterialButton) c.Enabled = false;
+                }
             }
         }
 
-        private void btnMehsulIdareetme_Click(object sender, EventArgs e)
-        {
-            UsaqFormuAc<MehsulIdareetmeFormu>();
-        }
-
-        private void btnYeniSatis_Click(object sender, EventArgs e)
-        {
-            UsaqFormuAc<SatisFormu>();
-        }
-
-        private void btnNisyeIdareetme_Click(object sender, EventArgs e)
-        {
-            UsaqFormuAc<NisyeIdareetmeFormu>();
-        }
-
-        private void btnTemirIdareetme_Click(object sender, EventArgs e)
-        {
-            UsaqFormuAc<TemirIdareetmeFormu>();
-        }
-
+        private void btnMehsulIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<MehsulIdareetmeFormu>();
+        private void btnYeniSatis_Click(object sender, EventArgs e) => UsaqFormuAc<SatisFormu>();
+        private void btnNisyeIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<NisyeIdareetmeFormu>();
+        private void btnTemirIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<TemirIdareetmeFormu>();
         private void btnNovbeIdareetme_Click(object sender, EventArgs e)
         {
-            using (var form = new NovbeIdareetmesiFormu())
-            {
-                form.ShowDialog();
-            }
+            using (var form = new NovbeIdareetmesiFormu()) { form.ShowDialog(); }
             IcazeleriYoxla();
         }
-
-        private void btnIstifadeciIdareetme_Click(object sender, EventArgs e)
-        {
-            UsaqFormuAc<IstifadeciIdareetmeFormu>();
-        }
-
-        private void btnHesabatlar_Click(object sender, EventArgs e)
-        {
-            UsaqFormuAc<HesabatFormu>();
-        }
-
-        private void btnMehsulSatisHesabati_Click(object sender, EventArgs e)
-        {
-            UsaqFormuAc<MehsulSatisHesabatFormu>();
-        }
-
-        private void btnZHesabatArxivi_Click(object sender, EventArgs e)
-        {
-            UsaqFormuAc<ZHesabatArxivFormu>();
-        }
-
-        private void btnBarkodCapi_Click(object sender, EventArgs e)
-        {
-            UsaqFormuAc<BarkodCapiFormu>();
-        }
+        private void btnIstifadeciIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<IstifadeciIdareetmeFormu>();
+        private void btnHesabatlar_Click(object sender, EventArgs e) => UsaqFormuAc<HesabatFormu>();
+        private void btnMehsulSatisHesabati_Click(object sender, EventArgs e) => UsaqFormuAc<MehsulSatisHesabatFormu>();
+        private void btnZHesabatArxivi_Click(object sender, EventArgs e) => UsaqFormuAc<ZHesabatArxivFormu>();
+        private void btnBarkodCapi_Click(object sender, EventArgs e) => UsaqFormuAc<BarkodCapiFormu>();
+        #endregion
     }
 }
