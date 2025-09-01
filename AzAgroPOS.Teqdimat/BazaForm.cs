@@ -23,7 +23,7 @@ public partial class BazaForm : MaterialForm
             Primary.Indigo500,
             Primary.Indigo700,
             Primary.Indigo100,
-            Accent.Pink200,
+            Accent.LightBlue400,
             TextShade.WHITE
         );
     }
