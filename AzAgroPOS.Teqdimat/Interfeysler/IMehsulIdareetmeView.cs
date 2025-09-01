@@ -32,6 +32,7 @@ public interface IMehsulIdareetmeView
     event EventHandler Axtaris_Istek;
     event EventHandler StokKoduGeneralasiyaIstek;
     event EventHandler BarkodGeneralasiyaIstek;
+    event EventHandler Kopyala_Istek;
 
     DialogResult MesajGoster(string mesaj, string basliq, MessageBoxButtons düymələr, MessageBoxIcon ikon);
 }

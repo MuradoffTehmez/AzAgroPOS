@@ -1,109 +1,124 @@
 ﻿// Fayl: AzAgroPOS.Teqdimat/MehsulIdareetmeFormu.cs
-namespace AzAgroPOS.Teqdimat;
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
-//... using-lər
 using AzAgroPOS.Varliglar;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Forms;
 
-public partial class MehsulIdareetmeFormu : BazaForm, IMehsulIdareetmeView
+namespace AzAgroPOS.Teqdimat
 {
-    private readonly MehsulPresenter _presenter;
-
-    public MehsulIdareetmeFormu()
+    public partial class MehsulIdareetmeFormu : BazaForm, IMehsulIdareetmeView
     {
-        InitializeComponent();
-        _presenter = new MehsulPresenter(this);
-    }
+        private readonly MehsulPresenter _presenter;
 
-    #region View Implementasiyası
-    public string MehsulId { get => txtId.Text; set => txtId.Text = value; }
-    public string MehsulAdi { get => txtAd.Text; set => txtAd.Text = value; }
-    public string StokKodu { get => txtStokKodu.Text; set => txtStokKodu.Text = value; }
-    public string Barkod { get => txtBarkod.Text; set => txtBarkod.Text = value; }
-    public string PerakendeSatisQiymeti { get => txtPerakendeSatisQiymeti.Text; set => txtPerakendeSatisQiymeti.Text = value; }
-    public string TopdanSatisQiymeti { get => txtTopdanSatisQiymeti.Text; set => txtTopdanSatisQiymeti.Text = value; }
-    public string TekEdedSatisQiymeti { get => txtTekEdedSatisQiymeti.Text; set => txtTekEdedSatisQiymeti.Text = value; }
-    public string AlisQiymeti { get => txtAlisQiymeti.Text; set => txtAlisQiymeti.Text = value; }
-    public string MovcudSay { get => txtMevcudSay.Text; set => txtMevcudSay.Text = value; }
-    public OlcuVahidi SecilmisOlcuVahidi => (OlcuVahidi)cmbOlcuVahidi.SelectedItem;
-    public string AxtarisMetni { get => txtAxtar.Text; set => txtAxtar.Text = value; }
-
-    public event EventHandler FormYuklendi_Istek;
-    public event EventHandler MehsulElaveEt_Istek;
-    public event EventHandler MehsulYenile_Istek;
-    public event EventHandler MehsulSil_Istek;
-    public event EventHandler FormuTemizle_Istek;
-    public event EventHandler CedvelSecimiDeyisdi_Istek;
-    public event EventHandler Axtaris_Istek;
-    public event EventHandler StokKoduGeneralasiyaIstek;
-    public event EventHandler BarkodGeneralasiyaIstek;
-
-    public void OlcuVahidleriniGoster(Array olcuVahidleri)
-    {
-        cmbOlcuVahidi.DataSource = olcuVahidleri;
-        if (cmbOlcuVahidi.Items.Count > 0)
-            cmbOlcuVahidi.SelectedIndex = 0;
-    }
-
-    public void MehsullariGoster(IEnumerable<MehsulDto> mehsullar)
-    {
-        var mehsulSiyahisi = mehsullar?.ToList() ?? new List<MehsulDto>();
-        dgvMehsullar.SelectionChanged -= dgvMehsullar_SelectionChanged;
-        dgvMehsullar.DataSource = mehsulSiyahisi;
-        dgvMehsullar.SelectionChanged += dgvMehsullar_SelectionChanged;
-
-        if (dgvMehsullar.Columns.Count > 0)
+        public MehsulIdareetmeFormu()
         {
-            string[] gorunenSutunlar = { "Ad", "StokKodu", "PerakendeSatisQiymetiStr", "MovcudSay", "OlcuVahidiStr" };
-            foreach (DataGridViewColumn column in dgvMehsullar.Columns)
+            InitializeComponent();
+            _presenter = new MehsulPresenter(this);
+        }
+
+        #region View Xassə və Hadisələri (Properties and Events)
+        public string MehsulId { get => txtId.Text; set => txtId.Text = value; }
+        public string MehsulAdi { get => txtAd.Text; set => txtAd.Text = value; }
+        public string StokKodu { get => txtStokKodu.Text; set => txtStokKodu.Text = value; }
+        public string Barkod { get => txtBarkod.Text; set => txtBarkod.Text = value; }
+        public string PerakendeSatisQiymeti { get => txtPerakendeSatisQiymeti.Text; set => txtPerakendeSatisQiymeti.Text = value; }
+        public string TopdanSatisQiymeti { get => txtTopdanSatisQiymeti.Text; set => txtTopdanSatisQiymeti.Text = value; }
+        public string TekEdedSatisQiymeti { get => txtTekEdedSatisQiymeti.Text; set => txtTekEdedSatisQiymeti.Text = value; }
+        public string AlisQiymeti { get => txtAlisQiymeti.Text; set => txtAlisQiymeti.Text = value; }
+        public string MovcudSay { get => txtMevcudSay.Text; set => txtMevcudSay.Text = value; }
+        public OlcuVahidi SecilmisOlcuVahidi => (OlcuVahidi)cmbOlcuVahidi.SelectedItem;
+        public string AxtarisMetni { get => txtAxtar.Text; set => txtAxtar.Text = value; }
+
+        public event EventHandler FormYuklendi_Istek;
+        public event EventHandler MehsulElaveEt_Istek;
+        public event EventHandler MehsulYenile_Istek;
+        public event EventHandler MehsulSil_Istek;
+        public event EventHandler FormuTemizle_Istek;
+        public event EventHandler CedvelSecimiDeyisdi_Istek;
+        public event EventHandler Axtaris_Istek;
+        public event EventHandler StokKoduGeneralasiyaIstek;
+        public event EventHandler BarkodGeneralasiyaIstek;
+        public event EventHandler Kopyala_Istek;
+        #endregion
+
+        #region View Metodları
+        public void OlcuVahidleriniGoster(Array olcuVahidleri)
+        {
+            cmbOlcuVahidi.DataSource = olcuVahidleri;
+            if (cmbOlcuVahidi.Items.Count > 0)
+                cmbOlcuVahidi.SelectedIndex = 0;
+        }
+
+        public void MehsullariGoster(IEnumerable<MehsulDto> mehsullar)
+        {
+            var mehsulSiyahisi = mehsullar?.ToList() ?? new List<MehsulDto>();
+            dgvMehsullar.SelectionChanged -= dgvMehsullar_SelectionChanged;
+            dgvMehsullar.DataSource = mehsulSiyahisi;
+            dgvMehsullar.SelectionChanged += dgvMehsullar_SelectionChanged;
+
+            if (dgvMehsullar.Columns.Count > 0)
             {
-                if (!gorunenSutunlar.Contains(column.Name))
+                string[] gorunenSutunlar = { "Ad", "StokKodu", "PerakendeSatisQiymetiStr", "MovcudSay", "OlcuVahidiStr" };
+                foreach (DataGridViewColumn column in dgvMehsullar.Columns)
                 {
-                    column.Visible = false;
+                    if (!gorunenSutunlar.Contains(column.Name))
+                    {
+                        column.Visible = false;
+                    }
+                    column.SortMode = DataGridViewColumnSortMode.Automatic;
                 }
-                column.SortMode = DataGridViewColumnSortMode.Automatic;
+
+                dgvMehsullar.Columns["Ad"].HeaderText = "Məhsulun Adı";
+                dgvMehsullar.Columns["StokKodu"].HeaderText = "Stok Kodu";
+                dgvMehsullar.Columns["PerakendeSatisQiymetiStr"].HeaderText = "Pərakəndə Qiymət";
+                dgvMehsullar.Columns["MovcudSay"].HeaderText = "Mövcud Say";
+                dgvMehsullar.Columns["OlcuVahidiStr"].HeaderText = "Ölçü Vahidi";
             }
-
-            dgvMehsullar.Columns["Ad"].HeaderText = "Məhsulun Adı";
-            dgvMehsullar.Columns["StokKodu"].HeaderText = "Stok Kodu";
-            dgvMehsullar.Columns["PerakendeSatisQiymetiStr"].HeaderText = "Pərakəndə Qiymət";
-            dgvMehsullar.Columns["MovcudSay"].HeaderText = "Mövcud Say";
-            dgvMehsullar.Columns["OlcuVahidiStr"].HeaderText = "Ölçü Vahidi";
         }
-    }
 
-    public DialogResult MesajGoster(string mesaj, string basliq, MessageBoxButtons düymələr, MessageBoxIcon ikon)
-    {
-        return MessageBox.Show(mesaj, basliq, düymələr, ikon);
-    }
-    #endregion
-
-    #region Hadisə Ötürücüləri
-    private void MehsulIdareetmeFormu_Load(object sender, EventArgs e) => FormYuklendi_Istek?.Invoke(this, EventArgs.Empty);
-    private void btnElaveEt_Click(object sender, EventArgs e) => MehsulElaveEt_Istek?.Invoke(this, EventArgs.Empty);
-    private void btnYenile_Click(object sender, EventArgs e) => MehsulYenile_Istek?.Invoke(this, EventArgs.Empty);
-    private void btnSil_Click(object sender, EventArgs e) => MehsulSil_Istek?.Invoke(this, EventArgs.Empty);
-    private void btnTemizle_Click(object sender, EventArgs e)
-    {
-        FormuTemizle_Istek?.Invoke(this, EventArgs.Empty);
-        dgvMehsullar.ClearSelection();
-        if (cmbOlcuVahidi.Items.Count > 0) cmbOlcuVahidi.SelectedIndex = 0;
-        txtAd.Focus();
-        btnElaveEt.Text = "Yeni Məhsulu Yadda Saxla";
-    }
-    private void btnStokKoduYarat_Click(object sender, EventArgs e) => StokKoduGeneralasiyaIstek?.Invoke(this, EventArgs.Empty);
-    private void btnBarkodYarat_Click(object sender, EventArgs e) => BarkodGeneralasiyaIstek?.Invoke(this, EventArgs.Empty);
-    private void dgvMehsullar_SelectionChanged(object sender, EventArgs e)
-    {
-        if (dgvMehsullar.CurrentRow != null && dgvMehsullar.CurrentRow.DataBoundItem is MehsulDto secilmisMehsul)
+        public DialogResult MesajGoster(string mesaj, string basliq, MessageBoxButtons düymələr, MessageBoxIcon ikon)
         {
-            txtId.Text = secilmisMehsul.Id.ToString();
-            cmbOlcuVahidi.SelectedItem = secilmisMehsul.OlcuVahidi;
-            CedvelSecimiDeyisdi_Istek?.Invoke(this, EventArgs.Empty);
-            btnElaveEt.Text = "Yeni Məhsul";
+            return MessageBox.Show(mesaj, basliq, düymələr, ikon);
         }
+        #endregion
+
+        #region Hadisə Ötürücüləri (Event Handlers)
+        private void MehsulIdareetmeFormu_Load(object sender, EventArgs e) => FormYuklendi_Istek?.Invoke(this, EventArgs.Empty);
+        private void btnElaveEt_Click(object sender, EventArgs e) => MehsulElaveEt_Istek?.Invoke(this, EventArgs.Empty);
+        private void btnYenile_Click(object sender, EventArgs e) => MehsulYenile_Istek?.Invoke(this, EventArgs.Empty);
+        private void btnSil_Click(object sender, EventArgs e) => MehsulSil_Istek?.Invoke(this, EventArgs.Empty);
+        private void btnTemizle_Click(object sender, EventArgs e)
+        {
+            FormuTemizle_Istek?.Invoke(this, EventArgs.Empty);
+            dgvMehsullar.ClearSelection();
+            if (cmbOlcuVahidi.Items.Count > 0) cmbOlcuVahidi.SelectedIndex = 0;
+            txtAd.Focus();
+            btnElaveEt.Text = "Yeni Məhsulu Yadda Saxla";
+            btnKopyala.Enabled = false;
+        }
+        private void btnStokKoduYarat_Click(object sender, EventArgs e) => StokKoduGeneralasiyaIstek?.Invoke(this, EventArgs.Empty);
+        private void btnBarkodYarat_Click(object sender, EventArgs e) => BarkodGeneralasiyaIstek?.Invoke(this, EventArgs.Empty);
+        private void btnKopyala_Click(object sender, EventArgs e) => Kopyala_Istek?.Invoke(this, EventArgs.Empty);
+        private void dgvMehsullar_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dgvMehsullar.CurrentRow != null && dgvMehsullar.CurrentRow.DataBoundItem is MehsulDto secilmisMehsul)
+            {
+                txtId.Text = secilmisMehsul.Id.ToString();
+                cmbOlcuVahidi.SelectedItem = secilmisMehsul.OlcuVahidi;
+                CedvelSecimiDeyisdi_Istek?.Invoke(this, EventArgs.Empty);
+                btnElaveEt.Text = "Yeni Məhsul";
+                btnKopyala.Enabled = true;
+            }
+            else
+            {
+                btnKopyala.Enabled = false;
+            }
+        }
+        private void txtAxtar_TextChanged(object sender, EventArgs e) => Axtaris_Istek?.Invoke(this, EventArgs.Empty);
+        #endregion
     }
-    private void txtAxtar_TextChanged(object sender, EventArgs e) => Axtaris_Istek?.Invoke(this, EventArgs.Empty);
-    #endregion
 }
