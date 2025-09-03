@@ -22,6 +22,7 @@ public class Temir : BazaVarligi
     /// </summary>
     public string MusteriTelefonu { get; set; } = string.Empty;
 
+
     // Cihaz Məlumatları
     /// <summary>
     /// Cihazın növü (məsələn, telefon, planşet, kompüter və s.).

@@ -68,6 +68,8 @@ public class AzAgroPOSDbContext : DbContext
     /// </summary>
     public DbSet<Novbe> Novbeler { get; set; }
 
+    //public DbSet<TemirMerhelesi> TemirMerheleleri { get; set; }
+
 
     /// <summary>
     /// OnConfiguring metodu, verilənlər bazası bağlantı sətrini və digər konfiqurasiyaları təyin etmək üçün istifadə olunur.

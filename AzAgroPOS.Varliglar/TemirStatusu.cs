@@ -29,3 +29,19 @@ public enum TemirStatusu
     /// </summary>
     TəhvilVerildi = 4
 }
+
+
+
+/*namespace AzAgroPOS.Varliglar
+{
+    public enum TemirStatusu
+    {
+        Gozlemede, 
+        Diaqnostika,
+        TemirEdilir,
+        Hazirdir,
+        LegvEdilib,
+        MusteriyeVerildi
+    }
+}
+*/

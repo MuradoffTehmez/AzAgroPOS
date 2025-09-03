@@ -14,5 +14,8 @@ namespace AzAgroPOS.Verilenler.Interfeysler
         Task ElaveEtAsync(T varliq);
         void Yenile(T varliq);
         void Sil(T varliq);
+        //Task<T> IdyeGoreGetirAsync(int id, string includeProperties = null);
+        //Task<IEnumerable<T>> HamisiniGetirAsync(Expression<Func<T, bool>> filter = null, string includeProperties = null);
+        //Task ElaveEtAsync(T varliq);
     }
 }
