@@ -4,6 +4,7 @@ using AzAgroPOS.Verilenler.Kontekst;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AzAgroPOS.Verilenler.Migrations
 {
     [DbContext(typeof(AzAgroPOSDbContext))]
-    partial class AzAgroPOSDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250901212741_OlcuVahidiDeyerleriniDuzelt")]
+    partial class OlcuVahidiDeyerleriniDuzelt
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,7 +52,7 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.HasIndex("RolId");
 
-                    b.ToTable("Istifadeciler", (string)null);
+                    b.ToTable("Istifadeciler");
 
                     b.HasData(
                         new
@@ -106,7 +109,7 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Mehsullar", (string)null);
+                    b.ToTable("Mehsullar");
 
                     b.HasData(
                         new
@@ -183,7 +186,7 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Musteriler", (string)null);
+                    b.ToTable("Musteriler");
                 });
 
             modelBuilder.Entity("AzAgroPOS.Varliglar.NisyeHereketi", b =>
@@ -218,7 +221,7 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.HasIndex("SatisId");
 
-                    b.ToTable("NisyeHereketleri", (string)null);
+                    b.ToTable("NisyeHereketleri");
                 });
 
             modelBuilder.Entity("AzAgroPOS.Varliglar.Novbe", b =>
@@ -254,7 +257,7 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.HasIndex("IsciId");
 
-                    b.ToTable("Novbeler", (string)null);
+                    b.ToTable("Novbeler");
                 });
 
             modelBuilder.Entity("AzAgroPOS.Varliglar.Rol", b =>
@@ -271,7 +274,7 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Rollar", (string)null);
+                    b.ToTable("Rollar");
 
                     b.HasData(
                         new
@@ -315,7 +318,7 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.HasIndex("NovbeId");
 
-                    b.ToTable("Satislar", (string)null);
+                    b.ToTable("Satislar");
                 });
 
             modelBuilder.Entity("AzAgroPOS.Varliglar.SatisDetali", b =>
@@ -347,7 +350,7 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.HasIndex("SatisId");
 
-                    b.ToTable("SatisDetallari", (string)null);
+                    b.ToTable("SatisDetallari");
                 });
 
             modelBuilder.Entity("AzAgroPOS.Varliglar.Temir", b =>
@@ -396,7 +399,7 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.HasIndex("IsciId");
 
-                    b.ToTable("TemirSifarisleri", (string)null);
+                    b.ToTable("TemirSifarisleri");
                 });
 
             modelBuilder.Entity("AzAgroPOS.Varliglar.Istifadeci", b =>

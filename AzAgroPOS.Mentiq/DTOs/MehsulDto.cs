@@ -1,5 +1,5 @@
-﻿// AzAgroPOS.Mentiq/DTOs/MehsulDto.cs
-using AzAgroPOS.Varliglar; // Eklendi
+﻿// Fayl: AzAgroPOS.Mentiq/DTOs/MehsulDto.cs
+using AzAgroPOS.Varliglar;
 
 namespace AzAgroPOS.Mentiq.DTOs
 {
@@ -13,13 +13,15 @@ namespace AzAgroPOS.Mentiq.DTOs
         public decimal PerakendeSatisQiymeti { get; set; }
         public string PerakendeSatisQiymetiStr => $"{PerakendeSatisQiymeti:N2} AZN";
         public decimal TopdanSatisQiymeti { get; set; }
-        public decimal TekEdedSatisQiymeti { get; set; } 
-        public int MovcudSay { get; set; } 
+        public decimal TekEdedSatisQiymeti { get; set; }
+        public int MovcudSay { get; set; }
         public bool Aktivdir { get; set; }
         public OlcuVahidi OlcuVahidi { get; set; }
         public decimal AnbarMiqdari { get; set; }
-        public int OlcuVahidiId { get; set; }
-        public string OlcuVahidiAdi { get; set; } = string.Empty;
-        public string OlcuVahidiStr => OlcuVahidi.ToString(); 
+
+        // --- BU SƏTİRLƏR DƏYİŞDİRİLDİ ---
+        // public int OlcuVahidiId { get; set; } // Bu sətir silindi
+        public string OlcuVahidiAdi => OlcuVahidi.ToString(); // Bu sətir sadələşdirilib
+        public string OlcuVahidiStr => OlcuVahidi.ToString();
     }
 }

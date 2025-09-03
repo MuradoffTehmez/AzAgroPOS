@@ -6,7 +6,6 @@ namespace AzAgroPOS.Varliglar
         public string Ad { get; set; } = string.Empty;
         public string? Barkod { get; set; }
         public string? StokKodu { get; set; }
-        public int OlcuVahidiId { get; set; }
         public OlcuVahidi OlcuVahidi { get; set; }
         public decimal AlisQiymeti { get; set; }
         public decimal PerakendeSatisQiymeti { get; set; }
