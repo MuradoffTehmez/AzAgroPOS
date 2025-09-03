@@ -204,7 +204,8 @@ public class MehsulManager
             PerakendeSatisQiymeti = m.PerakendeSatisQiymeti,
             AnbarMiqdari = m.MovcudSay,
             Aktivdir = m.Aktivdir,
-            OlcuVahidi = m.OlcuVahidi
+            OlcuVahidi = m.OlcuVahidi,
+            OlcuVahidiAdi = m.OlcuVahidi.ToString() 
         }).ToList();
 
         return EmeliyyatNeticesi<List<MehsulDto>>.Ugurlu(dtolar);
