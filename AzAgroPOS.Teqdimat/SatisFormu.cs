@@ -97,7 +97,17 @@ namespace AzAgroPOS.Teqdimat
         public void AxtarisNeticeleriniGoster(List<MehsulDto> mehsullar)
         {
             dgvAxtarisNeticeleri.DataSource = mehsullar;
-            // ... (Sütun konfiqurasiyası mövcud kodda olduğu kimi)
+            if (dgvAxtarisNeticeleri.Columns.Count > 0)
+            {
+                dgvAxtarisNeticeleri.Columns["Ad"].HeaderText = "Məhsul Adı";
+                dgvAxtarisNeticeleri.Columns["StokKodu"].HeaderText = "Stok Kodu";
+                // Digər sütunları gizlədirik
+                string[] gorunenler = { "Ad", "StokKodu" };
+                foreach (DataGridViewColumn col in dgvAxtarisNeticeleri.Columns)
+                {
+                    if (!gorunenler.Contains(col.Name)) col.Visible = false;
+                }
+            }
         }
 
         public void AxtarisPaneliniSifirla()
@@ -110,12 +120,38 @@ namespace AzAgroPOS.Teqdimat
         public void SebeteMehsullariGoster(BindingList<SatisSebetiElementiDto> sebet)
         {
             dgvSebet.DataSource = sebet;
-            // ... (Sütun konfiqurasiyası mövcud kodda olduğu kimi)
+            if (dgvSebet.Columns.Count > 0)
+            {
+                dgvSebet.Columns["MehsulAdi"].HeaderText = "Məhsul Adı";
+                dgvSebet.Columns["Miqdar"].HeaderText = "Miqdar";
+                dgvSebet.Columns["VahidinQiymeti"].HeaderText = "Qiymət";
+                dgvSebet.Columns["QiymetNövü"].HeaderText = "Qiymət Növü";
+                dgvSebet.Columns["UmumiMebleg"].HeaderText = "Cəmi Məbləğ";
+
+                dgvSebet.Columns["MehsulId"].Visible = false;
+                dgvSebet.Columns["VahidinQiymeti"].ReadOnly = true;
+                dgvSebet.Columns["UmumiMebleg"].ReadOnly = true;
+                dgvSebet.Columns["MehsulAdi"].ReadOnly = true;
+                dgvSebet.Columns["QiymetNövü"].ReadOnly = true;
+            }
         }
 
         public void GozleyenSatislarMenyusunuGoster(List<GozleyenSatis> gozleyenSatislar)
         {
-            // ... (Mövcud kod)
+            contextMenuStripGozleyenler.Items.Clear();
+            if (!gozleyenSatislar.Any())
+            {
+                contextMenuStripGozleyenler.Items.Add("Gözləyən satış yoxdur.").Enabled = false;
+            }
+            else
+            {
+                foreach (var satis in gozleyenSatislar)
+                {
+                    var menuItem = new ToolStripMenuItem(satis.Ad) { Tag = satis };
+                    contextMenuStripGozleyenler.Items.Add(menuItem);
+                }
+            }
+            contextMenuStripGozleyenler.Show(btnGozleyenSatislar, new Point(0, btnGozleyenSatislar.Height));
         }
 
         public void FormuTamSifirla()
