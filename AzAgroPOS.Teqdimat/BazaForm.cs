@@ -9,46 +9,35 @@ namespace AzAgroPOS.Teqdimat
 {
     public partial class BazaForm : MaterialForm
     {
-        // MaterialSkinManager-i statik olaraq saxlayırıq ki, bütün tətbiq boyu yalnız bir dəfə yaradılsın.
         private static MaterialSkinManager _materialSkinManager;
+        private Color originalRowColor;
 
         public BazaForm()
         {
             InitializeComponent();
-
-            // Formun öz şriftini təyin edirik. Bu, içindəki bir çox kontrol tərəfindən miras alınacaq.
-            // Bu, 'FontRoboto' xətasını aradan qaldırmaq üçün daha etibarlı bir yoldur.
             this.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
-
             InitializeMaterialSkin();
         }
 
         private void InitializeMaterialSkin()
         {
-            // Yalnız ilk dəfə BazaForm yaradılanda SkinManager-i konfiqurasiya edirik.
             if (_materialSkinManager == null)
             {
                 _materialSkinManager = MaterialSkinManager.Instance;
-
-                // Bu xüsusiyyət bəzi kontrollərin arxa fon rənginin düzgün tətbiq olunmasını təmin edir.
                 _materialSkinManager.EnforceBackcolorOnAllComponents = true;
-
-                // Tətbiqin temasını təyin edirik (Açıq və ya Tünd).
                 _materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
-
-                // Tətbiqin peşəkar və gözə xoş görünən YAŞIL rəng sxemini təyin edirik.
                 _materialSkinManager.ColorScheme = new ColorScheme(
-                    Primary.Green800,      // Əsas tünd yaşıl (Header, əsas düymələr)
-                    Primary.Green900,      // Daha tünd variant (Status bar)
-                    Primary.Green500,      // Açıq variant
-                    Accent.LightGreen700,  // Vurğu rəngi (Seçilmiş elementlər, bəzi düymələr)
-                    TextShade.WHITE        // Mətn rəngi
+                    Primary.Green800,     
+                    Primary.Green900,     
+                    Primary.Green500,      
+                    Accent.LightGreen700,  
+                    TextShade.WHITE        
                 );
             }
 
-            // Hər yeni yaradılan formu SkinManager-in idarəetməsinə əlavə edirik.
             _materialSkinManager.AddFormToManage(this);
         }
+        
         /// <summary>
         /// DataGridView-lər üçün vahid stil təyin edən metod.
         /// Bu metod miras alan bütün formalardan çağırıla bilər.
@@ -56,36 +45,80 @@ namespace AzAgroPOS.Teqdimat
         /// <param name="dgv">Stil veriləcək DataGridView obyekti.</param>
         protected void StilVerDataGridView(DataGridView dgv)
         {
-            // --- Ümumi Davranış Tənzimləmələri ---
-            dgv.AllowUserToAddRows = false;       // İstifadəçinin sətir əlavə etməsini qadağan et
-            dgv.AllowUserToDeleteRows = false;     // İstifadəçinin sətir silməsini qadağan et
-            dgv.ReadOnly = true;                   // Cədvəli yalnız oxunaqlı et
-            dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect; // Klikləyəndə bütün sətri seç
-            dgv.MultiSelect = false;               // Çoxsaylı sətir seçimini qadağan et
-            dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill; // Sütunları avtomatik doldur
+            dgv.AllowUserToAddRows = false;
+            dgv.AllowUserToDeleteRows = false;
+            dgv.AllowUserToResizeColumns = false;  
+            dgv.AllowUserToResizeRows = false;   
+            dgv.ReadOnly = true;
+            dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgv.MultiSelect = false;
+            dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgv.ScrollBars = ScrollBars.Both;
 
-            // --- Görünüş və Stil Tənzimləmələri ---
-            dgv.BackgroundColor = Color.Gainsboro; // Arxa fon rəngi
-            dgv.BorderStyle = BorderStyle.None;      // Kənar xətləri ləğv et
-            dgv.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal; // Hüceyrələr arası üfüqi xətt
+            dgv.BackgroundColor = Color.FromArgb(245, 247, 249);
+            dgv.BorderStyle = BorderStyle.None;
+            dgv.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgv.GridColor = Color.FromArgb(224, 224, 224);
 
-            // --- Başlıq (Header) Stili ---
-            dgv.EnableHeadersVisualStyles = false; // Xüsusi başlıq stilini aktivləşdirmək üçün vacibdir!
-            dgv.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None; // Başlıq kənar xətti
-            dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(34, 49, 63); // Başlıq arxa fon rəngi (tünd göy)
-            dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.White; // Başlıq mətni rəngi (ağ)
-            dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold); // Başlıq şrifti
-            dgv.ColumnHeadersHeight = 40; // Başlıq hündürlüyü
+            dgv.EnableHeadersVisualStyles = false;
+            dgv.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(44, 62, 80);
+            dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI Semibold", 10.5F);
+            dgv.ColumnHeadersDefaultCellStyle.Padding = new Padding(10, 0, 0, 0);
+            dgv.ColumnHeadersHeight = 45;
 
-            // --- Sətir (Row) Stili ---
-            dgv.RowHeadersVisible = false; // Ən soldakı boş sütunu gizlət
-            dgv.DefaultCellStyle.Font = new Font("Segoe UI", 9); // Sətir şrifti
-            dgv.DefaultCellStyle.SelectionBackColor = Color.FromArgb(52, 152, 219); // Seçilmiş sətir arxa fonu
-            dgv.DefaultCellStyle.SelectionForeColor = Color.White; // Seçilmiş sətir mətni
-            dgv.RowTemplate.Height = 35; // Sətirlərin hündürlüyü
+            foreach (DataGridViewColumn column in dgv.Columns)
+                column.SortMode = DataGridViewColumnSortMode.NotSortable;
 
-            // Alternativ sətirlərə fərqli rəng vermək (zebr effekti)
-            dgv.AlternatingRowsDefaultCellStyle.BackColor = Color.WhiteSmoke;
+            dgv.RowHeadersVisible = false;
+            dgv.DefaultCellStyle.Font = new Font("Segoe UI", 9.5F);
+            dgv.DefaultCellStyle.SelectionBackColor = Color.FromArgb(52, 152, 219);
+            dgv.DefaultCellStyle.SelectionForeColor = Color.White;
+            dgv.DefaultCellStyle.Padding = new Padding(5, 0, 0, 0);
+            dgv.RowTemplate.Height = 40;
+
+            dgv.AlternatingRowsDefaultCellStyle.BackColor = Color.White;
+            dgv.RowsDefaultCellStyle.BackColor = Color.FromArgb(249, 249, 249);
+
+            dgv.CellMouseEnter -= dgv_CellMouseEnter;
+            dgv.CellMouseLeave -= dgv_CellMouseLeave;
+            dgv.CellMouseEnter += dgv_CellMouseEnter;
+            dgv.CellMouseLeave += dgv_CellMouseLeave;
         }
+
+        /// <summary>
+        /// Hover zamanı sətrin arxa fonunu dəyişir.
+        /// </summary>
+        private void dgv_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                var dgv = (DataGridView)sender;
+                var row = dgv.Rows[e.RowIndex];
+
+                if (!row.Selected) 
+                {
+                    originalRowColor = row.DefaultCellStyle.BackColor;
+                    row.DefaultCellStyle.BackColor = Color.FromArgb(236, 240, 241);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Hover bitdikdə rəngi bərpa edir.
+        /// </summary>
+        private void dgv_CellMouseLeave(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                var dgv = (DataGridView)sender;
+                var row = dgv.Rows[e.RowIndex];
+
+                if (!row.Selected) 
+                    row.DefaultCellStyle.BackColor = originalRowColor;
+            }
+        }
+
     }
 }
