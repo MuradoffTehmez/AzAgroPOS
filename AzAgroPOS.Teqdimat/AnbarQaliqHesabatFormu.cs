@@ -12,6 +12,8 @@ public partial class AnbarQaliqHesabatFormu : BazaForm, IAnbarQaliqHesabatView
     public AnbarQaliqHesabatFormu()
     {
         InitializeComponent();
+        StilVerDataGridView(dgvHesabat);
+
         _presenter = new AnbarQaliqHesabatPresenter(this);
     }
 

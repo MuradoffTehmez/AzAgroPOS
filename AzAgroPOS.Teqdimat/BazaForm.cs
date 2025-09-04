@@ -49,5 +49,43 @@ namespace AzAgroPOS.Teqdimat
             // Hər yeni yaradılan formu SkinManager-in idarəetməsinə əlavə edirik.
             _materialSkinManager.AddFormToManage(this);
         }
+        /// <summary>
+        /// DataGridView-lər üçün vahid stil təyin edən metod.
+        /// Bu metod miras alan bütün formalardan çağırıla bilər.
+        /// </summary>
+        /// <param name="dgv">Stil veriləcək DataGridView obyekti.</param>
+        protected void StilVerDataGridView(DataGridView dgv)
+        {
+            // --- Ümumi Davranış Tənzimləmələri ---
+            dgv.AllowUserToAddRows = false;       // İstifadəçinin sətir əlavə etməsini qadağan et
+            dgv.AllowUserToDeleteRows = false;     // İstifadəçinin sətir silməsini qadağan et
+            dgv.ReadOnly = true;                   // Cədvəli yalnız oxunaqlı et
+            dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect; // Klikləyəndə bütün sətri seç
+            dgv.MultiSelect = false;               // Çoxsaylı sətir seçimini qadağan et
+            dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill; // Sütunları avtomatik doldur
+
+            // --- Görünüş və Stil Tənzimləmələri ---
+            dgv.BackgroundColor = Color.Gainsboro; // Arxa fon rəngi
+            dgv.BorderStyle = BorderStyle.None;      // Kənar xətləri ləğv et
+            dgv.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal; // Hüceyrələr arası üfüqi xətt
+
+            // --- Başlıq (Header) Stili ---
+            dgv.EnableHeadersVisualStyles = false; // Xüsusi başlıq stilini aktivləşdirmək üçün vacibdir!
+            dgv.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None; // Başlıq kənar xətti
+            dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(34, 49, 63); // Başlıq arxa fon rəngi (tünd göy)
+            dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.White; // Başlıq mətni rəngi (ağ)
+            dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold); // Başlıq şrifti
+            dgv.ColumnHeadersHeight = 40; // Başlıq hündürlüyü
+
+            // --- Sətir (Row) Stili ---
+            dgv.RowHeadersVisible = false; // Ən soldakı boş sütunu gizlət
+            dgv.DefaultCellStyle.Font = new Font("Segoe UI", 9); // Sətir şrifti
+            dgv.DefaultCellStyle.SelectionBackColor = Color.FromArgb(52, 152, 219); // Seçilmiş sətir arxa fonu
+            dgv.DefaultCellStyle.SelectionForeColor = Color.White; // Seçilmiş sətir mətni
+            dgv.RowTemplate.Height = 35; // Sətirlərin hündürlüyü
+
+            // Alternativ sətirlərə fərqli rəng vermək (zebr effekti)
+            dgv.AlternatingRowsDefaultCellStyle.BackColor = Color.WhiteSmoke;
+        }
     }
 }

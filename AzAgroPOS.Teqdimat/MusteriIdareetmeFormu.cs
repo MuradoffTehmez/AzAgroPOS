@@ -17,6 +17,7 @@ namespace AzAgroPOS.Teqdimat
             _presenter = new MusteriPresenter(this);
             // Form yüklənəndə Presenter-ə xəbər veririk
             this.Load += (s, e) => FormYuklendi?.Invoke(this, EventArgs.Empty);
+            StilVerDataGridView(dgvMusteriler);
         }
 
         #region IMusteriView Implementasiyası

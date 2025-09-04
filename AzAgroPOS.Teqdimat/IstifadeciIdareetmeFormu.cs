@@ -14,6 +14,8 @@ public partial class IstifadeciIdareetmeFormu : BazaForm, IIstifadeciView
     {
         InitializeComponent();
         _presenter = new IstifadeciPresenter(this);
+        StilVerDataGridView(dgvIstifadeciler);
+
     }
 
     public string IstifadeciId { get => txtId.Text; set => txtId.Text = value; }

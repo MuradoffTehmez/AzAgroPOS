@@ -12,6 +12,7 @@ public partial class ZHesabatArxivFormu : BazaForm, IZHesabatArxivView
     {
         InitializeComponent();
         _presenter = new ZHesabatArxivPresenter(this);
+        StilVerDataGridView(dgvNovbeler);
     }
 
     public int? SecilmisNovbeId

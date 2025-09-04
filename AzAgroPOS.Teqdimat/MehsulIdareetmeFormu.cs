@@ -18,6 +18,7 @@ namespace AzAgroPOS.Teqdimat
         {
             InitializeComponent();
             _presenter = new MehsulPresenter(this);
+            StilVerDataGridView(dgvMehsullar);
         }
 
         #region View Xassə və Hadisələri (Properties and Events)

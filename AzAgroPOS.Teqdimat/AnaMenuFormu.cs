@@ -17,6 +17,7 @@ namespace AzAgroPOS.Teqdimat
         public AnaMenuFormu()
         {
             InitializeComponent();
+
             this.Load += AnaMenuFormu_Load;
 
             _formButtonMap = new Dictionary<Type, MaterialButton>

@@ -14,6 +14,8 @@ public partial class NisyeIdareetmeFormu : BazaForm, INisyeView
     {
         InitializeComponent();
         _presenter = new NisyePresenter(this);
+        StilVerDataGridView(dgvMusteriler);
+        StilVerDataGridView(dgvNisyeHereketleri);
     }
 
     public int? SecilmisMusteriId

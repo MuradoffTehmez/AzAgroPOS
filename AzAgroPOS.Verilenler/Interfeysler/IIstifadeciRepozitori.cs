@@ -1,19 +1,15 @@
-﻿// Fayl: AzAgroPOS.Verilenler/Interfeysler/IIstifadeciRepozitori.cs
-namespace AzAgroPOS.Verilenler.Interfeysler;
+﻿// AzAgroPOS.Verilenler/Interfeysler/IIstifadeciRepozitori.cs
 
+//using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Varliglar;
-using AzAgroPOS.Verilenler;
-/// <summary>
-/// Bütün istifadəçi verilənlər bazası əməliyyatları üçün interfeys.
-/// Uzunluğu IRepozitori interfeysindən miras alır və istifadəçi ilə əlaqəli xüsusi əməliyyatları əlavə etmək üçün genişləndirilə bilər.
-/// </summary>
-public interface IIstifadeciRepozitori : IRepozitori<Istifadeci> 
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace AzAgroPOS.Verilenler.Interfeysler
 {
-    /// <summary>
-    /// İstifadəçi adı və şifrə ilə istifadəçini tapır.
-    /// </summary>
-    /// <param name="istifadeciAdi">İstifadəçi adı.</param>
-    /// <param name="sifre">Şifrə.</param>
-    /// <returns>Əgər istifadəçi tapılarsa, Istifadeci obyekti; əks halda, null.</returns>
-    //Istifadeci? TapIstifadeci(string istifadeciAdi, string sifre);
+    public interface IIstifadeciRepozitori : IRepozitori<Istifadeci>
+    {
+       
+        //Task<List<IstifadeciDto>> ButunIstifadecileriGetirDtoAsync();
+    }
 }

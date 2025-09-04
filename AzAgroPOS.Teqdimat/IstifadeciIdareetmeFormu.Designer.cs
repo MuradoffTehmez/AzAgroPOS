@@ -7,6 +7,8 @@
         #region Windows Form Designer generated code
         private void InitializeComponent()
         {
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             splitContainer1 = new SplitContainer();
             dgvIstifadeciler = new DataGridView();
             materialCard1 = new MaterialSkin.Controls.MaterialCard();
@@ -28,17 +30,26 @@
             // 
             // splitContainer1
             // 
+            splitContainer1.BackColor = Color.FromArgb(242, 242, 242);
             splitContainer1.Dock = DockStyle.Fill;
+            splitContainer1.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            splitContainer1.ForeColor = Color.FromArgb(222, 0, 0, 0);
             splitContainer1.Location = new Point(3, 64);
             splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
             // 
+            splitContainer1.Panel1.BackColor = Color.FromArgb(242, 242, 242);
             splitContainer1.Panel1.Controls.Add(dgvIstifadeciler);
+            splitContainer1.Panel1.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            splitContainer1.Panel1.ForeColor = Color.FromArgb(222, 0, 0, 0);
             // 
             // splitContainer1.Panel2
             // 
+            splitContainer1.Panel2.BackColor = Color.FromArgb(242, 242, 242);
             splitContainer1.Panel2.Controls.Add(materialCard1);
+            splitContainer1.Panel2.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            splitContainer1.Panel2.ForeColor = Color.FromArgb(222, 0, 0, 0);
             splitContainer1.Size = new Size(978, 517);
             splitContainer1.SplitterDistance = 550;
             splitContainer1.TabIndex = 0;
@@ -48,13 +59,29 @@
             dgvIstifadeciler.AllowUserToAddRows = false;
             dgvIstifadeciler.AllowUserToDeleteRows = false;
             dgvIstifadeciler.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Control;
+            dataGridViewCellStyle1.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dgvIstifadeciler.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgvIstifadeciler.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            dataGridViewCellStyle2.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            dgvIstifadeciler.DefaultCellStyle = dataGridViewCellStyle2;
             dgvIstifadeciler.Dock = DockStyle.Fill;
+            dgvIstifadeciler.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             dgvIstifadeciler.Location = new Point(0, 0);
             dgvIstifadeciler.MultiSelect = false;
             dgvIstifadeciler.Name = "dgvIstifadeciler";
             dgvIstifadeciler.ReadOnly = true;
-            dgvIstifadeciler.RowTemplate.Height = 25;
             dgvIstifadeciler.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvIstifadeciler.Size = new Size(550, 517);
             dgvIstifadeciler.TabIndex = 0;
@@ -87,8 +114,10 @@
             btnYeni.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnYeni.AutoSize = false;
             btnYeni.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnYeni.BackColor = Color.FromArgb(242, 242, 242);
             btnYeni.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             btnYeni.Depth = 0;
+            btnYeni.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnYeni.HighEmphasis = false;
             btnYeni.Icon = null;
             btnYeni.Location = new Point(18, 461);
@@ -101,7 +130,7 @@
             btnYeni.Text = "Yeni / Ləğv et";
             btnYeni.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
             btnYeni.UseAccentColor = false;
-            btnYeni.UseVisualStyleBackColor = true;
+            btnYeni.UseVisualStyleBackColor = false;
             btnYeni.Click += btnTemizle_Click;
             // 
             // btnSil
@@ -109,8 +138,10 @@
             btnSil.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnSil.AutoSize = false;
             btnSil.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnSil.BackColor = Color.FromArgb(242, 242, 242);
             btnSil.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             btnSil.Depth = 0;
+            btnSil.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnSil.HighEmphasis = true;
             btnSil.Icon = null;
             btnSil.Location = new Point(146, 461);
@@ -123,7 +154,7 @@
             btnSil.Text = "Sil";
             btnSil.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnSil.UseAccentColor = true;
-            btnSil.UseVisualStyleBackColor = true;
+            btnSil.UseVisualStyleBackColor = false;
             btnSil.Click += btnSil_Click;
             // 
             // btnYaddaSaxla
@@ -131,8 +162,10 @@
             btnYaddaSaxla.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnYaddaSaxla.AutoSize = false;
             btnYaddaSaxla.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnYaddaSaxla.BackColor = Color.FromArgb(242, 242, 242);
             btnYaddaSaxla.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             btnYaddaSaxla.Depth = 0;
+            btnYaddaSaxla.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnYaddaSaxla.HighEmphasis = true;
             btnYaddaSaxla.Icon = null;
             btnYaddaSaxla.Location = new Point(274, 461);
@@ -145,14 +178,14 @@
             btnYaddaSaxla.Text = "Yadda Saxla";
             btnYaddaSaxla.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnYaddaSaxla.UseAccentColor = false;
-            btnYaddaSaxla.UseVisualStyleBackColor = true;
+            btnYaddaSaxla.UseVisualStyleBackColor = false;
             btnYaddaSaxla.Click += btnYarat_Click;
             // 
             // cmbRollar
             // 
             cmbRollar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             cmbRollar.AutoResize = false;
-            cmbRollar.BackColor = Color.FromArgb(255, 255, 255);
+            cmbRollar.BackColor = Color.FromArgb(242, 242, 242);
             cmbRollar.Depth = 0;
             cmbRollar.DrawMode = DrawMode.OwnerDrawVariable;
             cmbRollar.DropDownHeight = 174;
@@ -175,6 +208,7 @@
             // 
             txtParol.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtParol.AnimateReadOnly = false;
+            txtParol.BackColor = Color.FromArgb(255, 255, 255);
             txtParol.BackgroundImageLayout = ImageLayout.None;
             txtParol.CharacterCasing = CharacterCasing.Normal;
             txtParol.Depth = 0;
@@ -205,6 +239,7 @@
             // 
             txtTamAd.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtTamAd.AnimateReadOnly = false;
+            txtTamAd.BackColor = Color.FromArgb(255, 255, 255);
             txtTamAd.BackgroundImageLayout = ImageLayout.None;
             txtTamAd.CharacterCasing = CharacterCasing.Normal;
             txtTamAd.Depth = 0;
@@ -235,6 +270,7 @@
             // 
             txtIstifadeciAdi.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtIstifadeciAdi.AnimateReadOnly = false;
+            txtIstifadeciAdi.BackColor = Color.FromArgb(255, 255, 255);
             txtIstifadeciAdi.BackgroundImageLayout = ImageLayout.None;
             txtIstifadeciAdi.CharacterCasing = CharacterCasing.Normal;
             txtIstifadeciAdi.Depth = 0;
@@ -263,9 +299,12 @@
             // 
             // txtId
             // 
+            txtId.BackColor = Color.FromArgb(255, 255, 255);
+            txtId.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            txtId.ForeColor = Color.FromArgb(222, 0, 0, 0);
             txtId.Location = new Point(17, 252);
             txtId.Name = "txtId";
-            txtId.Size = new Size(100, 23);
+            txtId.Size = new Size(100, 24);
             txtId.TabIndex = 6;
             txtId.Visible = false;
             // 
@@ -276,7 +315,6 @@
             ClientSize = new Size(984, 584);
             Controls.Add(splitContainer1);
             Name = "IstifadeciIdareetmeFormu";
-            Padding = new Padding(3, 64, 3, 3);
             StartPosition = FormStartPosition.CenterScreen;
             Text = "İstifadəçi İdarəetməsi";
             Load += IstifadeciIdareetmeFormu_Load;

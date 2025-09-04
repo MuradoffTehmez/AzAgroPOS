@@ -15,6 +15,8 @@ public partial class BarkodCapiFormu : BazaForm, IBarkodCapiView
     {
         InitializeComponent();
         _presenter = new BarkodCapiPresenter(this);
+        StilVerDataGridView(dgvAxtarisNeticeleri);
+        StilVerDataGridView(dgvCapSiyahisi);
         _capSiyahisiBindingList = new BindingList<BarkodEtiketDto>();
         dgvCapSiyahisi.DataSource = _capSiyahisiBindingList;
     }

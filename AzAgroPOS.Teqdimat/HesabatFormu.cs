@@ -12,6 +12,7 @@ public partial class HesabatFormu : BazaForm, IHesabatView
     {
         InitializeComponent();
         _presenter = new HesabatPresenter(this);
+        StilVerDataGridView(dgvSatislar);
         PanelləriSıfırla();
     }
 

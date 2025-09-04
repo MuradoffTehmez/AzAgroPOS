@@ -13,6 +13,7 @@ public partial class MehsulSatisHesabatFormu : BazaForm, IMehsulSatisHesabatView
     {
         InitializeComponent();
         _presenter = new MehsulSatisHesabatPresenter(this);
+        StilVerDataGridView(dgvHesabat);
     }
 
     public DateTime BaslangicTarix => dtpBaslangic.Value;
