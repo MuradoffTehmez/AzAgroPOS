@@ -22,5 +22,6 @@ public class NisyeHereketiRepozitori : Repozitori<NisyeHereketi>, INisyeHereketi
     public NisyeHereketiRepozitori(AzAgroPOSDbContext kontekst) : base(kontekst) 
     {
         // burda əlavə konfiqurasiya və ya başlanğıc əməliyyatları həyata keçirilə bilər
+        // nisyeHereketi ilə əlaqəli xüsusi əməliyyatlar əlavə edilə bilər, məsələn: Müştəriyə görə nisyə hərəkətlərini tapmaq, tarix aralığına görə nisyə hərəkətlərini filtrləmək və s.
     }
 }

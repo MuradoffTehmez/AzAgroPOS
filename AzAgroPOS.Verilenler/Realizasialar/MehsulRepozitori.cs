@@ -18,5 +18,8 @@ public class MehsulRepozitori : Repozitori<AzAgroPOS.Varliglar.Mehsul>, IMehsulR
     public MehsulRepozitori(AzAgroPOSDbContext kontekst) : base(kontekst) 
     {
         // Burda əlavə konfiqurasiyalar və ya başlanğıc əməliyyatları həyata keçirilə bilər.
+        // buradakı əlavə əməliyyatlar, məsələn, başlanğıc məlumatları əlavə etmək və ya xüsusi konfiqurasiyalar təyin etmək kimi ola bilər.
+        // Məsələn, məhsul ilə əlaqəli xüsusi əməliyyatlar əlavə edilə bilər, məsələn: Kateqoriyasına görə məhsulları tapmaq, qiymət aralığına görə məhsulları filtrləmək və s.
+        // Məhsulun adına, kateqoriyasına və ya qiymətinə görə məhsulları axtarmaq üçün xüsusi metodlar əlavə edilə bilər.
     }
 }

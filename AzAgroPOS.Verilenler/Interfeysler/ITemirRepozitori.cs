@@ -10,4 +10,7 @@ using AzAgroPOS.Varliglar;
 public interface ITemirRepozitori : IRepozitori<Temir> 
 {
     // Burada təmir ilə əlaqəli xüsusi əməliyyatlar əlavə edilə bilər, məsələn: Müəyyən bir tarixdəki təmir işlərini tapmaq, istifadəçiyə görə təmir işlərini filtrləmək və s.
+    // təmir işlərinin ümumi xərclərini hesablamaq üçün xüsusi metodlar əlavə edilə bilər.
+    // təmir işlərinin müddətini hesablamaq üçün xüsusi metodlar əlavə edilə bilər.
+
 }

@@ -45,7 +45,7 @@ namespace AzAgroPOS.Teqdimat
             txtIstifadeciAdi.HideSelection = true;
             txtIstifadeciAdi.Hint = "İstifadəçi Adı";
             txtIstifadeciAdi.LeadingIcon = null;
-            txtIstifadeciAdi.Location = new Point(52, 111);
+            txtIstifadeciAdi.Location = new Point(105, 112);
             txtIstifadeciAdi.Margin = new Padding(4, 3, 4, 3);
             txtIstifadeciAdi.MaxLength = 32767;
             txtIstifadeciAdi.MouseState = MaterialSkin.MouseState.OUT;
@@ -76,7 +76,7 @@ namespace AzAgroPOS.Teqdimat
             txtParol.HideSelection = true;
             txtParol.Hint = "Parol";
             txtParol.LeadingIcon = null;
-            txtParol.Location = new Point(52, 186);
+            txtParol.Location = new Point(105, 187);
             txtParol.Margin = new Padding(4, 3, 4, 3);
             txtParol.MaxLength = 32767;
             txtParol.MouseState = MaterialSkin.MouseState.OUT;
@@ -106,12 +106,12 @@ namespace AzAgroPOS.Teqdimat
             btnDaxilOl.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnDaxilOl.HighEmphasis = true;
             btnDaxilOl.Icon = null;
-            btnDaxilOl.Location = new Point(52, 265);
+            btnDaxilOl.Location = new Point(105, 266);
             btnDaxilOl.Margin = new Padding(5, 7, 5, 7);
             btnDaxilOl.MouseState = MaterialSkin.MouseState.HOVER;
             btnDaxilOl.Name = "btnDaxilOl";
             btnDaxilOl.NoAccentTextColor = Color.Empty;
-            btnDaxilOl.Size = new Size(408, 52);
+            btnDaxilOl.Size = new Size(408, 48);
             btnDaxilOl.TabIndex = 2;
             btnDaxilOl.Text = "Daxil Ol";
             btnDaxilOl.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -124,7 +124,7 @@ namespace AzAgroPOS.Teqdimat
             AcceptButton = btnDaxilOl;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(513, 369);
+            ClientSize = new Size(618, 372);
             Controls.Add(btnDaxilOl);
             Controls.Add(txtParol);
             Controls.Add(txtIstifadeciAdi);

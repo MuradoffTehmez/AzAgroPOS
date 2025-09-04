@@ -19,5 +19,8 @@ public class RolRepozitori : Repozitori<Rol>, IRolRepozitori
     public RolRepozitori(AzAgroPOSDbContext kontekst) : base(kontekst) 
     {
         // burda əlavə konfiqurasiya və ya başlanğıc əməliyyatları həyata keçirilə bilər
+        // rol ilə əlaqəli xüsusi əməliyyatlar əlavə edilə bilər, məsələn: İstifadəçiyə görə rolları tapmaq, rola görə istifadəçiləri filtrləmək və s.
+        // gələcəkdə xususi rollar yaradıla və sistemə əlavə edilə bilər.
+        // təmirçi, menecer, anbarçı , mühasibat və s. kimi xüsusi rollar əlavə edilə bilər.
     }
 }

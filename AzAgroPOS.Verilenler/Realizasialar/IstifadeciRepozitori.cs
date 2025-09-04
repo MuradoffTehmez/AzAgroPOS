@@ -19,5 +19,11 @@ public class IstifadeciRepozitori : Repozitori<Istifadeci>, IIstifadeciRepozitor
     /// Qeyd: Bu konstruktor, konkret varlıq repozitoriyaları üçün istifadə olunur.
     /// </summary>
     /// <param name="kontekst"></param>
-    public IstifadeciRepozitori(AzAgroPOSDbContext kontekst) : base(kontekst) { }
+    public IstifadeciRepozitori(AzAgroPOSDbContext kontekst) : base(kontekst) 
+    {
+        // Burda əlavə konfiqurasiyalar və ya başlanğıc əməliyyatları həyata keçirilə bilər.
+        // buradakı əlavə əməliyyatlar, məsələn, başlanğıc məlumatları əlavə etmək və ya xüsusi konfiqurasiyalar təyin etmək kimi ola bilər.
+        // İstifadəçi ilə əlaqəli xüsusi əməliyyatlar əlavə edilə bilər, məsələn: Rola görə istifadəçiləri tapmaq, istifadəçi adına görə istifadəçiləri filtrləmək və s.
+        // İstifadəçi adına, emailinə və ya roluna görə istifadəçiləri axtarmaq üçün xüsusi metodlar əlavə edilə bilər.
+    }
 }

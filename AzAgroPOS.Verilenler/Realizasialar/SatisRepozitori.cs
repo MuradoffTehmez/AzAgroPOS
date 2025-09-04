@@ -18,5 +18,8 @@ public class SatisRepozitori : Repozitori<AzAgroPOS.Varliglar.Satis>, ISatisRepo
     public SatisRepozitori(AzAgroPOSDbContext kontekst) : base(kontekst) 
     {
         // Burada əlavə konfiqurasiyalar və ya metodlar əlavə edilə bilər
+        // Məsələn, satışla əlaqəli xüsusi əməliyyatlar əlavə edilə bilər, məsələn: Müəyyən tarix aralığında satışları tapmaq, müəyyən məhsulun satışlarını filtrləmək və s.
+        // ən çox satılan məhsulları tapmaq üçün xüsusi metodlar əlavə edilə bilər.
+        // ən az satılan məhsulları tapmaq üçün xüsusi metodlar əlavə edilə bilər.
     }
 }

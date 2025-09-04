@@ -22,5 +22,8 @@ public class NovbeRepozitori : Repozitori<Novbe>, INovbeRepozitori
     public NovbeRepozitori(AzAgroPOSDbContext kontekst) : base(kontekst) 
     {
         // burda əlavə konfiqurasiya və ya başlanğıc əməliyyatları həyata keçirilə bilər
+        // novbe ilə əlaqəli xüsusi əməliyyatlar əlavə edilə bilər, məsələn: Novbeye görə növbələri tapmaq, tarix aralığına görə növbələri filtrləmək və s.
+        // növbədə hansi işçinin olduğunu tapmaq üçün xüsusi metodlar əlavə edilə bilər.
+        // işçi növbədə nə qədər qalır, işlədiyi vaxtı hesablamaq üçün xüsusi metodlar əlavə edilə bilər.
     }
 }

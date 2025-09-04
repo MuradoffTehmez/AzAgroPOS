@@ -16,6 +16,9 @@ public class MusteriRepozitori : Repozitori<AzAgroPOS.Varliglar.Musteri>, IMuste
     /// <param name="kontekst"></param>
     public MusteriRepozitori(AzAgroPOSDbContext kontekst) : base(kontekst) 
     {
-        // burda əlavə konfiqurasiya və ya başlanğıc əməliyyatları həyata keçirilə bilər
+        // buradana əlavə konfiqurasiyalar və ya başlanğıc əməliyyatları həyata keçirilə bilər.
+        // Məsələn, başlanğıc məlumatları əlavə etmək və ya xüsusi konfiqurasiyalar təyin etmək kimi.
+        // müştəri ilə əlaqəli xüsusi əməliyyatlar əlavə edilə bilər, məsələn: Ünvanına görə müştəriləri tapmaq, telefon nömrəsinə görə müştəriləri filtrləmək və s.
+        // telefon nömrəsi, ada , soyada və ya ünvanına görə müştəriləri axtarmaq üçün xüsusi metodlar əlavə edilə bilər.
     }
 }
