@@ -37,6 +37,7 @@ public class NovbePresenter
         Task.Run(async () => await FormuYukle());
     }
 
+
     /// <summary>
     /// FormuYukle metodu, form yükləndikdə aktiv növbəni yükləyir və göstərir. Dəyişikliklər varsa, istifadəçiyə aktiv növbənin açıq olduğunu və açılma tarixini göstərir.
     /// </summary>

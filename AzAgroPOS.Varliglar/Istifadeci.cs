@@ -50,4 +50,7 @@ public class Istifadeci : BazaVarligi
     /// qeyd: İstifadəçi, təmir sifarişlərini idarə edə bilər və bu kolleksiya vasitəsilə ona təyin edilmiş bütün təmir sifarişlərini görə bilər. Məsələn, "Temir Sifarişi 1", "Temir Sifarişi 2" və s. Bu kolleksiya, Temir sinifindən olan obyektləri ehtiva edir və istifadəçinin təmir sifarişləri ilə əlaqəli məlumatları saxlayır.
     /// </summary>
     public ICollection<Temir> TemirSifarisleri { get; set; } = new List<Temir>();
+
+    public ICollection<Novbe> Novbeler { get; set; }
+
 }
