@@ -19,11 +19,11 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
         private readonly MehsulManager _mehsulManager;
         private IEnumerable<MehsulDto>? _butunMehsullarCache;
 
-        public MehsulPresenter(IMehsulIdareetmeView view)
+        public MehsulPresenter(IMehsulIdareetmeView view, MehsulManager mehsulManager)
         {
             _view = view;
-            var unitOfWork = new UnitOfWork(new AzAgroPOSDbContext());
-            _mehsulManager = new MehsulManager(unitOfWork);
+            _mehsulManager = mehsulManager;
+            //_mehsulManager = new MehsulManager(unitOfWork);
 
             // Hadisələrə abunə oluruq (Subscribing to events)
             _view.FormYuklendi_Istek += async (s, e) => await FormuYukle();

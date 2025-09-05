@@ -15,11 +15,11 @@ public class MehsulSatisHesabatPresenter
     private readonly IMehsulSatisHesabatView _view;
     private readonly HesabatManager _hesabatManager;
 
-    public MehsulSatisHesabatPresenter(IMehsulSatisHesabatView view)
+    public MehsulSatisHesabatPresenter(IMehsulSatisHesabatView view, HesabatManager hesabatManager)
     {
         _view = view;
-        var unitOfWork = new UnitOfWork(new AzAgroPOSDbContext());
-        _hesabatManager = new HesabatManager(unitOfWork);
+        _hesabatManager = hesabatManager;
+        //_hesabatManager = new HesabatManager(unitOfWork);
 
         _view.HesabatiGosterIstek += async (s, e) => await MehsulSatisHesabatiniGoster();
     }

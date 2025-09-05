@@ -1,4 +1,5 @@
 ﻿using AzAgroPOS.Mentiq.DTOs;
+using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
 using System;
@@ -11,10 +12,10 @@ namespace AzAgroPOS.Teqdimat
     {
         private readonly MusteriPresenter _presenter;
 
-        public MusteriIdareetmeFormu()
+        public MusteriIdareetmeFormu(MusteriManager musteriManager)
         {
             InitializeComponent();
-            _presenter = new MusteriPresenter(this);
+            _presenter = new MusteriPresenter(this, musteriManager);
             // Form yüklənəndə Presenter-ə xəbər veririk
             this.Load += (s, e) => FormYuklendi?.Invoke(this, EventArgs.Empty);
             StilVerDataGridView(dgvMusteriler);

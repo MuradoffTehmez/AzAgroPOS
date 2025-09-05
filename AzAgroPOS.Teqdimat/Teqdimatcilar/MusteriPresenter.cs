@@ -14,14 +14,15 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
     public class MusteriPresenter
     {
         private readonly IMusteriView _view;
+        private readonly MusteriManager _musteriManager;
         private readonly MusteriManager _manager;
         private List<MusteriDto> _musteriCache;
 
-        public MusteriPresenter(IMusteriView view)
+        public MusteriPresenter(IMusteriView view, MusteriManager musteriManager)
         {
             _view = view;
-            var unitOfWork = new UnitOfWork(new AzAgroPOSDbContext());
-            _manager = new MusteriManager(unitOfWork);
+            _musteriManager = musteriManager;
+            //_manager = new MusteriManager(unitOfWork);
 
             _musteriCache = new List<MusteriDto>();
 

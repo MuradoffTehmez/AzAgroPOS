@@ -4,17 +4,18 @@ namespace AzAgroPOS.Teqdimat;
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
+using AzAgroPOS.Mentiq.Idareciler;
 
 public partial class AnbarQaliqHesabatFormu : BazaForm, IAnbarQaliqHesabatView
 {
     private readonly AnbarQaliqHesabatPresenter _presenter;
 
-    public AnbarQaliqHesabatFormu()
+    public AnbarQaliqHesabatFormu(HesabatManager hesabatManager)
     {
         InitializeComponent();
         StilVerDataGridView(dgvHesabat);
 
-        _presenter = new AnbarQaliqHesabatPresenter(this);
+        _presenter = new AnbarQaliqHesabatPresenter(this, hesabatManager);
     }
 
     public string LimitSay => txtLimit.Text;

@@ -2,6 +2,8 @@
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
 using AzAgroPOS.Teqdimat.Yardimcilar;
+using AzAgroPOS.Mentiq.Idareciler;
+using Microsoft.Extensions.DependencyInjection;
 using AzAgroPOS.Varliglar;
 using MaterialSkin.Controls;
 using System;
@@ -16,11 +18,12 @@ namespace AzAgroPOS.Teqdimat
     public partial class SatisFormu : BazaForm, ISatisView
     {
         private readonly SatisPresenter _presenter;
+        private readonly IServiceProvider _serviceProvider;
 
-        public SatisFormu()
+        public SatisFormu(SatisManager satisManager, MehsulManager mehsulManager, MusteriManager musteriManager)
         {
             InitializeComponent();
-            _presenter = new SatisPresenter(this);
+            _presenter = new SatisPresenter(this, satisManager, mehsulManager, musteriManager);
             this.Load += (s, e) => FormYuklendiIstek?.Invoke(this, EventArgs.Empty);
             ConfigureDataGridViewStyles();
             AddCartActionButtons();
@@ -209,9 +212,9 @@ namespace AzAgroPOS.Teqdimat
         }
         private void btnYeniMusteri_Click(object sender, EventArgs e)
         {
-            using (var form = new MusteriIdareetmeFormu())
+            using (var musteriFormu = _serviceProvider.GetRequiredService<MusteriIdareetmeFormu>())
             {
-                form.ShowDialog();
+                musteriFormu.ShowDialog();
             }
             MusteriSiyahisiniYenileIstek?.Invoke(this, EventArgs.Empty);
         }

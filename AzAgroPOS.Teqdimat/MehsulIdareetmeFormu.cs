@@ -1,5 +1,6 @@
 ﻿// Fayl: AzAgroPOS.Teqdimat/MehsulIdareetmeFormu.cs
 using AzAgroPOS.Mentiq.DTOs;
+using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
 using AzAgroPOS.Varliglar;
@@ -14,10 +15,10 @@ namespace AzAgroPOS.Teqdimat
     {
         private readonly MehsulPresenter _presenter;
 
-        public MehsulIdareetmeFormu()
+        public MehsulIdareetmeFormu(MehsulManager mehsulManager)
         {
             InitializeComponent();
-            _presenter = new MehsulPresenter(this);
+            _presenter = new MehsulPresenter(this, mehsulManager);
             StilVerDataGridView(dgvMehsullar);
         }
 

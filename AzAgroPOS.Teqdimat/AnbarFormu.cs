@@ -4,14 +4,16 @@ namespace AzAgroPOS.Teqdimat;
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
+using AzAgroPOS.Mentiq.Idareciler;
 
 public partial class AnbarFormu : BazaForm, IAnbarView
 {
     private readonly AnbarPresenter _presenter;
-    public AnbarFormu()
+
+    public AnbarFormu(AnbarManager anbarManager)
     {
         InitializeComponent();
-        _presenter = new AnbarPresenter(this);
+        _presenter = new AnbarPresenter(this, anbarManager);
     }
 
     public string AxtarisMetni => txtAxtaris.Text;

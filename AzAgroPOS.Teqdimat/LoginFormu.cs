@@ -1,28 +1,30 @@
-﻿// Fayl: AzAgroPOS.Teqdimat/LoginFormu.cs
-namespace AzAgroPOS.Teqdimat;
-using System;
-using System.Windows.Forms;
+﻿using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
+using System;
+using System.Windows.Forms;
 
-public partial class LoginFormu : BazaForm, ILoginView
+namespace AzAgroPOS.Teqdimat
 {
-    public bool UgurluDaxilOlundu { get; set; } = false;
-    private readonly LoginPresenter _presenter;
-
-    public LoginFormu()
+    public partial class LoginFormu : BazaForm, ILoginView
     {
-        InitializeComponent();
-        _presenter = new LoginPresenter(this);
+        private readonly LoginPresenter _presenter;
+        public bool UgurluDaxilOlundu { get; set; } = false;
+        public string IstifadeciAdi => txtIstifadeciAdi.Text;
+
+        public string Parol => txtParol.Text;
+
+        public event EventHandler DaxilOl_Istek;
+
+        public LoginFormu(TehlukesizlikManager tehlukesizlikManager)
+        {
+            InitializeComponent();
+            _presenter = new LoginPresenter(this, tehlukesizlikManager);
+        }
+
+        public void MesajGoster(string mesaj) => MessageBox.Show(mesaj, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        public void FormuBagla() => this.Close();
+
+        private void btnDaxilOl_Click(object sender, EventArgs e) => DaxilOl_Istek?.Invoke(this, EventArgs.Empty);
     }
-
-    public string IstifadeciAdi => txtIstifadeciAdi.Text;
-    public string Parol => txtParol.Text;
-
-    public event EventHandler DaxilOl_Istek;
-
-    public void MesajGoster(string mesaj) => MessageBox.Show(mesaj, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
-    public void FormuBagla() => this.Close();
-
-    private void btnDaxilOl_Click(object sender, EventArgs e) => DaxilOl_Istek?.Invoke(this, EventArgs.Empty);
 }

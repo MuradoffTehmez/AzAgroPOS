@@ -1,5 +1,7 @@
 ﻿// Fayl: AzAgroPOS.Teqdimat/NovbeIdareetmesiFormu.cs
 namespace AzAgroPOS.Teqdimat;
+
+using AzAgroPOS.Mentiq.Idareciler;
 // using-lər...
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
@@ -23,10 +25,10 @@ public partial class NovbeIdareetmesiFormu : BazaForm, INovbeView
     /// diqqət - InitializeComponent metodu, formun komponentlərini ilkin vəziyyətə gətirir.
     /// qeyd - NovbePresenter, INovbeView interfeysini alır və növbə əməliyyatlarını idarə etmək üçün NovbeManager ilə əlaqələndirir.
     /// </summary>
-    public NovbeIdareetmesiFormu()
+    public NovbeIdareetmesiFormu(NovbeManager novbeManager, IstifadeciManager istifadeciManager)
     {
         InitializeComponent();
-        _presenter = new NovbePresenter(this);
+        _presenter = new NovbePresenter(this, novbeManager, istifadeciManager);
     }
     /// <summary>
     /// Başlanğıc məbləği, növbə açmaq üçün istifadə olunan məbləğdir.

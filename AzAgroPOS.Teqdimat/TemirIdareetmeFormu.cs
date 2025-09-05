@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Teqdimat.Teqdimatcilar;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,9 +14,11 @@ namespace AzAgroPOS.Teqdimat
 {
     public partial class TemirIdareetmeFormu : Form
     {
-        public TemirIdareetmeFormu()
+        private readonly TemirPresenter _presenter;
+        public TemirIdareetmeFormu(TemirManager temirManager, MusteriManager musteriManager, IstifadeciManager istifadeciManager)
         {
             InitializeComponent();
+            //_presenter = new TemirPresenter(this, temirManager, musteriManager, istifadeciManager);
         }
     }
 }

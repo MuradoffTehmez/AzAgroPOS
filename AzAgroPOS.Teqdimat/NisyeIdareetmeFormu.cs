@@ -3,6 +3,7 @@ namespace AzAgroPOS.Teqdimat;
 
 // using-lər
 using AzAgroPOS.Mentiq.DTOs;
+using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
 
@@ -10,10 +11,10 @@ public partial class NisyeIdareetmeFormu : BazaForm, INisyeView
 {
     private readonly NisyePresenter _presenter;
 
-    public NisyeIdareetmeFormu()
+    public NisyeIdareetmeFormu(NisyeManager nisyeManager, MusteriManager musteriManager)
     {
         InitializeComponent();
-        _presenter = new NisyePresenter(this);
+        _presenter = new NisyePresenter(this, nisyeManager, musteriManager);
         StilVerDataGridView(dgvMusteriler);
         StilVerDataGridView(dgvNisyeHereketleri);
     }

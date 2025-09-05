@@ -15,16 +15,19 @@ public class TemirPresenter
 {
     private readonly ITemirView _view;
     private readonly TemirManager _temirManager;
+    private readonly MusteriManager _musteriManager;
+    private readonly IstifadeciManager _istifadeciManager;
 
     /// <summary>
     ///  bu presenter, temir view interfeysini alır və temir manager ilə əlaqələndirir.
     /// </summary>
     /// <param name="view"></param>
-    public TemirPresenter(ITemirView view)
+    public TemirPresenter(ITemirView view, TemirManager temirManager, MusteriManager musteriManager, IstifadeciManager istifadeciManager)
     {
         _view = view;
-        var unitOfWork = new UnitOfWork(new AzAgroPOSDbContext());
-        _temirManager = new TemirManager(unitOfWork);
+        _temirManager = temirManager;
+        _musteriManager = musteriManager;
+        _istifadeciManager = istifadeciManager;
 
         _view.FormYuklendi += async (s, e) => await FormuYukle();
         _view.YeniSifarisYarat_Istek += async (s, e) => await YeniSifarisYarat();

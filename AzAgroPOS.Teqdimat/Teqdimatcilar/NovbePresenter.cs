@@ -18,6 +18,8 @@ public class NovbePresenter
 {
     private readonly INovbeView _view;
     private readonly NovbeManager _manager;
+    private readonly NovbeManager _novbeManager;
+    private readonly IstifadeciManager _istifadeciManager;
     private AzAgroPOS.Varliglar.Novbe? _aktivNovbe;
 
     /// <summary>
@@ -25,10 +27,11 @@ public class NovbePresenter
     /// Novbemanager, növbə əməliyyatlarını idarə etmək üçün istifadə olunur.
     /// </summary>
     /// <param name="view"></param>
-    public NovbePresenter(INovbeView view)
+    public NovbePresenter(INovbeView view, NovbeManager novbeManager, IstifadeciManager istifadeciManager)
     {
         _view = view;
-        _manager = new NovbeManager(new UnitOfWork(new AzAgroPOSDbContext()));
+        _novbeManager = novbeManager;
+        _istifadeciManager = istifadeciManager;
         _view.NovbeAc_Istek += async (s, e) => await NovbeAc();
         _view.NovbeBagla_Istek += async (s, e) => await NovbeBagla();
         Task.Run(async () => await FormuYukle());

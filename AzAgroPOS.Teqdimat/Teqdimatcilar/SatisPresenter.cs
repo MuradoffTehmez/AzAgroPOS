@@ -26,14 +26,12 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
         private readonly List<GozleyenSatis> _gozleyenSebetler;
         private decimal _endirimMeblegi = 0;
 
-        public SatisPresenter(ISatisView view)
+        public SatisPresenter(ISatisView view, SatisManager satisManager, MehsulManager mehsulManager, MusteriManager musteriManager)
         {
             _view = view;
-            var unitOfWork = new UnitOfWork(new AzAgroPOSDbContext());
-            _satisManager = new SatisManager(unitOfWork);
-            _mehsulManager = new MehsulManager(unitOfWork);
-            _musteriManager = new MusteriManager(unitOfWork);
-
+            _satisManager = satisManager;
+            _mehsulManager = mehsulManager;
+            _musteriManager = musteriManager;
             _aktivSebet = new BindingList<SatisSebetiElementiDto>();
             _gozleyenSebetler = new List<GozleyenSatis>();
 

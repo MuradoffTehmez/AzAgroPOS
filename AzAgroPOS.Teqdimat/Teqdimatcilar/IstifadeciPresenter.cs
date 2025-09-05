@@ -13,13 +13,16 @@ public class IstifadeciPresenter
 {
     private readonly IIstifadeciView _view;
     private readonly IstifadeciManager _manager;
+    private readonly IstifadeciManager _istifadeciManager;
+    //private readonly RolManager _rolManager;
     private readonly UnitOfWork _unitOfWork;
 
-    public IstifadeciPresenter(IIstifadeciView view)
+    public IstifadeciPresenter(IIstifadeciView view, IstifadeciManager istifadeciManager)
     {
         _view = view;
-        _unitOfWork = new UnitOfWork(new AzAgroPOSDbContext());
-        _manager = new IstifadeciManager(_unitOfWork);
+        _istifadeciManager = istifadeciManager;
+        //_unitOfWork = new UnitOfWork(new AzAgroPOSDbContext());
+        //_manager = new IstifadeciManager(_unitOfWork);
 
         // Hadisələrə (Events) abunə oluruq
         _view.FormYuklendi += async (s, e) => await FormuYukle();

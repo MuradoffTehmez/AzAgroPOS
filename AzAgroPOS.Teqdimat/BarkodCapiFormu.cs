@@ -5,16 +5,17 @@ using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
 using System.ComponentModel;
+using AzAgroPOS.Mentiq.Idareciler;
 
 public partial class BarkodCapiFormu : BazaForm, IBarkodCapiView
 {
     private readonly BarkodCapiPresenter _presenter;
     private BindingList<BarkodEtiketDto> _capSiyahisiBindingList;
 
-    public BarkodCapiFormu()
+    public BarkodCapiFormu(BarkodCapiManager barkodCapiManager, MehsulManager mehsulManager)
     {
         InitializeComponent();
-        _presenter = new BarkodCapiPresenter(this);
+        _presenter = new BarkodCapiPresenter(this, barkodCapiManager, mehsulManager);
         StilVerDataGridView(dgvAxtarisNeticeleri);
         StilVerDataGridView(dgvCapSiyahisi);
         _capSiyahisiBindingList = new BindingList<BarkodEtiketDto>();

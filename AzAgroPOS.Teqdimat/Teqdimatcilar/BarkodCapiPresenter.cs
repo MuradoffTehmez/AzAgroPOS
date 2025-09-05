@@ -14,13 +14,14 @@ using System.Threading.Tasks;
 public class BarkodCapiPresenter
 {
     private readonly IBarkodCapiView _view;
+    private readonly BarkodCapiManager _barkodCapiManager;
+    private readonly MehsulManager _mehsulManager;
     private readonly BarkodCapiManager _manager;
-
-    public BarkodCapiPresenter(IBarkodCapiView view)
+    public BarkodCapiPresenter(IBarkodCapiView view, BarkodCapiManager barkodCapiManager, MehsulManager mehsulManager)
     {
         _view = view;
-        var unitOfWork = new UnitOfWork(new AzAgroPOSDbContext());
-        _manager = new BarkodCapiManager(unitOfWork);
+        _barkodCapiManager = barkodCapiManager;
+        _mehsulManager = mehsulManager;
 
         _view.AxtarisIstek += async (s, e) => await MehsulAxtar();
         _view.SiyahiniCapaGonderIstek += (s, e) => SiyahiniCapaGonder();

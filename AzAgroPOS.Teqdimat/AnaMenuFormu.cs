@@ -1,5 +1,4 @@
-﻿// Fayl: AzAgroPOS.Teqdimat/AnaMenuFormu.cs
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -7,16 +6,20 @@ using System.Linq;
 using System.Windows.Forms;
 using AzAgroPOS.Teqdimat.Yardimcilar;
 using MaterialSkin.Controls;
+using Microsoft.Extensions.DependencyInjection; // Bu using əlavə edildi
 
 namespace AzAgroPOS.Teqdimat
 {
     public partial class AnaMenuFormu : BazaForm
     {
+        private readonly IServiceProvider _serviceProvider; // Əlavə edildi
         private readonly Dictionary<Type, MaterialButton> _formButtonMap;
 
-        public AnaMenuFormu()
+        // DƏYİŞİKLİK: Konstruktor IServiceProvider qəbul edir
+        public AnaMenuFormu(IServiceProvider serviceProvider)
         {
             InitializeComponent();
+            _serviceProvider = serviceProvider; // Əlavə edildi
 
             this.Load += AnaMenuFormu_Load;
 
@@ -43,7 +46,9 @@ namespace AzAgroPOS.Teqdimat
         }
 
         #region Tab İdarəetməsi
-        private void UsaqFormuAc<T>() where T : Form, new()
+
+        // DƏYİŞİKLİK: Bu metod formaları DI Konteynerindən istifadə edərək açır
+        private void UsaqFormuAc<T>() where T : Form
         {
             var mövcudSehife = mdiTabControl.TabPages.OfType<TabPage>().FirstOrDefault(p => p.Tag is T);
 
@@ -53,12 +58,11 @@ namespace AzAgroPOS.Teqdimat
             }
             else
             {
-                var yeniForm = new T
-                {
-                    TopLevel = false,
-                    FormBorderStyle = FormBorderStyle.None,
-                    Dock = DockStyle.Fill
-                };
+                // Formanı 'new' ilə deyil, Service Provider ilə yaradırıq
+                var yeniForm = _serviceProvider.GetRequiredService<T>();
+                yeniForm.TopLevel = false;
+                yeniForm.FormBorderStyle = FormBorderStyle.None;
+                yeniForm.Dock = DockStyle.Fill;
 
                 var yeniSehife = new TabPage(yeniForm.Text) { Tag = yeniForm };
                 yeniSehife.Controls.Add(yeniForm);
@@ -207,16 +211,28 @@ namespace AzAgroPOS.Teqdimat
         private void btnYeniSatis_Click(object sender, EventArgs e) => UsaqFormuAc<SatisFormu>();
         private void btnNisyeIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<NisyeIdareetmeFormu>();
         private void btnTemirIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<TemirIdareetmeFormu>();
+
+        // DƏYİŞİKLİK: Bu dialoq da DI konteynerindən çağırılır
         private void btnNovbeIdareetme_Click(object sender, EventArgs e)
         {
-            using (var form = new NovbeIdareetmesiFormu()) { form.ShowDialog(); }
+            using (var form = _serviceProvider.GetRequiredService<NovbeIdareetmesiFormu>())
+            {
+                form.ShowDialog();
+            }
             IcazeleriYoxla();
         }
+
         private void btnIstifadeciIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<IstifadeciIdareetmeFormu>();
         private void btnHesabatlar_Click(object sender, EventArgs e) => UsaqFormuAc<HesabatFormu>();
         private void btnMehsulSatisHesabati_Click(object sender, EventArgs e) => UsaqFormuAc<MehsulSatisHesabatFormu>();
+        private void btnAnbarQaliqHesabati_Click(object sender, EventArgs e) => UsaqFormuAc<AnbarQaliqHesabatFormu>();
         private void btnZHesabatArxivi_Click(object sender, EventArgs e) => UsaqFormuAc<ZHesabatArxivFormu>();
         private void btnBarkodCapi_Click(object sender, EventArgs e) => UsaqFormuAc<BarkodCapiFormu>();
         #endregion
+
+        private void AnaMenuFormu_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }

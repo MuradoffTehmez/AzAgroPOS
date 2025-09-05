@@ -12,15 +12,17 @@ public class ZHesabatArxivPresenter
 {
     private readonly IZHesabatArxivView _view;
     private readonly HesabatManager _hesabatManager;
+    private readonly NovbeManager _novbeManager;
 
-    public ZHesabatArxivPresenter(IZHesabatArxivView view)
+    public ZHesabatArxivPresenter(IZHesabatArxivView view, NovbeManager novbeManager)
     {
         _view = view;
-        var unitOfWork = new UnitOfWork(new AzAgroPOSDbContext());
-        _hesabatManager = new HesabatManager(unitOfWork);
+        //var unitOfWork = new UnitOfWork(new AzAgroPOSDbContext());
+        //_hesabatManager = new HesabatManager(unitOfWork);
 
         _view.FormYuklendi += async (s, e) => await FormuYukle();
         _view.HesabatGosterIstek += async (s, e) => await ZHesabatiGoster();
+        _novbeManager = novbeManager;
     }
 
     private async Task FormuYukle()

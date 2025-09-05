@@ -5,15 +5,16 @@ using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
 using AzAgroPOS.Varliglar;
+using AzAgroPOS.Mentiq.Idareciler;
 
 public partial class IstifadeciIdareetmeFormu : BazaForm, IIstifadeciView
 {
     private readonly IstifadeciPresenter _presenter;
 
-    public IstifadeciIdareetmeFormu()
+    public IstifadeciIdareetmeFormu(IstifadeciManager istifadeciManager)
     {
         InitializeComponent();
-        _presenter = new IstifadeciPresenter(this);
+        _presenter = new IstifadeciPresenter(this, istifadeciManager);
         StilVerDataGridView(dgvIstifadeciler);
 
     }

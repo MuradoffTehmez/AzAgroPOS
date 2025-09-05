@@ -14,25 +14,19 @@ public class NisyePresenter
 {
     private readonly INisyeView _view;
     private readonly NisyeManager _nisyeManager;
+    private readonly MusteriManager _musteriManager;
 
-    /// <summary>
-    /// nisye presenter, müştəri nisye əməliyyatlarını idarə etmək üçün istifadə olunur.
-    /// </summary>
-    /// <param name="view"></param>
-    public NisyePresenter(INisyeView view)
+    public NisyePresenter(INisyeView view, NisyeManager nisyeManager, MusteriManager musteriManager)
     {
         _view = view;
-        var unitOfWork = new UnitOfWork(new AzAgroPOSDbContext());
-        _nisyeManager = new NisyeManager(unitOfWork);
+        _nisyeManager = nisyeManager;
+        _musteriManager = musteriManager;
 
         _view.FormYuklendi += async (s, e) => await FormuYukle();
         _view.MusteriSecildi += async (s, e) => await MusteriHereketleriniYukle();
         _view.OdenisEdildi += async (s, e) => await OdenisEt();
     }
-    /// <summary>
-    /// bu metod, form yükləndikdə müştəri siyahısını yükləyir və göstərir.
-    /// </summary>
-    /// <returns></returns>
+    
     private async Task FormuYukle()
     {
         var netice = await _nisyeManager.MusterileriGetirAsync();

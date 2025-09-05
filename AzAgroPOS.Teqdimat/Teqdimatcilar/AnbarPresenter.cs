@@ -17,11 +17,11 @@ public class AnbarPresenter
     private readonly IAnbarView _view;
     private readonly AnbarManager _anbarManager;
 
-    public AnbarPresenter(IAnbarView view)
+    public AnbarPresenter(IAnbarView view, AnbarManager anbarManager)
     {
         _view = view;
-        var unitOfWork = new UnitOfWork(new AzAgroPOSDbContext());
-        _anbarManager = new AnbarManager(unitOfWork);
+        _anbarManager = anbarManager;
+        //_anbarManager = new AnbarManager(unitOfWork);
 
         _view.AxtarIstek += async (s, e) => await MehsulAxtar();
         _view.StokArtirIstek += async (s, e) => await StokArtir();

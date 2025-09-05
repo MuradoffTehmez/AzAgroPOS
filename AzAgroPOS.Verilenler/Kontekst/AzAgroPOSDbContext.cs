@@ -1,9 +1,7 @@
-﻿// Fayl: AzAgroPOS.Verilenler/Kontekst/AzAgroPOSDbContext.cs
-namespace AzAgroPOS.Verilenler.Kontekst;
+﻿namespace AzAgroPOS.Verilenler.Kontekst;
 
 using AzAgroPOS.Varliglar;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 
 /// <summary>
 /// AzAgroPOS tətbiqinin verilənlər bazası kontekstini təmsil edir.
@@ -13,6 +11,13 @@ using Microsoft.Extensions.Options;
 /// </summary>
 public class AzAgroPOSDbContext : DbContext
 {
+    // DƏYİŞİKLİK: Dependency Injection üçün yeni konstruktor əlavə edildi.
+    // Bu konstruktor Program.cs-dən göndərilən verilənlər bazası konfiqurasiyasını qəbul edir.
+    public AzAgroPOSDbContext(DbContextOptions<AzAgroPOSDbContext> options) : base(options)
+    {
+
+    }
+
     // Hər bir varlıq üçün DbSet təyin edirik. Bunlar verilənlər bazasındakı cədvəlləri təmsil edəcək.
     /// <summary>
     /// Məhsul cədvəli - Məhsul varlıqlarını təmsil edir.
@@ -71,20 +76,16 @@ public class AzAgroPOSDbContext : DbContext
     //public DbSet<TemirMerhelesi> TemirMerheleleri { get; set; }
 
 
-    /// <summary>
-    /// OnConfiguring metodu, verilənlər bazası bağlantı sətrini və digər konfiqurasiyaları təyin etmək üçün istifadə olunur.
-    /// Diqqət: Bu metod, DbContext-in necə konfiqurasiya olunacağını müəyyən edir.
-    /// Qeyd: Bağlantı sətri (connection string) burada təyin olunur, lakin təhlükəsizlik səbəbi ilə onu birbaşa kodda saxlamaq tövsiyə edilmir. Əvəzinə, konfiqurasiya faylında və ya mühit dəyişənlərində saxlamaq daha yaxşıdır.
-    /// </summary>
-    /// <param name="optionsBuilder"></param>
+    // DƏYİŞİKLİK: OnConfiguring metodu silindi, çünki bu məntiq artıq Program.cs-dədir.
+    /*
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        // Verilənlər bazasına qoşulma sətrini (connection string) burada təyin edirik.
         if (!optionsBuilder.IsConfigured)
         {
-            optionsBuilder.UseSqlServer("Server=MURADOV-TAHMAZ\\TAHMAZ_MURADOV;Database=AzAgroPOS_DB;Trusted_Connection=True;TrustServerCertificate=True;");
+            optionsBuilder.UseSqlServer("...");
         }
     }
+    */
 
     /// <summary>
     /// OnModelCreating metodu, verilənlər bazası modellərinin konfiqurasiyasını təyin etmək üçün istifadə olunur.
@@ -109,19 +110,17 @@ public class AzAgroPOSDbContext : DbContext
         modelBuilder.Entity<Temir>().Property(t => t.YekunMebleg).HasColumnType("decimal(18, 2)");
         modelBuilder.Entity<NisyeHereketi>().Property(n => n.Mebleg).HasColumnType("decimal(18, 2)");
 
-        
         modelBuilder.Entity<Novbe>().Property(n => n.BaslangicMebleg).HasColumnType("decimal(18, 2)");
         modelBuilder.Entity<Novbe>().Property(n => n.GozlenilenMebleg).HasColumnType("decimal(18, 2)");
         modelBuilder.Entity<Novbe>().Property(n => n.FaktikiMebleg).HasColumnType("decimal(18, 2)");
 
-        
         modelBuilder.Entity<Istifadeci>().HasOne(i => i.Rol).WithMany(r => r.Istifadeciler).HasForeignKey(i => i.RolId);
         modelBuilder.Entity<Temir>().HasOne(t => t.Isci).WithMany(i => i.TemirSifarisleri).HasForeignKey(t => t.IsciId).OnDelete(DeleteBehavior.Restrict);
         modelBuilder.Entity<Satis>().HasOne(s => s.Novbe).WithMany(n => n.Satislar).HasForeignKey(s => s.NovbeId).OnDelete(DeleteBehavior.Restrict);
 
-        
         SeedData(modelBuilder);
     }
+
     /// <summary>
     /// SeedData metodu, verilənlər bazasına başlanğıc (initial) məlumatları əlavə etmək üçün istifadə olunur.
     /// Diqqət: Bu metod, tətbiq ilk dəfə işə salındıqda və ya verilənlər bazası yaradıldıqda lazım olan ilkin məlumatları təmin edir.
@@ -141,17 +140,17 @@ public class AzAgroPOSDbContext : DbContext
         {
             Id = 1,
             IstifadeciAdi = "admin",
-            ParolHash = "$2a$11$wvv2PHlk9LWlv4vuz3eEBl.ynUDwxFQSIHWle5nHfS3sL7hTkTQPG",
+            ParolHash = "$2a$11$wvv2PHlk9LWlv4vuz3eEBl.ynUDwxFQSIHWle5nHfS3sL7hTkTQPG", // admin123
             TamAd = "Sistem Administratoru",
             RolId = adminRolu.Id
         };
         modelBuilder.Entity<Istifadeci>().HasData(adminIstifadeci);
-        
+
         // 3. Bir neçə nümunə məhsul yarat
         modelBuilder.Entity<Mehsul>().HasData(
             new Mehsul { Id = 1, Ad = "Çörək", StokKodu = "SK001", Barkod = "869000000001", PerakendeSatisQiymeti = 0.70m, AlisQiymeti = 0.50m, MovcudSay = 100, OlcuVahidi = OlcuVahidi.Ədəd },
             new Mehsul { Id = 2, Ad = "Süd 1L", StokKodu = "SK002", Barkod = "869000000002", PerakendeSatisQiymeti = 2.50m, AlisQiymeti = 2.00m, MovcudSay = 50, OlcuVahidi = OlcuVahidi.Litr },
             new Mehsul { Id = 3, Ad = "Yumurta (10 ədəd)", StokKodu = "SK003", Barkod = "869000000003", PerakendeSatisQiymeti = 3.20m, AlisQiymeti = 2.80m, MovcudSay = 200, OlcuVahidi = OlcuVahidi.Paket }
-         );
+           );
     }
 }

@@ -2,16 +2,17 @@
 namespace AzAgroPOS.Teqdimat;
 
 using AzAgroPOS.Mentiq.DTOs;
+using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
 
 public partial class ZHesabatArxivFormu : BazaForm, IZHesabatArxivView
 {
     private readonly ZHesabatArxivPresenter _presenter;
-    public ZHesabatArxivFormu()
+    public ZHesabatArxivFormu(NovbeManager novbeManager)
     {
         InitializeComponent();
-        _presenter = new ZHesabatArxivPresenter(this);
+        _presenter = new ZHesabatArxivPresenter(this, novbeManager);
         StilVerDataGridView(dgvNovbeler);
     }
 

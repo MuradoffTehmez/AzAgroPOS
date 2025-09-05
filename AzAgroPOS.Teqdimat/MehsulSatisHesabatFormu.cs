@@ -2,6 +2,7 @@
 namespace AzAgroPOS.Teqdimat;
 
 using AzAgroPOS.Mentiq.DTOs;
+using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
 
@@ -9,10 +10,10 @@ public partial class MehsulSatisHesabatFormu : BazaForm, IMehsulSatisHesabatView
 {
     private readonly MehsulSatisHesabatPresenter _presenter;
 
-    public MehsulSatisHesabatFormu()
+    public MehsulSatisHesabatFormu(HesabatManager hesabatManager)
     {
         InitializeComponent();
-        _presenter = new MehsulSatisHesabatPresenter(this);
+        _presenter = new MehsulSatisHesabatPresenter(this, hesabatManager);
         StilVerDataGridView(dgvHesabat);
     }
 

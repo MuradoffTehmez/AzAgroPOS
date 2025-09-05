@@ -2,16 +2,17 @@
 namespace AzAgroPOS.Teqdimat;
 
 using AzAgroPOS.Mentiq.DTOs;
+using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
 
 public partial class HesabatFormu : BazaForm, IHesabatView
 {
     private readonly HesabatPresenter _presenter;
-    public HesabatFormu()
+    public HesabatFormu(HesabatManager hesabatManager)
     {
         InitializeComponent();
-        _presenter = new HesabatPresenter(this);
+        _presenter = new HesabatPresenter(this, hesabatManager);
         StilVerDataGridView(dgvSatislar);
         PanelləriSıfırla();
     }

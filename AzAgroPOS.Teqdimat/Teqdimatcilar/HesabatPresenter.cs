@@ -18,11 +18,11 @@ public class HesabatPresenter
     /// hesabatPresenter konstruktoru, HesabatView və HesabatManager nümunələrini qəbul edir və hadisə abunəliyini təyin edir.
     /// </summary>
     /// <param name="view"></param>
-    public HesabatPresenter(IHesabatView view)
+    public HesabatPresenter(IHesabatView view, HesabatManager hesabatManager)
     {
         _view = view;
-        var unitOfWork = new UnitOfWork(new AzAgroPOSDbContext());
-        _hesabatManager = new HesabatManager(unitOfWork);
+        _hesabatManager = hesabatManager;
+        //_hesabatManager = new HesabatManager(unitOfWork);
 
         _view.HesabatiGosterIstek += async (s, e) => await GunlukHesabatiGoster();
     }
