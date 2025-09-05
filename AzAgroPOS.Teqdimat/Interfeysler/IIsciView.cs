@@ -6,6 +6,9 @@ using AzAgroPOS.Varliglar;
 using System;
 using System.Collections.Generic;
 
+/// <summary>
+/// İşçi idarəetmə forması üçün interfeys.
+/// </summary>
 public interface IIsciView
 {
     // İşçi məlumatları

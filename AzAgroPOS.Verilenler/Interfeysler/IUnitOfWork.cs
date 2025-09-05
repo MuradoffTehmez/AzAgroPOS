@@ -72,10 +72,52 @@ public interface IUnitOfWork : IAsyncDisposable
 
     /// <summary>
     /// İşçi İzn Repozitorisi - İşçi məzuniyyət/icazə əməliyyatlarını idarə edir.
-    /// diqqət: Bu repozitoriya işçilərin məzuniyyət/icazə qeydlərini idarə edir.
-    /// qeyd: İzn qeydi yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
+    /// Diqqət: Bu repozitoriya işçilərin məzuniyyət/icazə qeydlərini idarə edir.
+    /// Qeyd: İzn qeydi yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
     /// </summary>
     IIsciIzniRepozitori IsciIznleri { get; }
+
+    /// <summary>
+    /// Tədarükçü Repozitorisi - Tədarükçü əməliyyatlarını idarə edir.
+    /// Diqqət: Bu repozitoriya tədarükçülərin məlumatlarını idarə edir.
+    /// Qeyd: Tədarükçü yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
+    /// </summary>
+    ITedarukcuRepozitori Tedarukculer { get; }
+
+    /// <summary>
+    /// Alış Sifarişi Repozitorisi - Alış sifarişi əməliyyatlarını idarə edir.
+    /// Diqqət: Bu repozitoriya alış sifarişlərinin məlumatlarını idarə edir.
+    /// Qeyd: Alış sifarişi yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
+    /// </summary>
+    IAlisSifarisRepozitori AlisSifarisleri { get; }
+
+    /// <summary>
+    /// Alış Sifarişi Sətiri Repozitorisi - Alış sifarişi sətirləri əməliyyatlarını idarə edir.
+    /// Diqqət: Bu repozitoriya alış sifarişi sətirlərinin məlumatlarını idarə edir.
+    /// Qeyd: Alış sifarişi sətiri yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
+    /// </summary>
+    IAlisSifarisSetiriRepozitori AlisSifarisSetirleri { get; }
+
+    /// <summary>
+    /// Alış Sənədi Repozitorisi - Alış sənədi əməliyyatlarını idarə edir.
+    /// Diqqət: Bu repozitoriya alış sənədlərinin məlumatlarını idarə edir.
+    /// Qeyd: Alış sənədi yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
+    /// </summary>
+    IAlisSenedRepozitori AlisSenetleri { get; }
+
+    /// <summary>
+    /// Alış Sənədi Sətiri Repozitorisi - Alış sənədi sətirləri əməliyyatlarını idarə edir.
+    /// Diqqət: Bu repozitoriya alış sənədi sətirlərinin məlumatlarını idarə edir.
+    /// Qeyd: Alış sənədi sətiri yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
+    /// </summary>
+    IAlisSenedSetiriRepozitori AlisSenedSetirleri { get; }
+
+    /// <summary>
+    /// Tədarükçü Ödənişi Repozitorisi - Tədarükçü ödəniş əməliyyatlarını idarə edir.
+    /// Diqqət: Bu repozitoriya tədarükçü ödənişlərinin məlumatlarını idarə edir.
+    /// Qeyd: Tədarükçü ödənişi yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
+    /// </summary>
+    ITedarukcuOdemeRepozitori TedarukcuOdemeleri { get; }
 
     /// <summary>
     /// Edilmiş bütün dəyişiklikləri vahid bir tranzaksiya kimi verilənlər bazasına tətbiq edir.

@@ -22,7 +22,7 @@ public class IsciDto
     /// <summary>
     /// İşçinin doğum tarixi.
     /// </summary>
-    public DateTime DogumTarixi { get; set; }
+    public DateTime DogumTarixi { get; set; } = DateTime.Now.AddYears(-25);
 
     /// <summary>
     /// İşçinin telefon nömrəsi.
@@ -42,12 +42,12 @@ public class IsciDto
     /// <summary>
     /// İşçinin işə başlama tarixi.
     /// </summary>
-    public DateTime IseBaslamaTarixi { get; set; }
+    public DateTime IseBaslamaTarixi { get; set; } = DateTime.Now;
 
     /// <summary>
     /// İşçinin maaşı.
     /// </summary>
-    public decimal Maas { get; set; }
+    public decimal Maas { get; set; } = 0;
 
     /// <summary>
     /// İşçinin vəzifəsi.
@@ -62,7 +62,7 @@ public class IsciDto
     /// <summary>
     /// İşçinin statusu.
     /// </summary>
-    public IsciStatusu Status { get; set; }
+    public IsciStatusu Status { get; set; } = IsciStatusu.Aktiv;
 
     /// <summary>
     /// İşçinin şəxsiyyət vəsiqəsinin seriya nömrəsi.
@@ -78,9 +78,4 @@ public class IsciDto
     /// İşçinin bank məlumatları.
     /// </summary>
     public string BankMəlumatları { get; set; } = string.Empty;
-
-    /// <summary>
-    /// İşçinin sistem istifadəçi adı (əgər varsa).
-    /// </summary>
-    public string? SistemIstifadeciAdi { get; set; }
 }

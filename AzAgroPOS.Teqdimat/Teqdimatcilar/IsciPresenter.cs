@@ -4,10 +4,15 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
+using AzAgroPOS.Varliglar;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+/// <summary>
+/// İşçi idarəetmə forması üçün presenter.
+/// </summary>
 public class IsciPresenter
 {
     private readonly IIsciView _view;
@@ -35,8 +40,8 @@ public class IsciPresenter
         }
         else
         {
-            _view.IscileriGoster(new System.Collections.Generic.List<IsciDto>());
-            _view.MesajGoster(netice.Mesaj);
+            _view.IscileriGoster(new List<IsciDto>());
+            _view.MesajGoster(netice.Mesaj, true);
         }
     }
 
@@ -60,7 +65,6 @@ public class IsciPresenter
         };
 
         var netice = await _isciManager.IsciYaratAsync(dto);
-
         if (netice.UgurluDur)
         {
             _view.MesajGoster("İşçi uğurla yaradıldı.");
@@ -100,7 +104,6 @@ public class IsciPresenter
         };
 
         var netice = await _isciManager.IsciYenileAsync(dto);
-
         if (netice.UgurluDur)
         {
             _view.MesajGoster("İşçi məlumatları uğurla yeniləndi.");

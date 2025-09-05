@@ -67,6 +67,7 @@ namespace AzAgroPOS.Teqdimat
             pnlDugmeler = new Panel();
             btnTemizle = new Button();
             btnSil = new Button();
+            btnYenile = new Button();
             btnYarat = new Button();
             grpIsciler = new GroupBox();
             dgvIsciler = new DataGridView();
@@ -579,6 +580,7 @@ namespace AzAgroPOS.Teqdimat
             pnlDugmeler.BackColor = Color.FromArgb(242, 242, 242);
             pnlDugmeler.Controls.Add(btnTemizle);
             pnlDugmeler.Controls.Add(btnSil);
+            pnlDugmeler.Controls.Add(btnYenile);
             pnlDugmeler.Controls.Add(btnYarat);
             pnlDugmeler.Dock = DockStyle.Bottom;
             pnlDugmeler.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
@@ -613,6 +615,19 @@ namespace AzAgroPOS.Teqdimat
             btnSil.Text = "Sil";
             btnSil.UseVisualStyleBackColor = false;
             btnSil.Click += btnSil_Click;
+            // 
+            // btnYenile
+            // 
+            btnYenile.BackColor = Color.FromArgb(242, 242, 242);
+            btnYenile.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            btnYenile.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            btnYenile.Location = new Point(5, 20);
+            btnYenile.Name = "btnYenile";
+            btnYenile.Size = new Size(100, 35);
+            btnYenile.TabIndex = 0;
+            btnYenile.Text = "Yarat/Yenilə";
+            btnYenile.UseVisualStyleBackColor = false;
+            btnYenile.Click += btnYarat_Click;
             // 
             // btnYarat
             // 
@@ -738,6 +753,7 @@ namespace AzAgroPOS.Teqdimat
         private System.Windows.Forms.Panel pnlDugmeler;
         private System.Windows.Forms.Button btnTemizle;
         private System.Windows.Forms.Button btnSil;
+        private System.Windows.Forms.Button btnYenile;
         private System.Windows.Forms.Button btnYarat;
         private System.Windows.Forms.GroupBox grpIsciler;
         private System.Windows.Forms.DataGridView dgvIsciler;

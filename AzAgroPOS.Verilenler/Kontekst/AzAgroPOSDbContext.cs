@@ -22,6 +22,12 @@ public class AzAgroPOSDbContext : DbContext
     public DbSet<Isci> Isciler { get; set; }
     public DbSet<IsciPerformans> IsciPerformanslari { get; set; }
     public DbSet<IsciIzni> IsciIznleri { get; set; }
+    public DbSet<Tedarukcu> Tedarukculer { get; set; }
+    public DbSet<AlisSifaris> AlisSifarisleri { get; set; }
+    public DbSet<AlisSifarisSetiri> AlisSifarisSetirleri { get; set; }
+    public DbSet<AlisSened> AlisSenetleri { get; set; }
+    public DbSet<AlisSenedSetiri> AlisSenedSetirleri { get; set; }
+    public DbSet<TedarukcuOdeme> TedarukcuOdemeleri { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -41,6 +47,13 @@ public class AzAgroPOSDbContext : DbContext
         modelBuilder.Entity<Novbe>().Property(n => n.GozlenilenMebleg).HasColumnType("decimal(18, 2)");
         modelBuilder.Entity<Novbe>().Property(n => n.FaktikiMebleg).HasColumnType("decimal(18, 2)");
         modelBuilder.Entity<Isci>().Property(i => i.Maas).HasColumnType("decimal(18, 2)");
+        modelBuilder.Entity<AlisSifaris>().Property(a => a.UmumiMebleg).HasColumnType("decimal(18, 2)");
+        modelBuilder.Entity<AlisSifarisSetiri>().Property(a => a.BirVahidQiymet).HasColumnType("decimal(18, 2)");
+        modelBuilder.Entity<AlisSifarisSetiri>().Property(a => a.CemiMebleg).HasColumnType("decimal(18, 2)");
+        modelBuilder.Entity<AlisSened>().Property(a => a.UmumiMebleg).HasColumnType("decimal(18, 2)");
+        modelBuilder.Entity<AlisSenedSetiri>().Property(a => a.BirVahidQiymet).HasColumnType("decimal(18, 2)");
+        modelBuilder.Entity<AlisSenedSetiri>().Property(a => a.CemiMebleg).HasColumnType("decimal(18, 2)");
+        modelBuilder.Entity<TedarukcuOdeme>().Property(t => t.Mebleg).HasColumnType("decimal(18, 2)");
 
         modelBuilder.Entity<Istifadeci>()
             .HasOne(i => i.Rol)
@@ -82,6 +95,84 @@ public class AzAgroPOSDbContext : DbContext
             .WithMany()
             .HasForeignKey(ii => ii.TesdiqEdenIsciId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<AlisSifaris>()
+            .HasOne(a => a.Tedarukcu)
+            .WithMany(t => t.AlisSifarisleri)
+            .HasForeignKey(a => a.TedarukcuId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Tedarukcu>()
+            .HasMany(t => t.AlisSenetleri)
+            .WithOne(a => a.Tedarukcu)
+            .HasForeignKey(a => a.TedarukcuId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Tedarukcu>()
+            .HasMany(t => t.Odemeler)
+            .WithOne(o => o.Tedarukcu)
+            .HasForeignKey(o => o.TedarukcuId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<AlisSifaris>()
+            .HasMany(a => a.SifarisSetirleri)
+            .WithOne(s => s.AlisSifaris)
+            .HasForeignKey(s => s.AlisSifarisId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<AlisSifarisSetiri>()
+            .HasOne(a => a.AlisSifaris)
+            .WithMany(s => s.SifarisSetirleri)
+            .HasForeignKey(a => a.AlisSifarisId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<AlisSifarisSetiri>()
+            .HasOne(a => a.Mehsul)
+            .WithMany()
+            .HasForeignKey(a => a.MehsulId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<AlisSened>()
+            .HasMany(a => a.SenedSetirleri)
+            .WithOne(s => s.AlisSened)
+            .HasForeignKey(s => s.AlisSenedId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<AlisSened>()
+            .HasOne(a => a.Tedarukcu)
+            .WithMany(t => t.AlisSenetleri)
+            .HasForeignKey(a => a.TedarukcuId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<AlisSenedSetiri>()
+            .HasOne(a => a.AlisSened)
+            .WithMany(s => s.SenedSetirleri)
+            .HasForeignKey(a => a.AlisSenedId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<AlisSenedSetiri>()
+            .HasOne(a => a.Mehsul)
+            .WithMany()
+            .HasForeignKey(a => a.MehsulId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<AlisSenedSetiri>()
+            .HasOne(a => a.AlisSifarisSetiri)
+            .WithMany()
+            .HasForeignKey(a => a.AlisSifarisSetiriId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<TedarukcuOdeme>()
+            .HasOne(t => t.Tedarukcu)
+            .WithMany(t => t.Odemeler)
+            .HasForeignKey(t => t.TedarukcuId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<TedarukcuOdeme>()
+            .HasOne(t => t.AlisSened)
+            .WithMany(a => a.Odemeler)
+            .HasForeignKey(t => t.AlisSenedId)
+            .OnDelete(DeleteBehavior.SetNull);
 
         SeedData(modelBuilder);
     }
@@ -143,6 +234,32 @@ public class AzAgroPOSDbContext : DbContext
                 SvsNo = "AZE87654321",
                 QeydiyyatUnvani = "Bakı şəh., Xətai r-nu",
                 BankMəlumatları = "IBAN: AZ87NABZ0000000087654321"
+            }
+        );
+
+        // Sample supplier data
+        modelBuilder.Entity<Tedarukcu>().HasData(
+            new Tedarukcu 
+            { 
+                Id = 1, 
+                Ad = "Ənənəvi Bakery", 
+                Voen = "1234567890",
+                Unvan = "Bakı şəh., Nəsimi r-nu, Cavid prospekti 45",
+                Telefon = "+994123456789",
+                Email = "info@enanavi-bakery.az",
+                BankHesabi = "IBAN: AZ12NABZ0000000012345678",
+                Aktivdir = true
+            },
+            new Tedarukcu 
+            { 
+                Id = 2, 
+                Ad = "Fresh Dairy Products", 
+                Voen = "0987654321",
+                Unvan = "Sumqayıt şəh., Sənaye rayonu, Zavod küçəsi 12",
+                Telefon = "+994181234567",
+                Email = "orders@fresh-dairy.az",
+                BankHesabi = "IBAN: AZ87NABZ0000000087654321",
+                Aktivdir = true
             }
         );
     }

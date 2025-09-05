@@ -5,7 +5,6 @@ using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
-using AzAgroPOS.Varliglar;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -135,7 +134,6 @@ public partial class IsciIdareetmeFormu : BazaForm, IIsciView
             dgvIsciler.Columns["SvsNo"].HeaderText = "SVS No";
             dgvIsciler.Columns["QeydiyyatUnvani"].HeaderText = "Qeydiyyat Ünvanı";
             dgvIsciler.Columns["BankMəlumatları"].HeaderText = "Bank Məlumatları";
-            dgvIsciler.Columns["SistemIstifadeciAdi"].HeaderText = "Sistem İstifadəçisi";
         }
     }
 

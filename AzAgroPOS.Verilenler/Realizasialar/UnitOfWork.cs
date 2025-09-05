@@ -92,6 +92,48 @@ public class UnitOfWork : IUnitOfWork
     public IIsciIzniRepozitori IsciIznleri { get; private set; }
 
     /// <summary>
+    /// Tədarükçü Repozitorisi - Tədarükçü əməliyyatlarını idarə edir.
+    /// Diqqət: Bu repozitoriya tədarükçülərin məlumatlarını idarə edir.
+    /// Qeyd: Tədarükçü yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
+    /// </summary>
+    public ITedarukcuRepozitori Tedarukculer { get; private set; }
+
+    /// <summary>
+    /// Alış Sifarişi Repozitorisi - Alış sifarişi əməliyyatlarını idarə edir.
+    /// Diqqət: Bu repozitoriya alış sifarişlərinin məlumatlarını idarə edir.
+    /// Qeyd: Alış sifarişi yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
+    /// </summary>
+    public IAlisSifarisRepozitori AlisSifarisleri { get; private set; }
+
+    /// <summary>
+    /// Alış Sifarişi Sətiri Repozitorisi - Alış sifarişi sətirləri əməliyyatlarını idarə edir.
+    /// Diqqət: Bu repozitoriya alış sifarişi sətirlərinin məlumatlarını idarə edir.
+    /// Qeyd: Alış sifarişi sətiri yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
+    /// </summary>
+    public IAlisSifarisSetiriRepozitori AlisSifarisSetirleri { get; private set; }
+
+    /// <summary>
+    /// Alış Sənədi Repozitorisi - Alış sənədi əməliyyatlarını idarə edir.
+    /// Diqqət: Bu repozitoriya alış sənədlərinin məlumatlarını idarə edir.
+    /// Qeyd: Alış sənədi yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
+    /// </summary>
+    public IAlisSenedRepozitori AlisSenetleri { get; private set; }
+
+    /// <summary>
+    /// Alış Sənədi Sətiri Repozitorisi - Alış sənədi sətirləri əməliyyatlarını idarə edir.
+    /// Diqqət: Bu repozitoriya alış sənədi sətirlərinin məlumatlarını idarə edir.
+    /// Qeyd: Alış sənədi sətiri yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
+    /// </summary>
+    public IAlisSenedSetiriRepozitori AlisSenedSetirleri { get; private set; }
+
+    /// <summary>
+    /// Tədarükçü Ödənişi Repozitorisi - Tədarükçü ödəniş əməliyyatlarını idarə edir.
+    /// Diqqət: Bu repozitoriya tədarükçü ödənişlərinin məlumatlarını idarə edir.
+    /// Qeyd: Tədarükçü ödənişi yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
+    /// </summary>
+    public ITedarukcuOdemeRepozitori TedarukcuOdemeleri { get; private set; }
+
+    /// <summary>
     /// unitOfWork konstruktoru, verilənlər bazası kontekstini qəbul edir və repozitoriyaların instansiyalarını yaradır.
     /// Diqqət: Bu konstruktor, verilənlər bazası kontekstini bazaya ötürür.
     /// Qeyd: Bu konstruktor, konkret varlıq repozitoriyaları üçün istifadə olunur.
@@ -113,6 +155,12 @@ public class UnitOfWork : IUnitOfWork
         Isciler = new IsciRepozitori(_kontekst);
         IsciPerformanslari = new IsciPerformansRepozitori(_kontekst);
         IsciIznleri = new IsciIzniRepozitori(_kontekst);
+        Tedarukculer = new TedarukcuRepozitori(_kontekst);
+        AlisSifarisleri = new AlisSifarisRepozitori(_kontekst);
+        AlisSifarisSetirleri = new AlisSifarisSetiriRepozitori(_kontekst);
+        AlisSenetleri = new AlisSenedRepozitori(_kontekst);
+        AlisSenedSetirleri = new AlisSenedSetiriRepozitori(_kontekst);
+        TedarukcuOdemeleri = new TedarukcuOdemeRepozitori(_kontekst);
     }
     /// <summary>
     /// EMELIYYATI TƏSDİQLƏ metod, edilmiş bütün dəyişiklikləri vahid bir tranzaksiya kimi verilənlər bazasına tətbiq edir.

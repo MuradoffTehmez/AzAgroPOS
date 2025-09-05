@@ -5,72 +5,72 @@ using AzAgroPOS.Varliglar;
 using System;
 
 /// <summary>
-/// İşçi məzuniyyət/icazə məlumatlarını təqdimat qatına ötürmək üçün istifadə olunan DTO.
+/// İşçinin məzuniyyət/icazə məlumatlarını təqdimat qatına ötürmək üçün istifadə olunan DTO.
 /// </summary>
 public class IsciIzniDto
 {
     /// <summary>
-    /// İznin unikal identifikatoru.
+    /// Məzuniyyət/icazə qeydinin unikal identifikatoru.
     /// </summary>
     public int Id { get; set; }
 
     /// <summary>
-    /// İznin aid olduğu işçinin ID-si.
+    /// Məzuniyyət/icazə qeydinin aid olduğu işçinin ID-si.
     /// </summary>
     public int IsciId { get; set; }
 
     /// <summary>
-    /// İznin aid olduğu işçinin adı.
+    /// Məzuniyyət/icazə qeydinin aid olduğu işçinin adı.
     /// </summary>
     public string IsciAdi { get; set; } = string.Empty;
 
     /// <summary>
-    /// İznin növü.
+    /// Məzuniyyət/icazənin növü (Məzuniyyət, Xəstəlik, Məzuniyyətsiz, və s.).
     /// </summary>
-    public IzinNovu IzinNovu { get; set; }
+    public IzinNovu IzinNovu { get; set; } = IzinNovu.Mezuniyyet;
 
     /// <summary>
-    /// İznin başlama tarixi.
+    /// Məzuniyyət/icazənin başlama tarixi.
     /// </summary>
-    public DateTime BaslamaTarixi { get; set; }
+    public DateTime BaslamaTarixi { get; set; } = DateTime.Now;
 
     /// <summary>
-    /// İznin bitmə tarixi.
+    /// Məzuniyyət/icazənin bitmə tarixi.
     /// </summary>
-    public DateTime BitmeTarixi { get; set; }
+    public DateTime BitmeTarixi { get; set; } = DateTime.Now.AddDays(1);
 
     /// <summary>
-    /// İznin ümumi günü.
+    /// Məzuniyyət/icazənin ümumi günü.
     /// </summary>
-    public int IzinGunu { get; set; }
+    public int IzinGunu { get; set; } = 1;
 
     /// <summary>
-    /// İznin səbəbi.
+    /// Məzuniyyət/icazənin səbəbi.
     /// </summary>
     public string Sebeb { get; set; } = string.Empty;
 
     /// <summary>
-    /// İznin statusu.
+    /// Məzuniyyət/icazənin statusu (Təsdiqlənib, Gözləmədə, Rədd edilib və s.).
     /// </summary>
-    public IzinStatusu Status { get; set; }
+    public IzinStatusu Status { get; set; } = IzinStatusu.Gozlemede;
 
     /// <summary>
-    /// İznin təsdiq edən şəxsin ID-si.
+    /// Məzuniyyət/icazəni təsdiq edən işçinin ID-si.
     /// </summary>
     public int? TesdiqEdenIsciId { get; set; }
 
     /// <summary>
-    /// İznin təsdiq edən şəxsin adı.
+    /// Məzuniyyət/icazəni təsdiq edən işçinin adı.
     /// </summary>
-    public string? TesdiqEdenIsciAdi { get; set; }
+    public string TesdiqEdenIsciAdi { get; set; } = string.Empty;
 
     /// <summary>
-    /// İznin təsdiq tarixi.
+    /// Məzuniyyət/icazənin təsdiq tarixi.
     /// </summary>
     public DateTime? TesdiqTarixi { get; set; }
 
     /// <summary>
-    /// İznin təsdiq edilməsi ilə bağlı əlavə qeydlər.
+    /// Məzuniyyət/icazə ilə bağlı əlavə qeydlər.
     /// </summary>
     public string Qeydler { get; set; } = string.Empty;
 }

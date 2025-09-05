@@ -5,6 +5,7 @@ using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -26,27 +27,33 @@ public class IsciManager
     /// </summary>
     public async Task<EmeliyyatNeticesi<List<IsciDto>>> ButunIscileriGetirAsync()
     {
-        var isciler = await _unitOfWork.Isciler.ButununuGetirAsync();
-        var dtolar = isciler.Select(i => new IsciDto
+        try
         {
-            Id = i.Id,
-            TamAd = i.TamAd,
-            DogumTarixi = i.DogumTarixi,
-            TelefonNomresi = i.TelefonNomresi,
-            Unvan = i.Unvan,
-            Email = i.Email,
-            IseBaslamaTarixi = i.IseBaslamaTarixi,
-            Maas = i.Maas,
-            Vezife = i.Vezife,
-            Departament = i.Departament,
-            Status = i.Status,
-            SvsNo = i.SvsNo,
-            QeydiyyatUnvani = i.QeydiyyatUnvani,
-            BankMəlumatları = i.BankMəlumatları,
-            SistemIstifadeciAdi = i.SistemIstifadecisi?.IstifadeciAdi
-        }).ToList();
+            var isciler = await _unitOfWork.Isciler.ButununuGetirAsync();
+            var dtolar = isciler.Select(i => new IsciDto
+            {
+                Id = i.Id,
+                TamAd = i.TamAd,
+                DogumTarixi = i.DogumTarixi,
+                TelefonNomresi = i.TelefonNomresi,
+                Unvan = i.Unvan,
+                Email = i.Email,
+                IseBaslamaTarixi = i.IseBaslamaTarixi,
+                Maas = i.Maas,
+                Vezife = i.Vezife,
+                Departament = i.Departament,
+                Status = i.Status,
+                SvsNo = i.SvsNo,
+                QeydiyyatUnvani = i.QeydiyyatUnvani,
+                BankMəlumatları = i.BankMəlumatları
+            }).ToList();
 
-        return EmeliyyatNeticesi<List<IsciDto>>.Ugurlu(dtolar);
+            return EmeliyyatNeticesi<List<IsciDto>>.Ugurlu(dtolar);
+        }
+        catch (Exception ex)
+        {
+            return EmeliyyatNeticesi<List<IsciDto>>.Ugursuz($"İşçiləri gətirmək alınmadı: {ex.Message}");
+        }
     }
 
     /// <summary>
@@ -54,30 +61,36 @@ public class IsciManager
     /// </summary>
     public async Task<EmeliyyatNeticesi<IsciDto>> IsciGetirAsync(int id)
     {
-        var isci = await _unitOfWork.Isciler.GetirAsync(id);
-        if (isci == null)
-            return EmeliyyatNeticesi<IsciDto>.Ugursuz("İşçi tapılmadı.");
-
-        var dto = new IsciDto
+        try
         {
-            Id = isci.Id,
-            TamAd = isci.TamAd,
-            DogumTarixi = isci.DogumTarixi,
-            TelefonNomresi = isci.TelefonNomresi,
-            Unvan = isci.Unvan,
-            Email = isci.Email,
-            IseBaslamaTarixi = isci.IseBaslamaTarixi,
-            Maas = isci.Maas,
-            Vezife = isci.Vezife,
-            Departament = isci.Departament,
-            Status = isci.Status,
-            SvsNo = isci.SvsNo,
-            QeydiyyatUnvani = isci.QeydiyyatUnvani,
-            BankMəlumatları = isci.BankMəlumatları,
-            SistemIstifadeciAdi = isci.SistemIstifadecisi?.IstifadeciAdi
-        };
+            var isci = await _unitOfWork.Isciler.GetirAsync(id);
+            if (isci == null)
+                return EmeliyyatNeticesi<IsciDto>.Ugursuz("İşçi tapılmadı.");
 
-        return EmeliyyatNeticesi<IsciDto>.Ugurlu(dto);
+            var dto = new IsciDto
+            {
+                Id = isci.Id,
+                TamAd = isci.TamAd,
+                DogumTarixi = isci.DogumTarixi,
+                TelefonNomresi = isci.TelefonNomresi,
+                Unvan = isci.Unvan,
+                Email = isci.Email,
+                IseBaslamaTarixi = isci.IseBaslamaTarixi,
+                Maas = isci.Maas,
+                Vezife = isci.Vezife,
+                Departament = isci.Departament,
+                Status = isci.Status,
+                SvsNo = isci.SvsNo,
+                QeydiyyatUnvani = isci.QeydiyyatUnvani,
+                BankMəlumatları = isci.BankMəlumatları
+            };
+
+            return EmeliyyatNeticesi<IsciDto>.Ugurlu(dto);
+        }
+        catch (Exception ex)
+        {
+            return EmeliyyatNeticesi<IsciDto>.Ugursuz($"İşçi məlumatlarını gətirmək alınmadı: {ex.Message}");
+        }
     }
 
     /// <summary>
@@ -85,35 +98,42 @@ public class IsciManager
     /// </summary>
     public async Task<EmeliyyatNeticesi<int>> IsciYaratAsync(IsciDto dto)
     {
-        // Validasiya
-        if (string.IsNullOrWhiteSpace(dto.TamAd))
-            return EmeliyyatNeticesi<int>.Ugursuz("İşçinin tam adı boş ola bilməz.");
-
-        if (dto.Maas < 0)
-            return EmeliyyatNeticesi<int>.Ugursuz("Maaş mənfi ola bilməz.");
-
-        // Yeni işçi obyekti yaradırıq
-        var yeniIsci = new Isci
+        try
         {
-            TamAd = dto.TamAd,
-            DogumTarixi = dto.DogumTarixi,
-            TelefonNomresi = dto.TelefonNomresi,
-            Unvan = dto.Unvan,
-            Email = dto.Email,
-            IseBaslamaTarixi = dto.IseBaslamaTarixi,
-            Maas = dto.Maas,
-            Vezife = dto.Vezife,
-            Departament = dto.Departament,
-            Status = dto.Status,
-            SvsNo = dto.SvsNo,
-            QeydiyyatUnvani = dto.QeydiyyatUnvani,
-            BankMəlumatları = dto.BankMəlumatları
-        };
+            // Validasiya
+            if (string.IsNullOrWhiteSpace(dto.TamAd))
+                return EmeliyyatNeticesi<int>.Ugursuz("İşçinin tam adı boş ola bilməz.");
 
-        await _unitOfWork.Isciler.ElaveEtAsync(yeniIsci);
-        await _unitOfWork.EmeliyyatiTesdiqleAsync();
+            if (dto.Maas < 0)
+                return EmeliyyatNeticesi<int>.Ugursuz("Maaş mənfi ola bilməz.");
 
-        return EmeliyyatNeticesi<int>.Ugurlu(yeniIsci.Id);
+            // Yeni işçi obyekti yaradırıq
+            var yeniIsci = new Isci
+            {
+                TamAd = dto.TamAd,
+                DogumTarixi = dto.DogumTarixi,
+                TelefonNomresi = dto.TelefonNomresi,
+                Unvan = dto.Unvan,
+                Email = dto.Email,
+                IseBaslamaTarixi = dto.IseBaslamaTarixi,
+                Maas = dto.Maas,
+                Vezife = dto.Vezife,
+                Departament = dto.Departament,
+                Status = dto.Status,
+                SvsNo = dto.SvsNo,
+                QeydiyyatUnvani = dto.QeydiyyatUnvani,
+                BankMəlumatları = dto.BankMəlumatları
+            };
+
+            await _unitOfWork.Isciler.ElaveEtAsync(yeniIsci);
+            await _unitOfWork.EmeliyyatiTesdiqleAsync();
+
+            return EmeliyyatNeticesi<int>.Ugurlu(yeniIsci.Id);
+        }
+        catch (Exception ex)
+        {
+            return EmeliyyatNeticesi<int>.Ugursuz($"İşçi yaratmaq alınmadı: {ex.Message}");
+        }
     }
 
     /// <summary>
@@ -121,36 +141,43 @@ public class IsciManager
     /// </summary>
     public async Task<EmeliyyatNeticesi> IsciYenileAsync(IsciDto dto)
     {
-        var movcudIsci = await _unitOfWork.Isciler.GetirAsync(dto.Id);
-        if (movcudIsci == null)
-            return EmeliyyatNeticesi.Ugursuz("Yenilənmək üçün işçi tapılmadı.");
+        try
+        {
+            var movcudIsci = await _unitOfWork.Isciler.GetirAsync(dto.Id);
+            if (movcudIsci == null)
+                return EmeliyyatNeticesi.Ugursuz("Yenilənmək üçün işçi tapılmadı.");
 
-        // Validasiya
-        if (string.IsNullOrWhiteSpace(dto.TamAd))
-            return EmeliyyatNeticesi.Ugursuz("İşçinin tam adı boş ola bilməz.");
+            // Validasiya
+            if (string.IsNullOrWhiteSpace(dto.TamAd))
+                return EmeliyyatNeticesi.Ugursuz("İşçinin tam adı boş ola bilməz.");
 
-        if (dto.Maas < 0)
-            return EmeliyyatNeticesi.Ugursuz("Maaş mənfi ola bilməz.");
+            if (dto.Maas < 0)
+                return EmeliyyatNeticesi.Ugursuz("Maaş mənfi ola bilməz.");
 
-        // Məlumatları yeniləyirik
-        movcudIsci.TamAd = dto.TamAd;
-        movcudIsci.DogumTarixi = dto.DogumTarixi;
-        movcudIsci.TelefonNomresi = dto.TelefonNomresi;
-        movcudIsci.Unvan = dto.Unvan;
-        movcudIsci.Email = dto.Email;
-        movcudIsci.IseBaslamaTarixi = dto.IseBaslamaTarixi;
-        movcudIsci.Maas = dto.Maas;
-        movcudIsci.Vezife = dto.Vezife;
-        movcudIsci.Departament = dto.Departament;
-        movcudIsci.Status = dto.Status;
-        movcudIsci.SvsNo = dto.SvsNo;
-        movcudIsci.QeydiyyatUnvani = dto.QeydiyyatUnvani;
-        movcudIsci.BankMəlumatları = dto.BankMəlumatları;
+            // Məlumatları yeniləyirik
+            movcudIsci.TamAd = dto.TamAd;
+            movcudIsci.DogumTarixi = dto.DogumTarixi;
+            movcudIsci.TelefonNomresi = dto.TelefonNomresi;
+            movcudIsci.Unvan = dto.Unvan;
+            movcudIsci.Email = dto.Email;
+            movcudIsci.IseBaslamaTarixi = dto.IseBaslamaTarixi;
+            movcudIsci.Maas = dto.Maas;
+            movcudIsci.Vezife = dto.Vezife;
+            movcudIsci.Departament = dto.Departament;
+            movcudIsci.Status = dto.Status;
+            movcudIsci.SvsNo = dto.SvsNo;
+            movcudIsci.QeydiyyatUnvani = dto.QeydiyyatUnvani;
+            movcudIsci.BankMəlumatları = dto.BankMəlumatları;
 
-        _unitOfWork.Isciler.Yenile(movcudIsci);
-        await _unitOfWork.EmeliyyatiTesdiqleAsync();
+            _unitOfWork.Isciler.Yenile(movcudIsci);
+            await _unitOfWork.EmeliyyatiTesdiqleAsync();
 
-        return EmeliyyatNeticesi.Ugurlu();
+            return EmeliyyatNeticesi.Ugurlu();
+        }
+        catch (Exception ex)
+        {
+            return EmeliyyatNeticesi.Ugursuz($"İşçi məlumatlarını yeniləmək alınmadı: {ex.Message}");
+        }
     }
 
     /// <summary>
@@ -158,13 +185,82 @@ public class IsciManager
     /// </summary>
     public async Task<EmeliyyatNeticesi> IsciSilAsync(int id)
     {
-        var isci = await _unitOfWork.Isciler.GetirAsync(id);
-        if (isci == null)
-            return EmeliyyatNeticesi.Ugursuz("Silinəcək işçi tapılmadı.");
+        try
+        {
+            var isci = await _unitOfWork.Isciler.GetirAsync(id);
+            if (isci == null)
+                return EmeliyyatNeticesi.Ugursuz("Silinəcək işçi tapılmadı.");
 
-        _unitOfWork.Isciler.Sil(isci);
-        await _unitOfWork.EmeliyyatiTesdiqleAsync();
+            _unitOfWork.Isciler.Sil(isci);
+            await _unitOfWork.EmeliyyatiTesdiqleAsync();
 
-        return EmeliyyatNeticesi.Ugurlu();
+            return EmeliyyatNeticesi.Ugurlu();
+        }
+        catch (Exception ex)
+        {
+            return EmeliyyatNeticesi.Ugursuz($"İşçi silmək alınmadı: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// İşçinin performans qeydlərini gətirir.
+    /// </summary>
+    public async Task<EmeliyyatNeticesi<List<IsciPerformansDto>>> IscininPerformansQeydleriniGetirAsync(int isciId)
+    {
+        try
+        {
+            var performansQeydleri = await _unitOfWork.IsciPerformanslari.AxtarAsync(p => p.IsciId == isciId);
+            var dtolar = performansQeydleri.Select(p => new IsciPerformansDto
+            {
+                Id = p.Id,
+                IsciId = p.IsciId,
+                IsciAdi = p.Isci?.TamAd ?? "Naməlum",
+                Tarix = p.Tarix,
+                QeydDovru = p.QeydDovru,
+                Qiymet = p.Qiymet,
+                Qeydler = p.Qeydler,
+                Emsallar = p.Emsallar,
+                Teklifler = p.Teklifler
+            }).ToList();
+
+            return EmeliyyatNeticesi<List<IsciPerformansDto>>.Ugurlu(dtolar);
+        }
+        catch (Exception ex)
+        {
+            return EmeliyyatNeticesi<List<IsciPerformansDto>>.Ugursuz($"İşçinin performans qeydlərini gətirmək alınmadı: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// İşçinin məzuniyyət/icazə qeydlərini gətirir.
+    /// </summary>
+    public async Task<EmeliyyatNeticesi<List<IsciIzniDto>>> IscininIzinQeydleriniGetirAsync(int isciId)
+    {
+        try
+        {
+            var izinQeydleri = await _unitOfWork.IsciIznleri.AxtarAsync(i => i.IsciId == isciId);
+            var dtolar = izinQeydleri.Select(i => new IsciIzniDto
+            {
+                Id = i.Id,
+                IsciId = i.IsciId,
+                IsciAdi = i.Isci?.TamAd ?? "Naməlum",
+                IzinNovu = i.IzinNovu,
+                BaslamaTarixi = i.BaslamaTarixi,
+                BitmeTarixi = i.BitmeTarixi,
+                IzinGunu = i.IzinGunu,
+                Sebeb = i.Sebeb,
+                Status = i.Status,
+                TesdiqEdenIsciId = i.TesdiqEdenIsciId,
+                TesdiqEdenIsciAdi = i.TesdiqEdenIsci?.TamAd ?? "Naməlum",
+                TesdiqTarixi = i.TesdiqTarixi,
+                Qeydler = i.Qeydler
+            }).ToList();
+
+            return EmeliyyatNeticesi<List<IsciIzniDto>>.Ugurlu(dtolar);
+        }
+        catch (Exception ex)
+        {
+            return EmeliyyatNeticesi<List<IsciIzniDto>>.Ugursuz($"İşçinin məzuniyyət/icazə qeydlərini gətirmək alınmadı: {ex.Message}");
+        }
     }
 }
