@@ -65,12 +65,6 @@ public class AzAgroPOSDbContext : DbContext
             .HasForeignKey(n => n.IsciId) 
             .OnDelete(DeleteBehavior.Restrict);
 
-        modelBuilder.Entity<Isci>()
-            .HasOne(i => i.SistemIstifadecisi)
-            .WithOne(si => si.Isci)
-            .HasForeignKey<Istifadeci>(si => si.Id)
-            .OnDelete(DeleteBehavior.Cascade);
-
         modelBuilder.Entity<IsciPerformans>()
             .HasOne(ip => ip.Isci)
             .WithMany(i => i.PerformansQeydleri)

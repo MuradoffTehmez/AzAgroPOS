@@ -53,9 +53,4 @@ public class Istifadeci : BazaVarligi
 
     public ICollection<Novbe> Novbeler { get; set; } = new List<Novbe>();
 
-    /// <summary>
-    /// Bu sistem istifadəçisinin aid olduğu işçi məlumatları.
-    /// </summary>
-    public Isci? Isci { get; set; }
-
 }
