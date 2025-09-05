@@ -57,6 +57,27 @@ public interface IUnitOfWork : IAsyncDisposable
     INovbeRepozitori Novbeler { get; }
 
     /// <summary>
+    /// İşçi Repozitorisi - İşçi əməliyyatlarını idarə edir.
+    /// diqqət: Bu repozitoriya işçilərin məlumatlarını idarə edir.
+    /// qeyd: İşçi yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
+    /// </summary>
+    IIsciRepozitori Isciler { get; }
+
+    /// <summary>
+    /// İşçi Performans Repozitorisi - İşçi performans əməliyyatlarını idarə edir.
+    /// diqqət: Bu repozitoriya işçilərin performans qeydlərini idarə edir.
+    /// qeyd: Performans qeydi yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
+    /// </summary>
+    IIsciPerformansRepozitori IsciPerformanslari { get; }
+
+    /// <summary>
+    /// İşçi İzn Repozitorisi - İşçi məzuniyyət/icazə əməliyyatlarını idarə edir.
+    /// diqqət: Bu repozitoriya işçilərin məzuniyyət/icazə qeydlərini idarə edir.
+    /// qeyd: İzn qeydi yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
+    /// </summary>
+    IIsciIzniRepozitori IsciIznleri { get; }
+
+    /// <summary>
     /// Edilmiş bütün dəyişiklikləri vahid bir tranzaksiya kimi verilənlər bazasına tətbiq edir.
     /// dəyişikliklər uğurla tətbiq olunarsa, təsdiqlənir; əks halda, ləğv edilir.
     /// Bu metod asinxron olaraq işləyir və təsirlənən sətirlərin sayını qaytarır.

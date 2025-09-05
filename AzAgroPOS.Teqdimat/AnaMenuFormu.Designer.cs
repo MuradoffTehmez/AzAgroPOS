@@ -10,6 +10,7 @@ namespace AzAgroPOS.Teqdimat
         {
             components = new System.ComponentModel.Container();
             pnlMenu = new Panel();
+            btnIsciIdareetme = new MaterialSkin.Controls.MaterialButton();
             btnBarkodCapi = new MaterialSkin.Controls.MaterialButton();
             sidebarImageList = new ImageList(components);
             separator2 = new Panel();
@@ -41,6 +42,7 @@ namespace AzAgroPOS.Teqdimat
             // pnlMenu
             // 
             pnlMenu.BackColor = Color.FromArgb(242, 242, 242);
+            pnlMenu.Controls.Add(btnIsciIdareetme);
             pnlMenu.Controls.Add(btnBarkodCapi);
             pnlMenu.Controls.Add(separator2);
             pnlMenu.Controls.Add(btnZHesabatArxivi);
@@ -62,6 +64,27 @@ namespace AzAgroPOS.Teqdimat
             pnlMenu.Name = "pnlMenu";
             pnlMenu.Size = new Size(240, 673);
             pnlMenu.TabIndex = 1;
+            // 
+            // btnIsciIdareetme
+            // 
+            btnIsciIdareetme.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnIsciIdareetme.BackColor = Color.FromArgb(242, 242, 242);
+            btnIsciIdareetme.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnIsciIdareetme.Depth = 0;
+            btnIsciIdareetme.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            btnIsciIdareetme.HighEmphasis = true;
+            btnIsciIdareetme.Icon = null;
+            btnIsciIdareetme.Location = new Point(49, 567);
+            btnIsciIdareetme.Margin = new Padding(4, 6, 4, 6);
+            btnIsciIdareetme.MouseState = MaterialSkin.MouseState.HOVER;
+            btnIsciIdareetme.Name = "btnIsciIdareetme";
+            btnIsciIdareetme.NoAccentTextColor = Color.Empty;
+            btnIsciIdareetme.Size = new Size(64, 36);
+            btnIsciIdareetme.TabIndex = 0;
+            btnIsciIdareetme.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnIsciIdareetme.UseAccentColor = false;
+            btnIsciIdareetme.UseVisualStyleBackColor = false;
+            btnIsciIdareetme.Click += btnIsciIdareetme_Click_1;
             // 
             // btnBarkodCapi
             // 
@@ -469,6 +492,7 @@ namespace AzAgroPOS.Teqdimat
             Text = "AzAgroPOS - Ana Menyu";
             WindowState = FormWindowState.Maximized;
             pnlMenu.ResumeLayout(false);
+            pnlMenu.PerformLayout();
             pnlUserInfo.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)picUserIcon).EndInit();
             tabContextMenu.ResumeLayout(false);
@@ -489,6 +513,7 @@ namespace AzAgroPOS.Teqdimat
         private MaterialSkin.Controls.MaterialButton btnAnbarQaliqHesabati;
         private MaterialSkin.Controls.MaterialButton btnZHesabatArxivi;
         private MaterialSkin.Controls.MaterialButton btnBarkodCapi;
+        private MaterialSkin.Controls.MaterialButton btnIsciIdareetme;
         private MaterialSkin.Controls.MaterialTabControl mdiTabControl;
         private MaterialSkin.Controls.MaterialContextMenuStrip tabContextMenu;
         private System.Windows.Forms.ToolStripMenuItem baglaToolStripMenuItem;

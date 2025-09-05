@@ -71,6 +71,27 @@ public class UnitOfWork : IUnitOfWork
     public INovbeRepozitori Novbeler { get; private set; }
 
     /// <summary>
+    /// İşçi Repozitorisi - İşçi əməliyyatlarını idarə edir.
+    /// Diqqət: Bu repozitoriya işçilərin məlumatlarını idarə edir.
+    /// Qeyd: İşçi yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
+    /// </summary>
+    public IIsciRepozitori Isciler { get; private set; }
+
+    /// <summary>
+    /// İşçi Performans Repozitorisi - İşçi performans əməliyyatlarını idarə edir.
+    /// Diqqət: Bu repozitoriya işçilərin performans qeydlərini idarə edir.
+    /// Qeyd: Performans qeydi yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
+    /// </summary>
+    public IIsciPerformansRepozitori IsciPerformanslari { get; private set; }
+
+    /// <summary>
+    /// İşçi İzn Repozitorisi - İşçi məzuniyyət/icazə əməliyyatlarını idarə edir.
+    /// Diqqət: Bu repozitoriya işçilərin məzuniyyət/icazə qeydlərini idarə edir.
+    /// Qeyd: İzn qeydi yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
+    /// </summary>
+    public IIsciIzniRepozitori IsciIznleri { get; private set; }
+
+    /// <summary>
     /// unitOfWork konstruktoru, verilənlər bazası kontekstini qəbul edir və repozitoriyaların instansiyalarını yaradır.
     /// Diqqət: Bu konstruktor, verilənlər bazası kontekstini bazaya ötürür.
     /// Qeyd: Bu konstruktor, konkret varlıq repozitoriyaları üçün istifadə olunur.
@@ -89,6 +110,9 @@ public class UnitOfWork : IUnitOfWork
         NisyeHereketleri = new NisyeHereketiRepozitori(_kontekst);
         TemirSifarisleri = new TemirRepozitori(_kontekst);
         Novbeler = new NovbeRepozitori(_kontekst);
+        Isciler = new IsciRepozitori(_kontekst);
+        IsciPerformanslari = new IsciPerformansRepozitori(_kontekst);
+        IsciIznleri = new IsciIzniRepozitori(_kontekst);
     }
     /// <summary>
     /// EMELIYYATI TƏSDİQLƏ metod, edilmiş bütün dəyişiklikləri vahid bir tranzaksiya kimi verilənlər bazasına tətbiq edir.

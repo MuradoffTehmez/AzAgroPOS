@@ -54,6 +54,7 @@ namespace AzAgroPOS.Teqdimat
             services.AddTransient<AnbarManager>();
             services.AddTransient<BarkodCapiManager>();
             services.AddTransient<TemirManager>();
+            services.AddTransient<IsciManager>();
 
             // Formalar (Bütün formaları buraya əlavə edirik)
             services.AddTransient<LoginFormu>();
@@ -71,6 +72,7 @@ namespace AzAgroPOS.Teqdimat
             services.AddTransient<SatisFormu>();
             services.AddTransient<TemirIdareetmeFormu>();
             services.AddTransient<ZHesabatArxivFormu>();
+            services.AddTransient<IsciIdareetmeFormu>();
         }
     }
 }

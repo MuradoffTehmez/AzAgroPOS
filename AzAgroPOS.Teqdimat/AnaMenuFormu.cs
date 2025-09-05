@@ -34,7 +34,8 @@ namespace AzAgroPOS.Teqdimat
                 { typeof(MehsulSatisHesabatFormu), btnMehsulSatisHesabati },
                 { typeof(AnbarQaliqHesabatFormu), btnAnbarQaliqHesabati },
                 { typeof(ZHesabatArxivFormu), btnZHesabatArxivi },
-                { typeof(BarkodCapiFormu), btnBarkodCapi }
+                { typeof(BarkodCapiFormu), btnBarkodCapi },
+                { typeof(IsciIdareetmeFormu), btnIsciIdareetme }
             };
         }
 
@@ -228,11 +229,17 @@ namespace AzAgroPOS.Teqdimat
         private void btnAnbarQaliqHesabati_Click(object sender, EventArgs e) => UsaqFormuAc<AnbarQaliqHesabatFormu>();
         private void btnZHesabatArxivi_Click(object sender, EventArgs e) => UsaqFormuAc<ZHesabatArxivFormu>();
         private void btnBarkodCapi_Click(object sender, EventArgs e) => UsaqFormuAc<BarkodCapiFormu>();
+        private void btnIsciIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<IsciIdareetmeFormu>();
         #endregion
 
         private void AnaMenuFormu_FormClosing(object sender, FormClosingEventArgs e)
         {
             Application.Exit();
+        }
+
+        private void btnIsciIdareetme_Click_1(object sender, EventArgs e)
+        {
+            UsaqFormuAc<IsciIdareetmeFormu>();
         }
     }
 }
