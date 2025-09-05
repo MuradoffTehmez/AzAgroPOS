@@ -9,10 +9,10 @@ using AzAgroPOS.Teqdimat.Teqdimatcilar;
 public partial class ZHesabatArxivFormu : BazaForm, IZHesabatArxivView
 {
     private readonly ZHesabatArxivPresenter _presenter;
-    public ZHesabatArxivFormu(NovbeManager novbeManager)
+    public ZHesabatArxivFormu(HesabatManager hesabatManager)
     {
         InitializeComponent();
-        _presenter = new ZHesabatArxivPresenter(this, novbeManager);
+        _presenter = new ZHesabatArxivPresenter(this, hesabatManager);
         StilVerDataGridView(dgvNovbeler);
     }
 
