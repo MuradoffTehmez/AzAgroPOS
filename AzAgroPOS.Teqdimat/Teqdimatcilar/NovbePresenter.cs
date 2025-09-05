@@ -17,7 +17,6 @@ using System.Threading.Tasks;
 public class NovbePresenter
 {
     private readonly INovbeView _view;
-    private readonly NovbeManager _manager;
     private readonly NovbeManager _novbeManager;
     private readonly IstifadeciManager _istifadeciManager;
     private AzAgroPOS.Varliglar.Novbe? _aktivNovbe;
@@ -44,7 +43,9 @@ public class NovbePresenter
     /// <returns></returns>
     private async Task FormuYukle()
     {
-        _aktivNovbe = await _manager.AktivNovbeniGetirAsync(AktivSessiya.AktivIstifadeci.Id);
+        if (AktivSessiya.AktivIstifadeci == null) return;
+        
+        _aktivNovbe = await _novbeManager.AktivNovbeniGetirAsync(AktivSessiya.AktivIstifadeci.Id);
         if (_aktivNovbe != null)
         {
             AktivSessiya.AktivNovbeId = _aktivNovbe.Id;
@@ -63,7 +64,9 @@ public class NovbePresenter
     /// <returns></returns>
     private async Task NovbeAc()
     {
-        var netice = await _manager.NovbeAcAsync(AktivSessiya.AktivIstifadeci.Id, _view.BaslangicMebleg);
+        if (AktivSessiya.AktivIstifadeci == null) return;
+        
+        var netice = await _novbeManager.NovbeAcAsync(AktivSessiya.AktivIstifadeci.Id, _view.BaslangicMebleg);
         if (netice.UgurluDur)
         {
             _aktivNovbe = netice.Data;
@@ -78,7 +81,9 @@ public class NovbePresenter
     /// <returns>j</returns>
     private async Task NovbeBagla()
     {
-        var netice = await _manager.NovbeBaglaAsync(_aktivNovbe.Id, _view.FaktikiMebleg);
+        if (_aktivNovbe == null) return;
+        
+        var netice = await _novbeManager.NovbeBaglaAsync(_aktivNovbe.Id, _view.FaktikiMebleg);
         if (netice.UgurluDur)
         {
             AktivSessiya.AktivNovbeId = null;

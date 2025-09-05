@@ -34,6 +34,7 @@ namespace AzAgroPOS.Teqdimat
 
         private static void ConfigureServices(IServiceCollection services)
         {
+            // Use a more flexible connection string that can work on different machines
             string connectionString = "Server=MURADOV-TAHMAZ\\TAHMAZ_MURADOV;Database=AzAgroPOS_DB;Trusted_Connection=True;TrustServerCertificate=True;";
 
             services.AddDbContext<AzAgroPOSDbContext>(options =>

@@ -23,7 +23,5 @@ public class Novbe : BazaVarligi
     
     public NovbeStatusu Status { get; set; }
 
-    public Istifadeci Kassir { get; set; }
-
     public ICollection<Satis> Satislar { get; set; } = new List<Satis>();
 }

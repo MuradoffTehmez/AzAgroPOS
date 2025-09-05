@@ -44,6 +44,24 @@ public class IstifadeciManager
     }
 
     /// <summary>
+    /// Bütün istifadəçiləri gətirir (əsas admin daxil olmaqla).
+    /// </summary>
+    /// <returns></returns>
+    public async Task<List<Istifadeci>> ButunIstifadecileriGetirAsync()
+    {
+        return (await _unitOfWork.Istifadeciler.ButununuGetirAsync()).ToList();
+    }
+
+    /// <summary>
+    /// Bütün rolları gətirir.
+    /// </summary>
+    /// <returns></returns>
+    public async Task<List<Rol>> ButunRollarGetirAsync()
+    {
+        return (await _unitOfWork.Rollar.ButununuGetirAsync()).ToList();
+    }
+
+    /// <summary>
     /// İstifadəçi yaratmaq üçün metod. Asinxron olaraq işləyir və yeni istifadəçi məlumatlarını alır.
     /// diqqət: İstifadəçi adı və parol boş olmamalıdır, və istifadəçi adı unikal olmalıdır.
     /// Əsas admini (id = 1) yaratmaq mümkün deyil.

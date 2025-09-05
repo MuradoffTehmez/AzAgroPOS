@@ -51,6 +51,6 @@ public class Istifadeci : BazaVarligi
     /// </summary>
     public ICollection<Temir> TemirSifarisleri { get; set; } = new List<Temir>();
 
-    public ICollection<Novbe> Novbeler { get; set; }
+    public ICollection<Novbe> Novbeler { get; set; } = new List<Novbe>();
 
 }

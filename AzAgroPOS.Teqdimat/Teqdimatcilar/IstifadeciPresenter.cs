@@ -12,17 +12,12 @@ using System.Threading.Tasks;
 public class IstifadeciPresenter
 {
     private readonly IIstifadeciView _view;
-    private readonly IstifadeciManager _manager;
     private readonly IstifadeciManager _istifadeciManager;
-    //private readonly RolManager _rolManager;
-    private readonly UnitOfWork _unitOfWork;
 
     public IstifadeciPresenter(IIstifadeciView view, IstifadeciManager istifadeciManager)
     {
         _view = view;
         _istifadeciManager = istifadeciManager;
-        //_unitOfWork = new UnitOfWork(new AzAgroPOSDbContext());
-        //_manager = new IstifadeciManager(_unitOfWork);
 
         // Hadisələrə (Events) abunə oluruq
         _view.FormYuklendi += async (s, e) => await FormuYukle();
@@ -32,16 +27,29 @@ public class IstifadeciPresenter
         _view.FormuTemizle_Istek += (s, e) => _view.FormuTemizle();
     }
 
+
+
     private async Task FormuYukle()
     {
-        var rollar = await _unitOfWork.Rollar.ButununuGetirAsync();
-        _view.RollariGoster(rollar.ToList());
-        await IstifadecileriYenile();
+        // Load roles first
+        var rollar = await _istifadeciManager.ButunRollarGetirAsync();
+        _view.RollariGoster(rollar);
+        
+        var netice = await _istifadeciManager.IstifadecileriGetirAsync();
+        if (netice.UgurluDur)
+        {
+            _view.IstifadecileriGoster(netice.Data.OrderBy(i => i.IstifadeciAdi).ToList());
+        }
+        else
+        {
+            _view.IstifadecileriGoster(new List<IstifadeciDto>());
+            _view.MesajGoster(netice.Mesaj);
+        }
     }
 
     private async Task IstifadecileriYenile()
     {
-        var netice = await _manager.IstifadecileriGetirAsync();
+        var netice = await _istifadeciManager.IstifadecileriGetirAsync();
         if (netice.UgurluDur)
         {
             _view.IstifadecileriGoster(netice.Data);
@@ -63,7 +71,7 @@ public class IstifadeciPresenter
             RolId = _view.SecilmisRolId
         };
 
-        var netice = await _manager.IstifadeciYaratAsync(dto, _view.Parol);
+        var netice = await _istifadeciManager.IstifadeciYaratAsync(dto, _view.Parol);
 
         if (netice.UgurluDur)
         {
@@ -93,7 +101,7 @@ public class IstifadeciPresenter
             RolId = _view.SecilmisRolId
         };
 
-        var netice = await _manager.IstifadeciYenileAsync(dto, _view.Parol);
+        var netice = await _istifadeciManager.IstifadeciYenileAsync(dto, _view.Parol);
 
         if (netice.UgurluDur)
         {
@@ -111,7 +119,7 @@ public class IstifadeciPresenter
     {
         if (int.TryParse(_view.IstifadeciId, out int id))
         {
-            var netice = await _manager.IstifadeciSilAsync(id);
+            var netice = await _istifadeciManager.IstifadeciSilAsync(id);
             if (netice.UgurluDur)
             {
                 _view.MesajGoster("İstifadəçi silindi.");
