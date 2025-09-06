@@ -252,7 +252,7 @@
             txtMusteriTelefonu.Location = new Point(105, 38);
             txtMusteriTelefonu.Name = "txtMusteriTelefonu";
             txtMusteriTelefonu.Size = new Size(233, 24);
-            txtMusteriTelefonu.TabIndex = 3;
+            txtMusteriTelefonu.TabIndex = 2;
             // 
             // lblCihazAdi
             // 
@@ -277,7 +277,7 @@
             txtCihazAdi.Location = new Point(105, 73);
             txtCihazAdi.Name = "txtCihazAdi";
             txtCihazAdi.Size = new Size(233, 24);
-            txtCihazAdi.TabIndex = 5;
+            txtCihazAdi.TabIndex = 3;
             // 
             // lblSeriyaNomresi
             // 
@@ -302,7 +302,7 @@
             txtSeriyaNomresi.Location = new Point(105, 108);
             txtSeriyaNomresi.Name = "txtSeriyaNomresi";
             txtSeriyaNomresi.Size = new Size(233, 24);
-            txtSeriyaNomresi.TabIndex = 19;
+            txtSeriyaNomresi.TabIndex = 4;
             // 
             // lblProblemTesviri
             // 
@@ -329,7 +329,7 @@
             txtProblemTesviri.Name = "txtProblemTesviri";
             txtProblemTesviri.ScrollBars = ScrollBars.Vertical;
             txtProblemTesviri.Size = new Size(233, 94);
-            txtProblemTesviri.TabIndex = 7;
+            txtProblemTesviri.TabIndex = 5;
             // 
             // lblYekunMebleg
             // 
@@ -368,7 +368,7 @@
             txtTemirXerci.Location = new Point(105, 208);
             txtTemirXerci.Name = "txtTemirXerci";
             txtTemirXerci.Size = new Size(233, 24);
-            txtTemirXerci.TabIndex = 11;
+            txtTemirXerci.TabIndex = 6;
             txtTemirXerci.TextChanged += txtTemirXerci_TextChanged;
             // 
             // lblServisHaqqi
@@ -394,7 +394,7 @@
             txtServisHaqqi.Location = new Point(105, 243);
             txtServisHaqqi.Name = "txtServisHaqqi";
             txtServisHaqqi.Size = new Size(233, 24);
-            txtServisHaqqi.TabIndex = 13;
+            txtServisHaqqi.TabIndex = 7;
             txtServisHaqqi.TextChanged += txtServisHaqqi_TextChanged;
             // 
             // lblYekunMebleg
@@ -421,7 +421,7 @@
             txtYekunMebleg.Name = "txtYekunMebleg";
             txtYekunMebleg.ReadOnly = true;
             txtYekunMebleg.Size = new Size(233, 24);
-            txtYekunMebleg.TabIndex = 9;
+            txtYekunMebleg.TabIndex = 8;
             // 
             // btnEhtiyatHissəsiElaveEt
             // 
@@ -460,7 +460,7 @@
             cmbUsta.Location = new Point(105, 313);
             cmbUsta.Name = "cmbUsta";
             cmbUsta.Size = new Size(233, 25);
-            cmbUsta.TabIndex = 17;
+            cmbUsta.TabIndex = 9;
             // 
             // btnEhtiyatHissəsiElaveEt
             // 
@@ -511,7 +511,7 @@
             btnTemizle.Location = new Point(240, 20);
             btnTemizle.Name = "btnTemizle";
             btnTemizle.Size = new Size(100, 35);
-            btnTemizle.TabIndex = 3;
+            btnTemizle.TabIndex = 13;
             btnTemizle.Text = "Təmizlə";
             btnTemizle.UseVisualStyleBackColor = false;
             btnTemizle.Click += btnTemizle_Click;
@@ -524,7 +524,7 @@
             btnSil.Location = new Point(160, 20);
             btnSil.Name = "btnSil";
             btnSil.Size = new Size(75, 35);
-            btnSil.TabIndex = 2;
+            btnSil.TabIndex = 12;
             btnSil.Text = "Sil";
             btnSil.UseVisualStyleBackColor = false;
             btnSil.Click += btnSil_Click;
@@ -537,7 +537,7 @@
             btnYenile.Location = new Point(80, 20);
             btnYenile.Name = "btnYenile";
             btnYenile.Size = new Size(75, 35);
-            btnYenile.TabIndex = 1;
+            btnYenile.TabIndex = 11;
             btnYenile.Text = "Yenilə";
             btnYenile.UseVisualStyleBackColor = false;
             btnYenile.Click += btnYenile_Click;
@@ -550,7 +550,7 @@
             btnYarat.Location = new Point(5, 20);
             btnYarat.Name = "btnYarat";
             btnYarat.Size = new Size(70, 35);
-            btnYarat.TabIndex = 0;
+            btnYarat.TabIndex = 10;
             btnYarat.Text = "Yarat";
             btnYarat.UseVisualStyleBackColor = false;
             btnYarat.Click += btnYarat_Click;
@@ -598,7 +598,7 @@
             dgvSifarisler.ReadOnly = true;
             dgvSifarisler.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvSifarisler.Size = new Size(617, 490);
-            dgvSifarisler.TabIndex = 0;
+            dgvSifarisler.TabIndex = 16;
             dgvSifarisler.SelectionChanged += dgvSifarisler_SelectionChanged;
             // 
             // errorProvider1

@@ -127,7 +127,7 @@
             txtAxtaris.SelectionStart = 0;
             txtAxtaris.ShortcutsEnabled = true;
             txtAxtaris.Size = new Size(638, 48);
-            txtAxtaris.TabIndex = 0;
+            txtAxtaris.TabIndex = 4;
             txtAxtaris.TabStop = false;
             txtAxtaris.TextAlign = HorizontalAlignment.Left;
             txtAxtaris.TrailingIcon = null;
@@ -203,7 +203,7 @@
             btnYeni.Name = "btnYeni";
             btnYeni.NoAccentTextColor = Color.Empty;
             btnYeni.Size = new Size(120, 40);
-            btnYeni.TabIndex = 6;
+            btnYeni.TabIndex = 7;
             btnYeni.Text = "Yeni / Ləğv et";
             btnYeni.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
             btnYeni.UseAccentColor = false;
@@ -226,7 +226,7 @@
             btnSil.Name = "btnSil";
             btnSil.NoAccentTextColor = Color.Empty;
             btnSil.Size = new Size(120, 40);
-            btnSil.TabIndex = 5;
+            btnSil.TabIndex = 6;
             btnSil.Text = "Sil";
             btnSil.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnSil.UseAccentColor = true;
@@ -249,7 +249,7 @@
             btnYaddaSaxla.Name = "btnYaddaSaxla";
             btnYaddaSaxla.NoAccentTextColor = Color.Empty;
             btnYaddaSaxla.Size = new Size(133, 40);
-            btnYaddaSaxla.TabIndex = 4;
+            btnYaddaSaxla.TabIndex = 5;
             btnYaddaSaxla.Text = "Yadda Saxla";
             btnYaddaSaxla.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnYaddaSaxla.UseAccentColor = false;
