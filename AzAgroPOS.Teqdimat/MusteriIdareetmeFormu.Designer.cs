@@ -4,6 +4,10 @@
     {
         private System.ComponentModel.IContainer components = null;
 
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -15,12 +19,17 @@
 
         #region Windows Form Designer generated code
 
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-            splitContainer1 = new SplitContainer();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MusteriIdareetmeFormu));
+            toolTip1 = new ToolTip(components);
             dgvMusteriler = new DataGridView();
             txtAxtaris = new MaterialSkin.Controls.MaterialTextBox2();
             materialCard1 = new MaterialSkin.Controls.MaterialCard();
@@ -225,18 +234,41 @@
             btnSil.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnSil.HighEmphasis = true;
             btnSil.Icon = null;
-            btnSil.Location = new Point(146, 276);
+            btnSil.Location = new Point(274, 276);
             btnSil.Margin = new Padding(4, 6, 4, 6);
             btnSil.MouseState = MaterialSkin.MouseState.HOVER;
             btnSil.Name = "btnSil";
             btnSil.NoAccentTextColor = Color.Empty;
-            btnSil.Size = new Size(120, 40);
-            btnSil.TabIndex = 6;
+            btnSil.Size = new Size(133, 40);
+            btnSil.TabIndex = 5;
             btnSil.Text = "Sil";
             btnSil.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnSil.UseAccentColor = true;
             btnSil.UseVisualStyleBackColor = false;
             btnSil.Click += btnSil_Click;
+            // 
+            // btnIxracEt
+            // 
+            btnIxracEt.AutoSize = false;
+            btnIxracEt.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnIxracEt.BackColor = Color.FromArgb(242, 242, 242);
+            btnIxracEt.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnIxracEt.Depth = 0;
+            btnIxracEt.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            btnIxracEt.HighEmphasis = true;
+            btnIxracEt.Icon = null;
+            btnIxracEt.Location = new Point(18, 330);
+            btnIxracEt.Margin = new Padding(4, 6, 4, 6);
+            btnIxracEt.MouseState = MaterialSkin.MouseState.HOVER;
+            btnIxracEt.Name = "btnIxracEt";
+            btnIxracEt.NoAccentTextColor = Color.Empty;
+            btnIxracEt.Size = new Size(150, 40);
+            btnIxracEt.TabIndex = 6;
+            btnIxracEt.Text = "Excel-ə İxrac Et";
+            btnIxracEt.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnIxracEt.UseAccentColor = true;
+            btnIxracEt.UseVisualStyleBackColor = false;
+            btnIxracEt.Click += btnIxracEt_Click;
             // 
             // btnYaddaSaxla
             // 
@@ -384,12 +416,20 @@
             tsmiMusteriSil.Text = "Sil";
             tsmiMusteriSil.Click += tsmiMusteriSil_Click;
             // 
+            // tsmiMusteriBarkodCapEt
+            // 
+            tsmiMusteriBarkodCapEt.Name = "tsmiMusteriBarkodCapEt";
+            tsmiMusteriBarkodCapEt.Size = new Size(180, 22);
+            tsmiMusteriBarkodCapEt.Text = "Barkod Çap Et";
+            tsmiMusteriBarkodCapEt.Click += tsmiMusteriBarkodCapEt_Click;
+            // 
             // contextMenuStripMusteriler
             // 
             contextMenuStripMusteriler.Items.AddRange(new ToolStripItem[] {
             tsmiMusteriDetallar,
             tsmiMusteriRedakteEt,
-            tsmiMusteriSil});
+            tsmiMusteriSil,
+            tsmiMusteriBarkodCapEt});
             // 
             // MusteriIdareetmeFormu
             // 
@@ -418,6 +458,7 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiMusteriDetallar;
         private System.Windows.Forms.ToolStripMenuItem tsmiMusteriRedakteEt;
         private System.Windows.Forms.ToolStripMenuItem tsmiMusteriSil;
+        private System.Windows.Forms.ToolStripMenuItem tsmiMusteriBarkodCapEt;
         private MaterialSkin.Controls.MaterialCard materialCard1;
         private MaterialSkin.Controls.MaterialTextBox2 txtUnvan;
         private MaterialSkin.Controls.MaterialTextBox2 txtTelefon;
@@ -425,7 +466,9 @@
         private MaterialSkin.Controls.MaterialButton btnYaddaSaxla;
         private MaterialSkin.Controls.MaterialButton btnYeni;
         private MaterialSkin.Controls.MaterialButton btnSil;
+        private MaterialSkin.Controls.MaterialButton btnIxracEt;
         private MaterialSkin.Controls.MaterialTextBox2 txtKreditLimiti;
         private ErrorProvider errorProvider1;
+        private ToolTip toolTip1;
     }
 }

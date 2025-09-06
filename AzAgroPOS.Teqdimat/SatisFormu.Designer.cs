@@ -827,6 +827,30 @@
             btnIndirim.UseVisualStyleBackColor = false;
             btnIndirim.Click += btnIndirim_Click;
             // 
+            // btnIxracEt
+            // 
+            btnIxracEt.AutoSize = false;
+            btnIxracEt.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnIxracEt.BackColor = Color.FromArgb(242, 242, 242);
+            btnIxracEt.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnIxracEt.Depth = 0;
+            btnIxracEt.FlatStyle = FlatStyle.Flat;
+            btnIxracEt.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            btnIxracEt.HighEmphasis = false;
+            btnIxracEt.Icon = null;
+            btnIxracEt.Location = new Point(450, 6);
+            btnIxracEt.Margin = new Padding(4, 6, 4, 6);
+            btnIxracEt.MouseState = MaterialSkin.MouseState.HOVER;
+            btnIxracEt.Name = "btnIxracEt";
+            btnIxracEt.NoAccentTextColor = Color.Empty;
+            btnIxracEt.Size = new Size(150, 40);
+            btnIxracEt.TabIndex = 6;
+            btnIxracEt.Text = "Sebəti İxrac Et";
+            btnIxracEt.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
+            btnIxracEt.UseAccentColor = true;
+            btnIxracEt.UseVisualStyleBackColor = false;
+            btnIxracEt.Click += btnIxracEt_Click;
+            // 
             // flpSuretliSatis
             // 
             flpSuretliSatis.AutoScroll = true;
@@ -931,6 +955,7 @@
         private MaterialSkin.Controls.MaterialButton btnSatisiGozlet;
         private MaterialSkin.Controls.MaterialButton btnGozleyenSatislar;
         private MaterialSkin.Controls.MaterialButton btnIndirim;
+        private MaterialSkin.Controls.MaterialButton btnIxracEt;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStripGozleyenler;
         private System.Windows.Forms.ContextMenuStrip contextMenuStripAxtarisNeticeleri;

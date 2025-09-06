@@ -234,7 +234,37 @@ namespace AzAgroPOS.Teqdimat
         #endregion
 
         #region Hadisə Ötürücüləri (Event Handlers)
-        private void MehsulIdareetmeFormu_Load(object sender, EventArgs e) => FormYuklendi_Istek?.Invoke(this, EventArgs.Empty);
+        private void MehsulIdareetmeFormu_Load(object sender, EventArgs e)
+        {
+            FormYuklendi_Istek?.Invoke(this, EventArgs.Empty);
+            SetupTooltips();
+        }
+        
+        private void SetupTooltips()
+        {
+            // Add tooltips to form elements
+            toolTip1.SetToolTip(txtAd, "Məhsulun tam adını daxil edin");
+            toolTip1.SetToolTip(txtStokKodu, "Məhsulun unikal stok kodunu daxil edin və ya yaradın");
+            toolTip1.SetToolTip(txtBarkod, "Məhsulun barkodunu daxil edin və ya yaradın");
+            toolTip1.SetToolTip(txtAlisQiymeti, "Məhsulun alış qiymətini daxil edin");
+            toolTip1.SetToolTip(txtPerakendeSatisQiymeti, "Pərakəndə satış qiymətini daxil edin");
+            toolTip1.SetToolTip(txtTopdanSatisQiymeti, "Topdan satış qiymətini daxil edin");
+            toolTip1.SetToolTip(txtTekEdedSatisQiymeti, "Tək ədəd satış qiymətini daxil edin");
+            toolTip1.SetToolTip(txtMevcudSay, "Anbarda mövcud olan məhsul sayını daxil edin");
+            toolTip1.SetToolTip(txtMinimumStok, "Minimum stok səviyyəsini daxil edin");
+            toolTip1.SetToolTip(cmbOlcuVahidi, "Məhsulun ölçü vahidini seçin");
+            toolTip1.SetToolTip(cmbKateqoriya, "Məhsulun kateqoriyasını seçin");
+            toolTip1.SetToolTip(cmbBrend, "Məhsulun brendini seçin");
+            toolTip1.SetToolTip(cmbTedarukcu, "Məhsulun tədarükçüsünü seçin");
+            toolTip1.SetToolTip(btnStokKoduYarat, "Avtomatik stok kodu yaradın");
+            toolTip1.SetToolTip(btnBarkodYarat, "Avtomatik barkod yaradın");
+            toolTip1.SetToolTip(btnElaveEt, "Yeni məhsul əlavə edin");
+            toolTip1.SetToolTip(btnYenile, "Məhsul məlumatlarını yeniləyin");
+            toolTip1.SetToolTip(btnSil, "Seçilmiş məhsulu silin");
+            toolTip1.SetToolTip(btnTemizle, "Formu təmizləyin");
+            toolTip1.SetToolTip(btnKopyala, "Seçilmiş məhsulu kopyalayın");
+            toolTip1.SetToolTip(txtAxtar, "Məhsullar arasında axtarış edin");
+        }
         private void btnElaveEt_Click(object sender, EventArgs e) => MehsulElaveEt_Istek?.Invoke(this, EventArgs.Empty);
         private void btnYenile_Click(object sender, EventArgs e) => MehsulYenile_Istek?.Invoke(this, EventArgs.Empty);
         private void btnSil_Click(object sender, EventArgs e) => MehsulSil_Istek?.Invoke(this, EventArgs.Empty);
@@ -250,6 +280,10 @@ namespace AzAgroPOS.Teqdimat
         private void btnStokKoduYarat_Click(object sender, EventArgs e) => StokKoduGeneralasiyaIstek?.Invoke(this, EventArgs.Empty);
         private void btnBarkodYarat_Click(object sender, EventArgs e) => BarkodGeneralasiyaIstek?.Invoke(this, EventArgs.Empty);
         private void btnKopyala_Click(object sender, EventArgs e) => Kopyala_Istek?.Invoke(this, EventArgs.Empty);
+        private void btnIxracEt_Click(object sender, EventArgs e)
+        {
+            Yardimcilar.ExportHelper.ShowExportDialog(dgvMehsullar, "mehsullar");
+        }
         private void dgvMehsullar_SelectionChanged(object sender, EventArgs e)
         {
             if (dgvMehsullar.CurrentRow != null && dgvMehsullar.CurrentRow.DataBoundItem is MehsulDto secilmisMehsul)
@@ -323,6 +357,30 @@ namespace AzAgroPOS.Teqdimat
         }
         
         #region Context Menu Event Handlers
+
+        private void tsmiMehsulBarkodCapEt_Click(object sender, EventArgs e)
+        {
+            // Print barcode of selected product
+            if (dgvMehsullar.CurrentRow?.DataBoundItem is MehsulDto mehsul)
+            {
+                try
+                {
+                    // TODO: Burada barkod çap etmə funksionallığını tətbiq etmək lazımdır
+                    // Nümunə:
+                    // using (var barkodCapiFormu = _serviceProvider.GetRequiredService<BarkodCapiFormu>())
+                    // {
+                    //     barkodCapiFormu.BarkodCapEt(mehsul.Barkod, mehsul.Ad, mehsul.PerakendeSatisQiymeti);
+                    // }
+                    
+                    MessageBox.Show($"'{mehsul.Ad}' məhsulunun barkodu çap edilmək üçün hazırdır.\n\nBarkod: {mehsul.Barkod}", 
+                        "Barkod Çapı", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Barkod çap edilərkən xəta baş verdi: {ex.Message}", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
 
         private void tsmiMehsulDetallar_Click(object sender, EventArgs e)
         {

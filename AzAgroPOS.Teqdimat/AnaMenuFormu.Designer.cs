@@ -543,6 +543,173 @@ namespace AzAgroPOS.Teqdimat
             mdiTabControl.TabIndex = 1;
             mdiTabControl.SelectedIndexChanged += mdiTabControl_SelectedIndexChanged;
             mdiTabControl.MouseClick += mdiTabControl_MouseClick;
+            
+            // 
+            // dashboardPanel
+            // 
+            dashboardPanel.BackColor = Color.FromArgb(242, 242, 242);
+            dashboardPanel.Dock = DockStyle.Top;
+            dashboardPanel.Location = new Point(243, 64);
+            dashboardPanel.Name = "dashboardPanel";
+            dashboardPanel.Size = new Size(954, 150);
+            dashboardPanel.TabIndex = 2;
+            
+            // 
+            // dailySalesCard
+            // 
+            dailySalesCard.BackColor = Color.FromArgb(255, 255, 255);
+            dailySalesCard.Depth = 0;
+            dailySalesCard.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            dailySalesCard.Location = new Point(10, 10);
+            dailySalesCard.Margin = new Padding(14);
+            dailySalesCard.MouseState = MaterialSkin.MouseState.HOVER;
+            dailySalesCard.Name = "dailySalesCard";
+            dailySalesCard.Padding = new Padding(14);
+            dailySalesCard.Size = new Size(220, 130);
+            dailySalesCard.TabIndex = 0;
+            
+            // 
+            // activeShiftCard
+            // 
+            activeShiftCard.BackColor = Color.FromArgb(255, 255, 255);
+            activeShiftCard.Depth = 0;
+            activeShiftCard.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            activeShiftCard.Location = new Point(250, 10);
+            activeShiftCard.Margin = new Padding(14);
+            activeShiftCard.MouseState = MaterialSkin.MouseState.HOVER;
+            activeShiftCard.Name = "activeShiftCard";
+            activeShiftCard.Padding = new Padding(14);
+            activeShiftCard.Size = new Size(220, 130);
+            activeShiftCard.TabIndex = 1;
+            
+            // 
+            // debtorCustomersCard
+            // 
+            debtorCustomersCard.BackColor = Color.FromArgb(255, 255, 255);
+            debtorCustomersCard.Depth = 0;
+            debtorCustomersCard.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            debtorCustomersCard.Location = new Point(490, 10);
+            debtorCustomersCard.Margin = new Padding(14);
+            debtorCustomersCard.MouseState = MaterialSkin.MouseState.HOVER;
+            debtorCustomersCard.Name = "debtorCustomersCard";
+            debtorCustomersCard.Padding = new Padding(14);
+            debtorCustomersCard.Size = new Size(220, 130);
+            debtorCustomersCard.TabIndex = 2;
+            
+            // 
+            // lowStockProductsCard
+            // 
+            lowStockProductsCard.BackColor = Color.FromArgb(255, 255, 255);
+            lowStockProductsCard.Depth = 0;
+            lowStockProductsCard.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lowStockProductsCard.Location = new Point(730, 10);
+            lowStockProductsCard.Margin = new Padding(14);
+            lowStockProductsCard.MouseState = MaterialSkin.MouseState.HOVER;
+            lowStockProductsCard.Name = "lowStockProductsCard";
+            lowStockProductsCard.Padding = new Padding(14);
+            lowStockProductsCard.Size = new Size(220, 130);
+            lowStockProductsCard.TabIndex = 3;
+            
+            // 
+            // lblDailySales
+            // 
+            lblDailySales.AutoSize = true;
+            lblDailySales.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblDailySales.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lblDailySales.Location = new Point(20, 20);
+            lblDailySales.Name = "lblDailySales";
+            lblDailySales.Size = new Size(95, 15);
+            lblDailySales.TabIndex = 0;
+            lblDailySales.Text = "Günlük Satışlar";
+            
+            // 
+            // lblActiveShift
+            // 
+            lblActiveShift.AutoSize = true;
+            lblActiveShift.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblActiveShift.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lblActiveShift.Location = new Point(20, 20);
+            lblActiveShift.Name = "lblActiveShift";
+            lblActiveShift.Size = new Size(85, 15);
+            lblActiveShift.TabIndex = 0;
+            lblActiveShift.Text = "Aktiv Növbə";
+            
+            // 
+            // lblDebtorCustomers
+            // 
+            lblDebtorCustomers.AutoSize = true;
+            lblDebtorCustomers.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblDebtorCustomers.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lblDebtorCustomers.Location = new Point(20, 20);
+            lblDebtorCustomers.Name = "lblDebtorCustomers";
+            lblDebtorCustomers.Size = new Size(120, 15);
+            lblDebtorCustomers.TabIndex = 0;
+            lblDebtorCustomers.Text = "Borclu Müştərilər";
+            
+            // 
+            // lblLowStockProducts
+            // 
+            lblLowStockProducts.AutoSize = true;
+            lblLowStockProducts.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblLowStockProducts.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lblLowStockProducts.Location = new Point(20, 20);
+            lblLowStockProducts.Name = "lblLowStockProducts";
+            lblLowStockProducts.Size = new Size(135, 15);
+            lblLowStockProducts.TabIndex = 0;
+            lblLowStockProducts.Text = "Aşağı Stoklu Məhsullar";
+            
+            // 
+            // lblDailySalesValue
+            // 
+            lblDailySalesValue.AutoSize = true;
+            lblDailySalesValue.Font = new Font("Roboto", 24F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblDailySalesValue.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lblDailySalesValue.Location = new Point(20, 60);
+            lblDailySalesValue.Name = "lblDailySalesValue";
+            lblDailySalesValue.Size = new Size(55, 30);
+            lblDailySalesValue.TabIndex = 1;
+            lblDailySalesValue.Text = "0.00";
+            
+            // 
+            // lblActiveShiftValue
+            // 
+            lblActiveShiftValue.AutoSize = true;
+            lblActiveShiftValue.Font = new Font("Roboto", 18F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblActiveShiftValue.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lblActiveShiftValue.Location = new Point(20, 60);
+            lblActiveShiftValue.Name = "lblActiveShiftValue";
+            lblActiveShiftValue.Size = new Size(100, 22);
+            lblActiveShiftValue.TabIndex = 1;
+            lblActiveShiftValue.Text = "Növbə Yoxdur";
+            
+            // 
+            // lblDebtorCustomersValue
+            // 
+            lblDebtorCustomersValue.AutoSize = true;
+            lblDebtorCustomersValue.Font = new Font("Roboto", 24F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblDebtorCustomersValue.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lblDebtorCustomersValue.Location = new Point(20, 60);
+            lblDebtorCustomersValue.Name = "lblDebtorCustomersValue";
+            lblDebtorCustomersValue.Size = new Size(25, 30);
+            lblDebtorCustomersValue.TabIndex = 1;
+            lblDebtorCustomersValue.Text = "0";
+            
+            // 
+            // lblLowStockProductsValue
+            // 
+            lblLowStockProductsValue.AutoSize = true;
+            lblLowStockProductsValue.Font = new Font("Roboto", 24F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblLowStockProductsValue.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lblLowStockProductsValue.Location = new Point(20, 60);
+            lblLowStockProductsValue.Name = "lblLowStockProductsValue";
+            lblLowStockProductsValue.Size = new Size(25, 30);
+            lblLowStockProductsValue.TabIndex = 1;
+            lblLowStockProductsValue.Text = "0";
+            
+            // 
+            // dashboardTimer
+            // 
+            dashboardTimer.Interval = 300000; // 5 dəqiqə
             // 
             // tabContextMenu
             // 
@@ -577,6 +744,7 @@ namespace AzAgroPOS.Teqdimat
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1200, 740);
+            Controls.Add(dashboardPanel);
             Controls.Add(mdiTabControl);
             Controls.Add(pnlMenu);
             //DrawerShowIconsWhenHidden = true;
@@ -621,5 +789,20 @@ namespace AzAgroPOS.Teqdimat
         private ToolStripSeparator toolStripSeparator1;
         private ToolStripMenuItem hamisiniBaglaToolStripMenuItem;
         private ImageList sidebarImageList;
+        // Dashboard controls
+        private Panel dashboardPanel;
+        private MaterialSkin.Controls.MaterialCard dailySalesCard;
+        private MaterialSkin.Controls.MaterialCard activeShiftCard;
+        private MaterialSkin.Controls.MaterialCard debtorCustomersCard;
+        private MaterialSkin.Controls.MaterialCard lowStockProductsCard;
+        private Label lblDailySales;
+        private Label lblActiveShift;
+        private Label lblDebtorCustomers;
+        private Label lblLowStockProducts;
+        private Label lblDailySalesValue;
+        private Label lblActiveShiftValue;
+        private Label lblDebtorCustomersValue;
+        private Label lblLowStockProductsValue;
+        private System.Windows.Forms.Timer dashboardTimer;
     }
 }

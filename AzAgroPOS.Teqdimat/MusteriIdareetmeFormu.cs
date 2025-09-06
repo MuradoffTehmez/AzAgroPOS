@@ -18,11 +18,27 @@ namespace AzAgroPOS.Teqdimat
             _presenter = new MusteriPresenter(this, musteriManager);
             _serviceProvider = serviceProvider;
             // Form yüklənəndə Presenter-ə xəbər veririk
-            this.Load += (s, e) => FormYuklendi?.Invoke(this, EventArgs.Empty);
+            this.Load += (s, e) => {
+                FormYuklendi?.Invoke(this, EventArgs.Empty);
+                SetupTooltips();
+            };
             StilVerDataGridView(dgvMusteriler);
             
             // Add conditional formatting for customers with debt exceeding credit limit
             dgvMusteriler.CellFormatting += DgvMusteriler_CellFormatting;
+        }
+        
+        private void SetupTooltips()
+        {
+            // Add tooltips to form elements
+            toolTip1.SetToolTip(txtTamAd, "Müştərinin tam adını daxil edin");
+            toolTip1.SetToolTip(txtTelefon, "Müştərinin telefon nömrəsini daxil edin");
+            toolTip1.SetToolTip(txtUnvan, "Müştərinin ünvanını daxil edin");
+            toolTip1.SetToolTip(txtKreditLimiti, "Müştərinin kredit limitini daxil edin (0 = Limitsiz)");
+            toolTip1.SetToolTip(txtAxtaris, "Müştərilər arasında axtarış edin");
+            toolTip1.SetToolTip(btnYeni, "Yeni müştəri əlavə edin və ya formanı təmizləyin");
+            toolTip1.SetToolTip(btnYaddaSaxla, "Müştəri məlumatlarını yadda saxlayın");
+            toolTip1.SetToolTip(btnSil, "Seçilmiş müştəriyi silin");
         }
 
         #region IMusteriView Implementasiyası
@@ -160,6 +176,10 @@ namespace AzAgroPOS.Teqdimat
         private void btnYaddaSaxla_Click(object sender, EventArgs e) => YaddaSaxlaIstek?.Invoke(sender, e);
         private void btnSil_Click(object sender, EventArgs e) => SilIstek?.Invoke(sender, e);
         private void txtAxtaris_TextChanged(object sender, EventArgs e) => AxtarIstek?.Invoke(sender, e);
+        private void btnIxracEt_Click(object sender, EventArgs e)
+        {
+            Yardimcilar.ExportHelper.ShowExportDialog(dgvMusteriler, "musteriler");
+        }
 
         // Handle double-click to select customer and close form
         private void dgvMusteriler_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -233,6 +253,30 @@ namespace AzAgroPOS.Teqdimat
                 catch (Exception ex)
                 {
                     MessageBox.Show($"Müştəri məlumatları yüklənərkən xəta baş verdi: {ex.Message}", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void tsmiMusteriBarkodCapEt_Click(object sender, EventArgs e)
+        {
+            // Print barcode of selected customer
+            if (dgvMusteriler.CurrentRow?.DataBoundItem is MusteriDto musteri)
+            {
+                try
+                {
+                    // TODO: Burada barkod çap etmə funksionallığını tətbiq etmək lazımdır
+                    // Nümunə:
+                    // using (var barkodCapiFormu = _serviceProvider.GetRequiredService<BarkodCapiFormu>())
+                    // {
+                    //     barkodCapiFormu.BarkodCapEt(musteri.Id.ToString(), musteri.TamAd, 0); // Müştəri üçün barkod çapı
+                    // }
+                    
+                    MessageBox.Show($"'{musteri.TamAd}' müştərisinin barkodu çap edilmək üçün hazırdır.\n\nMüştəri ID: {musteri.Id}", 
+                        "Barkod Çapı", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Barkod çap edilərkən xəta baş verdi: {ex.Message}", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }

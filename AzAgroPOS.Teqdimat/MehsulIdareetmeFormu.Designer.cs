@@ -4,6 +4,10 @@ namespace AzAgroPOS.Teqdimat
     {
         private System.ComponentModel.IContainer components = null;
 
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -15,6 +19,10 @@ namespace AzAgroPOS.Teqdimat
 
         #region Windows Form Designer generated code
 
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
@@ -22,7 +30,8 @@ namespace AzAgroPOS.Teqdimat
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
-            splitContainer1 = new SplitContainer();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MehsulIdareetmeFormu));
+            toolTip1 = new ToolTip(components);
             dgvMehsullar = new DataGridView();
             contextMenuStripMehsullar = new ContextMenuStrip(components);
             tsmiMehsulDetallar = new ToolStripMenuItem();
@@ -134,9 +143,9 @@ namespace AzAgroPOS.Teqdimat
             // 
             // contextMenuStripMehsullar
             // 
-            contextMenuStripMehsullar.Items.AddRange(new ToolStripItem[] { tsmiMehsulDetallar, tsmiMehsulRedakteEt, tsmiMehsulSil });
+            contextMenuStripMehsullar.Items.AddRange(new ToolStripItem[] { tsmiMehsulDetallar, tsmiMehsulRedakteEt, tsmiMehsulSil, tsmiMehsulBarkodCapEt });
             contextMenuStripMehsullar.Name = "contextMenuStripMehsullar";
-            contextMenuStripMehsullar.Size = new Size(130, 70);
+            contextMenuStripMehsullar.Size = new Size(130, 92);
             // 
             // tsmiMehsulDetallar
             // 
@@ -158,6 +167,13 @@ namespace AzAgroPOS.Teqdimat
             tsmiMehsulSil.Size = new Size(129, 22);
             tsmiMehsulSil.Text = "Sil";
             tsmiMehsulSil.Click += tsmiMehsulSil_Click;
+            // 
+            // tsmiMehsulBarkodCapEt
+            // 
+            tsmiMehsulBarkodCapEt.Name = "tsmiMehsulBarkodCapEt";
+            tsmiMehsulBarkodCapEt.Size = new Size(129, 22);
+            tsmiMehsulBarkodCapEt.Text = "Barkod Çap Et";
+            tsmiMehsulBarkodCapEt.Click += tsmiMehsulBarkodCapEt_Click;
             // 
             // txtAxtar
             // 
@@ -532,6 +548,30 @@ namespace AzAgroPOS.Teqdimat
             btnTemizle.UseAccentColor = false;
             btnTemizle.UseVisualStyleBackColor = false;
             btnTemizle.Click += btnTemizle_Click;
+            // 
+            // btnIxracEt
+            // 
+            btnIxracEt.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnIxracEt.AutoSize = false;
+            btnIxracEt.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnIxracEt.BackColor = Color.FromArgb(242, 242, 242);
+            btnIxracEt.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnIxracEt.Depth = 0;
+            btnIxracEt.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            btnIxracEt.HighEmphasis = true;
+            btnIxracEt.Icon = null;
+            btnIxracEt.Location = new Point(18, 700);
+            btnIxracEt.Margin = new Padding(4, 6, 4, 6);
+            btnIxracEt.MouseState = MaterialSkin.MouseState.HOVER;
+            btnIxracEt.Name = "btnIxracEt";
+            btnIxracEt.NoAccentTextColor = Color.Empty;
+            btnIxracEt.Size = new Size(150, 40);
+            btnIxracEt.TabIndex = 18;
+            btnIxracEt.Text = "Excel-ə İxrac Et";
+            btnIxracEt.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnIxracEt.UseAccentColor = true;
+            btnIxracEt.UseVisualStyleBackColor = false;
+            btnIxracEt.Click += btnIxracEt_Click;
             // 
             // btnSil
             // 
@@ -920,6 +960,7 @@ namespace AzAgroPOS.Teqdimat
         private System.Windows.Forms.ToolStripMenuItem tsmiMehsulDetallar;
         private System.Windows.Forms.ToolStripMenuItem tsmiMehsulRedakteEt;
         private System.Windows.Forms.ToolStripMenuItem tsmiMehsulSil;
+        private System.Windows.Forms.ToolStripMenuItem tsmiMehsulBarkodCapEt;
         private System.Windows.Forms.ToolStripMenuItem tsmiAlisDetallar;
         private MaterialSkin.Controls.MaterialTextBox2 txtMinimumStok;
         private MaterialSkin.Controls.MaterialComboBox cmbKateqoriya;
@@ -928,5 +969,7 @@ namespace AzAgroPOS.Teqdimat
         private ErrorProvider errorProvider1;
         private StatusStrip statusStrip1;
         private ToolStripStatusLabel toolStripStatusLabel1;
+        private ToolTip toolTip1;
+        private MaterialSkin.Controls.MaterialButton btnIxracEt;
     }
 }

@@ -297,16 +297,10 @@ namespace AzAgroPOS.Teqdimat
                 _presenter.GozleyenSatisiSec(secilmisSatis);
             }
         }
-        private void btnIndirim_Click(object sender, EventArgs e)
+        private void btnIndirim_Click(object sender, EventArgs e) => IndirimIstek?.Invoke(this, EventArgs.Empty);
+        private void btnIxracEt_Click(object sender, EventArgs e)
         {
-            var secilmisElement = SecilmisSebetElementi;
-            using (var endirimFormu = new EndirimFormu(secilmisElement))
-            {
-                if (endirimFormu.ShowDialog(this) == DialogResult.OK)
-                {
-                    IndirimIstek?.Invoke(this, endirimFormu.EndirimParametrləri);
-                }
-            }
+            Yardimcilar.ExportHelper.ShowExportDialog(dgvSebet, "sebet");
         }
         private void btnYeniMusteri_Click(object sender, EventArgs e)
         {

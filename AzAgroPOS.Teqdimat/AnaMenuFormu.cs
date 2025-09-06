@@ -1,5 +1,7 @@
 // Fayl: AzAgroPOS.Teqdimat/AnaMenuFormu.cs
 namespace AzAgroPOS.Teqdimat;
+using AzAgroPOS.Mentiq.DTOs;
+using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Yardimcilar;
 using MaterialSkin.Controls;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,6 +10,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 public partial class AnaMenuFormu : BazaForm
@@ -38,6 +41,9 @@ public partial class AnaMenuFormu : BazaForm
             { typeof(IsciIdareetmeFormu), btnIsciIdareetme },
             { typeof(MinimumStokMehsullariFormu), btnMinimumStokMehsullari } // Əlavə edildi
         };
+        
+        // Dashboard panelini hazırlayırıq
+        InitializeDashboard();
     }
 
     private void AnaMenuFormu_Load(object sender, EventArgs e)
@@ -45,6 +51,9 @@ public partial class AnaMenuFormu : BazaForm
         IcazeleriYoxla();
         mdiTabControl.TabPages.Clear();
         UpdateActiveButtonHighlight();
+        
+        // Dashboard məlumatlarını yükləyirik
+        _ = UpdateDashboardData(); // Fire and forget
     }
 
     #region Tab İdarəetməsi
@@ -167,6 +176,108 @@ public partial class AnaMenuFormu : BazaForm
         }
         return bmp;
     }
+    #endregion
+
+    #region Dashboard Methods
+    
+    private void InitializeDashboard()
+    {
+        // Dashboard panelinə kartları əlavə edirik
+        dashboardPanel.Controls.Add(dailySalesCard);
+        dashboardPanel.Controls.Add(activeShiftCard);
+        dashboardPanel.Controls.Add(debtorCustomersCard);
+        dashboardPanel.Controls.Add(lowStockProductsCard);
+        
+        // Kartlara etiketləri əlavə edirik
+        dailySalesCard.Controls.Add(lblDailySales);
+        dailySalesCard.Controls.Add(lblDailySalesValue);
+        
+        activeShiftCard.Controls.Add(lblActiveShift);
+        activeShiftCard.Controls.Add(lblActiveShiftValue);
+        
+        debtorCustomersCard.Controls.Add(lblDebtorCustomers);
+        debtorCustomersCard.Controls.Add(lblDebtorCustomersValue);
+        
+        lowStockProductsCard.Controls.Add(lblLowStockProducts);
+        lowStockProductsCard.Controls.Add(lblLowStockProductsValue);
+        
+        // Timeri konfiqurasiya edirik
+        dashboardTimer = new Timer();
+        dashboardTimer.Interval = 300000; // 5 dəqiqə
+        dashboardTimer.Tick += async (s, e) => await UpdateDashboardData();
+        dashboardTimer.Start();
+        
+        // İlk dəfə məlumatları yükləyirik
+        _ = UpdateDashboardData(); // Fire and forget
+    }
+    
+    private async Task UpdateDashboardData()
+    {
+        try
+        {
+            // Günlük satış məbləğini hesablayırıq
+            var hesabatManager = _serviceProvider.GetRequiredService<HesabatManager>();
+            var gunlukHesabat = await hesabatManager.GunlukSatisHesabatiGetirAsync(DateTime.Today);
+            if (gunlukHesabat.UgurluDur)
+            {
+                lblDailySalesValue.Text = $"{gunlukHesabat.Data.UmumiDovriyye:N2} AZN";
+            }
+            else
+            {
+                lblDailySalesValue.Text = "0.00 AZN";
+            }
+            
+            // Aktiv növbə məlumatlarını göstəririk
+            if (AktivSessiya.AktivNovbeId.HasValue)
+            {
+                var novbeManager = _serviceProvider.GetRequiredService<NovbeManager>();
+                var novbe = await novbeManager.NovbeGetirAsync(AktivSessiya.AktivNovbeId.Value);
+                if (novbe.UgurluDur)
+                {
+                    lblActiveShiftValue.Text = $"{AktivSessiya.AktivIstifadeci?.TamAd}\n{novbe.Data.BaslangicTarixi:HH:mm}";
+                }
+                else
+                {
+                    lblActiveShiftValue.Text = "Məlumat tapılmadı";
+                }
+            }
+            else
+            {
+                lblActiveShiftValue.Text = "Növbə Yoxdur";
+            }
+            
+            // Borclu müştəri sayını hesablayırıq
+            var musteriManager = _serviceProvider.GetRequiredService<MusteriManager>();
+            var musteriler = await musteriManager.ButunMusterileriGetirAsync();
+            if (musteriler.UgurluDur)
+            {
+                var borcluMusteriSayi = musteriler.Data.Count(m => m.UmumiBorc > 0);
+                lblDebtorCustomersValue.Text = borcluMusteriSayi.ToString();
+            }
+            else
+            {
+                lblDebtorCustomersValue.Text = "0";
+            }
+            
+            // Aşağı stoklu məhsulların sayını hesablayırıq
+            var mehsulMeneceri = _serviceProvider.GetRequiredService<MehsulMeneceri>();
+            var minimumStokMehsullari = await mehsulMeneceri.MinimumStokMehsullariniGetirAsync();
+            if (minimumStokMehsullari.UgurluDur)
+            {
+                lblLowStockProductsValue.Text = minimumStokMehsullari.Data.Count.ToString();
+            }
+            else
+            {
+                lblLowStockProductsValue.Text = "0";
+            }
+        }
+        catch (Exception ex)
+        {
+            // Xətanı log edirik amma dashboardu ləğv etmirik
+            System.Diagnostics.Debug.WriteLine($"Dashboard update error: {ex.Message}");
+        }
+    }
+    
     #endregion
 
     #region İcazələr və Düymə Klikləri
