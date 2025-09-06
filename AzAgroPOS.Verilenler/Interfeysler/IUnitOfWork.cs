@@ -10,6 +10,11 @@ using System;
 public interface IUnitOfWork : IAsyncDisposable
 {
     /// <summary>
+    /// Hazırda sistemdə aktiv olan istifadəçinin ID-si
+    /// Audit jurnalı qeydləri üçün istifadə olunur
+    /// </summary>
+    int AktivIstifadeciId { get; set; }
+    /// <summary>
     /// Məhsul Repozitorisi - Məhsul əməliyyatlarını idarə edir.
     /// diqqət: Bu repozitoriya məhsul məlumatlarını, satış qiymətlərini və stok kodlarını idarə edir.
     /// qeyd: Məhsul yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
@@ -141,6 +146,34 @@ public interface IUnitOfWork : IAsyncDisposable
     /// Qeyd: Qaytarma yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
     /// </summary>
     IQaytarmaRepozitori Qaytarmalar { get; }
+
+    /// <summary>
+    /// Əməliyyat Jurnalı Repozitorisi - Audit jurnalı əməliyyatlarını idarə edir.
+    /// Diqqət: Bu repozitoriya verilənlər bazasında edilən əməliyyatların jurnalını saxlayır.
+    /// Qeyd: Audit jurnalı qeydlərinin yaradılması, axtarışı və silinməsi əməliyyatlarını həyata keçirir.
+    /// </summary>
+    IEmeliyyatJurnaliRepozitori EmeliyyatJurnallari { get; }
+    
+    /// <summary>
+    /// Konfiqurasiya Repozitorisi - Tətbiqat konfiqurasiya parametrlərini idarə edir.
+    /// Diqqət: Bu repozitoriya tətbiqatın konfiqurasiya parametrlərini saxlayır və idarə edir.
+    /// Qeyd: Konfiqurasiya parametrlərinin yaradılması, axtarışı, yenilənməsi və silinməsi əməliyyatlarını həyata keçirir.
+    /// </summary>
+    IKonfiqurasiyaRepozitori Konfiqurasiyalar { get; }
+    
+    /// <summary>
+    /// İcazə Repozitorisi - İstifadəçilərin ayrı-ayrı icazələrini idarə edir.
+    /// Diqqət: Bu repozitoriya sistemdə mövcud olan icazələri saxlayır və idarə edir.
+    /// Qeyd: İcazələrin yaradılması, axtarışı, yenilənməsi və silinməsi əməliyyatlarını həyata keçirir.
+    /// </summary>
+    IIcazeRepozitori Icazeler { get; }
+    
+    /// <summary>
+    /// Rol İcazəsi Repozitorisi - Rollar və icazələr arasında əlaqələri idarə edir.
+    /// Diqqət: Bu repozitoriya rolların sahib olduğu icazələri saxlayır və idarə edir.
+    /// Qeyd: Rol-icazə əlaqələrinin yaradılması, axtarışı, yenilənməsi və silinməsi əməliyyatlarını həyata keçirir.
+    /// </summary>
+    IRolIcazesiRepozitori RolIcazeleri { get; }
 
     /// <summary>
     /// Edilmiş bütün dəyişiklikləri vahid bir tranzaksiya kimi verilənlər bazasına tətbiq edir.

@@ -21,4 +21,9 @@ public class Rol : BazaVarligi
     /// Qeyd: İstifadəçilər kolleksiyası, rola aid olan istifadəçilərin siyahısını saxlamaq və onların rollarını idarə etmək üçün vacibdir.
     /// </summary>
     public ICollection<Istifadeci> Istifadeciler { get; set; } = new List<Istifadeci>();
+    
+    /// <summary>
+    /// Bu rola təyin edilmiş icazələrin siyahısı
+    /// </summary>
+    public ICollection<RolIcazesi> Icazeler { get; set; } = new List<RolIcazesi>();
 }

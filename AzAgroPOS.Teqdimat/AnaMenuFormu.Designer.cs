@@ -85,6 +85,7 @@ namespace AzAgroPOS.Teqdimat
             pnlMenu.Controls.Add(btnYeniSatis);
             pnlMenu.Controls.Add(btnMehsulIdareetme);
             pnlMenu.Controls.Add(btnNovbeIdareetme);
+            pnlMenu.Controls.Add(btnKonfiqurasiya); // Əlavə edildi
             pnlMenu.Controls.Add(separator2);
             pnlMenu.Controls.Add(separator1);
             pnlMenu.Controls.Add(pnlUserInfo);
@@ -778,6 +779,7 @@ namespace AzAgroPOS.Teqdimat
         private MaterialSkin.Controls.MaterialButton btnYeniSatis;
         private MaterialSkin.Controls.MaterialButton btnMehsulIdareetme;
         private MaterialSkin.Controls.MaterialButton btnNovbeIdareetme;
+        private MaterialSkin.Controls.MaterialButton btnKonfiqurasiya; // Əlavə edildi
         private Panel separator2;
         private Panel separator1;
         private Panel pnlUserInfo;

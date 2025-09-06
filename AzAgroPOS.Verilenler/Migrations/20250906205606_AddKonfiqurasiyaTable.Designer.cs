@@ -4,6 +4,7 @@ using AzAgroPOS.Verilenler.Kontekst;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AzAgroPOS.Verilenler.Migrations
 {
     [DbContext(typeof(AzAgroPOSDbContext))]
-    partial class AzAgroPOSDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250906205606_AddKonfiqurasiyaTable")]
+    partial class AddKonfiqurasiyaTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -299,69 +302,6 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("EmeliyyatJurnallari");
-                });
-
-            modelBuilder.Entity("AzAgroPOS.Varliglar.Icaze", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Ad")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Silinib")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<string>("Tesvir")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Icazeler");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Ad = "CanDeleteSale",
-                            Silinib = false,
-                            Tesvir = "Satış silmək imkanı"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Ad = "CanGiveDiscount",
-                            Silinib = false,
-                            Tesvir = "Endirim tətbiq etmək imkanı"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Ad = "CanViewReports",
-                            Silinib = false,
-                            Tesvir = "Hesabatları görmək imkanı"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Ad = "CanManageProducts",
-                            Silinib = false,
-                            Tesvir = "Məhsulları idarə etmək imkanı"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Ad = "CanManageUsers",
-                            Silinib = false,
-                            Tesvir = "İstifadəçiləri idarə etmək imkanı"
-                        });
                 });
 
             modelBuilder.Entity("AzAgroPOS.Varliglar.Isci", b =>
@@ -1053,71 +993,6 @@ namespace AzAgroPOS.Verilenler.Migrations
                         });
                 });
 
-            modelBuilder.Entity("AzAgroPOS.Varliglar.RolIcazesi", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("IcazeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RolId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Silinib")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IcazeId");
-
-                    b.HasIndex("RolId");
-
-                    b.ToTable("RolIcazeleri");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            IcazeId = 1,
-                            RolId = 1,
-                            Silinib = false
-                        },
-                        new
-                        {
-                            Id = 2,
-                            IcazeId = 2,
-                            RolId = 1,
-                            Silinib = false
-                        },
-                        new
-                        {
-                            Id = 3,
-                            IcazeId = 3,
-                            RolId = 1,
-                            Silinib = false
-                        },
-                        new
-                        {
-                            Id = 4,
-                            IcazeId = 4,
-                            RolId = 1,
-                            Silinib = false
-                        },
-                        new
-                        {
-                            Id = 5,
-                            IcazeId = 5,
-                            RolId = 1,
-                            Silinib = false
-                        });
-                });
-
             modelBuilder.Entity("AzAgroPOS.Varliglar.Satis", b =>
                 {
                     b.Property<int>("Id")
@@ -1581,25 +1456,6 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.Navigation("Qaytarma");
                 });
 
-            modelBuilder.Entity("AzAgroPOS.Varliglar.RolIcazesi", b =>
-                {
-                    b.HasOne("AzAgroPOS.Varliglar.Icaze", "Icaze")
-                        .WithMany("Rollar")
-                        .HasForeignKey("IcazeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AzAgroPOS.Varliglar.Rol", "Rol")
-                        .WithMany("Icazeler")
-                        .HasForeignKey("RolId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Icaze");
-
-                    b.Navigation("Rol");
-                });
-
             modelBuilder.Entity("AzAgroPOS.Varliglar.Satis", b =>
                 {
                     b.HasOne("AzAgroPOS.Varliglar.Musteri", "Musteri")
@@ -1681,11 +1537,6 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.Navigation("Mehsullar");
                 });
 
-            modelBuilder.Entity("AzAgroPOS.Varliglar.Icaze", b =>
-                {
-                    b.Navigation("Rollar");
-                });
-
             modelBuilder.Entity("AzAgroPOS.Varliglar.Isci", b =>
                 {
                     b.Navigation("IzinQeydleri");
@@ -1717,8 +1568,6 @@ namespace AzAgroPOS.Verilenler.Migrations
 
             modelBuilder.Entity("AzAgroPOS.Varliglar.Rol", b =>
                 {
-                    b.Navigation("Icazeler");
-
                     b.Navigation("Istifadeciler");
                 });
 

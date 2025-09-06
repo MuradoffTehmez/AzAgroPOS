@@ -39,7 +39,8 @@ public partial class AnaMenuFormu : BazaForm
             { typeof(ZHesabatArxivFormu), btnZHesabatArxivi },
             { typeof(BarkodCapiFormu), btnBarkodCapi },
             { typeof(IsciIdareetmeFormu), btnIsciIdareetme },
-            { typeof(MinimumStokMehsullariFormu), btnMinimumStokMehsullari } // Əlavə edildi
+            { typeof(MinimumStokMehsullariFormu), btnMinimumStokMehsullari }, // Əlavə edildi
+            { typeof(KonfiqurasiyaFormu), btnKonfiqurasiya } // Əlavə edildi
         };
         
         // Dashboard panelini hazırlayırıq
@@ -342,6 +343,7 @@ public partial class AnaMenuFormu : BazaForm
     private void btnBarkodCapi_Click(object sender, EventArgs e) => UsaqFormuAc<BarkodCapiFormu>();
     private void btnIsciIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<IsciIdareetmeFormu>();
     private void btnMinimumStokMehsullari_Click(object sender, EventArgs e) => UsaqFormuAc<MinimumStokMehsullariFormu>(); // Əlavə edildi
+    private void btnKonfiqurasiya_Click(object sender, EventArgs e) => UsaqFormuAc<KonfiqurasiyaFormu>(); // Əlavə edildi
 
     #endregion
 

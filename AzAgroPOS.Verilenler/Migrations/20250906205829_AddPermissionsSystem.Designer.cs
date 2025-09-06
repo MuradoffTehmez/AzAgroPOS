@@ -4,6 +4,7 @@ using AzAgroPOS.Verilenler.Kontekst;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AzAgroPOS.Verilenler.Migrations
 {
     [DbContext(typeof(AzAgroPOSDbContext))]
-    partial class AzAgroPOSDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250906205829_AddPermissionsSystem")]
+    partial class AddPermissionsSystem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -325,43 +328,6 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Icazeler");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Ad = "CanDeleteSale",
-                            Silinib = false,
-                            Tesvir = "Satış silmək imkanı"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Ad = "CanGiveDiscount",
-                            Silinib = false,
-                            Tesvir = "Endirim tətbiq etmək imkanı"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Ad = "CanViewReports",
-                            Silinib = false,
-                            Tesvir = "Hesabatları görmək imkanı"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Ad = "CanManageProducts",
-                            Silinib = false,
-                            Tesvir = "Məhsulları idarə etmək imkanı"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Ad = "CanManageUsers",
-                            Silinib = false,
-                            Tesvir = "İstifadəçiləri idarə etmək imkanı"
-                        });
                 });
 
             modelBuilder.Entity("AzAgroPOS.Varliglar.Isci", b =>
@@ -1079,43 +1045,6 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.HasIndex("RolId");
 
                     b.ToTable("RolIcazeleri");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            IcazeId = 1,
-                            RolId = 1,
-                            Silinib = false
-                        },
-                        new
-                        {
-                            Id = 2,
-                            IcazeId = 2,
-                            RolId = 1,
-                            Silinib = false
-                        },
-                        new
-                        {
-                            Id = 3,
-                            IcazeId = 3,
-                            RolId = 1,
-                            Silinib = false
-                        },
-                        new
-                        {
-                            Id = 4,
-                            IcazeId = 4,
-                            RolId = 1,
-                            Silinib = false
-                        },
-                        new
-                        {
-                            Id = 5,
-                            IcazeId = 5,
-                            RolId = 1,
-                            Silinib = false
-                        });
                 });
 
             modelBuilder.Entity("AzAgroPOS.Varliglar.Satis", b =>

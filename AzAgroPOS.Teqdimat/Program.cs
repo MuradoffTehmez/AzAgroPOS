@@ -71,6 +71,8 @@ namespace AzAgroPOS.Teqdimat
             services.AddTransient<KateqoriyaMeneceri>(); // Əlavə edildi
             services.AddTransient<BrendMeneceri>(); // Əlavə edildi
             services.AddTransient<TedarukcuMeneceri>(); // Əlavə edildi
+            services.AddTransient<KonfiqurasiyaManager>(); // Əlavə edildi
+            services.AddTransient<IcazeManager>(); // Əlavə edildi
 
             // Formalar (Bütün formaları buraya əlavə edirik)
             services.AddTransient<LoginFormu>();
@@ -113,6 +115,7 @@ namespace AzAgroPOS.Teqdimat
             services.AddTransient<IsciIdareetmeFormu>();
             services.AddTransient<QaytarmaFormu>();
             services.AddTransient<QaytarmaPresenter>();
+            services.AddTransient<KonfiqurasiyaFormu>(); // Əlavə edildi
         }
     }
 }

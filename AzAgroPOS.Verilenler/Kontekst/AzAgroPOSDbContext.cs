@@ -33,6 +33,10 @@ public class AzAgroPOSDbContext : DbContext
     public DbSet<Brend> Brendler { get; set; } // Əlavə edildi
     public DbSet<Qaytarma> Qaytarmalar { get; set; } // Əlavə edildi
     public DbSet<QaytarmaDetali> QaytarmaDetallari { get; set; } // Əlavə edildi
+    public DbSet<EmeliyyatJurnali> EmeliyyatJurnallari { get; set; } // Əlavə edildi
+    public DbSet<Konfiqurasiya> Konfiqurasiyalar { get; set; } // Əlavə edildi
+    public DbSet<Icaze> Icazeler { get; set; } // Əlavə edildi
+    public DbSet<RolIcazesi> RolIcazeleri { get; set; } // Əlavə edildi
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -60,10 +64,45 @@ public class AzAgroPOSDbContext : DbContext
         modelBuilder.Entity<AlisSenedSetiri>().Property(a => a.CemiMebleg).HasColumnType("decimal(18, 2)");
         modelBuilder.Entity<TedarukcuOdeme>().Property(t => t.Mebleg).HasColumnType("decimal(18, 2)");
 
-        modelBuilder.Entity<Istifadeci>()
-            .HasOne(i => i.Rol)
-            .WithMany(r => r.Istifadeciler)
-            .HasForeignKey(i => i.RolId);
+        // Configure Silinib property for all entities
+        modelBuilder.Entity<Mehsul>().Property(m => m.Silinib).HasDefaultValue(false);
+        modelBuilder.Entity<Musteri>().Property(m => m.Silinib).HasDefaultValue(false);
+        modelBuilder.Entity<Satis>().Property(s => s.Silinib).HasDefaultValue(false);
+        modelBuilder.Entity<SatisDetali>().Property(sd => sd.Silinib).HasDefaultValue(false);
+        modelBuilder.Entity<Istifadeci>().Property(i => i.Silinib).HasDefaultValue(false);
+        modelBuilder.Entity<Rol>().Property(r => r.Silinib).HasDefaultValue(false);
+        modelBuilder.Entity<NisyeHereketi>().Property(nh => nh.Silinib).HasDefaultValue(false);
+        modelBuilder.Entity<Temir>().Property(t => t.Silinib).HasDefaultValue(false);
+        modelBuilder.Entity<Novbe>().Property(n => n.Silinib).HasDefaultValue(false);
+        modelBuilder.Entity<Isci>().Property(i => i.Silinib).HasDefaultValue(false);
+        modelBuilder.Entity<IsciPerformans>().Property(ip => ip.Silinib).HasDefaultValue(false);
+        modelBuilder.Entity<IsciIzni>().Property(ii => ii.Silinib).HasDefaultValue(false);
+        modelBuilder.Entity<Tedarukcu>().Property(t => t.Silinib).HasDefaultValue(false);
+        modelBuilder.Entity<AlisSifaris>().Property(asif => asif.Silinib).HasDefaultValue(false);
+        modelBuilder.Entity<AlisSifarisSetiri>().Property(ass => ass.Silinib).HasDefaultValue(false);
+        modelBuilder.Entity<AlisSened>().Property(asen => asen.Silinib).HasDefaultValue(false);
+        modelBuilder.Entity<AlisSenedSetiri>().Property(assen => assen.Silinib).HasDefaultValue(false);
+        modelBuilder.Entity<TedarukcuOdeme>().Property(to => to.Silinib).HasDefaultValue(false);
+        modelBuilder.Entity<Kateqoriya>().Property(k => k.Silinib).HasDefaultValue(false);
+        modelBuilder.Entity<Brend>().Property(b => b.Silinib).HasDefaultValue(false);
+        modelBuilder.Entity<Qaytarma>().Property(q => q.Silinib).HasDefaultValue(false);
+        modelBuilder.Entity<QaytarmaDetali>().Property(qd => qd.Silinib).HasDefaultValue(false);
+        modelBuilder.Entity<EmeliyyatJurnali>().Property(ej => ej.Silinib).HasDefaultValue(false);
+        modelBuilder.Entity<Konfiqurasiya>().Property(k => k.Silinib).HasDefaultValue(false);
+        modelBuilder.Entity<Icaze>().Property(i => i.Silinib).HasDefaultValue(false);
+        modelBuilder.Entity<RolIcazesi>().Property(ri => ri.Silinib).HasDefaultValue(false);
+
+        modelBuilder.Entity<RolIcazesi>()
+            .HasOne(ri => ri.Rol)
+            .WithMany(r => r.Icazeler)
+            .HasForeignKey(ri => ri.RolId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<RolIcazesi>()
+            .HasOne(ri => ri.Icaze)
+            .WithMany(i => i.Rollar)
+            .HasForeignKey(ri => ri.IcazeId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<Temir>()
             .HasOne(t => t.Isci)
@@ -228,6 +267,19 @@ public class AzAgroPOSDbContext : DbContext
             .HasForeignKey(qd => qd.MehsulId)
             .OnDelete(DeleteBehavior.Restrict);
 
+        // Rol və İcazə arasında çoxdan-çoxa əlaqə
+        modelBuilder.Entity<RolIcazesi>()
+            .HasOne(ri => ri.Rol)
+            .WithMany(r => r.Icazeler)
+            .HasForeignKey(ri => ri.RolId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<RolIcazesi>()
+            .HasOne(ri => ri.Icaze)
+            .WithMany(i => i.Rollar)
+            .HasForeignKey(ri => ri.IcazeId)
+            .OnDelete(DeleteBehavior.Cascade);
+
         SeedData(modelBuilder);
     }
 
@@ -328,6 +380,24 @@ public class AzAgroPOSDbContext : DbContext
             new Brend { Id = 1, Ad = "Ənənəvi", Olke = "Azərbaycan", Vebsayt = "www.enanevi.az", Tesvir = "Yerli brend", Aktivdir = true },
             new Brend { Id = 2, Ad = "Fresh", Olke = "Azərbaycan", Vebsayt = "www.fresh.az", Tesvir = "Təzə məhsullar", Aktivdir = true },
             new Brend { Id = 3, Ad = "CleanHome", Olke = "Almaniya", Vebsayt = "www.cleanhome.de", Tesvir = "Təmizlik vasitələri", Aktivdir = true }
+        );
+        
+        // Standart icazələr
+        modelBuilder.Entity<Icaze>().HasData(
+            new Icaze { Id = 1, Ad = "CanDeleteSale", Tesvir = "Satış silmək imkanı" },
+            new Icaze { Id = 2, Ad = "CanGiveDiscount", Tesvir = "Endirim tətbiq etmək imkanı" },
+            new Icaze { Id = 3, Ad = "CanViewReports", Tesvir = "Hesabatları görmək imkanı" },
+            new Icaze { Id = 4, Ad = "CanManageProducts", Tesvir = "Məhsulları idarə etmək imkanı" },
+            new Icaze { Id = 5, Ad = "CanManageUsers", Tesvir = "İstifadəçiləri idarə etmək imkanı" }
+        );
+        
+        // Admin rolu üçün bütün icazələr
+        modelBuilder.Entity<RolIcazesi>().HasData(
+            new RolIcazesi { Id = 1, RolId = 1, IcazeId = 1 },
+            new RolIcazesi { Id = 2, RolId = 1, IcazeId = 2 },
+            new RolIcazesi { Id = 3, RolId = 1, IcazeId = 3 },
+            new RolIcazesi { Id = 4, RolId = 1, IcazeId = 4 },
+            new RolIcazesi { Id = 5, RolId = 1, IcazeId = 5 }
         );
     }
 }

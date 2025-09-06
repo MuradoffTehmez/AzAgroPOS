@@ -11,8 +11,10 @@ namespace AzAgroPOS.Verilenler.Interfeysler
         Task ElaveEtAsync(T varliq);
         void Yenile(T varliq);
         void Sil(T varliq);
-        //Task<T> IdyeGoreGetirAsync(int id, string includeProperties = null);
-        //Task<IEnumerable<T>> HamisiniGetirAsync(Expression<Func<T, bool>> filter = null, string includeProperties = null);
-        //Task ElaveEtAsync(T varliq);
+        // Fiziki silmə əməliyyatı (geri qaytarılmaz)
+        void FizikiSil(T varliq);
+        // Silinmiş varlıqları əldə etmək üçün metodlar
+        Task<IEnumerable<T>> SilinmisleriGetirAsync(Expression<Func<T, bool>>? filter = null, string[]? includeProperties = null);
+        Task<IEnumerable<T>> ButununuVeSilinmisleriGetirAsync(Expression<Func<T, bool>>? filter = null, string[]? includeProperties = null);
     }
 }

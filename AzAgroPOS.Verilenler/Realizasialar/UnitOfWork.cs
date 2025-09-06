@@ -3,6 +3,12 @@ namespace AzAgroPOS.Verilenler.Realizasialar;
 
 using AzAgroPOS.Verilenler.Interfeysler;
 using AzAgroPOS.Verilenler.Kontekst;
+using AzAgroPOS.Varliglar;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 /// <summary>
@@ -18,6 +24,12 @@ public class UnitOfWork : IUnitOfWork
     /// qeyd: Bu kontekst, verilənlər bazası bağlantısını və digər konfiqurasiyaları ehtiva edir.
     /// </summary>
     private readonly AzAgroPOSDbContext _kontekst;
+
+    /// <summary>
+    /// Hazırda sistemdə aktiv olan istifadəçinin ID-si
+    /// Audit jurnalı qeydləri üçün istifadə olunur
+    /// </summary>
+    public int AktivIstifadeciId { get; set; } = 1; // Default admin user
 
     // Repozitorilərin instansiyaları
     /// <summary>
@@ -154,6 +166,34 @@ public class UnitOfWork : IUnitOfWork
     public IQaytarmaRepozitori Qaytarmalar { get; private set; }
 
     /// <summary>
+    /// Əməliyyat Jurnalı Repozitorisi - Audit jurnalı əməliyyatlarını idarə edir.
+    /// Diqqət: Bu repozitoriya verilənlər bazasında edilən əməliyyatların jurnalını saxlayır.
+    /// Qeyd: Audit jurnalı qeydlərinin yaradılması, axtarışı və silinməsi əməliyyatlarını həyata keçirir.
+    /// </summary>
+    public IEmeliyyatJurnaliRepozitori EmeliyyatJurnallari { get; private set; }
+    
+    /// <summary>
+    /// Konfiqurasiya Repozitorisi - Tətbiqat konfiqurasiya parametrlərini idarə edir.
+    /// Diqqət: Bu repozitoriya tətbiqatın konfiqurasiya parametrlərini saxlayır və idarə edir.
+    /// Qeyd: Konfiqurasiya parametrlərinin yaradılması, axtarışı, yenilənməsi və silinməsi əməliyyatlarını həyata keçirir.
+    /// </summary>
+    public IKonfiqurasiyaRepozitori Konfiqurasiyalar { get; private set; }
+    
+    /// <summary>
+    /// İcazə Repozitorisi - İstifadəçilərin ayrı-ayrı icazələrini idarə edir.
+    /// Diqqət: Bu repozitoriya sistemdə mövcud olan icazələri saxlayır və idarə edir.
+    /// Qeyd: İcazələrin yaradılması, axtarışı, yenilənməsi və silinməsi əməliyyatlarını həyata keçirir.
+    /// </summary>
+    public IIcazeRepozitori Icazeler { get; private set; }
+    
+    /// <summary>
+    /// Rol İcazəsi Repozitorisi - Rollar və icazələr arasında əlaqələri idarə edir.
+    /// Diqqət: Bu repozitoriya rolların sahib olduğu icazələri saxlayır və idarə edir.
+    /// Qeyd: Rol-icazə əlaqələrinin yaradılması, axtarışı, yenilənməsi və silinməsi əməliyyatlarını həyata keçirir.
+    /// </summary>
+    public IRolIcazesiRepozitori RolIcazeleri { get; private set; }
+
+    /// <summary>
     /// unitOfWork konstruktoru, verilənlər bazası kontekstini qəbul edir və repozitoriyaların instansiyalarını yaradır.
     /// Diqqət: Bu konstruktor, verilənlər bazası kontekstini bazaya ötürür.
     /// Qeyd: Bu konstruktor, konkret varlıq repozitoriyaları üçün istifadə olunur.
@@ -184,6 +224,10 @@ public class UnitOfWork : IUnitOfWork
         Kateqoriyalar = new KateqoriyaRepozitori(_kontekst); // Əlavə edildi
         Brendler = new BrendRepozitori(_kontekst); // Əlavə edildi
         Qaytarmalar = new QaytarmaRepozitori(_kontekst);
+        EmeliyyatJurnallari = new EmeliyyatJurnaliRepozitori(_kontekst);
+        Konfiqurasiyalar = new KonfiqurasiyaRepozitori(_kontekst);
+        Icazeler = new IcazeRepozitori(_kontekst);
+        RolIcazeleri = new RolIcazesiRepozitori(_kontekst);
     }
     /// <summary>
     /// EMELIYYATI TƏSDİQLƏ metod, edilmiş bütün dəyişiklikləri vahid bir tranzaksiya kimi verilənlər bazasına tətbiq edir.
@@ -193,7 +237,94 @@ public class UnitOfWork : IUnitOfWork
     /// <returns></returns>
     public async Task<int> EmeliyyatiTesdiqleAsync()
     {
-        return await _kontekst.SaveChangesAsync();
+        // Əməliyyat jurnalı qeydlərini yaradırıq
+        var auditEntries = OnBeforeSaveChanges();
+        
+        var result = await _kontekst.SaveChangesAsync();
+        
+        // Əgər audit qeydləri varsa, onları verilənlər bazasına əlavə edirik
+        if (auditEntries.Any())
+        {
+            foreach (var auditEntry in auditEntries)
+            {
+                await EmeliyyatJurnallari.ElaveEtAsync(auditEntry);
+            }
+            await _kontekst.SaveChangesAsync();
+        }
+        
+        return result;
+    }
+    
+    /// <summary>
+    /// Dəyişiklikləri saxlamazdan əvvəl audit jurnalı qeydlərini yaradır
+    /// </summary>
+    /// <returns>Audit jurnalı qeydlərinin siyahısı</returns>
+    private List<EmeliyyatJurnali> OnBeforeSaveChanges()
+    {
+        var auditEntries = new List<EmeliyyatJurnali>();
+        var entries = _kontekst.ChangeTracker.Entries()
+            .Where(e => e.Entity is BazaVarligi &&
+                        (e.State == EntityState.Added ||
+                         e.State == EntityState.Modified ||
+                         e.State == EntityState.Deleted));
+
+        foreach (var entry in entries)
+        {
+            var entityType = entry.Entity.GetType().Name;
+            
+            // Sadəcə əsas cədvəllər üçün audit qeydi yaradırıq
+            if (!(entry.Entity is Mehsul || entry.Entity is Musteri || entry.Entity is Satis))
+            {
+                continue;
+            }
+            
+            // Müvəqqəti audit jurnalı obyekti
+            var auditEntry = new EmeliyyatJurnali
+            {
+                EmeliyyatTarixi = DateTime.UtcNow,
+                CədvəlAdi = entityType,
+                IstifadeciId = AktivIstifadeciId, // Aktiv istifadəçi ID-sini istifadə edirik
+                ObyektId = entry.Entity is BazaVarligi baseEntity ? baseEntity.Id : 0
+            };
+
+            switch (entry.State)
+            {
+                case EntityState.Added:
+                    auditEntry.EmeliyyatNovu = AuditEmeliyyatNovu.Elave;
+                    auditEntry.Aciklama = $"{entityType} obyekti yaradıldı";
+                    // Yeni obyektlər üçün ID hələ müəyyən olunmayıb
+                    auditEntry.ObyektId = 0;
+                    break;
+
+                case EntityState.Deleted:
+                    auditEntry.EmeliyyatNovu = AuditEmeliyyatNovu.Silme;
+                    auditEntry.Aciklama = $"{entityType} obyekti silindi";
+                    break;
+
+                case EntityState.Modified:
+                    auditEntry.EmeliyyatNovu = AuditEmeliyyatNovu.Yenileme;
+                    
+                    // Dəyişən sahələri müəyyən edirik
+                    var changes = new List<string>();
+                    foreach (var property in entry.Properties)
+                    {
+                        if (property.IsModified)
+                        {
+                            var propertyName = property.Metadata.Name;
+                            var originalValue = property.OriginalValue?.ToString() ?? "null";
+                            var currentValue = property.CurrentValue?.ToString() ?? "null";
+                            changes.Add($"{propertyName}: {originalValue} -> {currentValue}");
+                        }
+                    }
+                    
+                    auditEntry.Aciklama = $"{entityType} obyekti yeniləndi: {string.Join(", ", changes)}";
+                    break;
+            }
+            
+            auditEntries.Add(auditEntry);
+        }
+
+        return auditEntries;
     }
 
     /// <summary>

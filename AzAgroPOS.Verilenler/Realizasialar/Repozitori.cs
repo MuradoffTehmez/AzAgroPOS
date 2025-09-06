@@ -9,7 +9,7 @@ namespace AzAgroPOS.Verilenler.Realizasialar
     public class Repozitori<T> : IRepozitori<T> where T : BazaVarligi
     {
         protected readonly AzAgroPOSDbContext _kontekst;
-        private readonly DbSet<T> _dbSet;
+        protected readonly DbSet<T> _dbSet;
 
         public Repozitori(AzAgroPOSDbContext kontekst)
         {
@@ -20,6 +20,9 @@ namespace AzAgroPOS.Verilenler.Realizasialar
         public async Task<IEnumerable<T>> AxtarAsync(Expression<Func<T, bool>>? filter = null, string[]? includeProperties = null)
         {
             IQueryable<T> query = _dbSet;
+
+            // Filter out deleted records by default
+            query = query.Where(e => !e.Silinib);
 
             if (filter != null)
             {
@@ -39,12 +42,12 @@ namespace AzAgroPOS.Verilenler.Realizasialar
 
         public async Task<T> GetirAsync(int id)
         {
-            return await _dbSet.FindAsync(id);
+            return await _dbSet.FirstOrDefaultAsync(e => e.Id == id && !e.Silinib);
         }
 
         public async Task<IEnumerable<T>> ButununuGetirAsync()
         {
-            return await _dbSet.ToListAsync();
+            return await _dbSet.Where(e => !e.Silinib).ToListAsync();
         }
 
         public async Task ElaveEtAsync(T varliq)
@@ -60,7 +63,75 @@ namespace AzAgroPOS.Verilenler.Realizasialar
 
         public void Sil(T varliq)
         {
+            // Soft delete - mark as deleted instead of physical removal
+            varliq.Silinib = true;
+            _dbSet.Attach(varliq);
+            _kontekst.Entry(varliq).State = EntityState.Modified;
+        }
+        
+        /// <summary>
+        /// Fiziki olaraq silir (geri qaytarılmaz)
+        /// </summary>
+        /// <param name="varliq">Silinəcək varlıq</param>
+        public void FizikiSil(T varliq)
+        {
+            // Hard delete - physically remove from database
             _dbSet.Remove(varliq);
+        }
+        
+        /// <summary>
+        /// Silinmiş varlıqları göstərir
+        /// </summary>
+        /// <param name="filter">Əlavə filtr</param>
+        /// <param name="includeProperties">Əlaqəli xüsusiyyətlər</param>
+        /// <returns>Silinmiş varlıqların siyahısı</returns>
+        public async Task<IEnumerable<T>> SilinmisleriGetirAsync(Expression<Func<T, bool>>? filter = null, string[]? includeProperties = null)
+        {
+            IQueryable<T> query = _dbSet;
+
+            // Only show deleted records
+            query = query.Where(e => e.Silinib);
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            if (includeProperties != null)
+            {
+                foreach (var includeProperty in includeProperties)
+                {
+                    query = query.Include(includeProperty);
+                }
+            }
+
+            return await query.ToListAsync();
+        }
+        
+        /// <summary>
+        /// Bütün varlıqları göstərir (silinmişlər də daxil olmaqla)
+        /// </summary>
+        /// <param name="filter">Əlavə filtr</param>
+        /// <param name="includeProperties">Əlaqəli xüsusiyyətlər</param>
+        /// <returns>Bütün varlıqların siyahısı</returns>
+        public async Task<IEnumerable<T>> ButununuVeSilinmisleriGetirAsync(Expression<Func<T, bool>>? filter = null, string[]? includeProperties = null)
+        {
+            IQueryable<T> query = _dbSet;
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            if (includeProperties != null)
+            {
+                foreach (var includeProperty in includeProperties)
+                {
+                    query = query.Include(includeProperty);
+                }
+            }
+
+            return await query.ToListAsync();
         }
     }
 }
