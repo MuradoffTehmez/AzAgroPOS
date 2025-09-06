@@ -44,12 +44,13 @@ namespace AzAgroPOS.Teqdimat
             // Build configuration
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
 
             IConfiguration configuration = builder.Build();
 
-            // Get connection string from configuration
-            string connectionString = configuration.GetConnectionString("DefaultConnection");
+            // Get connection string from configuration or use fallback
+            string connectionString = configuration.GetConnectionString("DefaultConnection") ?? 
+            "Server=.\\SQLEXPRESS;Database=AzAgroPOS_DB;Trusted_Connection=True;TrustServerCertificate=True;";
 
             services.AddDbContext<AzAgroPOSDbContext>(options =>
                 options.UseSqlServer(connectionString), ServiceLifetime.Transient);
