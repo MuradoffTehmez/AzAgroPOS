@@ -1,11 +1,10 @@
 // Fayl: AzAgroPOS.Verilenler/Realizasialar/UnitOfWork.cs
 namespace AzAgroPOS.Verilenler.Realizasialar;
 
+using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using AzAgroPOS.Verilenler.Kontekst;
-using AzAgroPOS.Varliglar;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -171,21 +170,21 @@ public class UnitOfWork : IUnitOfWork
     /// Qeyd: Audit jurnalı qeydlərinin yaradılması, axtarışı və silinməsi əməliyyatlarını həyata keçirir.
     /// </summary>
     public IEmeliyyatJurnaliRepozitori EmeliyyatJurnallari { get; private set; }
-    
+
     /// <summary>
     /// Konfiqurasiya Repozitorisi - Tətbiqat konfiqurasiya parametrlərini idarə edir.
     /// Diqqət: Bu repozitoriya tətbiqatın konfiqurasiya parametrlərini saxlayır və idarə edir.
     /// Qeyd: Konfiqurasiya parametrlərinin yaradılması, axtarışı, yenilənməsi və silinməsi əməliyyatlarını həyata keçirir.
     /// </summary>
     public IKonfiqurasiyaRepozitori Konfiqurasiyalar { get; private set; }
-    
+
     /// <summary>
     /// İcazə Repozitorisi - İstifadəçilərin ayrı-ayrı icazələrini idarə edir.
     /// Diqqət: Bu repozitoriya sistemdə mövcud olan icazələri saxlayır və idarə edir.
     /// Qeyd: İcazələrin yaradılması, axtarışı, yenilənməsi və silinməsi əməliyyatlarını həyata keçirir.
     /// </summary>
     public IIcazeRepozitori Icazeler { get; private set; }
-    
+
     /// <summary>
     /// Rol İcazəsi Repozitorisi - Rollar və icazələr arasında əlaqələri idarə edir.
     /// Diqqət: Bu repozitoriya rolların sahib olduğu icazələri saxlayır və idarə edir.
@@ -239,9 +238,9 @@ public class UnitOfWork : IUnitOfWork
     {
         // Əməliyyat jurnalı qeydlərini yaradırıq
         var auditEntries = OnBeforeSaveChanges();
-        
+
         var result = await _kontekst.SaveChangesAsync();
-        
+
         // Əgər audit qeydləri varsa, onları verilənlər bazasına əlavə edirik
         if (auditEntries.Any())
         {
@@ -251,10 +250,10 @@ public class UnitOfWork : IUnitOfWork
             }
             await _kontekst.SaveChangesAsync();
         }
-        
+
         return result;
     }
-    
+
     /// <summary>
     /// Dəyişiklikləri saxlamazdan əvvəl audit jurnalı qeydlərini yaradır
     /// </summary>
@@ -271,13 +270,13 @@ public class UnitOfWork : IUnitOfWork
         foreach (var entry in entries)
         {
             var entityType = entry.Entity.GetType().Name;
-            
+
             // Sadəcə əsas cədvəllər üçün audit qeydi yaradırıq
             if (!(entry.Entity is Mehsul || entry.Entity is Musteri || entry.Entity is Satis))
             {
                 continue;
             }
-            
+
             // Müvəqqəti audit jurnalı obyekti
             var auditEntry = new EmeliyyatJurnali
             {
@@ -303,7 +302,7 @@ public class UnitOfWork : IUnitOfWork
 
                 case EntityState.Modified:
                     auditEntry.EmeliyyatNovu = AuditEmeliyyatNovu.Yenileme;
-                    
+
                     // Dəyişən sahələri müəyyən edirik
                     var changes = new List<string>();
                     foreach (var property in entry.Properties)
@@ -316,11 +315,11 @@ public class UnitOfWork : IUnitOfWork
                             changes.Add($"{propertyName}: {originalValue} -> {currentValue}");
                         }
                     }
-                    
+
                     auditEntry.Aciklama = $"{entityType} obyekti yeniləndi: {string.Join(", ", changes)}";
                     break;
             }
-            
+
             auditEntries.Add(auditEntry);
         }
 

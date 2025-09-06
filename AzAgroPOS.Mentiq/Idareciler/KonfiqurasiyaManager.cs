@@ -1,8 +1,8 @@
 // AzAgroPOS.Mentiq/Idareciler/KonfiqurasiyaManager.cs
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Uslublar;
-using AzAgroPOS.Verilenler.Interfeysler;
 using AzAgroPOS.Varliglar;
+using AzAgroPOS.Verilenler.Interfeysler;
 
 namespace AzAgroPOS.Mentiq.Idareciler;
 
@@ -12,12 +12,12 @@ namespace AzAgroPOS.Mentiq.Idareciler;
 public class KonfiqurasiyaManager
 {
     private readonly IUnitOfWork _unitOfWork;
-    
+
     public KonfiqurasiyaManager(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }
-    
+
     /// <summary>
     /// Açar adı ilə konfiqurasiya parametrini götürür
     /// </summary>
@@ -28,12 +28,12 @@ public class KonfiqurasiyaManager
         try
         {
             var konfiqurasiya = await _unitOfWork.Konfiqurasiyalar.AcarlaGetirAsync(acar);
-            
+
             if (konfiqurasiya == null)
             {
                 return EmeliyyatNeticesi<KonfiqurasiyaDto>.Ugursuz("Konfiqurasiya parametri tapılmadı");
             }
-            
+
             var dto = new KonfiqurasiyaDto
             {
                 Id = konfiqurasiya.Id,
@@ -42,7 +42,7 @@ public class KonfiqurasiyaManager
                 Tesvir = konfiqurasiya.Tesvir,
                 Qrup = konfiqurasiya.Qrup
             };
-            
+
             return EmeliyyatNeticesi<KonfiqurasiyaDto>.Ugurlu(dto);
         }
         catch (Exception ex)
@@ -50,7 +50,7 @@ public class KonfiqurasiyaManager
             return EmeliyyatNeticesi<KonfiqurasiyaDto>.Ugursuz($"Konfiqurasiya parametri götürülərkən xəta baş verdi: {ex.Message}");
         }
     }
-    
+
     /// <summary>
     /// Qrupa görə konfiqurasiya parametrlərini götürür
     /// </summary>
@@ -61,7 +61,7 @@ public class KonfiqurasiyaManager
         try
         {
             var konfiqurasiyalar = await _unitOfWork.Konfiqurasiyalar.QruplaGetirAsync(qrup);
-            
+
             var dtos = konfiqurasiyalar.Select(k => new KonfiqurasiyaDto
             {
                 Id = k.Id,
@@ -70,7 +70,7 @@ public class KonfiqurasiyaManager
                 Tesvir = k.Tesvir,
                 Qrup = k.Qrup
             });
-            
+
             return EmeliyyatNeticesi<IEnumerable<KonfiqurasiyaDto>>.Ugurlu(dtos);
         }
         catch (Exception ex)
@@ -78,7 +78,7 @@ public class KonfiqurasiyaManager
             return EmeliyyatNeticesi<IEnumerable<KonfiqurasiyaDto>>.Ugursuz($"Konfiqurasiya parametrləri götürülərkən xəta baş verdi: {ex.Message}");
         }
     }
-    
+
     /// <summary>
     /// Konfiqurasiya parametrini yaradır və ya yeniləyir
     /// </summary>
@@ -89,7 +89,7 @@ public class KonfiqurasiyaManager
         try
         {
             var movcudKonfiqurasiya = await _unitOfWork.Konfiqurasiyalar.AcarlaGetirAsync(dto.Acar);
-            
+
             if (movcudKonfiqurasiya == null)
             {
                 // Yeni konfiqurasiya yaradırıq
@@ -100,7 +100,7 @@ public class KonfiqurasiyaManager
                     Tesvir = dto.Tesvir,
                     Qrup = dto.Qrup
                 };
-                
+
                 await _unitOfWork.Konfiqurasiyalar.ElaveEtAsync(yeniKonfiqurasiya);
             }
             else
@@ -109,12 +109,12 @@ public class KonfiqurasiyaManager
                 movcudKonfiqurasiya.Deyer = dto.Deyer;
                 movcudKonfiqurasiya.Tesvir = dto.Tesvir;
                 movcudKonfiqurasiya.Qrup = dto.Qrup;
-                
+
                 _unitOfWork.Konfiqurasiyalar.Yenile(movcudKonfiqurasiya);
             }
-            
+
             await _unitOfWork.EmeliyyatiTesdiqleAsync();
-            
+
             return EmeliyyatNeticesi<bool>.Ugurlu(true);
         }
         catch (Exception ex)
@@ -122,7 +122,7 @@ public class KonfiqurasiyaManager
             return EmeliyyatNeticesi<bool>.Ugursuz($"Konfiqurasiya parametri saxlanılarkən xəta baş verdi: {ex.Message}");
         }
     }
-    
+
     /// <summary>
     /// Bütün konfiqurasiya parametrlərini götürür
     /// </summary>
@@ -132,7 +132,7 @@ public class KonfiqurasiyaManager
         try
         {
             var konfiqurasiyalar = await _unitOfWork.Konfiqurasiyalar.ButununuGetirAsync();
-            
+
             var dtos = konfiqurasiyalar.Select(k => new KonfiqurasiyaDto
             {
                 Id = k.Id,
@@ -141,7 +141,7 @@ public class KonfiqurasiyaManager
                 Tesvir = k.Tesvir,
                 Qrup = k.Qrup
             });
-            
+
             return EmeliyyatNeticesi<IEnumerable<KonfiqurasiyaDto>>.Ugurlu(dtos);
         }
         catch (Exception ex)

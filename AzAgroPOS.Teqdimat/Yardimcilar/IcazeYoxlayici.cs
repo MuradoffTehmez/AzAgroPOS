@@ -22,17 +22,17 @@ public static class IcazeYoxlayici
         {
             return false;
         }
-        
+
         // Admin istifadəçisinin bütün icazələri var
         if (AktivSessiya.AktivIstifadeci.RolId == 1)
         {
             return true;
         }
-        
+
         var netice = await icaeManager.IstifadecininIcazesiVarAsync(
-            AktivSessiya.AktivIstifadeci.Id, 
+            AktivSessiya.AktivIstifadeci.Id,
             icaeAdi);
-        
+
         return netice.UgurluDur && netice.Data;
     }
 }

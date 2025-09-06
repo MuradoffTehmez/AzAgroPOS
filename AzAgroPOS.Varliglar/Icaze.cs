@@ -11,12 +11,12 @@ public class Icaze : BazaVarligi
     /// İcazənin adı (məsələn, "CanDeleteSale", "CanGiveDiscount")
     /// </summary>
     public string Ad { get; set; } = string.Empty;
-    
+
     /// <summary>
     /// İcazənin təsviri (məsələn, "Satış silmək imkanı", "Endirim tətbiq etmək imkanı")
     /// </summary>
     public string Tesvir { get; set; } = string.Empty;
-    
+
     /// <summary>
     /// Bu icazəyə sahib olan rolların siyahısı
     /// </summary>

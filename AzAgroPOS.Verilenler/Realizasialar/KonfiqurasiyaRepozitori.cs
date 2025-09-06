@@ -11,7 +11,7 @@ public class KonfiqurasiyaRepozitori : Repozitori<Konfiqurasiya>, IKonfiqurasiya
     public KonfiqurasiyaRepozitori(AzAgroPOSDbContext kontekst) : base(kontekst)
     {
     }
-    
+
     /// <summary>
     /// Açar adı ilə konfiqurasiya parametrini götürür
     /// </summary>
@@ -21,7 +21,7 @@ public class KonfiqurasiyaRepozitori : Repozitori<Konfiqurasiya>, IKonfiqurasiya
     {
         return await _dbSet.FirstOrDefaultAsync(k => k.Acar == acar && !k.Silinib);
     }
-    
+
     /// <summary>
     /// Qrupa görə konfiqurasiya parametrlərini götürür
     /// </summary>

@@ -10,12 +10,12 @@ public enum AuditEmeliyyatNovu
     /// Yeni obyektin yaradılması
     /// </summary>
     Elave = 1,
-    
+
     /// <summary>
     /// Mövcud obyektin yenilənməsi
     /// </summary>
     Yenileme = 2,
-    
+
     /// <summary>
     /// Obyektin silinməsi (soft delete)
     /// </summary>

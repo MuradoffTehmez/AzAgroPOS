@@ -2,7 +2,6 @@
 namespace AzAgroPOS.Teqdimat.Yardimcilar;
 
 using AzAgroPOS.Mentiq.Idareciler;
-using System;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -27,7 +26,7 @@ public static class IcazeKontroluNümunəsi
             düymə.Enabled = icazeVar;
         }
     }
-    
+
     /// <summary>
     /// Endirim tətbiq etmə icazəsi olub-olmamasına görə bir menyu elementini aktiv/qeyri-aktiv edir
     /// </summary>
@@ -38,7 +37,7 @@ public static class IcazeKontroluNümunəsi
         var icazeVar = await IcazeYoxlayici.IstifadecininIcazesiVarAsync(icaeManager, "CanGiveDiscount");
         menuItem.Enabled = icazeVar;
     }
-    
+
     /// <summary>
     /// Hesabatları görmə icazəsi olub-olmamasına görə bir form elementini gizlədir/göstərir
     /// </summary>

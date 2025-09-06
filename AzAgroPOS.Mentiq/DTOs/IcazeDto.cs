@@ -10,12 +10,12 @@ public class IcazeDto
     /// İcazənin ID-si
     /// </summary>
     public int Id { get; set; }
-    
+
     /// <summary>
     /// İcazənin adı
     /// </summary>
     public string Ad { get; set; } = string.Empty;
-    
+
     /// <summary>
     /// İcazənin təsviri
     /// </summary>

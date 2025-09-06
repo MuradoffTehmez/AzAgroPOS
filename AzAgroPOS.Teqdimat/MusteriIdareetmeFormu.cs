@@ -18,16 +18,17 @@ namespace AzAgroPOS.Teqdimat
             _presenter = new MusteriPresenter(this, musteriManager);
             _serviceProvider = serviceProvider;
             // Form yüklənəndə Presenter-ə xəbər veririk
-            this.Load += (s, e) => {
+            this.Load += (s, e) =>
+            {
                 FormYuklendi?.Invoke(this, EventArgs.Empty);
                 SetupTooltips();
             };
             StilVerDataGridView(dgvMusteriler);
-            
+
             // Add conditional formatting for customers with debt exceeding credit limit
             dgvMusteriler.CellFormatting += DgvMusteriler_CellFormatting;
         }
-        
+
         private void SetupTooltips()
         {
             // Add tooltips to form elements
@@ -193,7 +194,7 @@ namespace AzAgroPOS.Teqdimat
         }
 
         #endregion
-        
+
         /// <summary>
         /// Conditional formatting for customers grid - highlights customers with debt exceeding credit limit
         /// </summary>
@@ -217,7 +218,7 @@ namespace AzAgroPOS.Teqdimat
                 }
             }
         }
-        
+
         #region Context Menu Event Handlers
 
         private void tsmiMusteriDetallar_Click(object sender, EventArgs e)
@@ -247,7 +248,7 @@ namespace AzAgroPOS.Teqdimat
                     // Enable save button and disable new button
                     btnYeni.Enabled = false;
                     btnYaddaSaxla.Enabled = true;
-                    
+
                     txtTamAd.Focus();
                 }
                 catch (Exception ex)
@@ -270,8 +271,8 @@ namespace AzAgroPOS.Teqdimat
                     // {
                     //     barkodCapiFormu.BarkodCapEt(musteri.Id.ToString(), musteri.TamAd, 0); // Müştəri üçün barkod çapı
                     // }
-                    
-                    MessageBox.Show($"'{musteri.TamAd}' müştərisinin barkodu çap edilmək üçün hazırdır.\n\nMüştəri ID: {musteri.Id}", 
+
+                    MessageBox.Show($"'{musteri.TamAd}' müştərisinin barkodu çap edilmək üçün hazırdır.\n\nMüştəri ID: {musteri.Id}",
                         "Barkod Çapı", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 catch (Exception ex)
@@ -286,9 +287,9 @@ namespace AzAgroPOS.Teqdimat
             // Delete selected customer
             if (dgvMusteriler.CurrentRow?.DataBoundItem is MusteriDto musteri)
             {
-                var result = MessageBox.Show($"{musteri.TamAd} müştərisini silmək istədiyinizə əminsiniz?", 
+                var result = MessageBox.Show($"{musteri.TamAd} müştərisini silmək istədiyinizə əminsiniz?",
                     "Təsdiq", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                
+
                 if (result == DialogResult.Yes)
                 {
                     try
@@ -298,7 +299,7 @@ namespace AzAgroPOS.Teqdimat
                         if (silindi.UgurluDur)
                         {
                             MessageBox.Show("Müştəri uğurla silindi.", "Uğur", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            
+
                             // Refresh customers list after deletion
                             Axtar_Istek?.Invoke(this, EventArgs.Empty);
                         }

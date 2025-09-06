@@ -68,7 +68,7 @@ namespace AzAgroPOS.Verilenler.Realizasialar
             _dbSet.Attach(varliq);
             _kontekst.Entry(varliq).State = EntityState.Modified;
         }
-        
+
         /// <summary>
         /// Fiziki olaraq silir (geri qaytarılmaz)
         /// </summary>
@@ -78,7 +78,7 @@ namespace AzAgroPOS.Verilenler.Realizasialar
             // Hard delete - physically remove from database
             _dbSet.Remove(varliq);
         }
-        
+
         /// <summary>
         /// Silinmiş varlıqları göstərir
         /// </summary>
@@ -107,7 +107,7 @@ namespace AzAgroPOS.Verilenler.Realizasialar
 
             return await query.ToListAsync();
         }
-        
+
         /// <summary>
         /// Bütün varlıqları göstərir (silinmişlər də daxil olmaqla)
         /// </summary>

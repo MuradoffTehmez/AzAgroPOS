@@ -92,10 +92,10 @@ namespace AzAgroPOS.Teqdimat
             cmbMusteriler.DataSource = listDataSource;
             cmbMusteriler.DisplayMember = "TamAd";
             cmbMusteriler.ValueMember = "Id";
-            
+
             // Setup autocomplete after data is loaded
             SetupCustomerComboBoxAutoComplete();
-            
+
             // Add event handler for conditional formatting
             cmbMusteriler.DrawMode = DrawMode.OwnerDrawFixed;
             cmbMusteriler.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -469,7 +469,7 @@ namespace AzAgroPOS.Teqdimat
             // Currently no special formatting for cart items
             // This method is added for future extensibility
         }
-        
+
         /// <summary>
         /// Custom drawing for customer combobox to highlight customers with debt exceeding credit limit
         /// </summary>
@@ -478,14 +478,14 @@ namespace AzAgroPOS.Teqdimat
             if (e.Index < 0) return;
 
             e.DrawBackground();
-            
+
             ComboBox cmb = sender as ComboBox;
             var item = cmb.Items[e.Index];
-            
+
             // Get the customer data
             var customerIdProp = item.GetType().GetProperty("Id");
             var customerId = (int)customerIdProp.GetValue(item);
-            
+
             // Skip formatting for "Şəxsi Satış" option (Id = 0)
             if (customerId == 0)
             {
@@ -493,7 +493,7 @@ namespace AzAgroPOS.Teqdimat
                 e.DrawFocusRectangle();
                 return;
             }
-            
+
             // Extract debt and credit limit from the display text
             // The format is: "Name (Borc: amount)"
             string displayText = cmb.GetItemText(item);
@@ -503,7 +503,7 @@ namespace AzAgroPOS.Teqdimat
                 if (decimal.TryParse(match.Groups[2].Value, out decimal debt))
                 {
                     // Check if debt exceeds a reasonable threshold (e.g., 5000 AZN)
-                    if (debt > 5000) 
+                    if (debt > 5000)
                     {
                         e.Graphics.DrawString(displayText, new Font(e.Font, FontStyle.Bold), Brushes.Red, e.Bounds);
                     }
@@ -525,10 +525,10 @@ namespace AzAgroPOS.Teqdimat
             {
                 e.Graphics.DrawString(displayText, e.Font, Brushes.Black, e.Bounds);
             }
-            
+
             e.DrawFocusRectangle();
         }
-        
+
         #endregion
 
         #region Context Menu Event Handlers
@@ -554,7 +554,7 @@ namespace AzAgroPOS.Teqdimat
                     {
                         mehsulFormu.MehsulDuzelisEt(mehsul.Id);
                         mehsulFormu.ShowDialog();
-                        
+
                         // Refresh search results after editing
                         MehsulAxtarIstek?.Invoke(this, EventArgs.Empty);
                     }
@@ -571,9 +571,9 @@ namespace AzAgroPOS.Teqdimat
             // Delete selected product
             if (dgvAxtarisNeticeleri.CurrentRow?.DataBoundItem is MehsulDto mehsul)
             {
-                var result = MessageBox.Show($"{mehsul.Ad} məhsulunu silmək istədiyinizə əminsiniz?", 
+                var result = MessageBox.Show($"{mehsul.Ad} məhsulunu silmək istədiyinizə əminsiniz?",
                     "Təsdiq", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                
+
                 if (result == DialogResult.Yes)
                 {
                     try
@@ -582,7 +582,7 @@ namespace AzAgroPOS.Teqdimat
                         if (silindi)
                         {
                             MessageBox.Show("Məhsul uğurla silindi.", "Uğur", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            
+
                             // Refresh search results after deletion
                             MehsulAxtarIstek?.Invoke(this, EventArgs.Empty);
                         }
@@ -615,7 +615,7 @@ namespace AzAgroPOS.Teqdimat
             if (dgvSebet.CurrentRow?.DataBoundItem is SatisSebetiElementiDto sebetElementi)
             {
                 // For simplicity, we'll just show a message here
-                MessageBox.Show("Səbət elementinin miqdarını dəyişdirmək üçün miqdar sahəsində düzəliş edin.", 
+                MessageBox.Show("Səbət elementinin miqdarını dəyişdirmək üçün miqdar sahəsində düzəliş edin.",
                     "İnfo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }

@@ -1,11 +1,6 @@
 using OfficeOpenXml;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Windows.Forms;
 
 namespace AzAgroPOS.Teqdimat.Yardimcilar
 {
@@ -63,13 +58,13 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
                     var fileBytes = package.GetAsByteArray();
                     File.WriteAllBytes(fileName, fileBytes);
 
-                    MessageBox.Show($"Məlumatlar uğurla {fileName} faylına ixrac edildi.", 
+                    MessageBox.Show($"Məlumatlar uğurla {fileName} faylına ixrac edildi.",
                         "İxrac Uğurlu", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"İxrac edərkən xəta baş verdi: {ex.Message}", 
+                MessageBox.Show($"İxrac edərkən xəta baş verdi: {ex.Message}",
                     "İxrac Xətası", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -119,13 +114,13 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
                     var fileBytes = package.GetAsByteArray();
                     File.WriteAllBytes(fileName, fileBytes);
 
-                    MessageBox.Show($"Məlumatlar uğurla {fileName} faylına ixrac edildi.", 
+                    MessageBox.Show($"Məlumatlar uğurla {fileName} faylına ixrac edildi.",
                         "İxrac Uğurlu", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"İxrac edərkən xəta baş verdi: {ex.Message}", 
+                MessageBox.Show($"İxrac edərkən xəta baş verdi: {ex.Message}",
                     "İxrac Xətası", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

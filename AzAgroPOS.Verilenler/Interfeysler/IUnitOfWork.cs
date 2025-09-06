@@ -153,21 +153,21 @@ public interface IUnitOfWork : IAsyncDisposable
     /// Qeyd: Audit jurnalı qeydlərinin yaradılması, axtarışı və silinməsi əməliyyatlarını həyata keçirir.
     /// </summary>
     IEmeliyyatJurnaliRepozitori EmeliyyatJurnallari { get; }
-    
+
     /// <summary>
     /// Konfiqurasiya Repozitorisi - Tətbiqat konfiqurasiya parametrlərini idarə edir.
     /// Diqqət: Bu repozitoriya tətbiqatın konfiqurasiya parametrlərini saxlayır və idarə edir.
     /// Qeyd: Konfiqurasiya parametrlərinin yaradılması, axtarışı, yenilənməsi və silinməsi əməliyyatlarını həyata keçirir.
     /// </summary>
     IKonfiqurasiyaRepozitori Konfiqurasiyalar { get; }
-    
+
     /// <summary>
     /// İcazə Repozitorisi - İstifadəçilərin ayrı-ayrı icazələrini idarə edir.
     /// Diqqət: Bu repozitoriya sistemdə mövcud olan icazələri saxlayır və idarə edir.
     /// Qeyd: İcazələrin yaradılması, axtarışı, yenilənməsi və silinməsi əməliyyatlarını həyata keçirir.
     /// </summary>
     IIcazeRepozitori Icazeler { get; }
-    
+
     /// <summary>
     /// Rol İcazəsi Repozitorisi - Rollar və icazələr arasında əlaqələri idarə edir.
     /// Diqqət: Bu repozitoriya rolların sahib olduğu icazələri saxlayır və idarə edir.

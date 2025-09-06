@@ -1,34 +1,24 @@
 // AzAgroPOS.Teqdimat/KonfiqurasiyaFormu.cs
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
-using MaterialSkin.Controls;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace AzAgroPOS.Teqdimat
 {
     public partial class KonfiqurasiyaFormu : BazaForm
     {
         private readonly KonfiqurasiyaManager _konfiqurasiyaManager;
-        
+
         public KonfiqurasiyaFormu(KonfiqurasiyaManager konfiqurasiyaManager)
         {
             InitializeComponent();
             _konfiqurasiyaManager = konfiqurasiyaManager;
         }
-        
+
         private async void KonfiqurasiyaFormu_Load(object sender, EventArgs e)
         {
             await YukleKonfiqurasiyaParametrləri();
         }
-        
+
         private async Task YukleKonfiqurasiyaParametrləri()
         {
             try
@@ -53,7 +43,7 @@ namespace AzAgroPOS.Teqdimat
                         }
                     }
                 }
-                
+
                 // Vergi parametrlərini yükləyirik
                 var vergiParametrləri = await _konfiqurasiyaManager.QruplaGetirAsync("Vergi Parametrləri");
                 if (vergiParametrləri.UgurluDur)
@@ -69,7 +59,7 @@ namespace AzAgroPOS.Teqdimat
                         }
                     }
                 }
-                
+
                 // Printer tənzimləmələrini yükləyirik
                 var printerTənzimləmələri = await _konfiqurasiyaManager.QruplaGetirAsync("Printer Tənzimləmələri");
                 if (printerTənzimləmələri.UgurluDur)
@@ -87,7 +77,7 @@ namespace AzAgroPOS.Teqdimat
                         }
                     }
                 }
-                
+
                 // Proqram davranış parametrlərini yükləyirik
                 var davranisParametrləri = await _konfiqurasiyaManager.QruplaGetirAsync("Proqram Davranışı");
                 if (davranisParametrləri.UgurluDur)
@@ -103,11 +93,11 @@ namespace AzAgroPOS.Teqdimat
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Konfiqurasiya parametrləri yüklənərkən xəta baş verdi: {ex.Message}", 
+                MessageBox.Show($"Konfiqurasiya parametrləri yüklənərkən xəta baş verdi: {ex.Message}",
                     "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        
+
         private async void btnSaxla_Click(object sender, EventArgs e)
         {
             try
@@ -121,7 +111,7 @@ namespace AzAgroPOS.Teqdimat
                     Qrup = "Şirkət Məlumatları"
                 };
                 await _konfiqurasiyaManager.KonfiqurasiyaElaveEtVəYaYenileAsync(sirketAdiParametr);
-                
+
                 var sirketUnvaniParametr = new KonfiqurasiyaDto
                 {
                     Acar = "Şirkət.Ünvanı",
@@ -130,7 +120,7 @@ namespace AzAgroPOS.Teqdimat
                     Qrup = "Şirkət Məlumatları"
                 };
                 await _konfiqurasiyaManager.KonfiqurasiyaElaveEtVəYaYenileAsync(sirketUnvaniParametr);
-                
+
                 var sirketVoenParametr = new KonfiqurasiyaDto
                 {
                     Acar = "Şirkət.VÖEN",
@@ -139,7 +129,7 @@ namespace AzAgroPOS.Teqdimat
                     Qrup = "Şirkət Məlumatları"
                 };
                 await _konfiqurasiyaManager.KonfiqurasiyaElaveEtVəYaYenileAsync(sirketVoenParametr);
-                
+
                 // Vergi parametrlərini saxlayırıq
                 var edvDerəcəsiParametr = new KonfiqurasiyaDto
                 {
@@ -149,7 +139,7 @@ namespace AzAgroPOS.Teqdimat
                     Qrup = "Vergi Parametrləri"
                 };
                 await _konfiqurasiyaManager.KonfiqurasiyaElaveEtVəYaYenileAsync(edvDerəcəsiParametr);
-                
+
                 // Printer tənzimləmələrini saxlayırıq
                 var qəbzPrinteriParametr = new KonfiqurasiyaDto
                 {
@@ -159,7 +149,7 @@ namespace AzAgroPOS.Teqdimat
                     Qrup = "Printer Tənzimləmələri"
                 };
                 await _konfiqurasiyaManager.KonfiqurasiyaElaveEtVəYaYenileAsync(qəbzPrinteriParametr);
-                
+
                 var barkodPrinteriParametr = new KonfiqurasiyaDto
                 {
                     Acar = "Printer.Barkod",
@@ -168,7 +158,7 @@ namespace AzAgroPOS.Teqdimat
                     Qrup = "Printer Tənzimləmələri"
                 };
                 await _konfiqurasiyaManager.KonfiqurasiyaElaveEtVəYaYenileAsync(barkodPrinteriParametr);
-                
+
                 // Proqram davranış parametrlərini saxlayırıq
                 var davranisParametr = new KonfiqurasiyaDto
                 {
@@ -178,13 +168,13 @@ namespace AzAgroPOS.Teqdimat
                     Qrup = "Proqram Davranışı"
                 };
                 await _konfiqurasiyaManager.KonfiqurasiyaElaveEtVəYaYenileAsync(davranisParametr);
-                
-                MessageBox.Show("Konfiqurasiya parametrləri uğurla saxlanıldı.", 
+
+                MessageBox.Show("Konfiqurasiya parametrləri uğurla saxlanıldı.",
                     "Uğur", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Konfiqurasiya parametrləri saxlanılarkən xəta baş verdi: {ex.Message}", 
+                MessageBox.Show($"Konfiqurasiya parametrləri saxlanılarkən xəta baş verdi: {ex.Message}",
                     "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

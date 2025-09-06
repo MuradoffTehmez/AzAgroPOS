@@ -14,7 +14,7 @@ public abstract class BazaVarligi
     /// rol: Bu sinif, bütün varlıqların ID sahəsini ehtiva edir və hər bir varlığın unikal identifikatorunu təmsil edir.
     /// </summary>
     public int Id { get; set; }
-    
+
     /// <summary>
     /// Varlığın silinib-silinmədiyini göstərir. True olduqda varlıq silinmiş sayılır.
     /// </summary>

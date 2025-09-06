@@ -22,7 +22,7 @@ namespace AzAgroPOS.Teqdimat
 
             // Setup auto-complete for ComboBoxes
             SetupComboBoxAutoComplete();
-            
+
             // Add conditional formatting for low stock products
             dgvMehsullar.CellFormatting += DgvMehsullar_CellFormatting;
         }
@@ -61,7 +61,7 @@ namespace AzAgroPOS.Teqdimat
         {
             // Mehsul ID'sini forma üzerindeki alana yerleştir
             txtId.Text = mehsulId.ToString();
-            
+
             // Seçili satırı güncelle
             if (dgvMehsullar.DataSource is List<MehsulDto> mehsullar)
             {
@@ -79,7 +79,7 @@ namespace AzAgroPOS.Teqdimat
                             break;
                         }
                     }
-                    
+
                     // Form alanlarını doldur
                     txtAd.Text = secilmisMehsul.Ad;
                     txtStokKodu.Text = secilmisMehsul.StokKodu;
@@ -90,10 +90,10 @@ namespace AzAgroPOS.Teqdimat
                     txtAlisQiymeti.Text = secilmisMehsul.AlisQiymeti.ToString("F2");
                     txtMevcudSay.Text = secilmisMehsul.MovcudSay.ToString();
                     txtMinimumStok.Text = secilmisMehsul.MinimumStok.ToString();
-                    
+
                     // ComboBox seçimlerini ayarla
                     cmbOlcuVahidi.SelectedItem = secilmisMehsul.OlcuVahidi;
-                    
+
                     if (secilmisMehsul.KateqoriyaId.HasValue)
                         cmbKateqoriya.SelectedValue = secilmisMehsul.KateqoriyaId.Value;
                     else
@@ -108,7 +108,7 @@ namespace AzAgroPOS.Teqdimat
                         cmbTedarukcu.SelectedValue = secilmisMehsul.TedarukcuId.Value;
                     else
                         cmbTedarukcu.SelectedIndex = -1;
-                    
+
                     // Buton metnini güncelle
                     btnElaveEt.Text = "Yeni Məhsul";
                     btnKopyala.Enabled = true;
@@ -239,7 +239,7 @@ namespace AzAgroPOS.Teqdimat
             FormYuklendi_Istek?.Invoke(this, EventArgs.Empty);
             SetupTooltips();
         }
-        
+
         private void SetupTooltips()
         {
             // Add tooltips to form elements
@@ -338,7 +338,7 @@ namespace AzAgroPOS.Teqdimat
             cmbOlcuVahidi.AutoCompleteSource = AutoCompleteSource.ListItems;
         }
         #endregion
-        
+
         /// <summary>
         /// Conditional formatting for products grid - highlights products with low stock
         /// </summary>
@@ -355,7 +355,7 @@ namespace AzAgroPOS.Teqdimat
                 }
             }
         }
-        
+
         #region Context Menu Event Handlers
 
         private void tsmiMehsulBarkodCapEt_Click(object sender, EventArgs e)
@@ -371,8 +371,8 @@ namespace AzAgroPOS.Teqdimat
                     // {
                     //     barkodCapiFormu.BarkodCapEt(mehsul.Barkod, mehsul.Ad, mehsul.PerakendeSatisQiymeti);
                     // }
-                    
-                    MessageBox.Show($"'{mehsul.Ad}' məhsulunun barkodu çap edilmək üçün hazırdır.\n\nBarkod: {mehsul.Barkod}", 
+
+                    MessageBox.Show($"'{mehsul.Ad}' məhsulunun barkodu çap edilmək üçün hazırdır.\n\nBarkod: {mehsul.Barkod}",
                         "Barkod Çapı", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 catch (Exception ex)
@@ -416,9 +416,9 @@ namespace AzAgroPOS.Teqdimat
             // Delete selected product
             if (dgvMehsullar.CurrentRow?.DataBoundItem is MehsulDto mehsul)
             {
-                var result = MessageBox.Show($"{mehsul.Ad} məhsulunu silmək istədiyinizə əminsiniz?", 
+                var result = MessageBox.Show($"{mehsul.Ad} məhsulunu silmək istədiyinizə əminsiniz?",
                     "Təsdiq", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                
+
                 if (result == DialogResult.Yes)
                 {
                     try
@@ -428,7 +428,7 @@ namespace AzAgroPOS.Teqdimat
                         if (silindi.UgurluDur)
                         {
                             MessageBox.Show("Məhsul uğurla silindi.", "Uğur", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            
+
                             // Refresh products list after deletion
                             Axtaris_Istek?.Invoke(this, EventArgs.Empty);
                         }
@@ -456,7 +456,7 @@ namespace AzAgroPOS.Teqdimat
                     "Alış Detalları", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             */
-            
+
             // Temporary implementation
             MessageBox.Show("Alış detalları funksionallığı hazırlanır...", "Qeyd", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }

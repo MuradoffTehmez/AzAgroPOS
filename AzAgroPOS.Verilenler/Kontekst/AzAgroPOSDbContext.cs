@@ -381,7 +381,7 @@ public class AzAgroPOSDbContext : DbContext
             new Brend { Id = 2, Ad = "Fresh", Olke = "Azərbaycan", Vebsayt = "www.fresh.az", Tesvir = "Təzə məhsullar", Aktivdir = true },
             new Brend { Id = 3, Ad = "CleanHome", Olke = "Almaniya", Vebsayt = "www.cleanhome.de", Tesvir = "Təmizlik vasitələri", Aktivdir = true }
         );
-        
+
         // Standart icazələr
         modelBuilder.Entity<Icaze>().HasData(
             new Icaze { Id = 1, Ad = "CanDeleteSale", Tesvir = "Satış silmək imkanı" },
@@ -390,7 +390,7 @@ public class AzAgroPOSDbContext : DbContext
             new Icaze { Id = 4, Ad = "CanManageProducts", Tesvir = "Məhsulları idarə etmək imkanı" },
             new Icaze { Id = 5, Ad = "CanManageUsers", Tesvir = "İstifadəçiləri idarə etmək imkanı" }
         );
-        
+
         // Admin rolu üçün bütün icazələr
         modelBuilder.Entity<RolIcazesi>().HasData(
             new RolIcazesi { Id = 1, RolId = 1, IcazeId = 1 },

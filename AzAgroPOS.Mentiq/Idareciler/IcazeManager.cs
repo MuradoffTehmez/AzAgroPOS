@@ -3,6 +3,7 @@ namespace AzAgroPOS.Mentiq.Idareciler;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Uslublar;
+using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,12 +15,12 @@ using System.Threading.Tasks;
 public class IcazeManager
 {
     private readonly IUnitOfWork _unitOfWork;
-    
+
     public IcazeManager(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }
-    
+
     /// <summary>
     /// İstifadəçinin müəyyən bir icazəyə sahib olub-olmadığını yoxlayır
     /// </summary>
@@ -36,26 +37,26 @@ public class IcazeManager
             {
                 return EmeliyyatNeticesi<bool>.Ugursuz("İstifadəçi tapılmadı");
             }
-            
+
             // Admin istifadəçisinin bütün icazələri var
             if (istifadeci.RolId == 1) // 1 - Admin rolu
             {
                 return EmeliyyatNeticesi<bool>.Ugurlu(true);
             }
-            
+
             // İstifadəçinin roluna aid icazələri yoxlayırıq
-            var rolIcazeleri = await _unitOfWork.AxtarAsync<RolIcazesi>(ri => ri.RolId == istifadeci.RolId);
+            var rolIcazeleri = await _unitOfWork.RolIcazeleri.AxtarAsync(ri => ri.RolId == istifadeci.RolId);
             var icazeIdleri = rolIcazeleri.Select(ri => ri.IcazeId).ToList();
-            
+
             if (!icazeIdleri.Any())
             {
                 return EmeliyyatNeticesi<bool>.Ugurlu(false);
             }
-            
+
             // İcazələri götürüb axtarırıq
-            var icazeler = await _unitOfWork.AxtarAsync<Icaze>(i => icazeIdleri.Contains(i.Id) && i.Ad == icaeAdi);
+            var icazeler = await _unitOfWork.Icazeler.AxtarAsync(i => icazeIdleri.Contains(i.Id) && i.Ad == icaeAdi);
             var icazeVar = icazeler.Any();
-            
+
             return EmeliyyatNeticesi<bool>.Ugurlu(icazeVar);
         }
         catch (System.Exception ex)
@@ -63,7 +64,7 @@ public class IcazeManager
             return EmeliyyatNeticesi<bool>.Ugursuz($"İcazə yoxlanılması zamanı xəta baş verdi: {ex.Message}");
         }
     }
-    
+
     /// <summary>
     /// Bütün mövcud icazələri götürür
     /// </summary>
@@ -79,7 +80,7 @@ public class IcazeManager
                 Ad = i.Ad,
                 Tesvir = i.Tesvir
             });
-            
+
             return EmeliyyatNeticesi<IEnumerable<IcazeDto>>.Ugurlu(icazeDtos);
         }
         catch (System.Exception ex)
@@ -87,7 +88,7 @@ public class IcazeManager
             return EmeliyyatNeticesi<IEnumerable<IcazeDto>>.Ugursuz($"İcazələr götürülərkən xəta baş verdi: {ex.Message}");
         }
     }
-    
+
     /// <summary>
     /// Bir rol üçün icazələri təyin edir
     /// </summary>
@@ -99,12 +100,12 @@ public class IcazeManager
         try
         {
             // Mövcud rol icazələrini silirik
-            var movcudRolIcazeleri = await _unitOfWork.AxtarAsync<RolIcazesi>(ri => ri.RolId == rolId);
+            var movcudRolIcazeleri = await _unitOfWork.RolIcazeleri.AxtarAsync(ri => ri.RolId == rolId);
             foreach (var rolIcazesi in movcudRolIcazeleri)
             {
-                _unitOfWork.Sil(rolIcazesi);
+                _unitOfWork.RolIcazeleri.Sil(rolIcazesi);
             }
-            
+
             // Yeni rol icazələrini əlavə edirik
             foreach (var icazeId in icazeIdleri)
             {
@@ -113,11 +114,11 @@ public class IcazeManager
                     RolId = rolId,
                     IcazeId = icazeId
                 };
-                await _unitOfWork.ElaveEtAsync(yeniRolIcazesi);
+                await _unitOfWork.RolIcazeleri.ElaveEtAsync(yeniRolIcazesi);
             }
-            
+
             await _unitOfWork.EmeliyyatiTesdiqleAsync();
-            
+
             return EmeliyyatNeticesi.Ugurlu();
         }
         catch (System.Exception ex)
@@ -125,7 +126,7 @@ public class IcazeManager
             return EmeliyyatNeticesi.Ugursuz($"Rol icazələri təyin edilərkən xəta baş verdi: {ex.Message}");
         }
     }
-    
+
     /// <summary>
     /// Bir rol üçün təyin edilmiş icazələri götürür
     /// </summary>
@@ -135,22 +136,22 @@ public class IcazeManager
     {
         try
         {
-            var rolIcazeleri = await _unitOfWork.AxtarAsync<RolIcazesi>(ri => ri.RolId == rolId);
+            var rolIcazeleri = await _unitOfWork.RolIcazeleri.AxtarAsync(ri => ri.RolId == rolId);
             var icazeIdleri = rolIcazeleri.Select(ri => ri.IcazeId).ToList();
-            
+
             if (!icazeIdleri.Any())
             {
                 return EmeliyyatNeticesi<IEnumerable<IcazeDto>>.Ugurlu(new List<IcazeDto>());
             }
-            
-            var icazeler = await _unitOfWork.AxtarAsync<Icaze>(i => icazeIdleri.Contains(i.Id));
+
+            var icazeler = await _unitOfWork.Icazeler.AxtarAsync(i => icazeIdleri.Contains(i.Id));
             var icazeDtos = icazeler.Select(i => new IcazeDto
             {
                 Id = i.Id,
                 Ad = i.Ad,
                 Tesvir = i.Tesvir
             });
-            
+
             return EmeliyyatNeticesi<IEnumerable<IcazeDto>>.Ugurlu(icazeDtos);
         }
         catch (System.Exception ex)

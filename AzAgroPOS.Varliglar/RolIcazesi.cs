@@ -10,17 +10,17 @@ public class RolIcazesi : BazaVarligi
     /// Rolun ID-si
     /// </summary>
     public int RolId { get; set; }
-    
+
     /// <summary>
     /// Rol obyekti
     /// </summary>
     public Rol? Rol { get; set; }
-    
+
     /// <summary>
     /// İcazənin ID-si
     /// </summary>
     public int IcazeId { get; set; }
-    
+
     /// <summary>
     /// İcazə obyekti
     /// </summary>

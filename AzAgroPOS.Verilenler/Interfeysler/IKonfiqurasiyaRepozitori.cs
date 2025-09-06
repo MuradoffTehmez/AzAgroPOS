@@ -11,7 +11,7 @@ public interface IKonfiqurasiyaRepozitori : IRepozitori<Konfiqurasiya>
     /// <param name="acar">Konfiqurasiya açarı</param>
     /// <returns>Konfiqurasiya obyekti</returns>
     Task<Konfiqurasiya?> AcarlaGetirAsync(string acar);
-    
+
     /// <summary>
     /// Qrupa görə konfiqurasiya parametrlərini götürür
     /// </summary>

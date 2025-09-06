@@ -1,6 +1,5 @@
 // Fayl: AzAgroPOS.Teqdimat/AnaMenuFormu.cs
 namespace AzAgroPOS.Teqdimat;
-using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Yardimcilar;
 using MaterialSkin.Controls;
@@ -42,7 +41,7 @@ public partial class AnaMenuFormu : BazaForm
             { typeof(MinimumStokMehsullariFormu), btnMinimumStokMehsullari }, // Əlavə edildi
             { typeof(KonfiqurasiyaFormu), btnKonfiqurasiya } // Əlavə edildi
         };
-        
+
         // Dashboard panelini hazırlayırıq
         InitializeDashboard();
     }
@@ -52,7 +51,7 @@ public partial class AnaMenuFormu : BazaForm
         IcazeleriYoxla();
         mdiTabControl.TabPages.Clear();
         UpdateActiveButtonHighlight();
-        
+
         // Dashboard məlumatlarını yükləyirik
         _ = UpdateDashboardData(); // Fire and forget
     }
@@ -180,7 +179,7 @@ public partial class AnaMenuFormu : BazaForm
     #endregion
 
     #region Dashboard Methods
-    
+
     private void InitializeDashboard()
     {
         // Dashboard panelinə kartları əlavə edirik
@@ -188,30 +187,30 @@ public partial class AnaMenuFormu : BazaForm
         dashboardPanel.Controls.Add(activeShiftCard);
         dashboardPanel.Controls.Add(debtorCustomersCard);
         dashboardPanel.Controls.Add(lowStockProductsCard);
-        
+
         // Kartlara etiketləri əlavə edirik
         dailySalesCard.Controls.Add(lblDailySales);
         dailySalesCard.Controls.Add(lblDailySalesValue);
-        
+
         activeShiftCard.Controls.Add(lblActiveShift);
         activeShiftCard.Controls.Add(lblActiveShiftValue);
-        
+
         debtorCustomersCard.Controls.Add(lblDebtorCustomers);
         debtorCustomersCard.Controls.Add(lblDebtorCustomersValue);
-        
+
         lowStockProductsCard.Controls.Add(lblLowStockProducts);
         lowStockProductsCard.Controls.Add(lblLowStockProductsValue);
-        
+
         // Timeri konfiqurasiya edirik
         dashboardTimer = new Timer();
         dashboardTimer.Interval = 300000; // 5 dəqiqə
         dashboardTimer.Tick += async (s, e) => await UpdateDashboardData();
         dashboardTimer.Start();
-        
+
         // İlk dəfə məlumatları yükləyirik
         _ = UpdateDashboardData(); // Fire and forget
     }
-    
+
     private async Task UpdateDashboardData()
     {
         try
@@ -227,7 +226,7 @@ public partial class AnaMenuFormu : BazaForm
             {
                 lblDailySalesValue.Text = "0.00 AZN";
             }
-            
+
             // Aktiv növbə məlumatlarını göstəririk
             if (AktivSessiya.AktivNovbeId.HasValue)
             {
@@ -246,7 +245,7 @@ public partial class AnaMenuFormu : BazaForm
             {
                 lblActiveShiftValue.Text = "Növbə Yoxdur";
             }
-            
+
             // Borclu müştəri sayını hesablayırıq
             var musteriManager = _serviceProvider.GetRequiredService<MusteriManager>();
             var musteriler = await musteriManager.ButunMusterileriGetirAsync();
@@ -259,7 +258,7 @@ public partial class AnaMenuFormu : BazaForm
             {
                 lblDebtorCustomersValue.Text = "0";
             }
-            
+
             // Aşağı stoklu məhsulların sayını hesablayırıq
             var mehsulMeneceri = _serviceProvider.GetRequiredService<MehsulMeneceri>();
             var minimumStokMehsullari = await mehsulMeneceri.MinimumStokMehsullariniGetirAsync();
@@ -278,7 +277,7 @@ public partial class AnaMenuFormu : BazaForm
             System.Diagnostics.Debug.WriteLine($"Dashboard update error: {ex.Message}");
         }
     }
-    
+
     #endregion
 
     #region İcazələr və Düymə Klikləri

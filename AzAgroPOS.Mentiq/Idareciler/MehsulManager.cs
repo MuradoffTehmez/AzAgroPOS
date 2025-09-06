@@ -137,7 +137,7 @@ public class MehsulManager
         return EmeliyyatNeticesi.Ugurlu();
     }
 
-    
+
     /// <summary>
     /// Verilmiş məhsul adına əsasən unikal Stok Kodu (SKU) yaradır.
     /// Məsələn: "Süd 1L" -> "SUD-12345"

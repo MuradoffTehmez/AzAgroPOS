@@ -10,17 +10,17 @@ public class Konfiqurasiya : BazaVarligi
     /// Konfiqurasiya açarı (məsələn: "Şirkət.Adı")
     /// </summary>
     public string Acar { get; set; } = string.Empty;
-    
+
     /// <summary>
     /// Konfiqurasiya dəyəri (məsələn: "AzAgroPOS MMC")
     /// </summary>
     public string Deyer { get; set; } = string.Empty;
-    
+
     /// <summary>
     /// Konfiqurasiya təsviri (məsələn: "Şirkətin rəsmi adı")
     /// </summary>
     public string Tesvir { get; set; } = string.Empty;
-    
+
     /// <summary>
     /// Konfiqurasiya qrupu (məsələn: "Şirkət Məlumatları", "Printer Tənzimləmələri")
     /// </summary>
