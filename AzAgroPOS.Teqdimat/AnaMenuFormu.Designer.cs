@@ -66,18 +66,17 @@ namespace AzAgroPOS.Teqdimat
             sidebarImageList.ColorDepth = ColorDepth.Depth32Bit;
             sidebarImageList.ImageStream = (ImageListStreamer)resources.GetObject("sidebarImageList.ImageStream");
             sidebarImageList.TransparentColor = Color.Transparent;
-            sidebarImageList.Images.SetKeyName(0, "product.png");
-            sidebarImageList.Images.SetKeyName(1, "sale.png");
-            sidebarImageList.Images.SetKeyName(2, "customer.png");
-            sidebarImageList.Images.SetKeyName(3, "report.png");
-            sidebarImageList.Images.SetKeyName(4, "user.png");
-            sidebarImageList.Images.SetKeyName(5, "settings.png");
-            sidebarImageList.Images.SetKeyName(6, "cashier.png");
-            sidebarImageList.Images.SetKeyName(7, "repair.png");
-            sidebarImageList.Images.SetKeyName(8, "shift.png");
-            sidebarImageList.Images.SetKeyName(9, "barcode.png");
-            sidebarImageList.Images.SetKeyName(10, "employee.png");
-            sidebarImageList.Images.SetKeyName(11, "low_stock.png"); // Əlavə edildi
+            //sidebarImageList.Images.SetKeyName(0, "product.png");
+            //sidebarImageList.Images.SetKeyName(1, "sale.png");
+            //sidebarImageList.Images.SetKeyName(2, "customer.png");
+            //sidebarImageList.Images.SetKeyName(3, "report.png");
+            //sidebarImageList.Images.SetKeyName(4, "user.png");
+            //sidebarImageList.Images.SetKeyName(5, "settings.png");
+            //sidebarImageList.Images.SetKeyName(6, "cashier.png");
+            //sidebarImageList.Images.SetKeyName(7, "repair.png");
+            //sidebarImageList.Images.SetKeyName(8, "shift.png");
+            //sidebarImageList.Images.SetKeyName(9, "barcode.png");
+            //sidebarImageList.Images.SetKeyName(10, "employee.png");
             // 
             // pnlMenu
             // 
@@ -120,7 +119,6 @@ namespace AzAgroPOS.Teqdimat
             btnMinimumStokMehsullari.Icon = null;
             btnMinimumStokMehsullari.ImageAlign = ContentAlignment.MiddleLeft;
             btnMinimumStokMehsullari.ImageList = sidebarImageList;
-            btnMinimumStokMehsullari.ImageKey = "low_stock.png"; // Əlavə edildi
             btnMinimumStokMehsullari.Location = new Point(0, 570);
             btnMinimumStokMehsullari.Margin = new Padding(4, 6, 4, 6);
             btnMinimumStokMehsullari.MouseState = MaterialSkin.MouseState.HOVER;
