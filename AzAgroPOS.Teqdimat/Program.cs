@@ -1,5 +1,6 @@
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Teqdimat.Teqdimatcilar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using AzAgroPOS.Verilenler.Kontekst;
 using AzAgroPOS.Verilenler.Realizasialar;
@@ -80,7 +81,13 @@ namespace AzAgroPOS.Teqdimat
             services.AddTransient<NisyeIdareetmeFormu>();
             services.AddTransient<NovbeIdareetmesiFormu>();
             services.AddTransient<SatisFormu>();
-            services.AddTransient<TemirIdareetmeFormu>();
+            services.AddTransient<TemirIdareetmeFormu>(provider =>
+            {
+                var temirManager = provider.GetRequiredService<TemirManager>();
+                var musteriManager = provider.GetRequiredService<MusteriManager>();
+                var istifadeciManager = provider.GetRequiredService<IstifadeciManager>();
+                return new TemirIdareetmeFormu(temirManager, musteriManager, istifadeciManager);
+            });
             services.AddTransient<ZHesabatArxivFormu>();
             services.AddTransient<TedarukcuIdareetmeFormu>();
             services.AddTransient<IsciIdareetmeFormu>();
