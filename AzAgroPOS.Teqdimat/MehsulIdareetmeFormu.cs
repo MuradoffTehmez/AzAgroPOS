@@ -1,4 +1,4 @@
-﻿// Fayl: AzAgroPOS.Teqdimat/MehsulIdareetmeFormu.cs
+// Fayl: AzAgroPOS.Teqdimat/MehsulIdareetmeFormu.cs
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
@@ -32,7 +32,11 @@ namespace AzAgroPOS.Teqdimat
         public string TekEdedSatisQiymeti { get => txtTekEdedSatisQiymeti.Text; set => txtTekEdedSatisQiymeti.Text = value; }
         public string AlisQiymeti { get => txtAlisQiymeti.Text; set => txtAlisQiymeti.Text = value; }
         public string MovcudSay { get => txtMevcudSay.Text; set => txtMevcudSay.Text = value; }
+        public string MinimumStok { get => txtMinimumStok.Text; set => txtMinimumStok.Text = value; }
         public OlcuVahidi SecilmisOlcuVahidi => (OlcuVahidi)cmbOlcuVahidi.SelectedItem;
+        public int? SecilmisKateqoriyaId => cmbKateqoriya.SelectedValue as int?;
+        public int? SecilmisBrendId => cmbBrend.SelectedValue as int?;
+        public int? SecilmisTedarukcuId => cmbTedarukcu.SelectedValue as int?;
         public string AxtarisMetni { get => txtAxtar.Text; set => txtAxtar.Text = value; }
 
         public event EventHandler FormYuklendi_Istek;
@@ -53,6 +57,30 @@ namespace AzAgroPOS.Teqdimat
             cmbOlcuVahidi.DataSource = olcuVahidleri;
             if (cmbOlcuVahidi.Items.Count > 0)
                 cmbOlcuVahidi.SelectedIndex = 0;
+        }
+
+        public void KateqoriyalariGoster(IEnumerable<KateqoriyaDto> kateqoriyalar)
+        {
+            cmbKateqoriya.DisplayMember = "Ad";
+            cmbKateqoriya.ValueMember = "Id";
+            cmbKateqoriya.DataSource = kateqoriyalar.ToList();
+            cmbKateqoriya.SelectedIndex = -1;
+        }
+
+        public void BrendleriGoster(IEnumerable<BrendDto> brendler)
+        {
+            cmbBrend.DisplayMember = "Ad";
+            cmbBrend.ValueMember = "Id";
+            cmbBrend.DataSource = brendler.ToList();
+            cmbBrend.SelectedIndex = -1;
+        }
+
+        public void TedarukculeriGoster(IEnumerable<TedarukcuDto> tedarukculer)
+        {
+            cmbTedarukcu.DisplayMember = "Ad";
+            cmbTedarukcu.ValueMember = "Id";
+            cmbTedarukcu.DataSource = tedarukculer.ToList();
+            cmbTedarukcu.SelectedIndex = -1;
         }
 
         public void MehsullariGoster(IEnumerable<MehsulDto> mehsullar)
@@ -111,6 +139,22 @@ namespace AzAgroPOS.Teqdimat
             {
                 txtId.Text = secilmisMehsul.Id.ToString();
                 cmbOlcuVahidi.SelectedItem = secilmisMehsul.OlcuVahidi;
+                // Kateqoriya, Brend və Tedarukçu seçimlərini də təyin edirik
+                if (secilmisMehsul.KateqoriyaId.HasValue)
+                    cmbKateqoriya.SelectedValue = secilmisMehsul.KateqoriyaId.Value;
+                else
+                    cmbKateqoriya.SelectedIndex = -1;
+
+                if (secilmisMehsul.BrendId.HasValue)
+                    cmbBrend.SelectedValue = secilmisMehsul.BrendId.Value;
+                else
+                    cmbBrend.SelectedIndex = -1;
+
+                if (secilmisMehsul.TedarukcuId.HasValue)
+                    cmbTedarukcu.SelectedValue = secilmisMehsul.TedarukcuId.Value;
+                else
+                    cmbTedarukcu.SelectedIndex = -1;
+
                 CedvelSecimiDeyisdi_Istek?.Invoke(this, EventArgs.Empty);
                 btnElaveEt.Text = "Yeni Məhsul";
                 btnKopyala.Enabled = true;

@@ -1,4 +1,4 @@
-﻿// AzAgroPOS.Varliglar/Mehsul.cs
+// AzAgroPOS.Varliglar/Mehsul.cs
 namespace AzAgroPOS.Varliglar
 {
     public class Mehsul : BazaVarligi
@@ -14,5 +14,19 @@ namespace AzAgroPOS.Varliglar
         public decimal TekEdedSatisQiymeti { get; set; }
         public int MovcudSay { get; set; }
         public bool Aktivdir { get; set; } = true;
+        
+        // Yeni əlavə edilən sahələr
+        public int? KateqoriyaId { get; set; }
+        public Kateqoriya? Kateqoriya { get; set; }
+        
+        public int? BrendId { get; set; }
+        public Brend? Brend { get; set; }
+        
+        public int? TedarukcuId { get; set; }
+        public Tedarukcu? Tedarukcu { get; set; }
+        
+        public int MinimumStok { get; set; } = 0;
+        
+        public string? SekilYolu { get; set; }
     }
 }

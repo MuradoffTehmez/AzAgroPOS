@@ -1,4 +1,4 @@
-﻿// Fayl: AzAgroPOS.Verilenler/Realizasialar/UnitOfWork.cs
+// Fayl: AzAgroPOS.Verilenler/Realizasialar/UnitOfWork.cs
 namespace AzAgroPOS.Verilenler.Realizasialar;
 
 using System.Threading.Tasks;
@@ -59,7 +59,7 @@ public class UnitOfWork : IUnitOfWork
     public INisyeHereketiRepozitori NisyeHereketleri { get; private set; }
     /// <summary>
     /// Təmir Sifarişləri Repozitorisi - Texniki xidmət və təmir sifarişlərini idarə edir.
-    /// Diqət: Bu repozitoriya təmir sifarişlərinin yaradılması, axtarılması və silinməsi əməliyyatlarını idarə edir.
+    /// Diqət: Bu repozitoriya təmir sifarişlərinin yaradılması, axtarışı və silinməsi əməliyyatlarını idarə edir.
     /// Qeyd: Təmir sifarişləri, təmir detalları və texniki xidmət tarixçəsini idarə edir.
     /// </summary>
     public ITemirRepozitori TemirSifarisleri { get; private set; }
@@ -121,17 +121,31 @@ public class UnitOfWork : IUnitOfWork
 
     /// <summary>
     /// Alış Sənədi Sətiri Repozitorisi - Alış sənədi sətirləri əməliyyatlarını idarə edir.
-    /// Diqqət: Bu repozitoriya alış sənədi sətirlərinin yaradılması, axtarış, yeniləmə və silmə əməliyyatlarını idarə edir.
+    /// Diqqət: Bu repozitoriya alış sənədi sətirlərinin yaradılması, axtarış, yeniləmə və silinmə əməliyyatlarını idarə edir.
     /// Qeyd: Alış sənədi sətiri yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
     /// </summary>
     public IAlisSenedSetiriRepozitori AlisSenedSetirleri { get; private set; }
 
     /// <summary>
     /// Tədarükçü Ödənişi Repozitorisi - Tədarükçü ödəniş əməliyyatlarını idarə edir.
-    /// Diqqət: Bu repozitoriya tədarükçü ödənişlərinin yaradılması, axtarış, yeniləmə və silmə əməliyyatlarını idarə edir.
+    /// Diqqət: Bu repozitoriya tədarükçü ödənişlərinin yaradılması, axtarış, yeniləmə və silinmə əməliyyatlarını idarə edir.
     /// Qeyd: Tədarükçü ödənişi yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
     /// </summary>
     public ITedarukcuOdemeRepozitori TedarukcuOdemeleri { get; private set; }
+    
+    /// <summary>
+    /// Kateqoriya Repozitorisi - Kateqoriya əməliyyatlarını idarə edir.
+    /// Diqqət: Bu repozitoriya məhsul kateqoriyalarını idarə edir.
+    /// Qeyd: Kateqoriya yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
+    /// </summary>
+    public IKateqoriyaRepozitori Kateqoriyalar { get; private set; }
+    
+    /// <summary>
+    /// Brend Repozitorisi - Brend əməliyyatlarını idarə edir.
+    /// Diqqət: Bu repozitoriya məhsul brendlərini idarə edir.
+    /// Qeyd: Brend yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
+    /// </summary>
+    public IBrendRepozitori Brendler { get; private set; }
 
     /// <summary>
     /// unitOfWork konstruktoru, verilənlər bazası kontekstini qəbul edir və repozitoriyaların instansiyalarını yaradır.
@@ -155,11 +169,14 @@ public class UnitOfWork : IUnitOfWork
         Isciler = new IsciRepozitori(_kontekst);
         IsciPerformanslari = new IsciPerformansRepozitori(_kontekst);
         IsciIznleri = new IsciIzniRepozitori(_kontekst);
+        Tedarukculer = new TedarukcuRepozitori(_kontekst);
         AlisSifarisleri = new AlisSifarisRepozitori(_kontekst);
         AlisSifarisSetirleri = new AlisSifarisSetiriRepozitori(_kontekst);
         AlisSenetleri = new AlisSenedRepozitori(_kontekst);
         AlisSenedSetirleri = new AlisSenedSetiriRepozitori(_kontekst);
         TedarukcuOdemeleri = new TedarukcuOdemeRepozitori(_kontekst);
+        Kateqoriyalar = new KateqoriyaRepozitori(_kontekst); // Əlavə edildi
+        Brendler = new BrendRepozitori(_kontekst); // Əlavə edildi
     }
     /// <summary>
     /// EMELIYYATI TƏSDİQLƏ metod, edilmiş bütün dəyişiklikləri vahid bir tranzaksiya kimi verilənlər bazasına tətbiq edir.

@@ -1,4 +1,4 @@
-﻿namespace AzAgroPOS.Teqdimat
+namespace AzAgroPOS.Teqdimat
 {
     partial class MehsulIdareetmeFormu
     {
@@ -17,16 +17,20 @@
 
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle13 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle14 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle15 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle16 = new DataGridViewCellStyle();
             splitContainer1 = new SplitContainer();
             dgvMehsullar = new DataGridView();
             txtAxtar = new MaterialSkin.Controls.MaterialTextBox2();
             materialTabControl1 = new MaterialSkin.Controls.MaterialTabControl();
             tabPage2 = new TabPage();
             materialCard1 = new MaterialSkin.Controls.MaterialCard();
+            cmbTedarukcu = new MaterialSkin.Controls.MaterialComboBox();
+            cmbBrend = new MaterialSkin.Controls.MaterialComboBox();
+            cmbKateqoriya = new MaterialSkin.Controls.MaterialComboBox();
+            txtMinimumStok = new MaterialSkin.Controls.MaterialTextBox2();
             btnKopyala = new MaterialSkin.Controls.MaterialButton();
             txtTekEdedSatisQiymeti = new MaterialSkin.Controls.MaterialTextBox2();
             txtTopdanSatisQiymeti = new MaterialSkin.Controls.MaterialTextBox2();
@@ -81,7 +85,7 @@
             splitContainer1.Panel2.Controls.Add(materialTabControl1);
             splitContainer1.Panel2.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             splitContainer1.Panel2.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            splitContainer1.Size = new Size(1281, 671);
+            splitContainer1.Size = new Size(1281, 794);
             splitContainer1.SplitterDistance = 750;
             splitContainer1.TabIndex = 0;
             // 
@@ -91,30 +95,28 @@
             dgvMehsullar.AllowUserToDeleteRows = false;
             dgvMehsullar.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvMehsullar.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = SystemColors.Control;
-            dataGridViewCellStyle1.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            dgvMehsullar.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle13.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle13.BackColor = SystemColors.Control;
+            dataGridViewCellStyle13.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            dataGridViewCellStyle13.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle13.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle13.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle13.WrapMode = DataGridViewTriState.True;
+            dgvMehsullar.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle13;
             dgvMehsullar.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Window;
-            dataGridViewCellStyle2.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            dataGridViewCellStyle2.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
-            dgvMehsullar.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle14.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle14.BackColor = SystemColors.Window;
+            dataGridViewCellStyle14.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            dataGridViewCellStyle14.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            dataGridViewCellStyle14.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle14.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle14.WrapMode = DataGridViewTriState.False;
+            dgvMehsullar.DefaultCellStyle = dataGridViewCellStyle14;
             dgvMehsullar.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            dgvMehsullar.Location = new Point(3, 57);
-            dgvMehsullar.MultiSelect = false;
+            dgvMehsullar.Location = new Point(15, 67);
             dgvMehsullar.Name = "dgvMehsullar";
             dgvMehsullar.ReadOnly = true;
-            dgvMehsullar.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvMehsullar.Size = new Size(744, 611);
+            dgvMehsullar.Size = new Size(720, 713);
             dgvMehsullar.TabIndex = 1;
             dgvMehsullar.SelectionChanged += dgvMehsullar_SelectionChanged;
             // 
@@ -128,9 +130,9 @@
             txtAxtar.Depth = 0;
             txtAxtar.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             txtAxtar.HideSelection = true;
-            txtAxtar.Hint = "Məhsul Siyahısında Axtar...";
+            txtAxtar.Hint = "Məhsul axtar...";
             txtAxtar.LeadingIcon = null;
-            txtAxtar.Location = new Point(3, 3);
+            txtAxtar.Location = new Point(15, 15);
             txtAxtar.MaxLength = 32767;
             txtAxtar.MouseState = MaterialSkin.MouseState.OUT;
             txtAxtar.Name = "txtAxtar";
@@ -142,7 +144,7 @@
             txtAxtar.SelectionLength = 0;
             txtAxtar.SelectionStart = 0;
             txtAxtar.ShortcutsEnabled = true;
-            txtAxtar.Size = new Size(744, 48);
+            txtAxtar.Size = new Size(720, 48);
             txtAxtar.TabIndex = 0;
             txtAxtar.TabStop = false;
             txtAxtar.TextAlign = HorizontalAlignment.Left;
@@ -162,7 +164,7 @@
             materialTabControl1.Multiline = true;
             materialTabControl1.Name = "materialTabControl1";
             materialTabControl1.SelectedIndex = 0;
-            materialTabControl1.Size = new Size(527, 671);
+            materialTabControl1.Size = new Size(527, 794);
             materialTabControl1.TabIndex = 0;
             // 
             // tabPage2
@@ -172,13 +174,17 @@
             tabPage2.Location = new Point(4, 26);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(519, 641);
+            tabPage2.Size = new Size(519, 764);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Əsas Məlumatlar";
             // 
             // materialCard1
             // 
             materialCard1.BackColor = Color.FromArgb(255, 255, 255);
+            materialCard1.Controls.Add(cmbTedarukcu);
+            materialCard1.Controls.Add(cmbBrend);
+            materialCard1.Controls.Add(cmbKateqoriya);
+            materialCard1.Controls.Add(txtMinimumStok);
             materialCard1.Controls.Add(btnKopyala);
             materialCard1.Controls.Add(txtTekEdedSatisQiymeti);
             materialCard1.Controls.Add(txtTopdanSatisQiymeti);
@@ -204,8 +210,108 @@
             materialCard1.MouseState = MaterialSkin.MouseState.HOVER;
             materialCard1.Name = "materialCard1";
             materialCard1.Padding = new Padding(14);
-            materialCard1.Size = new Size(513, 635);
+            materialCard1.Size = new Size(513, 758);
             materialCard1.TabIndex = 2;
+            // 
+            // cmbTedarukcu
+            // 
+            cmbTedarukcu.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            cmbTedarukcu.AutoResize = false;
+            cmbTedarukcu.BackColor = Color.FromArgb(242, 242, 242);
+            cmbTedarukcu.Depth = 0;
+            cmbTedarukcu.DrawMode = DrawMode.OwnerDrawVariable;
+            cmbTedarukcu.DropDownHeight = 174;
+            cmbTedarukcu.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbTedarukcu.DropDownWidth = 121;
+            cmbTedarukcu.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
+            cmbTedarukcu.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            cmbTedarukcu.Hint = "Tədarükçü";
+            cmbTedarukcu.IntegralHeight = false;
+            cmbTedarukcu.ItemHeight = 43;
+            cmbTedarukcu.Location = new Point(18, 538);
+            cmbTedarukcu.MaxDropDownItems = 4;
+            cmbTedarukcu.MouseState = MaterialSkin.MouseState.OUT;
+            cmbTedarukcu.Name = "cmbTedarukcu";
+            cmbTedarukcu.Size = new Size(478, 49);
+            cmbTedarukcu.StartIndex = 0;
+            cmbTedarukcu.TabIndex = 24;
+            // 
+            // cmbBrend
+            // 
+            cmbBrend.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            cmbBrend.AutoResize = false;
+            cmbBrend.BackColor = Color.FromArgb(242, 242, 242);
+            cmbBrend.Depth = 0;
+            cmbBrend.DrawMode = DrawMode.OwnerDrawVariable;
+            cmbBrend.DropDownHeight = 174;
+            cmbBrend.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbBrend.DropDownWidth = 121;
+            cmbBrend.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
+            cmbBrend.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            cmbBrend.Hint = "Brend";
+            cmbBrend.IntegralHeight = false;
+            cmbBrend.ItemHeight = 43;
+            cmbBrend.Location = new Point(18, 486);
+            cmbBrend.MaxDropDownItems = 4;
+            cmbBrend.MouseState = MaterialSkin.MouseState.OUT;
+            cmbBrend.Name = "cmbBrend";
+            cmbBrend.Size = new Size(478, 49);
+            cmbBrend.StartIndex = 0;
+            cmbBrend.TabIndex = 23;
+            // 
+            // cmbKateqoriya
+            // 
+            cmbKateqoriya.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            cmbKateqoriya.AutoResize = false;
+            cmbKateqoriya.BackColor = Color.FromArgb(242, 242, 242);
+            cmbKateqoriya.Depth = 0;
+            cmbKateqoriya.DrawMode = DrawMode.OwnerDrawVariable;
+            cmbKateqoriya.DropDownHeight = 174;
+            cmbKateqoriya.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbKateqoriya.DropDownWidth = 121;
+            cmbKateqoriya.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
+            cmbKateqoriya.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            cmbKateqoriya.Hint = "Kateqoriya";
+            cmbKateqoriya.IntegralHeight = false;
+            cmbKateqoriya.ItemHeight = 43;
+            cmbKateqoriya.Location = new Point(18, 434);
+            cmbKateqoriya.MaxDropDownItems = 4;
+            cmbKateqoriya.MouseState = MaterialSkin.MouseState.OUT;
+            cmbKateqoriya.Name = "cmbKateqoriya";
+            cmbKateqoriya.Size = new Size(478, 49);
+            cmbKateqoriya.StartIndex = 0;
+            cmbKateqoriya.TabIndex = 22;
+            // 
+            // txtMinimumStok
+            // 
+            txtMinimumStok.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtMinimumStok.AnimateReadOnly = false;
+            txtMinimumStok.BackColor = Color.FromArgb(255, 255, 255);
+            txtMinimumStok.BackgroundImageLayout = ImageLayout.None;
+            txtMinimumStok.CharacterCasing = CharacterCasing.Normal;
+            txtMinimumStok.Depth = 0;
+            txtMinimumStok.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            txtMinimumStok.HideSelection = true;
+            txtMinimumStok.Hint = "Minimum Stok";
+            txtMinimumStok.LeadingIcon = null;
+            txtMinimumStok.Location = new Point(250, 380);
+            txtMinimumStok.MaxLength = 32767;
+            txtMinimumStok.MouseState = MaterialSkin.MouseState.OUT;
+            txtMinimumStok.Name = "txtMinimumStok";
+            txtMinimumStok.PasswordChar = '\0';
+            txtMinimumStok.PrefixSuffixText = null;
+            txtMinimumStok.ReadOnly = false;
+            txtMinimumStok.RightToLeft = RightToLeft.No;
+            txtMinimumStok.SelectedText = "";
+            txtMinimumStok.SelectionLength = 0;
+            txtMinimumStok.SelectionStart = 0;
+            txtMinimumStok.ShortcutsEnabled = true;
+            txtMinimumStok.Size = new Size(246, 48);
+            txtMinimumStok.TabIndex = 21;
+            txtMinimumStok.TabStop = false;
+            txtMinimumStok.TextAlign = HorizontalAlignment.Left;
+            txtMinimumStok.TrailingIcon = null;
+            txtMinimumStok.UseSystemPasswordChar = false;
             // 
             // btnKopyala
             // 
@@ -218,7 +324,7 @@
             btnKopyala.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnKopyala.HighEmphasis = false;
             btnKopyala.Icon = null;
-            btnKopyala.Location = new Point(137, 577);
+            btnKopyala.Location = new Point(137, 700);
             btnKopyala.Margin = new Padding(4, 6, 4, 6);
             btnKopyala.MouseState = MaterialSkin.MouseState.HOVER;
             btnKopyala.Name = "btnKopyala";
@@ -308,11 +414,11 @@
             cmbOlcuVahidi.Hint = "Ölçü Vahidi";
             cmbOlcuVahidi.IntegralHeight = false;
             cmbOlcuVahidi.ItemHeight = 43;
-            cmbOlcuVahidi.Location = new Point(18, 432);
+            cmbOlcuVahidi.Location = new Point(18, 380);
             cmbOlcuVahidi.MaxDropDownItems = 4;
             cmbOlcuVahidi.MouseState = MaterialSkin.MouseState.OUT;
             cmbOlcuVahidi.Name = "cmbOlcuVahidi";
-            cmbOlcuVahidi.Size = new Size(478, 49);
+            cmbOlcuVahidi.Size = new Size(226, 49);
             cmbOlcuVahidi.StartIndex = 0;
             cmbOlcuVahidi.TabIndex = 16;
             // 
@@ -327,7 +433,7 @@
             btnYenile.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnYenile.HighEmphasis = true;
             btnYenile.Icon = null;
-            btnYenile.Location = new Point(258, 525);
+            btnYenile.Location = new Point(258, 700);
             btnYenile.Margin = new Padding(4, 6, 4, 6);
             btnYenile.MouseState = MaterialSkin.MouseState.HOVER;
             btnYenile.Name = "btnYenile";
@@ -351,14 +457,14 @@
             btnElaveEt.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnElaveEt.HighEmphasis = true;
             btnElaveEt.Icon = null;
-            btnElaveEt.Location = new Point(18, 525);
+            btnElaveEt.Location = new Point(18, 700);
             btnElaveEt.Margin = new Padding(4, 6, 4, 6);
             btnElaveEt.MouseState = MaterialSkin.MouseState.HOVER;
             btnElaveEt.Name = "btnElaveEt";
             btnElaveEt.NoAccentTextColor = Color.Empty;
-            btnElaveEt.Size = new Size(233, 40);
+            btnElaveEt.Size = new Size(111, 40);
             btnElaveEt.TabIndex = 14;
-            btnElaveEt.Text = "Yeni Məhsulu Yadda Saxla";
+            btnElaveEt.Text = "Əlavə Et";
             btnElaveEt.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnElaveEt.UseAccentColor = false;
             btnElaveEt.UseVisualStyleBackColor = false;
@@ -373,17 +479,17 @@
             btnTemizle.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             btnTemizle.Depth = 0;
             btnTemizle.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            btnTemizle.HighEmphasis = false;
+            btnTemizle.HighEmphasis = true;
             btnTemizle.Icon = null;
-            btnTemizle.Location = new Point(258, 577);
+            btnTemizle.Location = new Point(258, 648);
             btnTemizle.Margin = new Padding(4, 6, 4, 6);
             btnTemizle.MouseState = MaterialSkin.MouseState.HOVER;
             btnTemizle.Name = "btnTemizle";
             btnTemizle.NoAccentTextColor = Color.Empty;
             btnTemizle.Size = new Size(236, 40);
             btnTemizle.TabIndex = 13;
-            btnTemizle.Text = "Formu Təmizlə";
-            btnTemizle.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
+            btnTemizle.Text = "Təmizlə";
+            btnTemizle.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnTemizle.UseAccentColor = false;
             btnTemizle.UseVisualStyleBackColor = false;
             btnTemizle.Click += btnTemizle_Click;
@@ -399,16 +505,16 @@
             btnSil.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnSil.HighEmphasis = true;
             btnSil.Icon = null;
-            btnSil.Location = new Point(18, 577);
+            btnSil.Location = new Point(18, 648);
             btnSil.Margin = new Padding(4, 6, 4, 6);
             btnSil.MouseState = MaterialSkin.MouseState.HOVER;
             btnSil.Name = "btnSil";
             btnSil.NoAccentTextColor = Color.Empty;
-            btnSil.Size = new Size(111, 40);
-            btnSil.TabIndex = 9;
-            btnSil.Text = "Seçilmişi Sil";
+            btnSil.Size = new Size(232, 40);
+            btnSil.TabIndex = 12;
+            btnSil.Text = "Sil";
             btnSil.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            btnSil.UseAccentColor = true;
+            btnSil.UseAccentColor = false;
             btnSil.UseVisualStyleBackColor = false;
             btnSil.Click += btnSil_Click;
             // 
@@ -421,17 +527,17 @@
             btnBarkodYarat.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             btnBarkodYarat.Depth = 0;
             btnBarkodYarat.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            btnBarkodYarat.HighEmphasis = false;
+            btnBarkodYarat.HighEmphasis = true;
             btnBarkodYarat.Icon = null;
-            btnBarkodYarat.Location = new Point(380, 162);
+            btnBarkodYarat.Location = new Point(421, 112);
             btnBarkodYarat.Margin = new Padding(4, 6, 4, 6);
             btnBarkodYarat.MouseState = MaterialSkin.MouseState.HOVER;
             btnBarkodYarat.Name = "btnBarkodYarat";
             btnBarkodYarat.NoAccentTextColor = Color.Empty;
-            btnBarkodYarat.Size = new Size(102, 36);
-            btnBarkodYarat.TabIndex = 12;
+            btnBarkodYarat.Size = new Size(75, 40);
+            btnBarkodYarat.TabIndex = 11;
             btnBarkodYarat.Text = "Yarat";
-            btnBarkodYarat.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
+            btnBarkodYarat.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnBarkodYarat.UseAccentColor = false;
             btnBarkodYarat.UseVisualStyleBackColor = false;
             btnBarkodYarat.Click += btnBarkodYarat_Click;
@@ -445,17 +551,17 @@
             btnStokKoduYarat.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             btnStokKoduYarat.Depth = 0;
             btnStokKoduYarat.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            btnStokKoduYarat.HighEmphasis = false;
+            btnStokKoduYarat.HighEmphasis = true;
             btnStokKoduYarat.Icon = null;
-            btnStokKoduYarat.Location = new Point(380, 90);
+            btnStokKoduYarat.Location = new Point(421, 58);
             btnStokKoduYarat.Margin = new Padding(4, 6, 4, 6);
             btnStokKoduYarat.MouseState = MaterialSkin.MouseState.HOVER;
             btnStokKoduYarat.Name = "btnStokKoduYarat";
             btnStokKoduYarat.NoAccentTextColor = Color.Empty;
-            btnStokKoduYarat.Size = new Size(102, 36);
-            btnStokKoduYarat.TabIndex = 11;
+            btnStokKoduYarat.Size = new Size(75, 40);
+            btnStokKoduYarat.TabIndex = 10;
             btnStokKoduYarat.Text = "Yarat";
-            btnStokKoduYarat.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
+            btnStokKoduYarat.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnStokKoduYarat.UseAccentColor = false;
             btnStokKoduYarat.UseVisualStyleBackColor = false;
             btnStokKoduYarat.Click += btnStokKoduYarat_Click;
@@ -472,7 +578,7 @@
             txtMevcudSay.HideSelection = true;
             txtMevcudSay.Hint = "Mövcud Say";
             txtMevcudSay.LeadingIcon = null;
-            txtMevcudSay.Location = new Point(252, 378);
+            txtMevcudSay.Location = new Point(18, 162);
             txtMevcudSay.MaxLength = 32767;
             txtMevcudSay.MouseState = MaterialSkin.MouseState.OUT;
             txtMevcudSay.Name = "txtMevcudSay";
@@ -484,8 +590,8 @@
             txtMevcudSay.SelectionLength = 0;
             txtMevcudSay.SelectionStart = 0;
             txtMevcudSay.ShortcutsEnabled = true;
-            txtMevcudSay.Size = new Size(230, 48);
-            txtMevcudSay.TabIndex = 6;
+            txtMevcudSay.Size = new Size(478, 48);
+            txtMevcudSay.TabIndex = 9;
             txtMevcudSay.TabStop = false;
             txtMevcudSay.TextAlign = HorizontalAlignment.Left;
             txtMevcudSay.TrailingIcon = null;
@@ -493,6 +599,7 @@
             // 
             // txtAlisQiymeti
             // 
+            txtAlisQiymeti.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtAlisQiymeti.AnimateReadOnly = false;
             txtAlisQiymeti.BackColor = Color.FromArgb(255, 255, 255);
             txtAlisQiymeti.BackgroundImageLayout = ImageLayout.None;
@@ -502,7 +609,7 @@
             txtAlisQiymeti.HideSelection = true;
             txtAlisQiymeti.Hint = "Alış Qiyməti";
             txtAlisQiymeti.LeadingIcon = null;
-            txtAlisQiymeti.Location = new Point(18, 378);
+            txtAlisQiymeti.Location = new Point(18, 326);
             txtAlisQiymeti.MaxLength = 32767;
             txtAlisQiymeti.MouseState = MaterialSkin.MouseState.OUT;
             txtAlisQiymeti.Name = "txtAlisQiymeti";
@@ -515,7 +622,7 @@
             txtAlisQiymeti.SelectionStart = 0;
             txtAlisQiymeti.ShortcutsEnabled = true;
             txtAlisQiymeti.Size = new Size(226, 48);
-            txtAlisQiymeti.TabIndex = 5;
+            txtAlisQiymeti.TabIndex = 8;
             txtAlisQiymeti.TabStop = false;
             txtAlisQiymeti.TextAlign = HorizontalAlignment.Left;
             txtAlisQiymeti.TrailingIcon = null;
@@ -545,8 +652,8 @@
             txtPerakendeSatisQiymeti.SelectionLength = 0;
             txtPerakendeSatisQiymeti.SelectionStart = 0;
             txtPerakendeSatisQiymeti.ShortcutsEnabled = true;
-            txtPerakendeSatisQiymeti.Size = new Size(464, 48);
-            txtPerakendeSatisQiymeti.TabIndex = 4;
+            txtPerakendeSatisQiymeti.Size = new Size(478, 48);
+            txtPerakendeSatisQiymeti.TabIndex = 7;
             txtPerakendeSatisQiymeti.TabStop = false;
             txtPerakendeSatisQiymeti.TextAlign = HorizontalAlignment.Left;
             txtPerakendeSatisQiymeti.TrailingIcon = null;
@@ -564,7 +671,7 @@
             txtBarkod.HideSelection = true;
             txtBarkod.Hint = "Barkod";
             txtBarkod.LeadingIcon = null;
-            txtBarkod.Location = new Point(18, 156);
+            txtBarkod.Location = new Point(18, 108);
             txtBarkod.MaxLength = 32767;
             txtBarkod.MouseState = MaterialSkin.MouseState.OUT;
             txtBarkod.Name = "txtBarkod";
@@ -576,8 +683,8 @@
             txtBarkod.SelectionLength = 0;
             txtBarkod.SelectionStart = 0;
             txtBarkod.ShortcutsEnabled = true;
-            txtBarkod.Size = new Size(345, 48);
-            txtBarkod.TabIndex = 3;
+            txtBarkod.Size = new Size(396, 48);
+            txtBarkod.TabIndex = 6;
             txtBarkod.TabStop = false;
             txtBarkod.TextAlign = HorizontalAlignment.Left;
             txtBarkod.TrailingIcon = null;
@@ -593,9 +700,9 @@
             txtStokKodu.Depth = 0;
             txtStokKodu.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             txtStokKodu.HideSelection = true;
-            txtStokKodu.Hint = "Stok Kodu (SKU)";
+            txtStokKodu.Hint = "Stok Kodu";
             txtStokKodu.LeadingIcon = null;
-            txtStokKodu.Location = new Point(18, 88);
+            txtStokKodu.Location = new Point(18, 54);
             txtStokKodu.MaxLength = 32767;
             txtStokKodu.MouseState = MaterialSkin.MouseState.OUT;
             txtStokKodu.Name = "txtStokKodu";
@@ -607,8 +714,8 @@
             txtStokKodu.SelectionLength = 0;
             txtStokKodu.SelectionStart = 0;
             txtStokKodu.ShortcutsEnabled = true;
-            txtStokKodu.Size = new Size(345, 48);
-            txtStokKodu.TabIndex = 2;
+            txtStokKodu.Size = new Size(396, 48);
+            txtStokKodu.TabIndex = 5;
             txtStokKodu.TabStop = false;
             txtStokKodu.TextAlign = HorizontalAlignment.Left;
             txtStokKodu.TrailingIcon = null;
@@ -624,9 +731,9 @@
             txtAd.Depth = 0;
             txtAd.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             txtAd.HideSelection = true;
-            txtAd.Hint = "Məhsulun Adı";
+            txtAd.Hint = "Ad";
             txtAd.LeadingIcon = null;
-            txtAd.Location = new Point(18, 28);
+            txtAd.Location = new Point(18, 0);
             txtAd.MaxLength = 32767;
             txtAd.MouseState = MaterialSkin.MouseState.OUT;
             txtAd.Name = "txtAd";
@@ -638,8 +745,8 @@
             txtAd.SelectionLength = 0;
             txtAd.SelectionStart = 0;
             txtAd.ShortcutsEnabled = true;
-            txtAd.Size = new Size(464, 48);
-            txtAd.TabIndex = 1;
+            txtAd.Size = new Size(478, 48);
+            txtAd.TabIndex = 4;
             txtAd.TabStop = false;
             txtAd.TextAlign = HorizontalAlignment.Left;
             txtAd.TrailingIcon = null;
@@ -672,23 +779,23 @@
             dgvAlisTarixcesi.AllowUserToAddRows = false;
             dgvAlisTarixcesi.AllowUserToDeleteRows = false;
             dgvAlisTarixcesi.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = SystemColors.Control;
-            dataGridViewCellStyle3.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
-            dgvAlisTarixcesi.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle15.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle15.BackColor = SystemColors.Control;
+            dataGridViewCellStyle15.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            dataGridViewCellStyle15.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle15.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle15.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle15.WrapMode = DataGridViewTriState.True;
+            dgvAlisTarixcesi.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle15;
             dgvAlisTarixcesi.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = SystemColors.Window;
-            dataGridViewCellStyle4.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            dataGridViewCellStyle4.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.False;
-            dgvAlisTarixcesi.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle16.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle16.BackColor = SystemColors.Window;
+            dataGridViewCellStyle16.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            dataGridViewCellStyle16.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            dataGridViewCellStyle16.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle16.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle16.WrapMode = DataGridViewTriState.False;
+            dgvAlisTarixcesi.DefaultCellStyle = dataGridViewCellStyle16;
             dgvAlisTarixcesi.Dock = DockStyle.Fill;
             dgvAlisTarixcesi.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             dgvAlisTarixcesi.Location = new Point(3, 3);
@@ -701,7 +808,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1287, 738);
+            ClientSize = new Size(1287, 861);
             Controls.Add(splitContainer1);
             Name = "MehsulIdareetmeFormu";
             StartPosition = FormStartPosition.CenterScreen;
@@ -729,6 +836,7 @@
         private MaterialSkin.Controls.MaterialTabControl materialTabControl1;
         private System.Windows.Forms.TabPage tabPage2;
         private MaterialSkin.Controls.MaterialCard materialCard1;
+        private MaterialSkin.Controls.MaterialButton btnKopyala;
         private MaterialSkin.Controls.MaterialTextBox2 txtTekEdedSatisQiymeti;
         private MaterialSkin.Controls.MaterialTextBox2 txtTopdanSatisQiymeti;
         private MaterialSkin.Controls.MaterialComboBox cmbOlcuVahidi;
@@ -747,6 +855,9 @@
         private System.Windows.Forms.TextBox txtId;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.DataGridView dgvAlisTarixcesi;
-        private MaterialSkin.Controls.MaterialButton btnKopyala;
+        private MaterialSkin.Controls.MaterialTextBox2 txtMinimumStok;
+        private MaterialSkin.Controls.MaterialComboBox cmbKateqoriya;
+        private MaterialSkin.Controls.MaterialComboBox cmbBrend;
+        private MaterialSkin.Controls.MaterialComboBox cmbTedarukcu;
     }
 }

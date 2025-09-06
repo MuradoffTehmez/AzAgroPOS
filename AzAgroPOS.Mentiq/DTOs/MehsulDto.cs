@@ -1,4 +1,4 @@
-﻿// AzAgroPOS.Mentiq/DTOs/MehsulDto.cs
+// AzAgroPOS.Mentiq/DTOs/MehsulDto.cs
 using AzAgroPOS.Varliglar;
 
 namespace AzAgroPOS.Mentiq.DTOs
@@ -18,8 +18,22 @@ namespace AzAgroPOS.Mentiq.DTOs
         public bool Aktivdir { get; set; }
         public OlcuVahidi OlcuVahidi { get; set; }
         public decimal AnbarMiqdari { get; set; }
-        // OlcuVahidiId silindi
+        
         public string OlcuVahidiAdi { get; set; } = string.Empty;
         public string OlcuVahidiStr => OlcuVahidi.ToString();
+        
+        // Yeni əlavə edilən sahələr
+        public int? KateqoriyaId { get; set; }
+        public string? KateqoriyaAdi { get; set; }
+        
+        public int? BrendId { get; set; }
+        public string? BrendAdi { get; set; }
+        
+        public int? TedarukcuId { get; set; }
+        public string? TedarukcuAdi { get; set; }
+        
+        public int MinimumStok { get; set; } = 0;
+        
+        public string? SekilYolu { get; set; }
     }
 }

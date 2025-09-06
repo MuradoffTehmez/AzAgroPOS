@@ -1,4 +1,5 @@
-﻿namespace AzAgroPOS.Verilenler.Kontekst;
+// Fayl: AzAgroPOS.Verilenler/Kontekst/AzAgroPOSDbContext.cs
+namespace AzAgroPOS.Verilenler.Kontekst;
 
 using AzAgroPOS.Varliglar;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +29,8 @@ public class AzAgroPOSDbContext : DbContext
     public DbSet<AlisSened> AlisSenetleri { get; set; }
     public DbSet<AlisSenedSetiri> AlisSenedSetirleri { get; set; }
     public DbSet<TedarukcuOdeme> TedarukcuOdemeleri { get; set; }
+    public DbSet<Kateqoriya> Kateqoriyalar { get; set; } // Əlavə edildi
+    public DbSet<Brend> Brendler { get; set; } // Əlavə edildi
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -174,6 +177,27 @@ public class AzAgroPOSDbContext : DbContext
             .HasForeignKey(t => t.AlisSenedId)
             .OnDelete(DeleteBehavior.SetNull);
 
+        // Mehsul ile Kateqoriya arasinda elaqe
+        modelBuilder.Entity<Mehsul>()
+            .HasOne(m => m.Kateqoriya)
+            .WithMany(k => k.Mehsullar)
+            .HasForeignKey(m => m.KateqoriyaId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        // Mehsul ile Brend arasinda elaqe
+        modelBuilder.Entity<Mehsul>()
+            .HasOne(m => m.Brend)
+            .WithMany(b => b.Mehsullar)
+            .HasForeignKey(m => m.BrendId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        // Mehsul ile Tedarukcu arasinda elaqe
+        modelBuilder.Entity<Mehsul>()
+            .HasOne(m => m.Tedarukcu)
+            .WithMany()
+            .HasForeignKey(m => m.TedarukcuId)
+            .OnDelete(DeleteBehavior.SetNull);
+
         SeedData(modelBuilder);
     }
 
@@ -261,6 +285,19 @@ public class AzAgroPOSDbContext : DbContext
                 BankHesabi = "IBAN: AZ87NABZ0000000087654321",
                 Aktivdir = true
             }
+        );
+
+        // Kateqoriya və Brend nümunə məlumatları
+        modelBuilder.Entity<Kateqoriya>().HasData(
+            new Kateqoriya { Id = 1, Ad = "Qida Məhsulları", Tesvir = "Yemək və içki məhsulları", Aktivdir = true },
+            new Kateqoriya { Id = 2, Ad = "Təmizlik Vasitələri", Tesvir = "Ev təmizliyi üçün vasitələr", Aktivdir = true },
+            new Kateqoriya { Id = 3, Ad = "Şəxsi Gigiyena", Tesvir = "Şəxsi gigiyena məhsulları", Aktivdir = true }
+        );
+
+        modelBuilder.Entity<Brend>().HasData(
+            new Brend { Id = 1, Ad = "Ənənəvi", Olke = "Azərbaycan", Vebsayt = "www.enanevi.az", Tesvir = "Yerli brend", Aktivdir = true },
+            new Brend { Id = 2, Ad = "Fresh", Olke = "Azərbaycan", Vebsayt = "www.fresh.az", Tesvir = "Təzə məhsullar", Aktivdir = true },
+            new Brend { Id = 3, Ad = "CleanHome", Olke = "Almaniya", Vebsayt = "www.cleanhome.de", Tesvir = "Təmizlik vasitələri", Aktivdir = true }
         );
     }
 }

@@ -1,3 +1,4 @@
+using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Verilenler.Interfeysler;
 using AzAgroPOS.Verilenler.Kontekst;
@@ -56,6 +57,8 @@ namespace AzAgroPOS.Teqdimat
             services.AddTransient<TemirManager>();
             services.AddTransient<IsciManager>();
             services.AddTransient<AlisManager>();
+            services.AddTransient<KateqoriyaMeneceri>(); // Əlavə edildi
+            services.AddTransient<BrendMeneceri>(); // Əlavə edildi
 
             // Formalar (Bütün formaları buraya əlavə edirik)
             services.AddTransient<LoginFormu>();
@@ -75,7 +78,7 @@ namespace AzAgroPOS.Teqdimat
             services.AddTransient<ZHesabatArxivFormu>();
             services.AddTransient<TedarukcuIdareetmeFormu>();
             services.AddTransient<IsciIdareetmeFormu>();
-            services.AddTransient<IsciIdareetmeFormu>();
+            services.AddTransient<MinimumStokMehsullariFormu>(); // Əlavə edildi
         }
     }
 }

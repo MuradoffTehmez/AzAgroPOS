@@ -1,4 +1,4 @@
-﻿// Fayl: AzAgroPOS.Teqdimat/Interfeysler/IMehsulIdareetmeView.cs
+// Fayl: AzAgroPOS.Teqdimat/Interfeysler/IMehsulIdareetmeView.cs
 namespace AzAgroPOS.Teqdimat.Interfeysler;
 
 using AzAgroPOS.Mentiq.DTOs;
@@ -17,11 +17,18 @@ public interface IMehsulIdareetmeView
     string TekEdedSatisQiymeti { get; set; }
     string AlisQiymeti { get; set; }
     string MovcudSay { get; set; }
+    string MinimumStok { get; set; }
     OlcuVahidi SecilmisOlcuVahidi { get; }
+    int? SecilmisKateqoriyaId { get; }
+    int? SecilmisBrendId { get; }
+    int? SecilmisTedarukcuId { get; }
     string AxtarisMetni { get; set; }
 
     void MehsullariGoster(IEnumerable<MehsulDto> mehsullar);
     void OlcuVahidleriniGoster(Array olcuVahidleri);
+    void KateqoriyalariGoster(IEnumerable<KateqoriyaDto> kateqoriyalar);
+    void BrendleriGoster(IEnumerable<BrendDto> brendler);
+    void TedarukculeriGoster(IEnumerable<TedarukcuDto> tedarukculer);
 
     event EventHandler FormYuklendi_Istek;
     event EventHandler MehsulElaveEt_Istek;
