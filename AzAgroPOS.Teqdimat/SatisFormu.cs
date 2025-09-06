@@ -1,7 +1,7 @@
 ﻿using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
-using AzAgroPOS.Teqdimat.Yardimcilar;
+using AzAgroPOS.Teqdimat.Yardimcilar; // Add this using directive
 using AzAgroPOS.Mentiq.Idareciler;
 using Microsoft.Extensions.DependencyInjection;
 using AzAgroPOS.Varliglar;
@@ -46,7 +46,7 @@ namespace AzAgroPOS.Teqdimat
         public event EventHandler SatisiGozletIstek;
         public event EventHandler GozleyenSatisiAcIstek;
         public event EventHandler<OdenisMetodu> SatisiTesdiqleIstek;
-        public event EventHandler<decimal> IndirimIstek;
+        public event EventHandler<EndirimParametrləriDto> IndirimIstek;
         public event EventHandler<int> SebetMiqdarArtirIstek;
         public event EventHandler<int> SebetMiqdarAzaltIstek;
         public event EventHandler YeniMusteriFormuAcIstek;
@@ -197,16 +197,12 @@ namespace AzAgroPOS.Teqdimat
         }
         private void btnIndirim_Click(object sender, EventArgs e)
         {
-            string deyer = "0";
-            if (InputBox.Show("Endirim", "Endirim faizini daxil edin:", ref deyer) == DialogResult.OK)
+            var secilmisElement = SecilmisSebetElementi;
+            using (var endirimFormu = new EndirimFormu(secilmisElement))
             {
-                if (decimal.TryParse(deyer, out decimal faiz) && faiz >= 0 && faiz <= 100)
+                if (endirimFormu.ShowDialog(this) == DialogResult.OK)
                 {
-                    IndirimIstek?.Invoke(this, faiz);
-                }
-                else
-                {
-                    MesajGoster("Zəhmət olmasa, 0 ilə 100 arasında bir rəqəm daxil edin.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    IndirimIstek?.Invoke(this, endirimFormu.EndirimParametrləri);
                 }
             }
         }

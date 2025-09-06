@@ -27,7 +27,7 @@ namespace AzAgroPOS.Teqdimat.Interfeysler
         event EventHandler SatisiGozletIstek;
         event EventHandler GozleyenSatisiAcIstek;
         event EventHandler<OdenisMetodu> SatisiTesdiqleIstek;
-        event EventHandler<decimal> IndirimIstek;
+        event EventHandler<EndirimParametrləriDto> IndirimIstek;
         event EventHandler<int> SebetMiqdarArtirIstek;
         event EventHandler<int> SebetMiqdarAzaltIstek;
         event EventHandler YeniMusteriFormuAcIstek;

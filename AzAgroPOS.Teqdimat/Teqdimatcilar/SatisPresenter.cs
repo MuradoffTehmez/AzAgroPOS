@@ -24,7 +24,9 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 
         private BindingList<SatisSebetiElementiDto> _aktivSebet;
         private readonly List<GozleyenSatis> _gozleyenSebetler;
-        private decimal _endirimMeblegi = 0;
+        // Store individual item discounts and calculate cart discount dynamically
+        // For simplicity, we'll keep a simple cart-level discount for now, but prepare for item-level.
+        private decimal _cartLevelEndirimMeblegi = 0;
 
         public SatisPresenter(ISatisView view, SatisManager satisManager, MehsulManager mehsulManager, MusteriManager musteriManager)
         {
@@ -50,7 +52,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             _view.SatisiGozletIstek += (s, e) => SatisiGozlet();
             _view.GozleyenSatisiAcIstek += (s, e) => _view.GozleyenSatislarMenyusunuGoster(_gozleyenSebetler);
             _view.SatisiTesdiqleIstek += async (s, odenisMetodu) => await SatisiTesdiqle(odenisMetodu);
-            _view.IndirimIstek += (s, faiz) => IndirimEt(faiz);
+            _view.IndirimIstek += (s, endirimParam) => IndirimEt(endirimParam);
             _view.SebetMiqdarArtirIstek += (s, mehsulId) => SebetMiqdarDeyisdir(mehsulId, 1);
             _view.SebetMiqdarAzaltIstek += (s, mehsulId) => SebetMiqdarDeyisdir(mehsulId, -1);
             _view.MusteriSiyahisiniYenileIstek += async (s, e) => await MusterileriYukle();
@@ -157,15 +159,63 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             }
         }
 
-        private void IndirimEt(decimal faiz)
+        private void IndirimEt(EndirimParametrləriDto endirimParam)
         {
-            decimal umumiMebleg = _aktivSebet.Sum(e => e.UmumiMebleg);
-            if (umumiMebleg > 0)
+            if (!_aktivSebet.Any())
             {
-                _endirimMeblegi = umumiMebleg * (faiz / 100);
-                GosterisleriYenile();
-                _view.MesajGoster($"{_endirimMeblegi:N2} AZN endirim tətbiq edildi.", "Endirim", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                _view.MesajGoster("Səbət boşdur. Endirim tətbiq etmək mümkün deyil.", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
+
+            decimal umumiMebleg = _aktivSebet.Sum(e => e.VahidinQiymeti * e.Miqdar); // Calculate total before any discount
+            decimal appliedDiscount = 0;
+
+            if (endirimParam.Scope == EndirimScope.Cart)
+            {
+                if (endirimParam.Type == EndirimType.Percentage)
+                {
+                    appliedDiscount = umumiMebleg * (endirimParam.Value / 100);
+                    _cartLevelEndirimMeblegi = appliedDiscount;
+                }
+                else if (endirimParam.Type == EndirimType.FixedAmount)
+                {
+                    appliedDiscount = Math.Min(endirimParam.Value, umumiMebleg); // Cannot discount more than total
+                    _cartLevelEndirimMeblegi = appliedDiscount;
+                }
+                // Reset item-level discounts when applying cart-level discount
+                foreach (var item in _aktivSebet)
+                {
+                    item.EndirimMeblegi = 0;
+                }
+            }
+            else if (endirimParam.Scope == EndirimScope.SelectedItem)
+            {
+                var secilmisSebetElementi = _view.SecilmisSebetElementi;
+                if (secilmisSebetElementi == null)
+                {
+                    _view.MesajGoster("Zəhmət olmasa, endirim tətbiq etmək üçün bir məhsul seçin.", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Reset cart-level discount when applying item-level discount
+                _cartLevelEndirimMeblegi = 0;
+
+                decimal itemTotalBeforeDiscount = secilmisSebetElementi.VahidinQiymeti * secilmisSebetElementi.Miqdar;
+
+                if (endirimParam.Type == EndirimType.Percentage)
+                {
+                    appliedDiscount = itemTotalBeforeDiscount * (endirimParam.Value / 100);
+                }
+                else if (endirimParam.Type == EndirimType.FixedAmount)
+                {
+                    appliedDiscount = Math.Min(endirimParam.Value, itemTotalBeforeDiscount); // Cannot discount more than item total
+                }
+
+                secilmisSebetElementi.EndirimMeblegi = appliedDiscount;
+            }
+
+            GosterisleriYenile();
+            _view.MesajGoster($"{appliedDiscount:N2} AZN endirim tətbiq edildi.", "Endirim", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void SatisiGozlet()
@@ -217,8 +267,10 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                 return;
             }
 
-            decimal umumiMebleg = _aktivSebet.Sum(e => e.UmumiMebleg);
-            decimal yekunMebleg = umumiMebleg - _endirimMeblegi;
+            decimal umumiMebleg = _aktivSebet.Sum(e => e.VahidinQiymeti * e.Miqdar); // Total before any discount
+            decimal totalItemDiscount = _aktivSebet.Sum(e => e.EndirimMeblegi); // Total discount from items
+            decimal totalDiscount = totalItemDiscount + _cartLevelEndirimMeblegi;
+            decimal yekunMebleg = umumiMebleg - totalDiscount;
 
             var satisDto = new SatisYaratDto
             {
@@ -227,7 +279,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                 NovbeId = AktivSessiya.AktivNovbeId.Value,
                 MusteriId = musteriId,
                 UmumiMebleg = umumiMebleg,
-                Endirim = _endirimMeblegi,
+                Endirim = _cartLevelEndirimMeblegi,
                 YekunMebleg = yekunMebleg
             };
 
@@ -246,15 +298,16 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 
         private void GosterisleriYenile()
         {
-            decimal umumiMebleg = _aktivSebet.Sum(e => e.UmumiMebleg);
-            decimal yekunMebleg = umumiMebleg - _endirimMeblegi;
-            _view.UmumiMebligiGoster(umumiMebleg, _endirimMeblegi, yekunMebleg);
+            decimal umumiMebleg = _aktivSebet.Sum(e => e.VahidinQiymeti * e.Miqdar); // Total before any discount
+            decimal totalItemDiscount = _aktivSebet.Sum(e => e.EndirimMeblegi); // Total discount from items
+            decimal yekunMebleg = umumiMebleg - totalItemDiscount - _cartLevelEndirimMeblegi;
+            _view.UmumiMebligiGoster(umumiMebleg, totalItemDiscount + _cartLevelEndirimMeblegi, yekunMebleg);
         }
 
         private void FormuTamSifirla()
         {
             _aktivSebet.Clear();
-            _endirimMeblegi = 0;
+            _cartLevelEndirimMeblegi = 0;
             _view.FormuTamSifirla();
             GosterisleriYenile();
         }
