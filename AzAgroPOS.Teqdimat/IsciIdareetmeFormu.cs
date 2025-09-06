@@ -204,6 +204,11 @@ public partial class IsciIdareetmeFormu : BazaForm, IIsciView
         IsciSil_Istek?.Invoke(this, EventArgs.Empty);
     }
 
+    private void btnYenile_Click(object sender, EventArgs e)
+    {
+        IsciYenile_Istek?.Invoke(this, EventArgs.Empty);
+    }
+
     private void btnTemizle_Click(object sender, EventArgs e)
     {
         FormuTemizle_Istek?.Invoke(this, EventArgs.Empty);

@@ -45,7 +45,7 @@ public interface IUnitOfWork : IAsyncDisposable
     INisyeHereketiRepozitori NisyeHereketleri { get; }
     /// <summary>
     /// Təmir Sifarişləri Repozitorisi - Texniki xidmət və təmir sifarişlərini idarə edir.
-    /// diqqət: Bu repozitoriya təmir sifarişlərinin yaradılması, axtarılması və silinməsi əməliyyatlarını idarə edir.
+    /// diqqət: Bu repozitoriya təmir sifarişlərinin yaradılması, axtarışı və silinməsi əməliyyatlarını idarə edir.
     /// qeyd: Təmir sifarişləri, təmir detalları və texniki xidmət tarixçəsini idarə edir.
     /// </summary>
     ITemirRepozitori TemirSifarisleri { get; }
@@ -58,22 +58,22 @@ public interface IUnitOfWork : IAsyncDisposable
 
     /// <summary>
     /// İşçi Repozitorisi - İşçi əməliyyatlarını idarə edir.
-    /// diqqət: Bu repozitoriya işçilərin məlumatlarını idarə edir.
+    /// diqqət: Bu repozitoriya işçilərin məlumatlarını, maaşlarını və işçi statusunu idarə edir.
     /// qeyd: İşçi yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
     /// </summary>
     IIsciRepozitori Isciler { get; }
 
     /// <summary>
     /// İşçi Performans Repozitorisi - İşçi performans əməliyyatlarını idarə edir.
-    /// diqqət: Bu repozitoriya işçilərin performans qeydlərini idarə edir.
+    /// diqqət: Bu repozitoriya işçilərin performans qeydlərini idarə edir və yeni performans qeydləri əlavə etməyə imkan verir.
     /// qeyd: Performans qeydi yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
     /// </summary>
     IIsciPerformansRepozitori IsciPerformanslari { get; }
 
     /// <summary>
     /// İşçi İzn Repozitorisi - İşçi məzuniyyət/icazə əməliyyatlarını idarə edir.
-    /// Diqqət: Bu repozitoriya işçilərin məzuniyyət/icazə qeydlərini idarə edir.
-    /// Qeyd: İzn qeydi yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
+    /// Diqqət: Bu repozitoriya işçilərin məzuniyyət/icazə qeydlərini idarə edir və yeni məzuniyyət/icazə qeydləri əlavə etməyə imkan verir.
+    /// Qeyd: Məzuniyyət/icazə qeydi yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
     /// </summary>
     IIsciIzniRepozitori IsciIznleri { get; }
 
@@ -118,27 +118,6 @@ public interface IUnitOfWork : IAsyncDisposable
     /// Qeyd: Tədarükçü ödənişi yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
     /// </summary>
     ITedarukcuOdemeRepozitori TedarukcuOdemeleri { get; }
-
-    /// <summary>
-    /// İşçi Repozitorisi - İşçi əməliyyatlarını idarə edir.
-    /// Diqqət: Bu repozitoriya işçilərin məlumatlarını, maaşlarını və işçi statusunu idarə edir.
-    /// Qeyd: işçi yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
-    /// </summary>
-    IIsciRepozitori Isciler { get; }
-
-    /// <summary>
-    /// İşçi Performans Repozitorisi - İşçi performans əməliyyatlarını idarə edir.
-    /// Diqqət: Bu repozitoriya işçilərin performans qeydlərini idarə edir və yeni performans qeydləri əlavə etməyə imkan verir.
-    /// Qeyd: Performans qeydi yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
-    /// </summary>
-    IIsciPerformansRepozitori IsciPerformanslari { get; }
-
-    /// <summary>
-    /// İşçi İzn Repozitorisi - İşçi məzuniyyət/icazə əməliyyatlarını idarə edir.
-    /// Diqqət: Bu repozitoriya işçilərin məzuniyyət/icazə qeydlərini idarə edir və yeni məzuniyyət/icazə qeydləri əlavə etməyə imkan verir.
-    /// Qeyd: Məzuniyyət/icazə qeydi yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
-    /// </summary>
-    IIsciIzniRepozitori IsciIznleri { get; }
 
     /// <summary>
     /// Edilmiş bütün dəyişiklikləri vahid bir tranzaksiya kimi verilənlər bazasına tətbiq edir.

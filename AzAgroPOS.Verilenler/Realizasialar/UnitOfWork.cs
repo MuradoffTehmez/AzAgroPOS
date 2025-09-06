@@ -72,22 +72,22 @@ public class UnitOfWork : IUnitOfWork
 
     /// <summary>
     /// İşçi Repozitorisi - İşçi əməliyyatlarını idarə edir.
-    /// Diqqət: Bu repozitoriya işçilərin məlumatlarını idarə edir.
+    /// Diqqət: Bu repozitoriya işçilərin məlumatlarını, maaşlarını və işçi statusunu idarə edir.
     /// Qeyd: İşçi yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
     /// </summary>
     public IIsciRepozitori Isciler { get; private set; }
 
     /// <summary>
     /// İşçi Performans Repozitorisi - İşçi performans əməliyyatlarını idarə edir.
-    /// Diqqət: Bu repozitoriya işçilərin performans qeydlərini idarə edir.
+    /// Diqqət: Bu repozitoriya işçilərin performans qeydlərini idarə edir və yeni performans qeydləri əlavə etməyə imkan verir.
     /// Qeyd: Performans qeydi yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
     /// </summary>
     public IIsciPerformansRepozitori IsciPerformanslari { get; private set; }
 
     /// <summary>
     /// İşçi İzn Repozitorisi - İşçi məzuniyyət/icazə əməliyyatlarını idarə edir.
-    /// Diqqət: Bu repozitoriya işçilərin məzuniyyət/icazə qeydlərini idarə edir.
-    /// Qeyd: İzn qeydi yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
+    /// Diqqət: Bu repozitoriya işçilərin məzuniyyət/icazə qeydlərini idarə edir və yeni məzuniyyət/icazə qeydləri əlavə etməyə imkan verir.
+    /// Qeyd: Məzuniyyət/icazə qeydi yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
     /// </summary>
     public IIsciIzniRepozitori IsciIznleri { get; private set; }
 
@@ -132,27 +132,6 @@ public class UnitOfWork : IUnitOfWork
     /// Qeyd: Tədarükçü ödənişi yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
     /// </summary>
     public ITedarukcuOdemeRepozitori TedarukcuOdemeleri { get; private set; }
-
-    /// <summary>
-    /// İşçi Repozitorisi - İşçi əməliyyatlarını idarə edir.
-    /// Diqqət: Bu repozitoriya işçilərin məlumatlarını, maaşlarını və işçi statusunu idarə edir.
-    /// Qeyd: İşçi yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
-    /// </summary>
-    public IIsciRepozitori Isciler { get; private set; }
-
-    /// <summary>
-    /// İşçi Performans Repozitorisi - İşçi performans əməliyyatlarını idarə edir.
-    /// Diqqət: Bu repozitoriya işçilərin performans qeydlərini idarə edir və yeni performans qeydləri əlavə etməyə imkan verir.
-    /// Qeyd: Performans qeydi yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
-    /// </summary>
-    public IIsciPerformansRepozitori IsciPerformanslari { get; private set; }
-
-    /// <summary>
-    /// İşçi İzn Repozitorisi - İşçi məzuniyyət/icazə əməliyyatlarını idarə edir.
-    /// Diqqət: Bu repozitoriya işçilərin məzuniyyət/icazə qeydlərini idarə edir və yeni məzuniyyət/icazə qeydləri əlavə etməyə imkan verir.
-    /// Qeyd: Məzuniyyət/icazə qeydi yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
-    /// </summary>
-    public IIsciIzniRepozitori IsciIznleri { get; private set; }
 
     /// <summary>
     /// unitOfWork konstruktoru, verilənlər bazası kontekstini qəbul edir və repozitoriyaların instansiyalarını yaradır.
