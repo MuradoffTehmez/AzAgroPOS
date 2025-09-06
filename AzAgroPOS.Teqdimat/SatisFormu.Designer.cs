@@ -421,6 +421,11 @@
             pnlPaymentMethods.Controls.Add(btnNagd);
             pnlPaymentMethods.Controls.Add(btnKart);
             pnlPaymentMethods.Controls.Add(btnNisye);
+            pnlPaymentMethods.Controls.Add(btn5AZN);
+            pnlPaymentMethods.Controls.Add(btn10AZN);
+            pnlPaymentMethods.Controls.Add(btn20AZN);
+            pnlPaymentMethods.Controls.Add(btn50AZN);
+            pnlPaymentMethods.Controls.Add(btn100AZN);
             pnlPaymentMethods.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             pnlPaymentMethods.ForeColor = Color.FromArgb(222, 0, 0, 0);
             pnlPaymentMethods.Location = new Point(632, 17);
@@ -496,6 +501,121 @@
             btnNisye.UseAccentColor = true;
             btnNisye.UseVisualStyleBackColor = false;
             btnNisye.Click += btnNisye_Click;
+            // 
+            // btn5AZN
+            // 
+            btn5AZN.AutoSize = false;
+            btn5AZN.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btn5AZN.BackColor = Color.FromArgb(242, 242, 242);
+            btn5AZN.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btn5AZN.Depth = 0;
+            btn5AZN.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            btn5AZN.HighEmphasis = true;
+            btn5AZN.Icon = null;
+            btn5AZN.Location = new Point(3, 70);
+            btn5AZN.Margin = new Padding(4, 6, 4, 6);
+            btn5AZN.MouseState = MaterialSkin.MouseState.HOVER;
+            btn5AZN.Name = "btn5AZN";
+            btn5AZN.NoAccentTextColor = Color.Empty;
+            btn5AZN.Size = new Size(70, 30);
+            btn5AZN.TabIndex = 3;
+            btn5AZN.Text = "5 AZN";
+            btn5AZN.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btn5AZN.UseAccentColor = false;
+            btn5AZN.UseVisualStyleBackColor = false;
+            btn5AZN.Click += btn5AZN_Click;
+            // 
+            // btn10AZN
+            // 
+            btn10AZN.AutoSize = false;
+            btn10AZN.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btn10AZN.BackColor = Color.FromArgb(242, 242, 242);
+            btn10AZN.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btn10AZN.Depth = 0;
+            btn10AZN.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            btn10AZN.HighEmphasis = true;
+            btn10AZN.Icon = null;
+            btn10AZN.Location = new Point(80, 70);
+            btn10AZN.Margin = new Padding(4, 6, 4, 6);
+            btn10AZN.MouseState = MaterialSkin.MouseState.HOVER;
+            btn10AZN.Name = "btn10AZN";
+            btn10AZN.NoAccentTextColor = Color.Empty;
+            btn10AZN.Size = new Size(70, 30);
+            btn10AZN.TabIndex = 4;
+            btn10AZN.Text = "10 AZN";
+            btn10AZN.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btn10AZN.UseAccentColor = false;
+            btn10AZN.UseVisualStyleBackColor = false;
+            btn10AZN.Click += btn10AZN_Click;
+            // 
+            // btn20AZN
+            // 
+            btn20AZN.AutoSize = false;
+            btn20AZN.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btn20AZN.BackColor = Color.FromArgb(242, 242, 242);
+            btn20AZN.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btn20AZN.Depth = 0;
+            btn20AZN.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            btn20AZN.HighEmphasis = true;
+            btn20AZN.Icon = null;
+            btn20AZN.Location = new Point(157, 70);
+            btn20AZN.Margin = new Padding(4, 6, 4, 6);
+            btn20AZN.MouseState = MaterialSkin.MouseState.HOVER;
+            btn20AZN.Name = "btn20AZN";
+            btn20AZN.NoAccentTextColor = Color.Empty;
+            btn20AZN.Size = new Size(70, 30);
+            btn20AZN.TabIndex = 5;
+            btn20AZN.Text = "20 AZN";
+            btn20AZN.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btn20AZN.UseAccentColor = false;
+            btn20AZN.UseVisualStyleBackColor = false;
+            btn20AZN.Click += btn20AZN_Click;
+            // 
+            // btn50AZN
+            // 
+            btn50AZN.AutoSize = false;
+            btn50AZN.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btn50AZN.BackColor = Color.FromArgb(242, 242, 242);
+            btn50AZN.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btn50AZN.Depth = 0;
+            btn50AZN.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            btn50AZN.HighEmphasis = true;
+            btn50AZN.Icon = null;
+            btn50AZN.Location = new Point(234, 70);
+            btn50AZN.Margin = new Padding(4, 6, 4, 6);
+            btn50AZN.MouseState = MaterialSkin.MouseState.HOVER;
+            btn50AZN.Name = "btn50AZN";
+            btn50AZN.NoAccentTextColor = Color.Empty;
+            btn50AZN.Size = new Size(70, 30);
+            btn50AZN.TabIndex = 6;
+            btn50AZN.Text = "50 AZN";
+            btn50AZN.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btn50AZN.UseAccentColor = false;
+            btn50AZN.UseVisualStyleBackColor = false;
+            btn50AZN.Click += btn50AZN_Click;
+            // 
+            // btn100AZN
+            // 
+            btn100AZN.AutoSize = false;
+            btn100AZN.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btn100AZN.BackColor = Color.FromArgb(242, 242, 242);
+            btn100AZN.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btn100AZN.Depth = 0;
+            btn100AZN.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            btn100AZN.HighEmphasis = true;
+            btn100AZN.Icon = null;
+            btn100AZN.Location = new Point(311, 70);
+            btn100AZN.Margin = new Padding(4, 6, 4, 6);
+            btn100AZN.MouseState = MaterialSkin.MouseState.HOVER;
+            btn100AZN.Name = "btn100AZN";
+            btn100AZN.NoAccentTextColor = Color.Empty;
+            btn100AZN.Size = new Size(70, 30);
+            btn100AZN.TabIndex = 7;
+            btn100AZN.Text = "100 AZN";
+            btn100AZN.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btn100AZN.UseAccentColor = false;
+            btn100AZN.UseVisualStyleBackColor = false;
+            btn100AZN.Click += btn100AZN_Click;
             // 
             // pnlAdvancedOptions
             // 
@@ -697,6 +817,11 @@
         private MaterialSkin.Controls.MaterialButton btnNagd;
         private MaterialSkin.Controls.MaterialButton btnKart;
         private MaterialSkin.Controls.MaterialButton btnNisye;
+        private MaterialSkin.Controls.MaterialButton btn5AZN;
+        private MaterialSkin.Controls.MaterialButton btn10AZN;
+        private MaterialSkin.Controls.MaterialButton btn20AZN;
+        private MaterialSkin.Controls.MaterialButton btn50AZN;
+        private MaterialSkin.Controls.MaterialButton btn100AZN;
         private System.Windows.Forms.Panel pnlAdvancedOptions;
         private MaterialSkin.Controls.MaterialComboBox cmbMusteriler;
         private MaterialSkin.Controls.MaterialButton btnSatisiGozlet;

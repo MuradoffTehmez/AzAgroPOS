@@ -120,6 +120,9 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             _aktivSebet.ResetBindings();
             GosterisleriYenile();
             if (mehsul == null) _view.AxtarisPaneliniSifirla();
+            
+            // Müştəri ekranına məhsul əlavə edildiyini bildir
+            _view.MusteriEkraniYenile(secilmisMehsul.Ad, secilmisMehsul.PerakendeSatisQiymeti, miqdar);
         }
 
         private void SebetMiqdarDeyisdir(int mehsulId, decimal deyisiklik)

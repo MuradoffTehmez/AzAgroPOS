@@ -167,6 +167,15 @@ namespace AzAgroPOS.Teqdimat
         {
             return MessageBox.Show(this, mesaj, basliq, düymələr, ikon);
         }
+        
+        // Müştəri ekranı dəstəyi
+        public void MusteriEkraniYenile(string mehsulAdi, decimal qiymet, decimal miqdar)
+        {
+            // Müştəri ekranına məhsul əlavə edildiyini bildir
+            // Hazırda sadə mesajla tətbiq edirik, real tətbiqdə bu məlumatlar
+            // xarici müştəri ekranına göndəriləcək
+            Console.WriteLine($"Müştəri ekranı yeniləndi: {mehsulAdi} - Qiymət: {qiymet} AZN - Miqdar: {miqdar}");
+        }
 
         #endregion
 
@@ -186,6 +195,11 @@ namespace AzAgroPOS.Teqdimat
         private void btnNagd_Click(object sender, EventArgs e) => SatisiTesdiqleIstek?.Invoke(this, OdenisMetodu.Nağd);
         private void btnKart_Click(object sender, EventArgs e) => SatisiTesdiqleIstek?.Invoke(this, OdenisMetodu.Kart);
         private void btnNisye_Click(object sender, EventArgs e) => SatisiTesdiqleIstek?.Invoke(this, OdenisMetodu.Nisyə);
+        private void btn5AZN_Click(object sender, EventArgs e) => SatisiTesdiqleIstek?.Invoke(this, OdenisMetodu.Nağd);
+        private void btn10AZN_Click(object sender, EventArgs e) => SatisiTesdiqleIstek?.Invoke(this, OdenisMetodu.Nağd);
+        private void btn20AZN_Click(object sender, EventArgs e) => SatisiTesdiqleIstek?.Invoke(this, OdenisMetodu.Nağd);
+        private void btn50AZN_Click(object sender, EventArgs e) => SatisiTesdiqleIstek?.Invoke(this, OdenisMetodu.Nağd);
+        private void btn100AZN_Click(object sender, EventArgs e) => SatisiTesdiqleIstek?.Invoke(this, OdenisMetodu.Nağd);
         private void btnSatisiGozlet_Click(object sender, EventArgs e) => SatisiGozletIstek?.Invoke(this, EventArgs.Empty);
         private void btnGozleyenSatislar_Click(object sender, EventArgs e) => GozleyenSatisiAcIstek?.Invoke(this, EventArgs.Empty);
         private void contextMenuStripGozleyenler_ItemClicked(object sender, ToolStripItemClickedEventArgs e)

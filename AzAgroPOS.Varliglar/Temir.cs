@@ -31,11 +31,23 @@ public class Temir : BazaVarligi
     /// </summary>
     public string CihazAdi { get; set; } = string.Empty;
     /// <summary>
+    /// Cihazın seriya nömrəsi.
+    /// Diqqət: Seriya nömrəsi boş ola bilər, lakin əgər varsa unikal olmalıdır.
+    /// Qeyd: Seriya nömrəsi, cihazın identifikasiyası və zəmanət uçotu üçün vacibdir.
+    /// </summary>
+    public string SeriyaNomresi { get; set; } = string.Empty;
+    /// <summary>
     /// problem təsviri, yəni müştərinin cihazda müşahidə etdiyi problemlərin ətraflı izahı.
     /// Diqqət: Problem təsviri boş ola bilməz və cihazın vəziyyətini və problemlərini ətraflı şəkildə izah etməlidir.
     /// Qeyd: Problem təsviri, təmir prosesində düzgün diaqnoz və həll yollarının müəyyənləşdirilməsi üçün vacibdir.
     /// </summary>
     public string ProblemTesviri { get; set; } = string.Empty;
+    /// <summary>
+    /// Zəmanət müddəti (aylarla).
+    /// Diqqət: Zəmanət müddəti boş ola bilər.
+    /// Qeyd: Zəmanət müddəti, təmir edilmiş cihazın zəmanət qaydalarını müəyyənləşdirmək üçün vacibdir.
+    /// </summary>
+    public int? ZemanetMuddeti { get; set; }
 
     // Təmir Prosesi Məlumatları
     /// <summary>
@@ -61,11 +73,17 @@ public class Temir : BazaVarligi
     /// <summary>
     /// Təmir xərci, yəni təmir prosesində istifadə olunan ehtiyat hissələri və xidmətlərin ümumi dəyəri.
     /// Diqqət: Təmir xərci boş ola bilməz və müsbət bir dəyər olmalıdır.
-    /// Qeyd: Təmir xərci, müştəriyə təqdim ediləcək ümumi məbləği və təmir prosesinin maliyyə aspektlərini izləmək üçün vacibdir.
+    /// Qeyd: Təmir xərci, müştəriyə təqdim ediləcək ümuni məbləği və təmir prosesinin maliyyə aspektlərini izləmək üçün vacibdir.
     /// </summary>
     public decimal TemirXerci { get; set; }
     /// <summary>
-    /// Yekun məbləğ, yəni müştərinin ödəməli olduğu ümumi məbləğ (təmir xərci + əlavə xidmətlər və s.).
+    /// Servis haqqı, yəni təmir xidməti üçün alınan haqq.
+    /// Diqqət: Servis haqqı boş ola bilməz və müsbət bir dəyər olmalıdır.
+    /// Qeyd: Servis haqqı, təmir xidməti üçün alınan haqqı təmsil edir.
+    /// </summary>
+    public decimal ServisHaqqi { get; set; }
+    /// <summary>
+    /// Yekun məbləğ, yəni müştəriyin ödəməli olduğu ümumi məbləğ (təmir xərci + servis haqqı).
     /// Diqqət: Yekun məbləğ boş ola bilməz və müsbət bir dəyər olmalıdır.
     /// Qeyd: Yekun məbləğ, müştəriyə təqdim ediləcək ümumi məbləği və təmir prosesinin maliyyə aspektlərini izləmək üçün vacibdir.
     /// </summary>

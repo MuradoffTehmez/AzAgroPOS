@@ -158,20 +158,36 @@ namespace AzAgroPOS.Teqdimat
             tableLayoutPanel1.Controls.Add(txtMusteriTelefonu, 1, 1);
             tableLayoutPanel1.Controls.Add(lblCihazAdi, 0, 2);
             tableLayoutPanel1.Controls.Add(txtCihazAdi, 1, 2);
-            tableLayoutPanel1.Controls.Add(lblProblemTesviri, 0, 3);
-            tableLayoutPanel1.Controls.Add(txtProblemTesviri, 1, 3);
-            tableLayoutPanel1.Controls.Add(lblYekunMebleg, 0, 4);
-            tableLayoutPanel1.Controls.Add(txtYekunMebleg, 1, 4);
+            tableLayoutPanel1.Controls.Add(lblSeriyaNomresi, 0, 3);
+            tableLayoutPanel1.Controls.Add(txtSeriyaNomresi, 1, 3);
+            tableLayoutPanel1.Controls.Add(lblProblemTesviri, 0, 4);
+            tableLayoutPanel1.Controls.Add(txtProblemTesviri, 1, 4);
+            tableLayoutPanel1.Controls.Add(lblTemirXerci, 0, 5);
+            tableLayoutPanel1.Controls.Add(txtTemirXerci, 1, 5);
+            tableLayoutPanel1.Controls.Add(lblServisHaqqi, 0, 6);
+            tableLayoutPanel1.Controls.Add(txtServisHaqqi, 1, 6);
+            tableLayoutPanel1.Controls.Add(lblYekunMebleg, 0, 7);
+            tableLayoutPanel1.Controls.Add(txtYekunMebleg, 1, 7);
+            tableLayoutPanel1.Controls.Add(lblUsta, 0, 8);
+            tableLayoutPanel1.Controls.Add(cmbUsta, 1, 8);
+            tableLayoutPanel1.Controls.Add(btnEhtiyatHissəsiElaveEt, 1, 9);
+            tableLayoutPanel1.Controls.Add(btnÖdənişiTamamla, 1, 10);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             tableLayoutPanel1.ForeColor = Color.FromArgb(222, 0, 0, 0);
             tableLayoutPanel1.Location = new Point(3, 20);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 6;
+            tableLayoutPanel1.RowCount = 12;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 100F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tableLayoutPanel1.Size = new Size(341, 419);
@@ -252,6 +268,31 @@ namespace AzAgroPOS.Teqdimat
             txtCihazAdi.Size = new Size(233, 24);
             txtCihazAdi.TabIndex = 5;
             // 
+            // lblSeriyaNomresi
+            // 
+            lblSeriyaNomresi.AutoSize = true;
+            lblSeriyaNomresi.BackColor = Color.FromArgb(242, 242, 242);
+            lblSeriyaNomresi.Dock = DockStyle.Fill;
+            lblSeriyaNomresi.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblSeriyaNomresi.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lblSeriyaNomresi.Location = new Point(3, 105);
+            lblSeriyaNomresi.Name = "lblSeriyaNomresi";
+            lblSeriyaNomresi.Size = new Size(96, 35);
+            lblSeriyaNomresi.TabIndex = 18;
+            lblSeriyaNomresi.Text = "Seriya Nömrəsi:";
+            lblSeriyaNomresi.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // txtSeriyaNomresi
+            // 
+            txtSeriyaNomresi.BackColor = Color.FromArgb(242, 242, 242);
+            txtSeriyaNomresi.Dock = DockStyle.Fill;
+            txtSeriyaNomresi.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            txtSeriyaNomresi.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            txtSeriyaNomresi.Location = new Point(105, 108);
+            txtSeriyaNomresi.Name = "txtSeriyaNomresi";
+            txtSeriyaNomresi.Size = new Size(233, 24);
+            txtSeriyaNomresi.TabIndex = 19;
+            // 
             // lblProblemTesviri
             // 
             lblProblemTesviri.AutoSize = true;
@@ -259,7 +300,7 @@ namespace AzAgroPOS.Teqdimat
             lblProblemTesviri.Dock = DockStyle.Fill;
             lblProblemTesviri.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             lblProblemTesviri.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblProblemTesviri.Location = new Point(3, 105);
+            lblProblemTesviri.Location = new Point(3, 140);
             lblProblemTesviri.Name = "lblProblemTesviri";
             lblProblemTesviri.Size = new Size(96, 100);
             lblProblemTesviri.TabIndex = 6;
@@ -272,7 +313,7 @@ namespace AzAgroPOS.Teqdimat
             txtProblemTesviri.Dock = DockStyle.Fill;
             txtProblemTesviri.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             txtProblemTesviri.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            txtProblemTesviri.Location = new Point(105, 108);
+            txtProblemTesviri.Location = new Point(105, 143);
             txtProblemTesviri.Multiline = true;
             txtProblemTesviri.Name = "txtProblemTesviri";
             txtProblemTesviri.ScrollBars = ScrollBars.Vertical;
@@ -293,16 +334,148 @@ namespace AzAgroPOS.Teqdimat
             lblYekunMebleg.Text = "Yekun Məbləğ:";
             lblYekunMebleg.TextAlign = ContentAlignment.MiddleLeft;
             // 
+            // lblTemirXerci
+            // 
+            lblTemirXerci.AutoSize = true;
+            lblTemirXerci.BackColor = Color.FromArgb(242, 242, 242);
+            lblTemirXerci.Dock = DockStyle.Fill;
+            lblTemirXerci.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblTemirXerci.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lblTemirXerci.Location = new Point(3, 205);
+            lblTemirXerci.Name = "lblTemirXerci";
+            lblTemirXerci.Size = new Size(96, 35);
+            lblTemirXerci.TabIndex = 10;
+            lblTemirXerci.Text = "Təmir Xərci:";
+            lblTemirXerci.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // txtTemirXerci
+            // 
+            txtTemirXerci.BackColor = Color.FromArgb(242, 242, 242);
+            txtTemirXerci.Dock = DockStyle.Fill;
+            txtTemirXerci.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            txtTemirXerci.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            txtTemirXerci.Location = new Point(105, 208);
+            txtTemirXerci.Name = "txtTemirXerci";
+            txtTemirXerci.Size = new Size(233, 24);
+            txtTemirXerci.TabIndex = 11;
+            txtTemirXerci.TextChanged += txtTemirXerci_TextChanged;
+            // 
+            // lblServisHaqqi
+            // 
+            lblServisHaqqi.AutoSize = true;
+            lblServisHaqqi.BackColor = Color.FromArgb(242, 242, 242);
+            lblServisHaqqi.Dock = DockStyle.Fill;
+            lblServisHaqqi.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblServisHaqqi.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lblServisHaqqi.Location = new Point(3, 240);
+            lblServisHaqqi.Name = "lblServisHaqqi";
+            lblServisHaqqi.Size = new Size(96, 35);
+            lblServisHaqqi.TabIndex = 12;
+            lblServisHaqqi.Text = "Servis Haqqı:";
+            lblServisHaqqi.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // txtServisHaqqi
+            // 
+            txtServisHaqqi.BackColor = Color.FromArgb(242, 242, 242);
+            txtServisHaqqi.Dock = DockStyle.Fill;
+            txtServisHaqqi.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            txtServisHaqqi.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            txtServisHaqqi.Location = new Point(105, 243);
+            txtServisHaqqi.Name = "txtServisHaqqi";
+            txtServisHaqqi.Size = new Size(233, 24);
+            txtServisHaqqi.TabIndex = 13;
+            txtServisHaqqi.TextChanged += txtServisHaqqi_TextChanged;
+            // 
+            // lblYekunMebleg
+            // 
+            lblYekunMebleg.AutoSize = true;
+            lblYekunMebleg.BackColor = Color.FromArgb(242, 242, 242);
+            lblYekunMebleg.Dock = DockStyle.Fill;
+            lblYekunMebleg.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblYekunMebleg.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lblYekunMebleg.Location = new Point(3, 275);
+            lblYekunMebleg.Name = "lblYekunMebleg";
+            lblYekunMebleg.Size = new Size(96, 35);
+            lblYekunMebleg.TabIndex = 8;
+            lblYekunMebleg.Text = "Yekun Məbləğ:";
+            lblYekunMebleg.TextAlign = ContentAlignment.MiddleLeft;
+            // 
             // txtYekunMebleg
             // 
             txtYekunMebleg.BackColor = Color.FromArgb(242, 242, 242);
             txtYekunMebleg.Dock = DockStyle.Fill;
             txtYekunMebleg.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             txtYekunMebleg.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            txtYekunMebleg.Location = new Point(105, 208);
+            txtYekunMebleg.Location = new Point(105, 278);
             txtYekunMebleg.Name = "txtYekunMebleg";
+            txtYekunMebleg.ReadOnly = true;
             txtYekunMebleg.Size = new Size(233, 24);
             txtYekunMebleg.TabIndex = 9;
+            // 
+            // btnEhtiyatHissəsiElaveEt
+            // 
+            btnEhtiyatHissəsiElaveEt.BackColor = Color.FromArgb(242, 242, 242);
+            btnEhtiyatHissəsiElaveEt.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            btnEhtiyatHissəsiElaveEt.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            btnEhtiyatHissəsiElaveEt.Location = new Point(105, 313);
+            btnEhtiyatHissəsiElaveEt.Name = "btnEhtiyatHissəsiElaveEt";
+            btnEhtiyatHissəsiElaveEt.Size = new Size(233, 29);
+            btnEhtiyatHissəsiElaveEt.TabIndex = 14;
+            btnEhtiyatHissəsiElaveEt.Text = "Ehtiyat Hissəsi Əlavə Et";
+            btnEhtiyatHissəsiElaveEt.UseVisualStyleBackColor = false;
+            btnEhtiyatHissəsiElaveEt.Click += btnEhtiyatHissəsiElaveEt_Click;
+            // 
+            // lblUsta
+            // 
+            lblUsta.AutoSize = true;
+            lblUsta.BackColor = Color.FromArgb(242, 242, 242);
+            lblUsta.Dock = DockStyle.Fill;
+            lblUsta.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblUsta.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lblUsta.Location = new Point(3, 310);
+            lblUsta.Name = "lblUsta";
+            lblUsta.Size = new Size(96, 35);
+            lblUsta.TabIndex = 16;
+            lblUsta.Text = "Usta:";
+            lblUsta.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // cmbUsta
+            // 
+            cmbUsta.BackColor = Color.FromArgb(242, 242, 242);
+            cmbUsta.Dock = DockStyle.Fill;
+            cmbUsta.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            cmbUsta.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            cmbUsta.FormattingEnabled = true;
+            cmbUsta.Location = new Point(105, 313);
+            cmbUsta.Name = "cmbUsta";
+            cmbUsta.Size = new Size(233, 25);
+            cmbUsta.TabIndex = 17;
+            // 
+            // btnEhtiyatHissəsiElaveEt
+            // 
+            btnEhtiyatHissəsiElaveEt.BackColor = Color.FromArgb(242, 242, 242);
+            btnEhtiyatHissəsiElaveEt.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            btnEhtiyatHissəsiElaveEt.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            btnEhtiyatHissəsiElaveEt.Location = new Point(105, 348);
+            btnEhtiyatHissəsiElaveEt.Name = "btnEhtiyatHissəsiElaveEt";
+            btnEhtiyatHissəsiElaveEt.Size = new Size(233, 29);
+            btnEhtiyatHissəsiElaveEt.TabIndex = 14;
+            btnEhtiyatHissəsiElaveEt.Text = "Ehtiyat Hissəsi Əlavə Et";
+            btnEhtiyatHissəsiElaveEt.UseVisualStyleBackColor = false;
+            btnEhtiyatHissəsiElaveEt.Click += btnEhtiyatHissəsiElaveEt_Click;
+            // 
+            // btnÖdənişiTamamla
+            // 
+            btnÖdənişiTamamla.BackColor = Color.FromArgb(242, 242, 242);
+            btnÖdənişiTamamla.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            btnÖdənişiTamamla.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            btnÖdənişiTamamla.Location = new Point(105, 383);
+            btnÖdənişiTamamla.Name = "btnÖdənişiTamamla";
+            btnÖdənişiTamamla.Size = new Size(233, 29);
+            btnÖdənişiTamamla.TabIndex = 15;
+            btnÖdənişiTamamla.Text = "Ödənişi Tamamla";
+            btnÖdənişiTamamla.UseVisualStyleBackColor = false;
+            btnÖdənişiTamamla.Click += btnÖdənişiTamamla_Click;
             // 
             // pnlDugmeler
             // 
@@ -468,5 +641,15 @@ namespace AzAgroPOS.Teqdimat
         private System.Windows.Forms.Button btnYarat;
         private System.Windows.Forms.GroupBox grpSifarisler;
         private System.Windows.Forms.DataGridView dgvSifarisler;
+        private System.Windows.Forms.Button btnEhtiyatHissəsiElaveEt;
+        private System.Windows.Forms.Label lblTemirXerci;
+        private System.Windows.Forms.TextBox txtTemirXerci;
+        private System.Windows.Forms.Label lblServisHaqqi;
+        private System.Windows.Forms.TextBox txtServisHaqqi;
+        private System.Windows.Forms.Button btnÖdənişiTamamla;
+        private System.Windows.Forms.Label lblUsta;
+        private System.Windows.Forms.ComboBox cmbUsta;
+        private System.Windows.Forms.Label lblSeriyaNomresi;
+        private System.Windows.Forms.TextBox txtSeriyaNomresi;
     }
 }

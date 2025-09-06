@@ -41,10 +41,15 @@ public class TemirManager
                 MusteriAdi = s.MusteriAdi,
                 MusteriTelefonu = s.MusteriTelefonu,
                 CihazAdi = s.CihazAdi,
+                SeriyaNomresi = s.SeriyaNomresi,
                 ProblemTesviri = s.ProblemTesviri,
                 QebulTarixi = s.QebulTarixi,
                 Status = s.Status,
-                YekunMebleg = s.YekunMebleg
+                TemirXerci = s.TemirXerci,
+                ServisHaqqi = s.ServisHaqqi,
+                YekunMebleg = s.YekunMebleg,
+                ZemanetMuddeti = s.ZemanetMuddeti,
+                IsciId = s.IsciId
             }).OrderByDescending(s => s.QebulTarixi).ToList();
 
             return EmeliyyatNeticesi<List<TemirDto>>.Ugurlu(dtolar);
@@ -76,10 +81,15 @@ public class TemirManager
                 MusteriAdi = yeniSifaris.MusteriAdi,
                 MusteriTelefonu = yeniSifaris.MusteriTelefonu,
                 CihazAdi = yeniSifaris.CihazAdi,
+                SeriyaNomresi = yeniSifaris.SeriyaNomresi,
                 ProblemTesviri = yeniSifaris.ProblemTesviri,
                 QebulTarixi = DateTime.Now,
                 Status = TemirStatusu.Gözləmədə,
-                YekunMebleg = yeniSifaris.YekunMebleg
+                TemirXerci = yeniSifaris.TemirXerci,
+                ServisHaqqi = yeniSifaris.ServisHaqqi,
+                YekunMebleg = yeniSifaris.YekunMebleg,
+                ZemanetMuddeti = yeniSifaris.ZemanetMuddeti,
+                IsciId = yeniSifaris.IsciId
             };
 
             await _unitOfWork.TemirSifarisleri.ElaveEtAsync(sifaris);
@@ -116,8 +126,13 @@ public class TemirManager
             movcudSifaris.MusteriAdi = sifarisDto.MusteriAdi;
             movcudSifaris.MusteriTelefonu = sifarisDto.MusteriTelefonu;
             movcudSifaris.CihazAdi = sifarisDto.CihazAdi;
+            movcudSifaris.SeriyaNomresi = sifarisDto.SeriyaNomresi;
             movcudSifaris.ProblemTesviri = sifarisDto.ProblemTesviri;
+            movcudSifaris.TemirXerci = sifarisDto.TemirXerci;
+            movcudSifaris.ServisHaqqi = sifarisDto.ServisHaqqi;
             movcudSifaris.YekunMebleg = sifarisDto.YekunMebleg;
+            movcudSifaris.ZemanetMuddeti = sifarisDto.ZemanetMuddeti;
+            movcudSifaris.IsciId = sifarisDto.IsciId;
 
             _unitOfWork.TemirSifarisleri.Yenile(movcudSifaris);
             await _unitOfWork.EmeliyyatiTesdiqleAsync();

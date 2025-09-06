@@ -83,4 +83,66 @@ public class SatisManager
 
         return EmeliyyatNeticesi<Satis>.Ugurlu(satis);
     }
+
+    /// <summary>
+    /// Satış nömrəsinə görə satış məlumatlarını qaytarır.
+    /// </summary>
+    public async Task<EmeliyyatNeticesi<SatisQebzDto>> SatisGetirAsync(string satisNomresi)
+    {
+        // Satış nömrəsi formatı kontrolü
+        if (!int.TryParse(satisNomresi, out int satisId))
+            return EmeliyyatNeticesi<SatisQebzDto>.Ugursuz("Yanlış satış nömrəsi formatı.");
+
+        var satis = await _unitOfWork.Satislar.GetirAsync(satisId);
+        if (satis == null)
+            return EmeliyyatNeticesi<SatisQebzDto>.Ugursuz("Satış tapılmadı.");
+
+        // Satış detallarını və məhsul məlumatlarını yükləyin
+        var sebetElementleri = new List<SatisSebetiElementiDto>();
+        foreach (var detali in satis.SatisDetallari)
+        {
+            var mehsul = await _unitOfWork.Mehsullar.GetirAsync(detali.MehsulId);
+            if (mehsul != null)
+            {
+                sebetElementleri.Add(new SatisSebetiElementiDto
+                {
+                    MehsulId = detali.MehsulId,
+                    MehsulAdi = mehsul.Ad,
+                    Miqdar = detali.Miqdar,
+                    VahidinQiymeti = detali.Qiymet
+                });
+            }
+        }
+
+        var satisDto = new SatisQebzDto
+        {
+            SatisId = satis.Id,
+            Tarix = satis.Tarix,
+            SatilanMehsullar = sebetElementleri
+        };
+
+        return EmeliyyatNeticesi<SatisQebzDto>.Ugurlu(satisDto);
+    }
+
+    /// <summary>
+    /// Qaytarma əməliyyatını həyata keçirir.
+    /// </summary>
+    public async Task<EmeliyyatNeticesi<bool>> QaytarmaEmeliyyatiAsync(List<SatisSebetiElementiDto> qaytarilanMehsullar)
+    {
+        // Stokları artırmaq və lazımi məlumatları yeniləmək
+        foreach (var element in qaytarilanMehsullar)
+        {
+            var mehsul = await _unitOfWork.Mehsullar.GetirAsync(element.MehsulId);
+            if (mehsul != null)
+            {
+                mehsul.MovcudSay += (int)element.Miqdar;
+                _unitOfWork.Mehsullar.Yenile(mehsul);
+            }
+        }
+
+        // Bütün əməliyyatları təsdiqlə
+        await _unitOfWork.EmeliyyatiTesdiqleAsync();
+
+        return EmeliyyatNeticesi<bool>.Ugurlu(true);
+    }
 }
