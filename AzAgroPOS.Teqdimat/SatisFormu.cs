@@ -30,6 +30,9 @@ namespace AzAgroPOS.Teqdimat
             
             // Initialize status message helper
             StatusMesajiGostericisi.Initialize(toolStripStatusLabel1);
+            
+            // Setup auto-complete for customer ComboBox
+            SetupCustomerComboBoxAutoComplete();
         }
 
         #region ISatisView Implementasiyası
@@ -389,6 +392,16 @@ namespace AzAgroPOS.Teqdimat
                 dgvSebet.Columns.Add(azaltCol);
             }
         }
+        
+        #region Auto-complete Setup
+        private void SetupCustomerComboBoxAutoComplete()
+        {
+            // Setup auto-complete for customer ComboBox
+            cmbMusteriler.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            cmbMusteriler.AutoCompleteSource = AutoCompleteSource.ListItems;
+        }
+        #endregion
+        
         #region UI Konfiqurasiyası
         private void ConfigureDataGridViewStyles()
         {

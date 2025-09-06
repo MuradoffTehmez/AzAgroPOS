@@ -21,6 +21,9 @@ namespace AzAgroPOS.Teqdimat
             InitializeComponent();
             _presenter = new MehsulPresenter(this, mehsulManager, serviceProvider);
             StilVerDataGridView(dgvMehsullar);
+            
+            // Setup auto-complete for ComboBoxes
+            SetupComboBoxAutoComplete();
         }
 
         #region View Xassə və Hadisələri (Properties and Events)
@@ -219,6 +222,27 @@ namespace AzAgroPOS.Teqdimat
             }
         }
         private void txtAxtar_TextChanged(object sender, EventArgs e) => Axtaris_Istek?.Invoke(this, EventArgs.Empty);
+        #endregion
+        
+        #region Auto-complete Setup
+        private void SetupComboBoxAutoComplete()
+        {
+            // Setup auto-complete for supplier ComboBox
+            cmbTedarukcu.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            cmbTedarukcu.AutoCompleteSource = AutoCompleteSource.ListItems;
+            
+            // Setup auto-complete for category ComboBox
+            cmbKateqoriya.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            cmbKateqoriya.AutoCompleteSource = AutoCompleteSource.ListItems;
+            
+            // Setup auto-complete for brand ComboBox
+            cmbBrend.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            cmbBrend.AutoCompleteSource = AutoCompleteSource.ListItems;
+            
+            // Setup auto-complete for unit of measure ComboBox
+            cmbOlcuVahidi.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            cmbOlcuVahidi.AutoCompleteSource = AutoCompleteSource.ListItems;
+        }
         #endregion
     }
 }

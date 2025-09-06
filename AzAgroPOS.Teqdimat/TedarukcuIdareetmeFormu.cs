@@ -97,6 +97,12 @@ public partial class TedarukcuIdareetmeFormu : BazaForm, ITedarukcuView
         }
     }
 
+    public void MesajGoster(string mesaj, bool xetadir = false)
+    {
+        var ikon = xetadir ? MessageBoxIcon.Error : MessageBoxIcon.Information;
+        MessageBox.Show(mesaj, "Məlumat", MessageBoxButtons.OK, ikon);
+    }
+    
     public void MesajGoster(string mesaj, string basliq, MessageBoxIcon ikon)
     {
         MessageBox.Show(mesaj, basliq, MessageBoxButtons.OK, ikon);

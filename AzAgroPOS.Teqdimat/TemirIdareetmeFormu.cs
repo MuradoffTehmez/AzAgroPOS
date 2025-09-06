@@ -126,6 +126,11 @@ namespace AzAgroPOS.Teqdimat
             cmbUsta.ValueMember = "Id";
         }
 
+        public void MesajGoster(string mesaj, string basliq)
+        {
+            MessageBox.Show(mesaj, basliq);
+        }
+        
         public DialogResult MesajGoster(string mesaj, string basliq, MessageBoxButtons düymələr, MessageBoxIcon ikon)
         {
             return MessageBox.Show(mesaj, basliq, düymələr, ikon);
