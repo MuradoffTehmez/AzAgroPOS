@@ -30,6 +30,8 @@ public interface IIsciView
 
     // View metodları
     void IscileriGoster(List<IsciDto> isciler);
+    void PerformansQeydleriniGoster(List<IsciPerformansDto> performansQeydleri); // Əlavə edildi
+    void IzinQeydleriniGoster(List<IsciIzniDto> izinQeydleri); // Əlavə edildi
     void MesajGoster(string mesaj, bool xetadir = false);
     void FormuTemizle();
 

@@ -102,9 +102,32 @@ public class TedarukcuOdemePresenter
             return;
         }
 
-        // TODO: Ödənişi yeniləmək üçün tətbiqat
+        // Ödənişi yeniləmək üçün tətbiqat
+        var dto = new TedarukcuOdemeDto
+        {
+            Id = _view.OdemeId,
+            OdemeNomresi = _view.OdemeNomresi,
+            YaradilmaTarixi = _view.YaradilmaTarixi,
+            TedarukcuId = _view.TedarukcuId,
+            AlisSenedId = _view.AlisSenedId,
+            OdemeTarixi = _view.OdemeTarixi,
+            Mebleg = _view.Mebleg,
+            Qeydler = _view.Qeydler,
+            BankMelumatlari = _view.BankMelumatlari
+        };
 
-        _view.MesajGoster("Bu funksiya hələ tətbiq edilməyib.");
+        var netice = await _alisManager.TedarukcuOdemeYenileAsync(dto);
+
+        if (netice.UgurluDur)
+        {
+            _view.MesajGoster("Tədarükçü ödənişi uğurla yeniləndi.");
+            await FormuYukle();
+            _view.FormuTemizle();
+        }
+        else
+        {
+            _view.MesajGoster(netice.Mesaj, true);
+        }
     }
 
     private async Task OdemeSil()
@@ -115,8 +138,18 @@ public class TedarukcuOdemePresenter
             return;
         }
 
-        // TODO: Ödənişi silmək üçün tətbiqat
+        // Ödənişi silmək üçün tətbiqat
+        var netice = await _alisManager.TedarukcuOdemeSilAsync(_view.OdemeId);
 
-        _view.MesajGoster("Bu funksiya hələ tətbiq edilməyib.");
+        if (netice.UgurluDur)
+        {
+            _view.MesajGoster("Tədarükçü ödənişi uğurla silindi.");
+            await FormuYukle();
+            _view.FormuTemizle();
+        }
+        else
+        {
+            _view.MesajGoster(netice.Mesaj, true);
+        }
     }
 }

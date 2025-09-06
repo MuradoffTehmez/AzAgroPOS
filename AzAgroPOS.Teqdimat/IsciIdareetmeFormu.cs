@@ -171,6 +171,18 @@ public partial class IsciIdareetmeFormu : BazaForm, IIsciView
         txtTamAd.Focus();
     }
 
+    public void PerformansQeydleriniGoster(List<IsciPerformansDto> performansQeydleri)
+    {
+        // TODO: Performans qeydlərini göstərmək üçün uyğun forma elementləri əlavə edilməlidir
+        MesajGoster($"İşçinin {performansQeydleri.Count} performans qeydi tapıldı.", false);
+    }
+
+    public void IzinQeydleriniGoster(List<IsciIzniDto> izinQeydleri)
+    {
+        // TODO: İzn qeydlərini göstərmək üçün uyğun forma elementləri əlavə edilməlidir
+        MesajGoster($"İşçinin {izinQeydleri.Count} məzuniyyət/icazə qeydi tapıldı.", false);
+    }
+
     #endregion
 
     private void IsciIdareetmeFormu_Load(object sender, EventArgs e)

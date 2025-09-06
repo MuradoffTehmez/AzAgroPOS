@@ -15,11 +15,13 @@ public class AlisSenedPresenter
 {
     private readonly IAlisSenedView _view;
     private readonly AlisManager _alisManager;
+    private readonly MehsulManager _mehsulManager;
 
-    public AlisSenedPresenter(IAlisSenedView view, AlisManager alisManager)
+    public AlisSenedPresenter(IAlisSenedView view, AlisManager alisManager, MehsulManager mehsulManager)
     {
         _view = view;
         _alisManager = alisManager;
+        _mehsulManager = mehsulManager;
 
         // Hadisələrə abunə oluruq
         _view.FormYuklendi += async (s, e) => await FormuYukle();
@@ -43,7 +45,15 @@ public class AlisSenedPresenter
         }
 
         // Məhsulları yükləyirik
-        // TODO: Məhsulları yükləmək üçün uyğun meneceri əlavə edin
+        var mehsulNetice = await _mehsulManager.ButunMehsullariGetirAsync();
+        if (mehsulNetice.UgurluDur)
+        {
+            _view.MehsullariGoster(mehsulNetice.Data.OrderBy(m => m.Ad).ToList());
+        }
+        else
+        {
+            _view.MehsullariGoster(new System.Collections.Generic.List<MehsulDto>());
+        }
 
         // Sənədləri yükləyirik
         var senedNetice = await _alisManager.ButunAlisSenetleriniGetirAsync();
@@ -92,9 +102,30 @@ public class AlisSenedPresenter
             return;
         }
 
-        // TODO: Sənədi yeniləmək üçün tətbiqat
+        // Sənədi yeniləmək üçün tətbiqat
+        var dto = new AlisSenedDto
+        {
+            Id = _view.SenedId,
+            SenedNomresi = _view.SenedNomresi,
+            YaradilmaTarixi = _view.YaradilmaTarixi,
+            TedarukcuId = _view.TedarukcuId,
+            TehvilTarixi = _view.TehvilTarixi,
+            UmumiMebleg = _view.UmumiMebleg,
+            Qeydler = _view.Qeydler
+        };
 
-        _view.MesajGoster("Bu funksiya hələ tətbiq edilməyib.");
+        var netice = await _alisManager.AlisSenedYenileAsync(dto);
+
+        if (netice.UgurluDur)
+        {
+            _view.MesajGoster("Alış sənədi uğurla yeniləndi.");
+            await FormuYukle();
+            _view.FormuTemizle();
+        }
+        else
+        {
+            _view.MesajGoster(netice.Mesaj, true);
+        }
     }
 
     private async Task SenedSil()
@@ -105,8 +136,18 @@ public class AlisSenedPresenter
             return;
         }
 
-        // TODO: Sənədi silmək üçün tətbiqat
+        // Sənədi silmək üçün tətbiqat
+        var netice = await _alisManager.AlisSenedSilAsync(_view.SenedId);
 
-        _view.MesajGoster("Bu funksiya hələ tətbiq edilməyib.");
+        if (netice.UgurluDur)
+        {
+            _view.MesajGoster("Alış sənədi uğurla silindi.");
+            await FormuYukle();
+            _view.FormuTemizle();
+        }
+        else
+        {
+            _view.MesajGoster(netice.Mesaj, true);
+        }
     }
 }

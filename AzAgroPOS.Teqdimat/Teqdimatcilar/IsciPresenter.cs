@@ -150,8 +150,8 @@ public class IsciPresenter
         var netice = await _isciManager.IscininPerformansQeydleriniGetirAsync(_view.IsciId);
         if (netice.UgurluDur)
         {
-            // TODO: Performans qeydlərini göstərmək üçün uyğun view metodu çağırılmalıdır
-            _view.MesajGoster($"İşçinin {netice.Data.Count} performans qeydi tapıldı.");
+            // Performans qeydlərini göstərmək üçün uyğun view metodu çağırılır
+            _view.PerformansQeydleriniGoster(netice.Data);
         }
         else
         {
@@ -170,8 +170,8 @@ public class IsciPresenter
         var netice = await _isciManager.IscininIzinQeydleriniGetirAsync(_view.IsciId);
         if (netice.UgurluDur)
         {
-            // TODO: İzn qeydlərini göstərmək üçün uyğun view metodu çağırılmalıdır
-            _view.MesajGoster($"İşçinin {netice.Data.Count} məzuniyyət/icazə qeydi tapıldı.");
+            // İzn qeydlərini göstərmək üçün uyğun view metodu çağırılır
+            _view.IzinQeydleriniGoster(netice.Data);
         }
         else
         {

@@ -1,4 +1,4 @@
-﻿// Fayl: AzAgroPOS.Teqdimat/Interfeysler/ITemirView.cs
+// Fayl: AzAgroPOS.Teqdimat/Interfeysler/ITemirView.cs
 namespace AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Mentiq.DTOs;
 
@@ -16,11 +16,11 @@ public interface ITemirView
     void SifarisleriGoster(List<TemirDto> sifarisler);
 
     // View-dan data oxumaq
-    string MusteriAdi { get; }
-    string MusteriTelefonu { get; }
-    string CihazAdi { get; }
-    string ProblemTesviri { get; }
-    decimal YekunMebleg { get; }
+    string MusteriAdi { get; set; }
+    string MusteriTelefonu { get; set; }
+    string CihazAdi { get; set; }
+    string ProblemTesviri { get; set; }
+    decimal YekunMebleg { get; set; }
 
     /// <summary>
     ///  Form yükləndikdə çağırılan hadisə.
@@ -32,6 +32,18 @@ public interface ITemirView
     /// Dəyişikliklər varsa, yeni təmir sifarişi yaratmaq üçün istifadəçi tərəfindən çağırılan hadisə.
     /// </summary>
     event EventHandler YeniSifarisYarat_Istek;
+    /// <summary>
+    /// Mövcud təmir sifarişini yeniləmək üçün istifadəçi tərəfindən çağırılan hadisə.
+    /// </summary>
+    event EventHandler SifarisYenile_Istek;
+    /// <summary>
+    /// Mövcud təmir sifarişini silmək üçün istifadəçi tərəfindən çağırılan hadisə.
+    /// </summary>
+    event EventHandler SifarisSil_Istek;
+    /// <summary>
+    /// Formu təmizləmək üçün istifadəçi tərəfindən çağırılan hadisə.
+    /// </summary>
+    event EventHandler FormuTemizle_Istek;
 
     void FormuTemizle();
     void MesajGoster(string mesaj, string basliq);

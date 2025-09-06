@@ -16,11 +16,13 @@ public class AlisSifarisPresenter
 {
     private readonly IAlisSifarisView _view;
     private readonly AlisManager _alisManager;
+    private readonly MehsulManager _mehsulManager; // Əlavə edildi
 
-    public AlisSifarisPresenter(IAlisSifarisView view, AlisManager alisManager)
+    public AlisSifarisPresenter(IAlisSifarisView view, AlisManager alisManager, MehsulManager mehsulManager)
     {
         _view = view;
         _alisManager = alisManager;
+        _mehsulManager = mehsulManager; // Əlavə edildi
 
         // Hadisələrə abunə oluruq
         _view.FormYuklendi += async (s, e) => await FormuYukle();
@@ -45,8 +47,15 @@ public class AlisSifarisPresenter
         }
 
         // Məhsulları yükləyirik
-        var mehsulManager = new MehsulManager(_alisManager /* Bu düzgün deyil, amma sadəlik üçün */);
-        // TODO: Məhsulları yükləmək üçün uyğun meneceri əlavə edin
+        var mehsulNetice = await _mehsulManager.ButunMehsullariGetirAsync(); // Əlavə edildi
+        if (mehsulNetice.UgurluDur)
+        {
+            _view.MehsullariGoster(mehsulNetice.Data.OrderBy(m => m.Ad).ToList()); // Əlavə edildi
+        }
+        else
+        {
+            _view.MehsullariGoster(new System.Collections.Generic.List<MehsulDto>()); // Əlavə edildi
+        }
 
         // Sifarişləri yükləyirik
         var sifarisNetice = await _alisManager.ButunAlisSifarisleriniGetirAsync();
@@ -96,9 +105,31 @@ public class AlisSifarisPresenter
             return;
         }
 
-        // TODO: Sifarişi yeniləmək üçün tətbiqat
+        // Sifarişi yeniləmək üçün tətbiqat
+        var dto = new AlisSifarisDto
+        {
+            Id = _view.SifarisId,
+            SifarisNomresi = _view.SifarisNomresi,
+            YaradilmaTarixi = _view.YaradilmaTarixi,
+            TesdiqTarixi = _view.TesdiqTarixi,
+            GozlenilenTehvilTarixi = _view.GozlenilenTehvilTarixi,
+            TedarukcuId = _view.TedarukcuId,
+            UmumiMebleg = _view.UmumiMebleg,
+            Qeydler = _view.Qeydler
+        };
 
-        _view.MesajGoster("Bu funksiya hələ tətbiq edilməyib.");
+        var netice = await _alisManager.AlisSifarisYenileAsync(dto);
+
+        if (netice.UgurluDur)
+        {
+            _view.MesajGoster("Alış sifarişi uğurla yeniləndi.");
+            await FormuYukle();
+            _view.FormuTemizle();
+        }
+        else
+        {
+            _view.MesajGoster(netice.Mesaj, true);
+        }
     }
 
     private async Task SifarisSil()
@@ -109,9 +140,19 @@ public class AlisSifarisPresenter
             return;
         }
 
-        // TODO: Sifarişi silmək üçün tətbiqat
+        // Sifarişi silmək üçün tətbiqat
+        var netice = await _alisManager.AlisSifarisSilAsync(_view.SifarisId);
 
-        _view.MesajGoster("Bu funksiya hələ tətbiq edilməyib.");
+        if (netice.UgurluDur)
+        {
+            _view.MesajGoster("Alış sifarişi uğurla silindi.");
+            await FormuYukle();
+            _view.FormuTemizle();
+        }
+        else
+        {
+            _view.MesajGoster(netice.Mesaj, true);
+        }
     }
 
     private async Task SifarisTesdiqle()

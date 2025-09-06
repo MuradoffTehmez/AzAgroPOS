@@ -1,4 +1,4 @@
-﻿// Fayl: AzAgroPOS.Teqdimat/Teqdimatcilar/TemirPresenter.cs
+// Fayl: AzAgroPOS.Teqdimat/Teqdimatcilar/TemirPresenter.cs
 namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 // using-lər
 using AzAgroPOS.Mentiq.DTOs;
@@ -31,7 +31,11 @@ public class TemirPresenter
 
         _view.FormYuklendi += async (s, e) => await FormuYukle();
         _view.YeniSifarisYarat_Istek += async (s, e) => await YeniSifarisYarat();
+        _view.SifarisYenile_Istek += async (s, e) => await SifarisYenile();
+        _view.SifarisSil_Istek += async (s, e) => await SifarisSil();
+        _view.FormuTemizle_Istek += (s, e) => _view.FormuTemizle();
     }
+    
     /// <summary>
     /// bu metod, form yükləndikdə bütün sifarişləri yükləyir və göstərir.
     /// </summary>
@@ -69,5 +73,25 @@ public class TemirPresenter
         {
             _view.MesajGoster(netice.Mesaj, "Xəta");
         }
+    }
+
+    /// <summary>
+    /// bu metod, mövcud təmir sifarişini yeniləmək üçün istifadə olunur.
+    /// </summary>
+    /// <returns></returns>
+    private async Task SifarisYenile()
+    {
+        // TODO: Sifarişi yeniləmək üçün tətbiqat
+        _view.MesajGoster("Bu funksiya hələ tətbiq edilməyib.", "Məlumat");
+    }
+
+    /// <summary>
+    /// bu metod, mövcud təmir sifarişini silmək üçün istifadə olunur.
+    /// </summary>
+    /// <returns></returns>
+    private async Task SifarisSil()
+    {
+        // TODO: Sifarişi silmək üçün tətbiqat
+        _view.MesajGoster("Bu funksiya hələ tətbiq edilməyib.", "Məlumat");
     }
 }

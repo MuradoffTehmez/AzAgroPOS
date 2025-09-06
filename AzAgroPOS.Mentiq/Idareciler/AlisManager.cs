@@ -320,6 +320,69 @@ public class AlisManager
     }
 
     /// <summary>
+    /// Mövcud alış sifarişini yeniləyir.
+    /// </summary>
+    public async Task<EmeliyyatNeticesi> AlisSifarisYenileAsync(AlisSifarisDto dto)
+    {
+        try
+        {
+            // Validasiya
+            if (string.IsNullOrWhiteSpace(dto.SifarisNomresi))
+                return EmeliyyatNeticesi.Ugursuz("Sifariş nömrəsi boş ola bilməz.");
+
+            if (dto.TedarukcuId <= 0)
+                return EmeliyyatNeticesi.Ugursuz("Tədarükçü seçilməlidir.");
+
+            // Mövcud alış sifarişini axtarırıq
+            var movcudSifaris = await _unitOfWork.AlisSifarisleri.GetirAsync(dto.Id);
+            if (movcudSifaris == null)
+                return EmeliyyatNeticesi.Ugursuz("Yenilənmək üçün alış sifarişi tapılmadı.");
+
+            // Məlumatları yeniləyirik
+            movcudSifaris.SifarisNomresi = dto.SifarisNomresi;
+            movcudSifaris.YaradilmaTarixi = dto.YaradilmaTarixi;
+            movcudSifaris.TesdiqTarixi = dto.TesdiqTarixi;
+            movcudSifaris.GozlenilenTehvilTarixi = dto.GozlenilenTehvilTarixi;
+            movcudSifaris.TedarukcuId = dto.TedarukcuId;
+            movcudSifaris.UmumiMebleg = dto.UmumiMebleg;
+            movcudSifaris.Status = dto.Status;
+            movcudSifaris.Qeydler = dto.Qeydler;
+
+            _unitOfWork.AlisSifarisleri.Yenile(movcudSifaris);
+            await _unitOfWork.EmeliyyatiTesdiqleAsync();
+
+            return EmeliyyatNeticesi.Ugurlu();
+        }
+        catch (Exception ex)
+        {
+            return EmeliyyatNeticesi.Ugursuz($"Alış sifarişini yeniləmək alınmadı: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Alış sifarişini silir.
+    /// </summary>
+    public async Task<EmeliyyatNeticesi> AlisSifarisSilAsync(int id)
+    {
+        try
+        {
+            // Mövcud alış sifarişini axtarırıq
+            var movcudSifaris = await _unitOfWork.AlisSifarisleri.GetirAsync(id);
+            if (movcudSifaris == null)
+                return EmeliyyatNeticesi.Ugursuz("Silinəcək alış sifarişi tapılmadı.");
+
+            _unitOfWork.AlisSifarisleri.Sil(movcudSifaris);
+            await _unitOfWork.EmeliyyatiTesdiqleAsync();
+
+            return EmeliyyatNeticesi.Ugurlu();
+        }
+        catch (Exception ex)
+        {
+            return EmeliyyatNeticesi.Ugursuz($"Alış sifarişini silmək alınmadı: {ex.Message}");
+        }
+    }
+
+    /// <summary>
     /// Alış sifarişini təsdiqləyir.
     /// </summary>
     public async Task<EmeliyyatNeticesi> AlisSifarisiniTesdiqleAsync(int id)
@@ -446,6 +509,68 @@ public class AlisManager
         }
     }
 
+    /// <summary>
+    /// Mövcud alış sənədini yeniləyir.
+    /// </summary>
+    public async Task<EmeliyyatNeticesi> AlisSenedYenileAsync(AlisSenedDto dto)
+    {
+        try
+        {
+            // Validasiya
+            if (string.IsNullOrWhiteSpace(dto.SenedNomresi))
+                return EmeliyyatNeticesi.Ugursuz("Sənəd nömrəsi boş ola bilməz.");
+
+            if (dto.TedarukcuId <= 0)
+                return EmeliyyatNeticesi.Ugursuz("Tədarükçü seçilməlidir.");
+
+            // Mövcud alış sənədini axtarırıq
+            var movcudSened = await _unitOfWork.AlisSenetleri.GetirAsync(dto.Id);
+            if (movcudSened == null)
+                return EmeliyyatNeticesi.Ugursuz("Yenilənmək üçün alış sənədi tapılmadı.");
+
+            // Məlumatları yeniləyirik
+            movcudSened.SenedNomresi = dto.SenedNomresi;
+            movcudSened.YaradilmaTarixi = dto.YaradilmaTarixi;
+            movcudSened.TedarukcuId = dto.TedarukcuId;
+            movcudSened.TehvilTarixi = dto.TehvilTarixi;
+            movcudSened.UmumiMebleg = dto.UmumiMebleg;
+            movcudSened.Status = dto.Status;
+            movcudSened.Qeydler = dto.Qeydler;
+
+            _unitOfWork.AlisSenetleri.Yenile(movcudSened);
+            await _unitOfWork.EmeliyyatiTesdiqleAsync();
+
+            return EmeliyyatNeticesi.Ugurlu();
+        }
+        catch (Exception ex)
+        {
+            return EmeliyyatNeticesi.Ugursuz($"Alış sənədini yeniləmək alınmadı: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Alış sənədini silir.
+    /// </summary>
+    public async Task<EmeliyyatNeticesi> AlisSenedSilAsync(int id)
+    {
+        try
+        {
+            // Mövcud alış sənədini axtarırıq
+            var movcudSened = await _unitOfWork.AlisSenetleri.GetirAsync(id);
+            if (movcudSened == null)
+                return EmeliyyatNeticesi.Ugursuz("Silinəcək alış sənədi tapılmadı.");
+
+            _unitOfWork.AlisSenetleri.Sil(movcudSened);
+            await _unitOfWork.EmeliyyatiTesdiqleAsync();
+
+            return EmeliyyatNeticesi.Ugurlu();
+        }
+        catch (Exception ex)
+        {
+            return EmeliyyatNeticesi.Ugursuz($"Alış sənədini silmək alınmadı: {ex.Message}");
+        }
+    }
+
     #endregion
 
     #region Tədarükçü Ödənişi Əməliyyatları
@@ -526,6 +651,74 @@ public class AlisManager
         catch (Exception ex)
         {
             return EmeliyyatNeticesi<int>.Ugursuz($"Tədarükçü ödənişi yaratmaq alınmadı: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Mövcud tədarükçü ödənişini yeniləyir.
+    /// </summary>
+    public async Task<EmeliyyatNeticesi> TedarukcuOdemeYenileAsync(TedarukcuOdemeDto dto)
+    {
+        try
+        {
+            // Validasiya
+            if (string.IsNullOrWhiteSpace(dto.OdemeNomresi))
+                return EmeliyyatNeticesi.Ugursuz("Ödəniş nömrəsi boş ola bilməz.");
+
+            if (dto.TedarukcuId <= 0)
+                return EmeliyyatNeticesi.Ugursuz("Tədarükçü seçilməlidir.");
+
+            if (dto.Mebleg <= 0)
+                return EmeliyyatNeticesi.Ugursuz("Ödəniş məbləği müsbət olmalıdır.");
+
+            // Mövcud tədarükçü ödənişini axtarırıq
+            var movcudOdeme = await _unitOfWork.TedarukcuOdemeleri.GetirAsync(dto.Id);
+            if (movcudOdeme == null)
+                return EmeliyyatNeticesi.Ugursuz("Yenilənmək üçün tədarükçü ödənişi tapılmadı.");
+
+            // Məlumatları yeniləyirik
+            movcudOdeme.OdemeNomresi = dto.OdemeNomresi;
+            movcudOdeme.YaradilmaTarixi = dto.YaradilmaTarixi;
+            movcudOdeme.TedarukcuId = dto.TedarukcuId;
+            movcudOdeme.AlisSenedId = dto.AlisSenedId;
+            movcudOdeme.OdemeTarixi = dto.OdemeTarixi;
+            movcudOdeme.Mebleg = dto.Mebleg;
+            movcudOdeme.OdemeUsulu = dto.OdemeUsulu;
+            movcudOdeme.Status = dto.Status;
+            movcudOdeme.Qeydler = dto.Qeydler;
+            movcudOdeme.BankMelumatlari = dto.BankMelumatlari;
+
+            _unitOfWork.TedarukcuOdemeleri.Yenile(movcudOdeme);
+            await _unitOfWork.EmeliyyatiTesdiqleAsync();
+
+            return EmeliyyatNeticesi.Ugurlu();
+        }
+        catch (Exception ex)
+        {
+            return EmeliyyatNeticesi.Ugursuz($"Tədarükçü ödənişini yeniləmək alınmadı: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Tədarükçü ödənişini silir.
+    /// </summary>
+    public async Task<EmeliyyatNeticesi> TedarukcuOdemeSilAsync(int id)
+    {
+        try
+        {
+            // Mövcud tədarükçü ödənişini axtarırıq
+            var movcudOdeme = await _unitOfWork.TedarukcuOdemeleri.GetirAsync(id);
+            if (movcudOdeme == null)
+                return EmeliyyatNeticesi.Ugursuz("Silinəcək tədarükçü ödənişi tapılmadı.");
+
+            _unitOfWork.TedarukcuOdemeleri.Sil(movcudOdeme);
+            await _unitOfWork.EmeliyyatiTesdiqleAsync();
+
+            return EmeliyyatNeticesi.Ugurlu();
+        }
+        catch (Exception ex)
+        {
+            return EmeliyyatNeticesi.Ugursuz($"Tədarükçü ödənişini silmək alınmadı: {ex.Message}");
         }
     }
 
