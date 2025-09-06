@@ -28,6 +28,7 @@ namespace AzAgroPOS.Teqdimat
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             pnlTop = new Panel();
@@ -600,6 +601,10 @@ namespace AzAgroPOS.Teqdimat
             dgvSifarisler.TabIndex = 0;
             dgvSifarisler.SelectionChanged += dgvSifarisler_SelectionChanged;
             // 
+            // errorProvider1
+            // 
+            errorProvider1.ContainerControl = this;
+            // 
             // TemirIdareetmeFormu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -661,5 +666,6 @@ namespace AzAgroPOS.Teqdimat
         private System.Windows.Forms.ComboBox cmbUsta;
         private System.Windows.Forms.Label lblSeriyaNomresi;
         private System.Windows.Forms.TextBox txtSeriyaNomresi;
+        private ErrorProvider errorProvider1;
     }
 }

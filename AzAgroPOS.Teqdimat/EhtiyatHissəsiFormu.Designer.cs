@@ -28,6 +28,7 @@ namespace AzAgroPOS.Teqdimat
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
@@ -49,6 +50,7 @@ namespace AzAgroPOS.Teqdimat
             btnSil = new Button();
             btnİmtina = new Button();
             btnTamam = new Button();
+            errorProvider1 = new ErrorProvider(components);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -311,6 +313,10 @@ namespace AzAgroPOS.Teqdimat
             btnTamam.UseVisualStyleBackColor = true;
             btnTamam.Click += btnTamam_Click;
             // 
+            // errorProvider1
+            // 
+            errorProvider1.ContainerControl = this;
+            // 
             // EhtiyatHissəsiFormu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -357,5 +363,6 @@ namespace AzAgroPOS.Teqdimat
         private Button btnSil;
         private Button btnİmtina;
         private Button btnTamam;
+        private ErrorProvider errorProvider1;
     }
 }

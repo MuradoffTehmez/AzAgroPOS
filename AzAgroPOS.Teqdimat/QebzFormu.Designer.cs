@@ -28,11 +28,13 @@ namespace AzAgroPOS.Teqdimat
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             lblBasliq = new Label();
             tblMelumatlar = new TableLayoutPanel();
             panel1 = new Panel();
             btnCapEt = new Button();
             btnBagla = new Button();
+            errorProvider1 = new ErrorProvider(components);
             panel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -93,6 +95,10 @@ namespace AzAgroPOS.Teqdimat
             btnBagla.UseVisualStyleBackColor = true;
             btnBagla.Click += btnBagla_Click;
             // 
+            // errorProvider1
+            // 
+            errorProvider1.ContainerControl = this;
+            // 
             // QebzFormu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -115,5 +121,6 @@ namespace AzAgroPOS.Teqdimat
         private Panel panel1;
         private Button btnCapEt;
         private Button btnBagla;
+        private ErrorProvider errorProvider1;
     }
 }

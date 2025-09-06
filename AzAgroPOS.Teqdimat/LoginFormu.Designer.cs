@@ -29,9 +29,11 @@ namespace AzAgroPOS.Teqdimat
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             txtIstifadeciAdi = new MaterialSkin.Controls.MaterialTextBox2();
             txtParol = new MaterialSkin.Controls.MaterialTextBox2();
             btnDaxilOl = new MaterialSkin.Controls.MaterialButton();
+            errorProvider1 = new ErrorProvider(components);
             SuspendLayout();
             // 
             // txtIstifadeciAdi
@@ -119,6 +121,10 @@ namespace AzAgroPOS.Teqdimat
             btnDaxilOl.UseVisualStyleBackColor = false;
             btnDaxilOl.Click += btnDaxilOl_Click;
             // 
+            // errorProvider1
+            // 
+            errorProvider1.ContainerControl = this;
+            // 
             // LoginFormu
             // 
             AcceptButton = btnDaxilOl;
@@ -144,5 +150,6 @@ namespace AzAgroPOS.Teqdimat
         private MaterialSkin.Controls.MaterialTextBox2 txtIstifadeciAdi;
         private MaterialSkin.Controls.MaterialTextBox2 txtParol;
         private MaterialSkin.Controls.MaterialButton btnDaxilOl;
+        private ErrorProvider errorProvider1;
     }
 }

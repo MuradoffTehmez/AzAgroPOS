@@ -1,5 +1,6 @@
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Teqdimat.Yardimcilar;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -103,6 +104,52 @@ namespace AzAgroPOS.Teqdimat
                 {
                     MessageBox.Show("Zəhmət olmasa düzgün miqdar daxil edin.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+            }
+        }
+        
+        /// <summary>
+        /// Shows a validation error on a control
+        /// </summary>
+        /// <param name="control">Control to show error on</param>
+        /// <param name="message">Error message</param>
+        public void XetaGoster(Control control, string message)
+        {
+            errorProvider1.SetError(control, message);
+            errorProvider1.SetIconAlignment(control, ErrorIconAlignment.MiddleRight);
+            errorProvider1.SetIconPadding(control, 2);
+        }
+        
+        /// <summary>
+        /// Clears validation error from a control
+        /// </summary>
+        /// <param name="control">Control to clear error from</param>
+        public void XetaniTemizle(Control control)
+        {
+            errorProvider1.SetError(control, string.Empty);
+        }
+        
+        /// <summary>
+        /// Clears all validation errors
+        /// </summary>
+        public void ButunXetalariTemizle()
+        {
+            // Clear errors from all controls
+            foreach (Control control in this.Controls)
+            {
+                ClearErrorsRecursive(control);
+            }
+        }
+        
+        /// <summary>
+        /// Recursively clears errors from all controls
+        /// </summary>
+        /// <param name="control">Control to clear errors from</param>
+        private void ClearErrorsRecursive(Control control)
+        {
+            errorProvider1.SetError(control, string.Empty);
+            foreach (Control child in control.Controls)
+            {
+                ClearErrorsRecursive(child);
             }
         }
 

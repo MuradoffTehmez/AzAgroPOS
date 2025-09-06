@@ -4,6 +4,7 @@ namespace AzAgroPOS.Teqdimat;
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
+using AzAgroPOS.Teqdimat.Yardimcilar;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Mentiq.Idareciler;
 
@@ -130,7 +131,62 @@ public partial class IstifadeciIdareetmeFormu : BazaForm, IIstifadeciView
             txtTamAd.Text = istifadeci.TamAd;
             cmbRollar.SelectedValue = istifadeci.RolId;
             txtParol.Clear();
-            btnSil.Enabled = true; // "Redaktə" rejimində "Sil" düyməsi aktiv olsun
+            btnSil.Enabled = true; // "Redakt\u0131" rejimind\u0131 "Sil" d\u00FCym\u0131si aktiv olsun
+        }
+        else
+        {
+            btnSil.Enabled = false;
+        }
+    }
+    
+    public void MesajGoster(string mesaj, string basliq, MessageBoxIcon ikon)
+    {
+        MessageBox.Show(mesaj, basliq, MessageBoxButtons.OK, ikon);
+    }
+    
+    /// <summary>
+    /// Shows a validation error on a control
+    /// </summary>
+    /// <param name="control">Control to show error on</param>
+    /// <param name="message">Error message</param>
+    public void XetaGoster(Control control, string message)
+    {
+        errorProvider1.SetError(control, message);
+        errorProvider1.SetIconAlignment(control, ErrorIconAlignment.MiddleRight);
+        errorProvider1.SetIconPadding(control, 2);
+    }
+    
+    /// <summary>
+    /// Clears validation error from a control
+    /// </summary>
+    /// <param name="control">Control to clear error from</param>
+    public void XetaniTemizle(Control control)
+    {
+        errorProvider1.SetError(control, string.Empty);
+    }
+    
+    /// <summary>
+    /// Clears all validation errors
+    /// </summary>
+    public void ButunXetalariTemizle()
+    {
+        // Clear errors from all controls
+        foreach (Control control in this.Controls)
+        {
+            ClearErrorsRecursive(control);
+        }
+    }
+    
+    /// <summary>
+    /// Recursively clears errors from all controls
+    /// </summary>
+    /// <param name="control">Control to clear errors from</param>
+    private void ClearErrorsRecursive(Control control)
+    {
+        errorProvider1.SetError(control, string.Empty);
+        foreach (Control child in control.Controls)
+        {
+            ClearErrorsRecursive(child);
         }
     }
 }

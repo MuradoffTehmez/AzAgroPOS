@@ -18,6 +18,7 @@ namespace AzAgroPOS.Teqdimat
 
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
@@ -31,12 +32,14 @@ namespace AzAgroPOS.Teqdimat
             btnCapiBaslat = new MaterialSkin.Controls.MaterialButton();
             btnSiyahidanSil = new MaterialSkin.Controls.MaterialButton();
             dgvCapSiyahisi = new DataGridView();
+            errorProvider1 = new ErrorProvider(components);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
             splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvAxtarisNeticeleri).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvCapSiyahisi).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)errorProvider1).BeginInit();
             SuspendLayout();
             // 
             // splitContainer1
@@ -276,6 +279,10 @@ namespace AzAgroPOS.Teqdimat
             dgvCapSiyahisi.Size = new Size(629, 578);
             dgvCapSiyahisi.TabIndex = 3;
             // 
+            // errorProvider1
+            // 
+            errorProvider1.ContainerControl = this;
+            // 
             // BarkodCapiFormu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -292,6 +299,7 @@ namespace AzAgroPOS.Teqdimat
             splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvAxtarisNeticeleri).EndInit();
             ((System.ComponentModel.ISupportInitialize)dgvCapSiyahisi).EndInit();
+            ((System.ComponentModel.ISupportInitialize)errorProvider1).EndInit();
             ResumeLayout(false);
         }
 
@@ -306,5 +314,6 @@ namespace AzAgroPOS.Teqdimat
         private MaterialSkin.Controls.MaterialButton btnCapiBaslat;
         private MaterialSkin.Controls.MaterialButton btnSiyahidanSil;
         private MaterialSkin.Controls.MaterialLabel lblAxtarisXeta;
+        private ErrorProvider errorProvider1;
     }
 }

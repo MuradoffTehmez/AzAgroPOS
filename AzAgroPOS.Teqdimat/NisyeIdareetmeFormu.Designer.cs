@@ -17,6 +17,7 @@ namespace AzAgroPOS.Teqdimat
         #region Windows Form Designer generated code
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
@@ -27,6 +28,7 @@ namespace AzAgroPOS.Teqdimat
             btnOdenisEt = new MaterialSkin.Controls.MaterialButton();
             txtOdenisMeblegi = new MaterialSkin.Controls.MaterialTextBox2();
             dgvNisyeHereketleri = new DataGridView();
+            errorProvider1 = new ErrorProvider(components);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -195,6 +197,10 @@ namespace AzAgroPOS.Teqdimat
             dgvNisyeHereketleri.Size = new Size(775, 479);
             dgvNisyeHereketleri.TabIndex = 0;
             // 
+            // errorProvider1
+            // 
+            errorProvider1.ContainerControl = this;
+            // 
             // NisyeIdareetmeFormu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -222,5 +228,6 @@ namespace AzAgroPOS.Teqdimat
         private MaterialSkin.Controls.MaterialCard materialCard1;
         private MaterialSkin.Controls.MaterialButton btnOdenisEt;
         private MaterialSkin.Controls.MaterialTextBox2 txtOdenisMeblegi;
+        private ErrorProvider errorProvider1;
     }
 }

@@ -7,6 +7,7 @@
         #region Windows Form Designer generated code
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             splitContainer1 = new SplitContainer();
@@ -20,12 +21,14 @@
             txtTamAd = new MaterialSkin.Controls.MaterialTextBox2();
             txtIstifadeciAdi = new MaterialSkin.Controls.MaterialTextBox2();
             txtId = new TextBox();
+            errorProvider1 = new ErrorProvider(components);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
             splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvIstifadeciler).BeginInit();
             materialCard1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)errorProvider1).BeginInit();
             SuspendLayout();
             // 
             // splitContainer1
@@ -308,6 +311,10 @@
             txtId.TabIndex = 6;
             txtId.Visible = false;
             // 
+            // errorProvider1
+            // 
+            errorProvider1.ContainerControl = this;
+            // 
             // IstifadeciIdareetmeFormu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -325,6 +332,7 @@
             ((System.ComponentModel.ISupportInitialize)dgvIstifadeciler).EndInit();
             materialCard1.ResumeLayout(false);
             materialCard1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)errorProvider1).EndInit();
             ResumeLayout(false);
         }
 
@@ -341,5 +349,6 @@
         private MaterialSkin.Controls.MaterialTextBox2 txtIstifadeciAdi;
         private TextBox txtId;
         private MaterialSkin.Controls.MaterialButton btnYeni;
+        private ErrorProvider errorProvider1;
     }
 }

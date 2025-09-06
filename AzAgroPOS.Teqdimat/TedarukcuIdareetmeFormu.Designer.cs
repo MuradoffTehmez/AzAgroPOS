@@ -28,6 +28,7 @@ namespace AzAgroPOS.Teqdimat
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             pnlTop = new Panel();
@@ -495,6 +496,10 @@ namespace AzAgroPOS.Teqdimat
             dgvTedarukculer.TabIndex = 0;
             dgvTedarukculer.SelectionChanged += dgvTedarukculer_SelectionChanged;
             // 
+            // errorProvider1
+            // 
+            errorProvider1.ContainerControl = this;
+            // 
             // TedarukcuIdareetmeFormu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -551,5 +556,6 @@ namespace AzAgroPOS.Teqdimat
         private System.Windows.Forms.Button btnYarat;
         private System.Windows.Forms.GroupBox grpTedarukculer;
         private System.Windows.Forms.DataGridView dgvTedarukculer;
+        private ErrorProvider errorProvider1;
     }
 }

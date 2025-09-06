@@ -8,6 +8,7 @@ namespace AzAgroPOS.Teqdimat
         #region Windows Form Designer generated code
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             cardNovbeAc = new MaterialSkin.Controls.MaterialCard();
             btnNovbeAc = new MaterialSkin.Controls.MaterialButton();
             txtBaslangicMebleg = new MaterialSkin.Controls.MaterialTextBox2();
@@ -16,6 +17,7 @@ namespace AzAgroPOS.Teqdimat
             btnNovbeBagla = new MaterialSkin.Controls.MaterialButton();
             txtFaktikiMebleg = new MaterialSkin.Controls.MaterialTextBox2();
             lblNovbeMelumat = new MaterialSkin.Controls.MaterialLabel();
+            errorProvider1 = new ErrorProvider(components);
             cardNovbeAc.SuspendLayout();
             cardNovbeBagla.SuspendLayout();
             SuspendLayout();
@@ -189,6 +191,10 @@ namespace AzAgroPOS.Teqdimat
             lblNovbeMelumat.Size = new Size(1, 0);
             lblNovbeMelumat.TabIndex = 0;
             // 
+            // errorProvider1
+            // 
+            errorProvider1.ContainerControl = this;
+            // 
             // NovbeIdareetmesiFormu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -212,5 +218,6 @@ namespace AzAgroPOS.Teqdimat
         private MaterialSkin.Controls.MaterialButton btnNovbeBagla;
         private MaterialSkin.Controls.MaterialTextBox2 txtFaktikiMebleg;
         private MaterialSkin.Controls.MaterialLabel lblNovbeMelumat;
+        private ErrorProvider errorProvider1;
     }
 }

@@ -8,6 +8,7 @@ namespace AzAgroPOS.Teqdimat
         #region Windows Form Designer generated code
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             txtAxtaris = new MaterialSkin.Controls.MaterialTextBox2();
             btnAxtar = new MaterialSkin.Controls.MaterialButton();
             pnlMelumat = new Panel();
@@ -15,7 +16,9 @@ namespace AzAgroPOS.Teqdimat
             txtElaveOlunanSay = new MaterialSkin.Controls.MaterialTextBox2();
             lblMehsulMelumat = new MaterialSkin.Controls.MaterialLabel();
             lblMehsulId = new Label();
+            errorProvider1 = new ErrorProvider(components);
             pnlMelumat.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)errorProvider1).BeginInit();
             SuspendLayout();
             // 
             // txtAxtaris
@@ -165,6 +168,10 @@ namespace AzAgroPOS.Teqdimat
             lblMehsulId.TabIndex = 3;
             lblMehsulId.Visible = false;
             // 
+            // errorProvider1
+            // 
+            errorProvider1.ContainerControl = this;
+            // 
             // AnbarFormu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -178,6 +185,7 @@ namespace AzAgroPOS.Teqdimat
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Anbar Qeydiyyatı";
             pnlMelumat.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)errorProvider1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -189,5 +197,6 @@ namespace AzAgroPOS.Teqdimat
         private MaterialSkin.Controls.MaterialTextBox2 txtElaveOlunanSay;
         private MaterialSkin.Controls.MaterialLabel lblMehsulMelumat;
         private Label lblMehsulId;
+        private ErrorProvider errorProvider1;
     }
 }

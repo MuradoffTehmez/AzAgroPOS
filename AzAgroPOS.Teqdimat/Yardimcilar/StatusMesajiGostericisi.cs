@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace AzAgroPOS.Teqdimat.Yardimcilar
@@ -34,7 +35,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
             if (_statusLabel != null)
             {
                 _statusLabel.Text = message;
-                _statusLabel.ForeColor = System.Drawing.Color.Green;
+                _statusLabel.ForeColor = Color.Green;
                 StartClearTimer();
             }
         }
@@ -48,7 +49,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
             if (_statusLabel != null)
             {
                 _statusLabel.Text = message;
-                _statusLabel.ForeColor = System.Drawing.Color.Red;
+                _statusLabel.ForeColor = Color.Red;
                 StartClearTimer();
             }
         }
@@ -62,7 +63,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
             if (_statusLabel != null)
             {
                 _statusLabel.Text = message;
-                _statusLabel.ForeColor = System.Drawing.Color.Blue;
+                _statusLabel.ForeColor = Color.Blue;
                 StartClearTimer();
             }
         }
@@ -79,7 +80,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
             if (_statusLabel != null)
             {
                 _statusLabel.Text = "Hazır";
-                _statusLabel.ForeColor = System.Drawing.SystemColors.ControlText;
+                _statusLabel.ForeColor = SystemColors.ControlText;
             }
         }
     }
