@@ -17,6 +17,7 @@
 
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             splitContainer1 = new SplitContainer();
@@ -30,6 +31,7 @@
             txtUnvan = new MaterialSkin.Controls.MaterialTextBox2();
             txtTelefon = new MaterialSkin.Controls.MaterialTextBox2();
             txtTamAd = new MaterialSkin.Controls.MaterialTextBox2();
+            errorProvider1 = new ErrorProvider(components);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -97,6 +99,8 @@
             dgvMusteriler.Size = new Size(638, 486);
             dgvMusteriler.TabIndex = 1;
             dgvMusteriler.SelectionChanged += dgvMusteriler_SelectionChanged;
+            dgvMusteriler.CellDoubleClick += dgvMusteriler_CellDoubleClick;
+            dgvMusteriler.CellDoubleClick += dgvMusteriler_CellDoubleClick;
             // 
             // txtAxtaris
             // 
@@ -345,6 +349,10 @@
             txtTamAd.TrailingIcon = null;
             txtTamAd.UseSystemPasswordChar = false;
             // 
+            // errorProvider1
+            // 
+            errorProvider1.ContainerControl = this;
+            // 
             // MusteriIdareetmeFormu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -376,5 +384,6 @@
         private MaterialSkin.Controls.MaterialButton btnYeni;
         private MaterialSkin.Controls.MaterialButton btnSil;
         private MaterialSkin.Controls.MaterialTextBox2 txtKreditLimiti;
+        private ErrorProvider errorProvider1;
     }
 }

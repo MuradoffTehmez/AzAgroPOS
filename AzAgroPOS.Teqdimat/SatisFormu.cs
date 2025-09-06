@@ -27,6 +27,9 @@ namespace AzAgroPOS.Teqdimat
             this.Load += (s, e) => FormYuklendiIstek?.Invoke(this, EventArgs.Empty);
             ConfigureDataGridViewStyles();
             AddCartActionButtons();
+            
+            // Initialize status message helper
+            StatusMesajiGostericisi.Initialize(toolStripStatusLabel1);
         }
 
         #region ISatisView Implementasiyası
@@ -110,6 +113,10 @@ namespace AzAgroPOS.Teqdimat
                 {
                     if (!gorunenler.Contains(col.Name)) col.Visible = false;
                 }
+                
+                // Allow sorting
+                dgvAxtarisNeticeleri.Columns["Ad"].SortMode = DataGridViewColumnSortMode.Automatic;
+                dgvAxtarisNeticeleri.Columns["StokKodu"].SortMode = DataGridViewColumnSortMode.Automatic;
             }
         }
 
@@ -136,6 +143,21 @@ namespace AzAgroPOS.Teqdimat
                 dgvSebet.Columns["UmumiMebleg"].ReadOnly = true;
                 dgvSebet.Columns["MehsulAdi"].ReadOnly = true;
                 dgvSebet.Columns["QiymetNövü"].ReadOnly = true;
+                
+                // Format currency columns
+                dgvSebet.Columns["VahidinQiymeti"].DefaultCellStyle.Format = "c2";
+                dgvSebet.Columns["UmumiMebleg"].DefaultCellStyle.Format = "c2";
+                
+                // Align numeric columns to the right
+                dgvSebet.Columns["Miqdar"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                dgvSebet.Columns["VahidinQiymeti"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                dgvSebet.Columns["UmumiMebleg"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                
+                // Allow sorting
+                dgvSebet.Columns["MehsulAdi"].SortMode = DataGridViewColumnSortMode.Automatic;
+                dgvSebet.Columns["Miqdar"].SortMode = DataGridViewColumnSortMode.Automatic;
+                dgvSebet.Columns["VahidinQiymeti"].SortMode = DataGridViewColumnSortMode.Automatic;
+                dgvSebet.Columns["UmumiMebleg"].SortMode = DataGridViewColumnSortMode.Automatic;
             }
         }
 
@@ -163,9 +185,71 @@ namespace AzAgroPOS.Teqdimat
             if (cmbMusteriler.Items.Count > 0) cmbMusteriler.SelectedIndex = 0;
         }
 
+        public void StatusMesajiGoster(string mesaj, StatusMesajiNovu nov)
+        {
+            switch (nov)
+            {
+                case StatusMesajiNovu.Ugurlu:
+                    StatusMesajiGostericisi.UgurluMesajGoster(mesaj);
+                    break;
+                case StatusMesajiNovu.Xeta:
+                    StatusMesajiGostericisi.XetaMesajiGoster(mesaj);
+                    break;
+                case StatusMesajiNovu.Melumat:
+                    StatusMesajiGostericisi.MelumatMesajiGoster(mesaj);
+                    break;
+            }
+        }
+
         public DialogResult MesajGoster(string mesaj, string basliq, MessageBoxButtons düymələr, MessageBoxIcon ikon)
         {
             return MessageBox.Show(this, mesaj, basliq, düymələr, ikon);
+        }
+        
+        /// <summary>
+        /// Shows a validation error on a control
+        /// </summary>
+        /// <param name="control">Control to show error on</param>
+        /// <param name="message">Error message</param>
+        public void XetaGoster(Control control, string message)
+        {
+            errorProvider1.SetError(control, message);
+            errorProvider1.SetIconAlignment(control, ErrorIconAlignment.MiddleRight);
+            errorProvider1.SetIconPadding(control, 2);
+        }
+        
+        /// <summary>
+        /// Clears validation error from a control
+        /// </summary>
+        /// <param name="control">Control to clear error from</param>
+        public void XetaniTemizle(Control control)
+        {
+            errorProvider1.SetError(control, string.Empty);
+        }
+        
+        /// <summary>
+        /// Clears all validation errors
+        /// </summary>
+        public void ButunXetalariTemizle()
+        {
+            // Clear errors from all controls
+            foreach (Control control in this.Controls)
+            {
+                ClearErrorsRecursive(control);
+            }
+        }
+        
+        /// <summary>
+        /// Recursively clears errors from all controls
+        /// </summary>
+        /// <param name="control">Control to clear errors from</param>
+        private void ClearErrorsRecursive(Control control)
+        {
+            errorProvider1.SetError(control, string.Empty);
+            foreach (Control child in control.Controls)
+            {
+                ClearErrorsRecursive(child);
+            }
         }
         
         // Müştəri ekranı dəstəyi
@@ -180,7 +264,11 @@ namespace AzAgroPOS.Teqdimat
         #endregion
 
         #region Hadisə Ötürücüləri
-        private void txtAxtaris_TextChanged(object sender, EventArgs e) => MehsulAxtarIstek?.Invoke(this, EventArgs.Empty);
+        private async void txtAxtaris_TextChanged(object sender, EventArgs e) => 
+            await AsyncIslemYardimcisi.IslemiIcraEt(this, async () => 
+            {
+                await Task.Run(() => MehsulAxtarIstek?.Invoke(this, EventArgs.Empty));
+            });
         private void btnSebeteElaveEt_Click(object sender, EventArgs e) => SebeteElaveEtIstek?.Invoke(this, EventArgs.Empty);
         private void dgvAxtarisNeticeleri_DoubleClick(object sender, EventArgs e) => btnSebeteElaveEt.PerformClick();
         private void SuretliSatisButton_Click(object sender, EventArgs e)
@@ -222,11 +310,23 @@ namespace AzAgroPOS.Teqdimat
         }
         private void btnYeniMusteri_Click(object sender, EventArgs e)
         {
-            using (var musteriFormu = _serviceProvider.GetRequiredService<MusteriIdareetmeFormu>())
+            var musteriFormu = _serviceProvider.GetRequiredService<MusteriIdareetmeFormu>();
+            if (musteriFormu.ShowDialog() == DialogResult.OK)
             {
-                musteriFormu.ShowDialog();
+                // Update customer list and automatically select the newly created customer
+                MusteriSiyahisiniYenileIstek?.Invoke(this, EventArgs.Empty);
+                
+                // Select the newly created customer
+                if (musteriFormu.SecilenMusteriId > 0)
+                {
+                    cmbMusteriler.SelectedValue = musteriFormu.SecilenMusteriId;
+                }
             }
-            MusteriSiyahisiniYenileIstek?.Invoke(this, EventArgs.Empty);
+            else
+            {
+                // If form was cancelled, just refresh the customer list in case any changes were made
+                MusteriSiyahisiniYenileIstek?.Invoke(this, EventArgs.Empty);
+            }
         }
         private void dgvSebet_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {

@@ -1,7 +1,8 @@
-﻿using AzAgroPOS.Mentiq.DTOs;
+using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
+using AzAgroPOS.Teqdimat.Yardimcilar;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -11,6 +12,7 @@ namespace AzAgroPOS.Teqdimat
     public partial class MusteriIdareetmeFormu : BazaForm, IMusteriView
     {
         private readonly MusteriPresenter _presenter;
+        public int SecilenMusteriId { get; private set; } = 0;
 
         public MusteriIdareetmeFormu(MusteriManager musteriManager)
         {
@@ -52,8 +54,19 @@ namespace AzAgroPOS.Teqdimat
                 dgvMusteriler.Columns["UmumiBorc"].HeaderText = "Cari Borc";
                 dgvMusteriler.Columns["KreditLimiti"].HeaderText = "Kredit Limiti";
 
+                // Format currency columns
                 dgvMusteriler.Columns["UmumiBorc"].DefaultCellStyle.Format = "N2";
                 dgvMusteriler.Columns["KreditLimiti"].DefaultCellStyle.Format = "N2";
+                
+                // Align numeric columns to the right
+                dgvMusteriler.Columns["UmumiBorc"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                dgvMusteriler.Columns["KreditLimiti"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                
+                // Allow sorting
+                dgvMusteriler.Columns["TamAd"].SortMode = DataGridViewColumnSortMode.Automatic;
+                dgvMusteriler.Columns["TelefonNomresi"].SortMode = DataGridViewColumnSortMode.Automatic;
+                dgvMusteriler.Columns["UmumiBorc"].SortMode = DataGridViewColumnSortMode.Automatic;
+                dgvMusteriler.Columns["KreditLimiti"].SortMode = DataGridViewColumnSortMode.Automatic;
             }
             dgvMusteriler.SelectionChanged += dgvMusteriler_SelectionChanged;
         }
@@ -72,16 +85,87 @@ namespace AzAgroPOS.Teqdimat
         {
             MessageBox.Show(mesaj, basliq, MessageBoxButtons.OK, ikon);
         }
+        
+        /// <summary>
+        /// Shows a validation error on a control
+        /// </summary>
+        /// <param name="control">Control to show error on</param>
+        /// <param name="message">Error message</param>
+        public void XetaGoster(Control control, string message)
+        {
+            errorProvider1.SetError(control, message);
+            errorProvider1.SetIconAlignment(control, ErrorIconAlignment.MiddleRight);
+            errorProvider1.SetIconPadding(control, 2);
+        }
+        
+        /// <summary>
+        /// Clears validation error from a control
+        /// </summary>
+        /// <param name="control">Control to clear error from</param>
+        public void XetaniTemizle(Control control)
+        {
+            errorProvider1.SetError(control, string.Empty);
+        }
+        
+        /// <summary>
+        /// Clears all validation errors
+        /// </summary>
+        public void ButunXetalariTemizle()
+        {
+            // Clear errors from all controls
+            foreach (Control control in this.Controls)
+            {
+                ClearErrorsRecursive(control);
+            }
+        }
+        
+        /// <summary>
+        /// Recursively clears errors from all controls
+        /// </summary>
+        /// <param name="control">Control to clear errors from</param>
+        private void ClearErrorsRecursive(Control control)
+        {
+            errorProvider1.SetError(control, string.Empty);
+            foreach (Control child in control.Controls)
+            {
+                ClearErrorsRecursive(child);
+            }
+        }
 
         #endregion
 
         #region Hadisə Ötürücüləri
 
-        private void dgvMusteriler_SelectionChanged(object sender, EventArgs e) => MusteriSecildi?.Invoke(sender, e);
+        private void dgvMusteriler_SelectionChanged(object sender, EventArgs e)
+        {
+            MusteriSecildi?.Invoke(sender, e);
+            
+            // Update selected customer ID when selection changes
+            if (dgvMusteriler.CurrentRow?.DataBoundItem is MusteriDto musteri)
+            {
+                SecilenMusteriId = musteri.Id;
+            }
+            else
+            {
+                SecilenMusteriId = 0;
+            }
+        }
+        
         private void btnYeni_Click(object sender, EventArgs e) => YeniMusteriIstek?.Invoke(sender, e);
         private void btnYaddaSaxla_Click(object sender, EventArgs e) => YaddaSaxlaIstek?.Invoke(sender, e);
         private void btnSil_Click(object sender, EventArgs e) => SilIstek?.Invoke(sender, e);
         private void txtAxtaris_TextChanged(object sender, EventArgs e) => AxtarIstek?.Invoke(sender, e);
+
+        // Handle double-click to select customer and close form
+        private void dgvMusteriler_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && dgvMusteriler.CurrentRow?.DataBoundItem is MusteriDto musteri)
+            {
+                SecilenMusteriId = musteri.Id;
+                this.DialogResult = DialogResult.OK;
+                this.Close();
+            }
+        }
 
         #endregion
     }

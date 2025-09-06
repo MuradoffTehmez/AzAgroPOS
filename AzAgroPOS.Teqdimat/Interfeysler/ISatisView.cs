@@ -45,6 +45,9 @@ namespace AzAgroPOS.Teqdimat.Interfeysler
         void FormuTamSifirla();
         DialogResult MesajGoster(string mesaj, string basliq, MessageBoxButtons düymələr, MessageBoxIcon ikon);
         
+        // Status mesajları
+        void StatusMesajiGoster(string mesaj, StatusMesajiNovu nov);
+        
         // Müştəri ekranı dəstəyi
         void MusteriEkraniYenile(string mehsulAdi, decimal qiymet, decimal miqdar);
     }

@@ -57,6 +57,9 @@
             flpSuretliSatis = new FlowLayoutPanel();
             contextMenuStripGozleyenler = new ContextMenuStrip(components);
             toolTip1 = new ToolTip(components);
+            statusStrip1 = new StatusStrip();
+            toolStripStatusLabel1 = new ToolStripStatusLabel();
+            errorProvider1 = new ErrorProvider(components);
             pnlMainContainer.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             panel1.SuspendLayout();
@@ -382,12 +385,12 @@
             pnlPaymentSection.Controls.Add(pnlAdvancedOptions);
             pnlPaymentSection.Depth = 0;
             pnlPaymentSection.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            pnlPaymentSection.Location = new Point(3, 586);
+            pnlPaymentSection.Location = new Point(442, 587);
             pnlPaymentSection.Margin = new Padding(14);
             pnlPaymentSection.MouseState = MaterialSkin.MouseState.HOVER;
             pnlPaymentSection.Name = "pnlPaymentSection";
             pnlPaymentSection.Padding = new Padding(14);
-            pnlPaymentSection.Size = new Size(1132, 176);
+            pnlPaymentSection.Size = new Size(1138, 171);
             pnlPaymentSection.TabIndex = 2;
             // 
             // lblTotalTitle
@@ -776,12 +779,31 @@
             contextMenuStripGozleyenler.Size = new Size(61, 4);
             contextMenuStripGozleyenler.ItemClicked += contextMenuStripGozleyenler_ItemClicked;
             // 
+            // errorProvider1
+            // 
+            errorProvider1.ContainerControl = this;
+            // 
+            // statusStrip1
+            // 
+            statusStrip1.Location = new Point(0, 836);
+            statusStrip1.Name = "statusStrip1";
+            statusStrip1.Size = new Size(1620, 22);
+            statusStrip1.TabIndex = 1;
+            statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel1
+            // 
+            toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            toolStripStatusLabel1.Size = new Size(42, 17);
+            toolStripStatusLabel1.Text = "Hazır";
+            // 
             // SatisFormu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1620, 858);
             Controls.Add(pnlMainContainer);
+            Controls.Add(statusStrip1);
             KeyPreview = true;
             Name = "SatisFormu";
             StartPosition = FormStartPosition.CenterScreen;
@@ -841,5 +863,8 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.FlowLayoutPanel flpSuretliSatis;
         private MaterialSkin.Controls.MaterialButton btnYeniMusteri;
+        private StatusStrip statusStrip1;
+        private ToolStripStatusLabel toolStripStatusLabel1;
+        private ErrorProvider errorProvider1;
     }
 }

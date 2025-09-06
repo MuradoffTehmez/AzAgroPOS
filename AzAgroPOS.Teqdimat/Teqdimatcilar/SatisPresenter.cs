@@ -41,7 +41,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             AbuneOl();
         }
 
-        private void AbuneOl()
+        private async void AbuneOl()
         {
             _view.FormYuklendiIstek += async (s, e) => await FormuYukle();
             _view.MehsulAxtarIstek += async (s, e) => await MehsulAxtar();
@@ -166,7 +166,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
         {
             if (!_aktivSebet.Any())
             {
-                _view.MesajGoster("Səbət boşdur. Endirim tətbiq etmək mümkün deyil.", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                _view.StatusMesajiGoster("Səbət boşdur. Endirim tətbiq etmək mümkün deyil.", StatusMesajiNovu.Xeta);
                 return;
             }
 
@@ -196,7 +196,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                 var secilmisSebetElementi = _view.SecilmisSebetElementi;
                 if (secilmisSebetElementi == null)
                 {
-                    _view.MesajGoster("Zəhmət olmasa, endirim tətbiq etmək üçün bir məhsul seçin.", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    _view.StatusMesajiGoster("Zəhmət olmasa, endirim tətbiq etmək üçün bir məhsul seçin.", StatusMesajiNovu.Xeta);
                     return;
                 }
 
@@ -218,14 +218,14 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             }
 
             GosterisleriYenile();
-            _view.MesajGoster($"{appliedDiscount:N2} AZN endirim tətbiq edildi.", "Endirim", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            _view.StatusMesajiGoster($"{appliedDiscount:N2} AZN endirim tətbiq edildi.", StatusMesajiNovu.Ugurlu);
         }
 
         private void SatisiGozlet()
         {
             if (!_aktivSebet.Any())
             {
-                _view.MesajGoster("Gözlətmək üçün səbət boşdur.", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                _view.StatusMesajiGoster("Gözlətmək üçün səbət boşdur.", StatusMesajiNovu.Xeta);
                 return;
             }
 
@@ -259,14 +259,14 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 
             if (!_aktivSebet.Any())
             {
-                _view.MesajGoster("Satış üçün səbət boşdur.", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                _view.StatusMesajiGoster("Satış üçün səbət boşdur.", StatusMesajiNovu.Xeta);
                 return;
             }
 
             var musteriId = _view.SecilmisMusteriId;
             if (odenisMetodu == OdenisMetodu.Nisyə && !musteriId.HasValue)
             {
-                _view.MesajGoster("Nisyə satış üçün müştəri seçin.", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                _view.StatusMesajiGoster("Nisyə satış üçün müştəri seçin.", StatusMesajiNovu.Xeta);
                 return;
             }
 
@@ -290,7 +290,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 
             if (netice.UgurluDur)
             {
-                _view.MesajGoster("Satış uğurla tamamlandı!", "Uğurlu", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                _view.StatusMesajiGoster("Satış uğurla tamamlandı!", StatusMesajiNovu.Ugurlu);
                 FormuTamSifirla();
             }
             else

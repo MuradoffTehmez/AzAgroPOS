@@ -11,6 +11,7 @@ namespace AzAgroPOS.Teqdimat
     {
         private static MaterialSkinManager _materialSkinManager;
         private Color originalRowColor;
+        private Cursor _originalCursor;
 
         public BazaForm()
         {
@@ -120,5 +121,55 @@ namespace AzAgroPOS.Teqdimat
             }
         }
 
+        /// <summary>
+        /// Sets the form cursor to wait cursor and disables all controls
+        /// </summary>
+        public void YuklemeBasladi()
+        {
+            _originalCursor = this.Cursor;
+            this.Cursor = Cursors.WaitCursor;
+            DisableControls(this);
+        }
+
+        /// <summary>
+        /// Restores the form cursor and enables all controls
+        /// </summary>
+        public void YuklemeBitdi()
+        {
+            this.Cursor = _originalCursor ?? Cursors.Default;
+            EnableControls(this);
+        }
+
+        /// <summary>
+        /// Disables all controls on the form
+        /// </summary>
+        /// <param name="control">Control to disable</param>
+        private void DisableControls(Control control)
+        {
+            foreach (Control c in control.Controls)
+            {
+                if (c is DataGridView || c is TextBox || c is ComboBox || c is Button || c is CheckBox)
+                {
+                    c.Enabled = false;
+                }
+                DisableControls(c);
+            }
+        }
+
+        /// <summary>
+        /// Enables all controls on the form
+        /// </summary>
+        /// <param name="control">Control to enable</param>
+        private void EnableControls(Control control)
+        {
+            foreach (Control c in control.Controls)
+            {
+                if (c is DataGridView || c is TextBox || c is ComboBox || c is Button || c is CheckBox)
+                {
+                    c.Enabled = true;
+                }
+                EnableControls(c);
+            }
+        }
     }
 }

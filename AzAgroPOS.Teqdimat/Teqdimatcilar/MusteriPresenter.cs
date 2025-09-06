@@ -68,6 +68,9 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 
         private void MusteriFormunuDoldur()
         {
+            // Clear validation errors when loading a customer
+            _view.ButunXetalariTemizle();
+            
             if (_view.SecilmisMusteriId > 0)
             {
                 var musteri = _musteriCache.FirstOrDefault(m => m.Id == _view.SecilmisMusteriId);
@@ -83,9 +86,30 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 
         private async Task YaddaSaxla()
         {
-            if (string.IsNullOrWhiteSpace(_view.TamAd) || string.IsNullOrWhiteSpace(_view.Telefon))
+            // Clear previous validation errors
+            _view.ButunXetalariTemizle();
+            
+            // Validate required fields
+            bool valid = true;
+            
+            if (string.IsNullOrWhiteSpace(_view.TamAd))
             {
-                _view.MesajGoster("Tam ad və Telefon nömrəsi mütləq daxil edilməlidir.", "Xəbərdarlıq", MessageBoxIcon.Warning);
+                _view.XetaGoster(GetControlByName("txtTamAd"), 
+                    "Tam ad mütləq daxil edilməlidir.");
+                valid = false;
+            }
+            
+            if (string.IsNullOrWhiteSpace(_view.Telefon))
+            {
+                _view.XetaGoster(GetControlByName("txtTelefon"), 
+                    "Telefon nömrəsi mütləq daxil edilməlidir.");
+                valid = false;
+            }
+            
+            if (!valid)
+            {
+                _view.MesajGoster("Zəhmət olmasa, qırmızı ilə işarələnmiş sahələri düzgün doldurun.", 
+                    "Xəbərdarlıq", MessageBoxIcon.Warning);
                 return;
             }
 
@@ -117,6 +141,45 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             {
                 _view.MesajGoster(netice.Mesaj, "Xəta", MessageBoxIcon.Error);
             }
+        }
+        
+        /// <summary>
+        /// Gets a control by its name
+        /// </summary>
+        /// <param name="name">Name of the control</param>
+        /// <returns>Control with the specified name, or null if not found</returns>
+        private Control GetControlByName(string name)
+        {
+            // Try to find the control directly
+            var field = _view.GetType().GetField(name, System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+            if (field != null)
+            {
+                return field.GetValue(_view) as Control;
+            }
+            
+            // If not found, try to find it recursively
+            return FindControlRecursive((Control)_view, name);
+        }
+        
+        /// <summary>
+        /// Recursively finds a control by its name
+        /// </summary>
+        /// <param name="control">Parent control to search in</param>
+        /// <param name="name">Name of the control to find</param>
+        /// <returns>Control with the specified name, or null if not found</returns>
+        private Control FindControlRecursive(Control control, string name)
+        {
+            if (control.Name == name)
+                return control;
+                
+            foreach (Control child in control.Controls)
+            {
+                Control found = FindControlRecursive(child, name);
+                if (found != null)
+                    return found;
+            }
+            
+            return null;
         }
 
         private async Task Sil()

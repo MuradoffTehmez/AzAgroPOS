@@ -24,5 +24,10 @@ namespace AzAgroPOS.Teqdimat.Interfeysler
         void MusterileriGoster(List<MusteriDto> musteriler);
         void FormuTemizle();
         void MesajGoster(string mesaj, string basliq, MessageBoxIcon ikon);
+        
+        // Validation methods
+        void XetaGoster(Control control, string message);
+        void XetaniTemizle(Control control);
+        void ButunXetalariTemizle();
     }
 }

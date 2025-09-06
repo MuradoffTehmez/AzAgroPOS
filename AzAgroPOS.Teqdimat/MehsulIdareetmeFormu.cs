@@ -107,6 +107,13 @@ namespace AzAgroPOS.Teqdimat
                 dgvMehsullar.Columns["PerakendeSatisQiymetiStr"].HeaderText = "Pərakəndə Qiymət";
                 dgvMehsullar.Columns["MovcudSay"].HeaderText = "Mövcud Say";
                 dgvMehsullar.Columns["OlcuVahidiStr"].HeaderText = "Ölçü Vahidi";
+                
+                // Format currency columns
+                dgvMehsullar.Columns["PerakendeSatisQiymetiStr"].DefaultCellStyle.Format = "c2";
+                
+                // Align numeric columns to the right
+                dgvMehsullar.Columns["PerakendeSatisQiymetiStr"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                dgvMehsullar.Columns["MovcudSay"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             }
         }
 

@@ -140,7 +140,13 @@ namespace AzAgroPOS.Teqdimat
             txtTemirXerci.Clear();
             txtServisHaqqi.Clear();
             txtYekunMebleg.Clear();
-            cmbUsta.SelectedIndex = 0;
+            
+            // Safely set the selected index only if there are items in the ComboBox
+            if (cmbUsta.Items.Count > 0)
+            {
+                cmbUsta.SelectedIndex = 0;
+            }
+            
             dgvSifarisler.ClearSelection();
             txtMusteriAdi.Focus();
         }
