@@ -1,4 +1,3 @@
-// EndirimFormu.Designer.cs
 namespace AzAgroPOS.Teqdimat.Yardimcilar
 {
     partial class EndirimFormu
@@ -14,7 +13,6 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         #region Windows Form Designer generated code
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.rbSelectedItem = new System.Windows.Forms.RadioButton();
             this.rbCart = new System.Windows.Forms.RadioButton();
@@ -25,160 +23,145 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
             this.txtEndirimDeyer = new System.Windows.Forms.TextBox();
             this.btnTətbiqEt = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            errorProvider1 = new ErrorProvider(components);
-            groupBox1.SuspendLayout();
-            groupBox2.SuspendLayout();
-            SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.SuspendLayout();
             // 
             // groupBox1
             // 
-            groupBox1.Controls.Add(rbSelectedItem);
-            groupBox1.Controls.Add(rbCart);
-            groupBox1.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            groupBox1.ForeColor = Color.FromArgb(34, 139, 34);
-            groupBox1.Location = new Point(15, 15);
-            groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(250, 75);
-            groupBox1.TabIndex = 5;
-            groupBox1.TabStop = false;
-            groupBox1.Text = "Endirim Əhatəsi";
+            this.groupBox1.Controls.Add(this.rbSelectedItem);
+            this.groupBox1.Controls.Add(this.rbCart);
+            this.groupBox1.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.groupBox1.ForeColor = System.Drawing.Color.FromArgb(0, 128, 64);
+            this.groupBox1.Location = new System.Drawing.Point(20, 20);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(280, 80);
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Endirim Əhatəsi";
             // 
             // rbSelectedItem
             // 
-            rbSelectedItem.AutoSize = true;
-            rbSelectedItem.Font = new Font("Segoe UI", 9F);
-            rbSelectedItem.Location = new Point(10, 45);
-            rbSelectedItem.Name = "rbSelectedItem";
-            rbSelectedItem.Size = new Size(110, 19);
-            rbSelectedItem.TabIndex = 0;
-            rbSelectedItem.Text = "Seçilmiş Məhsul";
-            rbSelectedItem.UseVisualStyleBackColor = true;
-            rbSelectedItem.CheckedChanged += rbSelectedItem_CheckedChanged;
+            this.rbSelectedItem.AutoSize = true;
+            this.rbSelectedItem.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.rbSelectedItem.Location = new System.Drawing.Point(12, 48);
+            this.rbSelectedItem.Name = "rbSelectedItem";
+            this.rbSelectedItem.Size = new System.Drawing.Size(118, 19);
+            this.rbSelectedItem.Text = "Seçilmiş Məhsul";
+            this.rbSelectedItem.UseVisualStyleBackColor = true;
+            this.rbSelectedItem.CheckedChanged += new System.EventHandler(this.rbSelectedItem_CheckedChanged);
             // 
             // rbCart
             // 
-            rbCart.AutoSize = true;
-            rbCart.Checked = true;
-            rbCart.Font = new Font("Segoe UI", 9F);
-            rbCart.Location = new Point(10, 20);
-            rbCart.Name = "rbCart";
-            rbCart.Size = new Size(54, 19);
-            rbCart.TabIndex = 1;
-            rbCart.TabStop = true;
-            rbCart.Text = "Səbət";
-            rbCart.UseVisualStyleBackColor = true;
-            rbCart.CheckedChanged += rbCart_CheckedChanged;
+            this.rbCart.AutoSize = true;
+            this.rbCart.Checked = true;
+            this.rbCart.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.rbCart.Location = new System.Drawing.Point(12, 23);
+            this.rbCart.Name = "rbCart";
+            this.rbCart.Size = new System.Drawing.Size(57, 19);
+            this.rbCart.TabStop = true;
+            this.rbCart.Text = "Səbət";
+            this.rbCart.UseVisualStyleBackColor = true;
+            this.rbCart.CheckedChanged += new System.EventHandler(this.rbCart_CheckedChanged);
             // 
             // groupBox2
             // 
-            groupBox2.Controls.Add(rbFixedAmount);
-            groupBox2.Controls.Add(rbPercentage);
-            groupBox2.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            groupBox2.ForeColor = Color.FromArgb(34, 139, 34);
-            groupBox2.Location = new Point(15, 100);
-            groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(250, 75);
-            groupBox2.TabIndex = 4;
-            groupBox2.TabStop = false;
-            groupBox2.Text = "Endirim Növü";
+            this.groupBox2.Controls.Add(this.rbFixedAmount);
+            this.groupBox2.Controls.Add(this.rbPercentage);
+            this.groupBox2.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.groupBox2.ForeColor = System.Drawing.Color.FromArgb(0, 128, 64);
+            this.groupBox2.Location = new System.Drawing.Point(20, 110);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(280, 80);
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Endirim Növü";
             // 
             // rbFixedAmount
             // 
-            rbFixedAmount.AutoSize = true;
-            rbFixedAmount.Font = new Font("Segoe UI", 9F);
-            rbFixedAmount.Location = new Point(10, 45);
-            rbFixedAmount.Name = "rbFixedAmount";
-            rbFixedAmount.Size = new Size(94, 19);
-            rbFixedAmount.TabIndex = 0;
-            rbFixedAmount.Text = "Sabit Məbləğ";
-            rbFixedAmount.UseVisualStyleBackColor = true;
+            this.rbFixedAmount.AutoSize = true;
+            this.rbFixedAmount.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.rbFixedAmount.Location = new System.Drawing.Point(12, 48);
+            this.rbFixedAmount.Name = "rbFixedAmount";
+            this.rbFixedAmount.Size = new System.Drawing.Size(96, 19);
+            this.rbFixedAmount.Text = "Sabit Məbləğ";
+            this.rbFixedAmount.UseVisualStyleBackColor = true;
             // 
             // rbPercentage
             // 
-            rbPercentage.AutoSize = true;
-            rbPercentage.Checked = true;
-            rbPercentage.Font = new Font("Segoe UI", 9F);
-            rbPercentage.Location = new Point(10, 20);
-            rbPercentage.Name = "rbPercentage";
-            rbPercentage.Size = new Size(66, 19);
-            rbPercentage.TabIndex = 1;
-            rbPercentage.TabStop = true;
-            rbPercentage.Text = "Faiz (%)";
-            rbPercentage.UseVisualStyleBackColor = true;
+            this.rbPercentage.AutoSize = true;
+            this.rbPercentage.Checked = true;
+            this.rbPercentage.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.rbPercentage.Location = new System.Drawing.Point(12, 23);
+            this.rbPercentage.Name = "rbPercentage";
+            this.rbPercentage.Size = new System.Drawing.Size(63, 19);
+            this.rbPercentage.TabStop = true;
+            this.rbPercentage.Text = "Faiz (%)";
+            this.rbPercentage.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
-            label1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            label1.ForeColor = Color.FromArgb(34, 139, 34);
-            label1.Location = new Point(15, 185);
-            label1.Name = "label1";
-            label1.Size = new Size(52, 20);
-            label1.TabIndex = 3;
-            label1.Text = "Dəyər";
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.label1.ForeColor = System.Drawing.Color.FromArgb(0, 128, 64);
+            this.label1.Location = new System.Drawing.Point(20, 205);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(45, 20);
+            this.label1.Text = "Dəyər";
             // 
             // txtEndirimDeyer
             // 
-            txtEndirimDeyer.BorderStyle = BorderStyle.FixedSingle;
-            txtEndirimDeyer.Font = new Font("Segoe UI", 10F);
-            txtEndirimDeyer.Location = new Point(83, 182);
-            txtEndirimDeyer.Name = "txtEndirimDeyer";
-            txtEndirimDeyer.Size = new Size(182, 25);
-            txtEndirimDeyer.TabIndex = 2;
+            this.txtEndirimDeyer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtEndirimDeyer.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtEndirimDeyer.Location = new System.Drawing.Point(75, 202);
+            this.txtEndirimDeyer.Name = "txtEndirimDeyer";
+            this.txtEndirimDeyer.Size = new System.Drawing.Size(225, 25);
             // 
             // btnTətbiqEt
             // 
-            btnTətbiqEt.BackColor = Color.FromArgb(46, 204, 113);
-            btnTətbiqEt.FlatStyle = FlatStyle.Flat;
-            btnTətbiqEt.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            btnTətbiqEt.ForeColor = Color.White;
-            btnTətbiqEt.Location = new Point(15, 225);
-            btnTətbiqEt.Name = "btnTətbiqEt";
-            btnTətbiqEt.Size = new Size(120, 35);
-            btnTətbiqEt.TabIndex = 1;
-            btnTətbiqEt.Text = "✔ Tətbiq Et";
-            btnTətbiqEt.UseVisualStyleBackColor = false;
-            btnTətbiqEt.Click += btnTətbiqEt_Click;
+            this.btnTətbiqEt.BackColor = System.Drawing.Color.FromArgb(0, 158, 96);
+            this.btnTətbiqEt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnTətbiqEt.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.btnTətbiqEt.ForeColor = System.Drawing.Color.White;
+            this.btnTətbiqEt.Location = new System.Drawing.Point(20, 245);
+            this.btnTətbiqEt.Name = "btnTətbiqEt";
+            this.btnTətbiqEt.Size = new System.Drawing.Size(130, 38);
+            this.btnTətbiqEt.Text = "✔ Tətbiq Et";
+            this.btnTətbiqEt.UseVisualStyleBackColor = false;
+            this.btnTətbiqEt.Click += new System.EventHandler(this.btnTətbiqEt_Click);
             // 
             // btnCancel
             // 
-            btnCancel.BackColor = Color.FromArgb(189, 195, 199);
-            btnCancel.FlatStyle = FlatStyle.Flat;
-            btnCancel.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            btnCancel.ForeColor = Color.Black;
-            btnCancel.Location = new Point(145, 225);
-            btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(120, 35);
-            btnCancel.TabIndex = 0;
-            btnCancel.Text = "✖ Ləğv Et";
-            btnCancel.UseVisualStyleBackColor = false;
-            btnCancel.Click += btnCancel_Click;
-            // 
-            // errorProvider1
-            // 
-            errorProvider1.ContainerControl = this;
+            this.btnCancel.BackColor = System.Drawing.Color.FromArgb(180, 180, 180);
+            this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCancel.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.btnCancel.ForeColor = System.Drawing.Color.Black;
+            this.btnCancel.Location = new System.Drawing.Point(170, 245);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(130, 38);
+            this.btnCancel.Text = "✖ Ləğv Et";
+            this.btnCancel.UseVisualStyleBackColor = false;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // EndirimFormu
             // 
-            BackColor = Color.WhiteSmoke;
-            ClientSize = new Size(280, 280);
-            Controls.Add(btnCancel);
-            Controls.Add(btnTətbiqEt);
-            Controls.Add(txtEndirimDeyer);
-            Controls.Add(label1);
-            Controls.Add(groupBox2);
-            Controls.Add(groupBox1);
-            FormBorderStyle = FormBorderStyle.FixedDialog;
-            MaximizeBox = false;
-            MinimizeBox = false;
-            Name = "EndirimFormu";
-            StartPosition = FormStartPosition.CenterParent;
-            Text = "🟢 Endirim Tətbiqi";
-            groupBox1.ResumeLayout(false);
-            groupBox1.PerformLayout();
-            groupBox2.ResumeLayout(false);
-            groupBox2.PerformLayout();
-            ResumeLayout(false);
-            PerformLayout();
+            this.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.ClientSize = new System.Drawing.Size(330, 310);
+            this.Controls.Add(this.btnCancel);
+            this.Controls.Add(this.btnTətbiqEt);
+            this.Controls.Add(this.txtEndirimDeyer);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.groupBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "EndirimFormu";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "🟢 Endirim Tətbiqi";
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            this.ResumeLayout(false);
+            this.PerformLayout();
         }
         #endregion
 
@@ -192,6 +175,5 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         private System.Windows.Forms.TextBox txtEndirimDeyer;
         private System.Windows.Forms.Button btnTətbiqEt;
         private System.Windows.Forms.Button btnCancel;
-        private ErrorProvider errorProvider1;
     }
 }

@@ -20,6 +20,7 @@ namespace AzAgroPOS.Teqdimat
             errorProvider1 = new ErrorProvider(components);
             cardNovbeAc.SuspendLayout();
             cardNovbeBagla.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)errorProvider1).BeginInit();
             SuspendLayout();
             // 
             // cardNovbeAc
@@ -35,7 +36,7 @@ namespace AzAgroPOS.Teqdimat
             cardNovbeAc.MouseState = MaterialSkin.MouseState.HOVER;
             cardNovbeAc.Name = "cardNovbeAc";
             cardNovbeAc.Padding = new Padding(14);
-            cardNovbeAc.Size = new Size(600, 200);
+            cardNovbeAc.Size = new Size(461, 220);
             cardNovbeAc.TabIndex = 0;
             // 
             // btnNovbeAc
@@ -48,7 +49,7 @@ namespace AzAgroPOS.Teqdimat
             btnNovbeAc.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnNovbeAc.HighEmphasis = true;
             btnNovbeAc.Icon = null;
-            btnNovbeAc.Location = new Point(200, 130);
+            btnNovbeAc.Location = new Point(200, 150);
             btnNovbeAc.Margin = new Padding(4, 6, 4, 6);
             btnNovbeAc.MouseState = MaterialSkin.MouseState.HOVER;
             btnNovbeAc.Name = "btnNovbeAc";
@@ -68,11 +69,11 @@ namespace AzAgroPOS.Teqdimat
             txtBaslangicMebleg.BackgroundImageLayout = ImageLayout.None;
             txtBaslangicMebleg.CharacterCasing = CharacterCasing.Normal;
             txtBaslangicMebleg.Depth = 0;
-            txtBaslangicMebleg.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            txtBaslangicMebleg.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
             txtBaslangicMebleg.HideSelection = true;
             txtBaslangicMebleg.Hint = "Kassadakı ilkin məbləğ";
             txtBaslangicMebleg.LeadingIcon = null;
-            txtBaslangicMebleg.Location = new Point(150, 60);
+            txtBaslangicMebleg.Location = new Point(150, 80);
             txtBaslangicMebleg.MaxLength = 32767;
             txtBaslangicMebleg.MouseState = MaterialSkin.MouseState.OUT;
             txtBaslangicMebleg.Name = "txtBaslangicMebleg";
@@ -100,7 +101,7 @@ namespace AzAgroPOS.Teqdimat
             materialLabel1.Font = new Font("Roboto", 24F, FontStyle.Bold, GraphicsUnit.Pixel);
             materialLabel1.FontType = MaterialSkin.MaterialSkinManager.fontType.H5;
             materialLabel1.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            materialLabel1.Location = new Point(220, 14);
+            materialLabel1.Location = new Point(220, 20);
             materialLabel1.MouseState = MaterialSkin.MouseState.HOVER;
             materialLabel1.Name = "materialLabel1";
             materialLabel1.Size = new Size(157, 29);
@@ -120,7 +121,7 @@ namespace AzAgroPOS.Teqdimat
             cardNovbeBagla.MouseState = MaterialSkin.MouseState.HOVER;
             cardNovbeBagla.Name = "cardNovbeBagla";
             cardNovbeBagla.Padding = new Padding(14);
-            cardNovbeBagla.Size = new Size(600, 200);
+            cardNovbeBagla.Size = new Size(461, 220);
             cardNovbeBagla.TabIndex = 1;
             cardNovbeBagla.Visible = false;
             // 
@@ -134,12 +135,12 @@ namespace AzAgroPOS.Teqdimat
             btnNovbeBagla.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnNovbeBagla.HighEmphasis = true;
             btnNovbeBagla.Icon = null;
-            btnNovbeBagla.Location = new Point(175, 130);
+            btnNovbeBagla.Location = new Point(105, 125);
             btnNovbeBagla.Margin = new Padding(4, 6, 4, 6);
             btnNovbeBagla.MouseState = MaterialSkin.MouseState.HOVER;
             btnNovbeBagla.Name = "btnNovbeBagla";
             btnNovbeBagla.NoAccentTextColor = Color.Empty;
-            btnNovbeBagla.Size = new Size(250, 45);
+            btnNovbeBagla.Size = new Size(250, 48);
             btnNovbeBagla.TabIndex = 2;
             btnNovbeBagla.Text = "Növbəni Bağla və Hesabat al";
             btnNovbeBagla.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -154,11 +155,11 @@ namespace AzAgroPOS.Teqdimat
             txtFaktikiMebleg.BackgroundImageLayout = ImageLayout.None;
             txtFaktikiMebleg.CharacterCasing = CharacterCasing.Normal;
             txtFaktikiMebleg.Depth = 0;
-            txtFaktikiMebleg.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            txtFaktikiMebleg.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
             txtFaktikiMebleg.HideSelection = true;
             txtFaktikiMebleg.Hint = "Kassada sayılan yekun məbləğ";
             txtFaktikiMebleg.LeadingIcon = null;
-            txtFaktikiMebleg.Location = new Point(150, 60);
+            txtFaktikiMebleg.Location = new Point(80, 55);
             txtFaktikiMebleg.MaxLength = 32767;
             txtFaktikiMebleg.MouseState = MaterialSkin.MouseState.OUT;
             txtFaktikiMebleg.Name = "txtFaktikiMebleg";
@@ -198,15 +199,17 @@ namespace AzAgroPOS.Teqdimat
             // NovbeIdareetmesiFormu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
-            ClientSize = new Size(680, 350);
+            ClientSize = new Size(531, 331);
             Controls.Add(cardNovbeBagla);
             Controls.Add(cardNovbeAc);
             Name = "NovbeIdareetmesiFormu";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Növbə İdarəetməsi";
             cardNovbeAc.ResumeLayout(false);
             cardNovbeAc.PerformLayout();
             cardNovbeBagla.ResumeLayout(false);
             cardNovbeBagla.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)errorProvider1).EndInit();
             ResumeLayout(false);
         }
         #endregion
