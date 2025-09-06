@@ -29,10 +29,9 @@ namespace AzAgroPOS.Teqdimat
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AnaMenuFormu));
             sidebarImageList = new ImageList(components);
             pnlMenu = new Panel();
-            btnMinimumStokMehsullari = new MaterialSkin.Controls.MaterialButton(); // Əlavə edildi
+            btnMinimumStokMehsullari = new MaterialSkin.Controls.MaterialButton();
             btnIsciIdareetme = new MaterialSkin.Controls.MaterialButton();
             btnBarkodCapi = new MaterialSkin.Controls.MaterialButton();
             btnZHesabatArxivi = new MaterialSkin.Controls.MaterialButton();
@@ -42,6 +41,7 @@ namespace AzAgroPOS.Teqdimat
             btnIstifadeciIdareetme = new MaterialSkin.Controls.MaterialButton();
             btnTemirIdareetme = new MaterialSkin.Controls.MaterialButton();
             btnNisyeIdareetme = new MaterialSkin.Controls.MaterialButton();
+            btnQaytarma = new MaterialSkin.Controls.MaterialButton();
             btnYeniSatis = new MaterialSkin.Controls.MaterialButton();
             btnMehsulIdareetme = new MaterialSkin.Controls.MaterialButton();
             btnNovbeIdareetme = new MaterialSkin.Controls.MaterialButton();
@@ -64,25 +64,14 @@ namespace AzAgroPOS.Teqdimat
             // sidebarImageList
             // 
             sidebarImageList.ColorDepth = ColorDepth.Depth32Bit;
-            sidebarImageList.ImageStream = (ImageListStreamer)resources.GetObject("sidebarImageList.ImageStream");
+            sidebarImageList.ImageSize = new Size(16, 16);
             sidebarImageList.TransparentColor = Color.Transparent;
-            //sidebarImageList.Images.SetKeyName(0, "product.png");
-            //sidebarImageList.Images.SetKeyName(1, "sale.png");
-            //sidebarImageList.Images.SetKeyName(2, "customer.png");
-            //sidebarImageList.Images.SetKeyName(3, "report.png");
-            //sidebarImageList.Images.SetKeyName(4, "user.png");
-            //sidebarImageList.Images.SetKeyName(5, "settings.png");
-            //sidebarImageList.Images.SetKeyName(6, "cashier.png");
-            //sidebarImageList.Images.SetKeyName(7, "repair.png");
-            //sidebarImageList.Images.SetKeyName(8, "shift.png");
-            //sidebarImageList.Images.SetKeyName(9, "barcode.png");
-            //sidebarImageList.Images.SetKeyName(10, "employee.png");
             // 
             // pnlMenu
             // 
             pnlMenu.AutoScroll = true;
             pnlMenu.BackColor = Color.FromArgb(242, 242, 242);
-            pnlMenu.Controls.Add(btnMinimumStokMehsullari); // Əlavə edildi
+            pnlMenu.Controls.Add(btnMinimumStokMehsullari);
             pnlMenu.Controls.Add(btnIsciIdareetme);
             pnlMenu.Controls.Add(btnBarkodCapi);
             pnlMenu.Controls.Add(btnZHesabatArxivi);
@@ -92,6 +81,7 @@ namespace AzAgroPOS.Teqdimat
             pnlMenu.Controls.Add(btnIstifadeciIdareetme);
             pnlMenu.Controls.Add(btnTemirIdareetme);
             pnlMenu.Controls.Add(btnNisyeIdareetme);
+            pnlMenu.Controls.Add(btnQaytarma);
             pnlMenu.Controls.Add(btnYeniSatis);
             pnlMenu.Controls.Add(btnMehsulIdareetme);
             pnlMenu.Controls.Add(btnNovbeIdareetme);
@@ -119,7 +109,7 @@ namespace AzAgroPOS.Teqdimat
             btnMinimumStokMehsullari.Icon = null;
             btnMinimumStokMehsullari.ImageAlign = ContentAlignment.MiddleLeft;
             btnMinimumStokMehsullari.ImageList = sidebarImageList;
-            btnMinimumStokMehsullari.Location = new Point(0, 570);
+            btnMinimumStokMehsullari.Location = new Point(0, 615);
             btnMinimumStokMehsullari.Margin = new Padding(4, 6, 4, 6);
             btnMinimumStokMehsullari.MouseState = MaterialSkin.MouseState.HOVER;
             btnMinimumStokMehsullari.Name = "btnMinimumStokMehsullari";
@@ -130,7 +120,7 @@ namespace AzAgroPOS.Teqdimat
             btnMinimumStokMehsullari.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
             btnMinimumStokMehsullari.UseAccentColor = false;
             btnMinimumStokMehsullari.UseVisualStyleBackColor = false;
-            btnMinimumStokMehsullari.Click += btnMinimumStokMehsullari_Click; // Əlavə edildi
+            btnMinimumStokMehsullari.Click += btnMinimumStokMehsullari_Click;
             // 
             // btnIsciIdareetme
             // 
@@ -144,9 +134,9 @@ namespace AzAgroPOS.Teqdimat
             btnIsciIdareetme.HighEmphasis = false;
             btnIsciIdareetme.Icon = null;
             btnIsciIdareetme.ImageAlign = ContentAlignment.MiddleLeft;
-            btnIsciIdareetme.ImageList = sidebarImageList;
             btnIsciIdareetme.ImageKey = "employee.png";
-            btnIsciIdareetme.Location = new Point(0, 525);
+            btnIsciIdareetme.ImageList = sidebarImageList;
+            btnIsciIdareetme.Location = new Point(0, 570);
             btnIsciIdareetme.Margin = new Padding(4, 6, 4, 6);
             btnIsciIdareetme.MouseState = MaterialSkin.MouseState.HOVER;
             btnIsciIdareetme.Name = "btnIsciIdareetme";
@@ -171,9 +161,9 @@ namespace AzAgroPOS.Teqdimat
             btnBarkodCapi.HighEmphasis = false;
             btnBarkodCapi.Icon = null;
             btnBarkodCapi.ImageAlign = ContentAlignment.MiddleLeft;
-            btnBarkodCapi.ImageList = sidebarImageList;
             btnBarkodCapi.ImageKey = "barcode.png";
-            btnBarkodCapi.Location = new Point(0, 480);
+            btnBarkodCapi.ImageList = sidebarImageList;
+            btnBarkodCapi.Location = new Point(0, 525);
             btnBarkodCapi.Margin = new Padding(4, 6, 4, 6);
             btnBarkodCapi.MouseState = MaterialSkin.MouseState.HOVER;
             btnBarkodCapi.Name = "btnBarkodCapi";
@@ -199,7 +189,7 @@ namespace AzAgroPOS.Teqdimat
             btnZHesabatArxivi.Icon = null;
             btnZHesabatArxivi.ImageAlign = ContentAlignment.MiddleLeft;
             btnZHesabatArxivi.ImageList = sidebarImageList;
-            btnZHesabatArxivi.Location = new Point(0, 435);
+            btnZHesabatArxivi.Location = new Point(0, 480);
             btnZHesabatArxivi.Margin = new Padding(4, 6, 4, 6);
             btnZHesabatArxivi.MouseState = MaterialSkin.MouseState.HOVER;
             btnZHesabatArxivi.Name = "btnZHesabatArxivi";
@@ -225,7 +215,7 @@ namespace AzAgroPOS.Teqdimat
             btnAnbarQaliqHesabati.Icon = null;
             btnAnbarQaliqHesabati.ImageAlign = ContentAlignment.MiddleLeft;
             btnAnbarQaliqHesabati.ImageList = sidebarImageList;
-            btnAnbarQaliqHesabati.Location = new Point(0, 390);
+            btnAnbarQaliqHesabati.Location = new Point(0, 435);
             btnAnbarQaliqHesabati.Margin = new Padding(4, 6, 4, 6);
             btnAnbarQaliqHesabati.MouseState = MaterialSkin.MouseState.HOVER;
             btnAnbarQaliqHesabati.Name = "btnAnbarQaliqHesabati";
@@ -251,7 +241,7 @@ namespace AzAgroPOS.Teqdimat
             btnMehsulSatisHesabati.Icon = null;
             btnMehsulSatisHesabati.ImageAlign = ContentAlignment.MiddleLeft;
             btnMehsulSatisHesabati.ImageList = sidebarImageList;
-            btnMehsulSatisHesabati.Location = new Point(0, 345);
+            btnMehsulSatisHesabati.Location = new Point(0, 390);
             btnMehsulSatisHesabati.Margin = new Padding(4, 6, 4, 6);
             btnMehsulSatisHesabati.MouseState = MaterialSkin.MouseState.HOVER;
             btnMehsulSatisHesabati.Name = "btnMehsulSatisHesabati";
@@ -276,9 +266,9 @@ namespace AzAgroPOS.Teqdimat
             btnHesabatlar.HighEmphasis = false;
             btnHesabatlar.Icon = null;
             btnHesabatlar.ImageAlign = ContentAlignment.MiddleLeft;
-            btnHesabatlar.ImageList = sidebarImageList;
             btnHesabatlar.ImageKey = "report.png";
-            btnHesabatlar.Location = new Point(0, 300);
+            btnHesabatlar.ImageList = sidebarImageList;
+            btnHesabatlar.Location = new Point(0, 345);
             btnHesabatlar.Margin = new Padding(4, 6, 4, 6);
             btnHesabatlar.MouseState = MaterialSkin.MouseState.HOVER;
             btnHesabatlar.Name = "btnHesabatlar";
@@ -303,9 +293,9 @@ namespace AzAgroPOS.Teqdimat
             btnIstifadeciIdareetme.HighEmphasis = false;
             btnIstifadeciIdareetme.Icon = null;
             btnIstifadeciIdareetme.ImageAlign = ContentAlignment.MiddleLeft;
-            btnIstifadeciIdareetme.ImageList = sidebarImageList;
             btnIstifadeciIdareetme.ImageKey = "user.png";
-            btnIstifadeciIdareetme.Location = new Point(0, 255);
+            btnIstifadeciIdareetme.ImageList = sidebarImageList;
+            btnIstifadeciIdareetme.Location = new Point(0, 300);
             btnIstifadeciIdareetme.Margin = new Padding(4, 6, 4, 6);
             btnIstifadeciIdareetme.MouseState = MaterialSkin.MouseState.HOVER;
             btnIstifadeciIdareetme.Name = "btnIstifadeciIdareetme";
@@ -330,9 +320,9 @@ namespace AzAgroPOS.Teqdimat
             btnTemirIdareetme.HighEmphasis = false;
             btnTemirIdareetme.Icon = null;
             btnTemirIdareetme.ImageAlign = ContentAlignment.MiddleLeft;
-            btnTemirIdareetme.ImageList = sidebarImageList;
             btnTemirIdareetme.ImageKey = "repair.png";
-            btnTemirIdareetme.Location = new Point(0, 210);
+            btnTemirIdareetme.ImageList = sidebarImageList;
+            btnTemirIdareetme.Location = new Point(0, 255);
             btnTemirIdareetme.Margin = new Padding(4, 6, 4, 6);
             btnTemirIdareetme.MouseState = MaterialSkin.MouseState.HOVER;
             btnTemirIdareetme.Name = "btnTemirIdareetme";
@@ -358,7 +348,7 @@ namespace AzAgroPOS.Teqdimat
             btnNisyeIdareetme.Icon = null;
             btnNisyeIdareetme.ImageAlign = ContentAlignment.MiddleLeft;
             btnNisyeIdareetme.ImageList = sidebarImageList;
-            btnNisyeIdareetme.Location = new Point(0, 165);
+            btnNisyeIdareetme.Location = new Point(0, 210);
             btnNisyeIdareetme.Margin = new Padding(4, 6, 4, 6);
             btnNisyeIdareetme.MouseState = MaterialSkin.MouseState.HOVER;
             btnNisyeIdareetme.Name = "btnNisyeIdareetme";
@@ -370,6 +360,32 @@ namespace AzAgroPOS.Teqdimat
             btnNisyeIdareetme.UseAccentColor = false;
             btnNisyeIdareetme.UseVisualStyleBackColor = false;
             btnNisyeIdareetme.Click += btnNisyeIdareetme_Click;
+            // 
+            // btnQaytarma
+            // 
+            btnQaytarma.AutoSize = false;
+            btnQaytarma.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnQaytarma.BackColor = Color.FromArgb(242, 242, 242);
+            btnQaytarma.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnQaytarma.Depth = 0;
+            btnQaytarma.Dock = DockStyle.Top;
+            btnQaytarma.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            btnQaytarma.HighEmphasis = false;
+            btnQaytarma.Icon = null;
+            btnQaytarma.ImageAlign = ContentAlignment.MiddleLeft;
+            btnQaytarma.ImageList = sidebarImageList;
+            btnQaytarma.Location = new Point(0, 165);
+            btnQaytarma.Margin = new Padding(4, 6, 4, 6);
+            btnQaytarma.MouseState = MaterialSkin.MouseState.HOVER;
+            btnQaytarma.Name = "btnQaytarma";
+            btnQaytarma.NoAccentTextColor = Color.Empty;
+            btnQaytarma.Size = new Size(240, 45);
+            btnQaytarma.TabIndex = 16;
+            btnQaytarma.Text = "Qaytarma";
+            btnQaytarma.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
+            btnQaytarma.UseAccentColor = false;
+            btnQaytarma.UseVisualStyleBackColor = false;
+            btnQaytarma.Click += btnQaytarma_Click;
             // 
             // btnYeniSatis
             // 
@@ -383,8 +399,8 @@ namespace AzAgroPOS.Teqdimat
             btnYeniSatis.HighEmphasis = false;
             btnYeniSatis.Icon = null;
             btnYeniSatis.ImageAlign = ContentAlignment.MiddleLeft;
-            btnYeniSatis.ImageList = sidebarImageList;
             btnYeniSatis.ImageKey = "sale.png";
+            btnYeniSatis.ImageList = sidebarImageList;
             btnYeniSatis.Location = new Point(0, 120);
             btnYeniSatis.Margin = new Padding(4, 6, 4, 6);
             btnYeniSatis.MouseState = MaterialSkin.MouseState.HOVER;
@@ -410,8 +426,8 @@ namespace AzAgroPOS.Teqdimat
             btnMehsulIdareetme.HighEmphasis = false;
             btnMehsulIdareetme.Icon = null;
             btnMehsulIdareetme.ImageAlign = ContentAlignment.MiddleLeft;
-            btnMehsulIdareetme.ImageList = sidebarImageList;
             btnMehsulIdareetme.ImageKey = "product.png";
+            btnMehsulIdareetme.ImageList = sidebarImageList;
             btnMehsulIdareetme.Location = new Point(0, 75);
             btnMehsulIdareetme.Margin = new Padding(4, 6, 4, 6);
             btnMehsulIdareetme.MouseState = MaterialSkin.MouseState.HOVER;
@@ -437,8 +453,8 @@ namespace AzAgroPOS.Teqdimat
             btnNovbeIdareetme.HighEmphasis = false;
             btnNovbeIdareetme.Icon = null;
             btnNovbeIdareetme.ImageAlign = ContentAlignment.MiddleLeft;
-            btnNovbeIdareetme.ImageList = sidebarImageList;
             btnNovbeIdareetme.ImageKey = "shift.png";
+            btnNovbeIdareetme.ImageList = sidebarImageList;
             btnNovbeIdareetme.Location = new Point(0, 30);
             btnNovbeIdareetme.Margin = new Padding(4, 6, 4, 6);
             btnNovbeIdareetme.MouseState = MaterialSkin.MouseState.HOVER;
@@ -454,8 +470,10 @@ namespace AzAgroPOS.Teqdimat
             // 
             // separator2
             // 
-            separator2.BackColor = Color.FromArgb(224, 224, 224);
+            separator2.BackColor = Color.FromArgb(242, 242, 242);
             separator2.Dock = DockStyle.Top;
+            separator2.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            separator2.ForeColor = Color.FromArgb(222, 0, 0, 0);
             separator2.Location = new Point(0, 25);
             separator2.Name = "separator2";
             separator2.Size = new Size(240, 5);
@@ -463,8 +481,10 @@ namespace AzAgroPOS.Teqdimat
             // 
             // separator1
             // 
-            separator1.BackColor = Color.FromArgb(224, 224, 224);
+            separator1.BackColor = Color.FromArgb(242, 242, 242);
             separator1.Dock = DockStyle.Top;
+            separator1.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            separator1.ForeColor = Color.FromArgb(222, 0, 0, 0);
             separator1.Location = new Point(0, 20);
             separator1.Name = "separator1";
             separator1.Size = new Size(240, 5);
@@ -472,9 +492,12 @@ namespace AzAgroPOS.Teqdimat
             // 
             // pnlUserInfo
             // 
+            pnlUserInfo.BackColor = Color.FromArgb(242, 242, 242);
             pnlUserInfo.Controls.Add(lblUserName);
             pnlUserInfo.Controls.Add(picUserIcon);
             pnlUserInfo.Dock = DockStyle.Top;
+            pnlUserInfo.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            pnlUserInfo.ForeColor = Color.FromArgb(222, 0, 0, 0);
             pnlUserInfo.Location = new Point(0, 0);
             pnlUserInfo.Name = "pnlUserInfo";
             pnlUserInfo.Size = new Size(240, 20);
@@ -482,8 +505,10 @@ namespace AzAgroPOS.Teqdimat
             // 
             // lblUserName
             // 
+            lblUserName.BackColor = Color.FromArgb(242, 242, 242);
             lblUserName.Dock = DockStyle.Fill;
-            lblUserName.Font = new Font("Roboto", 12F, FontStyle.Bold, GraphicsUnit.Pixel);
+            lblUserName.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblUserName.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblUserName.Location = new Point(20, 0);
             lblUserName.Name = "lblUserName";
             lblUserName.Size = new Size(220, 20);
@@ -493,7 +518,10 @@ namespace AzAgroPOS.Teqdimat
             // 
             // picUserIcon
             // 
+            picUserIcon.BackColor = Color.FromArgb(242, 242, 242);
             picUserIcon.Dock = DockStyle.Left;
+            picUserIcon.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            picUserIcon.ForeColor = Color.FromArgb(222, 0, 0, 0);
             picUserIcon.Location = new Point(0, 0);
             picUserIcon.Name = "picUserIcon";
             picUserIcon.Size = new Size(20, 20);
@@ -505,6 +533,7 @@ namespace AzAgroPOS.Teqdimat
             // 
             mdiTabControl.Depth = 0;
             mdiTabControl.Dock = DockStyle.Fill;
+            mdiTabControl.ForeColor = Color.FromArgb(222, 0, 0, 0);
             mdiTabControl.Location = new Point(243, 64);
             mdiTabControl.MouseState = MaterialSkin.MouseState.HOVER;
             mdiTabControl.Multiline = true;
@@ -569,6 +598,7 @@ namespace AzAgroPOS.Teqdimat
         private Panel pnlMenu;
         private MaterialSkin.Controls.MaterialButton btnMinimumStokMehsullari; // Əlavə edildi
         private MaterialSkin.Controls.MaterialButton btnIsciIdareetme;
+        private MaterialSkin.Controls.MaterialButton btnQaytarma;
         private MaterialSkin.Controls.MaterialButton btnBarkodCapi;
         private MaterialSkin.Controls.MaterialButton btnZHesabatArxivi;
         private MaterialSkin.Controls.MaterialButton btnAnbarQaliqHesabati;

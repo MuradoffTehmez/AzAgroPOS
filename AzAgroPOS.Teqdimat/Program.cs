@@ -84,11 +84,8 @@ namespace AzAgroPOS.Teqdimat
             services.AddTransient<ZHesabatArxivFormu>();
             services.AddTransient<TedarukcuIdareetmeFormu>();
             services.AddTransient<IsciIdareetmeFormu>();
-            services.AddTransient<MinimumStokMehsullariFormu>(provider =>
-            {
-                var mehsulMeneceri = provider.GetRequiredService<MehsulMeneceri>();
-                return new MinimumStokMehsullariFormu(mehsulMeneceri);
-            }); // Əlavə edildi
+            services.AddTransient<QaytarmaFormu>();
+            services.AddTransient<QaytarmaPresenter>();
         }
     }
 }

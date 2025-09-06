@@ -32,6 +32,7 @@ public partial class AnaMenuFormu : BazaForm
         {
             { typeof(MehsulIdareetmeFormu), btnMehsulIdareetme },
             { typeof(SatisFormu), btnYeniSatis },
+            { typeof(QaytarmaFormu), btnQaytarma },
             { typeof(NisyeIdareetmeFormu), btnNisyeIdareetme },
             { typeof(TemirIdareetmeFormu), btnTemirIdareetme },
             { typeof(IstifadeciIdareetmeFormu), btnIstifadeciIdareetme },
@@ -215,6 +216,7 @@ public partial class AnaMenuFormu : BazaForm
 
     private void btnMehsulIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<MehsulIdareetmeFormu>();
     private void btnYeniSatis_Click(object sender, EventArgs e) => UsaqFormuAc<SatisFormu>();
+    private void btnQaytarma_Click(object sender, EventArgs e) => UsaqFormuAc<QaytarmaFormu>();
     private void btnNisyeIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<NisyeIdareetmeFormu>();
     private void btnTemirIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<TemirIdareetmeFormu>();
 
