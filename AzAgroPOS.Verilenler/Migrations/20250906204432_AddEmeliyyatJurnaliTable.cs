@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -249,117 +249,8 @@ namespace AzAgroPOS.Verilenler.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.UpdateData(
-                table: "Brendler",
-                keyColumn: "Id",
-                keyValue: 1,
-                columns: new string[0],
-                values: new object[0]);
-
-            migrationBuilder.UpdateData(
-                table: "Brendler",
-                keyColumn: "Id",
-                keyValue: 2,
-                columns: new string[0],
-                values: new object[0]);
-
-            migrationBuilder.UpdateData(
-                table: "Brendler",
-                keyColumn: "Id",
-                keyValue: 3,
-                columns: new string[0],
-                values: new object[0]);
-
-            migrationBuilder.UpdateData(
-                table: "Isciler",
-                keyColumn: "Id",
-                keyValue: 1,
-                columns: new string[0],
-                values: new object[0]);
-
-            migrationBuilder.UpdateData(
-                table: "Isciler",
-                keyColumn: "Id",
-                keyValue: 2,
-                columns: new string[0],
-                values: new object[0]);
-
-            migrationBuilder.UpdateData(
-                table: "Istifadeciler",
-                keyColumn: "Id",
-                keyValue: 1,
-                columns: new string[0],
-                values: new object[0]);
-
-            migrationBuilder.UpdateData(
-                table: "Kateqoriyalar",
-                keyColumn: "Id",
-                keyValue: 1,
-                columns: new string[0],
-                values: new object[0]);
-
-            migrationBuilder.UpdateData(
-                table: "Kateqoriyalar",
-                keyColumn: "Id",
-                keyValue: 2,
-                columns: new string[0],
-                values: new object[0]);
-
-            migrationBuilder.UpdateData(
-                table: "Kateqoriyalar",
-                keyColumn: "Id",
-                keyValue: 3,
-                columns: new string[0],
-                values: new object[0]);
-
-            migrationBuilder.UpdateData(
-                table: "Mehsullar",
-                keyColumn: "Id",
-                keyValue: 1,
-                columns: new string[0],
-                values: new object[0]);
-
-            migrationBuilder.UpdateData(
-                table: "Mehsullar",
-                keyColumn: "Id",
-                keyValue: 2,
-                columns: new string[0],
-                values: new object[0]);
-
-            migrationBuilder.UpdateData(
-                table: "Mehsullar",
-                keyColumn: "Id",
-                keyValue: 3,
-                columns: new string[0],
-                values: new object[0]);
-
-            migrationBuilder.UpdateData(
-                table: "Rollar",
-                keyColumn: "Id",
-                keyValue: 1,
-                columns: new string[0],
-                values: new object[0]);
-
-            migrationBuilder.UpdateData(
-                table: "Rollar",
-                keyColumn: "Id",
-                keyValue: 2,
-                columns: new string[0],
-                values: new object[0]);
-
-            migrationBuilder.UpdateData(
-                table: "Tedarukculer",
-                keyColumn: "Id",
-                keyValue: 1,
-                columns: new string[0],
-                values: new object[0]);
-
-            migrationBuilder.UpdateData(
-                table: "Tedarukculer",
-                keyColumn: "Id",
-                keyValue: 2,
-                columns: new string[0],
-                values: new object[0]);
+            // Remove the problematic UpdateData calls that were causing syntax errors
+            // These were trying to update existing records with empty column arrays
 
             migrationBuilder.CreateIndex(
                 name: "IX_QaytarmaDetallari_QaytarmaId",
