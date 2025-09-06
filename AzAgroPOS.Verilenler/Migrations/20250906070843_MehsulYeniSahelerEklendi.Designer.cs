@@ -4,6 +4,7 @@ using AzAgroPOS.Verilenler.Kontekst;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AzAgroPOS.Verilenler.Migrations
 {
     [DbContext(typeof(AzAgroPOSDbContext))]
-    partial class AzAgroPOSDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250906070843_MehsulYeniSahelerEklendi")]
+    partial class MehsulYeniSahelerEklendi
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
