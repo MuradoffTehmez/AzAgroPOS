@@ -17,6 +17,9 @@ namespace AzAgroPOS.Teqdimat
             // Form yüklənəndə Presenter-ə xəbər veririk
             this.Load += (s, e) => FormYuklendi?.Invoke(this, EventArgs.Empty);
             StilVerDataGridView(dgvMusteriler);
+            
+            // Add conditional formatting for customers with debt exceeding credit limit
+            dgvMusteriler.CellFormatting += DgvMusteriler_CellFormatting;
         }
 
         #region IMusteriView Implementasiyası
@@ -164,5 +167,29 @@ namespace AzAgroPOS.Teqdimat
         }
 
         #endregion
+        
+        /// <summary>
+        /// Conditional formatting for customers grid - highlights customers with debt exceeding credit limit
+        /// </summary>
+        private void DgvMusteriler_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex >= 0 && dgvMusteriler.Rows[e.RowIndex].DataBoundItem is MusteriDto musteri)
+            {
+                // Highlight customers whose debt exceeds their credit limit
+                if (musteri.UmumiBorc > musteri.KreditLimiti)
+                {
+                    e.CellStyle.BackColor = Color.FromArgb(255, 235, 235); // Light red background
+                    e.CellStyle.ForeColor = Color.FromArgb(183, 28, 28);   // Dark red text
+                    e.CellStyle.Font = new Font(dgvMusteriler.Font, FontStyle.Bold);
+                }
+                // Highlight customers whose debt is close to their credit limit (within 10%)
+                else if (musteri.UmumiBorc > musteri.KreditLimiti * 0.9m)
+                {
+                    e.CellStyle.BackColor = Color.FromArgb(255, 248, 225); // Light orange background
+                    e.CellStyle.ForeColor = Color.FromArgb(245, 124, 0);   // Orange text
+                    e.CellStyle.Font = new Font(dgvMusteriler.Font, FontStyle.Bold);
+                }
+            }
+        }
     }
 }

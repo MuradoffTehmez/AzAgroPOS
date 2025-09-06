@@ -87,7 +87,7 @@ namespace AzAgroPOS.Teqdimat
             }
 
             var listDataSource = new List<object> { new { Id = 0, TamAd = "Şəxsi Satış (müştərisiz)" } };
-            listDataSource.AddRange(musteriler.Select(m => new { m.Id, TamAd = $"{m.TamAd} (Borc: {m.UmumiBorc:N2})" }).ToList());
+            listDataSource.AddRange(musteriler.Select(m => new { m.Id, TamAd = $@"{m.TamAd} (Borc: {m.UmumiBorc:N2})" }).ToList());
 
             cmbMusteriler.DataSource = listDataSource;
             cmbMusteriler.DisplayMember = "TamAd";
@@ -95,6 +95,11 @@ namespace AzAgroPOS.Teqdimat
             
             // Setup autocomplete after data is loaded
             SetupCustomerComboBoxAutoComplete();
+            
+            // Add event handler for conditional formatting
+            cmbMusteriler.DrawMode = DrawMode.OwnerDrawFixed;
+            cmbMusteriler.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbMusteriler.DrawItem += CmbMusteriler_DrawItem;
         }
 
         public void AxtarisNeticeleriniGoster(List<MehsulDto> mehsullar)
@@ -433,7 +438,97 @@ namespace AzAgroPOS.Teqdimat
                 Color.FromArgb(200, 230, 201),
                 Color.FromArgb(245, 245, 245)
             );
+
+            // Add conditional formatting event handlers
+            dgvAxtarisNeticeleri.CellFormatting += DgvAxtarisNeticeleri_CellFormatting;
+            dgvSebet.CellFormatting += DgvSebet_CellFormatting;
         }
+
+        /// <summary>
+        /// Conditional formatting for search results grid - highlights products with low stock
+        /// </summary>
+        private void DgvAxtarisNeticeleri_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex >= 0 && dgvAxtarisNeticeleri.Rows[e.RowIndex].DataBoundItem is MehsulDto mehsul)
+            {
+                // Highlight products with low stock (current quantity less than minimum stock)
+                if (mehsul.MovcudSay < mehsul.MinimumStok)
+                {
+                    e.CellStyle.BackColor = Color.FromArgb(255, 235, 235); // Light red background
+                    e.CellStyle.ForeColor = Color.FromArgb(183, 28, 28);   // Dark red text
+                    e.CellStyle.Font = new Font(dgvAxtarisNeticeleri.Font, FontStyle.Bold);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Conditional formatting for cart grid - can be extended for additional rules
+        /// </summary>
+        private void DgvSebet_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            // Currently no special formatting for cart items
+            // This method is added for future extensibility
+        }
+        
+        /// <summary>
+        /// Custom drawing for customer combobox to highlight customers with debt exceeding credit limit
+        /// </summary>
+        private void CmbMusteriler_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            if (e.Index < 0) return;
+
+            e.DrawBackground();
+            
+            ComboBox cmb = sender as ComboBox;
+            var item = cmb.Items[e.Index];
+            
+            // Get the customer data
+            var customerIdProp = item.GetType().GetProperty("Id");
+            var customerId = (int)customerIdProp.GetValue(item);
+            
+            // Skip formatting for "Şəxsi Satış" option (Id = 0)
+            if (customerId == 0)
+            {
+                e.Graphics.DrawString(cmb.GetItemText(item), e.Font, Brushes.Black, e.Bounds);
+                e.DrawFocusRectangle();
+                return;
+            }
+            
+            // Extract debt and credit limit from the display text
+            // The format is: "Name (Borc: amount)"
+            string displayText = cmb.GetItemText(item);
+            var match = System.Text.RegularExpressions.Regex.Match(displayText, @"\((Borc|Debt): ([\d,\.]+)\)");
+            if (match.Success)
+            {
+                if (decimal.TryParse(match.Groups[2].Value, out decimal debt))
+                {
+                    // Check if debt exceeds a reasonable threshold (e.g., 5000 AZN)
+                    if (debt > 5000) 
+                    {
+                        e.Graphics.DrawString(displayText, new Font(e.Font, FontStyle.Bold), Brushes.Red, e.Bounds);
+                    }
+                    else if (debt > 1000)
+                    {
+                        e.Graphics.DrawString(displayText, new Font(e.Font, FontStyle.Bold), Brushes.Orange, e.Bounds);
+                    }
+                    else
+                    {
+                        e.Graphics.DrawString(displayText, e.Font, Brushes.Black, e.Bounds);
+                    }
+                }
+                else
+                {
+                    e.Graphics.DrawString(displayText, e.Font, Brushes.Black, e.Bounds);
+                }
+            }
+            else
+            {
+                e.Graphics.DrawString(displayText, e.Font, Brushes.Black, e.Bounds);
+            }
+            
+            e.DrawFocusRectangle();
+        }
+        
         #endregion
     }
 }

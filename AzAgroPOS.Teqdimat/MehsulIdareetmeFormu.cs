@@ -19,6 +19,9 @@ namespace AzAgroPOS.Teqdimat
 
             // Setup auto-complete for ComboBoxes
             SetupComboBoxAutoComplete();
+            
+            // Add conditional formatting for low stock products
+            dgvMehsullar.CellFormatting += DgvMehsullar_CellFormatting;
         }
 
         #region View Xassə və Hadisələri (Properties and Events)
@@ -239,5 +242,22 @@ namespace AzAgroPOS.Teqdimat
             cmbOlcuVahidi.AutoCompleteSource = AutoCompleteSource.ListItems;
         }
         #endregion
+        
+        /// <summary>
+        /// Conditional formatting for products grid - highlights products with low stock
+        /// </summary>
+        private void DgvMehsullar_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex >= 0 && dgvMehsullar.Rows[e.RowIndex].DataBoundItem is MehsulDto mehsul)
+            {
+                // Highlight products with low stock (current quantity less than minimum stock)
+                if (mehsul.MovcudSay < mehsul.MinimumStok)
+                {
+                    e.CellStyle.BackColor = Color.FromArgb(255, 235, 235); // Light red background
+                    e.CellStyle.ForeColor = Color.FromArgb(183, 28, 28);   // Dark red text
+                    e.CellStyle.Font = new Font(dgvMehsullar.Font, FontStyle.Bold);
+                }
+            }
+        }
     }
 }
