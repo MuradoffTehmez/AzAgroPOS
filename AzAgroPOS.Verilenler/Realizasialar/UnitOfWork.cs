@@ -121,17 +121,38 @@ public class UnitOfWork : IUnitOfWork
 
     /// <summary>
     /// Alış Sənədi Sətiri Repozitorisi - Alış sənədi sətirləri əməliyyatlarını idarə edir.
-    /// Diqqət: Bu repozitoriya alış sənədi sətirlərinin məlumatlarını idarə edir.
+    /// Diqqət: Bu repozitoriya alış sənədi sətirlərinin yaradılması, axtarış, yeniləmə və silmə əməliyyatlarını idarə edir.
     /// Qeyd: Alış sənədi sətiri yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
     /// </summary>
     public IAlisSenedSetiriRepozitori AlisSenedSetirleri { get; private set; }
 
     /// <summary>
     /// Tədarükçü Ödənişi Repozitorisi - Tədarükçü ödəniş əməliyyatlarını idarə edir.
-    /// Diqqət: Bu repozitoriya tədarükçü ödənişlərinin məlumatlarını idarə edir.
+    /// Diqqət: Bu repozitoriya tədarükçü ödənişlərinin yaradılması, axtarış, yeniləmə və silmə əməliyyatlarını idarə edir.
     /// Qeyd: Tədarükçü ödənişi yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
     /// </summary>
     public ITedarukcuOdemeRepozitori TedarukcuOdemeleri { get; private set; }
+
+    /// <summary>
+    /// İşçi Repozitorisi - İşçi əməliyyatlarını idarə edir.
+    /// Diqqət: Bu repozitoriya işçilərin məlumatlarını, maaşlarını və işçi statusunu idarə edir.
+    /// Qeyd: İşçi yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
+    /// </summary>
+    public IIsciRepozitori Isciler { get; private set; }
+
+    /// <summary>
+    /// İşçi Performans Repozitorisi - İşçi performans əməliyyatlarını idarə edir.
+    /// Diqqət: Bu repozitoriya işçilərin performans qeydlərini idarə edir və yeni performans qeydləri əlavə etməyə imkan verir.
+    /// Qeyd: Performans qeydi yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
+    /// </summary>
+    public IIsciPerformansRepozitori IsciPerformanslari { get; private set; }
+
+    /// <summary>
+    /// İşçi İzn Repozitorisi - İşçi məzuniyyət/icazə əməliyyatlarını idarə edir.
+    /// Diqqət: Bu repozitoriya işçilərin məzuniyyət/icazə qeydlərini idarə edir və yeni məzuniyyət/icazə qeydləri əlavə etməyə imkan verir.
+    /// Qeyd: Məzuniyyət/icazə qeydi yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
+    /// </summary>
+    public IIsciIzniRepozitori IsciIznleri { get; private set; }
 
     /// <summary>
     /// unitOfWork konstruktoru, verilənlər bazası kontekstini qəbul edir və repozitoriyaların instansiyalarını yaradır.
@@ -155,7 +176,6 @@ public class UnitOfWork : IUnitOfWork
         Isciler = new IsciRepozitori(_kontekst);
         IsciPerformanslari = new IsciPerformansRepozitori(_kontekst);
         IsciIznleri = new IsciIzniRepozitori(_kontekst);
-        Tedarukculer = new TedarukcuRepozitori(_kontekst);
         AlisSifarisleri = new AlisSifarisRepozitori(_kontekst);
         AlisSifarisSetirleri = new AlisSifarisSetiriRepozitori(_kontekst);
         AlisSenetleri = new AlisSenedRepozitori(_kontekst);

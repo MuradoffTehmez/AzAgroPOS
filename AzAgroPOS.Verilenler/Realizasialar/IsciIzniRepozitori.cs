@@ -4,6 +4,12 @@ namespace AzAgroPOS.Verilenler.Realizasialar;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using AzAgroPOS.Verilenler.Kontekst;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 /// <summary>
 /// IsciIzni varlığı üçün repozitoriya realizasiyası.

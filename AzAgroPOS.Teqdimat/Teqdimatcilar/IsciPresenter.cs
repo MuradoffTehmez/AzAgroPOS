@@ -61,7 +61,8 @@ public class IsciPresenter
             Status = _view.Status,
             SvsNo = _view.SvsNo,
             QeydiyyatUnvani = _view.QeydiyyatUnvani,
-            BankMəlumatları = _view.BankMəlumatları
+            BankMəlumatları = _view.BankMəlumatları,
+            SistemIstifadeciAdi = _view.SistemIstifadeciAdi
         };
 
         var netice = await _isciManager.IsciYaratAsync(dto);
@@ -100,7 +101,8 @@ public class IsciPresenter
             Status = _view.Status,
             SvsNo = _view.SvsNo,
             QeydiyyatUnvani = _view.QeydiyyatUnvani,
-            BankMəlumatları = _view.BankMəlumatları
+            BankMəlumatları = _view.BankMəlumatları,
+            SistemIstifadeciAdi = _view.SistemIstifadeciAdi
         };
 
         var netice = await _isciManager.IsciYenileAsync(dto);
@@ -130,6 +132,46 @@ public class IsciPresenter
             _view.MesajGoster("İşçi silindi.");
             await FormuYukle();
             _view.FormuTemizle();
+        }
+        else
+        {
+            _view.MesajGoster(netice.Mesaj, true);
+        }
+    }
+
+    private async Task IscininPerformansQeydleriniGoster()
+    {
+        if (_view.IsciId <= 0)
+        {
+            _view.MesajGoster("Performans qeydlərini göstərmək üçün cədvəldən işçi seçin.", true);
+            return;
+        }
+
+        var netice = await _isciManager.IscininPerformansQeydleriniGetirAsync(_view.IsciId);
+        if (netice.UgurluDur)
+        {
+            // TODO: Performans qeydlərini göstərmək üçün uyğun view metodu çağırılmalıdır
+            _view.MesajGoster($"İşçinin {netice.Data.Count} performans qeydi tapıldı.");
+        }
+        else
+        {
+            _view.MesajGoster(netice.Mesaj, true);
+        }
+    }
+
+    private async Task IscininIzinQeydleriniGoster()
+    {
+        if (_view.IsciId <= 0)
+        {
+            _view.MesajGoster("İzn qeydlərini göstərmək üçün cədvəldən işçi seçin.", true);
+            return;
+        }
+
+        var netice = await _isciManager.IscininIzinQeydleriniGetirAsync(_view.IsciId);
+        if (netice.UgurluDur)
+        {
+            // TODO: İzn qeydlərini göstərmək üçün uyğun view metodu çağırılmalıdır
+            _view.MesajGoster($"İşçinin {netice.Data.Count} məzuniyyət/icazə qeydi tapıldı.");
         }
         else
         {

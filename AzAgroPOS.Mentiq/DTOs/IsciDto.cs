@@ -78,4 +78,9 @@ public class IsciDto
     /// İşçinin bank məlumatları.
     /// </summary>
     public string BankMəlumatları { get; set; } = string.Empty;
+
+    /// <summary>
+    /// İşçinin sistem istifadəçi adı (əgər varsa).
+    /// </summary>
+    public string? SistemIstifadeciAdi { get; set; }
 }

@@ -107,17 +107,38 @@ public interface IUnitOfWork : IAsyncDisposable
 
     /// <summary>
     /// Alış Sənədi Sətiri Repozitorisi - Alış sənədi sətirləri əməliyyatlarını idarə edir.
-    /// Diqqət: Bu repozitoriya alış sənədi sətirlərinin məlumatlarını idarə edir.
+    /// Diqqət: Bu repozitoriya alış sənədi sətirlərinin yaradılması, axtarış, yeniləmə və silinmə əməliyyatlarını idarə edir.
     /// Qeyd: Alış sənədi sətiri yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
     /// </summary>
     IAlisSenedSetiriRepozitori AlisSenedSetirleri { get; }
 
     /// <summary>
     /// Tədarükçü Ödənişi Repozitorisi - Tədarükçü ödəniş əməliyyatlarını idarə edir.
-    /// Diqqət: Bu repozitoriya tədarükçü ödənişlərinin məlumatlarını idarə edir.
+    /// Diqqət: Bu repozitoriya tədarükçü ödənişlərinin yaradılması, axtarış, yeniləmə və silinmə əməliyyatlarını idarə edir.
     /// Qeyd: Tədarükçü ödənişi yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
     /// </summary>
     ITedarukcuOdemeRepozitori TedarukcuOdemeleri { get; }
+
+    /// <summary>
+    /// İşçi Repozitorisi - İşçi əməliyyatlarını idarə edir.
+    /// Diqqət: Bu repozitoriya işçilərin məlumatlarını, maaşlarını və işçi statusunu idarə edir.
+    /// Qeyd: işçi yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
+    /// </summary>
+    IIsciRepozitori Isciler { get; }
+
+    /// <summary>
+    /// İşçi Performans Repozitorisi - İşçi performans əməliyyatlarını idarə edir.
+    /// Diqqət: Bu repozitoriya işçilərin performans qeydlərini idarə edir və yeni performans qeydləri əlavə etməyə imkan verir.
+    /// Qeyd: Performans qeydi yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
+    /// </summary>
+    IIsciPerformansRepozitori IsciPerformanslari { get; }
+
+    /// <summary>
+    /// İşçi İzn Repozitorisi - İşçi məzuniyyət/icazə əməliyyatlarını idarə edir.
+    /// Diqqət: Bu repozitoriya işçilərin məzuniyyət/icazə qeydlərini idarə edir və yeni məzuniyyət/icazə qeydləri əlavə etməyə imkan verir.
+    /// Qeyd: Məzuniyyət/icazə qeydi yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
+    /// </summary>
+    IIsciIzniRepozitori IsciIznleri { get; }
 
     /// <summary>
     /// Edilmiş bütün dəyişiklikləri vahid bir tranzaksiya kimi verilənlər bazasına tətbiq edir.

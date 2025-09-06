@@ -5,6 +5,7 @@ using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
+using AzAgroPOS.Varliglar;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -42,8 +43,8 @@ public partial class IsciIdareetmeFormu : BazaForm, IIsciView
 
     public string TelefonNomresi
     {
-        get => txtTelefon.Text;
-        set => txtTelefon.Text = value;
+        get => txtTelefonNomresi.Text;
+        set => txtTelefonNomresi.Text = value;
     }
 
     public string Unvan
@@ -106,6 +107,12 @@ public partial class IsciIdareetmeFormu : BazaForm, IIsciView
         set => txtBankMelumatlari.Text = value;
     }
 
+    public string SistemIstifadeciAdi
+    {
+        get => txtSistemIstifadeciAdi.Text;
+        set => txtSistemIstifadeciAdi.Text = value;
+    }
+
     public event EventHandler FormYuklendi;
     public event EventHandler IsciYarat_Istek;
     public event EventHandler IsciYenile_Istek;
@@ -134,6 +141,7 @@ public partial class IsciIdareetmeFormu : BazaForm, IIsciView
             dgvIsciler.Columns["SvsNo"].HeaderText = "SVS No";
             dgvIsciler.Columns["QeydiyyatUnvani"].HeaderText = "Qeydiyyat Ünvanı";
             dgvIsciler.Columns["BankMəlumatları"].HeaderText = "Bank Məlumatları";
+            dgvIsciler.Columns["SistemIstifadeciAdi"].HeaderText = "Sistem İstifadəçisi";
         }
     }
 
@@ -147,7 +155,7 @@ public partial class IsciIdareetmeFormu : BazaForm, IIsciView
         txtId.Clear();
         txtTamAd.Clear();
         dtpDogumTarixi.Value = DateTime.Now.AddYears(-25);
-        txtTelefon.Clear();
+        txtTelefonNomresi.Clear();
         txtUnvan.Clear();
         txtEmail.Clear();
         dtpIseBaslamaTarixi.Value = DateTime.Now;
@@ -158,6 +166,7 @@ public partial class IsciIdareetmeFormu : BazaForm, IIsciView
         txtSvsNo.Clear();
         txtQeydiyyatUnvani.Clear();
         txtBankMelumatlari.Clear();
+        txtSistemIstifadeciAdi.Clear();
         dgvIsciler.ClearSelection();
         txtTamAd.Focus();
     }
@@ -207,7 +216,7 @@ public partial class IsciIdareetmeFormu : BazaForm, IIsciView
             txtId.Text = isci.Id.ToString();
             txtTamAd.Text = isci.TamAd;
             dtpDogumTarixi.Value = isci.DogumTarixi;
-            txtTelefon.Text = isci.TelefonNomresi;
+            txtTelefonNomresi.Text = isci.TelefonNomresi;
             txtUnvan.Text = isci.Unvan;
             txtEmail.Text = isci.Email;
             dtpIseBaslamaTarixi.Value = isci.IseBaslamaTarixi;
@@ -218,6 +227,7 @@ public partial class IsciIdareetmeFormu : BazaForm, IIsciView
             txtSvsNo.Text = isci.SvsNo;
             txtQeydiyyatUnvani.Text = isci.QeydiyyatUnvani;
             txtBankMelumatlari.Text = isci.BankMəlumatları;
+            txtSistemIstifadeciAdi.Text = isci.SistemIstifadeciAdi;
         }
     }
 }

@@ -45,7 +45,8 @@ public class IsciManager
                 Status = i.Status,
                 SvsNo = i.SvsNo,
                 QeydiyyatUnvani = i.QeydiyyatUnvani,
-                BankMəlumatları = i.BankMəlumatları
+                BankMəlumatları = i.BankMəlumatları,
+                SistemIstifadeciAdi = i.SistemIstifadecisi?.IstifadeciAdi
             }).ToList();
 
             return EmeliyyatNeticesi<List<IsciDto>>.Ugurlu(dtolar);
@@ -82,7 +83,8 @@ public class IsciManager
                 Status = isci.Status,
                 SvsNo = isci.SvsNo,
                 QeydiyyatUnvani = isci.QeydiyyatUnvani,
-                BankMəlumatları = isci.BankMəlumatları
+                BankMəlumatları = isci.BankMəlumatları,
+                SistemIstifadeciAdi = isci.SistemIstifadecisi?.IstifadeciAdi
             };
 
             return EmeliyyatNeticesi<IsciDto>.Ugurlu(dto);

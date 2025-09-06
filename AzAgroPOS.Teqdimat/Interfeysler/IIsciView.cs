@@ -26,6 +26,7 @@ public interface IIsciView
     string SvsNo { get; set; }
     string QeydiyyatUnvani { get; set; }
     string BankMəlumatları { get; set; }
+    string SistemIstifadeciAdi { get; set; }
 
     // View metodları
     void IscileriGoster(List<IsciDto> isciler);
