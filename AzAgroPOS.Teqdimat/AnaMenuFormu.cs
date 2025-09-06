@@ -232,9 +232,9 @@ public partial class AnaMenuFormu : BazaForm
             {
                 var novbeManager = _serviceProvider.GetRequiredService<NovbeManager>();
                 var novbe = await novbeManager.NovbeGetirAsync(AktivSessiya.AktivNovbeId.Value);
-                if (novbe.UgurluDur)
+                if (novbe != null)
                 {
-                    lblActiveShiftValue.Text = $"{AktivSessiya.AktivIstifadeci?.TamAd}\n{novbe.Data.BaslangicTarixi:HH:mm}";
+                    lblActiveShiftValue.Text = $"{AktivSessiya.AktivIstifadeci?.TamAd}\n{novbe.AcilmaTarixi:HH:mm}";
                 }
                 else
                 {

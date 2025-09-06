@@ -297,7 +297,16 @@ namespace AzAgroPOS.Teqdimat
                 _presenter.GozleyenSatisiSec(secilmisSatis);
             }
         }
-        private void btnIndirim_Click(object sender, EventArgs e) => IndirimIstek?.Invoke(this, EventArgs.Empty);
+        private void btnIndirim_Click(object sender, EventArgs e)
+        {
+            using (var endirimFormu = new EndirimFormu(SecilmisSebetElementi))
+            {
+                if (endirimFormu.ShowDialog() == DialogResult.OK)
+                {
+                    IndirimIstek?.Invoke(this, endirimFormu.EndirimParametrləri);
+                }
+            }
+        }
         private void btnIxracEt_Click(object sender, EventArgs e)
         {
             Yardimcilar.ExportHelper.ShowExportDialog(dgvSebet, "sebet");

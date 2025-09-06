@@ -11,15 +11,25 @@ using System.Linq;
 using System.Threading.Tasks;
 
 /// <summary>
-/// Növbə idarə etmə meneceri.
-/// bu menecer növbə açma, bağlama və aktiv növbəni gətirmə əməliyyatlarını idarə edir.
-/// diqqət: Növbə açma və bağlama əməliyyatları üçün istifadəçi ID-si və müvafiq məbləğ lazımdır.
-/// kompleks əməliyyatlar üçün EmeliyyatNeticesi tipindən istifadə olunur.
-/// </summary>
+    /// Növbə idarə etmə meneceri.
+    /// bu menecer növbə açma, bağlama və aktiv növbəni gətirmə əməliyyatlarını idarə edir.
+    /// diqqət: Növbə açma və bağlama əməliyyatları üçün istifadəçi ID-si və müvafiq məbləğ lazımdır.
+    /// kompleks əməliyyatlar üçün EmeliyyatNeticesi tipindən istifadə olunur.
+    /// </summary>
 public class NovbeManager
 {
     private readonly IUnitOfWork _unitOfWork;
     public NovbeManager(IUnitOfWork unitOfWork) { _unitOfWork = unitOfWork; }
+
+    /// <summary>
+    /// Növbəni ID-sinə görə gətirir.
+    /// </summary>
+    /// <param name="id">Növbənin ID-si</param>
+    /// <returns>Növbə obyekti</returns>
+    public async Task<Novbe?> NovbeGetirAsync(int id)
+    {
+        return await _unitOfWork.Novbeler.GetirAsync(id);
+    }
 
     /// <summary>
     /// Aktiv növbəni gətirir. 
