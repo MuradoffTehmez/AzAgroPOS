@@ -191,5 +191,80 @@ namespace AzAgroPOS.Teqdimat
                 }
             }
         }
+        
+        #region Context Menu Event Handlers
+
+        private void tsmiMusteriDetallar_Click(object sender, EventArgs e)
+        {
+            // Show details of selected customer
+            if (dgvMusteriler.CurrentRow?.DataBoundItem is MusteriDto musteri)
+            {
+                MessageBox.Show($"Müştəri Detalları:\n\nAd Soyad: {musteri.TamAd}\nTelefon: {musteri.TelefonNomresi}\nÜnvan: {musteri.Unvan}\nCari Borc: {musteri.UmumiBorc:N2} AZN\nKredit Limiti: {musteri.KreditLimiti:N2} AZN",
+                    "Müştəri Detalları", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void tsmiMusteriRedakteEt_Click(object sender, EventArgs e)
+        {
+            // Edit selected customer
+            if (dgvMusteriler.CurrentRow?.DataBoundItem is MusteriDto musteri)
+            {
+                try
+                {
+                    // Populate form fields with customer data
+                    txtId.Text = musteri.Id.ToString();
+                    txtTamAd.Text = musteri.TamAd;
+                    txtTelefon.Text = musteri.TelefonNomresi;
+                    txtUnvan.Text = musteri.Unvan;
+                    txtKreditLimiti.Text = musteri.KreditLimiti.ToString("N2");
+
+                    // Enable save button and disable new button
+                    btnYeni.Enabled = false;
+                    btnYaddaSaxla.Enabled = true;
+                    
+                    txtTamAd.Focus();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Müştəri məlumatları yüklənərkən xəta baş verdi: {ex.Message}", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void tsmiMusteriSil_Click(object sender, EventArgs e)
+        {
+            // Delete selected customer
+            if (dgvMusteriler.CurrentRow?.DataBoundItem is MusteriDto musteri)
+            {
+                var result = MessageBox.Show($"{musteri.TamAd} müştərisini silmək istədiyinizə əminsiniz?", 
+                    "Təsdiq", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                
+                if (result == DialogResult.Yes)
+                {
+                    try
+                    {
+                        var _musteriManager = Program.ServiceProvider.GetRequiredService<MusteriManager>();
+                        var silindi = _musteriManager.MusteriSil(musteri.Id);
+                        if (silindi.UgurluDur)
+                        {
+                            MessageBox.Show("Müştəri uğurla silindi.", "Uğur", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            
+                            // Refresh customers list after deletion
+                            Axtar_Istek?.Invoke(this, EventArgs.Empty);
+                        }
+                        else
+                        {
+                            MessageBox.Show($"Müştəri silinərkən xəta baş verdi: {silindi.Mesaj}", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Müştəri silinərkən xəta baş verdi: {ex.Message}", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+        }
+
+        #endregion
     }
 }

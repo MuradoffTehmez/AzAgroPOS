@@ -31,6 +31,10 @@
             txtUnvan = new MaterialSkin.Controls.MaterialTextBox2();
             txtTelefon = new MaterialSkin.Controls.MaterialTextBox2();
             txtTamAd = new MaterialSkin.Controls.MaterialTextBox2();
+            contextMenuStripMusteriler = new ContextMenuStrip(components);
+            tsmiMusteriDetallar = new ToolStripMenuItem();
+            tsmiMusteriRedakteEt = new ToolStripMenuItem();
+            tsmiMusteriSil = new ToolStripMenuItem();
             errorProvider1 = new ErrorProvider(components);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
@@ -101,6 +105,7 @@
             dgvMusteriler.SelectionChanged += dgvMusteriler_SelectionChanged;
             dgvMusteriler.CellDoubleClick += dgvMusteriler_CellDoubleClick;
             dgvMusteriler.CellDoubleClick += dgvMusteriler_CellDoubleClick;
+            dgvMusteriler.ContextMenuStrip = contextMenuStripMusteriler;
             // 
             // txtAxtaris
             // 
@@ -353,6 +358,39 @@
             // 
             errorProvider1.ContainerControl = this;
             // 
+            // contextMenuStripMusteriler
+            // 
+            contextMenuStripMusteriler.Name = "contextMenuStripMusteriler";
+            contextMenuStripMusteriler.Size = new Size(61, 4);
+            // 
+            // tsmiMusteriDetallar
+            // 
+            tsmiMusteriDetallar.Name = "tsmiMusteriDetallar";
+            tsmiMusteriDetallar.Size = new Size(180, 22);
+            tsmiMusteriDetallar.Text = "Detallar";
+            tsmiMusteriDetallar.Click += tsmiMusteriDetallar_Click;
+            // 
+            // tsmiMusteriRedakteEt
+            // 
+            tsmiMusteriRedakteEt.Name = "tsmiMusteriRedakteEt";
+            tsmiMusteriRedakteEt.Size = new Size(180, 22);
+            tsmiMusteriRedakteEt.Text = "Redaktə Et";
+            tsmiMusteriRedakteEt.Click += tsmiMusteriRedakteEt_Click;
+            // 
+            // tsmiMusteriSil
+            // 
+            tsmiMusteriSil.Name = "tsmiMusteriSil";
+            tsmiMusteriSil.Size = new Size(180, 22);
+            tsmiMusteriSil.Text = "Sil";
+            tsmiMusteriSil.Click += tsmiMusteriSil_Click;
+            // 
+            // contextMenuStripMusteriler
+            // 
+            contextMenuStripMusteriler.Items.AddRange(new ToolStripItem[] {
+            tsmiMusteriDetallar,
+            tsmiMusteriRedakteEt,
+            tsmiMusteriSil});
+            // 
             // MusteriIdareetmeFormu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -376,6 +414,10 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private MaterialSkin.Controls.MaterialTextBox2 txtAxtaris;
         private System.Windows.Forms.DataGridView dgvMusteriler;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripMusteriler;
+        private System.Windows.Forms.ToolStripMenuItem tsmiMusteriDetallar;
+        private System.Windows.Forms.ToolStripMenuItem tsmiMusteriRedakteEt;
+        private System.Windows.Forms.ToolStripMenuItem tsmiMusteriSil;
         private MaterialSkin.Controls.MaterialCard materialCard1;
         private MaterialSkin.Controls.MaterialTextBox2 txtUnvan;
         private MaterialSkin.Controls.MaterialTextBox2 txtTelefon;

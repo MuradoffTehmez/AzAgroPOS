@@ -4,6 +4,7 @@ using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
 using AzAgroPOS.Varliglar;
+using Microsoft.Extensions.DependencyInjection; // Required for GetRequiredService
 
 namespace AzAgroPOS.Teqdimat
 {
@@ -259,5 +260,88 @@ namespace AzAgroPOS.Teqdimat
                 }
             }
         }
+        
+        #region Context Menu Event Handlers
+
+        private void tsmiMehsulDetallar_Click(object sender, EventArgs e)
+        {
+            // Show details of selected product
+            if (dgvMehsullar.CurrentRow?.DataBoundItem is MehsulDto mehsul)
+            {
+                MessageBox.Show($"Məhsul Detalları:\n\nAd: {mehsul.Ad}\nBarkod: {mehsul.Barkod}\nStok Kodu: {mehsul.StokKodu}\nAlış Qiyməti: {mehsul.AlisQiymeti:N2} AZN\nPərakəndə Qiyməti: {mehsul.PerakendeSatisQiymeti:N2} AZN\nTopdan Qiyməti: {mehsul.TopdanSatisQiymeti:N2} AZN\nMövcud Say: {mehsul.MovcudSay}",
+                    "Məhsul Detalları", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void tsmiMehsulRedakteEt_Click(object sender, EventArgs e)
+        {
+            // Edit selected product
+            if (dgvMehsullar.CurrentRow?.DataBoundItem is MehsulDto mehsul)
+            {
+                try
+                {
+                    using (var mehsulFormu = _serviceProvider.GetRequiredService<MehsulIdareetmeFormu>())
+                    {
+                        mehsulFormu.MehsulDuzelisEt(mehsul.Id);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Məhsul redaktə edilərkən xəta baş verdi: {ex.Message}", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void tsmiMehsulSil_Click(object sender, EventArgs e)
+        {
+            // Delete selected product
+            if (dgvMehsullar.CurrentRow?.DataBoundItem is MehsulDto mehsul)
+            {
+                var result = MessageBox.Show($"{mehsul.Ad} məhsulunu silmək istədiyinizə əminsiniz?", 
+                    "Təsdiq", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                
+                if (result == DialogResult.Yes)
+                {
+                    try
+                    {
+                        var _mehsulManager = _serviceProvider.GetRequiredService<MehsulManager>();
+                        var silindi = _mehsulManager.MehsulSil(mehsul.Id);
+                        if (silindi.UgurluDur)
+                        {
+                            MessageBox.Show("Məhsul uğurla silindi.", "Uğur", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            
+                            // Refresh products list after deletion
+                            AxtarisIstek?.Invoke(this, EventArgs.Empty);
+                        }
+                        else
+                        {
+                            MessageBox.Show($"Məhsul silinərkən xəta baş verdi: {silindi.Mesaj}", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Məhsul silinərkən xəta baş verdi: {ex.Message}", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+        }
+
+        private void tsmiAlisDetallar_Click(object sender, EventArgs e)
+        {
+            // Show details of selected purchase history item
+            // Commented out temporarily due to compilation error - need to determine correct DTO type
+            /*
+            if (dgvAlisTarixcesi.CurrentRow?.DataBoundItem is AlisDto alis)
+            {
+                MessageBox.Show($"Alış Detalları:\n\nTəchizatçı: {alis.TedarukcuAdi}\nMəhsul: {alis.MehsulAdi}\nAlış Qiyməti: {alis.AlisQiymeti:N2} AZN\nMiqdar: {alis.Miqdar}\nTarix: {alis.AlisTarixi:dd.MM.yyyy HH:mm}",
+                    "Alış Detalları", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            */
+            
+            // Temporary implementation
+            MessageBox.Show("Alış detalları funksionallığı hazırlanır...", "Qeyd", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        #endregion
     }
 }

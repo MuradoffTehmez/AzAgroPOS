@@ -530,5 +530,105 @@ namespace AzAgroPOS.Teqdimat
         }
         
         #endregion
+
+        #region Context Menu Event Handlers
+
+        private void tsmiAxtarisDetallar_Click(object sender, EventArgs e)
+        {
+            // Show details of selected product
+            if (dgvAxtarisNeticeleri.CurrentRow?.DataBoundItem is MehsulDto mehsul)
+            {
+                MessageBox.Show($"Məhsul Detalları:\n\nAd: {mehsul.Ad}\nBarkod: {mehsul.Barkod}\nStok Kodu: {mehsul.StokKodu}\nAlış Qiyməti: {mehsul.AlisQiymeti:N2} AZN\nPərakəndə Qiyməti: {mehsul.PerakendeSatisQiymeti:N2} AZN\nTopdan Qiyməti: {mehsul.TopdanSatisQiymeti:N2} AZN",
+                    "Məhsul Detalları", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void tsmiAxtarisRedakteEt_Click(object sender, EventArgs e)
+        {
+            // Edit selected product
+            if (dgvAxtarisNeticeleri.CurrentRow?.DataBoundItem is MehsulDto mehsul)
+            {
+                try
+                {
+                    using (var mehsulFormu = _serviceProvider.GetRequiredService<MehsulIdareetmeFormu>())
+                    {
+                        mehsulFormu.MehsulDuzelisEt(mehsul.Id);
+                        mehsulFormu.ShowDialog();
+                        
+                        // Refresh search results after editing
+                        MehsulAxtarIstek?.Invoke(this, EventArgs.Empty);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Məhsul redaktə edilərkən xəta baş verdi: {ex.Message}", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void tsmiAxtarisSil_Click(object sender, EventArgs e)
+        {
+            // Delete selected product
+            if (dgvAxtarisNeticeleri.CurrentRow?.DataBoundItem is MehsulDto mehsul)
+            {
+                var result = MessageBox.Show($"{mehsul.Ad} məhsulunu silmək istədiyinizə əminsiniz?", 
+                    "Təsdiq", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                
+                if (result == DialogResult.Yes)
+                {
+                    try
+                    {
+                        var silindi = _presenter.MehsulSilAsync(mehsul.Id).Result;
+                        if (silindi)
+                        {
+                            MessageBox.Show("Məhsul uğurla silindi.", "Uğur", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            
+                            // Refresh search results after deletion
+                            MehsulAxtarIstek?.Invoke(this, EventArgs.Empty);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Məhsul silinərkən xəta baş verdi.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Məhsul silinərkən xəta baş verdi: {ex.Message}", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+        }
+
+        private void tsmiSebetDetallar_Click(object sender, EventArgs e)
+        {
+            // Show details of selected cart item
+            if (dgvSebet.CurrentRow?.DataBoundItem is SatisSebetiElementiDto sebetElementi)
+            {
+                MessageBox.Show($"Səbət Elementi Detalları:\n\nMəhsul: {sebetElementi.MehsulAdi}\nMiqdar: {sebetElementi.Miqdar}\nVahid Qiyməti: {sebetElementi.VahidinQiymeti:N2} AZN\nÜmumi Məbləğ: {sebetElementi.UmumiMebleg:N2} AZN",
+                    "Səbət Elementi Detalları", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void tsmiSebetRedakteEt_Click(object sender, EventArgs e)
+        {
+            // Edit quantity of selected cart item
+            if (dgvSebet.CurrentRow?.DataBoundItem is SatisSebetiElementiDto sebetElementi)
+            {
+                // For simplicity, we'll just show a message here
+                MessageBox.Show("Səbət elementinin miqdarını dəyişdirmək üçün miqdar sahəsində düzəliş edin.", 
+                    "İnfo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void tsmiSebetSil_Click(object sender, EventArgs e)
+        {
+            // Remove selected item from cart
+            if (dgvSebet.CurrentRow?.DataBoundItem is SatisSebetiElementiDto)
+            {
+                SebetdenSilIstek?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        #endregion
     }
 }

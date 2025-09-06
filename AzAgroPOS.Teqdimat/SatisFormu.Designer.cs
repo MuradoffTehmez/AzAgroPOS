@@ -18,21 +18,29 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
             pnlMainContainer = new Panel();
             tableLayoutPanel1 = new TableLayoutPanel();
             panel1 = new Panel();
             pnlSearchSection = new MaterialSkin.Controls.MaterialCard();
             dgvAxtarisNeticeleri = new DataGridView();
+            contextMenuStripAxtarisNeticeleri = new ContextMenuStrip(components);
+            tsmiAxtarisDetallar = new ToolStripMenuItem();
+            tsmiAxtarisRedakteEt = new ToolStripMenuItem();
+            tsmiAxtarisSil = new ToolStripMenuItem();
             txtAxtaris = new MaterialSkin.Controls.MaterialTextBox2();
             pnlQuantityControls = new Panel();
             txtMiqdar = new MaterialSkin.Controls.MaterialTextBox2();
             btnSebeteElaveEt = new MaterialSkin.Controls.MaterialButton();
             pnlCartSection = new MaterialSkin.Controls.MaterialCard();
             dgvSebet = new DataGridView();
+            contextMenuStripSebet = new ContextMenuStrip(components);
+            tsmiSebetDetallar = new ToolStripMenuItem();
+            tsmiSebetRedakteEt = new ToolStripMenuItem();
+            tsmiSebetSil = new ToolStripMenuItem();
             pnlCartControls = new Panel();
             btnSebetdenSil = new MaterialSkin.Controls.MaterialButton();
             btnSebetTemizle = new MaterialSkin.Controls.MaterialButton();
@@ -65,9 +73,11 @@
             panel1.SuspendLayout();
             pnlSearchSection.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvAxtarisNeticeleri).BeginInit();
+            contextMenuStripAxtarisNeticeleri.SuspendLayout();
             pnlQuantityControls.SuspendLayout();
             pnlCartSection.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvSebet).BeginInit();
+            contextMenuStripSebet.SuspendLayout();
             pnlCartControls.SuspendLayout();
             pnlPaymentSection.SuspendLayout();
             pnlPaymentMethods.SuspendLayout();
@@ -143,23 +153,24 @@
             dgvAxtarisNeticeleri.AllowUserToDeleteRows = false;
             dgvAxtarisNeticeleri.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvAxtarisNeticeleri.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = SystemColors.Control;
-            dataGridViewCellStyle1.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            dgvAxtarisNeticeleri.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = SystemColors.Control;
+            dataGridViewCellStyle5.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            dataGridViewCellStyle5.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle5.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
+            dgvAxtarisNeticeleri.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             dgvAxtarisNeticeleri.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Window;
-            dataGridViewCellStyle2.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            dataGridViewCellStyle2.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
-            dgvAxtarisNeticeleri.DefaultCellStyle = dataGridViewCellStyle2;
+            dgvAxtarisNeticeleri.ContextMenuStrip = contextMenuStripAxtarisNeticeleri;
+            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = SystemColors.Window;
+            dataGridViewCellStyle6.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            dataGridViewCellStyle6.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            dataGridViewCellStyle6.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.False;
+            dgvAxtarisNeticeleri.DefaultCellStyle = dataGridViewCellStyle6;
             dgvAxtarisNeticeleri.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             dgvAxtarisNeticeleri.Location = new Point(17, 72);
             dgvAxtarisNeticeleri.MultiSelect = false;
@@ -169,6 +180,33 @@
             dgvAxtarisNeticeleri.Size = new Size(405, 392);
             dgvAxtarisNeticeleri.TabIndex = 1;
             dgvAxtarisNeticeleri.DoubleClick += dgvAxtarisNeticeleri_DoubleClick;
+            // 
+            // contextMenuStripAxtarisNeticeleri
+            // 
+            contextMenuStripAxtarisNeticeleri.Items.AddRange(new ToolStripItem[] { tsmiAxtarisDetallar, tsmiAxtarisRedakteEt, tsmiAxtarisSil });
+            contextMenuStripAxtarisNeticeleri.Name = "contextMenuStripAxtarisNeticeleri";
+            contextMenuStripAxtarisNeticeleri.Size = new Size(130, 70);
+            // 
+            // tsmiAxtarisDetallar
+            // 
+            tsmiAxtarisDetallar.Name = "tsmiAxtarisDetallar";
+            tsmiAxtarisDetallar.Size = new Size(129, 22);
+            tsmiAxtarisDetallar.Text = "Detallar";
+            tsmiAxtarisDetallar.Click += tsmiAxtarisDetallar_Click;
+            // 
+            // tsmiAxtarisRedakteEt
+            // 
+            tsmiAxtarisRedakteEt.Name = "tsmiAxtarisRedakteEt";
+            tsmiAxtarisRedakteEt.Size = new Size(129, 22);
+            tsmiAxtarisRedakteEt.Text = "Redaktə Et";
+            tsmiAxtarisRedakteEt.Click += tsmiAxtarisRedakteEt_Click;
+            // 
+            // tsmiAxtarisSil
+            // 
+            tsmiAxtarisSil.Name = "tsmiAxtarisSil";
+            tsmiAxtarisSil.Size = new Size(129, 22);
+            tsmiAxtarisSil.Text = "Sil";
+            tsmiAxtarisSil.Click += tsmiAxtarisSil_Click;
             // 
             // txtAxtaris
             // 
@@ -292,23 +330,24 @@
             dgvSebet.AllowUserToDeleteRows = false;
             dgvSebet.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvSebet.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = SystemColors.Control;
-            dataGridViewCellStyle3.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
-            dgvSebet.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Control;
+            dataGridViewCellStyle1.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dgvSebet.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgvSebet.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = SystemColors.Window;
-            dataGridViewCellStyle4.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            dataGridViewCellStyle4.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.False;
-            dgvSebet.DefaultCellStyle = dataGridViewCellStyle4;
+            dgvSebet.ContextMenuStrip = contextMenuStripSebet;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            dataGridViewCellStyle2.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            dgvSebet.DefaultCellStyle = dataGridViewCellStyle2;
             dgvSebet.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             dgvSebet.Location = new Point(17, 17);
             dgvSebet.Name = "dgvSebet";
@@ -316,6 +355,33 @@
             dgvSebet.Size = new Size(659, 447);
             dgvSebet.TabIndex = 0;
             dgvSebet.CellContentClick += dgvSebet_CellContentClick;
+            // 
+            // contextMenuStripSebet
+            // 
+            contextMenuStripSebet.Items.AddRange(new ToolStripItem[] { tsmiSebetDetallar, tsmiSebetRedakteEt, tsmiSebetSil });
+            contextMenuStripSebet.Name = "contextMenuStripSebet";
+            contextMenuStripSebet.Size = new Size(130, 70);
+            // 
+            // tsmiSebetDetallar
+            // 
+            tsmiSebetDetallar.Name = "tsmiSebetDetallar";
+            tsmiSebetDetallar.Size = new Size(129, 22);
+            tsmiSebetDetallar.Text = "Detallar";
+            tsmiSebetDetallar.Click += tsmiSebetDetallar_Click;
+            // 
+            // tsmiSebetRedakteEt
+            // 
+            tsmiSebetRedakteEt.Name = "tsmiSebetRedakteEt";
+            tsmiSebetRedakteEt.Size = new Size(129, 22);
+            tsmiSebetRedakteEt.Text = "Redaktə Et";
+            tsmiSebetRedakteEt.Click += tsmiSebetRedakteEt_Click;
+            // 
+            // tsmiSebetSil
+            // 
+            tsmiSebetSil.Name = "tsmiSebetSil";
+            tsmiSebetSil.Size = new Size(129, 22);
+            tsmiSebetSil.Text = "Sil";
+            tsmiSebetSil.Click += tsmiSebetSil_Click;
             // 
             // pnlCartControls
             // 
@@ -819,9 +885,11 @@
             panel1.ResumeLayout(false);
             pnlSearchSection.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvAxtarisNeticeleri).EndInit();
+            contextMenuStripAxtarisNeticeleri.ResumeLayout(false);
             pnlQuantityControls.ResumeLayout(false);
             pnlCartSection.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvSebet).EndInit();
+            contextMenuStripSebet.ResumeLayout(false);
             pnlCartControls.ResumeLayout(false);
             pnlPaymentSection.ResumeLayout(false);
             pnlPaymentSection.PerformLayout();
@@ -865,6 +933,14 @@
         private MaterialSkin.Controls.MaterialButton btnIndirim;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStripGozleyenler;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripAxtarisNeticeleri;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripSebet;
+        private System.Windows.Forms.ToolStripMenuItem tsmiAxtarisDetallar;
+        private System.Windows.Forms.ToolStripMenuItem tsmiAxtarisRedakteEt;
+        private System.Windows.Forms.ToolStripMenuItem tsmiAxtarisSil;
+        private System.Windows.Forms.ToolStripMenuItem tsmiSebetDetallar;
+        private System.Windows.Forms.ToolStripMenuItem tsmiSebetRedakteEt;
+        private System.Windows.Forms.ToolStripMenuItem tsmiSebetSil;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.FlowLayoutPanel flpSuretliSatis;

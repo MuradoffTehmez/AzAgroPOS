@@ -24,6 +24,10 @@ namespace AzAgroPOS.Teqdimat
             DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
             splitContainer1 = new SplitContainer();
             dgvMehsullar = new DataGridView();
+            contextMenuStripMehsullar = new ContextMenuStrip(components);
+            tsmiMehsulDetallar = new ToolStripMenuItem();
+            tsmiMehsulRedakteEt = new ToolStripMenuItem();
+            tsmiMehsulSil = new ToolStripMenuItem();
             txtAxtar = new MaterialSkin.Controls.MaterialTextBox2();
             materialTabControl1 = new MaterialSkin.Controls.MaterialTabControl();
             tabPage2 = new TabPage();
@@ -51,17 +55,21 @@ namespace AzAgroPOS.Teqdimat
             txtId = new TextBox();
             tabPage1 = new TabPage();
             dgvAlisTarixcesi = new DataGridView();
+            contextMenuStripAlisTarixcesi = new ContextMenuStrip(components);
+            tsmiAlisDetallar = new ToolStripMenuItem();
             errorProvider1 = new ErrorProvider(components);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
             splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvMehsullar).BeginInit();
+            contextMenuStripMehsullar.SuspendLayout();
             materialTabControl1.SuspendLayout();
             tabPage2.SuspendLayout();
             materialCard1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvAlisTarixcesi).BeginInit();
+            contextMenuStripAlisTarixcesi.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)errorProvider1).BeginInit();
             SuspendLayout();
             // 
@@ -107,6 +115,7 @@ namespace AzAgroPOS.Teqdimat
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
             dgvMehsullar.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgvMehsullar.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvMehsullar.ContextMenuStrip = contextMenuStripMehsullar;
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = SystemColors.Window;
             dataGridViewCellStyle2.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
@@ -122,6 +131,33 @@ namespace AzAgroPOS.Teqdimat
             dgvMehsullar.Size = new Size(720, 713);
             dgvMehsullar.TabIndex = 1;
             dgvMehsullar.SelectionChanged += dgvMehsullar_SelectionChanged;
+            // 
+            // contextMenuStripMehsullar
+            // 
+            contextMenuStripMehsullar.Items.AddRange(new ToolStripItem[] { tsmiMehsulDetallar, tsmiMehsulRedakteEt, tsmiMehsulSil });
+            contextMenuStripMehsullar.Name = "contextMenuStripMehsullar";
+            contextMenuStripMehsullar.Size = new Size(130, 70);
+            // 
+            // tsmiMehsulDetallar
+            // 
+            tsmiMehsulDetallar.Name = "tsmiMehsulDetallar";
+            tsmiMehsulDetallar.Size = new Size(129, 22);
+            tsmiMehsulDetallar.Text = "Detallar";
+            tsmiMehsulDetallar.Click += tsmiMehsulDetallar_Click;
+            // 
+            // tsmiMehsulRedakteEt
+            // 
+            tsmiMehsulRedakteEt.Name = "tsmiMehsulRedakteEt";
+            tsmiMehsulRedakteEt.Size = new Size(129, 22);
+            tsmiMehsulRedakteEt.Text = "Redaktə Et";
+            tsmiMehsulRedakteEt.Click += tsmiMehsulRedakteEt_Click;
+            // 
+            // tsmiMehsulSil
+            // 
+            tsmiMehsulSil.Name = "tsmiMehsulSil";
+            tsmiMehsulSil.Size = new Size(129, 22);
+            tsmiMehsulSil.Text = "Sil";
+            tsmiMehsulSil.Click += tsmiMehsulSil_Click;
             // 
             // txtAxtar
             // 
@@ -791,6 +827,7 @@ namespace AzAgroPOS.Teqdimat
             dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
             dgvAlisTarixcesi.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             dgvAlisTarixcesi.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvAlisTarixcesi.ContextMenuStrip = contextMenuStripAlisTarixcesi;
             dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle4.BackColor = SystemColors.Window;
             dataGridViewCellStyle4.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
@@ -807,23 +844,22 @@ namespace AzAgroPOS.Teqdimat
             dgvAlisTarixcesi.Size = new Size(513, 758);
             dgvAlisTarixcesi.TabIndex = 0;
             // 
+            // contextMenuStripAlisTarixcesi
+            // 
+            contextMenuStripAlisTarixcesi.Items.AddRange(new ToolStripItem[] { tsmiAlisDetallar });
+            contextMenuStripAlisTarixcesi.Name = "contextMenuStripAlisTarixcesi";
+            contextMenuStripAlisTarixcesi.Size = new Size(115, 26);
+            // 
+            // tsmiAlisDetallar
+            // 
+            tsmiAlisDetallar.Name = "tsmiAlisDetallar";
+            tsmiAlisDetallar.Size = new Size(114, 22);
+            tsmiAlisDetallar.Text = "Detallar";
+            tsmiAlisDetallar.Click += tsmiAlisDetallar_Click;
+            // 
             // errorProvider1
             // 
             errorProvider1.ContainerControl = this;
-            // 
-            // statusStrip1
-            // 
-            statusStrip1.Location = new Point(0, 839);
-            statusStrip1.Name = "statusStrip1";
-            statusStrip1.Size = new Size(1287, 22);
-            statusStrip1.TabIndex = 1;
-            statusStrip1.Text = "statusStrip1";
-            // 
-            // toolStripStatusLabel1
-            // 
-            toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            toolStripStatusLabel1.Size = new Size(42, 17);
-            toolStripStatusLabel1.Text = "Hazır";
             // 
             // MehsulIdareetmeFormu
             // 
@@ -831,7 +867,6 @@ namespace AzAgroPOS.Teqdimat
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1287, 861);
             Controls.Add(splitContainer1);
-            Controls.Add(statusStrip1);
             Name = "MehsulIdareetmeFormu";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Məhsul İdarəetməsi";
@@ -841,12 +876,14 @@ namespace AzAgroPOS.Teqdimat
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
             splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvMehsullar).EndInit();
+            contextMenuStripMehsullar.ResumeLayout(false);
             materialTabControl1.ResumeLayout(false);
             tabPage2.ResumeLayout(false);
             materialCard1.ResumeLayout(false);
             materialCard1.PerformLayout();
             tabPage1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvAlisTarixcesi).EndInit();
+            contextMenuStripAlisTarixcesi.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)errorProvider1).EndInit();
             ResumeLayout(false);
         }
@@ -878,6 +915,12 @@ namespace AzAgroPOS.Teqdimat
         private System.Windows.Forms.TextBox txtId;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.DataGridView dgvAlisTarixcesi;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripMehsullar;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripAlisTarixcesi;
+        private System.Windows.Forms.ToolStripMenuItem tsmiMehsulDetallar;
+        private System.Windows.Forms.ToolStripMenuItem tsmiMehsulRedakteEt;
+        private System.Windows.Forms.ToolStripMenuItem tsmiMehsulSil;
+        private System.Windows.Forms.ToolStripMenuItem tsmiAlisDetallar;
         private MaterialSkin.Controls.MaterialTextBox2 txtMinimumStok;
         private MaterialSkin.Controls.MaterialComboBox cmbKateqoriya;
         private MaterialSkin.Controls.MaterialComboBox cmbBrend;

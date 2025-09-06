@@ -306,5 +306,18 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             _view.FormuTamSifirla();
             GosterisleriYenile();
         }
+
+        public async Task<bool> MehsulSilAsync(int mehsulId)
+        {
+            try
+            {
+                var netice = await _mehsulManager.MehsulSilAsync(mehsulId);
+                return netice.UgurluDur;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 }
