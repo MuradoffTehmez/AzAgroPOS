@@ -15,10 +15,10 @@ namespace AzAgroPOS.Teqdimat
     {
         private readonly MehsulPresenter _presenter;
 
-        public MehsulIdareetmeFormu(MehsulManager mehsulManager)
+        public MehsulIdareetmeFormu(MehsulManager mehsulManager, IServiceProvider serviceProvider)
         {
             InitializeComponent();
-            _presenter = new MehsulPresenter(this, mehsulManager);
+            _presenter = new MehsulPresenter(this, mehsulManager, serviceProvider);
             StilVerDataGridView(dgvMehsullar);
         }
 

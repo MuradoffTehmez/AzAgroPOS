@@ -5,6 +5,7 @@ using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Verilenler.Kontekst;
 using AzAgroPOS.Verilenler.Realizasialar;
 using AzAgroPOS.Varliglar;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,12 +20,14 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
         private readonly MehsulManager _mehsulManager;
         private readonly KateqoriyaMeneceri _kateqoriyaMeneceri;
         private readonly BrendMeneceri _brendMeneceri;
+        private readonly IServiceProvider _serviceProvider;
         private IEnumerable<MehsulDto>? _butunMehsullarCache;
 
-        public MehsulPresenter(IMehsulIdareetmeView view, MehsulManager mehsulManager)
+        public MehsulPresenter(IMehsulIdareetmeView view, MehsulManager mehsulManager, IServiceProvider serviceProvider)
         {
             _view = view;
             _mehsulManager = mehsulManager;
+            _serviceProvider = serviceProvider;
             //_mehsulManager = new MehsulManager(unitOfWork);
 
             // Hadisələrə abunə oluruq (Subscribing to events)
@@ -45,20 +48,20 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             _view.OlcuVahidleriniGoster(Enum.GetValues(typeof(OlcuVahidi)));
             
             // Kateqoriyaları yükləyirik
-            var kateqoriyaMeneceri = new KateqoriyaMeneceri(new UnitOfWork(new AzAgroPOSDbContext()));
+            var kateqoriyaMeneceri = _serviceProvider.GetRequiredService<KateqoriyaMeneceri>();
             var kateqoriyaNetice = await kateqoriyaMeneceri.ButunKateqoriyalariGetirAsync();
             if (kateqoriyaNetice.UgurluDur)
                 _view.KateqoriyalariGoster(kateqoriyaNetice.Data);
                 
             // Brendləri yükləyirik
-            var brendMeneceri = new BrendMeneceri(new UnitOfWork(new AzAgroPOSDbContext()));
+            var brendMeneceri = _serviceProvider.GetRequiredService<BrendMeneceri>();
             var brendNetice = await brendMeneceri.ButunBrendleriGetirAsync();
             if (brendNetice.UgurluDur)
                 _view.BrendleriGoster(brendNetice.Data);
                 
             // Tədarükçüləri yükləyirik
-            var tedarukcuMeneceri = new TedarukcuMeneceri(new UnitOfWork(new AzAgroPOSDbContext()));
-            var tedarukcuNetice = await tedarukcuMeneceri.ButunTedarukculeriGetirAsync();
+            var alisManager = _serviceProvider.GetRequiredService<AlisManager>();
+            var tedarukcuNetice = await alisManager.ButunTedarukculeriGetirAsync();
             if (tedarukcuNetice.UgurluDur)
                 _view.TedarukculeriGoster(tedarukcuNetice.Data);
 

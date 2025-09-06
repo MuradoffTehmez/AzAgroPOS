@@ -15,12 +15,12 @@ using System.Threading.Tasks;
 public class MinimumStokMehsullariPresenter
 {
     private readonly IMinimumStokMehsullariView _view;
-    private readonly MehsulManager _mehsulManager;
+    private readonly MehsulMeneceri _mehsulMeneceri;
 
-    public MinimumStokMehsullariPresenter(IMinimumStokMehsullariView view, MehsulManager mehsulManager)
+    public MinimumStokMehsullariPresenter(IMinimumStokMehsullariView view, MehsulMeneceri mehsulMeneceri)
     {
         _view = view;
-        _mehsulManager = mehsulManager;
+        _mehsulMeneceri = mehsulMeneceri;
 
         // Hadisələrə abunə oluruq
         _view.FormYuklendi += async (s, e) => await FormuYukle();
@@ -29,7 +29,7 @@ public class MinimumStokMehsullariPresenter
 
     private async Task FormuYukle()
     {
-        var netice = await _mehsulManager.MinimumStokMehsullariniGetirAsync();
+        var netice = await _mehsulMeneceri.MinimumStokMehsullariniGetirAsync();
         if (netice.UgurluDur)
         {
             _view.MinimumStokMehsullariniGoster(netice.Data.OrderBy(m => m.Ad).ToList());

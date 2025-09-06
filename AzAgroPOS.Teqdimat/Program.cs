@@ -47,6 +47,7 @@ namespace AzAgroPOS.Teqdimat
             services.AddTransient<TehlukesizlikManager>();
             services.AddTransient<IstifadeciManager>();
             services.AddTransient<MehsulManager>();
+            services.AddTransient<MehsulMeneceri>(); // Əlavə edildi
             services.AddTransient<MusteriManager>();
             services.AddTransient<SatisManager>();
             services.AddTransient<NisyeManager>();
@@ -59,6 +60,7 @@ namespace AzAgroPOS.Teqdimat
             services.AddTransient<AlisManager>();
             services.AddTransient<KateqoriyaMeneceri>(); // Əlavə edildi
             services.AddTransient<BrendMeneceri>(); // Əlavə edildi
+            services.AddTransient<TedarukcuMeneceri>(); // Əlavə edildi
 
             // Formalar (Bütün formaları buraya əlavə edirik)
             services.AddTransient<LoginFormu>();
@@ -68,7 +70,11 @@ namespace AzAgroPOS.Teqdimat
             services.AddTransient<AnbarQaliqHesabatFormu>();
             services.AddTransient<BarkodCapiFormu>();
             services.AddTransient<HesabatFormu>();
-            services.AddTransient<MehsulIdareetmeFormu>();
+            services.AddTransient<MehsulIdareetmeFormu>(provider =>
+            {
+                var mehsulManager = provider.GetRequiredService<MehsulManager>();
+                return new MehsulIdareetmeFormu(mehsulManager, provider);
+            });
             services.AddTransient<MehsulSatisHesabatFormu>();
             services.AddTransient<MusteriIdareetmeFormu>();
             services.AddTransient<NisyeIdareetmeFormu>();
@@ -78,7 +84,11 @@ namespace AzAgroPOS.Teqdimat
             services.AddTransient<ZHesabatArxivFormu>();
             services.AddTransient<TedarukcuIdareetmeFormu>();
             services.AddTransient<IsciIdareetmeFormu>();
-            services.AddTransient<MinimumStokMehsullariFormu>(); // Əlavə edildi
+            services.AddTransient<MinimumStokMehsullariFormu>(provider =>
+            {
+                var mehsulMeneceri = provider.GetRequiredService<MehsulMeneceri>();
+                return new MinimumStokMehsullariFormu(mehsulMeneceri);
+            }); // Əlavə edildi
         }
     }
 }

@@ -13,10 +13,10 @@ public partial class MinimumStokMehsullariFormu : BazaForm, IMinimumStokMehsulla
 {
     private readonly MinimumStokMehsullariPresenter _presenter;
 
-    public MinimumStokMehsullariFormu(MehsulManager mehsulManager)
+    public MinimumStokMehsullariFormu(MehsulMeneceri mehsulMeneceri)
     {
         InitializeComponent();
-        _presenter = new MinimumStokMehsullariPresenter(this, mehsulManager);
+        _presenter = new MinimumStokMehsullariPresenter(this, mehsulMeneceri);
         StilVerDataGridView(dgvMinimumStokMehsullari);
     }
 
