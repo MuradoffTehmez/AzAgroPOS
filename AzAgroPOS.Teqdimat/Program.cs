@@ -86,7 +86,11 @@ namespace AzAgroPOS.Teqdimat
                 return new MehsulIdareetmeFormu(mehsulManager, provider);
             });
             services.AddTransient<MehsulSatisHesabatFormu>();
-            services.AddTransient<MusteriIdareetmeFormu>();
+            services.AddTransient<MusteriIdareetmeFormu>(provider =>
+            {
+                var musteriManager = provider.GetRequiredService<MusteriManager>();
+                return new MusteriIdareetmeFormu(musteriManager, provider);
+            });
             services.AddTransient<NisyeIdareetmeFormu>();
             services.AddTransient<NovbeIdareetmesiFormu>();
             services.AddTransient<SatisFormu>(provider =>

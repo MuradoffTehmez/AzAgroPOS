@@ -255,6 +255,12 @@ namespace AzAgroPOS.Teqdimat
             Console.WriteLine($"Müştəri ekranı yeniləndi: {mehsulAdi} - Qiymət: {qiymet} AZN - Miqdar: {miqdar}");
         }
 
+        public void MehsulDuzelisEt(int mehsulId)
+        {
+            // Bu metod satis formasinda mehsul duzelis etmek ucun istifade olunmur
+            // Ancaq compiler xetasi vermemesi ucun burada bos bir implementasiya var
+        }
+
         #endregion
 
         #region Hadisə Ötürücüləri

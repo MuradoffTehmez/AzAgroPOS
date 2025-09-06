@@ -2,18 +2,21 @@ using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace AzAgroPOS.Teqdimat
 {
     public partial class MusteriIdareetmeFormu : BazaForm, IMusteriView
     {
         private readonly MusteriPresenter _presenter;
+        private readonly IServiceProvider _serviceProvider;
         public int SecilenMusteriId { get; private set; } = 0;
 
-        public MusteriIdareetmeFormu(MusteriManager musteriManager)
+        public MusteriIdareetmeFormu(MusteriManager musteriManager, IServiceProvider serviceProvider)
         {
             InitializeComponent();
             _presenter = new MusteriPresenter(this, musteriManager);
+            _serviceProvider = serviceProvider;
             // Form yüklənəndə Presenter-ə xəbər veririk
             this.Load += (s, e) => FormYuklendi?.Invoke(this, EventArgs.Empty);
             StilVerDataGridView(dgvMusteriler);
@@ -26,6 +29,8 @@ namespace AzAgroPOS.Teqdimat
 
         public int SecilmisMusteriId => dgvMusteriler.CurrentRow?.DataBoundItem is MusteriDto musteri ? musteri.Id : 0;
 
+        private string _musteriId = "";
+        public string MusteriId { get => _musteriId; set => _musteriId = value; }
         public string TamAd { get => txtTamAd.Text; set => txtTamAd.Text = value; }
         public string Telefon { get => txtTelefon.Text; set => txtTelefon.Text = value; }
         public string Unvan { get => txtUnvan.Text; set => txtUnvan.Text = value; }
@@ -38,6 +43,7 @@ namespace AzAgroPOS.Teqdimat
         public event EventHandler YaddaSaxlaIstek;
         public event EventHandler SilIstek;
         public event EventHandler AxtarIstek;
+        public event EventHandler Axtar_Istek;
 
         public void MusterileriGoster(List<MusteriDto> musteriler)
         {
@@ -212,7 +218,7 @@ namespace AzAgroPOS.Teqdimat
                 try
                 {
                     // Populate form fields with customer data
-                    txtId.Text = musteri.Id.ToString();
+                    MusteriId = musteri.Id.ToString();
                     txtTamAd.Text = musteri.TamAd;
                     txtTelefon.Text = musteri.TelefonNomresi;
                     txtUnvan.Text = musteri.Unvan;
@@ -231,7 +237,7 @@ namespace AzAgroPOS.Teqdimat
             }
         }
 
-        private void tsmiMusteriSil_Click(object sender, EventArgs e)
+        private async void tsmiMusteriSil_Click(object sender, EventArgs e)
         {
             // Delete selected customer
             if (dgvMusteriler.CurrentRow?.DataBoundItem is MusteriDto musteri)
@@ -243,8 +249,8 @@ namespace AzAgroPOS.Teqdimat
                 {
                     try
                     {
-                        var _musteriManager = Program.ServiceProvider.GetRequiredService<MusteriManager>();
-                        var silindi = _musteriManager.MusteriSil(musteri.Id);
+                        var _musteriManager = _serviceProvider.GetRequiredService<MusteriManager>();
+                        var silindi = await _musteriManager.MusteriSilAsync(musteri.Id);
                         if (silindi.UgurluDur)
                         {
                             MessageBox.Show("Müştəri uğurla silindi.", "Uğur", MessageBoxButtons.OK, MessageBoxIcon.Information);

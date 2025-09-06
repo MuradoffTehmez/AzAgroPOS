@@ -11,11 +11,13 @@ namespace AzAgroPOS.Teqdimat
     public partial class MehsulIdareetmeFormu : BazaForm, IMehsulIdareetmeView
     {
         private readonly MehsulPresenter _presenter;
+        private readonly IServiceProvider _serviceProvider;
 
         public MehsulIdareetmeFormu(MehsulManager mehsulManager, IServiceProvider serviceProvider)
         {
             InitializeComponent();
             _presenter = new MehsulPresenter(this, mehsulManager, serviceProvider);
+            _serviceProvider = serviceProvider;
             StilVerDataGridView(dgvMehsullar);
 
             // Setup auto-complete for ComboBoxes
@@ -55,6 +57,65 @@ namespace AzAgroPOS.Teqdimat
         #endregion
 
         #region View Metodları
+        public void MehsulDuzelisEt(int mehsulId)
+        {
+            // Mehsul ID'sini forma üzerindeki alana yerleştir
+            txtId.Text = mehsulId.ToString();
+            
+            // Seçili satırı güncelle
+            if (dgvMehsullar.DataSource is List<MehsulDto> mehsullar)
+            {
+                var secilmisMehsul = mehsullar.FirstOrDefault(m => m.Id == mehsulId);
+                if (secilmisMehsul != null)
+                {
+                    // Seçili satırı seç
+                    foreach (DataGridViewRow row in dgvMehsullar.Rows)
+                    {
+                        if (row.DataBoundItem is MehsulDto mehsul && mehsul.Id == mehsulId)
+                        {
+                            dgvMehsullar.ClearSelection();
+                            row.Selected = true;
+                            dgvMehsullar.FirstDisplayedScrollingRowIndex = row.Index;
+                            break;
+                        }
+                    }
+                    
+                    // Form alanlarını doldur
+                    txtAd.Text = secilmisMehsul.Ad;
+                    txtStokKodu.Text = secilmisMehsul.StokKodu;
+                    txtBarkod.Text = secilmisMehsul.Barkod;
+                    txtPerakendeSatisQiymeti.Text = secilmisMehsul.PerakendeSatisQiymeti.ToString("F2");
+                    txtTopdanSatisQiymeti.Text = secilmisMehsul.TopdanSatisQiymeti.ToString("F2");
+                    txtTekEdedSatisQiymeti.Text = secilmisMehsul.TekEdedSatisQiymeti.ToString("F2");
+                    txtAlisQiymeti.Text = secilmisMehsul.AlisQiymeti.ToString("F2");
+                    txtMevcudSay.Text = secilmisMehsul.MovcudSay.ToString();
+                    txtMinimumStok.Text = secilmisMehsul.MinimumStok.ToString();
+                    
+                    // ComboBox seçimlerini ayarla
+                    cmbOlcuVahidi.SelectedItem = secilmisMehsul.OlcuVahidi;
+                    
+                    if (secilmisMehsul.KateqoriyaId.HasValue)
+                        cmbKateqoriya.SelectedValue = secilmisMehsul.KateqoriyaId.Value;
+                    else
+                        cmbKateqoriya.SelectedIndex = -1;
+
+                    if (secilmisMehsul.BrendId.HasValue)
+                        cmbBrend.SelectedValue = secilmisMehsul.BrendId.Value;
+                    else
+                        cmbBrend.SelectedIndex = -1;
+
+                    if (secilmisMehsul.TedarukcuId.HasValue)
+                        cmbTedarukcu.SelectedValue = secilmisMehsul.TedarukcuId.Value;
+                    else
+                        cmbTedarukcu.SelectedIndex = -1;
+                    
+                    // Buton metnini güncelle
+                    btnElaveEt.Text = "Yeni Məhsul";
+                    btnKopyala.Enabled = true;
+                }
+            }
+        }
+
         public void OlcuVahidleriniGoster(Array olcuVahidleri)
         {
             cmbOlcuVahidi.DataSource = olcuVahidleri;
@@ -292,7 +353,7 @@ namespace AzAgroPOS.Teqdimat
             }
         }
 
-        private void tsmiMehsulSil_Click(object sender, EventArgs e)
+        private async void tsmiMehsulSil_Click(object sender, EventArgs e)
         {
             // Delete selected product
             if (dgvMehsullar.CurrentRow?.DataBoundItem is MehsulDto mehsul)
@@ -305,13 +366,13 @@ namespace AzAgroPOS.Teqdimat
                     try
                     {
                         var _mehsulManager = _serviceProvider.GetRequiredService<MehsulManager>();
-                        var silindi = _mehsulManager.MehsulSil(mehsul.Id);
+                        var silindi = await _mehsulManager.MehsulSilAsync(mehsul.Id);
                         if (silindi.UgurluDur)
                         {
                             MessageBox.Show("Məhsul uğurla silindi.", "Uğur", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             
                             // Refresh products list after deletion
-                            AxtarisIstek?.Invoke(this, EventArgs.Empty);
+                            Axtaris_Istek?.Invoke(this, EventArgs.Empty);
                         }
                         else
                         {
