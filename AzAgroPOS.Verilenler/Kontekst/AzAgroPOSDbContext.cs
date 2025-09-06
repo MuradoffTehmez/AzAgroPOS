@@ -31,6 +31,8 @@ public class AzAgroPOSDbContext : DbContext
     public DbSet<TedarukcuOdeme> TedarukcuOdemeleri { get; set; }
     public DbSet<Kateqoriya> Kateqoriyalar { get; set; } // Əlavə edildi
     public DbSet<Brend> Brendler { get; set; } // Əlavə edildi
+    public DbSet<Qaytarma> Qaytarmalar { get; set; } // Əlavə edildi
+    public DbSet<QaytarmaDetali> QaytarmaDetallari { get; set; } // Əlavə edildi
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -197,6 +199,34 @@ public class AzAgroPOSDbContext : DbContext
             .WithMany()
             .HasForeignKey(m => m.TedarukcuId)
             .OnDelete(DeleteBehavior.SetNull);
+
+        // Qaytarma ile Satis arasinda elaqe
+        modelBuilder.Entity<Qaytarma>()
+            .HasOne(q => q.Satis)
+            .WithMany(s => s.Qaytarmalar)
+            .HasForeignKey(q => q.SatisId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Qaytarma ile Kassir (Istifadeci) arasinda elaqe
+        modelBuilder.Entity<Qaytarma>()
+            .HasOne(q => q.Kassir)
+            .WithMany()
+            .HasForeignKey(q => q.KassirId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // QaytarmaDetali ile Qaytarma arasinda elaqe
+        modelBuilder.Entity<QaytarmaDetali>()
+            .HasOne(qd => qd.Qaytarma)
+            .WithMany(q => q.QaytarmaDetallari)
+            .HasForeignKey(qd => qd.QaytarmaId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        // QaytarmaDetali ile Mehsul arasinda elaqe
+        modelBuilder.Entity<QaytarmaDetali>()
+            .HasOne(qd => qd.Mehsul)
+            .WithMany()
+            .HasForeignKey(qd => qd.MehsulId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         SeedData(modelBuilder);
     }

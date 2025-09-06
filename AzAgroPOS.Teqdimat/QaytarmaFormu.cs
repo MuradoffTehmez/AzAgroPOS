@@ -23,6 +23,8 @@ namespace AzAgroPOS.Teqdimat
         }
 
         public string SatisNomresi => txtSatisNomresi.Text;
+        
+        public string QaytarmaSebebi => txtQaytarmaSebebi.Text;
 
         public List<SatisSebetiElementiDto> SecilmisMehsullar
         {
@@ -50,13 +52,13 @@ namespace AzAgroPOS.Teqdimat
             if (dgvSatisMehsullari.Columns.Count > 0)
             {
                 // Assuming the Dto has these properties
-                dgvSatisMehsullari.Columns["MehsulAdi"].HeaderText = "Məhsul Adı";
-                dgvSatisMehsullari.Columns["Miqdar"].HeaderText = "Miqdar";
-                dgvSatisMehsullari.Columns["VahidinQiymeti"].HeaderText = "Qiymət";
-                dgvSatisMehsullari.Columns["UmumiMebleg"].HeaderText = "Cəmi Məbləğ";
+                dgvSatisMehsullari.Columns[nameof(SatisSebetiElementiDto.MehsulAdi)].HeaderText = "Məhsul Adı";
+                dgvSatisMehsullari.Columns[nameof(SatisSebetiElementiDto.Miqdar)].HeaderText = "Miqdar";
+                dgvSatisMehsullari.Columns[nameof(SatisSebetiElementiDto.VahidinQiymeti)].HeaderText = "Qiymət";
+                dgvSatisMehsullari.Columns[nameof(SatisSebetiElementiDto.UmumiMebleg)].HeaderText = "Cəmi Məbləğ";
 
                 // Hide unnecessary columns
-                dgvSatisMehsullari.Columns["MehsulId"].Visible = false;
+                dgvSatisMehsullari.Columns[nameof(SatisSebetiElementiDto.MehsulId)].Visible = false;
                 // Add a checkbox column for selection if it doesn't exist
                 if (dgvSatisMehsullari.Columns["Secim"] == null)
                 {

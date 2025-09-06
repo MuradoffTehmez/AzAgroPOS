@@ -3,6 +3,7 @@
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
+using AzAgroPOS.Teqdimat.Yardimcilar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,8 +65,26 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                 return;
             }
 
+            var satisNomresi = _view.SatisNomresi;
+            if (string.IsNullOrWhiteSpace(satisNomresi) || !int.TryParse(satisNomresi, out int satisId))
+            {
+                _view.MesajGoster("Zəhmət olmasa, düzgün satış nömrəsi daxil edin.", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var sebeb = _view.QaytarmaSebebi;
+            if (string.IsNullOrWhiteSpace(sebeb))
+            {
+                _view.MesajGoster("Zəhmət olmasa, qaytarma səbəbini daxil edin.", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Kassir ID və aktiv növbə ID-ni əldə edin
+            int kassirId = Yardimcilar.AktivSessiya.AktivIstifadeci?.Id ?? 0;
+            int? aktivNovbeId = Yardimcilar.AktivSessiya.AktivNovbeId;
+
             // Seçilmiş məhsulları qaytarmaq
-            var netice = await _satisManager.QaytarmaEmeliyyatiAsync(secilmisMehsullar);
+            var netice = await _satisManager.QaytarmaEmeliyyatiAsync(secilmisMehsullar, satisId, sebeb, kassirId, aktivNovbeId);
 
             if (netice.UgurluDur)
             {

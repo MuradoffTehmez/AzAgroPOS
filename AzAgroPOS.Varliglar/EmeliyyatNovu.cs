@@ -21,5 +21,14 @@ public enum EmeliyyatNovu
     /// referans: Bu əməliyyat, müştərinin nisyə borcunu ödəməsi və borcun azalması ilə əlaqəlidir.
     /// rol: Bu əməliyyat, müştərinin nisyə borcunu ödəməsi və borcun azalması üçün istifadə olunur.
     /// </summary>
-    Odenis = 2 // Borc ödənişi (borcu azaldır)
+    Odenis = 2, // Borc ödənişi (borcu azaldır)
+    
+    /// <summary>
+    /// qaytarma - Satış qaytarma (borcu azaldır).
+    /// diqqət: Bu əməliyyat, müştərinin əvvəlki alışını qaytarmasını və borcun azalmasını təmsil edir.
+    /// qeyd: Satış qaytarma, müştərinin əvvəlki nisyə alışını qaytarması və borcun azalması ilə əlaqəlidir.
+    /// referans: Bu əməliyyat, müştərinin əvvəlki alışını qaytarması və borcun azalması ilə əlaqəlidir.
+    /// rol: Bu əməliyyat, müştərinin əvvəlki alışını qaytarması və borcun azalması üçün istifadə olunur.
+    /// </summary>
+    Qaytarma = 3 // Satış qaytarma (borcu azaldır)
 }

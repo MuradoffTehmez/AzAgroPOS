@@ -12,33 +12,32 @@ using System.Linq;
 using System.Threading.Tasks;
 
 public class BarkodCapiPresenter
-{
-    private readonly IBarkodCapiView _view;
-    private readonly BarkodCapiManager _barkodCapiManager;
-    private readonly MehsulManager _mehsulManager;
-    private readonly BarkodCapiManager _manager;
-    public BarkodCapiPresenter(IBarkodCapiView view, BarkodCapiManager barkodCapiManager, MehsulManager mehsulManager)
     {
-        _view = view;
-        _barkodCapiManager = barkodCapiManager;
-        _mehsulManager = mehsulManager;
-
-        _view.AxtarisIstek += async (s, e) => await MehsulAxtar();
-        _view.SiyahiniCapaGonderIstek += (s, e) => SiyahiniCapaGonder();
-    }
-
-    private async Task MehsulAxtar()
-    {
-        var netice = await _manager.MehsullariAxtarAsync(_view.AxtarisMetni);
-        if (netice.UgurluDur)
+        private readonly IBarkodCapiView _view;
+        private readonly BarkodCapiManager _barkodCapiManager;
+        private readonly MehsulManager _mehsulManager;
+        public BarkodCapiPresenter(IBarkodCapiView view, BarkodCapiManager barkodCapiManager, MehsulManager mehsulManager)
         {
-            _view.AxtarisNeticeleriniGoster(netice.Data);
+            _view = view;
+            _barkodCapiManager = barkodCapiManager;
+            _mehsulManager = mehsulManager;
+
+            _view.AxtarisIstek += async (s, e) => await MehsulAxtar();
+            _view.SiyahiniCapaGonderIstek += (s, e) => SiyahiniCapaGonder();
         }
-        else
+
+        private async Task MehsulAxtar()
         {
-            _view.AxtarisXetasiGoster(netice.Mesaj);
+            var netice = await _barkodCapiManager.MehsullariAxtarAsync(_view.AxtarisMetni);
+            if (netice.UgurluDur)
+            {
+                _view.AxtarisNeticeleriniGoster(netice.Data);
+            }
+            else
+            {
+                _view.AxtarisXetasiGoster(netice.Mesaj);
+            }
         }
-    }
 
     private void SiyahiniCapaGonder()
     {

@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace AzAgroPOS.Verilenler.Kontekst
 {
@@ -13,7 +15,15 @@ namespace AzAgroPOS.Verilenler.Kontekst
         {
             var optionsBuilder = new DbContextOptionsBuilder<AzAgroPOSDbContext>();
             
-            string connectionString = "Server=MURADOV-TAHMAZ\\TAHMAZ_MURADOV;Database=AzAgroPOS_DB;Trusted_Connection=True;TrustServerCertificate=True;";
+            // Build configuration
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+
+            IConfiguration configuration = builder.Build();
+
+            // Get connection string from configuration
+            string connectionString = configuration.GetConnectionString("DefaultConnection");
 
             optionsBuilder.UseSqlServer(connectionString);
 

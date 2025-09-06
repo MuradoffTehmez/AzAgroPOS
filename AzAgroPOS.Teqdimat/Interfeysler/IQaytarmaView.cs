@@ -11,6 +11,7 @@ namespace AzAgroPOS.Teqdimat.Interfeysler
     public interface IQaytarmaView
     {
         string SatisNomresi { get; }
+        string QaytarmaSebebi { get; }
         List<SatisSebetiElementiDto> SecilmisMehsullar { get; }
 
         event EventHandler SatisAxtarIstek;

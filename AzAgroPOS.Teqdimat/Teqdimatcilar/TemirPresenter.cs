@@ -4,6 +4,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
+using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Kontekst;
 using AzAgroPOS.Verilenler.Realizasialar;
 using Microsoft.Extensions.DependencyInjection;
@@ -96,8 +97,37 @@ public class TemirPresenter
     /// <returns></returns>
     private async Task SifarisYenile()
     {
-        // TODO: Sifarişi yeniləmək üçün tətbiqat
-        _view.MesajGoster("Bu funksiya hələ tətbiq edilməyib.", "Məlumat");
+        var secilmisSifarisId = _view.SecilmisSifarisId;
+        if (secilmisSifarisId <= 0)
+        {
+            _view.MesajGoster("Zəhmət olmasa, yeniləmək üçün bir sifariş seçin.", "Xəbərdarlıq");
+            return;
+        }
+
+        var sifarisDto = new TemirDto
+        {
+            Id = secilmisSifarisId,
+            MusteriAdi = _view.MusteriAdi,
+            MusteriTelefonu = _view.MusteriTelefonu,
+            CihazAdi = _view.CihazAdi,
+            SeriyaNomresi = _view.SeriyaNomresi,
+            ProblemTesviri = _view.ProblemTesviri,
+            TemirXerci = _view.TemirXerci,
+            ServisHaqqi = _view.ServisHaqqi,
+            YekunMebleg = _view.YekunMebleg,
+            IsciId = _view.UstaId
+        };
+
+        var netice = await _temirManager.SifarisYenileAsync(sifarisDto);
+        if (netice.UgurluDur)
+        {
+            _view.MesajGoster("Təmir sifarişi uğurla yeniləndi.", "Uğurlu Əməliyyat");
+            await FormuYukle();
+        }
+        else
+        {
+            _view.MesajGoster(netice.Mesaj, "Xəta");
+        }
     }
 
     /// <summary>
@@ -106,8 +136,33 @@ public class TemirPresenter
     /// <returns></returns>
     private async Task SifarisSil()
     {
-        // TODO: Sifarişi silmək üçün tətbiqat
-        _view.MesajGoster("Bu funksiya hələ tətbiq edilməyib.", "Məlumat");
+        var secilmisSifarisId = _view.SecilmisSifarisId;
+        if (secilmisSifarisId <= 0)
+        {
+            _view.MesajGoster("Zəhmət olmasa, silmək üçün bir sifariş seçin.", "Xəbərdarlıq");
+            return;
+        }
+
+        var tesdiq = MessageBox.Show(
+            "Bu sifarişi silmək istədiyinizə əminsiniz?", 
+            "Təsdiq", 
+            MessageBoxButtons.YesNo, 
+            MessageBoxIcon.Question);
+
+        if (tesdiq == DialogResult.Yes)
+        {
+            var netice = await _temirManager.SifarisSilAsync(secilmisSifarisId);
+            if (netice.UgurluDur)
+            {
+                _view.MesajGoster("Təmir sifarişi uğurla silindi.", "Uğurlu Əməliyyat");
+                _view.FormuTemizle();
+                await FormuYukle();
+            }
+            else
+            {
+                _view.MesajGoster(netice.Mesaj, "Xəta");
+            }
+        }
     }
     
     /// <summary>
@@ -138,9 +193,33 @@ public class TemirPresenter
     /// <summary>
     /// bu metod, təmirin ödənişini tamamlamaq üçün istifadə olunur.
     /// </summary>
-    private void ÖdənişiTamamla()
+    private async void ÖdənişiTamamla()
     {
-        // TODO: Ödənişi tamamlamaq üçün tətbiqat
-        _view.MesajGoster("Bu funksiya hələ tətbiq edilməyib.", "Məlumat");
+        var secilmisSifarisId = _view.SecilmisSifarisId;
+        if (secilmisSifarisId <= 0)
+        {
+            _view.MesajGoster("Zəhmət olmasa, ödənişi tamamlamaq üçün bir sifariş seçin.", "Xəbərdarlıq");
+            return;
+        }
+
+        var tesdiq = MessageBox.Show(
+            "Bu sifarişin ödənişini tamamlamaq istədiyinizə əminsiniz?", 
+            "Təsdiq", 
+            MessageBoxButtons.YesNo, 
+            MessageBoxIcon.Question);
+
+        if (tesdiq == DialogResult.Yes)
+        {
+            var netice = await _temirManager.StatusDeyisAsync(secilmisSifarisId, TemirStatusu.Hazırdır);
+            if (netice.UgurluDur)
+            {
+                _view.MesajGoster("Təmir sifarişinin ödənişi uğurla tamamlandı.", "Uğurlu Əməliyyat");
+                await FormuYukle();
+            }
+            else
+            {
+                _view.MesajGoster(netice.Mesaj, "Xəta");
+            }
+        }
     }
 }

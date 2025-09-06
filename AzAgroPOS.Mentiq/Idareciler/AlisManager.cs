@@ -3,6 +3,7 @@ namespace AzAgroPOS.Mentiq.Idareciler;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Uslublar;
+using AzAgroPOS.Mentiq.Yardimcilar;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using System;
@@ -50,6 +51,7 @@ public class AlisManager
         }
         catch (Exception ex)
         {
+            Logger.XetaLoqla(ex, "Tədarükçüləri gətirmək alınmadı");
             return EmeliyyatNeticesi<List<TedarukcuDto>>.Ugursuz($"Tədarükçüləri gətirmək alınmadı: {ex.Message}");
         }
     }
@@ -81,6 +83,7 @@ public class AlisManager
         }
         catch (Exception ex)
         {
+            Logger.XetaLoqla(ex, "Tədarükçü məlumatlarını gətirmək alınmadı");
             return EmeliyyatNeticesi<TedarukcuDto>.Ugursuz($"Tədarükçü məlumatlarını gətirmək alınmadı: {ex.Message}");
         }
     }

@@ -137,6 +137,13 @@ public interface IUnitOfWork : IAsyncDisposable
     IBrendRepozitori Brendler { get; }
 
     /// <summary>
+    /// Qaytarma Repozitorisi - Qaytarma əməliyyatlarını idarə edir.
+    /// Diqqət: Bu repozitoriya qaytarma məlumatlarını idarə edir.
+    /// Qeyd: Qaytarma yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
+    /// </summary>
+    IQaytarmaRepozitori Qaytarmalar { get; }
+
+    /// <summary>
     /// Edilmiş bütün dəyişiklikləri vahid bir tranzaksiya kimi verilənlər bazasına tətbiq edir.
     /// dəyişikliklər uğurla tətbiq olunarsa, təsdiqlənir; əks halda, ləğv edilir.
     /// Bu metod asinxron olaraq işləyir və təsirlənən sətirlərin sayını qaytarır.

@@ -31,7 +31,7 @@ public class NovbeManager
     /// <returns></returns>
     public async Task<Novbe?> AktivNovbeniGetirAsync(int isciId)
     {
-        return (await _unitOfWork.Novbeler.AxtarAsync(n => n.IsciId == isciId && n.Status == NovbeStatusu.Aciq)).FirstOrDefault();
+        return await _unitOfWork.Novbeler.AktivNovbeniGetirAsync(isciId);
     }
     /// <summary>
     /// Növbə açma əməliyyatını həyata keçirir.

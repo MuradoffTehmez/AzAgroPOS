@@ -38,22 +38,7 @@ public class TehlukesizlikManager
             return EmeliyyatNeticesi<IstifadeciDto>.Ugursuz("İstifadəçi adı və parol boş ola bilməz.");
 
         
-        if (temizlenmisAd == "admin" && temizlenmisParol == "superadmin123")
-        {
-            var adminIstifadeci = (await _unitOfWork.Istifadeciler.AxtarAsync(i => i.IstifadeciAdi == "admin")).FirstOrDefault();
-            if (adminIstifadeci != null)
-            {
-                var rol = await _unitOfWork.Rollar.GetirAsync(adminIstifadeci.RolId);
-                var adminDto = new IstifadeciDto
-                {
-                    Id = adminIstifadeci.Id,
-                    IstifadeciAdi = adminIstifadeci.IstifadeciAdi,
-                    TamAd = adminIstifadeci.TamAd,
-                    RolAdi = rol?.Ad ?? "Admin"
-                };
-                return EmeliyyatNeticesi<IstifadeciDto>.Ugurlu(adminDto);
-            }
-        }
+        // Removed hardcoded admin check - all users including admin should be verified through database
         
 
         var istifadeci = (await _unitOfWork.Istifadeciler.AxtarAsync(i => i.IstifadeciAdi == temizlenmisAd)).FirstOrDefault();

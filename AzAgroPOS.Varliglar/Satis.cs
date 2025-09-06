@@ -58,4 +58,9 @@ public class Satis : BazaVarligi
     /// qeyd: Hər bir satış detalı, məhsulun ID-sini, miqdarını və qiymətini ehtiva edir.
     /// </summary>
     public ICollection<SatisDetali> SatisDetallari { get; set; } = new List<SatisDetali>();
+
+    /// <summary>
+    /// Bu satışa aid qaytarmaların siyahısı.
+    /// </summary>
+    public ICollection<Qaytarma> Qaytarmalar { get; set; } = new List<Qaytarma>();
 }

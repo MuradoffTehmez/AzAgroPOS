@@ -75,6 +75,18 @@ namespace AzAgroPOS.Teqdimat
             get => decimal.TryParse(txtYekunMebleg.Text, out var mebleg) ? mebleg : 0;
             set => txtYekunMebleg.Text = value.ToString("N2");
         }
+        
+        public int SecilmisSifarisId
+        {
+            get
+            {
+                if (dgvSifarisler.CurrentRow?.DataBoundItem is TemirDto sifaris)
+                {
+                    return sifaris.Id;
+                }
+                return 0;
+            }
+        }
 
         public event EventHandler FormYuklendi;
         public event EventHandler YeniSifarisYarat_Istek;

@@ -9,5 +9,12 @@ using AzAgroPOS.Varliglar;
 /// </summary>
 public interface INovbeRepozitori : IRepozitori<Novbe> 
 {
+    /// <summary>
+    /// Müəyyən bir işçinin aktiv növbəsini gətirir.
+    /// </summary>
+    /// <param name="isciId">İşçinin ID-si</param>
+    /// <returns>Aktiv növbə və ya null</returns>
+    Task<Novbe?> AktivNovbeniGetirAsync(int isciId);
+    
     // Burada növbə ilə əlaqəli xüsusi əməliyyatlar əlavə edilə bilər, məsələn: Müəyyən bir tarixdəki növbələri tapmaq, istifadəçiyə görə növbələri filtrləmək və s.
 }

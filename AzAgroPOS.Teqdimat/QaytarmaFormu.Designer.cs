@@ -31,6 +31,8 @@ namespace AzAgroPOS.Teqdimat
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pnlMain = new MaterialSkin.Controls.MaterialCard();
+            this.txtQaytarmaSebebi = new MaterialSkin.Controls.MaterialTextBox2();
+            this.materialLabel2 = new MaterialSkin.Controls.MaterialLabel();
             this.dgvSatisMehsullari = new System.Windows.Forms.DataGridView();
             this.materialLabel1 = new MaterialSkin.Controls.MaterialLabel();
             this.txtSatisNomresi = new MaterialSkin.Controls.MaterialTextBox2();
@@ -43,6 +45,8 @@ namespace AzAgroPOS.Teqdimat
             // pnlMain
             // 
             this.pnlMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.pnlMain.Controls.Add(this.txtQaytarmaSebebi);
+            this.pnlMain.Controls.Add(this.materialLabel2);
             this.pnlMain.Controls.Add(this.dgvSatisMehsullari);
             this.pnlMain.Controls.Add(this.materialLabel1);
             this.pnlMain.Controls.Add(this.txtSatisNomresi);
@@ -58,6 +62,46 @@ namespace AzAgroPOS.Teqdimat
             this.pnlMain.Padding = new System.Windows.Forms.Padding(14);
             this.pnlMain.Size = new System.Drawing.Size(1170, 637);
             this.pnlMain.TabIndex = 0;
+            // 
+            // txtQaytarmaSebebi
+            // 
+            this.txtQaytarmaSebebi.AnimateReadOnly = false;
+            this.txtQaytarmaSebebi.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.txtQaytarmaSebebi.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
+            this.txtQaytarmaSebebi.Depth = 0;
+            this.txtQaytarmaSebebi.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.txtQaytarmaSebebi.HideSelection = true;
+            this.txtQaytarmaSebebi.LeadingIcon = null;
+            this.txtQaytarmaSebebi.Location = new System.Drawing.Point(17, 101);
+            this.txtQaytarmaSebebi.MaxLength = 32767;
+            this.txtQaytarmaSebebi.MouseState = MaterialSkin.MouseState.OUT;
+            this.txtQaytarmaSebebi.Name = "txtQaytarmaSebebi";
+            this.txtQaytarmaSebebi.PasswordChar = '\0';
+            this.txtQaytarmaSebebi.PrefixSuffixText = null;
+            this.txtQaytarmaSebebi.ReadOnly = false;
+            this.txtQaytarmaSebebi.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.txtQaytarmaSebebi.SelectedText = "";
+            this.txtQaytarmaSebebi.SelectionLength = 0;
+            this.txtQaytarmaSebebi.SelectionStart = 0;
+            this.txtQaytarmaSebebi.ShortcutsEnabled = true;
+            this.txtQaytarmaSebebi.Size = new System.Drawing.Size(350, 48);
+            this.txtQaytarmaSebebi.TabIndex = 6;
+            this.txtQaytarmaSebebi.TabStop = false;
+            this.txtQaytarmaSebebi.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.txtQaytarmaSebebi.TrailingIcon = null;
+            this.txtQaytarmaSebebi.UseSystemPasswordChar = false;
+            // 
+            // materialLabel2
+            // 
+            this.materialLabel2.AutoSize = true;
+            this.materialLabel2.Depth = 0;
+            this.materialLabel2.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel2.Location = new System.Drawing.Point(17, 79);
+            this.materialLabel2.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabel2.Name = "materialLabel2";
+            this.materialLabel2.Size = new System.Drawing.Size(127, 19);
+            this.materialLabel2.TabIndex = 5;
+            this.materialLabel2.Text = "Qaytarma Səbəbi:";
             // 
             // dgvSatisMehsullari
             // 
@@ -84,11 +128,11 @@ namespace AzAgroPOS.Teqdimat
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgvSatisMehsullari.DefaultCellStyle = dataGridViewCellStyle2;
-            this.dgvSatisMehsullari.Location = new System.Drawing.Point(17, 106);
+            this.dgvSatisMehsullari.Location = new System.Drawing.Point(17, 166);
             this.dgvSatisMehsullari.MultiSelect = false;
             this.dgvSatisMehsullari.Name = "dgvSatisMehsullari";
             this.dgvSatisMehsullari.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvSatisMehsullari.Size = new System.Drawing.Size(1136, 467);
+            this.dgvSatisMehsullari.Size = new System.Drawing.Size(1136, 407);
             this.dgvSatisMehsullari.TabIndex = 4;
             // 
             // materialLabel1
@@ -195,5 +239,7 @@ namespace AzAgroPOS.Teqdimat
         private MaterialSkin.Controls.MaterialTextBox2 txtSatisNomresi;
         private MaterialSkin.Controls.MaterialLabel materialLabel1;
         private System.Windows.Forms.DataGridView dgvSatisMehsullari;
+        private MaterialSkin.Controls.MaterialTextBox2 txtQaytarmaSebebi;
+        private MaterialSkin.Controls.MaterialLabel materialLabel2;
     }
 }

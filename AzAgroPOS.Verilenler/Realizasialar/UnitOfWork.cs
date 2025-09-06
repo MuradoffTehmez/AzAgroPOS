@@ -148,6 +148,13 @@ public class UnitOfWork : IUnitOfWork
     public IBrendRepozitori Brendler { get; private set; }
 
     /// <summary>
+    /// Qaytarma Repozitorisi - Qaytarma əməliyyatlarını idarə edir.
+    /// Diqqət: Bu repozitoriya qaytarma məlumatlarını idarə edir.
+    /// Qeyd: Qaytarma yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
+    /// </summary>
+    public IQaytarmaRepozitori Qaytarmalar { get; private set; }
+
+    /// <summary>
     /// unitOfWork konstruktoru, verilənlər bazası kontekstini qəbul edir və repozitoriyaların instansiyalarını yaradır.
     /// Diqqət: Bu konstruktor, verilənlər bazası kontekstini bazaya ötürür.
     /// Qeyd: Bu konstruktor, konkret varlıq repozitoriyaları üçün istifadə olunur.
@@ -177,6 +184,7 @@ public class UnitOfWork : IUnitOfWork
         TedarukcuOdemeleri = new TedarukcuOdemeRepozitori(_kontekst);
         Kateqoriyalar = new KateqoriyaRepozitori(_kontekst); // Əlavə edildi
         Brendler = new BrendRepozitori(_kontekst); // Əlavə edildi
+        Qaytarmalar = new QaytarmaRepozitori(_kontekst);
     }
     /// <summary>
     /// EMELIYYATI TƏSDİQLƏ metod, edilmiş bütün dəyişiklikləri vahid bir tranzaksiya kimi verilənlər bazasına tətbiq edir.

@@ -13,7 +13,7 @@ public class BarkodCapServisi
     private int _hazirkiKopyaIndexi;
 
     // Çap ofseti (mərkəzdən sola sürüşdürmə)
-    private readonly float _leftOffset = -20f;
+    // No hardcoded offset needed, we'll calculate centering dynamically
 
     // Fontlar konfiqurasiya olunmuş halda saxlanır
     private readonly Font _adFontu = new("Arial", 8, FontStyle.Regular);
@@ -68,14 +68,20 @@ public class BarkodCapServisi
 
     private float CekAdiniCek(Graphics g, string ad, float en, float y)
     {
-        RectangleF rect = new(_leftOffset, y, en, 30);
+        // Dinamik mərkəzləşdirmə
+        SizeF olculenBoy = g.MeasureString(ad, _adFontu);
+        float x = (en - olculenBoy.Width) / 2;
+        RectangleF rect = new(x, y, olculenBoy.Width, 30);
         g.DrawString(ad, _adFontu, Brushes.Black, rect, _centerFormat);
         return y + 25;
     }
 
     private float QiymetiCek(Graphics g, string qiymet, float en, float y)
     {
-        RectangleF rect = new(_leftOffset, y, en, 25);
+        // Dinamik mərkəzləşdirmə
+        SizeF olculenBoy = g.MeasureString(qiymet, _qiymetFontu);
+        float x = (en - olculenBoy.Width) / 2;
+        RectangleF rect = new(x, y, olculenBoy.Width, 25);
         g.DrawString(qiymet, _qiymetFontu, Brushes.Black, rect, _centerFormat);
         return y + 30;
     }
@@ -84,12 +90,16 @@ public class BarkodCapServisi
     {
         // Barkod
         string barkodData = $"*{barkod}*";
-        RectangleF barkodRect = new(_leftOffset, y, en, 60);
+        SizeF barkodBoy = g.MeasureString(barkodData, _barkodFontu);
+        float barkodX = (en - barkodBoy.Width) / 2;
+        RectangleF barkodRect = new(barkodX, y, barkodBoy.Width, 60);
         g.DrawString(barkodData, _barkodFontu, Brushes.Black, barkodRect, _centerFormat);
         y += 55;
 
         // Barkod rəqəmləri
-        RectangleF reqemRect = new(_leftOffset, y, en, 20);
+        SizeF reqemBoy = g.MeasureString(barkod, _barkodReqemFontu);
+        float reqemX = (en - reqemBoy.Width) / 2;
+        RectangleF reqemRect = new(reqemX, y, reqemBoy.Width, 20);
         g.DrawString(barkod, _barkodReqemFontu, Brushes.Black, reqemRect, _centerFormat);
         return y + 20;
     }

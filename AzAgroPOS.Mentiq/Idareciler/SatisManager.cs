@@ -3,8 +3,11 @@ namespace AzAgroPOS.Mentiq.Idareciler;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Uslublar;
+using AzAgroPOS.Mentiq.Yardimcilar;
+// Removed direct reference to Teqdimat namespace
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -53,7 +56,7 @@ public class SatisManager
         // Satış detallarını və stokları yenilə
         foreach (var element in satisDto.SebetElementleri)
         {
-            satis.SatisDetallari.Add(new SatisDetali { MehsulId = element.MehsulId, Miqdar = element.Miqdar, Qiymet = element.VahidinQiymeti });
+            satis.SatisDetallari.Add(new SatisDetali { MehsulId = element.MehsulId, Miqdar = element.Miqdar, Qiymet = element.VahidinQiymeti, UmumiMebleg = element.Miqdar * element.VahidinQiymeti });
             var mehsul = await _unitOfWork.Mehsullar.GetirAsync(element.MehsulId);
             if (mehsul != null)
             {
@@ -77,9 +80,6 @@ public class SatisManager
                 return EmeliyyatNeticesi<Satis>.Ugursuz($"Nisyə qeydiyatı zamanı xəta: {nisyeNetice.Mesaj}");
             }
         }
-
-        // Bütün əməliyyatları təsdiqlə
-        await _unitOfWork.EmeliyyatiTesdiqleAsync();
 
         return EmeliyyatNeticesi<Satis>.Ugurlu(satis);
     }
@@ -127,16 +127,85 @@ public class SatisManager
     /// <summary>
     /// Qaytarma əməliyyatını həyata keçirir.
     /// </summary>
-    public async Task<EmeliyyatNeticesi<bool>> QaytarmaEmeliyyatiAsync(List<SatisSebetiElementiDto> qaytarilanMehsullar)
+    public async Task<EmeliyyatNeticesi<bool>> QaytarmaEmeliyyatiAsync(List<SatisSebetiElementiDto> qaytarilanMehsullar, int satisId, string sebeb, int kassirId, int? aktivNovbeId)
     {
-        // Stokları artırmaq və lazımi məlumatları yeniləmək
+        // Əsas satışı tap
+        var satis = await _unitOfWork.Satislar.GetirAsync(satisId);
+        if (satis == null)
+            return EmeliyyatNeticesi<bool>.Ugursuz("Satış tapılmadı.");
+
+        // Qaytarma obyektini yarat
+        var qaytarma = new Qaytarma
+        {
+            Tarix = DateTime.Now,
+            SatisId = satisId,
+            Sebeb = sebeb,
+            KassirId = kassirId,
+            UmumiMebleg = qaytarilanMehsullar.Sum(e => e.UmumiMebleg)
+        };
+
+        // Qaytarma detallarını və stokları yenilə
         foreach (var element in qaytarilanMehsullar)
         {
+            // Qaytarma detallarını əlavə et
+            qaytarma.QaytarmaDetallari.Add(new QaytarmaDetali
+            {
+                MehsulId = element.MehsulId,
+                Miqdar = element.Miqdar,
+                Qiymet = element.VahidinQiymeti,
+                UmumiMebleg = element.UmumiMebleg
+            });
+
+            // Stokları artır
             var mehsul = await _unitOfWork.Mehsullar.GetirAsync(element.MehsulId);
             if (mehsul != null)
             {
                 mehsul.MovcudSay += (int)element.Miqdar;
                 _unitOfWork.Mehsullar.Yenile(mehsul);
+            }
+        }
+
+        // Müştərinin borcunu azalt (əgər satış nisyə idisə)
+        if (satis.OdenisMetodu == OdenisMetodu.Nisyə && satis.MusteriId.HasValue)
+        {
+            var musteri = await _unitOfWork.Musteriler.GetirAsync(satis.MusteriId.Value);
+            if (musteri != null)
+            {
+                musteri.UmumiBorc -= qaytarma.UmumiMebleg;
+                _unitOfWork.Musteriler.Yenile(musteri);
+
+                // Nisyə hərəkəti yarat
+                var nisyeHereketi = new NisyeHereketi
+                {
+                    MusteriId = satis.MusteriId.Value,
+                    Mebleg = qaytarma.UmumiMebleg,
+                    Tarix = DateTime.Now,
+                    EmeliyyatNovu = EmeliyyatNovu.Qaytarma,
+                    SatisId = 0 // Qaytarma ID-si əlavə edildikdən sonra təyin ediləcək
+                };
+                await _unitOfWork.NisyeHereketleri.ElaveEtAsync(nisyeHereketi);
+            }
+        }
+
+        // Qaytarma qeydini əlavə et
+        await _unitOfWork.Qaytarmalar.ElaveEtAsync(qaytarma);
+        
+        // Kassirin aktiv növbəsindəki nağd və ya kart məbləğini azalt
+        if (aktivNovbeId.HasValue)
+        {
+            var novbe = await _unitOfWork.Novbeler.GetirAsync(aktivNovbeId.Value);
+            if (novbe != null)
+            {
+                if (satis.OdenisMetodu == OdenisMetodu.Nağd)
+                {
+                    novbe.FaktikiMebleg -= qaytarma.UmumiMebleg;
+                }
+                else if (satis.OdenisMetodu == OdenisMetodu.Kart)
+                {
+                    // Kart ödənişləri üçün lazımi dəyişikliklər
+                    // Bu implementasiya şirkətin daxili qaydalarına görə dəyişə bilər
+                }
+                _unitOfWork.Novbeler.Yenile(novbe);
             }
         }
 

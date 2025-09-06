@@ -5,8 +5,10 @@ using AzAgroPOS.Verilenler.Interfeysler;
 using AzAgroPOS.Verilenler.Kontekst;
 using AzAgroPOS.Verilenler.Realizasialar;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.IO;
 using System.Windows.Forms;
 
 namespace AzAgroPOS.Teqdimat
@@ -19,6 +21,9 @@ namespace AzAgroPOS.Teqdimat
         static void Main()
         {
             ApplicationConfiguration.Initialize();
+
+            // Loggeri konfiqurasiya edirik
+            AzAgroPOS.Mentiq.Yardimcilar.Logger.KonfiqurasiyaEt();
 
             var services = new ServiceCollection();
             ConfigureServices(services);
@@ -36,8 +41,15 @@ namespace AzAgroPOS.Teqdimat
 
         private static void ConfigureServices(IServiceCollection services)
         {
-            // Use a more flexible connection string that can work on different machines
-            string connectionString = "Server=MURADOV-TAHMAZ\\TAHMAZ_MURADOV;Database=AzAgroPOS_DB;Trusted_Connection=True;TrustServerCertificate=True;";
+            // Build configuration
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+
+            IConfiguration configuration = builder.Build();
+
+            // Get connection string from configuration
+            string connectionString = configuration.GetConnectionString("DefaultConnection");
 
             services.AddDbContext<AzAgroPOSDbContext>(options =>
                 options.UseSqlServer(connectionString), ServiceLifetime.Transient);

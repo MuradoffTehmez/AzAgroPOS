@@ -18,6 +18,7 @@ using AzAgroPOS.Mentiq.DTOs;
         decimal TemirXerci { get; set; }
         decimal ServisHaqqi { get; set; }
         decimal YekunMebleg { get; set; }
+        int SecilmisSifarisId { get; }
 
         // Hadisələr (Events)
         event EventHandler FormYuklendi;
