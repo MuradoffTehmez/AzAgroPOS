@@ -215,7 +215,7 @@ namespace AzAgroPOS.Teqdimat
             txtId.Name = "txtId";
             txtId.ReadOnly = true;
             txtId.Size = new Size(233, 24);
-            txtId.TabIndex = 1;
+            txtId.TabIndex = 11;
             // 
             // lblAd
             // 
@@ -240,7 +240,7 @@ namespace AzAgroPOS.Teqdimat
             txtAd.Location = new Point(105, 38);
             txtAd.Name = "txtAd";
             txtAd.Size = new Size(233, 24);
-            txtAd.TabIndex = 3;
+            txtAd.TabIndex = 0;
             // 
             // lblVoen
             // 
@@ -265,7 +265,7 @@ namespace AzAgroPOS.Teqdimat
             txtVoen.Location = new Point(105, 73);
             txtVoen.Name = "txtVoen";
             txtVoen.Size = new Size(233, 24);
-            txtVoen.TabIndex = 5;
+            txtVoen.TabIndex = 1;
             // 
             // lblUnvan
             // 
@@ -290,7 +290,7 @@ namespace AzAgroPOS.Teqdimat
             txtUnvan.Location = new Point(105, 108);
             txtUnvan.Name = "txtUnvan";
             txtUnvan.Size = new Size(233, 24);
-            txtUnvan.TabIndex = 7;
+            txtUnvan.TabIndex = 2;
             // 
             // lblTelefon
             // 
@@ -315,7 +315,7 @@ namespace AzAgroPOS.Teqdimat
             txtTelefon.Location = new Point(105, 143);
             txtTelefon.Name = "txtTelefon";
             txtTelefon.Size = new Size(233, 24);
-            txtTelefon.TabIndex = 9;
+            txtTelefon.TabIndex = 3;
             // 
             // lblEmail
             // 
@@ -340,7 +340,7 @@ namespace AzAgroPOS.Teqdimat
             txtEmail.Location = new Point(105, 178);
             txtEmail.Name = "txtEmail";
             txtEmail.Size = new Size(233, 24);
-            txtEmail.TabIndex = 11;
+            txtEmail.TabIndex = 4;
             // 
             // lblBankHesabi
             // 
@@ -365,7 +365,7 @@ namespace AzAgroPOS.Teqdimat
             txtBankHesabi.Location = new Point(105, 213);
             txtBankHesabi.Name = "txtBankHesabi";
             txtBankHesabi.Size = new Size(233, 24);
-            txtBankHesabi.TabIndex = 13;
+            txtBankHesabi.TabIndex = 5;
             // 
             // chkAktivdir
             // 
@@ -379,7 +379,7 @@ namespace AzAgroPOS.Teqdimat
             chkAktivdir.Location = new Point(105, 248);
             chkAktivdir.Name = "chkAktivdir";
             chkAktivdir.Size = new Size(233, 29);
-            chkAktivdir.TabIndex = 14;
+            chkAktivdir.TabIndex = 6;
             chkAktivdir.Text = "Aktivdir";
             chkAktivdir.UseVisualStyleBackColor = false;
             // 
@@ -406,7 +406,7 @@ namespace AzAgroPOS.Teqdimat
             btnTemizle.Location = new Point(240, 20);
             btnTemizle.Name = "btnTemizle";
             btnTemizle.Size = new Size(100, 35);
-            btnTemizle.TabIndex = 3;
+            btnTemizle.TabIndex = 10;
             btnTemizle.Text = "Təmizlə";
             btnTemizle.UseVisualStyleBackColor = false;
             btnTemizle.Click += btnTemizle_Click;
@@ -419,7 +419,7 @@ namespace AzAgroPOS.Teqdimat
             btnSil.Location = new Point(160, 20);
             btnSil.Name = "btnSil";
             btnSil.Size = new Size(75, 35);
-            btnSil.TabIndex = 2;
+            btnSil.TabIndex = 9;
             btnSil.Text = "Sil";
             btnSil.UseVisualStyleBackColor = false;
             btnSil.Click += btnSil_Click;
@@ -432,7 +432,7 @@ namespace AzAgroPOS.Teqdimat
             btnYenile.Location = new Point(80, 20);
             btnYenile.Name = "btnYenile";
             btnYenile.Size = new Size(75, 35);
-            btnYenile.TabIndex = 1;
+            btnYenile.TabIndex = 8;
             btnYenile.Text = "Yenilə";
             btnYenile.UseVisualStyleBackColor = false;
             btnYenile.Click += btnYenile_Click;
@@ -445,7 +445,7 @@ namespace AzAgroPOS.Teqdimat
             btnYarat.Location = new Point(5, 20);
             btnYarat.Name = "btnYarat";
             btnYarat.Size = new Size(70, 35);
-            btnYarat.TabIndex = 0;
+            btnYarat.TabIndex = 7;
             btnYarat.Text = "Yarat";
             btnYarat.UseVisualStyleBackColor = false;
             btnYarat.Click += btnYarat_Click;

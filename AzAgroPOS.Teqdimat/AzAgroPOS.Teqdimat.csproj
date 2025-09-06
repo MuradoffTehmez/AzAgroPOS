@@ -1,6 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <Compile Remove="AzAgroPOS\**" />
+    <Compile Remove="Resurslar\**" />
+    <EmbeddedResource Remove="AzAgroPOS\**" />
+    <EmbeddedResource Remove="Resurslar\**" />
+    <None Remove="AzAgroPOS\**" />
+    <None Remove="Resurslar\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\AzAgroPOS.Mentiq\AzAgroPOS.Mentiq.csproj" />
   </ItemGroup>
 
@@ -18,11 +27,6 @@
     <None Include="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="AzAgroPOS\" />
-    <Folder Include="Resurslar\" />
   </ItemGroup>
 
   <PropertyGroup>

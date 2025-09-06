@@ -237,7 +237,7 @@ namespace AzAgroPOS.Teqdimat
             cmbTedarukcu.Name = "cmbTedarukcu";
             cmbTedarukcu.Size = new Size(478, 49);
             cmbTedarukcu.StartIndex = 0;
-            cmbTedarukcu.TabIndex = 24;
+            cmbTedarukcu.TabIndex = 12;
             // 
             // cmbBrend
             // 
@@ -260,7 +260,7 @@ namespace AzAgroPOS.Teqdimat
             cmbBrend.Name = "cmbBrend";
             cmbBrend.Size = new Size(478, 49);
             cmbBrend.StartIndex = 0;
-            cmbBrend.TabIndex = 23;
+            cmbBrend.TabIndex = 11;
             // 
             // cmbKateqoriya
             // 
@@ -283,7 +283,7 @@ namespace AzAgroPOS.Teqdimat
             cmbKateqoriya.Name = "cmbKateqoriya";
             cmbKateqoriya.Size = new Size(478, 49);
             cmbKateqoriya.StartIndex = 0;
-            cmbKateqoriya.TabIndex = 22;
+            cmbKateqoriya.TabIndex = 10;
             // 
             // txtMinimumStok
             // 
@@ -310,7 +310,7 @@ namespace AzAgroPOS.Teqdimat
             txtMinimumStok.SelectionStart = 0;
             txtMinimumStok.ShortcutsEnabled = true;
             txtMinimumStok.Size = new Size(246, 48);
-            txtMinimumStok.TabIndex = 21;
+            txtMinimumStok.TabIndex = 8;
             txtMinimumStok.TabStop = false;
             txtMinimumStok.TextAlign = HorizontalAlignment.Left;
             txtMinimumStok.TrailingIcon = null;
@@ -365,7 +365,7 @@ namespace AzAgroPOS.Teqdimat
             txtTekEdedSatisQiymeti.SelectionStart = 0;
             txtTekEdedSatisQiymeti.ShortcutsEnabled = true;
             txtTekEdedSatisQiymeti.Size = new Size(478, 48);
-            txtTekEdedSatisQiymeti.TabIndex = 18;
+            txtTekEdedSatisQiymeti.TabIndex = 6;
             txtTekEdedSatisQiymeti.TabStop = false;
             txtTekEdedSatisQiymeti.TextAlign = HorizontalAlignment.Left;
             txtTekEdedSatisQiymeti.TrailingIcon = null;
@@ -396,7 +396,7 @@ namespace AzAgroPOS.Teqdimat
             txtTopdanSatisQiymeti.SelectionStart = 0;
             txtTopdanSatisQiymeti.ShortcutsEnabled = true;
             txtTopdanSatisQiymeti.Size = new Size(478, 48);
-            txtTopdanSatisQiymeti.TabIndex = 17;
+            txtTopdanSatisQiymeti.TabIndex = 5;
             txtTopdanSatisQiymeti.TabStop = false;
             txtTopdanSatisQiymeti.TextAlign = HorizontalAlignment.Left;
             txtTopdanSatisQiymeti.TrailingIcon = null;
@@ -423,7 +423,7 @@ namespace AzAgroPOS.Teqdimat
             cmbOlcuVahidi.Name = "cmbOlcuVahidi";
             cmbOlcuVahidi.Size = new Size(226, 49);
             cmbOlcuVahidi.StartIndex = 0;
-            cmbOlcuVahidi.TabIndex = 16;
+            cmbOlcuVahidi.TabIndex = 9;
             // 
             // btnYenile
             // 
@@ -442,7 +442,7 @@ namespace AzAgroPOS.Teqdimat
             btnYenile.Name = "btnYenile";
             btnYenile.NoAccentTextColor = Color.Empty;
             btnYenile.Size = new Size(236, 40);
-            btnYenile.TabIndex = 15;
+            btnYenile.TabIndex = 16;
             btnYenile.Text = "Yenilə";
             btnYenile.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnYenile.UseAccentColor = false;
@@ -466,7 +466,7 @@ namespace AzAgroPOS.Teqdimat
             btnElaveEt.Name = "btnElaveEt";
             btnElaveEt.NoAccentTextColor = Color.Empty;
             btnElaveEt.Size = new Size(111, 40);
-            btnElaveEt.TabIndex = 14;
+            btnElaveEt.TabIndex = 15;
             btnElaveEt.Text = "Əlavə Et";
             btnElaveEt.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnElaveEt.UseAccentColor = false;
@@ -490,7 +490,7 @@ namespace AzAgroPOS.Teqdimat
             btnTemizle.Name = "btnTemizle";
             btnTemizle.NoAccentTextColor = Color.Empty;
             btnTemizle.Size = new Size(236, 40);
-            btnTemizle.TabIndex = 13;
+            btnTemizle.TabIndex = 18;
             btnTemizle.Text = "Təmizlə";
             btnTemizle.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnTemizle.UseAccentColor = false;
@@ -514,7 +514,7 @@ namespace AzAgroPOS.Teqdimat
             btnSil.Name = "btnSil";
             btnSil.NoAccentTextColor = Color.Empty;
             btnSil.Size = new Size(232, 40);
-            btnSil.TabIndex = 12;
+            btnSil.TabIndex = 17;
             btnSil.Text = "Sil";
             btnSil.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnSil.UseAccentColor = false;
@@ -538,7 +538,7 @@ namespace AzAgroPOS.Teqdimat
             btnBarkodYarat.Name = "btnBarkodYarat";
             btnBarkodYarat.NoAccentTextColor = Color.Empty;
             btnBarkodYarat.Size = new Size(75, 40);
-            btnBarkodYarat.TabIndex = 11;
+            btnBarkodYarat.TabIndex = 14;
             btnBarkodYarat.Text = "Yarat";
             btnBarkodYarat.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnBarkodYarat.UseAccentColor = false;
@@ -562,7 +562,7 @@ namespace AzAgroPOS.Teqdimat
             btnStokKoduYarat.Name = "btnStokKoduYarat";
             btnStokKoduYarat.NoAccentTextColor = Color.Empty;
             btnStokKoduYarat.Size = new Size(75, 40);
-            btnStokKoduYarat.TabIndex = 10;
+            btnStokKoduYarat.TabIndex = 13;
             btnStokKoduYarat.Text = "Yarat";
             btnStokKoduYarat.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnStokKoduYarat.UseAccentColor = false;
@@ -594,7 +594,7 @@ namespace AzAgroPOS.Teqdimat
             txtMevcudSay.SelectionStart = 0;
             txtMevcudSay.ShortcutsEnabled = true;
             txtMevcudSay.Size = new Size(478, 48);
-            txtMevcudSay.TabIndex = 9;
+            txtMevcudSay.TabIndex = 7;
             txtMevcudSay.TabStop = false;
             txtMevcudSay.TextAlign = HorizontalAlignment.Left;
             txtMevcudSay.TrailingIcon = null;
@@ -625,7 +625,7 @@ namespace AzAgroPOS.Teqdimat
             txtAlisQiymeti.SelectionStart = 0;
             txtAlisQiymeti.ShortcutsEnabled = true;
             txtAlisQiymeti.Size = new Size(226, 48);
-            txtAlisQiymeti.TabIndex = 8;
+            txtAlisQiymeti.TabIndex = 3;
             txtAlisQiymeti.TabStop = false;
             txtAlisQiymeti.TextAlign = HorizontalAlignment.Left;
             txtAlisQiymeti.TrailingIcon = null;
@@ -656,7 +656,7 @@ namespace AzAgroPOS.Teqdimat
             txtPerakendeSatisQiymeti.SelectionStart = 0;
             txtPerakendeSatisQiymeti.ShortcutsEnabled = true;
             txtPerakendeSatisQiymeti.Size = new Size(478, 48);
-            txtPerakendeSatisQiymeti.TabIndex = 7;
+            txtPerakendeSatisQiymeti.TabIndex = 4;
             txtPerakendeSatisQiymeti.TabStop = false;
             txtPerakendeSatisQiymeti.TextAlign = HorizontalAlignment.Left;
             txtPerakendeSatisQiymeti.TrailingIcon = null;
@@ -687,7 +687,7 @@ namespace AzAgroPOS.Teqdimat
             txtBarkod.SelectionStart = 0;
             txtBarkod.ShortcutsEnabled = true;
             txtBarkod.Size = new Size(396, 48);
-            txtBarkod.TabIndex = 6;
+            txtBarkod.TabIndex = 2;
             txtBarkod.TabStop = false;
             txtBarkod.TextAlign = HorizontalAlignment.Left;
             txtBarkod.TrailingIcon = null;
@@ -718,7 +718,7 @@ namespace AzAgroPOS.Teqdimat
             txtStokKodu.SelectionStart = 0;
             txtStokKodu.ShortcutsEnabled = true;
             txtStokKodu.Size = new Size(396, 48);
-            txtStokKodu.TabIndex = 5;
+            txtStokKodu.TabIndex = 1;
             txtStokKodu.TabStop = false;
             txtStokKodu.TextAlign = HorizontalAlignment.Left;
             txtStokKodu.TrailingIcon = null;
@@ -749,7 +749,7 @@ namespace AzAgroPOS.Teqdimat
             txtAd.SelectionStart = 0;
             txtAd.ShortcutsEnabled = true;
             txtAd.Size = new Size(478, 48);
-            txtAd.TabIndex = 4;
+            txtAd.TabIndex = 0;
             txtAd.TabStop = false;
             txtAd.TextAlign = HorizontalAlignment.Left;
             txtAd.TrailingIcon = null;
@@ -763,7 +763,7 @@ namespace AzAgroPOS.Teqdimat
             txtId.Location = new Point(18, 558);
             txtId.Name = "txtId";
             txtId.Size = new Size(100, 24);
-            txtId.TabIndex = 0;
+            txtId.TabIndex = 20;
             txtId.Visible = false;
             // 
             // tabPage1

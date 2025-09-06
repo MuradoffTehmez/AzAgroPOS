@@ -238,7 +238,7 @@
             txtMiqdar.SelectionStart = 0;
             txtMiqdar.ShortcutsEnabled = true;
             txtMiqdar.Size = new Size(98, 48);
-            txtMiqdar.TabIndex = 0;
+            txtMiqdar.TabIndex = 2;
             txtMiqdar.TabStop = false;
             txtMiqdar.Text = "1";
             txtMiqdar.TextAlign = HorizontalAlignment.Center;
@@ -262,7 +262,7 @@
             btnSebeteElaveEt.Name = "btnSebeteElaveEt";
             btnSebeteElaveEt.NoAccentTextColor = Color.Empty;
             btnSebeteElaveEt.Size = new Size(285, 46);
-            btnSebeteElaveEt.TabIndex = 1;
+            btnSebeteElaveEt.TabIndex = 3;
             btnSebeteElaveEt.Text = "Səbətə Əlavə Et (F7)";
             btnSebeteElaveEt.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnSebeteElaveEt.UseAccentColor = false;
@@ -457,7 +457,7 @@
             btnNagd.Name = "btnNagd";
             btnNagd.NoAccentTextColor = Color.Empty;
             btnNagd.Size = new Size(140, 60);
-            btnNagd.TabIndex = 0;
+            btnNagd.TabIndex = 12;
             btnNagd.Text = "NAĞD (F1)";
             btnNagd.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnNagd.UseAccentColor = false;
@@ -480,7 +480,7 @@
             btnKart.Name = "btnKart";
             btnKart.NoAccentTextColor = Color.Empty;
             btnKart.Size = new Size(140, 60);
-            btnKart.TabIndex = 1;
+            btnKart.TabIndex = 13;
             btnKart.Text = "KART (F2)";
             btnKart.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnKart.UseAccentColor = false;
@@ -503,7 +503,7 @@
             btnNisye.Name = "btnNisye";
             btnNisye.NoAccentTextColor = Color.Empty;
             btnNisye.Size = new Size(140, 60);
-            btnNisye.TabIndex = 2;
+            btnNisye.TabIndex = 14;
             btnNisye.Text = "NİSYƏ (F3)";
             btnNisye.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnNisye.UseAccentColor = true;
@@ -658,7 +658,7 @@
             btnYeniMusteri.Name = "btnYeniMusteri";
             btnYeniMusteri.NoAccentTextColor = Color.Empty;
             btnYeniMusteri.Size = new Size(42, 40);
-            btnYeniMusteri.TabIndex = 4;
+            btnYeniMusteri.TabIndex = 8;
             btnYeniMusteri.Text = "+";
             btnYeniMusteri.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnYeniMusteri.UseAccentColor = false;
@@ -686,7 +686,7 @@
             cmbMusteriler.Name = "cmbMusteriler";
             cmbMusteriler.Size = new Size(400, 49);
             cmbMusteriler.StartIndex = 0;
-            cmbMusteriler.TabIndex = 3;
+            cmbMusteriler.TabIndex = 7;
             // 
             // btnSatisiGozlet
             // 
@@ -705,7 +705,7 @@
             btnSatisiGozlet.Name = "btnSatisiGozlet";
             btnSatisiGozlet.NoAccentTextColor = Color.Empty;
             btnSatisiGozlet.Size = new Size(140, 40);
-            btnSatisiGozlet.TabIndex = 0;
+            btnSatisiGozlet.TabIndex = 10;
             btnSatisiGozlet.Text = "Gözlət (F4)";
             btnSatisiGozlet.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
             btnSatisiGozlet.UseAccentColor = false;
@@ -729,7 +729,7 @@
             btnGozleyenSatislar.Name = "btnGozleyenSatislar";
             btnGozleyenSatislar.NoAccentTextColor = Color.Empty;
             btnGozleyenSatislar.Size = new Size(140, 40);
-            btnGozleyenSatislar.TabIndex = 1;
+            btnGozleyenSatislar.TabIndex = 11;
             btnGozleyenSatislar.Text = "Gözləyənlər (F5)";
             btnGozleyenSatislar.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
             btnGozleyenSatislar.UseAccentColor = false;
@@ -753,7 +753,7 @@
             btnIndirim.Name = "btnIndirim";
             btnIndirim.NoAccentTextColor = Color.Empty;
             btnIndirim.Size = new Size(140, 40);
-            btnIndirim.TabIndex = 2;
+            btnIndirim.TabIndex = 9;
             btnIndirim.Text = "İndirim (F6)";
             btnIndirim.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
             btnIndirim.UseAccentColor = true;
