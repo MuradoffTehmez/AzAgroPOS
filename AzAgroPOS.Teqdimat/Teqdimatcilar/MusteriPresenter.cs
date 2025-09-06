@@ -2,12 +2,6 @@
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Teqdimat.Interfeysler;
-using AzAgroPOS.Verilenler.Kontekst;
-using AzAgroPOS.Verilenler.Realizasialar;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 {
@@ -70,7 +64,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
         {
             // Clear validation errors when loading a customer
             _view.ButunXetalariTemizle();
-            
+
             if (_view.SecilmisMusteriId > 0)
             {
                 var musteri = _musteriCache.FirstOrDefault(m => m.Id == _view.SecilmisMusteriId);
@@ -88,27 +82,27 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
         {
             // Clear previous validation errors
             _view.ButunXetalariTemizle();
-            
+
             // Validate required fields
             bool valid = true;
-            
+
             if (string.IsNullOrWhiteSpace(_view.TamAd))
             {
-                _view.XetaGoster(GetControlByName("txtTamAd"), 
+                _view.XetaGoster(GetControlByName("txtTamAd"),
                     "Tam ad mütləq daxil edilməlidir.");
                 valid = false;
             }
-            
+
             if (string.IsNullOrWhiteSpace(_view.Telefon))
             {
-                _view.XetaGoster(GetControlByName("txtTelefon"), 
+                _view.XetaGoster(GetControlByName("txtTelefon"),
                     "Telefon nömrəsi mütləq daxil edilməlidir.");
                 valid = false;
             }
-            
+
             if (!valid)
             {
-                _view.MesajGoster("Zəhmət olmasa, qırmızı ilə işarələnmiş sahələri düzgün doldurun.", 
+                _view.MesajGoster("Zəhmət olmasa, qırmızı ilə işarələnmiş sahələri düzgün doldurun.",
                     "Xəbərdarlıq", MessageBoxIcon.Warning);
                 return;
             }
@@ -142,7 +136,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                 _view.MesajGoster(netice.Mesaj, "Xəta", MessageBoxIcon.Error);
             }
         }
-        
+
         /// <summary>
         /// Gets a control by its name
         /// </summary>
@@ -156,11 +150,11 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             {
                 return field.GetValue(_view) as Control;
             }
-            
+
             // If not found, try to find it recursively
             return FindControlRecursive((Control)_view, name);
         }
-        
+
         /// <summary>
         /// Recursively finds a control by its name
         /// </summary>
@@ -171,14 +165,14 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
         {
             if (control.Name == name)
                 return control;
-                
+
             foreach (Control child in control.Controls)
             {
                 Control found = FindControlRecursive(child, name);
                 if (found != null)
                     return found;
             }
-            
+
             return null;
         }
 

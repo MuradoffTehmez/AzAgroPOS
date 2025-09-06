@@ -37,9 +37,9 @@ public class TehlukesizlikManager
         if (string.IsNullOrWhiteSpace(temizlenmisAd) || string.IsNullOrWhiteSpace(temizlenmisParol))
             return EmeliyyatNeticesi<IstifadeciDto>.Ugursuz("İstifadəçi adı və parol boş ola bilməz.");
 
-        
+
         // Removed hardcoded admin check - all users including admin should be verified through database
-        
+
 
         var istifadeci = (await _unitOfWork.Istifadeciler.AxtarAsync(i => i.IstifadeciAdi == temizlenmisAd)).FirstOrDefault();
 

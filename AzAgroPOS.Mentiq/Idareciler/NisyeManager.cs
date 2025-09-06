@@ -6,7 +6,6 @@ using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
-using Microsoft.EntityFrameworkCore;
 
 /// <summary>
 /// Nisye (borc) əməliyyatlarını idarə edən menecer.
@@ -108,7 +107,7 @@ public class NisyeManager
 
         return EmeliyyatNeticesi.Ugurlu();
     }
-    
+
     /// <summary>
     /// Nisyə olaraq həyata keçirilən satışı müştərinin borc hesabına əlavə edir.
     /// Diqqət: Bu metod SatisManager tərəfindən vahid tranzaksiya daxilində çağırılmalıdır.

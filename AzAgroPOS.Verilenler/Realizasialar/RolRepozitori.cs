@@ -16,7 +16,7 @@ public class RolRepozitori : Repozitori<Rol>, IRolRepozitori
     /// qeyd: Bu konstruktor, konkret varlıq repozitoriyaları üçün istifadə olunur və əlavə konfiqurasiya və ya başlanğıc əməliyyatları həyata keçirmək üçün istifadə oluna bilər.
     /// </summary>
     /// <param name="kontekst"></param>
-    public RolRepozitori(AzAgroPOSDbContext kontekst) : base(kontekst) 
+    public RolRepozitori(AzAgroPOSDbContext kontekst) : base(kontekst)
     {
         // burda əlavə konfiqurasiya və ya başlanğıc əməliyyatları həyata keçirilə bilər
         // rol ilə əlaqəli xüsusi əməliyyatlar əlavə edilə bilər, məsələn: İstifadəçiyə görə rolları tapmaq, rola görə istifadəçiləri filtrləmək və s.

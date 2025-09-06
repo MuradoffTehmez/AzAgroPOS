@@ -1,9 +1,6 @@
 ﻿using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
-using AzAgroPOS.Teqdimat.Yardimcilar;
-using System;
-using System.Windows.Forms;
 
 namespace AzAgroPOS.Teqdimat
 {
@@ -37,7 +34,7 @@ namespace AzAgroPOS.Teqdimat
             errorProvider1.SetIconAlignment(control, ErrorIconAlignment.MiddleRight);
             errorProvider1.SetIconPadding(control, 2);
         }
-        
+
         /// <summary>
         /// Clears validation error from a control
         /// </summary>
@@ -46,7 +43,7 @@ namespace AzAgroPOS.Teqdimat
         {
             errorProvider1.SetError(control, string.Empty);
         }
-        
+
         /// <summary>
         /// Clears all validation errors
         /// </summary>
@@ -58,7 +55,7 @@ namespace AzAgroPOS.Teqdimat
                 ClearErrorsRecursive(control);
             }
         }
-        
+
         /// <summary>
         /// Recursively clears errors from all controls
         /// </summary>

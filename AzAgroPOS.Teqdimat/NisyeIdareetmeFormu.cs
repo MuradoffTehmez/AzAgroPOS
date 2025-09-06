@@ -6,7 +6,6 @@ using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
-using AzAgroPOS.Teqdimat.Yardimcilar;
 
 public partial class NisyeIdareetmeFormu : BazaForm, INisyeView
 {
@@ -54,7 +53,7 @@ public partial class NisyeIdareetmeFormu : BazaForm, INisyeView
     {
         MessageBox.Show(mesaj, basliq);
     }
-    
+
     /// <summary>
     /// Shows a validation error on a control
     /// </summary>
@@ -66,7 +65,7 @@ public partial class NisyeIdareetmeFormu : BazaForm, INisyeView
         errorProvider1.SetIconAlignment(control, ErrorIconAlignment.MiddleRight);
         errorProvider1.SetIconPadding(control, 2);
     }
-    
+
     /// <summary>
     /// Clears validation error from a control
     /// </summary>
@@ -75,7 +74,7 @@ public partial class NisyeIdareetmeFormu : BazaForm, INisyeView
     {
         errorProvider1.SetError(control, string.Empty);
     }
-    
+
     /// <summary>
     /// Clears all validation errors
     /// </summary>
@@ -87,7 +86,7 @@ public partial class NisyeIdareetmeFormu : BazaForm, INisyeView
             ClearErrorsRecursive(control);
         }
     }
-    
+
     /// <summary>
     /// Recursively clears errors from all controls
     /// </summary>

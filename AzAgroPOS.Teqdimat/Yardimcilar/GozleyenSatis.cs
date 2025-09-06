@@ -1,6 +1,5 @@
 ﻿// Fayl: AzAgroPOS.Teqdimat/Yardimcilar/GozleyenSatis.cs
 using AzAgroPOS.Mentiq.DTOs;
-using System.Collections.Generic;
 
 namespace AzAgroPOS.Teqdimat.Yardimcilar
 {

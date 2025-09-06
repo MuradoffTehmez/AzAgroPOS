@@ -1,7 +1,6 @@
 ﻿using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Yardimcilar;
-using System.Threading.Tasks;
 
 namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 {

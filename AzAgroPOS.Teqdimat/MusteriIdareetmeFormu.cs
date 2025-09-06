@@ -2,10 +2,6 @@ using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
-using AzAgroPOS.Teqdimat.Yardimcilar;
-using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
 
 namespace AzAgroPOS.Teqdimat
 {
@@ -57,11 +53,11 @@ namespace AzAgroPOS.Teqdimat
                 // Format currency columns
                 dgvMusteriler.Columns["UmumiBorc"].DefaultCellStyle.Format = "N2";
                 dgvMusteriler.Columns["KreditLimiti"].DefaultCellStyle.Format = "N2";
-                
+
                 // Align numeric columns to the right
                 dgvMusteriler.Columns["UmumiBorc"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 dgvMusteriler.Columns["KreditLimiti"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                
+
                 // Allow sorting
                 dgvMusteriler.Columns["TamAd"].SortMode = DataGridViewColumnSortMode.Automatic;
                 dgvMusteriler.Columns["TelefonNomresi"].SortMode = DataGridViewColumnSortMode.Automatic;
@@ -85,7 +81,7 @@ namespace AzAgroPOS.Teqdimat
         {
             MessageBox.Show(mesaj, basliq, MessageBoxButtons.OK, ikon);
         }
-        
+
         /// <summary>
         /// Shows a validation error on a control
         /// </summary>
@@ -97,7 +93,7 @@ namespace AzAgroPOS.Teqdimat
             errorProvider1.SetIconAlignment(control, ErrorIconAlignment.MiddleRight);
             errorProvider1.SetIconPadding(control, 2);
         }
-        
+
         /// <summary>
         /// Clears validation error from a control
         /// </summary>
@@ -106,7 +102,7 @@ namespace AzAgroPOS.Teqdimat
         {
             errorProvider1.SetError(control, string.Empty);
         }
-        
+
         /// <summary>
         /// Clears all validation errors
         /// </summary>
@@ -118,7 +114,7 @@ namespace AzAgroPOS.Teqdimat
                 ClearErrorsRecursive(control);
             }
         }
-        
+
         /// <summary>
         /// Recursively clears errors from all controls
         /// </summary>
@@ -139,7 +135,7 @@ namespace AzAgroPOS.Teqdimat
         private void dgvMusteriler_SelectionChanged(object sender, EventArgs e)
         {
             MusteriSecildi?.Invoke(sender, e);
-            
+
             // Update selected customer ID when selection changes
             if (dgvMusteriler.CurrentRow?.DataBoundItem is MusteriDto musteri)
             {
@@ -150,7 +146,7 @@ namespace AzAgroPOS.Teqdimat
                 SecilenMusteriId = 0;
             }
         }
-        
+
         private void btnYeni_Click(object sender, EventArgs e) => YeniMusteriIstek?.Invoke(sender, e);
         private void btnYaddaSaxla_Click(object sender, EventArgs e) => YaddaSaxlaIstek?.Invoke(sender, e);
         private void btnSil_Click(object sender, EventArgs e) => SilIstek?.Invoke(sender, e);

@@ -8,7 +8,7 @@ public class AzAgroPOSDbContext : DbContext
 {
     public AzAgroPOSDbContext(DbContextOptions<AzAgroPOSDbContext> options) : base(options)
     {
-       //Database.EnsureCreated(); // Verilənlər bazasının yaradılmasını təmin edir
+        //Database.EnsureCreated(); // Verilənlər bazasının yaradılmasını təmin edir
     }
 
     public DbSet<Mehsul> Mehsullar { get; set; }
@@ -78,9 +78,9 @@ public class AzAgroPOSDbContext : DbContext
             .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<Novbe>()
-            .HasOne(n => n.Isci) 
-            .WithMany(i => i.Novbeler) 
-            .HasForeignKey(n => n.IsciId) 
+            .HasOne(n => n.Isci)
+            .WithMany(i => i.Novbeler)
+            .HasForeignKey(n => n.IsciId)
             .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<IsciPerformans>()
@@ -241,7 +241,7 @@ public class AzAgroPOSDbContext : DbContext
         {
             Id = 1,
             IstifadeciAdi = "admin",
-            ParolHash = "$2a$11$wvv2PHlk9LWlv4vuz3eEBl.ynUDwxFQSIHWle5nHfS3sL7hTkTQPG", 
+            ParolHash = "$2a$11$wvv2PHlk9LWlv4vuz3eEBl.ynUDwxFQSIHWle5nHfS3sL7hTkTQPG",
             TamAd = "Sistem Administratoru",
             RolId = adminRolu.Id
         };
@@ -255,10 +255,10 @@ public class AzAgroPOSDbContext : DbContext
 
         // Sample employee data
         modelBuilder.Entity<Isci>().HasData(
-            new Isci 
-            { 
-                Id = 1, 
-                TamAd = "Əli Məmmədov", 
+            new Isci
+            {
+                Id = 1,
+                TamAd = "Əli Məmmədov",
                 DogumTarixi = new DateTime(1990, 5, 15),
                 TelefonNomresi = "+994501234567",
                 Unvan = "Bakı şəh., Nərimanov r-nu, Sədərək m/s",
@@ -272,10 +272,10 @@ public class AzAgroPOSDbContext : DbContext
                 QeydiyyatUnvani = "Bakı şəh., Nərimanov r-nu",
                 BankMəlumatları = "IBAN: AZ12NABZ0000000012345678"
             },
-            new Isci 
-            { 
-                Id = 2, 
-                TamAd = "Nərgiz Quliyeva", 
+            new Isci
+            {
+                Id = 2,
+                TamAd = "Nərgiz Quliyeva",
                 DogumTarixi = new DateTime(1992, 8, 22),
                 TelefonNomresi = "+994552345678",
                 Unvan = "Bakı şəh., Xətai r-nu, Mərdəkan m/s",
@@ -293,10 +293,10 @@ public class AzAgroPOSDbContext : DbContext
 
         // Sample supplier data
         modelBuilder.Entity<Tedarukcu>().HasData(
-            new Tedarukcu 
-            { 
-                Id = 1, 
-                Ad = "Ənənəvi Bakery", 
+            new Tedarukcu
+            {
+                Id = 1,
+                Ad = "Ənənəvi Bakery",
                 Voen = "1234567890",
                 Unvan = "Bakı şəh., Nəsimi r-nu, Cavid prospekti 45",
                 Telefon = "+994123456789",
@@ -304,10 +304,10 @@ public class AzAgroPOSDbContext : DbContext
                 BankHesabi = "IBAN: AZ12NABZ0000000012345678",
                 Aktivdir = true
             },
-            new Tedarukcu 
-            { 
-                Id = 2, 
-                Ad = "Fresh Dairy Products", 
+            new Tedarukcu
+            {
+                Id = 2,
+                Ad = "Fresh Dairy Products",
                 Voen = "0987654321",
                 Unvan = "Sumqayıt şəh., Sənaye rayonu, Zavod küçəsi 12",
                 Telefon = "+994181234567",

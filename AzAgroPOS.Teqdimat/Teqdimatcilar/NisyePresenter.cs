@@ -4,8 +4,6 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 // using-lər
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
-using AzAgroPOS.Verilenler.Kontekst;
-using AzAgroPOS.Verilenler.Realizasialar;
 
 /// <summary>
 ///  bu presenter, müştəri nisye əməliyyatlarını idarə etmək üçün istifadə olunur.
@@ -26,7 +24,7 @@ public class NisyePresenter
         _view.MusteriSecildi += async (s, e) => await MusteriHereketleriniYukle();
         _view.OdenisEdildi += async (s, e) => await OdenisEt();
     }
-    
+
     private async Task FormuYukle()
     {
         var netice = await _nisyeManager.MusterileriGetirAsync();

@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using System.IO;
 
 namespace AzAgroPOS.Verilenler.Kontekst
 {
@@ -14,7 +13,7 @@ namespace AzAgroPOS.Verilenler.Kontekst
         public AzAgroPOSDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<AzAgroPOSDbContext>();
-            
+
             // Build configuration
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())

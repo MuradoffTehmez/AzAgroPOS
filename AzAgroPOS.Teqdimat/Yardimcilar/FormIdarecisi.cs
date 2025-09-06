@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
-
 namespace AzAgroPOS.Teqdimat.Yardimcilar
 {
     /// <summary>
@@ -28,7 +24,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
                     // Bring to front if already open
                     if (movcudForm.WindowState == FormWindowState.Minimized)
                         movcudForm.WindowState = FormWindowState.Normal;
-                    
+
                     movcudForm.BringToFront();
                     movcudForm.Activate();
                     return (T)movcudForm;
@@ -43,9 +39,9 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
             // Create new instance
             var yeniForm = new T();
             _aciqFormlar[formTipi] = yeniForm;
-            
+
             // Track when form is closed to remove from tracking
-            yeniForm.FormClosed += (s, e) => 
+            yeniForm.FormClosed += (s, e) =>
             {
                 if (_aciqFormlar.ContainsKey(formTipi))
                     _aciqFormlar.Remove(formTipi);

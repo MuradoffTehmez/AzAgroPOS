@@ -1,7 +1,4 @@
 using AzAgroPOS.Mentiq.DTOs;
-using AzAgroPOS.Teqdimat.Yardimcilar;
-using System;
-using System.Windows.Forms;
 
 namespace AzAgroPOS.Teqdimat.Yardimcilar
 {
@@ -48,7 +45,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
             this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
-        
+
         /// <summary>
         /// Shows a validation error on a control
         /// </summary>
@@ -60,7 +57,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
             errorProvider1.SetIconAlignment(control, ErrorIconAlignment.MiddleRight);
             errorProvider1.SetIconPadding(control, 2);
         }
-        
+
         /// <summary>
         /// Clears validation error from a control
         /// </summary>
@@ -69,7 +66,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         {
             errorProvider1.SetError(control, string.Empty);
         }
-        
+
         /// <summary>
         /// Clears all validation errors
         /// </summary>
@@ -81,7 +78,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
                 ClearErrorsRecursive(control);
             }
         }
-        
+
         /// <summary>
         /// Recursively clears errors from all controls
         /// </summary>

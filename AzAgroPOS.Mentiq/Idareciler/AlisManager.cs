@@ -192,7 +192,7 @@ public class AlisManager
         {
             var sifarisler = await _unitOfWork.AlisSifarisleri.ButununuGetirAsync();
             var tedarukculer = await _unitOfWork.Tedarukculer.ButununuGetirAsync();
-            
+
             var dtolar = sifarisler.Select(s => new AlisSifarisDto
             {
                 Id = s.Id,
@@ -426,7 +426,7 @@ public class AlisManager
         {
             var senetler = await _unitOfWork.AlisSenetleri.ButununuGetirAsync();
             var tedarukculer = await _unitOfWork.Tedarukculer.ButununuGetirAsync();
-            
+
             var dtolar = senetler.Select(s => new AlisSenedDto
             {
                 Id = s.Id,
@@ -588,7 +588,7 @@ public class AlisManager
             var odemeler = await _unitOfWork.TedarukcuOdemeleri.ButununuGetirAsync();
             var tedarukculer = await _unitOfWork.Tedarukculer.ButununuGetirAsync();
             var senetler = await _unitOfWork.AlisSenetleri.ButununuGetirAsync();
-            
+
             var dtolar = odemeler.Select(o => new TedarukcuOdemeDto
             {
                 Id = o.Id,

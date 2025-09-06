@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AzAgroPOS.Varliglar
+﻿namespace AzAgroPOS.Varliglar
 {
     public class TemirMerhelesi : BazaVarligi
     {

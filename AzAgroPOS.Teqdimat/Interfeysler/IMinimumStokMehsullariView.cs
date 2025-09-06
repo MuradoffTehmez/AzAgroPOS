@@ -4,7 +4,6 @@ namespace AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Mentiq.DTOs;
 using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
 
 /// <summary>
 /// Minimum stok məhsulları idarəetmə forması üçün interfeys.

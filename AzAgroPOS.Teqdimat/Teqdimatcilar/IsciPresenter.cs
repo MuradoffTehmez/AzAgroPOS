@@ -4,8 +4,6 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
-using AzAgroPOS.Varliglar;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

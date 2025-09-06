@@ -1,9 +1,5 @@
 // Fayl: AzAgroPOS.Mentiq/DTOs/AlisSenedSetiriDto.cs
 namespace AzAgroPOS.Mentiq.DTOs;
-
-using AzAgroPOS.Varliglar;
-using System;
-
 /// <summary>
 /// Alış sənədi sətiri məlumatlarını təqdimat qatına ötürmək üçün istifadə olunan DTO.
 /// </summary>

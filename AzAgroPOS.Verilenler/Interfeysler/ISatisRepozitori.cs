@@ -7,7 +7,7 @@ using AzAgroPOS.Varliglar;
 /// diqət: Hal-hazırda xüsusi əməliyyatlar əlavə edilməyib, amma gələcəkdə əlavə edilə bilər.
 /// qeyd: Bu interfeys, satış verilənlər bazası əməliyyatlarını idarə etmək üçün istifadə olunur və satış ilə əlaqəli əməliyyatları asanlaşdırır.
 /// </summary>
-public interface ISatisRepozitori : IRepozitori<Satis> 
+public interface ISatisRepozitori : IRepozitori<Satis>
 {
     // Burada satış ilə əlaqəli xüsusi əməliyyatlar əlavə edilə bilər, məsələn: Müəyyən bir tarixdəki satışları tapmaq, istifadəçiyə görə satışları filtrləmək və s.
 }

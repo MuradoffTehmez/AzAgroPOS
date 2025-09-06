@@ -1,4 +1,3 @@
-using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
 using AzAgroPOS.Verilenler.Interfeysler;
@@ -7,9 +6,6 @@ using AzAgroPOS.Verilenler.Realizasialar;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.IO;
-using System.Windows.Forms;
 
 namespace AzAgroPOS.Teqdimat
 {
@@ -49,7 +45,7 @@ namespace AzAgroPOS.Teqdimat
             IConfiguration configuration = builder.Build();
 
             // Get connection string from configuration or use fallback
-            string connectionString = configuration.GetConnectionString("DefaultConnection") ?? 
+            string connectionString = configuration.GetConnectionString("DefaultConnection") ??
             "Server=.\\SQLEXPRESS;Database=AzAgroPOS_DB;Trusted_Connection=True;TrustServerCertificate=True;";
 
             services.AddDbContext<AzAgroPOSDbContext>(options =>

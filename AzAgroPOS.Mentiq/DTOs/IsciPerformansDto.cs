@@ -1,7 +1,6 @@
 // Fayl: AzAgroPOS.Mentiq/DTOs/IsciPerformansDto.cs
 namespace AzAgroPOS.Mentiq.DTOs;
 
-using AzAgroPOS.Varliglar;
 using System;
 
 /// <summary>

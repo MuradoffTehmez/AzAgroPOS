@@ -1,8 +1,5 @@
 // Fayl: AzAgroPOS.Varliglar/AlisSenedSetiri.cs
 namespace AzAgroPOS.Varliglar;
-
-using System;
-
 /// <summary>
 /// Alış sənədi sətirlərini saxlayan varlıq sinifi.
 /// </summary>

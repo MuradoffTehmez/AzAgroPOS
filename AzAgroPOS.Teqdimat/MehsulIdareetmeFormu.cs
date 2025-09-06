@@ -3,12 +3,7 @@ using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
-using AzAgroPOS.Teqdimat.Yardimcilar;
 using AzAgroPOS.Varliglar;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Forms;
 
 namespace AzAgroPOS.Teqdimat
 {
@@ -21,7 +16,7 @@ namespace AzAgroPOS.Teqdimat
             InitializeComponent();
             _presenter = new MehsulPresenter(this, mehsulManager, serviceProvider);
             StilVerDataGridView(dgvMehsullar);
-            
+
             // Setup auto-complete for ComboBoxes
             SetupComboBoxAutoComplete();
         }
@@ -111,10 +106,10 @@ namespace AzAgroPOS.Teqdimat
                 dgvMehsullar.Columns["PerakendeSatisQiymetiStr"].HeaderText = "Pərakəndə Qiymət";
                 dgvMehsullar.Columns["MovcudSay"].HeaderText = "Mövcud Say";
                 dgvMehsullar.Columns["OlcuVahidiStr"].HeaderText = "Ölçü Vahidi";
-                
+
                 // Format currency columns
                 dgvMehsullar.Columns["PerakendeSatisQiymetiStr"].DefaultCellStyle.Format = "c2";
-                
+
                 // Align numeric columns to the right
                 dgvMehsullar.Columns["PerakendeSatisQiymetiStr"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 dgvMehsullar.Columns["MovcudSay"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
@@ -125,7 +120,7 @@ namespace AzAgroPOS.Teqdimat
         {
             return MessageBox.Show(mesaj, basliq, düymələr, ikon);
         }
-        
+
         /// <summary>
         /// Shows a validation error on a control
         /// </summary>
@@ -137,7 +132,7 @@ namespace AzAgroPOS.Teqdimat
             errorProvider1.SetIconAlignment(control, ErrorIconAlignment.MiddleRight);
             errorProvider1.SetIconPadding(control, 2);
         }
-        
+
         /// <summary>
         /// Clears validation error from a control
         /// </summary>
@@ -146,7 +141,7 @@ namespace AzAgroPOS.Teqdimat
         {
             errorProvider1.SetError(control, string.Empty);
         }
-        
+
         /// <summary>
         /// Clears all validation errors
         /// </summary>
@@ -158,7 +153,7 @@ namespace AzAgroPOS.Teqdimat
                 ClearErrorsRecursive(control);
             }
         }
-        
+
         /// <summary>
         /// Recursively clears errors from all controls
         /// </summary>
@@ -223,22 +218,22 @@ namespace AzAgroPOS.Teqdimat
         }
         private void txtAxtar_TextChanged(object sender, EventArgs e) => Axtaris_Istek?.Invoke(this, EventArgs.Empty);
         #endregion
-        
+
         #region Auto-complete Setup
         private void SetupComboBoxAutoComplete()
         {
             // Setup auto-complete for supplier ComboBox
             cmbTedarukcu.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             cmbTedarukcu.AutoCompleteSource = AutoCompleteSource.ListItems;
-            
+
             // Setup auto-complete for category ComboBox
             cmbKateqoriya.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             cmbKateqoriya.AutoCompleteSource = AutoCompleteSource.ListItems;
-            
+
             // Setup auto-complete for brand ComboBox
             cmbBrend.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             cmbBrend.AutoCompleteSource = AutoCompleteSource.ListItems;
-            
+
             // Setup auto-complete for unit of measure ComboBox
             cmbOlcuVahidi.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             cmbOlcuVahidi.AutoCompleteSource = AutoCompleteSource.ListItems;

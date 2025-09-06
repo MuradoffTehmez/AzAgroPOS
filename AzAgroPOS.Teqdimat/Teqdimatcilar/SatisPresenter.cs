@@ -1,17 +1,9 @@
 ﻿using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
-using AzAgroPOS.Teqdimat.Servisler;
 using AzAgroPOS.Teqdimat.Yardimcilar;
 using AzAgroPOS.Varliglar;
-using AzAgroPOS.Verilenler.Kontekst;
-using AzAgroPOS.Verilenler.Realizasialar;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 {
@@ -120,7 +112,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             _aktivSebet.ResetBindings();
             GosterisleriYenile();
             if (mehsul == null) _view.AxtarisPaneliniSifirla();
-            
+
             // Müştəri ekranına məhsul əlavə edildiyini bildir
             _view.MusteriEkraniYenile(secilmisMehsul.Ad, secilmisMehsul.PerakendeSatisQiymeti, miqdar);
         }

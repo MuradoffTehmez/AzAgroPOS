@@ -3,8 +3,6 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
-using AzAgroPOS.Verilenler.Kontekst;
-using AzAgroPOS.Verilenler.Realizasialar;
 using System.Threading.Tasks;
 
 /// <summary>

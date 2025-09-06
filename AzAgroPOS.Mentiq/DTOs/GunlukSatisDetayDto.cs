@@ -2,7 +2,6 @@
 namespace AzAgroPOS.Mentiq.DTOs;
 
 using System;
-using AzAgroPOS.Varliglar;
 
 /// <summary>
 /// Günlük satış hesabatında hər bir satış əməliyyatının detalını təmsil edir.

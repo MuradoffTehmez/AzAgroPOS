@@ -2,11 +2,10 @@
 namespace AzAgroPOS.Teqdimat;
 
 using AzAgroPOS.Mentiq.DTOs;
+using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
-using AzAgroPOS.Teqdimat.Yardimcilar;
 using AzAgroPOS.Varliglar;
-using AzAgroPOS.Mentiq.Idareciler;
 
 public partial class IstifadeciIdareetmeFormu : BazaForm, IIstifadeciView
 {
@@ -138,12 +137,12 @@ public partial class IstifadeciIdareetmeFormu : BazaForm, IIstifadeciView
             btnSil.Enabled = false;
         }
     }
-    
+
     public void MesajGoster(string mesaj, string basliq, MessageBoxIcon ikon)
     {
         MessageBox.Show(mesaj, basliq, MessageBoxButtons.OK, ikon);
     }
-    
+
     /// <summary>
     /// Shows a validation error on a control
     /// </summary>
@@ -155,7 +154,7 @@ public partial class IstifadeciIdareetmeFormu : BazaForm, IIstifadeciView
         errorProvider1.SetIconAlignment(control, ErrorIconAlignment.MiddleRight);
         errorProvider1.SetIconPadding(control, 2);
     }
-    
+
     /// <summary>
     /// Clears validation error from a control
     /// </summary>
@@ -164,7 +163,7 @@ public partial class IstifadeciIdareetmeFormu : BazaForm, IIstifadeciView
     {
         errorProvider1.SetError(control, string.Empty);
     }
-    
+
     /// <summary>
     /// Clears all validation errors
     /// </summary>
@@ -176,7 +175,7 @@ public partial class IstifadeciIdareetmeFormu : BazaForm, IIstifadeciView
             ClearErrorsRecursive(control);
         }
     }
-    
+
     /// <summary>
     /// Recursively clears errors from all controls
     /// </summary>

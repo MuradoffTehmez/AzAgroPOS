@@ -2,11 +2,6 @@ using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
-using AzAgroPOS.Teqdimat.Yardimcilar;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Forms;
 
 namespace AzAgroPOS.Teqdimat
 {
@@ -40,7 +35,7 @@ namespace AzAgroPOS.Teqdimat
             get => txtCihazAdi.Text;
             set => txtCihazAdi.Text = value;
         }
-        
+
         public string SeriyaNomresi
         {
             get => txtSeriyaNomresi.Text;
@@ -58,25 +53,25 @@ namespace AzAgroPOS.Teqdimat
             get => (int?)cmbUsta.SelectedValue > 0 ? (int?)cmbUsta.SelectedValue : null;
             set => cmbUsta.SelectedValue = value;
         }
-        
+
         public decimal TemirXerci
         {
             get => decimal.TryParse(txtTemirXerci.Text, out var xerc) ? xerc : 0;
             set => txtTemirXerci.Text = value.ToString("N2");
         }
-        
+
         public decimal ServisHaqqi
         {
             get => decimal.TryParse(txtServisHaqqi.Text, out var haqq) ? haqq : 0;
             set => txtServisHaqqi.Text = value.ToString("N2");
         }
-        
+
         public decimal YekunMebleg
         {
             get => decimal.TryParse(txtYekunMebleg.Text, out var mebleg) ? mebleg : 0;
             set => txtYekunMebleg.Text = value.ToString("N2");
         }
-        
+
         public int SecilmisSifarisId
         {
             get
@@ -115,7 +110,7 @@ namespace AzAgroPOS.Teqdimat
                 dgvSifarisler.Columns["YekunMebleg"].HeaderText = "Yekun Məbləğ";
             }
         }
-        
+
         public void UstaSiyahisiniGoster(List<IstifadeciDto> ustalar)
         {
             var listDataSource = new List<object> { new { Id = 0, TamAd = "Seçilməyib" } };
@@ -130,12 +125,12 @@ namespace AzAgroPOS.Teqdimat
         {
             MessageBox.Show(mesaj, basliq);
         }
-        
+
         public DialogResult MesajGoster(string mesaj, string basliq, MessageBoxButtons düymələr, MessageBoxIcon ikon)
         {
             return MessageBox.Show(mesaj, basliq, düymələr, ikon);
         }
-        
+
         /// <summary>
         /// Shows a validation error on a control
         /// </summary>
@@ -147,7 +142,7 @@ namespace AzAgroPOS.Teqdimat
             errorProvider1.SetIconAlignment(control, ErrorIconAlignment.MiddleRight);
             errorProvider1.SetIconPadding(control, 2);
         }
-        
+
         /// <summary>
         /// Clears validation error from a control
         /// </summary>
@@ -156,7 +151,7 @@ namespace AzAgroPOS.Teqdimat
         {
             errorProvider1.SetError(control, string.Empty);
         }
-        
+
         /// <summary>
         /// Clears all validation errors
         /// </summary>
@@ -168,7 +163,7 @@ namespace AzAgroPOS.Teqdimat
                 ClearErrorsRecursive(control);
             }
         }
-        
+
         /// <summary>
         /// Recursively clears errors from all controls
         /// </summary>
@@ -192,13 +187,13 @@ namespace AzAgroPOS.Teqdimat
             txtTemirXerci.Clear();
             txtServisHaqqi.Clear();
             txtYekunMebleg.Clear();
-            
+
             // Safely set the selected index only if there are items in the ComboBox
             if (cmbUsta.Items.Count > 0)
             {
                 cmbUsta.SelectedIndex = 0;
             }
-            
+
             dgvSifarisler.ClearSelection();
             txtMusteriAdi.Focus();
         }

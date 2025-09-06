@@ -1,10 +1,7 @@
 ﻿using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Teqdimat.Yardimcilar;
 using AzAgroPOS.Varliglar;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Windows.Forms;
 
 namespace AzAgroPOS.Teqdimat.Interfeysler
 {
@@ -44,10 +41,10 @@ namespace AzAgroPOS.Teqdimat.Interfeysler
         void GozleyenSatislarMenyusunuGoster(List<GozleyenSatis> gozleyenSatislar);
         void FormuTamSifirla();
         DialogResult MesajGoster(string mesaj, string basliq, MessageBoxButtons düymələr, MessageBoxIcon ikon);
-        
+
         // Status mesajları
         void StatusMesajiGoster(string mesaj, StatusMesajiNovu nov);
-        
+
         // Müştəri ekranı dəstəyi
         void MusteriEkraniYenile(string mehsulAdi, decimal qiymet, decimal miqdar);
     }

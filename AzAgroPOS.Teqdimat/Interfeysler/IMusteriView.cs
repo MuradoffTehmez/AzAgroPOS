@@ -1,7 +1,4 @@
 ﻿using AzAgroPOS.Mentiq.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
 
 namespace AzAgroPOS.Teqdimat.Interfeysler
 {
@@ -24,7 +21,7 @@ namespace AzAgroPOS.Teqdimat.Interfeysler
         void MusterileriGoster(List<MusteriDto> musteriler);
         void FormuTemizle();
         void MesajGoster(string mesaj, string basliq, MessageBoxIcon ikon);
-        
+
         // Validation methods
         void XetaGoster(Control control, string message);
         void XetaniTemizle(Control control);

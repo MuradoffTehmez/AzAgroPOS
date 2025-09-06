@@ -2,9 +2,9 @@
 namespace AzAgroPOS.Teqdimat;
 
 using AzAgroPOS.Mentiq.DTOs;
+using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
-using AzAgroPOS.Mentiq.Idareciler;
 
 public partial class AnbarQaliqHesabatFormu : BazaForm, IAnbarQaliqHesabatView
 {

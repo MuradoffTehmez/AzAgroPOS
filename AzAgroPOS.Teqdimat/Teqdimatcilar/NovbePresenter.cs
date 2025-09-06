@@ -4,9 +4,6 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Yardimcilar;
-using AzAgroPOS.Verilenler.Kontekst;
-using AzAgroPOS.Verilenler.Realizasialar;
-using System;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -44,7 +41,7 @@ public class NovbePresenter
     private async Task FormuYukle()
     {
         if (AktivSessiya.AktivIstifadeci == null) return;
-        
+
         _aktivNovbe = await _novbeManager.AktivNovbeniGetirAsync(AktivSessiya.AktivIstifadeci.Id);
         if (_aktivNovbe != null)
         {
@@ -65,7 +62,7 @@ public class NovbePresenter
     private async Task NovbeAc()
     {
         if (AktivSessiya.AktivIstifadeci == null) return;
-        
+
         var netice = await _novbeManager.NovbeAcAsync(AktivSessiya.AktivIstifadeci.Id, _view.BaslangicMebleg);
         if (netice.UgurluDur)
         {
@@ -82,7 +79,7 @@ public class NovbePresenter
     private async Task NovbeBagla()
     {
         if (_aktivNovbe == null) return;
-        
+
         var netice = await _novbeManager.NovbeBaglaAsync(_aktivNovbe.Id, _view.FaktikiMebleg);
         if (netice.UgurluDur)
         {

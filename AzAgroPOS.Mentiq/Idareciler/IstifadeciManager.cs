@@ -28,7 +28,7 @@ public class IstifadeciManager
     /// <returns></returns>
     public async Task<EmeliyyatNeticesi<List<IstifadeciDto>>> IstifadecileriGetirAsync()
     {
-        
+
         var istifadeciler = await _unitOfWork.Istifadeciler.ButununuGetirAsync();
         var rollar = await _unitOfWork.Rollar.ButununuGetirAsync();
 
@@ -149,7 +149,7 @@ public class IstifadeciManager
 
         return EmeliyyatNeticesi.Ugurlu();
     }
-    
+
     /// <summary>
     /// Bütün texnikləri (usta) gətirir.
     /// </summary>
@@ -162,8 +162,8 @@ public class IstifadeciManager
             var rollar = await _unitOfWork.Rollar.ButununuGetirAsync();
 
             // "Texnik" və ya "Usta" rolu olan istifadəçiləri gətiririk
-            var texnikler = istifadeciler.Where(i => 
-                rollar.FirstOrDefault(r => r.Id == i.RolId)?.Ad == "Texnik" || 
+            var texnikler = istifadeciler.Where(i =>
+                rollar.FirstOrDefault(r => r.Id == i.RolId)?.Ad == "Texnik" ||
                 rollar.FirstOrDefault(r => r.Id == i.RolId)?.Ad == "Usta").ToList();
 
             var dtolar = texnikler.Select(i => new IstifadeciDto

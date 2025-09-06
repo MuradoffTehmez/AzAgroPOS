@@ -3,7 +3,7 @@
     public class SatisSebetiElementiDto
     {
         public int MehsulId { get; set; }
-        
+
         public string MehsulAdi { get; set; } = string.Empty;
 
         public decimal Miqdar { get; set; }

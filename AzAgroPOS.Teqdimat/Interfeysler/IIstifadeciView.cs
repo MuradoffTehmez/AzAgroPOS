@@ -21,7 +21,7 @@ public interface IIstifadeciView
 
     event EventHandler FormYuklendi;
     event EventHandler IstifadeciYarat_Istek;
-    event EventHandler IstifadeciYenile_Istek; 
+    event EventHandler IstifadeciYenile_Istek;
     event EventHandler IstifadeciSil_Istek;
-    event EventHandler FormuTemizle_Istek; 
+    event EventHandler FormuTemizle_Istek;
 }

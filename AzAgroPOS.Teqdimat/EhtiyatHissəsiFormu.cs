@@ -1,15 +1,6 @@
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
-using AzAgroPOS.Teqdimat.Yardimcilar;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace AzAgroPOS.Teqdimat
 {
@@ -17,7 +8,7 @@ namespace AzAgroPOS.Teqdimat
     {
         private readonly MehsulManager _mehsulManager;
         private readonly List<EhtiyatHissəsiDto> _ehtiyatHissələri;
-        
+
         public List<EhtiyatHissəsiDto> EhtiyatHissələri => _ehtiyatHissələri;
 
         public EhtiyatHissəsiFormu(MehsulManager mehsulManager)
@@ -74,10 +65,10 @@ namespace AzAgroPOS.Teqdimat
             if (dgvMehsullar.DataSource is List<MehsulDto> mehsullar)
             {
                 var axtarışMətni = txtAxtar.Text.ToLower();
-                var filtrlenmisMehsullar = mehsullar.Where(m => 
-                    m.Ad.ToLower().Contains(axtarışMətni) || 
+                var filtrlenmisMehsullar = mehsullar.Where(m =>
+                    m.Ad.ToLower().Contains(axtarışMətni) ||
                     m.StokKodu.ToLower().Contains(axtarışMətni)).ToList();
-                
+
                 dgvMehsullar.DataSource = filtrlenmisMehsullar;
             }
         }
@@ -95,7 +86,7 @@ namespace AzAgroPOS.Teqdimat
                         Miqdar = miqdar,
                         Qiymet = mehsul.AlisQiymeti
                     };
-                    
+
                     _ehtiyatHissələri.Add(ehtiyatHissəsi);
                     SeçilmişMehsullariGoster();
                     txtMiqdar.Text = "1";
@@ -106,7 +97,7 @@ namespace AzAgroPOS.Teqdimat
                 }
             }
         }
-        
+
         /// <summary>
         /// Shows a validation error on a control
         /// </summary>
@@ -118,7 +109,7 @@ namespace AzAgroPOS.Teqdimat
             errorProvider1.SetIconAlignment(control, ErrorIconAlignment.MiddleRight);
             errorProvider1.SetIconPadding(control, 2);
         }
-        
+
         /// <summary>
         /// Clears validation error from a control
         /// </summary>
@@ -127,7 +118,7 @@ namespace AzAgroPOS.Teqdimat
         {
             errorProvider1.SetError(control, string.Empty);
         }
-        
+
         /// <summary>
         /// Clears all validation errors
         /// </summary>
@@ -139,7 +130,7 @@ namespace AzAgroPOS.Teqdimat
                 ClearErrorsRecursive(control);
             }
         }
-        
+
         /// <summary>
         /// Recursively clears errors from all controls
         /// </summary>
@@ -157,7 +148,7 @@ namespace AzAgroPOS.Teqdimat
         {
             dgvSeçilmişMehsullar.DataSource = null;
             dgvSeçilmişMehsullar.DataSource = _ehtiyatHissələri;
-            
+
             if (dgvSeçilmişMehsullar.Columns.Count > 0)
             {
                 dgvSeçilmişMehsullar.Columns["MehsulId"].Visible = false;

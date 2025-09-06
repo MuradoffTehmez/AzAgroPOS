@@ -1,7 +1,6 @@
 // Fayl: AzAgroPOS.Varliglar/Tedarukcu.cs
 namespace AzAgroPOS.Varliglar;
 
-using System;
 using System.Collections.Generic;
 
 /// <summary>

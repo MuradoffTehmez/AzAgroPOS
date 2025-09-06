@@ -5,7 +5,6 @@ using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
-using AzAgroPOS.Teqdimat.Yardimcilar;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -51,7 +50,7 @@ public partial class MinimumStokMehsullariFormu : BazaForm, IMinimumStokMehsulla
     {
         MessageBox.Show(mesaj, xetadir ? "Xəta" : "Məlumat", MessageBoxButtons.OK, xetadir ? MessageBoxIcon.Error : MessageBoxIcon.Information);
     }
-    
+
     /// <summary>
     /// Shows a validation error on a control
     /// </summary>
@@ -63,7 +62,7 @@ public partial class MinimumStokMehsullariFormu : BazaForm, IMinimumStokMehsulla
         errorProvider1.SetIconAlignment(control, ErrorIconAlignment.MiddleRight);
         errorProvider1.SetIconPadding(control, 2);
     }
-    
+
     /// <summary>
     /// Clears validation error from a control
     /// </summary>
@@ -72,7 +71,7 @@ public partial class MinimumStokMehsullariFormu : BazaForm, IMinimumStokMehsulla
     {
         errorProvider1.SetError(control, string.Empty);
     }
-    
+
     /// <summary>
     /// Clears all validation errors
     /// </summary>
@@ -84,7 +83,7 @@ public partial class MinimumStokMehsullariFormu : BazaForm, IMinimumStokMehsulla
             ClearErrorsRecursive(control);
         }
     }
-    
+
     /// <summary>
     /// Recursively clears errors from all controls
     /// </summary>

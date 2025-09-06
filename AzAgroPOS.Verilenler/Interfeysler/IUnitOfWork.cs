@@ -1,7 +1,6 @@
 // Fayl: AzAgroPOS.Verilenler/Interfeysler/IUnitOfWork.cs
 namespace AzAgroPOS.Verilenler.Interfeysler;
 
-using AzAgroPOS.Varliglar;
 using System;
 
 /// <summary>
@@ -121,14 +120,14 @@ public interface IUnitOfWork : IAsyncDisposable
     /// Qeyd: Tədarükçü ödənişi yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
     /// </summary>
     ITedarukcuOdemeRepozitori TedarukcuOdemeleri { get; }
-    
+
     /// <summary>
     /// Kateqoriya Repozitorisi - Kateqoriya əməliyyatlarını idarə edir.
     /// Diqqət: Bu repozitoriya məhsul kateqoriyalarını idarə edir.
     /// Qeyd: Kateqoriya yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
     /// </summary>
     IKateqoriyaRepozitori Kateqoriyalar { get; }
-    
+
     /// <summary>
     /// Brend Repozitorisi - Brend əməliyyatlarını idarə edir.
     /// Diqqət: Bu repozitoriya məhsul brendlərini idarə edir.

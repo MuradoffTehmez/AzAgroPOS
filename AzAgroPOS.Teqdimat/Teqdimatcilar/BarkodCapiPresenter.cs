@@ -1,43 +1,39 @@
 ﻿// Fayl: AzAgroPOS.Teqdimat/Teqdimatcilar/BarkodCapiPresenter.cs
 namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 
-using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Servisler;
-using AzAgroPOS.Verilenler.Kontekst;
-using AzAgroPOS.Verilenler.Realizasialar;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 public class BarkodCapiPresenter
+{
+    private readonly IBarkodCapiView _view;
+    private readonly BarkodCapiManager _barkodCapiManager;
+    private readonly MehsulManager _mehsulManager;
+    public BarkodCapiPresenter(IBarkodCapiView view, BarkodCapiManager barkodCapiManager, MehsulManager mehsulManager)
     {
-        private readonly IBarkodCapiView _view;
-        private readonly BarkodCapiManager _barkodCapiManager;
-        private readonly MehsulManager _mehsulManager;
-        public BarkodCapiPresenter(IBarkodCapiView view, BarkodCapiManager barkodCapiManager, MehsulManager mehsulManager)
-        {
-            _view = view;
-            _barkodCapiManager = barkodCapiManager;
-            _mehsulManager = mehsulManager;
+        _view = view;
+        _barkodCapiManager = barkodCapiManager;
+        _mehsulManager = mehsulManager;
 
-            _view.AxtarisIstek += async (s, e) => await MehsulAxtar();
-            _view.SiyahiniCapaGonderIstek += (s, e) => SiyahiniCapaGonder();
-        }
+        _view.AxtarisIstek += async (s, e) => await MehsulAxtar();
+        _view.SiyahiniCapaGonderIstek += (s, e) => SiyahiniCapaGonder();
+    }
 
-        private async Task MehsulAxtar()
+    private async Task MehsulAxtar()
+    {
+        var netice = await _barkodCapiManager.MehsullariAxtarAsync(_view.AxtarisMetni);
+        if (netice.UgurluDur)
         {
-            var netice = await _barkodCapiManager.MehsullariAxtarAsync(_view.AxtarisMetni);
-            if (netice.UgurluDur)
-            {
-                _view.AxtarisNeticeleriniGoster(netice.Data);
-            }
-            else
-            {
-                _view.AxtarisXetasiGoster(netice.Mesaj);
-            }
+            _view.AxtarisNeticeleriniGoster(netice.Data);
         }
+        else
+        {
+            _view.AxtarisXetasiGoster(netice.Mesaj);
+        }
+    }
 
     private void SiyahiniCapaGonder()
     {

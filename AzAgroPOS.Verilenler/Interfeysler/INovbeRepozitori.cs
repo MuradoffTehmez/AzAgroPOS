@@ -7,7 +7,7 @@ using AzAgroPOS.Varliglar;
 /// qeyd: Bu interfeys, növbə verilənlər bazası əməliyyatlarını idarə etmək üçün istifadə olunur və növbə ilə əlaqəli əməliyyatları asanlaşdırır.
 /// uzunluğu IRepozitori  interfeysindən miras alır və növbə ilə əlaqəli xüsusi əməliyyatları əlavə etmək üçün genişləndirilə bilər.
 /// </summary>
-public interface INovbeRepozitori : IRepozitori<Novbe> 
+public interface INovbeRepozitori : IRepozitori<Novbe>
 {
     /// <summary>
     /// Müəyyən bir işçinin aktiv növbəsini gətirir.
@@ -15,6 +15,6 @@ public interface INovbeRepozitori : IRepozitori<Novbe>
     /// <param name="isciId">İşçinin ID-si</param>
     /// <returns>Aktiv növbə və ya null</returns>
     Task<Novbe?> AktivNovbeniGetirAsync(int isciId);
-    
+
     // Burada növbə ilə əlaqəli xüsusi əməliyyatlar əlavə edilə bilər, məsələn: Müəyyən bir tarixdəki növbələri tapmaq, istifadəçiyə görə növbələri filtrləmək və s.
 }

@@ -1,12 +1,6 @@
 // Fayl: AzAgroPOS.Teqdimat/AnaMenuFormu.cs
 namespace AzAgroPOS.Teqdimat;
-
-using AzAgroPOS.Mentiq.DTOs;
-using AzAgroPOS.Mentiq.Idareciler;
-using AzAgroPOS.Teqdimat.Interfeysler;
-using AzAgroPOS.Teqdimat.Teqdimatcilar;
 using AzAgroPOS.Teqdimat.Yardimcilar;
-using AzAgroPOS.Varliglar;
 using MaterialSkin.Controls;
 using Microsoft.Extensions.DependencyInjection;
 using System;

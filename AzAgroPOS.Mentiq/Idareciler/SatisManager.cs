@@ -3,7 +3,6 @@ namespace AzAgroPOS.Mentiq.Idareciler;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Uslublar;
-using AzAgroPOS.Mentiq.Yardimcilar;
 // Removed direct reference to Teqdimat namespace
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
@@ -17,12 +16,12 @@ using System.Threading.Tasks;
 public class SatisManager
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly NisyeManager _nisyeManager; 
+    private readonly NisyeManager _nisyeManager;
 
     public SatisManager(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
-        _nisyeManager = new NisyeManager(unitOfWork); 
+        _nisyeManager = new NisyeManager(unitOfWork);
     }
 
     /// <summary>
@@ -189,7 +188,7 @@ public class SatisManager
 
         // Qaytarma qeydini əlavə et
         await _unitOfWork.Qaytarmalar.ElaveEtAsync(qaytarma);
-        
+
         // Kassirin aktiv növbəsindəki nağd və ya kart məbləğini azalt
         if (aktivNovbeId.HasValue)
         {

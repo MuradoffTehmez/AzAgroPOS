@@ -3,7 +3,6 @@ namespace AzAgroPOS.Teqdimat.Interfeysler;
 
 using AzAgroPOS.Mentiq.DTOs;
 using System;
-using System.Windows.Forms;
 
 /// <summary>
 /// Hesabatlar formu üçün "müqavilə".

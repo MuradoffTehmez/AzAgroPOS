@@ -22,7 +22,7 @@ public enum EmeliyyatNovu
     /// rol: Bu əməliyyat, müştərinin nisyə borcunu ödəməsi və borcun azalması üçün istifadə olunur.
     /// </summary>
     Odenis = 2, // Borc ödənişi (borcu azaldır)
-    
+
     /// <summary>
     /// qaytarma - Satış qaytarma (borcu azaldır).
     /// diqqət: Bu əməliyyat, müştərinin əvvəlki alışını qaytarmasını və borcun azalmasını təmsil edir.

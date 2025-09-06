@@ -2,7 +2,6 @@
 using AzAgroPOS.Verilenler.Interfeysler;
 using AzAgroPOS.Verilenler.Kontekst;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 
 namespace AzAgroPOS.Verilenler.Realizasialar
 {
@@ -21,7 +20,7 @@ namespace AzAgroPOS.Verilenler.Realizasialar
                 .Include(n => n.Isci)
                 .FirstOrDefaultAsync(n => n.Status == NovbeStatusu.Aciq);
         }
-        
+
         public async Task<Novbe?> AktivNovbeniGetirAsync(int isciId)
         {
             return await _kontekst.Novbeler

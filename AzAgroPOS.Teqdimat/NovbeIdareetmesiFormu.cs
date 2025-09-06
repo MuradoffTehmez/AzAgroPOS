@@ -5,7 +5,6 @@ using AzAgroPOS.Mentiq.Idareciler;
 // using-lər...
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
-using AzAgroPOS.Teqdimat.Yardimcilar;
 using System;
 using System.Windows.Forms;
 /// <summary>
@@ -95,7 +94,7 @@ public partial class NovbeIdareetmesiFormu : BazaForm, INovbeView
         if (this.InvokeRequired) { this.Invoke(() => HesabatGoster(hesabatMetni)); return; }
         MessageBox.Show(hesabatMetni, "Z-Hesabatı", MessageBoxButtons.OK, MessageBoxIcon.Information);
     }
-    
+
     /// <summary>
     /// Shows a validation error on a control
     /// </summary>
@@ -107,7 +106,7 @@ public partial class NovbeIdareetmesiFormu : BazaForm, INovbeView
         errorProvider1.SetIconAlignment(control, ErrorIconAlignment.MiddleRight);
         errorProvider1.SetIconPadding(control, 2);
     }
-    
+
     /// <summary>
     /// Clears validation error from a control
     /// </summary>
@@ -116,7 +115,7 @@ public partial class NovbeIdareetmesiFormu : BazaForm, INovbeView
     {
         errorProvider1.SetError(control, string.Empty);
     }
-    
+
     /// <summary>
     /// Clears all validation errors
     /// </summary>
@@ -128,7 +127,7 @@ public partial class NovbeIdareetmesiFormu : BazaForm, INovbeView
             ClearErrorsRecursive(control);
         }
     }
-    
+
     /// <summary>
     /// Recursively clears errors from all controls
     /// </summary>

@@ -5,8 +5,6 @@ using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Varliglar;
-using AzAgroPOS.Verilenler.Kontekst;
-using AzAgroPOS.Verilenler.Realizasialar;
 using Microsoft.Extensions.DependencyInjection;
 
 /// <summary>
@@ -41,7 +39,7 @@ public class TemirPresenter
         _view.EhtiyatHissəsiElaveEt_Istek += (s, e) => EhtiyatHissəsiElaveEt();
         _view.ÖdənişiTamamla_Istek += (s, e) => ÖdənişiTamamla();
     }
-    
+
     /// <summary>
     /// bu metod, form yükləndikdə bütün sifarişləri yükləyir və göstərir.
     /// </summary>
@@ -52,7 +50,7 @@ public class TemirPresenter
         var netice = await _temirManager.ButunSifarisleriGetirAsync();
         if (netice.UgurluDur)
             _view.SifarisleriGoster(netice.Data);
-        
+
         // Usta siyahısını yükləyirik
         var ustalarNetice = await _istifadeciManager.ButunTexnikleriGetirAsync();
         if (ustalarNetice.UgurluDur)
@@ -144,9 +142,9 @@ public class TemirPresenter
         }
 
         var tesdiq = MessageBox.Show(
-            "Bu sifarişi silmək istədiyinizə əminsiniz?", 
-            "Təsdiq", 
-            MessageBoxButtons.YesNo, 
+            "Bu sifarişi silmək istədiyinizə əminsiniz?",
+            "Təsdiq",
+            MessageBoxButtons.YesNo,
             MessageBoxIcon.Question);
 
         if (tesdiq == DialogResult.Yes)
@@ -164,7 +162,7 @@ public class TemirPresenter
             }
         }
     }
-    
+
     /// <summary>
     /// bu metod, ehtiyat hissəsi əlavə etmək üçün istifadə olunur.
     /// </summary>
@@ -176,20 +174,20 @@ public class TemirPresenter
             {
                 var ehtiyatHissələri = form.EhtiyatHissələri;
                 decimal ümumiMəbləğ = ehtiyatHissələri.Sum(e => e.ÜmumiMəbləğ);
-                
+
                 // Təmir xərcini yeniləyirik
                 var cariXerc = _view.TemirXerci;
                 _view.TemirXerci = cariXerc + ümumiMəbləğ;
-                
+
                 // Yekun məbləği yeniləyirik
                 var servisHaqqi = _view.ServisHaqqi;
                 _view.YekunMebleg = _view.TemirXerci + servisHaqqi;
-                
+
                 _view.MesajGoster($"{ehtiyatHissələri.Count} ədəd ehtiyat hissəsi əlavə edildi. Ümumi məbləğ: {ümumiMəbləğ:N2} AZN", "Məlumat");
             }
         }
     }
-    
+
     /// <summary>
     /// bu metod, təmirin ödənişini tamamlamaq üçün istifadə olunur.
     /// </summary>
@@ -203,9 +201,9 @@ public class TemirPresenter
         }
 
         var tesdiq = MessageBox.Show(
-            "Bu sifarişin ödənişini tamamlamaq istədiyinizə əminsiniz?", 
-            "Təsdiq", 
-            MessageBoxButtons.YesNo, 
+            "Bu sifarişin ödənişini tamamlamaq istədiyinizə əminsiniz?",
+            "Təsdiq",
+            MessageBoxButtons.YesNo,
             MessageBoxIcon.Question);
 
         if (tesdiq == DialogResult.Yes)

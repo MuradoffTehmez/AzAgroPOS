@@ -1,16 +1,5 @@
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Teqdimat.Interfeysler;
-using AzAgroPOS.Teqdimat.Yardimcilar;
-using MaterialSkin.Controls;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace AzAgroPOS.Teqdimat
 {
@@ -24,7 +13,7 @@ namespace AzAgroPOS.Teqdimat
         }
 
         public string SatisNomresi => txtSatisNomresi.Text;
-        
+
         public string QaytarmaSebebi => txtQaytarmaSebebi.Text;
 
         public List<SatisSebetiElementiDto> SecilmisMehsullar
@@ -75,7 +64,7 @@ namespace AzAgroPOS.Teqdimat
         {
             return MessageBox.Show(this, mesaj, basliq, buttons, icon);
         }
-        
+
         /// <summary>
         /// Shows a validation error on a control
         /// </summary>
@@ -87,7 +76,7 @@ namespace AzAgroPOS.Teqdimat
             errorProvider1.SetIconAlignment(control, ErrorIconAlignment.MiddleRight);
             errorProvider1.SetIconPadding(control, 2);
         }
-        
+
         /// <summary>
         /// Clears validation error from a control
         /// </summary>
@@ -96,7 +85,7 @@ namespace AzAgroPOS.Teqdimat
         {
             errorProvider1.SetError(control, string.Empty);
         }
-        
+
         /// <summary>
         /// Clears all validation errors
         /// </summary>
@@ -108,7 +97,7 @@ namespace AzAgroPOS.Teqdimat
                 ClearErrorsRecursive(control);
             }
         }
-        
+
         /// <summary>
         /// Recursively clears errors from all controls
         /// </summary>

@@ -1,10 +1,9 @@
 // Fayl: AzAgroPOS.Verilenler/Realizasialar/UnitOfWork.cs
 namespace AzAgroPOS.Verilenler.Realizasialar;
 
-using System.Threading.Tasks;
 using AzAgroPOS.Verilenler.Interfeysler;
 using AzAgroPOS.Verilenler.Kontekst;
-using AzAgroPOS.Varliglar;
+using System.Threading.Tasks;
 
 /// <summary>
 /// UnitOfWork sinifi, verilənlər bazası əməliyyatlarını idarə etmək üçün istifadə olunur.
@@ -132,14 +131,14 @@ public class UnitOfWork : IUnitOfWork
     /// Qeyd: Tədarükçü ödənişi yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
     /// </summary>
     public ITedarukcuOdemeRepozitori TedarukcuOdemeleri { get; private set; }
-    
+
     /// <summary>
     /// Kateqoriya Repozitorisi - Kateqoriya əməliyyatlarını idarə edir.
     /// Diqqət: Bu repozitoriya məhsul kateqoriyalarını idarə edir.
     /// Qeyd: Kateqoriya yaratma, axtarış, yeniləmə və silmə əməliyyatlarını həyata keçirir.
     /// </summary>
     public IKateqoriyaRepozitori Kateqoriyalar { get; private set; }
-    
+
     /// <summary>
     /// Brend Repozitorisi - Brend əməliyyatlarını idarə edir.
     /// Diqqət: Bu repozitoriya məhsul brendlərini idarə edir.

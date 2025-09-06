@@ -1,8 +1,5 @@
 ﻿// Fayl: AzAgroPOS.Varliglar/QaytarmaDetali.cs
 namespace AzAgroPOS.Varliglar;
-
-using System;
-
 /// <summary>
 /// Qaytarma əməliyyatının detallarını təmsil edir.
 /// </summary>

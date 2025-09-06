@@ -4,8 +4,6 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
-using AzAgroPOS.Verilenler.Kontekst;
-using AzAgroPOS.Verilenler.Realizasialar;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -34,7 +32,7 @@ public class IstifadeciPresenter
         // Load roles first
         var rollar = await _istifadeciManager.ButunRollarGetirAsync();
         _view.RollariGoster(rollar);
-        
+
         var netice = await _istifadeciManager.IstifadecileriGetirAsync();
         if (netice.UgurluDur)
         {

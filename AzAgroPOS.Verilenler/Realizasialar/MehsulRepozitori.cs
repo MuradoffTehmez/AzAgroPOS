@@ -1,7 +1,6 @@
 ﻿using AzAgroPOS.Verilenler.Interfeysler;
 using AzAgroPOS.Verilenler.Kontekst;
 using AzAgroPOS.Verilenler.Realizasialar;
-using AzAgroPOS.Varliglar;
 
 /// <summary>
 /// Baza repozitoriya sinifi, verilənlər bazası əməliyyatlarını ümumi şəkildə idarə edir.
@@ -15,7 +14,7 @@ public class MehsulRepozitori : Repozitori<AzAgroPOS.Varliglar.Mehsul>, IMehsulR
     /// QEYD: Bu konstruktor, konkret varlıq repozitoriyaları üçün istifadə olunur.
     /// </summary>
     /// <param name="kontekst"></param>
-    public MehsulRepozitori(AzAgroPOSDbContext kontekst) : base(kontekst) 
+    public MehsulRepozitori(AzAgroPOSDbContext kontekst) : base(kontekst)
     {
         // Burda əlavə konfiqurasiyalar və ya başlanğıc əməliyyatları həyata keçirilə bilər.
         // buradakı əlavə əməliyyatlar, məsələn, başlanğıc məlumatları əlavə etmək və ya xüsusi konfiqurasiyalar təyin etmək kimi ola bilər.

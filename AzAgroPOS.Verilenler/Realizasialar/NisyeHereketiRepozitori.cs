@@ -3,7 +3,6 @@ namespace AzAgroPOS.Verilenler.Realizasialar;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using AzAgroPOS.Verilenler.Kontekst;
-using AzAgroPOS.Varliglar;
 
 /// <summary>
 /// NisyeHereketi üçün CRUD əməliyyatlarını həyata keçirən repozitoriya.
@@ -19,7 +18,7 @@ public class NisyeHereketiRepozitori : Repozitori<NisyeHereketi>, INisyeHereketi
     /// azAgroPOSDbContext kontekst - verilənlər bazası kontekstini təmsil edən obyekt.
     /// </summary>
     /// <param name="kontekst"></param>
-    public NisyeHereketiRepozitori(AzAgroPOSDbContext kontekst) : base(kontekst) 
+    public NisyeHereketiRepozitori(AzAgroPOSDbContext kontekst) : base(kontekst)
     {
         // burda əlavə konfiqurasiya və ya başlanğıc əməliyyatları həyata keçirilə bilər
         // nisyeHereketi ilə əlaqəli xüsusi əməliyyatlar əlavə edilə bilər, məsələn: Müştəriyə görə nisyə hərəkətlərini tapmaq, tarix aralığına görə nisyə hərəkətlərini filtrləmək və s.

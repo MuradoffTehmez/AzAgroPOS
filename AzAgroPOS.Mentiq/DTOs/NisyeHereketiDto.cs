@@ -1,7 +1,5 @@
 ﻿// Fayl: AzAgroPOS.Mentiq/DTOs/NisyeHereketiDto.cs
 namespace AzAgroPOS.Mentiq.DTOs;
-
-using AzAgroPOS.Varliglar;
 /// <summary>
 /// bu class, nisye hərəkətlərini təmsil edir.
 /// </summary>

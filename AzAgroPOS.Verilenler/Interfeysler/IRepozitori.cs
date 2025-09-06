@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using AzAgroPOS.Varliglar;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
-using AzAgroPOS.Varliglar; 
 
 namespace AzAgroPOS.Verilenler.Interfeysler
 {
-    public interface IRepozitori<T> where T : BazaVarligi 
+    public interface IRepozitori<T> where T : BazaVarligi
     {
         Task<T> GetirAsync(int id);
         Task<IEnumerable<T>> ButununuGetirAsync();

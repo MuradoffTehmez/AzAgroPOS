@@ -1,17 +1,12 @@
 ﻿using AzAgroPOS.Mentiq.DTOs;
+using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
-using AzAgroPOS.Teqdimat.Yardimcilar; // Add this using directive
-using AzAgroPOS.Mentiq.Idareciler;
-using Microsoft.Extensions.DependencyInjection;
+using AzAgroPOS.Teqdimat.Yardimcilar;
 using AzAgroPOS.Varliglar;
 using MaterialSkin.Controls;
-using System;
-using System.Collections.Generic;
+using Microsoft.Extensions.DependencyInjection;
 using System.ComponentModel;
-using System.Drawing;
-using System.Linq;
-using System.Windows.Forms;
 
 namespace AzAgroPOS.Teqdimat
 {
@@ -27,11 +22,9 @@ namespace AzAgroPOS.Teqdimat
             this.Load += (s, e) => FormYuklendiIstek?.Invoke(this, EventArgs.Empty);
             ConfigureDataGridViewStyles();
             AddCartActionButtons();
-            
-            // Initialize status message helper
+
             StatusMesajiGostericisi.Initialize(toolStripStatusLabel1);
-            
-            // Setup auto-complete for customer ComboBox
+
             SetupCustomerComboBoxAutoComplete();
         }
 
@@ -110,14 +103,13 @@ namespace AzAgroPOS.Teqdimat
             {
                 dgvAxtarisNeticeleri.Columns["Ad"].HeaderText = "Məhsul Adı";
                 dgvAxtarisNeticeleri.Columns["StokKodu"].HeaderText = "Stok Kodu";
-                // Digər sütunları gizlədirik
+
                 string[] gorunenler = { "Ad", "StokKodu" };
                 foreach (DataGridViewColumn col in dgvAxtarisNeticeleri.Columns)
                 {
                     if (!gorunenler.Contains(col.Name)) col.Visible = false;
                 }
-                
-                // Allow sorting
+
                 dgvAxtarisNeticeleri.Columns["Ad"].SortMode = DataGridViewColumnSortMode.Automatic;
                 dgvAxtarisNeticeleri.Columns["StokKodu"].SortMode = DataGridViewColumnSortMode.Automatic;
             }
@@ -146,17 +138,14 @@ namespace AzAgroPOS.Teqdimat
                 dgvSebet.Columns["UmumiMebleg"].ReadOnly = true;
                 dgvSebet.Columns["MehsulAdi"].ReadOnly = true;
                 dgvSebet.Columns["QiymetNövü"].ReadOnly = true;
-                
-                // Format currency columns
+
                 dgvSebet.Columns["VahidinQiymeti"].DefaultCellStyle.Format = "c2";
                 dgvSebet.Columns["UmumiMebleg"].DefaultCellStyle.Format = "c2";
-                
-                // Align numeric columns to the right
+
                 dgvSebet.Columns["Miqdar"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 dgvSebet.Columns["VahidinQiymeti"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 dgvSebet.Columns["UmumiMebleg"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                
-                // Allow sorting
+
                 dgvSebet.Columns["MehsulAdi"].SortMode = DataGridViewColumnSortMode.Automatic;
                 dgvSebet.Columns["Miqdar"].SortMode = DataGridViewColumnSortMode.Automatic;
                 dgvSebet.Columns["VahidinQiymeti"].SortMode = DataGridViewColumnSortMode.Automatic;
@@ -208,7 +197,7 @@ namespace AzAgroPOS.Teqdimat
         {
             return MessageBox.Show(this, mesaj, basliq, düymələr, ikon);
         }
-        
+
         /// <summary>
         /// Shows a validation error on a control
         /// </summary>
@@ -220,7 +209,7 @@ namespace AzAgroPOS.Teqdimat
             errorProvider1.SetIconAlignment(control, ErrorIconAlignment.MiddleRight);
             errorProvider1.SetIconPadding(control, 2);
         }
-        
+
         /// <summary>
         /// Clears validation error from a control
         /// </summary>
@@ -229,19 +218,18 @@ namespace AzAgroPOS.Teqdimat
         {
             errorProvider1.SetError(control, string.Empty);
         }
-        
+
         /// <summary>
         /// Clears all validation errors
         /// </summary>
         public void ButunXetalariTemizle()
         {
-            // Clear errors from all controls
             foreach (Control control in this.Controls)
             {
                 ClearErrorsRecursive(control);
             }
         }
-        
+
         /// <summary>
         /// Recursively clears errors from all controls
         /// </summary>
@@ -254,21 +242,18 @@ namespace AzAgroPOS.Teqdimat
                 ClearErrorsRecursive(child);
             }
         }
-        
-        // Müştəri ekranı dəstəyi
+
+
         public void MusteriEkraniYenile(string mehsulAdi, decimal qiymet, decimal miqdar)
         {
-            // Müştəri ekranına məhsul əlavə edildiyini bildir
-            // Hazırda sadə mesajla tətbiq edirik, real tətbiqdə bu məlumatlar
-            // xarici müştəri ekranına göndəriləcək
             Console.WriteLine($"Müştəri ekranı yeniləndi: {mehsulAdi} - Qiymət: {qiymet} AZN - Miqdar: {miqdar}");
         }
 
         #endregion
 
         #region Hadisə Ötürücüləri
-        private async void txtAxtaris_TextChanged(object sender, EventArgs e) => 
-            await AsyncIslemYardimcisi.IslemiIcraEt(this, async () => 
+        private async void txtAxtaris_TextChanged(object sender, EventArgs e) =>
+            await AsyncIslemYardimcisi.IslemiIcraEt(this, async () =>
             {
                 await Task.Run(() => MehsulAxtarIstek?.Invoke(this, EventArgs.Empty));
             });
@@ -316,10 +301,8 @@ namespace AzAgroPOS.Teqdimat
             var musteriFormu = _serviceProvider.GetRequiredService<MusteriIdareetmeFormu>();
             if (musteriFormu.ShowDialog() == DialogResult.OK)
             {
-                // Update customer list and automatically select the newly created customer
                 MusteriSiyahisiniYenileIstek?.Invoke(this, EventArgs.Empty);
-                
-                // Select the newly created customer
+
                 if (musteriFormu.SecilenMusteriId > 0)
                 {
                     cmbMusteriler.SelectedValue = musteriFormu.SecilenMusteriId;
@@ -327,7 +310,6 @@ namespace AzAgroPOS.Teqdimat
             }
             else
             {
-                // If form was cancelled, just refresh the customer list in case any changes were made
                 MusteriSiyahisiniYenileIstek?.Invoke(this, EventArgs.Empty);
             }
         }
@@ -363,7 +345,6 @@ namespace AzAgroPOS.Teqdimat
         }
         #endregion
 
-       
         private void AddCartActionButtons()
         {
             if (dgvSebet.Columns["artir_col"] == null)
@@ -392,20 +373,18 @@ namespace AzAgroPOS.Teqdimat
                 dgvSebet.Columns.Add(azaltCol);
             }
         }
-        
+
         #region Auto-complete Setup
         private void SetupCustomerComboBoxAutoComplete()
         {
-            // Setup auto-complete for customer ComboBox
             cmbMusteriler.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             cmbMusteriler.AutoCompleteSource = AutoCompleteSource.ListItems;
         }
         #endregion
-        
+
         #region UI Konfiqurasiyası
         private void ConfigureDataGridViewStyles()
         {
-            // Ümumi GridView Parametrləri üçün metod
             void ApplyCommonGridStyle(DataGridView grid, Color headerBack, Color selectionBack, Color altRow)
             {
                 grid.BackgroundColor = Color.White;
@@ -415,7 +394,6 @@ namespace AzAgroPOS.Teqdimat
                 grid.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
                 grid.GridColor = Color.FromArgb(230, 230, 230);
 
-                // Header
                 grid.ColumnHeadersDefaultCellStyle.BackColor = headerBack;
                 grid.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
                 grid.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
@@ -424,7 +402,6 @@ namespace AzAgroPOS.Teqdimat
                 grid.EnableHeadersVisualStyles = false;
                 grid.ColumnHeadersHeight = 40;
 
-                // Hüceyrələr
                 grid.DefaultCellStyle.BackColor = Color.White;
                 grid.DefaultCellStyle.ForeColor = Color.Black;
                 grid.DefaultCellStyle.SelectionBackColor = selectionBack;
@@ -432,30 +409,25 @@ namespace AzAgroPOS.Teqdimat
                 grid.DefaultCellStyle.Font = new Font("Segoe UI", 9.5F, FontStyle.Regular);
                 grid.DefaultCellStyle.Padding = new Padding(5, 3, 5, 3);
 
-                // Alternativ sətirlər
                 grid.AlternatingRowsDefaultCellStyle.BackColor = altRow;
 
-                // Sətir parametrləri
                 grid.RowTemplate.Height = 35;
             }
 
-            // Axtarış Cədvəli Stili (mavi tonlar)
             ApplyCommonGridStyle(
                 dgvAxtarisNeticeleri,
-                Color.FromArgb(33, 150, 243), // header rəngi (blue)
-                Color.FromArgb(187, 222, 251), // selection rəngi (light blue)
-                Color.FromArgb(245, 245, 245)  // alternating rəng
+                Color.FromArgb(33, 150, 243),
+                Color.FromArgb(187, 222, 251),
+                Color.FromArgb(245, 245, 245)
             );
 
-            // Səbət Cədvəli Stili (yaşıl tonlar)
             ApplyCommonGridStyle(
                 dgvSebet,
-                Color.FromArgb(76, 175, 80),  // header rəngi (green)
-                Color.FromArgb(200, 230, 201), // selection rəngi (light green)
-                Color.FromArgb(245, 245, 245)  // alternating rəng
+                Color.FromArgb(76, 175, 80),
+                Color.FromArgb(200, 230, 201),
+                Color.FromArgb(245, 245, 245)
             );
         }
         #endregion
-
     }
 }

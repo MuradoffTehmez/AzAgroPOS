@@ -4,7 +4,6 @@ namespace AzAgroPOS.Verilenler.Realizasialar;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using AzAgroPOS.Verilenler.Kontekst;
-using Microsoft.EntityFrameworkCore;
 
 /// <summary>
 /// Brend varlığı üçün repozitoriya realizasiyası.

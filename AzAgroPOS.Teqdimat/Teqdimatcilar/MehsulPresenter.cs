@@ -2,15 +2,8 @@
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
-using AzAgroPOS.Verilenler.Kontekst;
-using AzAgroPOS.Verilenler.Realizasialar;
 using AzAgroPOS.Varliglar;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 {
@@ -46,19 +39,19 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
         private async Task FormuYukle()
         {
             _view.OlcuVahidleriniGoster(Enum.GetValues(typeof(OlcuVahidi)));
-            
+
             // Kateqoriyaları yükləyirik
             var kateqoriyaMeneceri = _serviceProvider.GetRequiredService<KateqoriyaMeneceri>();
             var kateqoriyaNetice = await kateqoriyaMeneceri.ButunKateqoriyalariGetirAsync();
             if (kateqoriyaNetice.UgurluDur)
                 _view.KateqoriyalariGoster(kateqoriyaNetice.Data);
-                
+
             // Brendləri yükləyirik
             var brendMeneceri = _serviceProvider.GetRequiredService<BrendMeneceri>();
             var brendNetice = await brendMeneceri.ButunBrendleriGetirAsync();
             if (brendNetice.UgurluDur)
                 _view.BrendleriGoster(brendNetice.Data);
-                
+
             // Tədarükçüləri yükləyirik
             var alisManager = _serviceProvider.GetRequiredService<AlisManager>();
             var tedarukcuNetice = await alisManager.ButunTedarukculeriGetirAsync();

@@ -1,9 +1,6 @@
 ﻿// Fayl: AzAgroPOS.Teqdimat/BazaForm.cs
 using MaterialSkin;
 using MaterialSkin.Controls;
-using System;
-using System.Drawing;
-using System.Windows.Forms;
 
 namespace AzAgroPOS.Teqdimat
 {
@@ -28,17 +25,17 @@ namespace AzAgroPOS.Teqdimat
                 _materialSkinManager.EnforceBackcolorOnAllComponents = true;
                 _materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
                 _materialSkinManager.ColorScheme = new ColorScheme(
-                    Primary.Green800,     
-                    Primary.Green900,     
-                    Primary.Green500,      
-                    Accent.LightGreen700,  
-                    TextShade.WHITE        
+                    Primary.Green800,
+                    Primary.Green900,
+                    Primary.Green500,
+                    Accent.LightGreen700,
+                    TextShade.WHITE
                 );
             }
 
             _materialSkinManager.AddFormToManage(this);
         }
-        
+
         /// <summary>
         /// DataGridView-lər üçün vahid stil təyin edən metod.
         /// Bu metod miras alan bütün formalardan çağırıla bilər.
@@ -48,8 +45,8 @@ namespace AzAgroPOS.Teqdimat
         {
             dgv.AllowUserToAddRows = false;
             dgv.AllowUserToDeleteRows = false;
-            dgv.AllowUserToResizeColumns = false;  
-            dgv.AllowUserToResizeRows = false;   
+            dgv.AllowUserToResizeColumns = false;
+            dgv.AllowUserToResizeRows = false;
             dgv.ReadOnly = true;
             dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgv.MultiSelect = false;
@@ -98,7 +95,7 @@ namespace AzAgroPOS.Teqdimat
                 var dgv = (DataGridView)sender;
                 var row = dgv.Rows[e.RowIndex];
 
-                if (!row.Selected) 
+                if (!row.Selected)
                 {
                     originalRowColor = row.DefaultCellStyle.BackColor;
                     row.DefaultCellStyle.BackColor = Color.FromArgb(236, 240, 241);
@@ -116,7 +113,7 @@ namespace AzAgroPOS.Teqdimat
                 var dgv = (DataGridView)sender;
                 var row = dgv.Rows[e.RowIndex];
 
-                if (!row.Selected) 
+                if (!row.Selected)
                     row.DefaultCellStyle.BackColor = originalRowColor;
             }
         }

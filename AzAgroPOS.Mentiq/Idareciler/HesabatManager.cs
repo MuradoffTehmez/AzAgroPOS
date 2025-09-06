@@ -5,9 +5,8 @@ using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -73,7 +72,7 @@ public class HesabatManager
         }
         catch (Exception ex)
         {
-            
+
             return EmeliyyatNeticesi<GunlukSatisHesabatDto>.Ugursuz($"Hesabat hazırlanarkən xəta baş verdi: {ex.Message}");
         }
     }
@@ -145,7 +144,7 @@ public class HesabatManager
                     MehsulAdi = m.Ad,
                     MovcudSay = m.MovcudSay
                 })
-                .OrderBy(r => r.MovcudSay) 
+                .OrderBy(r => r.MovcudSay)
                 .ToList();
 
             return EmeliyyatNeticesi<List<AnbarQaliqDetayDto>>.Ugurlu(hesabat);

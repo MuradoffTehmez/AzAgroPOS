@@ -1,9 +1,5 @@
 // Fayl: AzAgroPOS.Mentiq/DTOs/TedarukcuDto.cs
 namespace AzAgroPOS.Mentiq.DTOs;
-
-using AzAgroPOS.Varliglar;
-using System;
-
 /// <summary>
 /// Tədarükçü məlumatlarını təqdimat qatına ötürmək üçün istifadə olunan DTO.
 /// </summary>

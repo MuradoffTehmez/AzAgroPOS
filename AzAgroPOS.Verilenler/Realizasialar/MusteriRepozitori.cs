@@ -1,7 +1,6 @@
 ﻿using AzAgroPOS.Verilenler.Interfeysler;
 using AzAgroPOS.Verilenler.Kontekst;
 using AzAgroPOS.Verilenler.Realizasialar;
-using AzAgroPOS.Varliglar;
 
 /// <summary>
 /// BU REPOZITORIYA DIQQƏT: Bu sinif, CRUD əməliyyatlarını (Yarat, Oxu, Yenilə, Sil) ümumi şəkildə həyata keçirir.
@@ -14,7 +13,7 @@ public class MusteriRepozitori : Repozitori<AzAgroPOS.Varliglar.Musteri>, IMuste
     /// QEYD: Bu konstruktor, konkret varlıq repozitoriyaları üçün istifadə olunur.
     /// </summary>
     /// <param name="kontekst"></param>
-    public MusteriRepozitori(AzAgroPOSDbContext kontekst) : base(kontekst) 
+    public MusteriRepozitori(AzAgroPOSDbContext kontekst) : base(kontekst)
     {
         // buradana əlavə konfiqurasiyalar və ya başlanğıc əməliyyatları həyata keçirilə bilər.
         // Məsələn, başlanğıc məlumatları əlavə etmək və ya xüsusi konfiqurasiyalar təyin etmək kimi.

@@ -16,7 +16,7 @@ public class TemirRepozitori : Repozitori<Temir>, ITemirRepozitori
     /// qeyd: Bu konstruktor, konkret varlıq repozitoriyaları üçün istifadə olunur.
     /// </summary>
     /// <param name="kontekst"></param>
-    public TemirRepozitori(AzAgroPOSDbContext kontekst) : base(kontekst) 
+    public TemirRepozitori(AzAgroPOSDbContext kontekst) : base(kontekst)
     {
         // burda əlavə konfiqurasiya və ya başlanğıc əməliyyatları həyata keçirilə bilər
         // temir ilə əlaqəli xüsusi əməliyyatlar əlavə edilə bilər, məsələn: müəyyən tarix aralığında təmir işlərini tapmaq, müəyyən avadanlığın təmir işlərini filtrləmək və s.

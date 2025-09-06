@@ -1,7 +1,4 @@
-﻿using System.Windows.Forms;
-using System.Drawing;
-
-namespace AzAgroPOS.Teqdimat.Yardimcilar
+﻿namespace AzAgroPOS.Teqdimat.Yardimcilar
 {
     public static class InputBox
     {

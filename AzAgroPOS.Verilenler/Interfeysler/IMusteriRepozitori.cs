@@ -7,7 +7,7 @@ using AzAgroPOS.Varliglar;
 /// Qeyd: Bu interfeys, müştəri verilənlər bazası əməliyyatlarını idarə etmək üçün istifadə olunur və müştəri ilə əlaqəli əməliyyatları asanlaşdırır.
 /// Uzunluğu IRepozitori  interfeysindən miras alır və müştəri ilə əlaqəli xüsusi əməliyyatları əlavə etmək üçün genişləndirilə bilər.
 /// </summary>
-public interface IMusteriRepozitori : IRepozitori<Musteri> 
+public interface IMusteriRepozitori : IRepozitori<Musteri>
 {
     // Burada müştəri ilə əlaqəli xüsusi əməliyyatlar əlavə edilə bilər, məsələn: Ünvanına görə müştəriləri tapmaq, telefon nömrəsinə görə müştəriləri filtrləmək və s.
 }

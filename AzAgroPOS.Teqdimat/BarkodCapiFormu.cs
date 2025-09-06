@@ -2,11 +2,10 @@
 namespace AzAgroPOS.Teqdimat;
 
 using AzAgroPOS.Mentiq.DTOs;
+using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
-using AzAgroPOS.Teqdimat.Yardimcilar;
 using System.ComponentModel;
-using AzAgroPOS.Mentiq.Idareciler;
 
 public partial class BarkodCapiFormu : BazaForm, IBarkodCapiView
 {
@@ -57,7 +56,7 @@ public partial class BarkodCapiFormu : BazaForm, IBarkodCapiView
     {
         MessageBox.Show(mesaj, basliq);
     }
-    
+
     /// <summary>
     /// Shows a validation error on a control
     /// </summary>
@@ -69,7 +68,7 @@ public partial class BarkodCapiFormu : BazaForm, IBarkodCapiView
         errorProvider1.SetIconAlignment(control, ErrorIconAlignment.MiddleRight);
         errorProvider1.SetIconPadding(control, 2);
     }
-    
+
     /// <summary>
     /// Clears validation error from a control
     /// </summary>
@@ -78,7 +77,7 @@ public partial class BarkodCapiFormu : BazaForm, IBarkodCapiView
     {
         errorProvider1.SetError(control, string.Empty);
     }
-    
+
     /// <summary>
     /// Clears all validation errors
     /// </summary>
@@ -90,7 +89,7 @@ public partial class BarkodCapiFormu : BazaForm, IBarkodCapiView
             ClearErrorsRecursive(control);
         }
     }
-    
+
     /// <summary>
     /// Recursively clears errors from all controls
     /// </summary>

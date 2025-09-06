@@ -2,10 +2,9 @@
 namespace AzAgroPOS.Teqdimat;
 
 using AzAgroPOS.Mentiq.DTOs;
+using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
-using AzAgroPOS.Teqdimat.Yardimcilar;
-using AzAgroPOS.Mentiq.Idareciler;
 
 public partial class AnbarFormu : BazaForm, IAnbarView
 {
@@ -49,7 +48,7 @@ public partial class AnbarFormu : BazaForm, IAnbarView
     {
         return MessageBox.Show(this, mesaj, basliq, düymələr, ikon);
     }
-    
+
     /// <summary>
     /// Shows a validation error on a control
     /// </summary>
@@ -61,7 +60,7 @@ public partial class AnbarFormu : BazaForm, IAnbarView
         errorProvider1.SetIconAlignment(control, ErrorIconAlignment.MiddleRight);
         errorProvider1.SetIconPadding(control, 2);
     }
-    
+
     /// <summary>
     /// Clears validation error from a control
     /// </summary>
@@ -70,7 +69,7 @@ public partial class AnbarFormu : BazaForm, IAnbarView
     {
         errorProvider1.SetError(control, string.Empty);
     }
-    
+
     /// <summary>
     /// Clears all validation errors
     /// </summary>
@@ -82,7 +81,7 @@ public partial class AnbarFormu : BazaForm, IAnbarView
             ClearErrorsRecursive(control);
         }
     }
-    
+
     /// <summary>
     /// Recursively clears errors from all controls
     /// </summary>
