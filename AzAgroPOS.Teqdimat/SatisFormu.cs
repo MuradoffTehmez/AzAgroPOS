@@ -24,8 +24,6 @@ namespace AzAgroPOS.Teqdimat
             AddCartActionButtons();
 
             StatusMesajiGostericisi.Initialize(toolStripStatusLabel1);
-
-            SetupCustomerComboBoxAutoComplete();
         }
 
         #region ISatisView Implementasiyası
@@ -94,6 +92,9 @@ namespace AzAgroPOS.Teqdimat
             cmbMusteriler.DataSource = listDataSource;
             cmbMusteriler.DisplayMember = "TamAd";
             cmbMusteriler.ValueMember = "Id";
+            
+            // Setup autocomplete after data is loaded
+            SetupCustomerComboBoxAutoComplete();
         }
 
         public void AxtarisNeticeleriniGoster(List<MehsulDto> mehsullar)
@@ -377,8 +378,13 @@ namespace AzAgroPOS.Teqdimat
         #region Auto-complete Setup
         private void SetupCustomerComboBoxAutoComplete()
         {
-            cmbMusteriler.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-            cmbMusteriler.AutoCompleteSource = AutoCompleteSource.ListItems;
+            // Only setup autocomplete if we have items in the list
+            if (cmbMusteriler.Items.Count > 0)
+            {
+                // For DropDownList style, we need to set AutoCompleteSource first, then AutoCompleteMode
+                cmbMusteriler.AutoCompleteSource = AutoCompleteSource.ListItems;
+                cmbMusteriler.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            }
         }
         #endregion
 

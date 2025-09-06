@@ -174,6 +174,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtEndirimDeyer;
         private System.Windows.Forms.Button btnTətbiqEt;
+        private System.Windows.Forms.ErrorProvider errorProvider1;
         private System.Windows.Forms.Button btnCancel;
     }
 }

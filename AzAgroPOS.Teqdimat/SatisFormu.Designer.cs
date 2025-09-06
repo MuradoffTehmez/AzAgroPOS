@@ -72,6 +72,7 @@
             pnlPaymentSection.SuspendLayout();
             pnlPaymentMethods.SuspendLayout();
             pnlAdvancedOptions.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)errorProvider1).BeginInit();
             SuspendLayout();
             // 
             // pnlMainContainer
@@ -84,7 +85,7 @@
             pnlMainContainer.Location = new Point(3, 64);
             pnlMainContainer.Name = "pnlMainContainer";
             pnlMainContainer.Padding = new Padding(10);
-            pnlMainContainer.Size = new Size(1614, 791);
+            pnlMainContainer.Size = new Size(1614, 769);
             pnlMainContainer.TabIndex = 0;
             // 
             // tableLayoutPanel1
@@ -102,7 +103,7 @@
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 1;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel1.Size = new Size(1594, 771);
+            tableLayoutPanel1.Size = new Size(1594, 749);
             tableLayoutPanel1.TabIndex = 4;
             // 
             // panel1
@@ -116,7 +117,7 @@
             panel1.ForeColor = Color.FromArgb(222, 0, 0, 0);
             panel1.Location = new Point(3, 3);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1138, 765);
+            panel1.Size = new Size(1138, 743);
             panel1.TabIndex = 0;
             // 
             // pnlSearchSection
@@ -133,7 +134,7 @@
             pnlSearchSection.MouseState = MaterialSkin.MouseState.HOVER;
             pnlSearchSection.Name = "pnlSearchSection";
             pnlSearchSection.Padding = new Padding(14);
-            pnlSearchSection.Size = new Size(430, 574);
+            pnlSearchSection.Size = new Size(439, 552);
             pnlSearchSection.TabIndex = 0;
             // 
             // dgvAxtarisNeticeleri
@@ -165,7 +166,7 @@
             dgvAxtarisNeticeleri.Name = "dgvAxtarisNeticeleri";
             dgvAxtarisNeticeleri.ReadOnly = true;
             dgvAxtarisNeticeleri.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvAxtarisNeticeleri.Size = new Size(396, 414);
+            dgvAxtarisNeticeleri.Size = new Size(405, 392);
             dgvAxtarisNeticeleri.TabIndex = 1;
             dgvAxtarisNeticeleri.DoubleClick += dgvAxtarisNeticeleri_DoubleClick;
             // 
@@ -193,7 +194,7 @@
             txtAxtaris.SelectionLength = 0;
             txtAxtaris.SelectionStart = 0;
             txtAxtaris.ShortcutsEnabled = true;
-            txtAxtaris.Size = new Size(396, 48);
+            txtAxtaris.Size = new Size(405, 48);
             txtAxtaris.TabIndex = 0;
             txtAxtaris.TabStop = false;
             txtAxtaris.TextAlign = HorizontalAlignment.Left;
@@ -209,9 +210,9 @@
             pnlQuantityControls.Controls.Add(btnSebeteElaveEt);
             pnlQuantityControls.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             pnlQuantityControls.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            pnlQuantityControls.Location = new Point(17, 503);
+            pnlQuantityControls.Location = new Point(17, 481);
             pnlQuantityControls.Name = "pnlQuantityControls";
-            pnlQuantityControls.Size = new Size(396, 54);
+            pnlQuantityControls.Size = new Size(405, 54);
             pnlQuantityControls.TabIndex = 2;
             // 
             // txtMiqdar
@@ -237,7 +238,7 @@
             txtMiqdar.SelectionLength = 0;
             txtMiqdar.SelectionStart = 0;
             txtMiqdar.ShortcutsEnabled = true;
-            txtMiqdar.Size = new Size(98, 48);
+            txtMiqdar.Size = new Size(117, 48);
             txtMiqdar.TabIndex = 2;
             txtMiqdar.TabStop = false;
             txtMiqdar.Text = "1";
@@ -256,12 +257,12 @@
             btnSebeteElaveEt.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnSebeteElaveEt.HighEmphasis = true;
             btnSebeteElaveEt.Icon = null;
-            btnSebeteElaveEt.Location = new Point(107, 4);
+            btnSebeteElaveEt.Location = new Point(127, 4);
             btnSebeteElaveEt.Margin = new Padding(4, 6, 4, 6);
             btnSebeteElaveEt.MouseState = MaterialSkin.MouseState.HOVER;
             btnSebeteElaveEt.Name = "btnSebeteElaveEt";
             btnSebeteElaveEt.NoAccentTextColor = Color.Empty;
-            btnSebeteElaveEt.Size = new Size(285, 46);
+            btnSebeteElaveEt.Size = new Size(274, 46);
             btnSebeteElaveEt.TabIndex = 3;
             btnSebeteElaveEt.Text = "Səbətə Əlavə Et (F7)";
             btnSebeteElaveEt.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -282,7 +283,7 @@
             pnlCartSection.MouseState = MaterialSkin.MouseState.HOVER;
             pnlCartSection.Name = "pnlCartSection";
             pnlCartSection.Padding = new Padding(14);
-            pnlCartSection.Size = new Size(693, 574);
+            pnlCartSection.Size = new Size(693, 552);
             pnlCartSection.TabIndex = 1;
             // 
             // dgvSebet
@@ -312,7 +313,7 @@
             dgvSebet.Location = new Point(17, 17);
             dgvSebet.Name = "dgvSebet";
             dgvSebet.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvSebet.Size = new Size(659, 469);
+            dgvSebet.Size = new Size(659, 447);
             dgvSebet.TabIndex = 0;
             dgvSebet.CellContentClick += dgvSebet_CellContentClick;
             // 
@@ -324,7 +325,7 @@
             pnlCartControls.Controls.Add(btnSebetTemizle);
             pnlCartControls.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             pnlCartControls.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            pnlCartControls.Location = new Point(17, 503);
+            pnlCartControls.Location = new Point(17, 481);
             pnlCartControls.Name = "pnlCartControls";
             pnlCartControls.Size = new Size(659, 54);
             pnlCartControls.TabIndex = 1;
@@ -385,7 +386,7 @@
             pnlPaymentSection.Controls.Add(pnlAdvancedOptions);
             pnlPaymentSection.Depth = 0;
             pnlPaymentSection.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            pnlPaymentSection.Location = new Point(442, 587);
+            pnlPaymentSection.Location = new Point(0, 571);
             pnlPaymentSection.Margin = new Padding(14);
             pnlPaymentSection.MouseState = MaterialSkin.MouseState.HOVER;
             pnlPaymentSection.Name = "pnlPaymentSection";
@@ -770,7 +771,7 @@
             flpSuretliSatis.Location = new Point(1147, 3);
             flpSuretliSatis.Name = "flpSuretliSatis";
             flpSuretliSatis.Padding = new Padding(5);
-            flpSuretliSatis.Size = new Size(444, 765);
+            flpSuretliSatis.Size = new Size(444, 743);
             flpSuretliSatis.TabIndex = 1;
             // 
             // contextMenuStripGozleyenler
@@ -779,15 +780,14 @@
             contextMenuStripGozleyenler.Size = new Size(61, 4);
             contextMenuStripGozleyenler.ItemClicked += contextMenuStripGozleyenler_ItemClicked;
             // 
-            // errorProvider1
-            // 
-            errorProvider1.ContainerControl = this;
-            // 
             // statusStrip1
             // 
-            statusStrip1.Location = new Point(0, 836);
+            statusStrip1.BackColor = Color.FromArgb(242, 242, 242);
+            statusStrip1.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            statusStrip1.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            statusStrip1.Location = new Point(3, 833);
             statusStrip1.Name = "statusStrip1";
-            statusStrip1.Size = new Size(1620, 22);
+            statusStrip1.Size = new Size(1614, 22);
             statusStrip1.TabIndex = 1;
             statusStrip1.Text = "statusStrip1";
             // 
@@ -796,6 +796,10 @@
             toolStripStatusLabel1.Name = "toolStripStatusLabel1";
             toolStripStatusLabel1.Size = new Size(42, 17);
             toolStripStatusLabel1.Text = "Hazır";
+            // 
+            // errorProvider1
+            // 
+            errorProvider1.ContainerControl = this;
             // 
             // SatisFormu
             // 
@@ -823,7 +827,9 @@
             pnlPaymentSection.PerformLayout();
             pnlPaymentMethods.ResumeLayout(false);
             pnlAdvancedOptions.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)errorProvider1).EndInit();
             ResumeLayout(false);
+            PerformLayout();
 
         }
 

@@ -139,7 +139,7 @@ namespace AzAgroPOS.Teqdimat
             MinimizeBox = false;
             Name = "LoginFormu";
             Padding = new Padding(4, 74, 4, 3);
-            Sizable = false;
+            //Sizable = false;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Sistemə Giriş";
             ResumeLayout(false);

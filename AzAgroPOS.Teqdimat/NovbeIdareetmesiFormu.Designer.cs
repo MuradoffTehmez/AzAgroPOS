@@ -31,12 +31,12 @@ namespace AzAgroPOS.Teqdimat
             cardNovbeAc.Controls.Add(materialLabel1);
             cardNovbeAc.Depth = 0;
             cardNovbeAc.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            cardNovbeAc.Location = new Point(40, 90);
+            cardNovbeAc.Location = new Point(17, 78);
             cardNovbeAc.Margin = new Padding(14);
             cardNovbeAc.MouseState = MaterialSkin.MouseState.HOVER;
             cardNovbeAc.Name = "cardNovbeAc";
             cardNovbeAc.Padding = new Padding(14);
-            cardNovbeAc.Size = new Size(461, 220);
+            cardNovbeAc.Size = new Size(736, 303);
             cardNovbeAc.TabIndex = 0;
             // 
             // btnNovbeAc
@@ -49,7 +49,7 @@ namespace AzAgroPOS.Teqdimat
             btnNovbeAc.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnNovbeAc.HighEmphasis = true;
             btnNovbeAc.Icon = null;
-            btnNovbeAc.Location = new Point(200, 150);
+            btnNovbeAc.Location = new Point(268, 193);
             btnNovbeAc.Margin = new Padding(4, 6, 4, 6);
             btnNovbeAc.MouseState = MaterialSkin.MouseState.HOVER;
             btnNovbeAc.Name = "btnNovbeAc";
@@ -73,7 +73,7 @@ namespace AzAgroPOS.Teqdimat
             txtBaslangicMebleg.HideSelection = true;
             txtBaslangicMebleg.Hint = "Kassadakı ilkin məbləğ";
             txtBaslangicMebleg.LeadingIcon = null;
-            txtBaslangicMebleg.Location = new Point(150, 80);
+            txtBaslangicMebleg.Location = new Point(218, 119);
             txtBaslangicMebleg.MaxLength = 32767;
             txtBaslangicMebleg.MouseState = MaterialSkin.MouseState.OUT;
             txtBaslangicMebleg.Name = "txtBaslangicMebleg";
@@ -101,7 +101,7 @@ namespace AzAgroPOS.Teqdimat
             materialLabel1.Font = new Font("Roboto", 24F, FontStyle.Bold, GraphicsUnit.Pixel);
             materialLabel1.FontType = MaterialSkin.MaterialSkinManager.fontType.H5;
             materialLabel1.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            materialLabel1.Location = new Point(220, 20);
+            materialLabel1.Location = new Point(290, 64);
             materialLabel1.MouseState = MaterialSkin.MouseState.HOVER;
             materialLabel1.Name = "materialLabel1";
             materialLabel1.Size = new Size(157, 29);
@@ -116,12 +116,12 @@ namespace AzAgroPOS.Teqdimat
             cardNovbeBagla.Controls.Add(lblNovbeMelumat);
             cardNovbeBagla.Depth = 0;
             cardNovbeBagla.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            cardNovbeBagla.Location = new Point(40, 90);
+            cardNovbeBagla.Location = new Point(17, 78);
             cardNovbeBagla.Margin = new Padding(14);
             cardNovbeBagla.MouseState = MaterialSkin.MouseState.HOVER;
             cardNovbeBagla.Name = "cardNovbeBagla";
             cardNovbeBagla.Padding = new Padding(14);
-            cardNovbeBagla.Size = new Size(461, 220);
+            cardNovbeBagla.Size = new Size(736, 303);
             cardNovbeBagla.TabIndex = 1;
             cardNovbeBagla.Visible = false;
             // 
@@ -135,7 +135,7 @@ namespace AzAgroPOS.Teqdimat
             btnNovbeBagla.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnNovbeBagla.HighEmphasis = true;
             btnNovbeBagla.Icon = null;
-            btnNovbeBagla.Location = new Point(105, 125);
+            btnNovbeBagla.Location = new Point(243, 162);
             btnNovbeBagla.Margin = new Padding(4, 6, 4, 6);
             btnNovbeBagla.MouseState = MaterialSkin.MouseState.HOVER;
             btnNovbeBagla.Name = "btnNovbeBagla";
@@ -159,7 +159,7 @@ namespace AzAgroPOS.Teqdimat
             txtFaktikiMebleg.HideSelection = true;
             txtFaktikiMebleg.Hint = "Kassada sayılan yekun məbləğ";
             txtFaktikiMebleg.LeadingIcon = null;
-            txtFaktikiMebleg.Location = new Point(80, 55);
+            txtFaktikiMebleg.Location = new Point(218, 92);
             txtFaktikiMebleg.MaxLength = 32767;
             txtFaktikiMebleg.MouseState = MaterialSkin.MouseState.OUT;
             txtFaktikiMebleg.Name = "txtFaktikiMebleg";
@@ -199,7 +199,7 @@ namespace AzAgroPOS.Teqdimat
             // NovbeIdareetmesiFormu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
-            ClientSize = new Size(531, 331);
+            ClientSize = new Size(770, 398);
             Controls.Add(cardNovbeBagla);
             Controls.Add(cardNovbeAc);
             Name = "NovbeIdareetmesiFormu";

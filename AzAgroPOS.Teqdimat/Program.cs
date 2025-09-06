@@ -103,6 +103,7 @@ namespace AzAgroPOS.Teqdimat
                 var istifadeciManager = provider.GetRequiredService<IstifadeciManager>();
                 return new TemirIdareetmeFormu(temirManager, musteriManager, istifadeciManager);
             });
+            services.AddTransient<EhtiyatHissəsiFormu>();
             services.AddTransient<ZHesabatArxivFormu>();
             services.AddTransient<TedarukcuIdareetmeFormu>();
             services.AddTransient<IsciIdareetmeFormu>();

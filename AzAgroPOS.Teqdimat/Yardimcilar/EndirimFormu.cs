@@ -36,6 +36,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
             EndirimParametrləri.Type = rbPercentage.Checked ? EndirimType.Percentage : EndirimType.FixedAmount;
             EndirimParametrləri.Value = deyer;
 
+
             this.DialogResult = DialogResult.OK;
             this.Close();
         }

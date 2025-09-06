@@ -1,4 +1,4 @@
-namespace AzAgroPOS.Teqdimat
+﻿namespace AzAgroPOS.Teqdimat
 {
     partial class TemirIdareetmeFormu
     {
@@ -603,6 +603,7 @@ namespace AzAgroPOS.Teqdimat
             // 
             // errorProvider1
             // 
+            errorProvider1 = new ErrorProvider(components);
             errorProvider1.ContainerControl = this;
             // 
             // TemirIdareetmeFormu

@@ -579,7 +579,7 @@ namespace AzAgroPOS.Teqdimat
             ClientSize = new Size(1200, 740);
             Controls.Add(mdiTabControl);
             Controls.Add(pnlMenu);
-            DrawerShowIconsWhenHidden = true;
+            //DrawerShowIconsWhenHidden = true;
             Name = "AnaMenuFormu";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "AzAgroPOS - Ana Menyu";
