@@ -46,6 +46,16 @@ namespace AzAgroPOS.Teqdimat
             txtProblemTesviri = new TextBox();
             lblYekunMebleg = new Label();
             txtYekunMebleg = new TextBox();
+            lblSeriyaNomresi = new Label();
+            txtSeriyaNomresi = new TextBox();
+            lblTemirXerci = new Label();
+            txtTemirXerci = new TextBox();
+            lblServisHaqqi = new Label();
+            txtServisHaqqi = new TextBox();
+            lblUsta = new Label();
+            cmbUsta = new ComboBox();
+            btnEhtiyatHissəsiElaveEt = new Button();
+            btnÖdənişiTamamla = new Button();
             pnlDugmeler = new Panel();
             btnTemizle = new Button();
             btnSil = new Button();
