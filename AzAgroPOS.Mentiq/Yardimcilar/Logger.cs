@@ -1,5 +1,4 @@
 using Serilog;
-using System;
 
 namespace AzAgroPOS.Mentiq.Yardimcilar
 {

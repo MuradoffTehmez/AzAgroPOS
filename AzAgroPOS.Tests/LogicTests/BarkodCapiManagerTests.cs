@@ -1,15 +1,13 @@
-using AzAgroPOS.Mentiq.DTOs;
+// AzAgroPOS.Tests/LogicTests/BarkodCapiManagerTests.cs
+
 using AzAgroPOS.Mentiq.Idareciler;
-using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Tests.Helpers;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using AzAgroPOS.Verilenler.Kontekst;
-using Microsoft.EntityFrameworkCore;
 using Moq;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Xunit;
@@ -25,12 +23,12 @@ namespace AzAgroPOS.Tests.LogicTests
         public BarkodCapiManagerTests()
         {
             _dbContext = DbContextHelper.GetInMemoryDbContext();
-            
+
             _unitOfWorkMock = new Mock<IUnitOfWork>();
-            
+
             // Setup UnitOfWork mock to return our in-memory database context
             _unitOfWorkMock.Setup(u => u.Mehsullar).Returns(new Mock<IMehsulRepozitori>().Object);
-            
+
             _barkodCapiManager = new BarkodCapiManager(_unitOfWorkMock.Object);
         }
 
@@ -58,12 +56,12 @@ namespace AzAgroPOS.Tests.LogicTests
         {
             // Arrange
             string axtarisMetni = "yox olmayan məhsul";
-            
+
             var bosMehsullar = new List<Mehsul>();
             var mockMehsulRepo = new Mock<IMehsulRepozitori>();
             mockMehsulRepo.Setup(r => r.AxtarAsync(It.IsAny<Expression<Func<Mehsul, bool>>>(), null))
                 .ReturnsAsync(bosMehsullar);
-            
+
             _unitOfWorkMock.Setup(u => u.Mehsullar).Returns(mockMehsulRepo.Object);
 
             // Act
@@ -79,7 +77,7 @@ namespace AzAgroPOS.Tests.LogicTests
         {
             // Arrange
             string axtarisMetni = "çörək";
-            
+
             var mehsullar = new List<Mehsul>
             {
                 new Mehsul
@@ -96,9 +94,9 @@ namespace AzAgroPOS.Tests.LogicTests
             };
 
             var mockMehsulRepo = new Mock<IMehsulRepozitori>();
-            mockMehsulRepo.Setup(r => r.AxtarAsync(It.IsAny<Func<Mehsul, bool>>(), null))
+            mockMehsulRepo.Setup(r => r.AxtarAsync(It.IsAny<Expression<Func<Mehsul, bool>>>(), null))
                 .ReturnsAsync(mehsullar);
-            
+
             _unitOfWorkMock.Setup(u => u.Mehsullar).Returns(mockMehsulRepo.Object);
 
             // Act
@@ -106,12 +104,12 @@ namespace AzAgroPOS.Tests.LogicTests
 
             // Assert
             Assert.True(netice.UgurluDur);
-            Assert.NotNull(netice.Netice);
-            Assert.Single(netice.Netice);
-            Assert.Equal("Çörək", netice.Netice[0].Ad);
-            Assert.Equal("SK001", netice.Netice[0].StokKodu);
-            Assert.Equal("869000000001", netice.Netice[0].Barkod);
-            Assert.Equal(0.70m, netice.Netice[0].PerakendeSatisQiymeti);
+            Assert.NotNull(netice.Data);
+            Assert.Single(netice.Data);
+            Assert.Equal("Çörək", netice.Data[0].Ad);
+            Assert.Equal("SK001", netice.Data[0].StokKodu);
+            Assert.Equal("869000000001", netice.Data[0].Barkod);
+            Assert.Equal(0.70m, netice.Data[0].PerakendeSatisQiymeti);
         }
 
         [Fact]
@@ -119,7 +117,7 @@ namespace AzAgroPOS.Tests.LogicTests
         {
             // Arrange
             string axtarisMetni = "SK002";
-            
+
             var mehsullar = new List<Mehsul>
             {
                 new Mehsul
@@ -136,9 +134,9 @@ namespace AzAgroPOS.Tests.LogicTests
             };
 
             var mockMehsulRepo = new Mock<IMehsulRepozitori>();
-            mockMehsulRepo.Setup(r => r.AxtarAsync(It.IsAny<Func<Mehsul, bool>>(), null))
+            mockMehsulRepo.Setup(r => r.AxtarAsync(It.IsAny<Expression<Func<Mehsul, bool>>>(), null))
                 .ReturnsAsync(mehsullar);
-            
+
             _unitOfWorkMock.Setup(u => u.Mehsullar).Returns(mockMehsulRepo.Object);
 
             // Act
@@ -146,12 +144,12 @@ namespace AzAgroPOS.Tests.LogicTests
 
             // Assert
             Assert.True(netice.UgurluDur);
-            Assert.NotNull(netice.Netice);
-            Assert.Single(netice.Netice);
-            Assert.Equal("Süd 1L", netice.Netice[0].Ad);
-            Assert.Equal("SK002", netice.Netice[0].StokKodu);
-            Assert.Equal("869000000002", netice.Netice[0].Barkod);
-            Assert.Equal(2.50m, netice.Netice[0].PerakendeSatisQiymeti);
+            Assert.NotNull(netice.Data);
+            Assert.Single(netice.Data);
+            Assert.Equal("Süd 1L", netice.Data[0].Ad);
+            Assert.Equal("SK002", netice.Data[0].StokKodu);
+            Assert.Equal("869000000002", netice.Data[0].Barkod);
+            Assert.Equal(2.50m, netice.Data[0].PerakendeSatisQiymeti);
         }
 
         [Fact]
@@ -159,7 +157,7 @@ namespace AzAgroPOS.Tests.LogicTests
         {
             // Arrange
             string axtarisMetni = "869000000003";
-            
+
             var mehsullar = new List<Mehsul>
             {
                 new Mehsul
@@ -176,9 +174,9 @@ namespace AzAgroPOS.Tests.LogicTests
             };
 
             var mockMehsulRepo = new Mock<IMehsulRepozitori>();
-            mockMehsulRepo.Setup(r => r.AxtarAsync(It.IsAny<Func<Mehsul, bool>>(), null))
+            mockMehsulRepo.Setup(r => r.AxtarAsync(It.IsAny<Expression<Func<Mehsul, bool>>>(), null))
                 .ReturnsAsync(mehsullar);
-            
+
             _unitOfWorkMock.Setup(u => u.Mehsullar).Returns(mockMehsulRepo.Object);
 
             // Act
@@ -186,12 +184,12 @@ namespace AzAgroPOS.Tests.LogicTests
 
             // Assert
             Assert.True(netice.UgurluDur);
-            Assert.NotNull(netice.Netice);
-            Assert.Single(netice.Netice);
-            Assert.Equal("Yumurta (10 ədəd)", netice.Netice[0].Ad);
-            Assert.Equal("SK003", netice.Netice[0].StokKodu);
-            Assert.Equal("869000000003", netice.Netice[0].Barkod);
-            Assert.Equal(3.20m, netice.Netice[0].PerakendeSatisQiymeti);
+            Assert.NotNull(netice.Data);
+            Assert.Single(netice.Data);
+            Assert.Equal("Yumurta (10 ədəd)", netice.Data[0].Ad);
+            Assert.Equal("SK003", netice.Data[0].StokKodu);
+            Assert.Equal("869000000003", netice.Data[0].Barkod);
+            Assert.Equal(3.20m, netice.Data[0].PerakendeSatisQiymeti);
         }
 
         [Fact]
@@ -199,7 +197,7 @@ namespace AzAgroPOS.Tests.LogicTests
         {
             // Arrange
             string axtarisMetni = "süd";
-            
+
             var mehsullar = new List<Mehsul>
             {
                 new Mehsul
@@ -222,14 +220,14 @@ namespace AzAgroPOS.Tests.LogicTests
                     PerakendeSatisQiymeti = 4.50m,
                     AlisQiymeti = 3.80m,
                     MovcudSay = 30,
-                    OlcuVahidi = OlcuVahidi.Qram
+                    OlcuVahidi = OlcuVahidi.Paket
                 }
             };
 
             var mockMehsulRepo = new Mock<IMehsulRepozitori>();
-            mockMehsulRepo.Setup(r => r.AxtarAsync(It.IsAny<Func<Mehsul, bool>>(), null))
+            mockMehsulRepo.Setup(r => r.AxtarAsync(It.IsAny<Expression<Func<Mehsul, bool>>>(), null))
                 .ReturnsAsync(mehsullar);
-            
+
             _unitOfWorkMock.Setup(u => u.Mehsullar).Returns(mockMehsulRepo.Object);
 
             // Act
@@ -237,10 +235,10 @@ namespace AzAgroPOS.Tests.LogicTests
 
             // Assert
             Assert.True(netice.UgurluDur);
-            Assert.NotNull(netice.Netice);
-            Assert.Equal(2, netice.Netice.Count);
-            Assert.Equal("Süd 1L", netice.Netice[0].Ad);
-            Assert.Equal("Süd Tozu 400q", netice.Netice[1].Ad);
+            Assert.NotNull(netice.Data);
+            Assert.Equal(2, netice.Data.Count);
+            Assert.Equal("Süd 1L", netice.Data[0].Ad);
+            Assert.Equal("Süd Tozu 400q", netice.Data[1].Ad);
         }
     }
 }

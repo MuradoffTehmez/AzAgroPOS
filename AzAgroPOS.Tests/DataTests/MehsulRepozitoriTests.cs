@@ -1,7 +1,6 @@
 using AzAgroPOS.Tests.Helpers;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Kontekst;
-using AzAgroPOS.Verilenler.Realizasialar;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

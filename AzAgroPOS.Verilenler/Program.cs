@@ -1,4 +1,3 @@
-using System;
 using AzAgroPOS.Verilenler.Kontekst;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -24,18 +23,18 @@ class Program
 
         // Create DbContext
         using var context = new AzAgroPOSDbContext(optionsBuilder.Options);
-        
+
         try
         {
             // Get all migrations
             var migrations = context.Database.GetPendingMigrations();
             Console.WriteLine($"Found {migrations.Count()} pending migrations:");
-            
+
             foreach (var migration in migrations)
             {
                 Console.WriteLine($"  - {migration}");
             }
-            
+
             // Apply migrations one by one
             Console.WriteLine("Applying migrations one by one...");
             foreach (var migration in migrations)

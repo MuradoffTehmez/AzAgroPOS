@@ -9,7 +9,6 @@ using Microsoft.EntityFrameworkCore;
 using Moq;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -25,17 +24,17 @@ namespace AzAgroPOS.Tests.LogicTests
         public SatisManagerTests()
         {
             _dbContext = DbContextHelper.GetInMemoryDbContext();
-            
+
             _unitOfWorkMock = new Mock<IUnitOfWork>();
             _nisyeManagerMock = new Mock<NisyeManager>(_unitOfWorkMock.Object);
-            
+
             // Setup UnitOfWork mock to return our in-memory database context
             _unitOfWorkMock.Setup(u => u.Mehsullar).Returns(new Mock<IMehsulRepozitori>().Object);
             _unitOfWorkMock.Setup(u => u.Musteriler).Returns(new Mock<IMusteriRepozitori>().Object);
             _unitOfWorkMock.Setup(u => u.Satislar).Returns(new Mock<ISatisRepozitori>().Object);
             _unitOfWorkMock.Setup(u => u.Novbeler).Returns(new Mock<INovbeRepozitori>().Object);
             _unitOfWorkMock.Setup(u => u.EmeliyyatiTesdiqleAsync()).Returns(Task.FromResult(1));
-            
+
             _satisManager = new SatisManager(_unitOfWorkMock.Object, _nisyeManagerMock.Object);
         }
 
@@ -211,7 +210,7 @@ namespace AzAgroPOS.Tests.LogicTests
             // Setup mocks
             _unitOfWorkMock.Setup(u => u.Mehsullar.GetirAsync(1))
                 .ReturnsAsync(await _dbContext.Mehsullar.FirstAsync(m => m.Id == 1));
-            
+
             _unitOfWorkMock.Setup(u => u.Musteriler.GetirAsync(1))
                 .ReturnsAsync(await _dbContext.Musteriler.FirstAsync(m => m.Id == 1));
 
@@ -296,7 +295,7 @@ namespace AzAgroPOS.Tests.LogicTests
             // Setup mocks
             _unitOfWorkMock.Setup(u => u.Satislar.GetirAsync(1))
                 .ReturnsAsync(await _dbContext.Satislar.Include(s => s.SatisDetallari).FirstAsync(s => s.Id == 1));
-            
+
             _unitOfWorkMock.Setup(u => u.Mehsullar.GetirAsync(1))
                 .ReturnsAsync(await _dbContext.Mehsullar.FirstAsync(m => m.Id == 1));
 

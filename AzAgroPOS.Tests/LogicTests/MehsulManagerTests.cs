@@ -1,15 +1,11 @@
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
-using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Tests.Helpers;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using AzAgroPOS.Verilenler.Kontekst;
-using Microsoft.EntityFrameworkCore;
 using Moq;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -24,13 +20,13 @@ namespace AzAgroPOS.Tests.LogicTests
         public MehsulManagerTests()
         {
             _dbContext = DbContextHelper.GetInMemoryDbContext();
-            
+
             _unitOfWorkMock = new Mock<IUnitOfWork>();
-            
+
             // Setup UnitOfWork mock
             _unitOfWorkMock.Setup(u => u.Mehsullar).Returns(new Mock<IMehsulRepozitori>().Object);
             _unitOfWorkMock.Setup(u => u.EmeliyyatiTesdiqleAsync()).Returns(Task.FromResult(1));
-            
+
             _mehsulManager = new MehsulManager(_unitOfWorkMock.Object);
         }
 
@@ -57,7 +53,7 @@ namespace AzAgroPOS.Tests.LogicTests
             var mockMehsulRepo = new Mock<IMehsulRepozitori>();
             mockMehsulRepo.Setup(r => r.ElaveEtAsync(It.IsAny<Mehsul>()))
                 .Returns(Task.CompletedTask);
-            
+
             _unitOfWorkMock.Setup(u => u.Mehsullar).Returns(mockMehsulRepo.Object);
 
             // Act
@@ -102,7 +98,7 @@ namespace AzAgroPOS.Tests.LogicTests
                 .ReturnsAsync(movcudMehsul);
             mockMehsulRepo.Setup(r => r.Yenile(It.IsAny<Mehsul>()))
                 .Callback<Mehsul>(m => movcudMehsul.MovcudSay = m.MovcudSay);
-            
+
             _unitOfWorkMock.Setup(u => u.Mehsullar).Returns(mockMehsulRepo.Object);
 
             // Act
@@ -135,7 +131,7 @@ namespace AzAgroPOS.Tests.LogicTests
             var mockMehsulRepo = new Mock<IMehsulRepozitori>();
             mockMehsulRepo.Setup(r => r.GetirAsync(999))
                 .ReturnsAsync((Mehsul)null); // Mövcud olmayan məhsul
-            
+
             _unitOfWorkMock.Setup(u => u.Mehsullar).Returns(mockMehsulRepo.Object);
 
             // Act
@@ -170,7 +166,7 @@ namespace AzAgroPOS.Tests.LogicTests
             mockMehsulRepo.Setup(r => r.GetirAsync(mehsulId))
                 .ReturnsAsync(movcudMehsul);
             mockMehsulRepo.Setup(r => r.Sil(It.IsAny<Mehsul>()));
-            
+
             _unitOfWorkMock.Setup(u => u.Mehsullar).Returns(mockMehsulRepo.Object);
 
             // Act
@@ -192,7 +188,7 @@ namespace AzAgroPOS.Tests.LogicTests
             var mockMehsulRepo = new Mock<IMehsulRepozitori>();
             mockMehsulRepo.Setup(r => r.GetirAsync(mehsulId))
                 .ReturnsAsync((Mehsul)null); // Mövcud olmayan məhsul
-            
+
             _unitOfWorkMock.Setup(u => u.Mehsullar).Returns(mockMehsulRepo.Object);
 
             // Act

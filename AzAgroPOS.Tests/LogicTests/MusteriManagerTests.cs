@@ -1,15 +1,14 @@
+// AzAgroPOS.Tests/LogicTests/MusteriManagerTests.cs
+
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
-using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Tests.Helpers;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using AzAgroPOS.Verilenler.Kontekst;
-using Microsoft.EntityFrameworkCore;
 using Moq;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Xunit;
@@ -25,13 +24,13 @@ namespace AzAgroPOS.Tests.LogicTests
         public MusteriManagerTests()
         {
             _dbContext = DbContextHelper.GetInMemoryDbContext();
-            
+
             _unitOfWorkMock = new Mock<IUnitOfWork>();
-            
+
             // Setup UnitOfWork mock
             _unitOfWorkMock.Setup(u => u.Musteriler).Returns(new Mock<IMusteriRepozitori>().Object);
             _unitOfWorkMock.Setup(u => u.EmeliyyatiTesdiqleAsync()).Returns(Task.FromResult(1));
-            
+
             _musteriManager = new MusteriManager(_unitOfWorkMock.Object);
         }
 
@@ -55,11 +54,11 @@ namespace AzAgroPOS.Tests.LogicTests
 
             var bosMusteriler = new List<Musteri>();
             var mockMusteriRepo = new Mock<IMusteriRepozitori>();
-            mockMusteriRepo.Setup(r => r.AxtarAsync(It.IsAny<Func<Musteri, bool>>(), null))
+            mockMusteriRepo.Setup(r => r.AxtarAsync(It.IsAny<Expression<Func<Musteri, bool>>>(), null))
                 .ReturnsAsync(bosMusteriler);
             mockMusteriRepo.Setup(r => r.ElaveEtAsync(It.IsAny<Musteri>()))
                 .Returns(Task.CompletedTask);
-            
+
             _unitOfWorkMock.Setup(u => u.Musteriler).Returns(mockMusteriRepo.Object);
 
             // Act
@@ -67,7 +66,7 @@ namespace AzAgroPOS.Tests.LogicTests
 
             // Assert
             Assert.True(netice.UgurluDur);
-            mockMusteriRepo.Verify(r => r.AxtarAsync(It.IsAny<Func<Musteri, bool>>(), null), Times.Once);
+            mockMusteriRepo.Verify(r => r.AxtarAsync(It.IsAny<Expression<Func<Musteri, bool>>>(), null), Times.Once);
             mockMusteriRepo.Verify(r => r.ElaveEtAsync(It.IsAny<Musteri>()), Times.Once);
             _unitOfWorkMock.Verify(u => u.EmeliyyatiTesdiqleAsync(), Times.Once);
         }
@@ -99,9 +98,9 @@ namespace AzAgroPOS.Tests.LogicTests
             };
 
             var mockMusteriRepo = new Mock<IMusteriRepozitori>();
-            mockMusteriRepo.Setup(r => r.AxtarAsync(It.IsAny<Func<Musteri, bool>>(), null))
+            mockMusteriRepo.Setup(r => r.AxtarAsync(It.IsAny<Expression<Func<Musteri, bool>>>(), null))
                 .ReturnsAsync(movcudMusteriler);
-            
+
             _unitOfWorkMock.Setup(u => u.Musteriler).Returns(mockMusteriRepo.Object);
 
             // Act
@@ -110,7 +109,7 @@ namespace AzAgroPOS.Tests.LogicTests
             // Assert
             Assert.False(netice.UgurluDur);
             Assert.Contains("Bu telefon nömrəsi ilə müştəri artıq mövcuddur", netice.Mesaj);
-            mockMusteriRepo.Verify(r => r.AxtarAsync(It.IsAny<Func<Musteri, bool>>(), null), Times.Once);
+            mockMusteriRepo.Verify(r => r.AxtarAsync(It.IsAny<Expression<Func<Musteri, bool>>>(), null), Times.Once);
             mockMusteriRepo.Verify(r => r.ElaveEtAsync(It.IsAny<Musteri>()), Times.Never);
             _unitOfWorkMock.Verify(u => u.EmeliyyatiTesdiqleAsync(), Times.Never);
         }
@@ -143,13 +142,14 @@ namespace AzAgroPOS.Tests.LogicTests
             mockMusteriRepo.Setup(r => r.GetirAsync(1))
                 .ReturnsAsync(movcudMusteri);
             mockMusteriRepo.Setup(r => r.Yenile(It.IsAny<Musteri>()))
-                .Callback<Musteri>(m => {
+                .Callback<Musteri>(m =>
+                {
                     movcudMusteri.TamAd = m.TamAd;
                     movcudMusteri.TelefonNomresi = m.TelefonNomresi;
                     movcudMusteri.Unvan = m.Unvan;
                     movcudMusteri.KreditLimiti = m.KreditLimiti;
                 });
-            
+
             _unitOfWorkMock.Setup(u => u.Musteriler).Returns(mockMusteriRepo.Object);
 
             // Act
@@ -183,7 +183,7 @@ namespace AzAgroPOS.Tests.LogicTests
             var mockMusteriRepo = new Mock<IMusteriRepozitori>();
             mockMusteriRepo.Setup(r => r.GetirAsync(999))
                 .ReturnsAsync((Musteri)null); // Mövcud olmayan müştəri
-            
+
             _unitOfWorkMock.Setup(u => u.Musteriler).Returns(mockMusteriRepo.Object);
 
             // Act
@@ -216,7 +216,7 @@ namespace AzAgroPOS.Tests.LogicTests
             mockMusteriRepo.Setup(r => r.GetirAsync(musteriId))
                 .ReturnsAsync(movcudMusteri);
             mockMusteriRepo.Setup(r => r.Sil(It.IsAny<Musteri>()));
-            
+
             _unitOfWorkMock.Setup(u => u.Musteriler).Returns(mockMusteriRepo.Object);
 
             // Act
@@ -247,7 +247,7 @@ namespace AzAgroPOS.Tests.LogicTests
             var mockMusteriRepo = new Mock<IMusteriRepozitori>();
             mockMusteriRepo.Setup(r => r.GetirAsync(musteriId))
                 .ReturnsAsync(movcudMusteri);
-            
+
             _unitOfWorkMock.Setup(u => u.Musteriler).Returns(mockMusteriRepo.Object);
 
             // Act

@@ -11,11 +11,11 @@ using System.Linq;
 using System.Threading.Tasks;
 
 /// <summary>
-    /// Növbə idarə etmə meneceri.
-    /// bu menecer növbə açma, bağlama və aktiv növbəni gətirmə əməliyyatlarını idarə edir.
-    /// diqqət: Növbə açma və bağlama əməliyyatları üçün istifadəçi ID-si və müvafiq məbləğ lazımdır.
-    /// kompleks əməliyyatlar üçün EmeliyyatNeticesi tipindən istifadə olunur.
-    /// </summary>
+/// Növbə idarə etmə meneceri.
+/// bu menecer növbə açma, bağlama və aktiv növbəni gətirmə əməliyyatlarını idarə edir.
+/// diqqət: Növbə açma və bağlama əməliyyatları üçün istifadəçi ID-si və müvafiq məbləğ lazımdır.
+/// kompleks əməliyyatlar üçün EmeliyyatNeticesi tipindən istifadə olunur.
+/// </summary>
 public class NovbeManager
 {
     private readonly IUnitOfWork _unitOfWork;

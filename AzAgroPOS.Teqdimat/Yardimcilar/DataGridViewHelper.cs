@@ -1,6 +1,3 @@
-using System.Drawing;
-using System.Windows.Forms;
-
 namespace AzAgroPOS.Teqdimat.Yardimcilar
 {
     public static class DataGridViewHelper

@@ -1,6 +1,6 @@
-using AzAgroPOS.Mentiq.DTOs;
+// AzAgroPOS.Tests/LogicTests/NovbeManagerTests.cs
+
 using AzAgroPOS.Mentiq.Idareciler;
-using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Tests.Helpers;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
@@ -25,15 +25,15 @@ namespace AzAgroPOS.Tests.LogicTests
         public NovbeManagerTests()
         {
             _dbContext = DbContextHelper.GetInMemoryDbContext();
-            
+
             _unitOfWorkMock = new Mock<IUnitOfWork>();
-            
+
             // Setup UnitOfWork mock
             _unitOfWorkMock.Setup(u => u.Novbeler).Returns(new Mock<INovbeRepozitori>().Object);
             _unitOfWorkMock.Setup(u => u.Istifadeciler).Returns(new Mock<IIstifadeciRepozitori>().Object);
             _unitOfWorkMock.Setup(u => u.Satislar).Returns(new Mock<ISatisRepozitori>().Object);
             _unitOfWorkMock.Setup(u => u.EmeliyyatiTesdiqleAsync()).Returns(Task.FromResult(1));
-            
+
             _novbeManager = new NovbeManager(_unitOfWorkMock.Object);
         }
 
@@ -48,8 +48,8 @@ namespace AzAgroPOS.Tests.LogicTests
             // Arrange
             int isciId = 1;
             decimal baslangicMebleg = 100.00m;
-            
-            var isci = new Isci
+
+            var isci = new Istifadeci
             {
                 Id = isciId,
                 TamAd = "Test Kassir"
@@ -58,11 +58,11 @@ namespace AzAgroPOS.Tests.LogicTests
             var mockIsciRepo = new Mock<IIstifadeciRepozitori>();
             mockIsciRepo.Setup(r => r.GetirAsync(isciId))
                 .ReturnsAsync(isci);
-            
+
             var mockNovbeRepo = new Mock<INovbeRepozitori>();
             mockNovbeRepo.Setup(r => r.ElaveEtAsync(It.IsAny<Novbe>()))
                 .Returns(Task.CompletedTask);
-            
+
             _unitOfWorkMock.Setup(u => u.Istifadeciler).Returns(mockIsciRepo.Object);
             _unitOfWorkMock.Setup(u => u.Novbeler).Returns(mockNovbeRepo.Object);
 
@@ -71,12 +71,12 @@ namespace AzAgroPOS.Tests.LogicTests
 
             // Assert
             Assert.True(netice.UgurluDur);
-            Assert.NotNull(netice.Netice);
-            Assert.Equal(isciId, netice.Netice.IsciId);
-            Assert.Equal(baslangicMebleg, netice.Netice.BaslangicMebleg);
-            Assert.Equal(baslangicMebleg, netice.Netice.GozlenilenMebleg);
-            Assert.Equal(0.00m, netice.Netice.FaktikiMebleg);
-            Assert.Equal(NovbeStatusu.Aciq, netice.Netice.Status);
+            Assert.NotNull(netice.Data);
+            Assert.Equal(isciId, netice.Data.IsciId);
+            Assert.Equal(baslangicMebleg, netice.Data.BaslangicMebleg);
+            Assert.Equal(baslangicMebleg, netice.Data.GozlenilenMebleg);
+            Assert.Equal(0.00m, netice.Data.FaktikiMebleg);
+            Assert.Equal(NovbeStatusu.Aciq, netice.Data.Status);
             mockNovbeRepo.Verify(r => r.ElaveEtAsync(It.IsAny<Novbe>()), Times.Once);
             _unitOfWorkMock.Verify(u => u.EmeliyyatiTesdiqleAsync(), Times.Once);
         }
@@ -90,8 +90,8 @@ namespace AzAgroPOS.Tests.LogicTests
 
             var mockIsciRepo = new Mock<IIstifadeciRepozitori>();
             mockIsciRepo.Setup(r => r.GetirAsync(isciId))
-                .ReturnsAsync((Isci)null); // Mövcud olmayan işçi
-            
+                .ReturnsAsync((Istifadeci)null); // Mövcud olmayan işçi
+
             _unitOfWorkMock.Setup(u => u.Istifadeciler).Returns(mockIsciRepo.Object);
 
             // Act
@@ -111,7 +111,7 @@ namespace AzAgroPOS.Tests.LogicTests
             // Arrange
             int novbeId = 1;
             decimal faktikiMebleg = 1250.75m;
-            
+
             var movcudNovbe = new Novbe
             {
                 Id = novbeId,
@@ -134,16 +134,17 @@ namespace AzAgroPOS.Tests.LogicTests
             mockNovbeRepo.Setup(r => r.GetirAsync(novbeId))
                 .ReturnsAsync(movcudNovbe);
             mockNovbeRepo.Setup(r => r.Yenile(It.IsAny<Novbe>()))
-                .Callback<Novbe>(n => {
+                .Callback<Novbe>(n =>
+                {
                     movcudNovbe.FaktikiMebleg = n.FaktikiMebleg;
                     movcudNovbe.Status = n.Status;
                     movcudNovbe.BaglanmaTarixi = n.BaglanmaTarixi;
                 });
-            
+
             var mockSatisRepo = new Mock<ISatisRepozitori>();
-            mockSatisRepo.Setup(r => r.AxtarAsync(It.IsAny<Func<Satis, bool>>(), null))
+            mockSatisRepo.Setup(r => r.AxtarAsync(It.IsAny<Expression<Func<Satis, bool>>>(), null))
                 .ReturnsAsync(satislar);
-            
+
             _unitOfWorkMock.Setup(u => u.Novbeler).Returns(mockNovbeRepo.Object);
             _unitOfWorkMock.Setup(u => u.Satislar).Returns(mockSatisRepo.Object);
 
@@ -170,7 +171,7 @@ namespace AzAgroPOS.Tests.LogicTests
             var mockNovbeRepo = new Mock<INovbeRepozitori>();
             mockNovbeRepo.Setup(r => r.GetirAsync(novbeId))
                 .ReturnsAsync((Novbe)null); // Mövcud olmayan növbə
-            
+
             _unitOfWorkMock.Setup(u => u.Novbeler).Returns(mockNovbeRepo.Object);
 
             // Act
@@ -190,7 +191,7 @@ namespace AzAgroPOS.Tests.LogicTests
             // Arrange
             int novbeId = 1;
             decimal faktikiMebleg = 1250.75m;
-            
+
             var movcudNovbe = new Novbe
             {
                 Id = novbeId,
@@ -206,7 +207,7 @@ namespace AzAgroPOS.Tests.LogicTests
             var mockNovbeRepo = new Mock<INovbeRepozitori>();
             mockNovbeRepo.Setup(r => r.GetirAsync(novbeId))
                 .ReturnsAsync(movcudNovbe);
-            
+
             _unitOfWorkMock.Setup(u => u.Novbeler).Returns(mockNovbeRepo.Object);
 
             // Act
@@ -225,7 +226,7 @@ namespace AzAgroPOS.Tests.LogicTests
         {
             // Arrange
             int isciId = 1;
-            
+
             var aktivNovbe = new Novbe
             {
                 Id = 1,
@@ -240,9 +241,9 @@ namespace AzAgroPOS.Tests.LogicTests
             var novbeler = new List<Novbe> { aktivNovbe };
 
             var mockNovbeRepo = new Mock<INovbeRepozitori>();
-            mockNovbeRepo.Setup(r => r.AxtarAsync(It.IsAny<Func<Novbe, bool>>(), null))
+            mockNovbeRepo.Setup(r => r.AxtarAsync(It.IsAny<Expression<Func<Novbe, bool>>>(), null))
                 .ReturnsAsync(novbeler);
-            
+
             _unitOfWorkMock.Setup(u => u.Novbeler).Returns(mockNovbeRepo.Object);
 
             // Act
@@ -250,10 +251,10 @@ namespace AzAgroPOS.Tests.LogicTests
 
             // Assert
             Assert.True(netice.UgurluDur);
-            Assert.NotNull(netice.Netice);
-            Assert.Equal(aktivNovbe.Id, netice.Netice.Id);
-            Assert.Equal(NovbeStatusu.Aciq, netice.Netice.Status);
-            mockNovbeRepo.Verify(r => r.AxtarAsync(It.IsAny<Func<Novbe, bool>>(), null), Times.Once);
+            Assert.NotNull(netice.Data);
+            Assert.Equal(aktivNovbe.Id, netice.Data.Id);
+            Assert.Equal(NovbeStatusu.Aciq, netice.Data.Status);
+            mockNovbeRepo.Verify(r => r.AxtarAsync(It.IsAny<Expression<Func<Novbe, bool>>>(), null), Times.Once);
         }
 
         [Fact]
@@ -261,13 +262,13 @@ namespace AzAgroPOS.Tests.LogicTests
         {
             // Arrange
             int isciId = 1;
-            
+
             var bosNovbeler = new List<Novbe>();
 
             var mockNovbeRepo = new Mock<INovbeRepozitori>();
-            mockNovbeRepo.Setup(r => r.AxtarAsync(It.IsAny<Func<Novbe, bool>>(), null))
+            mockNovbeRepo.Setup(r => r.AxtarAsync(It.IsAny<Expression<Func<Novbe, bool>>>(), null))
                 .ReturnsAsync(bosNovbeler);
-            
+
             _unitOfWorkMock.Setup(u => u.Novbeler).Returns(mockNovbeRepo.Object);
 
             // Act
@@ -276,7 +277,7 @@ namespace AzAgroPOS.Tests.LogicTests
             // Assert
             Assert.False(netice.UgurluDur);
             Assert.Contains("Aktiv növbə tapılmadı", netice.Mesaj);
-            mockNovbeRepo.Verify(r => r.AxtarAsync(It.IsAny<Func<Novbe, bool>>(), null), Times.Once);
+            mockNovbeRepo.Verify(r => r.AxtarAsync(It.IsAny<Expression<Func<Novbe, bool>>>(), null), Times.Once);
         }
     }
 }
