@@ -1,14 +1,14 @@
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Teqdimat.Interfeysler;
 using System.Data;
 
 namespace AzAgroPOS.Teqdimat
 {
-    public partial class EhtiyatHissəsiFormu : Form
+    public partial class EhtiyatHissəsiFormu : Form, IEhtiyatHissəsiView
     {
         private readonly MehsulManager _mehsulManager;
         private readonly List<EhtiyatHissəsiDto> _ehtiyatHissələri;
-
         public List<EhtiyatHissəsiDto> EhtiyatHissələri => _ehtiyatHissələri;
 
         public EhtiyatHissəsiFormu(MehsulManager mehsulManager)
@@ -19,6 +19,20 @@ namespace AzAgroPOS.Teqdimat
             StilVerDataGridView(dgvMehsullar);
             StilVerDataGridView(dgvSeçilmişMehsullar);
         }
+
+        // IEhtiyatHissəsiView interface implementasiyası
+        public string AxtarisMetni => txtAxtar.Text;
+
+        public string Miqdar => txtMiqdar.Text;
+
+        public MehsulDto SecilmisMehsul => dgvMehsullar.CurrentRow?.DataBoundItem as MehsulDto;
+
+        // Hadisələr
+        public event EventHandler AxtarIstek;
+        public event EventHandler ElaveEtIstek;
+        public event EventHandler SilIstek;
+        public event EventHandler TamamIstek;
+        public event EventHandler İmtinaIstek;
 
         private void StilVerDataGridView(DataGridView grid)
         {
@@ -168,6 +182,52 @@ namespace AzAgroPOS.Teqdimat
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();
+        }
+
+        // IEhtiyatHissəsiView interface implementasiyası
+        public void MehsullariGoster(List<MehsulDto> mehsullar)
+        {
+            dgvMehsullar.DataSource = mehsullar;
+            if (dgvMehsullar.Columns.Count > 0)
+            {
+                dgvMehsullar.Columns["Id"].Visible = false;
+                dgvMehsullar.Columns["Ad"].HeaderText = "Məhsul Adı";
+                dgvMehsullar.Columns["StokKodu"].HeaderText = "Stok Kodu";
+                dgvMehsullar.Columns["AlisQiymeti"].HeaderText = "Alış Qiyməti";
+                dgvMehsullar.Columns["PerakendeSatisQiymeti"].HeaderText = "Pərakəndə Qiyməti";
+                dgvMehsullar.Columns["TopluSatisQiymeti"].HeaderText = "Toplu Qiymət";
+                dgvMehsullar.Columns["MovcudSay"].HeaderText = "Mövcud Say";
+                dgvMehsullar.Columns["MinimumStokSayi"].HeaderText = "Min. Stok";
+            }
+        }
+
+        public void SeçilmişMehsullariGoster(List<EhtiyatHissəsiDto> ehtiyatHissələri)
+        {
+            dgvSeçilmişMehsullar.DataSource = null;
+            dgvSeçilmişMehsullar.DataSource = ehtiyatHissələri;
+
+            if (dgvSeçilmişMehsullar.Columns.Count > 0)
+            {
+                dgvSeçilmişMehsullar.Columns["MehsulId"].Visible = false;
+                dgvSeçilmişMehsullar.Columns["MehsulAdi"].HeaderText = "Məhsul Adı";
+                dgvSeçilmişMehsullar.Columns["Miqdar"].HeaderText = "Miqdar";
+                dgvSeçilmişMehsullar.Columns["Qiymet"].HeaderText = "Qiymət";
+                dgvSeçilmişMehsullar.Columns["ÜmumiMəbləğ"].HeaderText = "Ümumi Məbləğ";
+            }
+        }
+
+        public void FormuTemizle()
+        {
+            txtAxtar.Text = string.Empty;
+            txtMiqdar.Text = "1";
+            dgvMehsullar.DataSource = null;
+            dgvSeçilmişMehsullar.DataSource = null;
+            ButunXetalariTemizle();
+        }
+
+        public DialogResult MesajGoster(string mesaj, string basliq, MessageBoxButtons düymələr, MessageBoxIcon ikon)
+        {
+            return MessageBox.Show(mesaj, basliq, düymələr, ikon);
         }
     }
 }

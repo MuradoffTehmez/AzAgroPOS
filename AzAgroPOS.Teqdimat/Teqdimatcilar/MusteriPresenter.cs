@@ -9,15 +9,12 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
     {
         private readonly IMusteriView _view;
         private readonly MusteriManager _musteriManager;
-        private readonly MusteriManager _manager;
         private List<MusteriDto> _musteriCache;
 
         public MusteriPresenter(IMusteriView view, MusteriManager musteriManager)
         {
             _view = view;
             _musteriManager = musteriManager;
-            //_manager = new MusteriManager(unitOfWork);
-
             _musteriCache = new List<MusteriDto>();
 
             _view.FormYuklendi += async (s, e) => await FormuYukle();
@@ -30,7 +27,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 
         private async Task FormuYukle()
         {
-            var netice = await _manager.ButunMusterileriGetirAsync();
+            var netice = await _musteriManager.ButunMusterileriGetirAsync();
             if (netice.UgurluDur)
             {
                 _musteriCache = netice.Data;
@@ -119,11 +116,11 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             EmeliyyatNeticesi netice;
             if (musteriDto.Id > 0)
             {
-                netice = await _manager.MusteriYenileAsync(musteriDto);
+                netice = await _musteriManager.MusteriYenileAsync(musteriDto);
             }
             else
             {
-                netice = await _manager.MusteriYaratAsync(musteriDto);
+                netice = await _musteriManager.MusteriYaratAsync(musteriDto);
             }
 
             if (netice.UgurluDur)
@@ -184,7 +181,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                 return;
             }
 
-            var netice = await _manager.MusteriSilAsync(_view.SecilmisMusteriId);
+            var netice = await _musteriManager.MusteriSilAsync(_view.SecilmisMusteriId);
 
             if (netice.UgurluDur)
             {

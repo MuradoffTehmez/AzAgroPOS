@@ -62,6 +62,7 @@ namespace AzAgroPOS.Teqdimat
             tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvSeçilmişMehsullar).BeginInit();
             tableLayoutPanel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)errorProvider1).BeginInit();
             SuspendLayout();
             // 
             // lblBaslik
@@ -341,6 +342,7 @@ namespace AzAgroPOS.Teqdimat
             tableLayoutPanel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvSeçilmişMehsullar).EndInit();
             tableLayoutPanel3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)errorProvider1).EndInit();
             ResumeLayout(false);
         }
 

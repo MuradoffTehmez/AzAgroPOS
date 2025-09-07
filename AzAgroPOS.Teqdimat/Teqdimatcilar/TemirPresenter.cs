@@ -8,28 +8,29 @@ using AzAgroPOS.Varliglar;
 using Microsoft.Extensions.DependencyInjection;
 
 /// <summary>
-///  temir presenter class. 
-///  bu presenter, temir sifarişlərinin idarə olunması üçün istifadə olunur.
-/// </summary>
+    ///  temir presenter class. 
+    ///  bu presenter, temir sifarişlərinin idarə olunması üçün istifadə olunur.
+    /// </summary>
 public class TemirPresenter
 {
     private readonly ITemirView _view;
     private readonly TemirManager _temirManager;
     private readonly MusteriManager _musteriManager;
     private readonly IstifadeciManager _istifadeciManager;
-    private readonly IServiceProvider _serviceProvider;
+    private readonly MehsulManager _mehsulManager;
 
     /// <summary>
     ///  bu presenter, temir view interfeysini alır və temir manager ilə əlaqələndirir.
     /// </summary>
     /// <param name="view"></param>
-    public TemirPresenter(ITemirView view, TemirManager temirManager, MusteriManager musteriManager, IstifadeciManager istifadeciManager, IServiceProvider serviceProvider)
+    public TemirPresenter(ITemirView view, TemirManager temirManager, MusteriManager musteriManager, 
+        IstifadeciManager istifadeciManager, MehsulManager mehsulManager)
     {
         _view = view;
         _temirManager = temirManager;
         _musteriManager = musteriManager;
         _istifadeciManager = istifadeciManager;
-        _serviceProvider = serviceProvider;
+        _mehsulManager = mehsulManager;
 
         _view.FormYuklendi += async (s, e) => await FormuYukle();
         _view.YeniSifarisYarat_Istek += async (s, e) => await YeniSifarisYarat();
@@ -168,7 +169,8 @@ public class TemirPresenter
     /// </summary>
     private void EhtiyatHissəsiElaveEt()
     {
-        using (var form = _serviceProvider.GetRequiredService<EhtiyatHissəsiFormu>())
+        // Create a new instance of the form for each use
+        using (var form = new EhtiyatHissəsiFormu(_mehsulManager))
         {
             if (form.ShowDialog() == DialogResult.OK)
             {
@@ -183,7 +185,7 @@ public class TemirPresenter
                 var servisHaqqi = _view.ServisHaqqi;
                 _view.YekunMebleg = _view.TemirXerci + servisHaqqi;
 
-                _view.MesajGoster($"{ehtiyatHissələri.Count} ədəd ehtiyat hissəsi əlavə edildi. Ümumi məbləğ: {ümumiMəbləğ:N2} AZN", "Məlumat");
+                _view.MesajGoster($"Ehtiyat hissələri əlavə edildi. Ümumi məbləğ: {ümumiMəbləğ:N2} AZN", "Məlumat");
             }
         }
     }

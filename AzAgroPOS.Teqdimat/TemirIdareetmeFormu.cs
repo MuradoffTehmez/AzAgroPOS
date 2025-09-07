@@ -9,10 +9,10 @@ namespace AzAgroPOS.Teqdimat
     {
         private readonly TemirPresenter _presenter;
 
-        public TemirIdareetmeFormu(TemirManager temirManager, MusteriManager musteriManager, IstifadeciManager istifadeciManager)
+        public TemirIdareetmeFormu(TemirPresenter temirPresenter)
         {
             InitializeComponent();
-            _presenter = new TemirPresenter(this, temirManager, musteriManager, istifadeciManager, Program.ServiceProvider);
+            _presenter = temirPresenter;
             StilVerDataGridView(dgvSifarisler);
         }
 

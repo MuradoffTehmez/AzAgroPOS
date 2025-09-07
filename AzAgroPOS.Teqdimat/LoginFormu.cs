@@ -14,10 +14,10 @@ namespace AzAgroPOS.Teqdimat
 
         public event EventHandler DaxilOl_Istek;
 
-        public LoginFormu(TehlukesizlikManager tehlukesizlikManager)
+        public LoginFormu(LoginPresenter loginPresenter)
         {
             InitializeComponent();
-            _presenter = new LoginPresenter(this, tehlukesizlikManager);
+            _presenter = loginPresenter;
         }
 
         public void MesajGoster(string mesaj) => MessageBox.Show(mesaj, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);

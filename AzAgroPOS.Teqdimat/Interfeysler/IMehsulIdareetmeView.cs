@@ -29,6 +29,7 @@ public interface IMehsulIdareetmeView
     void KateqoriyalariGoster(IEnumerable<KateqoriyaDto> kateqoriyalar);
     void BrendleriGoster(IEnumerable<BrendDto> brendler);
     void TedarukculeriGoster(IEnumerable<TedarukcuDto> tedarukculer);
+    void FormuTemizle();
 
     event EventHandler FormYuklendi_Istek;
     event EventHandler MehsulElaveEt_Istek;

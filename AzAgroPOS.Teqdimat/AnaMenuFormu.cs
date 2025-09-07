@@ -1,6 +1,7 @@
 // Fayl: AzAgroPOS.Teqdimat/AnaMenuFormu.cs
 namespace AzAgroPOS.Teqdimat;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Yardimcilar;
 using MaterialSkin.Controls;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,17 +13,25 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-public partial class AnaMenuFormu : BazaForm
+public partial class AnaMenuFormu : BazaForm, IAnaMenuView
 {
     private readonly IServiceProvider _serviceProvider;
     private readonly Dictionary<Type, MaterialButton> _formButtonMap;
+
+    // IAnaMenuView interface implementasiyası
+    public IServiceProvider ServiceProvider => _serviceProvider;
+
+    // Hadisələr
+    public event EventHandler FormYuklendi;
+    public event EventHandler<FormClosingEventArgs> FormBaglaniyor;
 
     public AnaMenuFormu(IServiceProvider serviceProvider)
     {
         InitializeComponent();
         _serviceProvider = serviceProvider;
 
-        this.Load += AnaMenuFormu_Load;
+        this.Load += (sender, e) => FormYuklendi?.Invoke(this, EventArgs.Empty);
+        this.FormClosing += (sender, e) => FormBaglaniyor?.Invoke(this, e);
 
         _formButtonMap = new Dictionary<Type, MaterialButton>
         {
@@ -58,7 +67,7 @@ public partial class AnaMenuFormu : BazaForm
 
     #region Tab İdarəetməsi
 
-    private void UsaqFormuAc<T>() where T : Form
+    public void UsaqFormuAc<T>() where T : Form
     {
         var mövcudSehife = mdiTabControl.TabPages.OfType<TabPage>().FirstOrDefault(p => p.Tag is T);
 
@@ -280,8 +289,8 @@ public partial class AnaMenuFormu : BazaForm
 
     #endregion
 
-    #region İcazələr və Düymə Klikləri
-    private void IcazeleriYoxla()
+    // IAnaMenuView interface implementasiyası
+    public void IcazeleriYoxla()
     {
         var istifadeci = AktivSessiya.AktivIstifadeci;
         if (istifadeci == null)
@@ -319,6 +328,11 @@ public partial class AnaMenuFormu : BazaForm
         btnYeniSatis.Enabled = AktivSessiya.AktivNovbeId.HasValue;
     }
 
+    public void MesajGoster(string mesaj, string basliq, MessageBoxButtons düymələr, MessageBoxIcon ikon)
+    {
+        MessageBox.Show(mesaj, basliq, düymələr, ikon);
+    }
+
     private void btnMehsulIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<MehsulIdareetmeFormu>();
     private void btnYeniSatis_Click(object sender, EventArgs e) => UsaqFormuAc<SatisFormu>();
     private void btnQaytarma_Click(object sender, EventArgs e) => UsaqFormuAc<QaytarmaFormu>();
@@ -343,8 +357,6 @@ public partial class AnaMenuFormu : BazaForm
     private void btnIsciIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<IsciIdareetmeFormu>();
     private void btnMinimumStokMehsullari_Click(object sender, EventArgs e) => UsaqFormuAc<MinimumStokMehsullariFormu>(); // Əlavə edildi
     private void btnKonfiqurasiya_Click(object sender, EventArgs e) => UsaqFormuAc<KonfiqurasiyaFormu>(); // Əlavə edildi
-
-    #endregion
 
     private void AnaMenuFormu_FormClosing(object sender, FormClosingEventArgs e)
     {

@@ -13,10 +13,10 @@ namespace AzAgroPOS.Teqdimat
         private readonly MehsulPresenter _presenter;
         private readonly IServiceProvider _serviceProvider;
 
-        public MehsulIdareetmeFormu(MehsulManager mehsulManager, IServiceProvider serviceProvider)
+        public MehsulIdareetmeFormu(MehsulManager mehsulManager, MehsulPresenter mehsulPresenter, IServiceProvider serviceProvider)
         {
             InitializeComponent();
-            _presenter = new MehsulPresenter(this, mehsulManager, serviceProvider);
+            _presenter = mehsulPresenter;
             _serviceProvider = serviceProvider;
             Yardimcilar.DataGridViewHelper.StilVerDataGridView(dgvMehsullar);
 
@@ -459,6 +459,39 @@ namespace AzAgroPOS.Teqdimat
 
             // Temporary implementation
             MessageBox.Show("Alış detalları funksionallığı hazırlanır...", "Qeyd", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        public void FormuTemizle()
+        {
+            // Clear all input fields
+            txtId.Clear();
+            txtAd.Clear();
+            txtStokKodu.Clear();
+            txtBarkod.Clear();
+            txtPerakendeSatisQiymeti.Text = "0";
+            txtTopdanSatisQiymeti.Text = "0";
+            txtTekEdedSatisQiymeti.Text = "0";
+            txtAlisQiymeti.Text = "0";
+            txtMevcudSay.Text = "0";
+            txtMinimumStok.Text = "0";
+            
+            // Reset combo boxes
+            cmbOlcuVahidi.SelectedIndex = -1;
+            cmbKateqoriya.SelectedIndex = -1;
+            cmbBrend.SelectedIndex = -1;
+            cmbTedarukcu.SelectedIndex = -1;
+            
+            // Clear selection in grid
+            dgvMehsullar.ClearSelection();
+            
+            // Reset button text
+            btnElaveEt.Text = "Əlavə Et";
+            
+            // Enable copy button
+            btnKopyala.Enabled = false;
+            
+            // Focus on name field
+            txtAd.Focus();
         }
 
         #endregion

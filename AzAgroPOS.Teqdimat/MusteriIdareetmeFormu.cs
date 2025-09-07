@@ -12,10 +12,10 @@ namespace AzAgroPOS.Teqdimat
         private readonly IServiceProvider _serviceProvider;
         public int SecilenMusteriId { get; private set; } = 0;
 
-        public MusteriIdareetmeFormu(MusteriManager musteriManager, IServiceProvider serviceProvider)
+        public MusteriIdareetmeFormu(MusteriManager musteriManager, MusteriPresenter musteriPresenter, IServiceProvider serviceProvider)
         {
             InitializeComponent();
-            _presenter = new MusteriPresenter(this, musteriManager);
+            _presenter = musteriPresenter;
             _serviceProvider = serviceProvider;
             // Form yüklənəndə Presenter-ə xəbər veririk
             this.Load += (s, e) =>

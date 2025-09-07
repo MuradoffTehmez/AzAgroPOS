@@ -1,6 +1,8 @@
-// AzAgroPOS.Tests/LogicTests/NovbeManagerTests.cs
+// Fayl: AzAgroPOS.Tests/LogicTests/NovbeManagerTests.cs
 
+using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Tests.Helpers;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
@@ -28,7 +30,6 @@ namespace AzAgroPOS.Tests.LogicTests
 
             _unitOfWorkMock = new Mock<IUnitOfWork>();
 
-            // Setup UnitOfWork mock
             _unitOfWorkMock.Setup(u => u.Novbeler).Returns(new Mock<INovbeRepozitori>().Object);
             _unitOfWorkMock.Setup(u => u.Istifadeciler).Returns(new Mock<IIstifadeciRepozitori>().Object);
             _unitOfWorkMock.Setup(u => u.Satislar).Returns(new Mock<ISatisRepozitori>().Object);
@@ -85,12 +86,12 @@ namespace AzAgroPOS.Tests.LogicTests
         public async Task NovbeAcAsync_IsciTapilmadi_Ugursuz()
         {
             // Arrange
-            int isciId = 999; // Mövcud olmayan ID
+            int isciId = 999;
             decimal baslangicMebleg = 100.00m;
 
             var mockIsciRepo = new Mock<IIstifadeciRepozitori>();
             mockIsciRepo.Setup(r => r.GetirAsync(isciId))
-                .ReturnsAsync((Istifadeci)null); // Mövcud olmayan işçi
+                .ReturnsAsync((Istifadeci)null);
 
             _unitOfWorkMock.Setup(u => u.Istifadeciler).Returns(mockIsciRepo.Object);
 
@@ -119,7 +120,7 @@ namespace AzAgroPOS.Tests.LogicTests
                 AcilmaTarixi = DateTime.Now.AddHours(-8),
                 BaslangicMebleg = 100.00m,
                 GozlenilenMebleg = 1350.00m,
-                FaktikiMebleg = 0.00m, // Hələ doldurulmayıb
+                FaktikiMebleg = 0.00m,
                 Status = NovbeStatusu.Aciq
             };
 
@@ -134,8 +135,7 @@ namespace AzAgroPOS.Tests.LogicTests
             mockNovbeRepo.Setup(r => r.GetirAsync(novbeId))
                 .ReturnsAsync(movcudNovbe);
             mockNovbeRepo.Setup(r => r.Yenile(It.IsAny<Novbe>()))
-                .Callback<Novbe>(n =>
-                {
+                .Callback<Novbe>(n => {
                     movcudNovbe.FaktikiMebleg = n.FaktikiMebleg;
                     movcudNovbe.Status = n.Status;
                     movcudNovbe.BaglanmaTarixi = n.BaglanmaTarixi;
@@ -165,12 +165,12 @@ namespace AzAgroPOS.Tests.LogicTests
         public async Task NovbeBaglaAsync_NovbeTapilmadi_Ugursuz()
         {
             // Arrange
-            int novbeId = 999; // Mövcud olmayan ID
+            int novbeId = 999;
             decimal faktikiMebleg = 1250.75m;
 
             var mockNovbeRepo = new Mock<INovbeRepozitori>();
             mockNovbeRepo.Setup(r => r.GetirAsync(novbeId))
-                .ReturnsAsync((Novbe)null); // Mövcud olmayan növbə
+                .ReturnsAsync((Novbe)null);
 
             _unitOfWorkMock.Setup(u => u.Novbeler).Returns(mockNovbeRepo.Object);
 
@@ -200,7 +200,7 @@ namespace AzAgroPOS.Tests.LogicTests
                 BaslangicMebleg = 100.00m,
                 GozlenilenMebleg = 1350.00m,
                 FaktikiMebleg = 1250.75m,
-                Status = NovbeStatusu.Bagli, // Artıq bağlı
+                Status = NovbeStatusu.Bagli,
                 BaglanmaTarixi = DateTime.Now
             };
 
@@ -250,10 +250,9 @@ namespace AzAgroPOS.Tests.LogicTests
             var netice = await _novbeManager.AktivNovbeniGetirAsync(isciId);
 
             // Assert
-            Assert.True(netice.UgurluDur);
-            Assert.NotNull(netice.Data);
-            Assert.Equal(aktivNovbe.Id, netice.Data.Id);
-            Assert.Equal(NovbeStatusu.Aciq, netice.Data.Status);
+            Assert.NotNull(netice);
+            Assert.Equal(aktivNovbe.Id, netice.Id);
+            Assert.Equal(NovbeStatusu.Aciq, netice.Status);
             mockNovbeRepo.Verify(r => r.AxtarAsync(It.IsAny<Expression<Func<Novbe, bool>>>(), null), Times.Once);
         }
 
@@ -275,8 +274,7 @@ namespace AzAgroPOS.Tests.LogicTests
             var netice = await _novbeManager.AktivNovbeniGetirAsync(isciId);
 
             // Assert
-            Assert.False(netice.UgurluDur);
-            Assert.Contains("Aktiv növbə tapılmadı", netice.Mesaj);
+            Assert.Null(netice);
             mockNovbeRepo.Verify(r => r.AxtarAsync(It.IsAny<Expression<Func<Novbe, bool>>>(), null), Times.Once);
         }
     }

@@ -15,10 +15,11 @@ namespace AzAgroPOS.Teqdimat
         private readonly SatisPresenter _presenter;
         private readonly IServiceProvider _serviceProvider;
 
-        public SatisFormu(SatisManager satisManager, MehsulManager mehsulManager, MusteriManager musteriManager)
+        public SatisFormu(SatisPresenter satisPresenter, IServiceProvider serviceProvider)
         {
             InitializeComponent();
-            _presenter = new SatisPresenter(this, satisManager, mehsulManager, musteriManager);
+            _presenter = satisPresenter;
+            _serviceProvider = serviceProvider;
             this.Load += (s, e) => FormYuklendiIstek?.Invoke(this, EventArgs.Empty);
             ConfigureDataGridViewStyles();
             AddCartActionButtons();

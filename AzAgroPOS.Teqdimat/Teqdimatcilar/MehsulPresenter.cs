@@ -13,15 +13,17 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
         private readonly MehsulManager _mehsulManager;
         private readonly KateqoriyaMeneceri _kateqoriyaMeneceri;
         private readonly BrendMeneceri _brendMeneceri;
-        private readonly IServiceProvider _serviceProvider;
+        private readonly TedarukcuMeneceri _tedarukcuMeneceri;
         private IEnumerable<MehsulDto>? _butunMehsullarCache;
 
-        public MehsulPresenter(IMehsulIdareetmeView view, MehsulManager mehsulManager, IServiceProvider serviceProvider)
+        public MehsulPresenter(IMehsulIdareetmeView view, MehsulManager mehsulManager, 
+            KateqoriyaMeneceri kateqoriyaMeneceri, BrendMeneceri brendMeneceri, TedarukcuMeneceri tedarukcuMeneceri)
         {
             _view = view;
             _mehsulManager = mehsulManager;
-            _serviceProvider = serviceProvider;
-            //_mehsulManager = new MehsulManager(unitOfWork);
+            _kateqoriyaMeneceri = kateqoriyaMeneceri;
+            _brendMeneceri = brendMeneceri;
+            _tedarukcuMeneceri = tedarukcuMeneceri;
 
             // Hadisələrə abunə oluruq (Subscribing to events)
             _view.FormYuklendi_Istek += async (s, e) => await FormuYukle();
@@ -41,29 +43,28 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             _view.OlcuVahidleriniGoster(Enum.GetValues(typeof(OlcuVahidi)));
 
             // Kateqoriyaları yükləyirik
-            var kateqoriyaMeneceri = _serviceProvider.GetRequiredService<KateqoriyaMeneceri>();
-            var kateqoriyaNetice = await kateqoriyaMeneceri.ButunKateqoriyalariGetirAsync();
+            var kateqoriyaNetice = await _kateqoriyaMeneceri.ButunKateqoriyalariGetirAsync();
             if (kateqoriyaNetice.UgurluDur)
                 _view.KateqoriyalariGoster(kateqoriyaNetice.Data);
 
             // Brendləri yükləyirik
-            var brendMeneceri = _serviceProvider.GetRequiredService<BrendMeneceri>();
-            var brendNetice = await brendMeneceri.ButunBrendleriGetirAsync();
+            var brendNetice = await _brendMeneceri.ButunBrendleriGetirAsync();
             if (brendNetice.UgurluDur)
                 _view.BrendleriGoster(brendNetice.Data);
 
-            // Tədarükçüləri yükləyirik
-            var alisManager = _serviceProvider.GetRequiredService<AlisManager>();
-            var tedarukcuNetice = await alisManager.ButunTedarukculeriGetirAsync();
+            // Tedarukçuları yükləyirik
+            var tedarukcuNetice = await _tedarukcuMeneceri.ButunTedarukculeriGetirAsync();
             if (tedarukcuNetice.UgurluDur)
                 _view.TedarukculeriGoster(tedarukcuNetice.Data);
 
+            // Bütün məhsulları yükləyirik (cache üçün)
             var netice = await _mehsulManager.ButunMehsullariGetirAsync();
-            if (netice.UgurluDur && netice.Data != null)
+            if (netice.UgurluDur)
             {
                 _butunMehsullarCache = netice.Data;
                 _view.MehsullariGoster(_butunMehsullarCache);
             }
+            _view.FormuTemizle();
         }
 
         private async Task MehsulElaveEt()

@@ -1,10 +1,11 @@
 // AzAgroPOS.Teqdimat/KonfiqurasiyaFormu.cs
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Teqdimat.Interfeysler;
 
 namespace AzAgroPOS.Teqdimat
 {
-    public partial class KonfiqurasiyaFormu : BazaForm
+    public partial class KonfiqurasiyaFormu : BazaForm, IKonfiqurasiyaView
     {
         private readonly KonfiqurasiyaManager _konfiqurasiyaManager;
 
@@ -177,6 +178,18 @@ namespace AzAgroPOS.Teqdimat
                 MessageBox.Show($"Konfiqurasiya parametrləri saxlanılarkən xəta baş verdi: {ex.Message}",
                     "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        // IKonfiqurasiyaView interface implementasiyası
+        public void MesajGoster(string mesaj, string basliq, MessageBoxButtons düymələr, MessageBoxIcon ikon)
+        {
+            MessageBox.Show(mesaj, basliq, düymələr, ikon);
+        }
+
+        public void FormuYenile()
+        {
+            // Formu yeniləmək üçün tələb olunan əməliyyatlar
+            // Hazırda bu metod sadələşdirilmişdir
         }
     }
 }
