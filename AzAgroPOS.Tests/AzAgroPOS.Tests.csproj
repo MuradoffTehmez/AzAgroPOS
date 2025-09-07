@@ -18,11 +18,13 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Moq" Version="4.18.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\AzAgroPOS.Mentiq\AzAgroPOS.Mentiq.csproj" />
     <ProjectReference Include="..\AzAgroPOS.Verilenler\AzAgroPOS.Verilenler.csproj" />
+    <ProjectReference Include="..\AzAgroPOS.Varliglar\AzAgroPOS.Varliglar.csproj" />
   </ItemGroup>
 
 </Project>
