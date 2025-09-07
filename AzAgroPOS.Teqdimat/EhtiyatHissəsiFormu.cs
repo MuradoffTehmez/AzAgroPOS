@@ -22,17 +22,7 @@ namespace AzAgroPOS.Teqdimat
 
         private void StilVerDataGridView(DataGridView grid)
         {
-            grid.BorderStyle = BorderStyle.None;
-            grid.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(238, 239, 249);
-            grid.CellBorderStyle = DataGridViewCellBorderStyle.Raised;
-            grid.DefaultCellStyle.SelectionBackColor = Color.FromArgb(150, 190, 220);
-            grid.DefaultCellStyle.SelectionForeColor = Color.WhiteSmoke;
-            grid.BackgroundColor = Color.White;
-
-            grid.EnableHeadersVisualStyles = false;
-            grid.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            grid.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(20, 25, 72);
-            grid.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            Yardimcilar.DataGridViewHelper.StilVerDataGridView(grid);
         }
 
         private async void EhtiyatHissəsiFormu_Load(object sender, EventArgs e)

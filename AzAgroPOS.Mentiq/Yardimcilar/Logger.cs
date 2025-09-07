@@ -1,42 +1,32 @@
-﻿// Fayl: AzAgroPOS.Mentiq/Yardimcilar/Logger.cs
-namespace AzAgroPOS.Mentiq.Yardimcilar;
-
 using Serilog;
 using System;
 
-/// <summary>
-/// Tətbiqat səviyyəli loqger konfiqurasiyası.
-/// </summary>
-public static class Logger
+namespace AzAgroPOS.Mentiq.Yardimcilar
 {
-    private static ILogger? _logger;
-
-    /// <summary>
-    /// Loqgeri konfiqurasiya edir və işə salır.
-    /// </summary>
-    public static void KonfiqurasiyaEt()
+    public static class Logger
     {
-        _logger = new LoggerConfiguration()
-            .WriteTo.File("logs/loqlar-.txt", rollingInterval: RollingInterval.Day)
-            .CreateLogger();
-    }
+        private static ILogger? _logger;
 
-    /// <summary>
-    /// Xəta loqlar.
-    /// </summary>
-    /// <param name="exception">Xəta obyekti</param>
-    /// <param name="mesaj">Əlavə məlumat</param>
-    public static void XetaLoqla(Exception exception, string mesaj = "")
-    {
-        _logger?.Error(exception, mesaj);
-    }
+        public static void KonfiqurasiyaEt()
+        {
+            _logger = new LoggerConfiguration()
+                .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day)
+                .CreateLogger();
+        }
 
-    /// <summary>
-    /// Ümumi məlumat loqlar.
-    /// </summary>
-    /// <param name="mesaj">Loq mesajı</param>
-    public static void MelumatLoqla(string mesaj)
-    {
-        _logger?.Information(mesaj);
+        public static void MelumatYaz(string mesaj)
+        {
+            _logger?.Information(mesaj);
+        }
+
+        public static void XetaYaz(Exception ex, string? mesaj = null)
+        {
+            _logger?.Error(ex, mesaj);
+        }
+
+        public static void XəbərdarlıqYaz(string mesaj)
+        {
+            _logger?.Warning(mesaj);
+        }
     }
 }

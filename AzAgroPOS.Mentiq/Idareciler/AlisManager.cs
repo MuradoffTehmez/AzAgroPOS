@@ -51,7 +51,7 @@ public class AlisManager
         }
         catch (Exception ex)
         {
-            Logger.XetaLoqla(ex, "Tədarükçüləri gətirmək alınmadı");
+            Logger.XetaYaz(ex, "Tədarükçüləri gətirmək alınmadı");
             return EmeliyyatNeticesi<List<TedarukcuDto>>.Ugursuz($"Tədarükçüləri gətirmək alınmadı: {ex.Message}");
         }
     }
@@ -83,7 +83,7 @@ public class AlisManager
         }
         catch (Exception ex)
         {
-            Logger.XetaLoqla(ex, "Tədarükçü məlumatlarını gətirmək alınmadı");
+            Logger.XetaYaz(ex, "Tədarükçü məlumatlarını gətirmək alınmadı");
             return EmeliyyatNeticesi<TedarukcuDto>.Ugursuz($"Tədarükçü məlumatlarını gətirmək alınmadı: {ex.Message}");
         }
     }

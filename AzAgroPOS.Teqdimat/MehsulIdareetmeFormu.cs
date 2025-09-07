@@ -18,7 +18,7 @@ namespace AzAgroPOS.Teqdimat
             InitializeComponent();
             _presenter = new MehsulPresenter(this, mehsulManager, serviceProvider);
             _serviceProvider = serviceProvider;
-            StilVerDataGridView(dgvMehsullar);
+            Yardimcilar.DataGridViewHelper.StilVerDataGridView(dgvMehsullar);
 
             // Setup auto-complete for ComboBoxes
             SetupComboBoxAutoComplete();

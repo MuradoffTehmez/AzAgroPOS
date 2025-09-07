@@ -1,4 +1,5 @@
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Teqdimat.Konfiqurasiya;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using AzAgroPOS.Verilenler.Kontekst;
@@ -21,17 +22,25 @@ namespace AzAgroPOS.Teqdimat
             // Loggeri konfiqurasiya edirik
             AzAgroPOS.Mentiq.Yardimcilar.Logger.KonfiqurasiyaEt();
 
-            var services = new ServiceCollection();
-            ConfigureServices(services);
-            ServiceProvider = services.BuildServiceProvider();
-
-            var loginFormu = ServiceProvider.GetRequiredService<LoginFormu>();
-            loginFormu.ShowDialog();
-
-            if (loginFormu.UgurluDaxilOlundu)
+            try
             {
-                var anaMenuFormu = ServiceProvider.GetRequiredService<AnaMenuFormu>();
-                Application.Run(anaMenuFormu);
+                var services = new ServiceCollection();
+                ConfigureServices(services);
+                ServiceProvider = services.BuildServiceProvider();
+
+                var loginFormu = ServiceProvider.GetRequiredService<LoginFormu>();
+                loginFormu.ShowDialog();
+
+                if (loginFormu.UgurluDaxilOlundu)
+                {
+                    var anaMenuFormu = ServiceProvider.GetRequiredService<AnaMenuFormu>();
+                    Application.Run(anaMenuFormu);
+                }
+            }
+            catch (Exception ex)
+            {
+                AzAgroPOS.Mentiq.Yardimcilar.Logger.XetaYaz(ex, "Tətbiq səviyyəsində tutulmayan istisna baş verdi");
+                MessageBox.Show("Tətbiqdə gözlənilməyən xəta baş verdi. Təfərrüatlar log faylına yazıldı.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -45,7 +54,7 @@ namespace AzAgroPOS.Teqdimat
             IConfiguration configuration = builder.Build();
 
             // Get connection string from configuration or use fallback
-            string connectionString = configuration.GetConnectionString("DefaultConnection") ??
+            string connectionString = configuration.GetConnectionString(Sabitler.DefaultConnection) ??
             "Server=.\\SQLEXPRESS;Database=AzAgroPOS_DB;Trusted_Connection=True;TrustServerCertificate=True;";
 
             services.AddDbContext<AzAgroPOSDbContext>(options =>
