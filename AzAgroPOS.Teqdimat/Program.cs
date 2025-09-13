@@ -20,7 +20,7 @@ namespace AzAgroPOS.Teqdimat
         {
             ApplicationConfiguration.Initialize();
 
-            // Loggeri konfiqurasiya edirik
+            
             AzAgroPOS.Mentiq.Yardimcilar.Logger.KonfiqurasiyaEt();
 
             try
