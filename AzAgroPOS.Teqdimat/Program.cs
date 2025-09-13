@@ -47,7 +47,6 @@ namespace AzAgroPOS.Teqdimat
                 }
                 catch
                 {
-                    // If logging also fails, show a simple message box
                     MessageBox.Show("Tətbiqdə gözlənilməyən xəta baş verdi. Log faylı yaradıla bilmədi.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
