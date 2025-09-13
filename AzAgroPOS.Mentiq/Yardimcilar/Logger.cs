@@ -1,5 +1,4 @@
 using Serilog;
-using System.IO;
 
 namespace AzAgroPOS.Mentiq.Yardimcilar
 {
@@ -19,7 +18,7 @@ namespace AzAgroPOS.Mentiq.Yardimcilar
                 }
 
                 _logger = new LoggerConfiguration()
-                    .WriteTo.File(Path.Combine(logDirectory, "log-.txt"), 
+                    .WriteTo.File(Path.Combine(logDirectory, "log-.txt"),
                                  rollingInterval: RollingInterval.Day,
                                  shared: true,
                                  rollOnFileSizeLimit: true)
@@ -30,7 +29,7 @@ namespace AzAgroPOS.Mentiq.Yardimcilar
                 // If we can't create the logger, we'll continue without logging
                 // but we'll try to write to console as fallback
                 System.Console.WriteLine($"Logging konfiqurasiya edilərkən xəta baş verdi: {ex.Message}");
-                
+
                 // Continue without logger - don't throw exception to avoid crashing the app
                 _logger = null;
             }
