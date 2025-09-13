@@ -1,17 +1,13 @@
 // Fayl: AzAgroPOS.Tests/LogicTests/NovbeManagerTests.cs
 
-using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
-using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Tests.Helpers;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using AzAgroPOS.Verilenler.Kontekst;
-using Microsoft.EntityFrameworkCore;
 using Moq;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Xunit;
@@ -135,7 +131,8 @@ namespace AzAgroPOS.Tests.LogicTests
             mockNovbeRepo.Setup(r => r.GetirAsync(novbeId))
                 .ReturnsAsync(movcudNovbe);
             mockNovbeRepo.Setup(r => r.Yenile(It.IsAny<Novbe>()))
-                .Callback<Novbe>(n => {
+                .Callback<Novbe>(n =>
+                {
                     movcudNovbe.FaktikiMebleg = n.FaktikiMebleg;
                     movcudNovbe.Status = n.Status;
                     movcudNovbe.BaglanmaTarixi = n.BaglanmaTarixi;
