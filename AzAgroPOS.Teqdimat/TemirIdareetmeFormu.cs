@@ -1,5 +1,4 @@
 using AzAgroPOS.Mentiq.DTOs;
-using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
 
