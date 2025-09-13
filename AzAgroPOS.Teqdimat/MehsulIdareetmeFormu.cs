@@ -474,22 +474,22 @@ namespace AzAgroPOS.Teqdimat
             txtAlisQiymeti.Text = "0";
             txtMevcudSay.Text = "0";
             txtMinimumStok.Text = "0";
-            
+
             // Reset combo boxes
             cmbOlcuVahidi.SelectedIndex = -1;
             cmbKateqoriya.SelectedIndex = -1;
             cmbBrend.SelectedIndex = -1;
             cmbTedarukcu.SelectedIndex = -1;
-            
+
             // Clear selection in grid
             dgvMehsullar.ClearSelection();
-            
+
             // Reset button text
             btnElaveEt.Text = "Əlavə Et";
-            
+
             // Enable copy button
             btnKopyala.Enabled = false;
-            
+
             // Focus on name field
             txtAd.Focus();
         }
