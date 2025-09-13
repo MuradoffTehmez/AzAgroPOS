@@ -1,7 +1,4 @@
 // Fayl: AzAgroPOS.Teqdimat/Interfeysler/IAnaMenuView.cs
-using System;
-using System.Windows.Forms;
-
 namespace AzAgroPOS.Teqdimat.Interfeysler;
 
 /// <summary>
