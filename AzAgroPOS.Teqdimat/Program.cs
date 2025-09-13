@@ -8,7 +8,6 @@ using AzAgroPOS.Verilenler.Realizasialar;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.IO;
 
 namespace AzAgroPOS.Teqdimat
 {
