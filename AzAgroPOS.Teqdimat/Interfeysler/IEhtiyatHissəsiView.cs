@@ -1,8 +1,5 @@
 // Fayl: AzAgroPOS.Teqdimat/Interfeysler/IEhtiyatHissəsiView.cs
 using AzAgroPOS.Mentiq.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
 
 namespace AzAgroPOS.Teqdimat.Interfeysler;
 
