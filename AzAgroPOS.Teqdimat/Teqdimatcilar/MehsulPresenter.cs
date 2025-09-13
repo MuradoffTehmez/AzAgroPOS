@@ -3,7 +3,6 @@ using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Varliglar;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 {
@@ -16,7 +15,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
         private readonly TedarukcuMeneceri _tedarukcuMeneceri;
         private IEnumerable<MehsulDto>? _butunMehsullarCache;
 
-        public MehsulPresenter(IMehsulIdareetmeView view, MehsulManager mehsulManager, 
+        public MehsulPresenter(IMehsulIdareetmeView view, MehsulManager mehsulManager,
             KateqoriyaMeneceri kateqoriyaMeneceri, BrendMeneceri brendMeneceri, TedarukcuMeneceri tedarukcuMeneceri)
         {
             _view = view;
