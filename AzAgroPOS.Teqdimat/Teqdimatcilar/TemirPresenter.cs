@@ -5,12 +5,11 @@ using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Varliglar;
-using Microsoft.Extensions.DependencyInjection;
 
 /// <summary>
-    ///  temir presenter class. 
-    ///  bu presenter, temir sifarişlərinin idarə olunması üçün istifadə olunur.
-    /// </summary>
+///  temir presenter class. 
+///  bu presenter, temir sifarişlərinin idarə olunması üçün istifadə olunur.
+/// </summary>
 public class TemirPresenter
 {
     private readonly ITemirView _view;
@@ -23,7 +22,7 @@ public class TemirPresenter
     ///  bu presenter, temir view interfeysini alır və temir manager ilə əlaqələndirir.
     /// </summary>
     /// <param name="view"></param>
-    public TemirPresenter(ITemirView view, TemirManager temirManager, MusteriManager musteriManager, 
+    public TemirPresenter(ITemirView view, TemirManager temirManager, MusteriManager musteriManager,
         IstifadeciManager istifadeciManager, MehsulManager mehsulManager)
     {
         _view = view;
