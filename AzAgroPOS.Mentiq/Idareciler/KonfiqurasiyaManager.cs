@@ -1,6 +1,7 @@
 // AzAgroPOS.Mentiq/Idareciler/KonfiqurasiyaManager.cs
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Uslublar;
+using AzAgroPOS.Mentiq.Yardimcilar;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 
@@ -47,7 +48,8 @@ public class KonfiqurasiyaManager
         }
         catch (Exception ex)
         {
-            return EmeliyyatNeticesi<KonfiqurasiyaDto>.Ugursuz($"Konfiqurasiya parametri götürülərkən xəta baş verdi: {ex.Message}");
+            Logger.XetaYaz(ex, "Konfiqurasiya parametri götürülərkən xəta baş verdi: ");
+            return EmeliyyatNeticesi<KonfiqurasiyaDto>.Ugursuz($"Konfiqurasiya parametri götürülərkən xəta baş verdi: {ex.Message}+ {ex.StackTrace}");
         }
     }
 
@@ -75,7 +77,8 @@ public class KonfiqurasiyaManager
         }
         catch (Exception ex)
         {
-            return EmeliyyatNeticesi<IEnumerable<KonfiqurasiyaDto>>.Ugursuz($"Konfiqurasiya parametrləri götürülərkən xəta baş verdi: {ex.Message}");
+            Logger.XetaYaz(ex, "Konfiqurasiya parametrləri götürülərkən xəta baş verdi: ");
+            return EmeliyyatNeticesi<IEnumerable<KonfiqurasiyaDto>>.Ugursuz($"Konfiqurasiya parametrləri götürülərkən xəta baş verdi: {ex.Message} + {ex.StackTrace}");
         }
     }
 
@@ -119,7 +122,8 @@ public class KonfiqurasiyaManager
         }
         catch (Exception ex)
         {
-            return EmeliyyatNeticesi<bool>.Ugursuz($"Konfiqurasiya parametri saxlanılarkən xəta baş verdi: {ex.Message}");
+            Logger.XetaYaz(ex, "Konfiqurasiya parametri saxlanılarkən xəta baş verdi: ");
+            return EmeliyyatNeticesi<bool>.Ugursuz($"Konfiqurasiya parametri saxlanılarkən xəta baş verdi: {ex.Message} + {ex.StackTrace}");
         }
     }
 
@@ -146,7 +150,8 @@ public class KonfiqurasiyaManager
         }
         catch (Exception ex)
         {
-            return EmeliyyatNeticesi<IEnumerable<KonfiqurasiyaDto>>.Ugursuz($"Konfiqurasiya parametrləri götürülərkən xəta baş verdi: {ex.Message}");
+            Logger.XetaYaz(ex, "Konfiqurasiya parametrləri götürülərkən xəta baş verdi: ");
+            return EmeliyyatNeticesi<IEnumerable<KonfiqurasiyaDto>>.Ugursuz($"Konfiqurasiya parametrləri götürülərkən xəta baş verdi: {ex.Message} + {ex.StackTrace}");
         }
     }
 }
