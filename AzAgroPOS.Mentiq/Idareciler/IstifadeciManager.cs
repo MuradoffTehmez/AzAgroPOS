@@ -3,6 +3,7 @@ namespace AzAgroPOS.Mentiq.Idareciler;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Uslublar;
+using AzAgroPOS.Mentiq.Yardimcilar;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using System.Collections.Generic;
@@ -28,19 +29,28 @@ public class IstifadeciManager
     /// <returns></returns>
     public async Task<EmeliyyatNeticesi<List<IstifadeciDto>>> IstifadecileriGetirAsync()
     {
-
-        var istifadeciler = await _unitOfWork.Istifadeciler.ButununuGetirAsync();
-        var rollar = await _unitOfWork.Rollar.ButununuGetirAsync();
-
-        var dtolar = istifadeciler.Select(i => new IstifadeciDto
+        Logger.MelumatYaz("IstifadecileriGetirAsync metodu çağırıldı.");
+        Logger.MelumatYaz("Əsas admini (id = 1) istisna edirik.");
+        try
         {
-            Id = i.Id,
-            IstifadeciAdi = i.IstifadeciAdi,
-            TamAd = i.TamAd,
-            RolAdi = rollar.FirstOrDefault(r => r.Id == i.RolId)?.Ad ?? "Təyinatsız"
-        }).ToList();
+            var istifadeciler = await _unitOfWork.Istifadeciler.ButununuGetirAsync();
+            var rollar = await _unitOfWork.Rollar.ButununuGetirAsync();
 
-        return EmeliyyatNeticesi<List<IstifadeciDto>>.Ugurlu(dtolar);
+            var dtolar = istifadeciler.Select(i => new IstifadeciDto
+            {
+                Id = i.Id,
+                IstifadeciAdi = i.IstifadeciAdi,
+                TamAd = i.TamAd,
+                RolAdi = rollar.FirstOrDefault(r => r.Id == i.RolId)?.Ad ?? "Təyinatsız"
+            }).ToList();
+
+            return EmeliyyatNeticesi<List<IstifadeciDto>>.Ugurlu(dtolar);
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Istifadəçiləri yaratmaq alınmadı: ");
+            return EmeliyyatNeticesi<List<IstifadeciDto>>.Ugursuz($"Istifadəçiləri yaratmaq alınmadı: {ex.Message} + {ex.StackTrace}");
+        }
     }
 
     /// <summary>
@@ -73,25 +83,37 @@ public class IstifadeciManager
     /// <returns></returns>
     public async Task<EmeliyyatNeticesi> IstifadeciYaratAsync(IstifadeciDto yeniIstifadeci, string parol)
     {
-        if (string.IsNullOrWhiteSpace(yeniIstifadeci.IstifadeciAdi) || string.IsNullOrWhiteSpace(parol))
-            return EmeliyyatNeticesi.Ugursuz("İstifadəçi adı və parol boş ola bilməz.");
+        Logger.MelumatYaz("IstifadeciYaratAsync metodu çağırıldı.");
+        Logger.MelumatYaz(yeniIstifadeci.ToString());
+        Logger.MelumatYaz(parol.ToLower());
 
-        var movcudIstifadeci = (await _unitOfWork.Istifadeciler.AxtarAsync(i => i.IstifadeciAdi == yeniIstifadeci.IstifadeciAdi)).FirstOrDefault();
-        if (movcudIstifadeci != null)
-            return EmeliyyatNeticesi.Ugursuz("Bu istifadəçi adı artıq mövcuddur.");
-
-        var istifadeci = new Istifadeci
+        try
         {
-            IstifadeciAdi = yeniIstifadeci.IstifadeciAdi,
-            TamAd = yeniIstifadeci.TamAd,
-            RolId = yeniIstifadeci.RolId,
-            ParolHash = BCrypt.Net.BCrypt.HashPassword(parol)
-        };
+            if (string.IsNullOrWhiteSpace(yeniIstifadeci.IstifadeciAdi) || string.IsNullOrWhiteSpace(parol))
+                return EmeliyyatNeticesi.Ugursuz("İstifadəçi adı və parol boş ola bilməz.");
 
-        await _unitOfWork.Istifadeciler.ElaveEtAsync(istifadeci);
-        await _unitOfWork.EmeliyyatiTesdiqleAsync();
+            var movcudIstifadeci = (await _unitOfWork.Istifadeciler.AxtarAsync(i => i.IstifadeciAdi == yeniIstifadeci.IstifadeciAdi)).FirstOrDefault();
+            if (movcudIstifadeci != null)
+                return EmeliyyatNeticesi.Ugursuz("Bu istifadəçi adı artıq mövcuddur.");
 
-        return EmeliyyatNeticesi.Ugurlu();
+            var istifadeci = new Istifadeci
+            {
+                IstifadeciAdi = yeniIstifadeci.IstifadeciAdi,
+                TamAd = yeniIstifadeci.TamAd,
+                RolId = yeniIstifadeci.RolId,
+                ParolHash = BCrypt.Net.BCrypt.HashPassword(parol)
+            };
+
+            await _unitOfWork.Istifadeciler.ElaveEtAsync(istifadeci);
+            await _unitOfWork.EmeliyyatiTesdiqleAsync();
+
+            return EmeliyyatNeticesi.Ugurlu();
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Istifadəçiləri yaratmaq alınmadı: ");
+            return EmeliyyatNeticesi<List<IstifadeciDto>>.Ugursuz($"Istifadəçiləri yaratmaq alınmadı: {ex.Message} + {ex.StackTrace}");
+        }
     }
     /// <summary>
     ///  İstifadəçi məlumatlarını yeniləmək üçün metod. Asinxron olaraq işləyir.
@@ -104,17 +126,27 @@ public class IstifadeciManager
     /// <returns></returns>
     public async Task<EmeliyyatNeticesi> IstifadeciSilAsync(int id)
     {
-        if (id == 1) // Əsas admini silməyin qarşısını alırıq
-            return EmeliyyatNeticesi.Ugursuz("Əsas Administratoru silmək olmaz.");
+        Logger.MelumatYaz("IstifadeciSilAsync metodu çağırıldı.");
+        Logger.MelumatYaz(id.ToString());
+        try
+        {
+            if (id == 1) // Əsas admini silməyin qarşısını alırıq
+                return EmeliyyatNeticesi.Ugursuz("Əsas Administratoru silmək olmaz.");
 
-        var istifadeci = await _unitOfWork.Istifadeciler.GetirAsync(id);
-        if (istifadeci == null)
-            return EmeliyyatNeticesi.Ugursuz("İstifadəçi tapılmadı.");
+            var istifadeci = await _unitOfWork.Istifadeciler.GetirAsync(id);
+            if (istifadeci == null)
+                return EmeliyyatNeticesi.Ugursuz("İstifadəçi tapılmadı.");
 
-        _unitOfWork.Istifadeciler.Sil(istifadeci);
-        await _unitOfWork.EmeliyyatiTesdiqleAsync();
+            _unitOfWork.Istifadeciler.Sil(istifadeci);
+            await _unitOfWork.EmeliyyatiTesdiqleAsync();
 
-        return EmeliyyatNeticesi.Ugurlu();
+            return EmeliyyatNeticesi.Ugurlu();
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Istifadəçiləri silmək alınmadı: ");
+            return EmeliyyatNeticesi<List<IstifadeciDto>>.Ugursuz($"Istifadəçiləri silmək alınmadı: {ex.Message} + {ex.StackTrace}");
+        }
     }
     /// <summary>
     /// Mövcud istifadəçinin məlumatlarını (Tam Ad, Rol, Parol) yeniləyir.
@@ -124,30 +156,41 @@ public class IstifadeciManager
     /// <returns>Əməliyyatın nəticəsi.</returns>
     public async Task<EmeliyyatNeticesi> IstifadeciYenileAsync(IstifadeciDto istifadeciDto, string? yeniParol)
     {
-        if (string.IsNullOrWhiteSpace(istifadeciDto.TamAd))
-            return EmeliyyatNeticesi.Ugursuz("Tam ad boş ola bilməz.");
-
-        var movcudIstifadeci = await _unitOfWork.Istifadeciler.GetirAsync(istifadeciDto.Id);
-        if (movcudIstifadeci == null)
-            return EmeliyyatNeticesi.Ugursuz("Yenilənmək üçün istifadəçi tapılmadı.");
-
-        // Əsas adminin məlumatlarının dəyişdirilməsinin qarşısını alırıq
-        if (movcudIstifadeci.Id == 1 && istifadeciDto.RolId != 1)
-            return EmeliyyatNeticesi.Ugursuz("Əsas Administratorun rolu dəyişdirilə bilməz.");
-
-        movcudIstifadeci.TamAd = istifadeciDto.TamAd;
-        movcudIstifadeci.RolId = istifadeciDto.RolId;
-
-        // Əgər yeni parol daxil edilibsə, onu hash-ləyib yeniləyirik
-        if (!string.IsNullOrWhiteSpace(yeniParol))
+        Logger.MelumatYaz("IstifadeciYenileAsync metodu çağırıldı.");
+        Logger.MelumatYaz(istifadeciDto.ToString());
+        Logger.MelumatYaz(yeniParol?.ToLower() ?? "Yeni parol daxil edilməyib.");
+        try
         {
-            movcudIstifadeci.ParolHash = BCrypt.Net.BCrypt.HashPassword(yeniParol);
+            if (string.IsNullOrWhiteSpace(istifadeciDto.TamAd))
+                return EmeliyyatNeticesi.Ugursuz("Tam ad boş ola bilməz.");
+
+            var movcudIstifadeci = await _unitOfWork.Istifadeciler.GetirAsync(istifadeciDto.Id);
+            if (movcudIstifadeci == null)
+                return EmeliyyatNeticesi.Ugursuz("Yenilənmək üçün istifadəçi tapılmadı.");
+
+            // Əsas adminin məlumatlarının dəyişdirilməsinin qarşısını alırıq
+            if (movcudIstifadeci.Id == 1 && istifadeciDto.RolId != 1)
+                return EmeliyyatNeticesi.Ugursuz("Əsas Administratorun rolu dəyişdirilə bilməz.");
+
+            movcudIstifadeci.TamAd = istifadeciDto.TamAd;
+            movcudIstifadeci.RolId = istifadeciDto.RolId;
+
+            // Əgər yeni parol daxil edilibsə, onu hash-ləyib yeniləyirik
+            if (!string.IsNullOrWhiteSpace(yeniParol))
+            {
+                movcudIstifadeci.ParolHash = BCrypt.Net.BCrypt.HashPassword(yeniParol);
+            }
+
+            _unitOfWork.Istifadeciler.Yenile(movcudIstifadeci);
+            await _unitOfWork.EmeliyyatiTesdiqleAsync();
+
+            return EmeliyyatNeticesi.Ugurlu();
         }
-
-        _unitOfWork.Istifadeciler.Yenile(movcudIstifadeci);
-        await _unitOfWork.EmeliyyatiTesdiqleAsync();
-
-        return EmeliyyatNeticesi.Ugurlu();
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Istifadəçiləri yeniləmək alınmadı: ");
+            return EmeliyyatNeticesi<List<IstifadeciDto>>.Ugursuz($"Istifadəçiləri gətirmək alınmadı: {ex.Message} + {ex.StackTrace}");
+        }
     }
 
     /// <summary>
@@ -156,6 +199,7 @@ public class IstifadeciManager
     /// <returns></returns>
     public async Task<EmeliyyatNeticesi<List<IstifadeciDto>>> ButunTexnikleriGetirAsync()
     {
+        Logger.MelumatYaz("ButunTexnikleriGetirAsync metodu çağırıldı.");
         try
         {
             var istifadeciler = await _unitOfWork.Istifadeciler.ButununuGetirAsync();
@@ -178,7 +222,8 @@ public class IstifadeciManager
         }
         catch (Exception ex)
         {
-            return EmeliyyatNeticesi<List<IstifadeciDto>>.Ugursuz($"Texnikləri gətirmək alınmadı: {ex.Message}");
+            Logger.XetaYaz(ex, "Texnikləri gətirmək alınmadı: ");
+            return EmeliyyatNeticesi<List<IstifadeciDto>>.Ugursuz($"Texnikləri gətirmək alınmadı: {ex.Message} + {ex.StackTrace}");
         }
     }
 }
