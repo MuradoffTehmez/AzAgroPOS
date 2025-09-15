@@ -47,5 +47,8 @@ namespace AzAgroPOS.Teqdimat.Interfeysler
 
         // Müştəri ekranı dəstəyi
         void MusteriEkraniYenile(string mehsulAdi, decimal qiymet, decimal miqdar);
+
+        // Müştəri borcuna görə rəngləmə üçün məlumat
+        string GetMusteriBorcRengi(decimal borc);
     }
 }
