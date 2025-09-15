@@ -78,8 +78,6 @@ public class SatisManager
             }
 
             await _unitOfWork.Satislar.ElaveEtAsync(satis);
-            // Vacib: Dəyişiklikləri yaddaşa veririk ki, satış ID alsın
-            await _unitOfWork.EmeliyyatiTesdiqleAsync();
 
             // Əgər nisyədirsə, borcu qeydə al
             if (satis.OdenisMetodu == OdenisMetodu.Nisyə)
@@ -87,12 +85,13 @@ public class SatisManager
                 var nisyeNetice = await _nisyeManager.NisyeyeSatisElaveEtAsync(satis);
                 if (!nisyeNetice.UgurluDur)
                 {
-                    // Bu hal baş verərsə, tranzaksiyanı ləğv etmək üçün mürəkkəb mexanizm lazımdır.
-                    // Hələlik sadə xəta qaytarırıq.
                     Logger.XetaYaz(new Exception(nisyeNetice.Mesaj), "Nisyə qeydiyatı zamanı xəta");
                     return EmeliyyatNeticesi<Satis>.Ugursuz($"Nisyə qeydiyatı zamanı xəta: {nisyeNetice.Mesaj}");
                 }
             }
+
+            // Vacib: Bütün əməliyyatları vahid tranzaksiya kimi saxlayırıq
+            await _unitOfWork.EmeliyyatiTesdiqleAsync();
 
             Logger.MelumatYaz("Satış uğurla yaradıldı");
             return EmeliyyatNeticesi<Satis>.Ugurlu(satis);
