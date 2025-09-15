@@ -32,6 +32,7 @@ public class AlisManager
     /// </summary>
     public async Task<EmeliyyatNeticesi<List<TedarukcuDto>>> ButunTedarukculeriGetirAsync()
     {
+        Logger.MelumatYaz("ButunTedarukculeriGetirAsync metodu çağırıldı.");
         try
         {
             var tedarukculer = await _unitOfWork.Tedarukculer.ButununuGetirAsync();
@@ -52,7 +53,7 @@ public class AlisManager
         catch (Exception ex)
         {
             Logger.XetaYaz(ex, "Tədarükçüləri gətirmək alınmadı");
-            return EmeliyyatNeticesi<List<TedarukcuDto>>.Ugursuz($"Tədarükçüləri gətirmək alınmadı: {ex.Message}");
+            return EmeliyyatNeticesi<List<TedarukcuDto>>.Ugursuz($"Tədarükçüləri gətirmək alınmadı: {ex.Message} + {ex.StackTrace} ");
         }
     }
 
@@ -61,6 +62,7 @@ public class AlisManager
     /// </summary>
     public async Task<EmeliyyatNeticesi<TedarukcuDto>> TedarukcuGetirAsync(int id)
     {
+        Logger.MelumatYaz($"TedarukcuGetirAsync metodu çağırıldı. ID: {id}");
         try
         {
             var tedarukcu = await _unitOfWork.Tedarukculer.GetirAsync(id);
@@ -84,7 +86,7 @@ public class AlisManager
         catch (Exception ex)
         {
             Logger.XetaYaz(ex, "Tədarükçü məlumatlarını gətirmək alınmadı");
-            return EmeliyyatNeticesi<TedarukcuDto>.Ugursuz($"Tədarükçü məlumatlarını gətirmək alınmadı: {ex.Message}");
+            return EmeliyyatNeticesi<TedarukcuDto>.Ugursuz($"Tədarükçü məlumatlarını gətirmək alınmadı: {ex.Message}+ {ex.StackTrace}");
         }
     }
 
@@ -93,6 +95,7 @@ public class AlisManager
     /// </summary>
     public async Task<EmeliyyatNeticesi<int>> TedarukcuYaratAsync(TedarukcuDto dto)
     {
+        Logger.MelumatYaz("TedarukcuYaratAsync metodu çağırıldı.");
         try
         {
             // Validasiya
@@ -118,7 +121,8 @@ public class AlisManager
         }
         catch (Exception ex)
         {
-            return EmeliyyatNeticesi<int>.Ugursuz($"Tədarükçü yaratmaq alınmadı: {ex.Message}");
+            Logger.XetaYaz(ex, "Tədarükçüləri yaratmaq alınmadı");
+            return EmeliyyatNeticesi<int>.Ugursuz($"Tədarükçü yaratmaq alınmadı: {ex.Message}+ {ex.StackTrace}");
         }
     }
 
@@ -127,6 +131,7 @@ public class AlisManager
     /// </summary>
     public async Task<EmeliyyatNeticesi> TedarukcuYenileAsync(TedarukcuDto dto)
     {
+        Logger.MelumatYaz($"TedarukcuYenileAsync metodu çağırıldı. ID: {dto.Id}");
         try
         {
             var movcudTedarukcu = await _unitOfWork.Tedarukculer.GetirAsync(dto.Id);
@@ -153,7 +158,8 @@ public class AlisManager
         }
         catch (Exception ex)
         {
-            return EmeliyyatNeticesi.Ugursuz($"Tədarükçü məlumatlarını yeniləmək alınmadı: {ex.Message}");
+            Logger.XetaYaz(ex, "Tədarükçüləri məlumatlarını yeniləmək alınmadı");
+            return EmeliyyatNeticesi.Ugursuz($"Tədarükçü məlumatlarını yeniləmək alınmadı: {ex.Message}+ {ex.StackTrace}");
         }
     }
 
@@ -162,6 +168,7 @@ public class AlisManager
     /// </summary>
     public async Task<EmeliyyatNeticesi> TedarukcuSilAsync(int id)
     {
+        Logger.MelumatYaz($"TedarukcuSilAsync metodu çağırıldı. ID: {id}");
         try
         {
             var tedarukcu = await _unitOfWork.Tedarukculer.GetirAsync(id);
@@ -175,6 +182,7 @@ public class AlisManager
         }
         catch (Exception ex)
         {
+            Logger.XetaYaz(ex, "Tədarükçüləri silmək alınmadı");
             return EmeliyyatNeticesi.Ugursuz($"Tədarükçü silmək alınmadı: {ex.Message}");
         }
     }
@@ -188,6 +196,7 @@ public class AlisManager
     /// </summary>
     public async Task<EmeliyyatNeticesi<List<AlisSifarisDto>>> ButunAlisSifarisleriniGetirAsync()
     {
+        Logger.MelumatYaz("ButunAlisSifarisleriniGetirAsync metodu çağırıldı.");
         try
         {
             var sifarisler = await _unitOfWork.AlisSifarisleri.ButununuGetirAsync();
@@ -212,7 +221,8 @@ public class AlisManager
         }
         catch (Exception ex)
         {
-            return EmeliyyatNeticesi<List<AlisSifarisDto>>.Ugursuz($"Alış sifarişlərini gətirmək alınmadı: {ex.Message}");
+            Logger.XetaYaz(ex, "Alış sifarişlərini gətirmək alınmadı");
+            return EmeliyyatNeticesi<List<AlisSifarisDto>>.Ugursuz($"Alış sifarişlərini gətirmək alınmadı: {ex.Message}+ {ex.StackTrace}");
         }
     }
 
@@ -221,6 +231,7 @@ public class AlisManager
     /// </summary>
     public async Task<EmeliyyatNeticesi<AlisSifarisDto>> AlisSifarisGetirAsync(int id)
     {
+        Logger.MelumatYaz($"AlisSifarisGetirAsync metodu çağırıldı. ID: {id}");
         try
         {
             var sifaris = await _unitOfWork.AlisSifarisleri.GetirAsync(id);
@@ -262,7 +273,8 @@ public class AlisManager
         }
         catch (Exception ex)
         {
-            return EmeliyyatNeticesi<AlisSifarisDto>.Ugursuz($"Alış sifarişi məlumatlarını gətirmək alınmadı: {ex.Message}");
+            Logger.XetaYaz(ex, "Alış sifarişi məlumatlarını gətirmək alınmadı");
+            return EmeliyyatNeticesi<AlisSifarisDto>.Ugursuz($"Alış sifarişi məlumatlarını gətirmək alınmadı: {ex.Message}+ {ex.StackTrace}");
         }
     }
 
@@ -271,6 +283,7 @@ public class AlisManager
     /// </summary>
     public async Task<EmeliyyatNeticesi<int>> AlisSifarisYaratAsync(AlisSifarisDto dto)
     {
+        Logger.MelumatYaz("AlisSifarisYaratAsync metodu çağırıldı.");
         try
         {
             // Validasiya
@@ -318,7 +331,8 @@ public class AlisManager
         }
         catch (Exception ex)
         {
-            return EmeliyyatNeticesi<int>.Ugursuz($"Alış sifarişi yaratmaq alınmadı: {ex.Message}");
+            Logger.XetaYaz(ex, "Alış sifarişi yaratmaq alınmadı");
+            return EmeliyyatNeticesi<int>.Ugursuz($"Alış sifarişi yaratmaq alınmadı: {ex.Message}+ {ex.StackTrace}");
         }
     }
 
@@ -327,6 +341,7 @@ public class AlisManager
     /// </summary>
     public async Task<EmeliyyatNeticesi> AlisSifarisYenileAsync(AlisSifarisDto dto)
     {
+        Logger.MelumatYaz($"AlisSifarisYenileAsync metodu çağırıldı. ID: {dto.Id}");
         try
         {
             // Validasiya
@@ -358,7 +373,8 @@ public class AlisManager
         }
         catch (Exception ex)
         {
-            return EmeliyyatNeticesi.Ugursuz($"Alış sifarişini yeniləmək alınmadı: {ex.Message}");
+            Logger.XetaYaz(ex, "Alış sifarişini yeniləmək alınmadı");
+            return EmeliyyatNeticesi.Ugursuz($"Alış sifarişini yeniləmək alınmadı: {ex.Message}+ {ex.StackTrace}");
         }
     }
 
@@ -367,6 +383,7 @@ public class AlisManager
     /// </summary>
     public async Task<EmeliyyatNeticesi> AlisSifarisSilAsync(int id)
     {
+        Logger.MelumatYaz($"AlisSifarisSilAsync metodu çağırıldı. ID: {id}");
         try
         {
             // Mövcud alış sifarişini axtarırıq
@@ -381,7 +398,8 @@ public class AlisManager
         }
         catch (Exception ex)
         {
-            return EmeliyyatNeticesi.Ugursuz($"Alış sifarişini silmək alınmadı: {ex.Message}");
+            Logger.XetaYaz(ex, "Alış sifarişini silmək alınmadı");
+            return EmeliyyatNeticesi.Ugursuz($"Alış sifarişini silmək alınmadı: {ex.Message}+ {ex.StackTrace}");
         }
     }
 
@@ -390,6 +408,7 @@ public class AlisManager
     /// </summary>
     public async Task<EmeliyyatNeticesi> AlisSifarisiniTesdiqleAsync(int id)
     {
+        Logger.MelumatYaz($"AlisSifarisiniTesdiqleAsync metodu çağırıldı. ID: {id}");
         try
         {
             var sifaris = await _unitOfWork.AlisSifarisleri.GetirAsync(id);
@@ -409,7 +428,8 @@ public class AlisManager
         }
         catch (Exception ex)
         {
-            return EmeliyyatNeticesi.Ugursuz($"Alış sifarişini təsdiqləmək alınmadı: {ex.Message}");
+            Logger.XetaYaz(ex, "Alış sifarişini təsdiqləmək alınmadı");
+            return EmeliyyatNeticesi.Ugursuz($"Alış sifarişini təsdiqləmək alınmadı: {ex.Message}+ {ex.StackTrace}");
         }
     }
 
@@ -422,6 +442,7 @@ public class AlisManager
     /// </summary>
     public async Task<EmeliyyatNeticesi<List<AlisSenedDto>>> ButunAlisSenetleriniGetirAsync()
     {
+        Logger.MelumatYaz("ButunAlisSenetleriniGetirAsync metodu çağırıldı.");
         try
         {
             var senetler = await _unitOfWork.AlisSenetleri.ButununuGetirAsync();
@@ -444,7 +465,8 @@ public class AlisManager
         }
         catch (Exception ex)
         {
-            return EmeliyyatNeticesi<List<AlisSenedDto>>.Ugursuz($"Alış sənədlərini gətirmək alınmadı: {ex.Message}");
+            Logger.XetaYaz(ex, "Alış sənədlərini gətirmək alınmadı");
+            return EmeliyyatNeticesi<List<AlisSenedDto>>.Ugursuz($"Alış sənədlərini gətirmək alınmadı: {ex.Message}+ {ex.StackTrace}");
         }
     }
 
@@ -453,6 +475,7 @@ public class AlisManager
     /// </summary>
     public async Task<EmeliyyatNeticesi<int>> AlisSenedYaratAsync(AlisSenedDto dto)
     {
+        Logger.MelumatYaz("AlisSenedYaratAsync metodu çağırıldı.");
         try
         {
             // Validasiya
@@ -508,7 +531,8 @@ public class AlisManager
         }
         catch (Exception ex)
         {
-            return EmeliyyatNeticesi<int>.Ugursuz($"Alış sənədi yaratmaq alınmadı: {ex.Message}");
+            Logger.XetaYaz(ex, "Alış sənədi yaratmaq alınmadı");
+            return EmeliyyatNeticesi<int>.Ugursuz($"Alış sənədi yaratmaq alınmadı: {ex.Message}+ {ex.StackTrace}");
         }
     }
 
@@ -517,6 +541,7 @@ public class AlisManager
     /// </summary>
     public async Task<EmeliyyatNeticesi> AlisSenedYenileAsync(AlisSenedDto dto)
     {
+        Logger.MelumatYaz($"AlisSenedYenileAsync metodu çağırıldı. ID: {dto.Id}");
         try
         {
             // Validasiya
@@ -547,7 +572,8 @@ public class AlisManager
         }
         catch (Exception ex)
         {
-            return EmeliyyatNeticesi.Ugursuz($"Alış sənədini yeniləmək alınmadı: {ex.Message}");
+            Logger.XetaYaz(ex, "Alış sənədini yeniləmək alınmadı");
+            return EmeliyyatNeticesi.Ugursuz($"Alış sənədini yeniləmək alınmadı: {ex.Message}+ {ex.StackTrace}");
         }
     }
 
@@ -556,6 +582,7 @@ public class AlisManager
     /// </summary>
     public async Task<EmeliyyatNeticesi> AlisSenedSilAsync(int id)
     {
+        Logger.MelumatYaz($"AlisSenedSilAsync metodu çağırıldı. ID: {id}");
         try
         {
             // Mövcud alış sənədini axtarırıq
@@ -570,7 +597,8 @@ public class AlisManager
         }
         catch (Exception ex)
         {
-            return EmeliyyatNeticesi.Ugursuz($"Alış sənədini silmək alınmadı: {ex.Message}");
+            Logger.XetaYaz(ex, "Alış sənədini silmək alınmadı");
+            return EmeliyyatNeticesi.Ugursuz($"Alış sənədini silmək alınmadı: {ex.Message}+ {ex.StackTrace}");
         }
     }
 
@@ -583,6 +611,7 @@ public class AlisManager
     /// </summary>
     public async Task<EmeliyyatNeticesi<List<TedarukcuOdemeDto>>> ButunTedarukcuOdemeleriniGetirAsync()
     {
+        Logger.MelumatYaz("ButunTedarukcuOdemeleriniGetirAsync metodu çağırıldı.");
         try
         {
             var odemeler = await _unitOfWork.TedarukcuOdemeleri.ButununuGetirAsync();
@@ -610,7 +639,8 @@ public class AlisManager
         }
         catch (Exception ex)
         {
-            return EmeliyyatNeticesi<List<TedarukcuOdemeDto>>.Ugursuz($"Tədarükçü ödənişlərini gətirmək alınmadı: {ex.Message}");
+            Logger.XetaYaz(ex, "Tədarükçü ödənişlərini gətirmək alınmadı");
+            return EmeliyyatNeticesi<List<TedarukcuOdemeDto>>.Ugursuz($"Tədarükçü ödənişlərini gətirmək alınmadı: {ex.Message}+ {ex.StackTrace}");
         }
     }
 
@@ -619,6 +649,7 @@ public class AlisManager
     /// </summary>
     public async Task<EmeliyyatNeticesi<int>> TedarukcuOdemeYaratAsync(TedarukcuOdemeDto dto)
     {
+        Logger.MelumatYaz("TedarukcuOdemeYaratAsync metodu çağırıldı.");
         try
         {
             // Validasiya
@@ -653,7 +684,8 @@ public class AlisManager
         }
         catch (Exception ex)
         {
-            return EmeliyyatNeticesi<int>.Ugursuz($"Tədarükçü ödənişi yaratmaq alınmadı: {ex.Message}");
+            Logger.XetaYaz(ex, "Tədarükçü ödənişi yaratmaq alınmadı");
+            return EmeliyyatNeticesi<int>.Ugursuz($"Tədarükçü ödənişi yaratmaq alınmadı: {ex.Message}+ {ex.StackTrace}");
         }
     }
 
@@ -662,6 +694,7 @@ public class AlisManager
     /// </summary>
     public async Task<EmeliyyatNeticesi> TedarukcuOdemeYenileAsync(TedarukcuOdemeDto dto)
     {
+        Logger.MelumatYaz($"TedarukcuOdemeYenileAsync metodu çağırıldı. ID: {dto.Id}");
         try
         {
             // Validasiya
@@ -698,7 +731,8 @@ public class AlisManager
         }
         catch (Exception ex)
         {
-            return EmeliyyatNeticesi.Ugursuz($"Tədarükçü ödənişini yeniləmək alınmadı: {ex.Message}");
+            Logger.XetaYaz(ex, "Tədarükçü ödənişini yeniləmək alınmadı");
+            return EmeliyyatNeticesi.Ugursuz($"Tədarükçü ödənişini yeniləmək alınmadı: {ex.Message}+ {ex.StackTrace}");
         }
     }
 
@@ -707,6 +741,7 @@ public class AlisManager
     /// </summary>
     public async Task<EmeliyyatNeticesi> TedarukcuOdemeSilAsync(int id)
     {
+        Logger.MelumatYaz($"TedarukcuOdemeSilAsync metodu çağırıldı. ID: {id}");
         try
         {
             // Mövcud tədarükçü ödənişini axtarırıq
@@ -721,9 +756,9 @@ public class AlisManager
         }
         catch (Exception ex)
         {
+            Logger.XetaYaz(ex, "Tədarükçü ödənişini silmək alınmadı");
             return EmeliyyatNeticesi.Ugursuz($"Tədarükçü ödənişini silmək alınmadı: {ex.Message}");
         }
     }
-
     #endregion
 }
