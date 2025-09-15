@@ -3,6 +3,7 @@ namespace AzAgroPOS.Mentiq.Idareciler;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Uslublar;
+using AzAgroPOS.Mentiq.Yardimcilar;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using System;
@@ -28,6 +29,8 @@ public class KateqoriyaMeneceri
     /// </summary>
     public async Task<EmeliyyatNeticesi<List<KateqoriyaDto>>> ButunKateqoriyalariGetirAsync()
     {
+        Logger.MelumatYaz("ButunKateqoriyalariGetirAsync metodu çağırıldı.");
+        Logger.MelumatYaz("Bütün kateqoriyaları gətiririk.");
         try
         {
             var kateqoriyalar = await _unitOfWork.Kateqoriyalar.ButununuGetirAsync();
@@ -43,7 +46,8 @@ public class KateqoriyaMeneceri
         }
         catch (Exception ex)
         {
-            return EmeliyyatNeticesi<List<KateqoriyaDto>>.Ugursuz($"Kateqoriyaları gətirmək alınmadı: {ex.Message}");
+            Logger.XetaYaz(ex, "Kateqoriyaları gətirmək alınmadı: ");
+            return EmeliyyatNeticesi<List<KateqoriyaDto>>.Ugursuz($"Kateqoriyaları gətirmək alınmadı: {ex.Message} + {ex.StackTrace}");
         }
     }
 
@@ -52,6 +56,7 @@ public class KateqoriyaMeneceri
     /// </summary>
     public async Task<EmeliyyatNeticesi<KateqoriyaDto>> KateqoriyaGetirAsync(int id)
     {
+        Logger.MelumatYaz($"KateqoriyaGetirAsync metodu çağırıldı. ID: {id}");
         try
         {
             var kateqoriya = await _unitOfWork.Kateqoriyalar.GetirAsync(id);
@@ -70,7 +75,8 @@ public class KateqoriyaMeneceri
         }
         catch (Exception ex)
         {
-            return EmeliyyatNeticesi<KateqoriyaDto>.Ugursuz($"Kateqoriya məlumatlarını gətirmək alınmadı: {ex.Message}");
+            Logger.XetaYaz(ex, "Kateqoriya məlumatlarını gətirmək alınmadı: ");
+            return EmeliyyatNeticesi<KateqoriyaDto>.Ugursuz($"Kateqoriya məlumatlarını gətirmək alınmadı: {ex.Message} + {ex.StackTrace}");
         }
     }
 
@@ -79,6 +85,8 @@ public class KateqoriyaMeneceri
     /// </summary>
     public async Task<EmeliyyatNeticesi<int>> KateqoriyaYaratAsync(KateqoriyaDto dto)
     {
+        Logger.MelumatYaz("KateqoriyaYaratAsync metodu çağırıldı.");
+        Logger.MelumatYaz(dto.ToString());
         try
         {
             // Validasiya
@@ -100,7 +108,8 @@ public class KateqoriyaMeneceri
         }
         catch (Exception ex)
         {
-            return EmeliyyatNeticesi<int>.Ugursuz($"Kateqoriya yaratmaq alınmadı: {ex.Message}");
+            Logger.XetaYaz(ex, "Kateqoriya yaratmaq alınmadı: ");
+            return EmeliyyatNeticesi<int>.Ugursuz($"Kateqoriya yaratmaq alınmadı: {ex.Message} + {ex.StackTrace}");
         }
     }
 
@@ -109,6 +118,7 @@ public class KateqoriyaMeneceri
     /// </summary>
     public async Task<EmeliyyatNeticesi> KateqoriyaYenileAsync(KateqoriyaDto dto)
     {
+        Logger.MelumatYaz(dto.ToString());
         try
         {
             var movcudKateqoriya = await _unitOfWork.Kateqoriyalar.GetirAsync(dto.Id);
@@ -131,7 +141,8 @@ public class KateqoriyaMeneceri
         }
         catch (Exception ex)
         {
-            return EmeliyyatNeticesi.Ugursuz($"Kateqoriya məlumatlarını yeniləmək alınmadı: {ex.Message}");
+            Logger.XetaYaz(ex, "Kateqoriya məlumatlarını yeniləmək alınmadı: ");
+            return EmeliyyatNeticesi.Ugursuz($"Kateqoriya məlumatlarını yeniləmək alınmadı: {ex.Message} + {ex.StackTrace}");
         }
     }
 
@@ -140,6 +151,7 @@ public class KateqoriyaMeneceri
     /// </summary>
     public async Task<EmeliyyatNeticesi> KateqoriyaSilAsync(int id)
     {
+        Logger.MelumatYaz($"KateqoriyaSilAsync metodu çağırıldı. ID: {id}");
         try
         {
             var kateqoriya = await _unitOfWork.Kateqoriyalar.GetirAsync(id);
@@ -153,7 +165,8 @@ public class KateqoriyaMeneceri
         }
         catch (Exception ex)
         {
-            return EmeliyyatNeticesi.Ugursuz($"Kateqoriya silmək alınmadı: {ex.Message}");
+            Logger.XetaYaz(ex, "Kateqoriya silmək alınmadı: ");
+            return EmeliyyatNeticesi.Ugursuz($"Kateqoriya silmək alınmadı: {ex.Message} + {ex.StackTrace}");
         }
     }
 }
