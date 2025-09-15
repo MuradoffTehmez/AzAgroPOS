@@ -7,7 +7,7 @@ using System.ComponentModel;
 
 namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 {
-    public class SatisPresenter
+    public class SatisPresenter : ISatisPresenter
     {
         private readonly ISatisView _view;
         private readonly SatisManager _satisManager;
@@ -318,6 +318,21 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             {
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Müştəri borcuna görə uyğun rəng adını qaytarır
+        /// </summary>
+        /// <param name="borc">Müştəri borcu</param>
+        /// <returns>Rəng adı ("Red", "Orange" və ya "Black")</returns>
+        public string GetMusteriBorcRengi(decimal borc)
+        {
+            if (borc > 5000)
+                return "Red";
+            else if (borc > 1000)
+                return "Orange";
+            else
+                return "Black";
         }
     }
 }
