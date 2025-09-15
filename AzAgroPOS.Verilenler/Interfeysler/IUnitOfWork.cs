@@ -14,6 +14,12 @@ public interface IUnitOfWork : IAsyncDisposable
     /// Audit jurnalı qeydləri üçün istifadə olunur
     /// </summary>
     int AktivIstifadeciId { get; set; }
+
+    /// <summary>
+    /// Aktiv istifadəçi ID-sini təyin edir
+    /// </summary>
+    /// <param name="istifadeciId">Aktiv istifadəçinin ID-si</param>
+    void AktivIstifadeciniTeyinEt(int istifadeciId);
     /// <summary>
     /// Məhsul Repozitorisi - Məhsul əməliyyatlarını idarə edir.
     /// diqqət: Bu repozitoriya məhsul məlumatlarını, satış qiymətlərini və stok kodlarını idarə edir.
