@@ -30,6 +30,12 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="appsettings_new.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
