@@ -3,6 +3,7 @@ namespace AzAgroPOS.Mentiq.Idareciler;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Uslublar;
+using AzAgroPOS.Mentiq.Yardimcilar;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using System.Collections.Generic;
@@ -29,6 +30,7 @@ public class IcazeManager
     /// <returns>İstifadəçinin icazəyə sahib olub-olmaması</returns>
     public async Task<EmeliyyatNeticesi<bool>> IstifadecininIcazesiVarAsync(int istifadeciId, string icaeAdi)
     {
+        Logger.MelumatYaz($"İstifadəçi ID-si: {istifadeciId}, İcazə adı: {icaeAdi} üçün icazə yoxlanılır.");
         try
         {
             // İstifadəçini götürürük
@@ -61,7 +63,8 @@ public class IcazeManager
         }
         catch (System.Exception ex)
         {
-            return EmeliyyatNeticesi<bool>.Ugursuz($"İcazə yoxlanılması zamanı xəta baş verdi: {ex.Message}");
+            Logger.XetaYaz(ex, "İcazə yoxlanılması zamanı xəta baş verdi: ");
+            return EmeliyyatNeticesi<bool>.Ugursuz($"İcazə yoxlanılması zamanı xəta baş verdi: {ex.Message}+ {ex.StackTrace}");
         }
     }
 
@@ -71,6 +74,7 @@ public class IcazeManager
     /// <returns>Bütün icazələrin siyahısı</returns>
     public async Task<EmeliyyatNeticesi<IEnumerable<IcazeDto>>> ButunIcazeleriGetirAsync()
     {
+        Logger.MelumatYaz("Bütün icazələr götürülür.");
         try
         {
             var icazeler = await _unitOfWork.Icazeler.ButununuGetirAsync();
@@ -85,7 +89,8 @@ public class IcazeManager
         }
         catch (System.Exception ex)
         {
-            return EmeliyyatNeticesi<IEnumerable<IcazeDto>>.Ugursuz($"İcazələr götürülərkən xəta baş verdi: {ex.Message}");
+            Logger.XetaYaz(ex, "İcazələr götürülərkən xəta baş verdi: ");
+            return EmeliyyatNeticesi<IEnumerable<IcazeDto>>.Ugursuz($"İcazələr götürülərkən xəta baş verdi: {ex.Message}+ {ex.StackTrace}");
         }
     }
 
@@ -97,6 +102,7 @@ public class IcazeManager
     /// <returns>Əməliyyat nəticəsi</returns>
     public async Task<EmeliyyatNeticesi> RolIcazeleriniTeyinEtAsync(int rolId, IEnumerable<int> icazeIdleri)
     {
+        Logger.MelumatYaz($"Rol ID-si: {rolId} üçün icazələr təyin edilir.");
         try
         {
             // Mövcud rol icazələrini silirik
@@ -123,7 +129,8 @@ public class IcazeManager
         }
         catch (System.Exception ex)
         {
-            return EmeliyyatNeticesi.Ugursuz($"Rol icazələri təyin edilərkən xəta baş verdi: {ex.Message}");
+            Logger.XetaYaz(ex, "Rol icazələri təyin edilərkən xəta baş verdi: ");
+            return EmeliyyatNeticesi.Ugursuz($"Rol icazələri təyin edilərkən xəta baş verdi: {ex.Message}+ {ex.StackTrace}");
         }
     }
 
@@ -134,6 +141,7 @@ public class IcazeManager
     /// <returns>Rol üçün təyin edilmiş icazələrin siyahısı</returns>
     public async Task<EmeliyyatNeticesi<IEnumerable<IcazeDto>>> RolIcazeleriniGetirAsync(int rolId)
     {
+        Logger.MelumatYaz($"Rol ID-si: {rolId} üçün icazələr götürülür.");
         try
         {
             var rolIcazeleri = await _unitOfWork.RolIcazeleri.AxtarAsync(ri => ri.RolId == rolId);
@@ -156,7 +164,8 @@ public class IcazeManager
         }
         catch (System.Exception ex)
         {
-            return EmeliyyatNeticesi<IEnumerable<IcazeDto>>.Ugursuz($"Rol icazələri götürülərkən xəta baş verdi: {ex.Message}");
+            Logger.XetaYaz(ex, "Rol icazələri götürülərkən xəta baş verdi: ");
+            return EmeliyyatNeticesi<IEnumerable<IcazeDto>>.Ugursuz($"Rol icazələri götürülərkən xəta baş verdi: {ex.Message}+ {ex.StackTrace}");
         }
     }
 }
