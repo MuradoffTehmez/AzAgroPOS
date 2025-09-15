@@ -3,6 +3,7 @@ namespace AzAgroPOS.Mentiq.Idareciler;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Uslublar;
+using AzAgroPOS.Mentiq.Yardimcilar;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using System;
@@ -27,6 +28,8 @@ public class IsciManager
     /// </summary>
     public async Task<EmeliyyatNeticesi<List<IsciDto>>> ButunIscileriGetirAsync()
     {
+        Logger.MelumatYaz("ButunIscileriGetirAsync metodu çağırıldı.");
+        Logger.MelumatYaz("Bütün işçilər gətirilir.");
         try
         {
             var isciler = await _unitOfWork.Isciler.ButununuGetirAsync();
@@ -53,7 +56,8 @@ public class IsciManager
         }
         catch (Exception ex)
         {
-            return EmeliyyatNeticesi<List<IsciDto>>.Ugursuz($"İşçiləri gətirmək alınmadı: {ex.Message}");
+            Logger.XetaYaz(ex, "İşçiləri gətirmək alınmadı: ");
+            return EmeliyyatNeticesi<List<IsciDto>>.Ugursuz($"İşçiləri gətirmək alınmadı: {ex.Message} + {ex.StackTrace}");
         }
     }
 
@@ -62,6 +66,8 @@ public class IsciManager
     /// </summary>
     public async Task<EmeliyyatNeticesi<IsciDto>> IsciGetirAsync(int id)
     {
+        Logger.MelumatYaz($"IsciGetirAsync metodu çağırıldı. İD: {id}");
+        Logger.MelumatYaz($"Axtarılan işçi ID-si: {id}");
         try
         {
             var isci = await _unitOfWork.Isciler.GetirAsync(id);
@@ -91,7 +97,8 @@ public class IsciManager
         }
         catch (Exception ex)
         {
-            return EmeliyyatNeticesi<IsciDto>.Ugursuz($"İşçi məlumatlarını gətirmək alınmadı: {ex.Message}");
+            Logger.XetaYaz(ex, "İşçi məlumatlarını gətirmək alınmadı: ");
+            return EmeliyyatNeticesi<IsciDto>.Ugursuz($"İşçi məlumatlarını gətirmək alınmadı: {ex.Message} + {ex.StackTrace}");
         }
     }
 
@@ -100,6 +107,8 @@ public class IsciManager
     /// </summary>
     public async Task<EmeliyyatNeticesi<int>> IsciYaratAsync(IsciDto dto)
     {
+        Logger.MelumatYaz("IsciYaratAsync metodu çağırıldı.");
+        Logger.MelumatYaz($"Yaradılacaq işçi adı: {dto.TamAd}");
         try
         {
             // Validasiya
@@ -134,7 +143,8 @@ public class IsciManager
         }
         catch (Exception ex)
         {
-            return EmeliyyatNeticesi<int>.Ugursuz($"İşçi yaratmaq alınmadı: {ex.Message}");
+            Logger.XetaYaz(ex, "İşçi yaratmaq alınmadı: ");
+            return EmeliyyatNeticesi<int>.Ugursuz($"İşçi yaratmaq alınmadı: {ex.Message} + {ex.StackTrace}");
         }
     }
 
@@ -143,6 +153,8 @@ public class IsciManager
     /// </summary>
     public async Task<EmeliyyatNeticesi> IsciYenileAsync(IsciDto dto)
     {
+        Logger.MelumatYaz("IsciYenileAsync metodu çağırıldı.");
+        Logger.MelumatYaz($"Yenilənəcək işçi ID-si: {dto.Id}");
         try
         {
             var movcudIsci = await _unitOfWork.Isciler.GetirAsync(dto.Id);
@@ -178,7 +190,8 @@ public class IsciManager
         }
         catch (Exception ex)
         {
-            return EmeliyyatNeticesi.Ugursuz($"İşçi məlumatlarını yeniləmək alınmadı: {ex.Message}");
+            Logger.XetaYaz(ex, "İşçi məlumatlarını yeniləmək alınmadı: ");
+            return EmeliyyatNeticesi.Ugursuz($"İşçi məlumatlarını yeniləmək alınmadı: {ex.Message}+ {ex.StackTrace}");
         }
     }
 
@@ -187,6 +200,8 @@ public class IsciManager
     /// </summary>
     public async Task<EmeliyyatNeticesi> IsciSilAsync(int id)
     {
+        Logger.MelumatYaz("IsciSilAsync metodu çağırıldı.");
+        Logger.MelumatYaz($"Silinəcək işçi ID-si: {id}");
         try
         {
             var isci = await _unitOfWork.Isciler.GetirAsync(id);
@@ -200,7 +215,8 @@ public class IsciManager
         }
         catch (Exception ex)
         {
-            return EmeliyyatNeticesi.Ugursuz($"İşçi silmək alınmadı: {ex.Message}");
+            Logger.XetaYaz(ex, "İşçi silmək alınmadı: ");
+            return EmeliyyatNeticesi.Ugursuz($"İşçi silmək alınmadı: {ex.Message}+ {ex.StackTrace}");
         }
     }
 
@@ -209,6 +225,8 @@ public class IsciManager
     /// </summary>
     public async Task<EmeliyyatNeticesi<List<IsciPerformansDto>>> IscininPerformansQeydleriniGetirAsync(int isciId)
     {
+        Logger.MelumatYaz("IscininPerformansQeydleriniGetirAsync metodu çağırıldı.");
+        Logger.MelumatYaz($"Performans qeydləri gətiriləcək işçi ID-si: {isciId}");
         try
         {
             var performansQeydleri = await _unitOfWork.IsciPerformanslari.AxtarAsync(p => p.IsciId == isciId);
@@ -229,7 +247,8 @@ public class IsciManager
         }
         catch (Exception ex)
         {
-            return EmeliyyatNeticesi<List<IsciPerformansDto>>.Ugursuz($"İşçinin performans qeydlərini gətirmək alınmadı: {ex.Message}");
+            Logger.XetaYaz(ex, "İşçinin performans qeydlərini gətirmək alınmadı: ");
+            return EmeliyyatNeticesi<List<IsciPerformansDto>>.Ugursuz($"İşçinin performans qeydlərini gətirmək alınmadı: {ex.Message}+ {ex.StackTrace}");
         }
     }
 
@@ -238,6 +257,8 @@ public class IsciManager
     /// </summary>
     public async Task<EmeliyyatNeticesi<List<IsciIzniDto>>> IscininIzinQeydleriniGetirAsync(int isciId)
     {
+        Logger.MelumatYaz("IscininİzinQeydleriniGetirAsync metodu çağırıldı.");
+        Logger.MelumatYaz($"Məzuniyyət/icazə qeydləri gətiriləcək işçi ID-si: {isciId}");
         try
         {
             var izinQeydleri = await _unitOfWork.IsciIznleri.AxtarAsync(i => i.IsciId == isciId);
@@ -262,7 +283,8 @@ public class IsciManager
         }
         catch (Exception ex)
         {
-            return EmeliyyatNeticesi<List<IsciIzniDto>>.Ugursuz($"İşçinin məzuniyyət/icazə qeydlərini gətirmək alınmadı: {ex.Message}");
+            Logger.XetaYaz(ex, "İşçinin məzuniyyət/icazə qeydlərini gətirmək alınmadı: ");
+            return EmeliyyatNeticesi<List<IsciIzniDto>>.Ugursuz($"İşçinin məzuniyyət/icazə qeydlərini gətirmək alınmadı: {ex.Message}+ {ex.StackTrace}");
         }
     }
 }
