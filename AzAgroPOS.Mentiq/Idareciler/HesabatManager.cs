@@ -3,6 +3,7 @@ namespace AzAgroPOS.Mentiq.Idareciler;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Uslublar;
+using AzAgroPOS.Mentiq.Yardimcilar;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using System;
@@ -28,6 +29,7 @@ public class HesabatManager
     /// <param name="tarix">Hesabatın hazırlanacağı gün.</param>
     public async Task<EmeliyyatNeticesi<GunlukSatisHesabatDto>> GunlukSatisHesabatiGetirAsync(DateTime tarix)
     {
+        Logger.MelumatYaz($"Günlük satış hesabatı üçün tarix: {tarix.ToShortDateString()}");
         try
         {
             var gununBasi = tarix.Date;
@@ -72,8 +74,8 @@ public class HesabatManager
         }
         catch (Exception ex)
         {
-
-            return EmeliyyatNeticesi<GunlukSatisHesabatDto>.Ugursuz($"Hesabat hazırlanarkən xəta baş verdi: {ex.Message}");
+            Logger.XetaYaz(ex, "Hesabat hazırlanarkən xəta baş verdi: "); // Xətanı qeyd etmək üçün
+            return EmeliyyatNeticesi<GunlukSatisHesabatDto>.Ugursuz($"Hesabat hazırlanarkən xəta baş verdi: {ex.Message} + {ex.StackTrace}");
         }
     }
     /// <summary>
@@ -83,6 +85,7 @@ public class HesabatManager
     /// <param name="bitis">Hesabatın bitiş tarixi.</param>
     public async Task<EmeliyyatNeticesi<List<MehsulUzreSatisDetayDto>>> MehsulUzreSatisHesabatiGetirAsync(DateTime baslangic, DateTime bitis)
     {
+        Logger.MelumatYaz($"Məhsul üzrə satış hesabatı üçün tarix aralığı: {baslangic.ToShortDateString()} - {bitis.ToShortDateString()}");
         try
         {
             var baslangicTarixi = baslangic.Date;
@@ -117,7 +120,8 @@ public class HesabatManager
         }
         catch (Exception ex)
         {
-            return EmeliyyatNeticesi<List<MehsulUzreSatisDetayDto>>.Ugursuz($"Hesabat hazırlanarkən xəta baş verdi: {ex.Message}");
+            Logger.XetaYaz(ex, "Hesabat hazırlanarkən xəta baş verdi: "); // Xətanı qeyd etmək üçün
+            return EmeliyyatNeticesi<List<MehsulUzreSatisDetayDto>>.Ugursuz($"Hesabat hazırlanarkən xəta baş verdi: {ex.Message}+ {ex.StackTrace}");
         }
     }
 
@@ -128,6 +132,7 @@ public class HesabatManager
     /// <param name="limitSay">Anbar qalığı üçün maksimum limit.</param>
     public async Task<EmeliyyatNeticesi<List<AnbarQaliqDetayDto>>> AnbarQaliqHesabatiGetirAsync(int limitSay)
     {
+        Logger.MelumatYaz($"Anbar qalıq hesabatı üçün limit: {limitSay}");
         try
         {
             var mehsullar = await _unitOfWork.Mehsullar.AxtarAsync(m => m.MovcudSay <= limitSay);
@@ -151,7 +156,8 @@ public class HesabatManager
         }
         catch (Exception ex)
         {
-            return EmeliyyatNeticesi<List<AnbarQaliqDetayDto>>.Ugursuz($"Hesabat hazırlanarkən xəta baş verdi: {ex.Message}");
+            Logger.XetaYaz(ex, "Hesabat hazırlanarkən xəta baş verdi: "); // Xətanı qeyd etmək üçün
+            return EmeliyyatNeticesi<List<AnbarQaliqDetayDto>>.Ugursuz($"Hesabat hazırlanarkən xəta baş verdi: {ex.Message}+ {ex.StackTrace}");
         }
     }
     /// <summary>
@@ -159,6 +165,7 @@ public class HesabatManager
     /// </summary>
     public async Task<EmeliyyatNeticesi<List<BaglanmisNovbeDto>>> BaglanmisNovbeleriGetirAsync()
     {
+        Logger.MelumatYaz("Bağlanmış növbələr gətirilir.");
         try
         {
             var novbeler = await _unitOfWork.Novbeler.AxtarAsync(n => n.Status == NovbeStatusu.Bagli);
@@ -184,7 +191,8 @@ public class HesabatManager
         }
         catch (Exception ex)
         {
-            return EmeliyyatNeticesi<List<BaglanmisNovbeDto>>.Ugursuz($"Növbələr gətirilərkən xəta baş verdi: {ex.Message}");
+            Logger.XetaYaz(ex, "Növbələr gətirilərkən xəta baş verdi: "); // Xətanı qeyd etmək üçün
+            return EmeliyyatNeticesi<List<BaglanmisNovbeDto>>.Ugursuz($"Növbələr gətirilərkən xəta baş verdi: {ex.Message}+ {ex.StackTrace}");
         }
     }
 
@@ -194,6 +202,7 @@ public class HesabatManager
     /// <param name="novbeId">Hesabatı tələb olunan növbənin ID-si.</param>
     public async Task<EmeliyyatNeticesi<ZHesabatDto>> ZHesabatTekrarGetirAsync(int novbeId)
     {
+        Logger.MelumatYaz($"Z-Hesabat üçün növbə ID-si: {novbeId}");
         try
         {
             var novbe = await _unitOfWork.Novbeler.GetirAsync(novbeId);
@@ -220,7 +229,8 @@ public class HesabatManager
         }
         catch (Exception ex)
         {
-            return EmeliyyatNeticesi<ZHesabatDto>.Ugursuz($"Z-Hesabat hazırlanarkən xəta baş verdi: {ex.Message}");
+            Logger.XetaYaz(ex, "Z-Hesabat hazırlanarkən xəta baş verdi: "); // Xətanı qeyd etmək üçün
+            return EmeliyyatNeticesi<ZHesabatDto>.Ugursuz($"Z-Hesabat hazırlanarkən xəta baş verdi: {ex.Message}+ {ex.StackTrace}");
         }
     }
 }
