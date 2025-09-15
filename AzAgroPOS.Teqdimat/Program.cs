@@ -40,11 +40,11 @@ namespace AzAgroPOS.Teqdimat
             }
             catch (Exception ex)
             {
-                MessageBox.Show("XƏTA - " + ex.Message + ex.StackTrace , "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //MessageBox.Show("XƏTA - " + ex.Message + ex.StackTrace , "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 try
                 {
                     AzAgroPOS.Mentiq.Yardimcilar.Logger.XetaYaz(ex, "Tətbiq səviyyəsində tutulmayan istisna baş verdi");
-                    MessageBox.Show("Tətbiqdə gözlənilməyən xəta baş verdi. Təfərrüatlar log faylına yazıldı." + ex.Message + ex.StackTrace, "Xəta " , MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Tətbiqdə gözlənilməyən xəta baş verdi. \nTəfərrüatlar log faylına yazıldı. \n\n" + ex.Message + ex.StackTrace, "Xəta " , MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 catch
                 {
