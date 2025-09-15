@@ -1,6 +1,7 @@
 ﻿using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Yardimcilar;
+using AzAgroPOS.Verilenler.Interfeysler;
 
 namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 {
@@ -8,11 +9,13 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
     {
         private readonly ILoginView _view;
         private readonly TehlukesizlikManager _tehlukesizlikManager;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public LoginPresenter(ILoginView view, TehlukesizlikManager tehlukesizlikManager)
+        public LoginPresenter(ILoginView view, TehlukesizlikManager tehlukesizlikManager, IUnitOfWork unitOfWork)
         {
             _view = view;
             _tehlukesizlikManager = tehlukesizlikManager;
+            _unitOfWork = unitOfWork;
             _view.DaxilOl_Istek += async (s, e) => await DaxilOl();
         }
 
@@ -23,6 +26,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             if (netice.UgurluDur)
             {
                 AktivSessiya.AktivIstifadeci = netice.Data;
+                _unitOfWork.AktivIstifadeciniTeyinEt(netice.Data.Id);
                 _view.UgurluDaxilOlundu = true;
                 _view.FormuBagla();
             }
