@@ -1,6 +1,5 @@
 ﻿using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Teqdimat.Interfeysler;
-using AzAgroPOS.Teqdimat.Teqdimatcilar;
 using AzAgroPOS.Teqdimat.Yardimcilar;
 using AzAgroPOS.Varliglar;
 using MaterialSkin.Controls;
@@ -11,10 +10,10 @@ namespace AzAgroPOS.Teqdimat
 {
     public partial class SatisFormu : BazaForm, ISatisView
     {
-        private readonly SatisPresenter _presenter;
+        private readonly ISatisPresenter _presenter;
         private readonly IServiceProvider _serviceProvider;
 
-        public SatisFormu(SatisPresenter satisPresenter, IServiceProvider serviceProvider)
+        public SatisFormu(ISatisPresenter satisPresenter, IServiceProvider serviceProvider)
         {
             InitializeComponent();
             _presenter = satisPresenter;
@@ -252,13 +251,22 @@ namespace AzAgroPOS.Teqdimat
 
         public void MusteriEkraniYenile(string mehsulAdi, decimal qiymet, decimal miqdar)
         {
-            Console.WriteLine($"Müştəri ekranı yeniləndi: {mehsulAdi} - Qiymət: {qiymet} AZN - Miqdar: {miqdar}");
+            Console.WriteLine($@"Müştəri ekranı yeniləndi: {mehsulAdi} - Qiymət: {qiymet} AZN - Miqdar: {miqdar}");
         }
 
-        public void MehsulDuzelisEt(int mehsulId)
+        /// <summary>
+        /// Müştəri borcuna görə uyğun rəng adını qaytarır
+        /// </summary>
+        /// <param name="borc">Müştəri borcu</param>
+        /// <returns>Rəng adı ("Red", "Orange" və ya "Black")</returns>
+        public string GetMusteriBorcRengi(decimal borc)
         {
-            // Bu metod satis formasinda mehsul duzelis etmek ucun istifade olunmur
-            // Ancaq compiler xetasi vermemesi ucun burada bos bir implementasiya var
+            if (borc > 5000)
+                return "Red";
+            else if (borc > 1000)
+                return "Orange";
+            else
+                return "Black";
         }
 
         #endregion
@@ -474,7 +482,7 @@ namespace AzAgroPOS.Teqdimat
                 return;
             }
 
-            // Extract debt and credit limit from the display text
+            // Extract debt from the display text
             // The format is: "Name (Borc: amount)"
             string displayText = cmb.GetItemText(item);
             var match = System.Text.RegularExpressions.Regex.Match(displayText, @"\((Borc|Debt): ([\d,\.]+)\)");
@@ -482,18 +490,20 @@ namespace AzAgroPOS.Teqdimat
             {
                 if (decimal.TryParse(match.Groups[2].Value, out decimal debt))
                 {
-                    // Check if debt exceeds a reasonable threshold (e.g., 5000 AZN)
-                    if (debt > 5000)
+                    // Get color from presenter based on debt amount
+                    string renk = _presenter.GetMusteriBorcRengi(debt);
+
+                    switch (renk)
                     {
-                        e.Graphics.DrawString(displayText, new Font(e.Font, FontStyle.Bold), Brushes.Red, e.Bounds);
-                    }
-                    else if (debt > 1000)
-                    {
-                        e.Graphics.DrawString(displayText, new Font(e.Font, FontStyle.Bold), Brushes.Orange, e.Bounds);
-                    }
-                    else
-                    {
-                        e.Graphics.DrawString(displayText, e.Font, Brushes.Black, e.Bounds);
+                        case "Red":
+                            e.Graphics.DrawString(displayText, new Font(e.Font, FontStyle.Bold), Brushes.Red, e.Bounds);
+                            break;
+                        case "Orange":
+                            e.Graphics.DrawString(displayText, new Font(e.Font, FontStyle.Bold), Brushes.Orange, e.Bounds);
+                            break;
+                        default:
+                            e.Graphics.DrawString(displayText, e.Font, Brushes.Black, e.Bounds);
+                            break;
                     }
                 }
                 else
