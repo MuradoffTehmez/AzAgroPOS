@@ -3,6 +3,7 @@ namespace AzAgroPOS.Mentiq.Idareciler;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Uslublar;
+using AzAgroPOS.Mentiq.Yardimcilar;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using System;
@@ -28,6 +29,7 @@ public class BrendMeneceri
     /// </summary>
     public async Task<EmeliyyatNeticesi<List<BrendDto>>> ButunBrendleriGetirAsync()
     {
+        Logger.MelumatYaz("ButunBrendleriGetirAsync metodu çağırıldı.");
         try
         {
             var brendler = await _unitOfWork.Brendler.ButununuGetirAsync();
@@ -46,7 +48,8 @@ public class BrendMeneceri
         }
         catch (Exception ex)
         {
-            return EmeliyyatNeticesi<List<BrendDto>>.Ugursuz($"Brendləri gətirmək alınmadı: {ex.Message}");
+            Logger.XetaYaz(ex, "Brendləri gətirmək alınmadı: ");
+            return EmeliyyatNeticesi<List<BrendDto>>.Ugursuz($"Brendləri gətirmək alınmadı: {ex.Message} + {ex.StackTrace}");
         }
     }
 
@@ -55,6 +58,7 @@ public class BrendMeneceri
     /// </summary>
     public async Task<EmeliyyatNeticesi<BrendDto>> BrendGetirAsync(int id)
     {
+        Logger.MelumatYaz($"BrendGetirAsync metodu çağırıldı. ID: {id}");
         try
         {
             var brend = await _unitOfWork.Brendler.GetirAsync(id);
@@ -76,7 +80,8 @@ public class BrendMeneceri
         }
         catch (Exception ex)
         {
-            return EmeliyyatNeticesi<BrendDto>.Ugursuz($"Brend məlumatlarını gətirmək alınmadı: {ex.Message}");
+            Logger.XetaYaz(ex, "Brend məlumatlarını gətirmək alınmadı: ");
+            return EmeliyyatNeticesi<BrendDto>.Ugursuz($"Brend məlumatlarını gətirmək alınmadı: {ex.Message}+ {ex.StackTrace}");
         }
     }
 
@@ -85,6 +90,7 @@ public class BrendMeneceri
     /// </summary>
     public async Task<EmeliyyatNeticesi<int>> BrendYaratAsync(BrendDto dto)
     {
+        Logger.MelumatYaz("BrendYaratAsync metodu çağırıldı.");
         try
         {
             // Validasiya
@@ -109,7 +115,8 @@ public class BrendMeneceri
         }
         catch (Exception ex)
         {
-            return EmeliyyatNeticesi<int>.Ugursuz($"Brend yaratmaq alınmadı: {ex.Message}");
+            Logger.XetaYaz(ex, "Brend yaratmaq alınmadı: ");
+            return EmeliyyatNeticesi<int>.Ugursuz($"Brend yaratmaq alınmadı: {ex.Message}+ {ex.StackTrace}");
         }
     }
 
@@ -118,6 +125,7 @@ public class BrendMeneceri
     /// </summary>
     public async Task<EmeliyyatNeticesi> BrendYenileAsync(BrendDto dto)
     {
+        Logger.MelumatYaz($"BrendYenileAsync metodu çağırıldı. ID: {dto.Id}");
         try
         {
             var movcudBrend = await _unitOfWork.Brendler.GetirAsync(dto.Id);
@@ -143,7 +151,8 @@ public class BrendMeneceri
         }
         catch (Exception ex)
         {
-            return EmeliyyatNeticesi.Ugursuz($"Brend məlumatlarını yeniləmək alınmadı: {ex.Message}");
+            Logger.XetaYaz(ex, "Brend məlumatlarını yeniləmək alınmadı: ");
+            return EmeliyyatNeticesi.Ugursuz($"Brend məlumatlarını yeniləmək alınmadı: {ex.Message}+ {ex.StackTrace}");
         }
     }
 
@@ -152,6 +161,7 @@ public class BrendMeneceri
     /// </summary>
     public async Task<EmeliyyatNeticesi> BrendSilAsync(int id)
     {
+        Logger.MelumatYaz($"BrendSilAsync metodu çağırıldı. ID: {id}");
         try
         {
             var brend = await _unitOfWork.Brendler.GetirAsync(id);
@@ -165,7 +175,8 @@ public class BrendMeneceri
         }
         catch (Exception ex)
         {
-            return EmeliyyatNeticesi.Ugursuz($"Brend silmək alınmadı: {ex.Message}");
+            Logger.XetaYaz(ex, "Brend silmək alınmadı: ");
+            return EmeliyyatNeticesi.Ugursuz($"Brend silmək alınmadı: {ex.Message}+ {ex.StackTrace}");
         }
     }
 }
