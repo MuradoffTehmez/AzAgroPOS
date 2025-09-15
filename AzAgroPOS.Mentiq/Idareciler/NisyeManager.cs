@@ -103,8 +103,7 @@ public class NisyeManager
         };
         await _unitOfWork.NisyeHereketleri.ElaveEtAsync(hereket);
 
-        await _unitOfWork.EmeliyyatiTesdiqleAsync();
-
+        // Qeyd: Tranzaksiya idarəsi çağıran metod tərəfindən həyata keçirilir
         return EmeliyyatNeticesi.Ugurlu();
     }
 
