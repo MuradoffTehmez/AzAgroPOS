@@ -3,6 +3,7 @@ namespace AzAgroPOS.Mentiq.Idareciler;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Uslublar;
+using AzAgroPOS.Mentiq.Yardimcilar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,39 +28,49 @@ public class BarkodCapiManager
     /// <returns>Tapılmış məhsulların siyahısı.</returns>
     public async Task<EmeliyyatNeticesi<List<MehsulDto>>> MehsullariAxtarAsync(string axtarisMetni)
     {
-        if (string.IsNullOrWhiteSpace(axtarisMetni))
+        Logger.MelumatYaz($"Məhsullar axtarılır: {axtarisMetni}");
+        try
         {
-            return EmeliyyatNeticesi<List<MehsulDto>>.Ugursuz("Axtarış üçün mətn daxil edin.");
+            if (string.IsNullOrWhiteSpace(axtarisMetni))
+            {
+                return EmeliyyatNeticesi<List<MehsulDto>>.Ugursuz("Axtarış üçün mətn daxil edin.");
+            }
+
+            var axtarisKicikHerfle = axtarisMetni.ToLower();
+
+            var mehsullar = await _unitOfWork.Mehsullar.AxtarAsync(m =>
+                m.Ad.ToLower().Contains(axtarisKicikHerfle) ||
+                m.StokKodu.ToLower().Contains(axtarisKicikHerfle) ||
+                m.Barkod.Contains(axtarisKicikHerfle)
+            );
+
+            if (!mehsullar.Any())
+            {
+                return EmeliyyatNeticesi<List<MehsulDto>>.Ugursuz("Axtarışa uyğun məhsul tapılmadı.");
+            }
+
+            var dtolar = mehsullar.Select(m => new MehsulDto
+            {
+                Id = m.Id,
+                Ad = m.Ad,
+                StokKodu = m.StokKodu,
+                Barkod = m.Barkod,
+                PerakendeSatisQiymeti = m.PerakendeSatisQiymeti,
+                // Xətaların qarşısını almaq üçün bütün DTO sahələrini doldururuq
+                TopdanSatisQiymeti = m.TopdanSatisQiymeti,
+                TekEdedSatisQiymeti = m.TekEdedSatisQiymeti,
+                AlisQiymeti = m.AlisQiymeti,
+                MovcudSay = m.MovcudSay,
+                OlcuVahidi = m.OlcuVahidi
+            }).ToList();
+
+            return EmeliyyatNeticesi<List<MehsulDto>>.Ugurlu(dtolar);
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Məhsullar axtarılarkən xəta baş verdi: ");
+            return EmeliyyatNeticesi<List<MehsulDto>>.Ugursuz($"Məhsullar axtarılarkən xəta baş verdi: {ex.Message} + {ex.StackTrace}");
         }
 
-        var axtarisKicikHerfle = axtarisMetni.ToLower();
-
-        var mehsullar = await _unitOfWork.Mehsullar.AxtarAsync(m =>
-            m.Ad.ToLower().Contains(axtarisKicikHerfle) ||
-            m.StokKodu.ToLower().Contains(axtarisKicikHerfle) ||
-            m.Barkod.Contains(axtarisKicikHerfle)
-        );
-
-        if (!mehsullar.Any())
-        {
-            return EmeliyyatNeticesi<List<MehsulDto>>.Ugursuz("Axtarışa uyğun məhsul tapılmadı.");
-        }
-
-        var dtolar = mehsullar.Select(m => new MehsulDto
-        {
-            Id = m.Id,
-            Ad = m.Ad,
-            StokKodu = m.StokKodu,
-            Barkod = m.Barkod,
-            PerakendeSatisQiymeti = m.PerakendeSatisQiymeti,
-            // Xətaların qarşısını almaq üçün bütün DTO sahələrini doldururuq
-            TopdanSatisQiymeti = m.TopdanSatisQiymeti,
-            TekEdedSatisQiymeti = m.TekEdedSatisQiymeti,
-            AlisQiymeti = m.AlisQiymeti,
-            MovcudSay = m.MovcudSay,
-            OlcuVahidi = m.OlcuVahidi
-        }).ToList();
-
-        return EmeliyyatNeticesi<List<MehsulDto>>.Ugurlu(dtolar);
     }
 }
