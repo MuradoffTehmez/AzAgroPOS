@@ -30,6 +30,15 @@ public class UnitOfWork : IUnitOfWork
     /// </summary>
     public int AktivIstifadeciId { get; set; } = 1; // Default admin user
 
+    /// <summary>
+    /// Aktiv istifadəçi ID-sini təyin edir
+    /// </summary>
+    /// <param name="istifadeciId">Aktiv istifadəçinin ID-si</param>
+    public void AktivIstifadeciniTeyinEt(int istifadeciId)
+    {
+        AktivIstifadeciId = istifadeciId;
+    }
+
     // Repozitorilərin instansiyaları
     /// <summary>
     /// Məhsul Repozitorisi - Məhsul əməliyyatlarını idarə edir.
@@ -271,11 +280,8 @@ public class UnitOfWork : IUnitOfWork
         {
             var entityType = entry.Entity.GetType().Name;
 
-            // Sadəcə əsas cədvəllər üçün audit qeydi yaradırıq
-            if (!(entry.Entity is Mehsul || entry.Entity is Musteri || entry.Entity is Satis))
-            {
-                continue;
-            }
+            // Bütün BazaVarligi törəmələri üçün audit qeydi yaradırıq
+            // Əvvəlki versiyada yalnız Mehsul, Musteri və Satis audit olunurdu
 
             // Müvəqqəti audit jurnalı obyekti
             var auditEntry = new EmeliyyatJurnali
