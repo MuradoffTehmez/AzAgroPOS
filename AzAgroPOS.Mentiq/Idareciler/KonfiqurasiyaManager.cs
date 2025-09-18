@@ -26,6 +26,8 @@ public class KonfiqurasiyaManager
     /// <returns>Konfiqurasiya DTO obyekti</returns>
     public async Task<EmeliyyatNeticesi<KonfiqurasiyaDto>> AcarlaGetirAsync(string acar)
     {
+        
+        Logger.MelumatYaz(acar);
         try
         {
             var konfiqurasiya = await _unitOfWork.Konfiqurasiyalar.AcarlaGetirAsync(acar);
@@ -60,6 +62,7 @@ public class KonfiqurasiyaManager
     /// <returns>Konfiqurasiya DTO obyektlərinin siyahısı</returns>
     public async Task<EmeliyyatNeticesi<IEnumerable<KonfiqurasiyaDto>>> QruplaGetirAsync(string qrup)
     {
+        Logger.MelumatYaz(qrup);
         try
         {
             var konfiqurasiyalar = await _unitOfWork.Konfiqurasiyalar.QruplaGetirAsync(qrup);
@@ -89,6 +92,7 @@ public class KonfiqurasiyaManager
     /// <returns>Əməliyyat nəticəsi</returns>
     public async Task<EmeliyyatNeticesi<bool>> KonfiqurasiyaElaveEtVəYaYenileAsync(KonfiqurasiyaDto dto)
     {
+       
         try
         {
             var movcudKonfiqurasiya = await _unitOfWork.Konfiqurasiyalar.AcarlaGetirAsync(dto.Acar);
