@@ -23,7 +23,6 @@ public class TehlukesizlikManager
     /// uğursuz giriş halında isə müvafiq xətanı bildirir.
     /// rol: Bu metod asinxron olaraq işləyir və istifadəçi adı və parolun düzgünlüyünü yoxlayır.
     /// diqqət: İstifadəçi adı və parol boş ola bilməz, əgər boşdursa müvafiq xəta mesajı qaytarılır.
-    /// qeyd: İstifadəçi adı və parol yoxlanarkən, istifadəçi adı ilə verilən parolun hash dəyəri müqayisə edilir.
     /// </summary>
     /// <param name="istifadeciAdi"></param>
     /// <param name="parol"></param>
