@@ -5,7 +5,7 @@ namespace AzAgroPOS.Teqdimat
 {
     public partial class LoginFormu : BazaForm, ILoginView
     {
-        private readonly LoginPresenter _presenter;
+        private LoginPresenter _presenter;
         public bool UgurluDaxilOlundu { get; set; } = false;
         public string IstifadeciAdi => txtIstifadeciAdi.Text;
 
@@ -13,10 +13,16 @@ namespace AzAgroPOS.Teqdimat
 
         public event EventHandler DaxilOl_Istek;
 
-        public LoginFormu(LoginPresenter loginPresenter)
+        public LoginFormu()
         {
             InitializeComponent();
-            _presenter = loginPresenter;
+            // We'll create the presenter after form is fully constructed
+            // The presenter will be injected by Program.cs after form creation
+        }
+
+        public void InitializePresenter(LoginPresenter presenter)
+        {
+            _presenter = presenter;
         }
 
         public void MesajGoster(string mesaj) => MessageBox.Show(mesaj, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);

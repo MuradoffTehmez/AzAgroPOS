@@ -30,6 +30,8 @@ namespace AzAgroPOS.Teqdimat
                 ServiceProvider = services.BuildServiceProvider();
 
                 var loginFormu = ServiceProvider.GetRequiredService<LoginFormu>();
+                var loginPresenter = ServiceProvider.GetRequiredService<LoginPresenter>();
+                loginFormu.InitializePresenter(loginPresenter);
                 var dialogResult = loginFormu.ShowDialog();
 
                 if (dialogResult == DialogResult.OK && loginFormu.UgurluDaxilOlundu)
@@ -103,7 +105,6 @@ namespace AzAgroPOS.Teqdimat
                 services.AddTransient<QaytarmaPresenter>();
 
                 // Interface-lər və onların implementasiyaları
-                services.AddTransient<ILoginView, LoginFormu>();
                 services.AddTransient<IAnaMenuView, AnaMenuFormu>();
                 services.AddTransient<IIstifadeciView, IstifadeciIdareetmeFormu>();
                 services.AddTransient<IAnbarView, AnbarFormu>();
@@ -124,8 +125,10 @@ namespace AzAgroPOS.Teqdimat
                 services.AddTransient<IQaytarmaView, QaytarmaFormu>();
                 services.AddTransient<IKonfiqurasiyaView, KonfiqurasiyaFormu>();
 
-                // Formalar (Bütün formaları buraya əlavə edirik)
+                // Login form has a special registration to avoid circular dependency
                 services.AddTransient<LoginFormu>();
+
+                // Other forms
                 services.AddTransient<AnaMenuFormu>();
                 services.AddTransient<IstifadeciIdareetmeFormu>();
                 services.AddTransient<AnbarFormu>();
