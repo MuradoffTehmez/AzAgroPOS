@@ -30,7 +30,9 @@ namespace AzAgroPOS.Teqdimat
                 ServiceProvider = services.BuildServiceProvider();
 
                 var loginFormu = ServiceProvider.GetRequiredService<LoginFormu>();
-                var loginPresenter = ServiceProvider.GetRequiredService<LoginPresenter>();
+                var tehlukesizlikManager = ServiceProvider.GetRequiredService<TehlukesizlikManager>();
+                var unitOfWork = ServiceProvider.GetRequiredService<IUnitOfWork>();
+                var loginPresenter = new LoginPresenter(loginFormu, tehlukesizlikManager, unitOfWork);
                 loginFormu.InitializePresenter(loginPresenter);
                 var dialogResult = loginFormu.ShowDialog();
 
@@ -97,7 +99,6 @@ namespace AzAgroPOS.Teqdimat
                 services.AddTransient<IcazeManager>(); // Əlavə edildi
 
                 // Presenterlər
-                services.AddTransient<LoginPresenter>();
                 services.AddTransient<MehsulPresenter>();
                 services.AddTransient<MusteriPresenter>();
                 services.AddTransient<SatisPresenter>();
