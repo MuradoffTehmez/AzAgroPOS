@@ -26,7 +26,11 @@ namespace AzAgroPOS.Teqdimat
         }
 
         public void MesajGoster(string mesaj) => MessageBox.Show(mesaj, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        public void FormuBagla() => this.Close();
+        public void FormuBagla() 
+        {
+            this.DialogResult = DialogResult.OK;
+            this.Close();
+        }
 
         /// <summary>
         /// Shows a validation error on a control
