@@ -1,67 +1,64 @@
-﻿using System.Windows.Forms;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Yardimcilar;
 using AzAgroPOS.Verilenler.Interfeysler;
 
-namespace AzAgroPOS.Teqdimat.Teqdimatcilar
+namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
+
+public class LoginPresenter
 {
-    public class LoginPresenter
+    private readonly ILoginView _view;
+    private readonly TehlukesizlikManager _tehlukesizlikManager;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly SemaphoreSlim _loginSemaphore = new(1, 1);
+
+    public LoginPresenter(ILoginView view, TehlukesizlikManager tehlukesizlikManager, IUnitOfWork unitOfWork)
     {
-        private readonly ILoginView _view;
-        private readonly TehlukesizlikManager _tehlukesizlikManager;
-        private readonly IUnitOfWork _unitOfWork;
+        _view = view;
+        _tehlukesizlikManager = tehlukesizlikManager;
+        _unitOfWork = unitOfWork;
+        _view.DaxilOl_Istek += OnDaxilOl;
+    }
 
-        public LoginPresenter(ILoginView view, TehlukesizlikManager tehlukesizlikManager, IUnitOfWork unitOfWork)
+    private async void OnDaxilOl(object? sender, EventArgs e)
+    {
+        if (!await _loginSemaphore.WaitAsync(0))
         {
-            _view = view;
-            _tehlukesizlikManager = tehlukesizlikManager;
-            _unitOfWork = unitOfWork;
-            _view.DaxilOl_Istek += OnDaxilOl;
+            _view.MesajGoster("Giriş prosesi artıq davam edir. Zəhmət olmasa tamamlanmasını gözləyin.");
+            return;
         }
 
-        private void OnDaxilOl(object sender, EventArgs e)
+        try
         {
-            // Use Task.Run to execute the async operation on a background thread
-            // This avoids blocking the UI thread and prevents concurrent access issues
-            Task.Run(async () => 
-            {
-                try
-                {
-                    await DaxilOl();
-                }
-                catch (Exception ex)
-                {
-                    // Marshal the exception back to the UI thread
-                    if (_view is Control control && control.InvokeRequired)
-                    {
-                        control.Invoke((MethodInvoker)delegate {
-                            _view.MesajGoster($"Giriş zamanı xəta baş verdi: {ex.Message}");
-                        });
-                    }
-                    else
-                    {
-                        _view.MesajGoster($"Giriş zamanı xəta baş verdi: {ex.Message}");
-                    }
-                }
-            });
+            await DaxilOlAsync();
         }
-
-        private async Task DaxilOl()
+        catch (Exception ex)
         {
-            var netice = await _tehlukesizlikManager.DaxilOlAsync(_view.IstifadeciAdi, _view.Parol);
+            _view.MesajGoster($"Giriş zamanı xəta baş verdi: {ex.Message}");
+        }
+        finally
+        {
+            _loginSemaphore.Release();
+        }
+    }
 
-            if (netice.UgurluDur)
-            {
-                AktivSessiya.AktivIstifadeci = netice.Data;
-                _unitOfWork.AktivIstifadeciniTeyinEt(netice.Data.Id);
-                _view.UgurluDaxilOlundu = true;
-                _view.FormuBagla();
-            }
-            else
-            {
-                _view.MesajGoster(netice.Mesaj);
-            }
+    private async Task DaxilOlAsync()
+    {
+        var netice = await _tehlukesizlikManager.DaxilOlAsync(_view.IstifadeciAdi, _view.Parol);
+
+        if (netice.UgurluDur)
+        {
+            AktivSessiya.AktivIstifadeci = netice.Data;
+            _unitOfWork.AktivIstifadeciniTeyinEt(netice.Data.Id);
+            _view.UgurluDaxilOlundu = true;
+            _view.FormuBagla();
+        }
+        else
+        {
+            _view.MesajGoster(netice.Mesaj);
         }
     }
 }

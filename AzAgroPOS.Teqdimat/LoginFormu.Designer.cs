@@ -34,6 +34,7 @@ namespace AzAgroPOS.Teqdimat
             txtParol = new MaterialSkin.Controls.MaterialTextBox2();
             btnDaxilOl = new MaterialSkin.Controls.MaterialButton();
             errorProvider1 = new ErrorProvider(components);
+            ((System.ComponentModel.ISupportInitialize)errorProvider1).BeginInit();
             SuspendLayout();
             // 
             // txtIstifadeciAdi
@@ -139,9 +140,9 @@ namespace AzAgroPOS.Teqdimat
             MinimizeBox = false;
             Name = "LoginFormu";
             Padding = new Padding(4, 74, 4, 3);
-            //Sizable = false;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Sistemə Giriş";
+            ((System.ComponentModel.ISupportInitialize)errorProvider1).EndInit();
             ResumeLayout(false);
         }
 

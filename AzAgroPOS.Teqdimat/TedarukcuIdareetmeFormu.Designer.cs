@@ -28,7 +28,6 @@ namespace AzAgroPOS.Teqdimat
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             pnlTop = new Panel();
@@ -495,10 +494,6 @@ namespace AzAgroPOS.Teqdimat
             dgvTedarukculer.Size = new Size(617, 490);
             dgvTedarukculer.TabIndex = 0;
             dgvTedarukculer.SelectionChanged += dgvTedarukculer_SelectionChanged;
-            // 
-            // errorProvider1
-            // 
-            errorProvider1.ContainerControl = this;
             // 
             // TedarukcuIdareetmeFormu
             // 

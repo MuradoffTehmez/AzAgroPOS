@@ -59,10 +59,10 @@ namespace AzAgroPOS.Teqdimat
             pnlMain.Dock = DockStyle.Fill;
             pnlMain.ForeColor = Color.FromArgb(222, 0, 0, 0);
             pnlMain.Location = new Point(4, 74);
-            pnlMain.Margin = new Padding(16, 16, 16, 16);
+            pnlMain.Margin = new Padding(16);
             pnlMain.MouseState = MaterialSkin.MouseState.HOVER;
             pnlMain.Name = "pnlMain";
-            pnlMain.Padding = new Padding(16, 16, 16, 16);
+            pnlMain.Padding = new Padding(16);
             pnlMain.Size = new Size(1364, 735);
             pnlMain.TabIndex = 0;
             // 

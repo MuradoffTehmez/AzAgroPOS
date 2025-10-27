@@ -821,35 +821,11 @@
             btnIndirim.NoAccentTextColor = Color.Empty;
             btnIndirim.Size = new Size(140, 40);
             btnIndirim.TabIndex = 5;
-            btnIndirim.Text = "İndirim (F6)";
+            btnIndirim.Text = "ENDİRİM (F6)";
             btnIndirim.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
             btnIndirim.UseAccentColor = true;
             btnIndirim.UseVisualStyleBackColor = false;
             btnIndirim.Click += btnIndirim_Click;
-            // 
-            // btnIxracEt
-            // 
-            btnIxracEt.AutoSize = false;
-            btnIxracEt.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnIxracEt.BackColor = Color.FromArgb(242, 242, 242);
-            btnIxracEt.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            btnIxracEt.Depth = 0;
-            btnIxracEt.FlatStyle = FlatStyle.Flat;
-            btnIxracEt.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            btnIxracEt.HighEmphasis = false;
-            btnIxracEt.Icon = null;
-            btnIxracEt.Location = new Point(450, 6);
-            btnIxracEt.Margin = new Padding(4, 6, 4, 6);
-            btnIxracEt.MouseState = MaterialSkin.MouseState.HOVER;
-            btnIxracEt.Name = "btnIxracEt";
-            btnIxracEt.NoAccentTextColor = Color.Empty;
-            btnIxracEt.Size = new Size(150, 40);
-            btnIxracEt.TabIndex = 6;
-            btnIxracEt.Text = "Sebəti İxrac Et";
-            btnIxracEt.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
-            btnIxracEt.UseAccentColor = true;
-            btnIxracEt.UseVisualStyleBackColor = false;
-            btnIxracEt.Click += btnIxracEt_Click;
             // 
             // flpSuretliSatis
             // 
