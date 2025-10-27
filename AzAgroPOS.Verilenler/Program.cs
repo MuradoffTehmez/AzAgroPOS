@@ -1,33 +1,33 @@
+using System.IO;
 using AzAgroPOS.Verilenler.Kontekst;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System.Linq;
 
 class Program
 {
-    static void Main(string[] args)
+    static async Task Main(string[] args)
     {
-        // Build configuration
-        var builder = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+        IConfiguration configuration = ConnectionStringResolver.BuildConfiguration(Directory.GetCurrentDirectory());
 
-        IConfiguration configuration = builder.Build();
-
-        // Get connection string
-        var connectionString = configuration.GetConnectionString("DefaultConnection");
+        string connectionString = ConnectionStringResolver.Resolve(configuration);
         Console.WriteLine($"Connection String: {connectionString}");
 
-        // Create DbContext options
-        var optionsBuilder = new DbContextOptionsBuilder<AzAgroPOSDbContext>();
-        optionsBuilder.UseSqlServer(connectionString);
+        if (!await CanOpenConnectionAsync(connectionString))
+        {
+            Console.WriteLine("Database connection failed. Update appsettings.json or set AZAGROPOS__CONNECTIONSTRING.");
+            return;
+        }
 
-        // Create DbContext
-        using var context = new AzAgroPOSDbContext(optionsBuilder.Options);
+        var optionsBuilder = new DbContextOptionsBuilder<AzAgroPOSDbContext>()
+            .UseSqlServer(connectionString);
+
+        await using var context = new AzAgroPOSDbContext(optionsBuilder.Options);
 
         try
         {
-            // Get all migrations
-            var migrations = context.Database.GetPendingMigrations();
+            var migrations = await context.Database.GetPendingMigrationsAsync();
             Console.WriteLine($"Found {migrations.Count()} pending migrations:");
 
             foreach (var migration in migrations)
@@ -35,28 +35,36 @@ class Program
                 Console.WriteLine($"  - {migration}");
             }
 
-            // Apply migrations one by one
-            Console.WriteLine("Applying migrations one by one...");
-            foreach (var migration in migrations)
+            if (migrations.Any())
             {
-                try
-                {
-                    Console.WriteLine($"Applying migration: {migration}");
-                    context.Database.Migrate(migration);
-                    Console.WriteLine($"Migration {migration} applied successfully!");
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error applying migration {migration}: {ex.Message}");
-                    Console.WriteLine($"Stack trace: {ex.StackTrace}");
-                    break;
-                }
+                Console.WriteLine("Applying migrations...");
+                await context.Database.MigrateAsync();
+                Console.WriteLine("All pending migrations applied successfully.");
+            }
+            else
+            {
+                Console.WriteLine("No pending migrations found.");
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error getting pending migrations: {ex.Message}");
-            Console.WriteLine($"Stack trace: {ex.StackTrace}");
+            Console.WriteLine($"Error while applying migrations: {ex.Message}");
+            Console.WriteLine(ex.StackTrace);
+        }
+    }
+
+    private static async Task<bool> CanOpenConnectionAsync(string connectionString)
+    {
+        await using var connection = new SqlConnection(connectionString);
+        try
+        {
+            await connection.OpenAsync();
+            return true;
+        }
+        catch (SqlException ex)
+        {
+            Console.WriteLine($"Connection error: {ex.Message}");
+            return false;
         }
     }
 }

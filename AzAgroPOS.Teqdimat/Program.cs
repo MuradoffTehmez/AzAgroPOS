@@ -8,6 +8,7 @@ using AzAgroPOS.Verilenler.Realizasialar;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Data.SqlClient;
 
 namespace AzAgroPOS.Teqdimat
 {
@@ -61,19 +62,16 @@ namespace AzAgroPOS.Teqdimat
         {
             try
             {
-                // Build configuration
-                var builder = new ConfigurationBuilder()
-                    .SetBasePath(Directory.GetCurrentDirectory())
-                    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                IConfiguration configuration = ConnectionStringResolver.BuildConfiguration(AppContext.BaseDirectory);
 
-                IConfiguration configuration = builder.Build();
+                string connectionString = ConnectionStringResolver.Resolve(configuration, Sabitler.DefaultConnection);
 
-                // Get connection string from configuration or use fallback
-                string connectionString = configuration.GetConnectionString(Sabitler.DefaultConnection) ??
-                "Server=.\\SQLEXPRESS;Database=AzAgroPOS_DB;Trusted_Connection=True;TrustServerCertificate=True;";
+                EnsureDatabaseAccessible(connectionString);
+
+                services.AddSingleton(configuration);
 
                 services.AddDbContext<AzAgroPOSDbContext>(options =>
-                    options.UseSqlServer(connectionString), ServiceLifetime.Transient);
+                    options.UseSqlServer(connectionString, sql => sql.EnableRetryOnFailure()), ServiceLifetime.Transient);
 
                 services.AddTransient<IUnitOfWork, UnitOfWork>();
 
@@ -155,6 +153,21 @@ namespace AzAgroPOS.Teqdimat
                 // Log the configuration error and rethrow
                 AzAgroPOS.Mentiq.Yardimcilar.Logger.XetaYaz(ex, "Servis konfiqurasiya edilərkən xəta baş verdi");
                 throw; // Rethrow to be caught by the main try-catch
+            }
+        }
+
+        private static void EnsureDatabaseAccessible(string connectionString)
+        {
+            using var connection = new SqlConnection(connectionString);
+            try
+            {
+                connection.Open();
+            }
+            catch (SqlException ex)
+            {
+                throw new InvalidOperationException(
+                    "Verilənlər bazasına qoşulmaq mümkün olmadı. Zəhmət olmasa appsettings.json faylındakı \"DefaultConnection\" sətirini yeniləyin və ya AZAGROPOS__CONNECTIONSTRING mühit dəyişənini təyin edin.",
+                    ex);
             }
         }
     }

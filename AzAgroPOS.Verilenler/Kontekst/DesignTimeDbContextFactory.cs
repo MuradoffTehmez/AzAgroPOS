@@ -1,32 +1,24 @@
-﻿using Microsoft.EntityFrameworkCore;
+using System.IO;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 
-namespace AzAgroPOS.Verilenler.Kontekst
+namespace AzAgroPOS.Verilenler.Kontekst;
+
+/// <summary>
+/// Entity Framework design-time factory so that tooling can create the DbContext consistently.
+/// </summary>
+public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<AzAgroPOSDbContext>
 {
-    /// <summary>
-    /// Bu sinif, 'Add-Migration' və 'Update-Database' kimi Entity Framework dizayn zamanı (design-time)
-    /// alətlərinin AzAgroPOSDbContext-i necə yaradacağını təyin edir.
-    /// </summary>
-    public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<AzAgroPOSDbContext>
+    public AzAgroPOSDbContext CreateDbContext(string[] args)
     {
-        public AzAgroPOSDbContext CreateDbContext(string[] args)
-        {
-            var optionsBuilder = new DbContextOptionsBuilder<AzAgroPOSDbContext>();
+        IConfiguration configuration = ConnectionStringResolver.BuildConfiguration(Directory.GetCurrentDirectory());
 
-            // Build configuration
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+        string connectionString = ConnectionStringResolver.Resolve(configuration);
 
-            IConfiguration configuration = builder.Build();
+        var optionsBuilder = new DbContextOptionsBuilder<AzAgroPOSDbContext>()
+            .UseSqlServer(connectionString);
 
-            // Get connection string from configuration
-            string connectionString = configuration.GetConnectionString("DefaultConnection");
-
-            optionsBuilder.UseSqlServer(connectionString);
-
-            return new AzAgroPOSDbContext(optionsBuilder.Options);
-        }
+        return new AzAgroPOSDbContext(optionsBuilder.Options);
     }
 }

@@ -43,16 +43,16 @@
             txtMusteriTelefonu = new TextBox();
             lblCihazAdi = new Label();
             txtCihazAdi = new TextBox();
-            lblProblemTesviri = new Label();
-            txtProblemTesviri = new TextBox();
-            lblYekunMebleg = new Label();
-            txtYekunMebleg = new TextBox();
             lblSeriyaNomresi = new Label();
             txtSeriyaNomresi = new TextBox();
+            lblProblemTesviri = new Label();
+            txtProblemTesviri = new TextBox();
             lblTemirXerci = new Label();
             txtTemirXerci = new TextBox();
             lblServisHaqqi = new Label();
             txtServisHaqqi = new TextBox();
+            lblYekunMebleg = new Label();
+            txtYekunMebleg = new TextBox();
             lblUsta = new Label();
             cmbUsta = new ComboBox();
             btnEhtiyatHissəsiElaveEt = new Button();
@@ -64,6 +64,7 @@
             btnYarat = new Button();
             grpSifarisler = new GroupBox();
             dgvSifarisler = new DataGridView();
+            errorProvider1 = new ErrorProvider(components);
             pnlTop.SuspendLayout();
             pnlMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
@@ -75,6 +76,7 @@
             pnlDugmeler.SuspendLayout();
             grpSifarisler.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvSifarisler).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)errorProvider1).BeginInit();
             SuspendLayout();
             // 
             // pnlTop
@@ -331,20 +333,6 @@
             txtProblemTesviri.Size = new Size(233, 94);
             txtProblemTesviri.TabIndex = 5;
             // 
-            // lblYekunMebleg
-            // 
-            lblYekunMebleg.AutoSize = true;
-            lblYekunMebleg.BackColor = Color.FromArgb(242, 242, 242);
-            lblYekunMebleg.Dock = DockStyle.Fill;
-            lblYekunMebleg.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            lblYekunMebleg.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblYekunMebleg.Location = new Point(3, 205);
-            lblYekunMebleg.Name = "lblYekunMebleg";
-            lblYekunMebleg.Size = new Size(96, 35);
-            lblYekunMebleg.TabIndex = 8;
-            lblYekunMebleg.Text = "Yekun Məbləğ:";
-            lblYekunMebleg.TextAlign = ContentAlignment.MiddleLeft;
-            // 
             // lblTemirXerci
             // 
             lblTemirXerci.AutoSize = true;
@@ -352,7 +340,7 @@
             lblTemirXerci.Dock = DockStyle.Fill;
             lblTemirXerci.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             lblTemirXerci.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblTemirXerci.Location = new Point(3, 205);
+            lblTemirXerci.Location = new Point(3, 240);
             lblTemirXerci.Name = "lblTemirXerci";
             lblTemirXerci.Size = new Size(96, 35);
             lblTemirXerci.TabIndex = 10;
@@ -365,7 +353,7 @@
             txtTemirXerci.Dock = DockStyle.Fill;
             txtTemirXerci.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             txtTemirXerci.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            txtTemirXerci.Location = new Point(105, 208);
+            txtTemirXerci.Location = new Point(105, 243);
             txtTemirXerci.Name = "txtTemirXerci";
             txtTemirXerci.Size = new Size(233, 24);
             txtTemirXerci.TabIndex = 6;
@@ -378,7 +366,7 @@
             lblServisHaqqi.Dock = DockStyle.Fill;
             lblServisHaqqi.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             lblServisHaqqi.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblServisHaqqi.Location = new Point(3, 240);
+            lblServisHaqqi.Location = new Point(3, 275);
             lblServisHaqqi.Name = "lblServisHaqqi";
             lblServisHaqqi.Size = new Size(96, 35);
             lblServisHaqqi.TabIndex = 12;
@@ -391,7 +379,7 @@
             txtServisHaqqi.Dock = DockStyle.Fill;
             txtServisHaqqi.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             txtServisHaqqi.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            txtServisHaqqi.Location = new Point(105, 243);
+            txtServisHaqqi.Location = new Point(105, 278);
             txtServisHaqqi.Name = "txtServisHaqqi";
             txtServisHaqqi.Size = new Size(233, 24);
             txtServisHaqqi.TabIndex = 7;
@@ -404,7 +392,7 @@
             lblYekunMebleg.Dock = DockStyle.Fill;
             lblYekunMebleg.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             lblYekunMebleg.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblYekunMebleg.Location = new Point(3, 275);
+            lblYekunMebleg.Location = new Point(3, 310);
             lblYekunMebleg.Name = "lblYekunMebleg";
             lblYekunMebleg.Size = new Size(96, 35);
             lblYekunMebleg.TabIndex = 8;
@@ -417,24 +405,11 @@
             txtYekunMebleg.Dock = DockStyle.Fill;
             txtYekunMebleg.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             txtYekunMebleg.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            txtYekunMebleg.Location = new Point(105, 278);
+            txtYekunMebleg.Location = new Point(105, 313);
             txtYekunMebleg.Name = "txtYekunMebleg";
             txtYekunMebleg.ReadOnly = true;
             txtYekunMebleg.Size = new Size(233, 24);
             txtYekunMebleg.TabIndex = 8;
-            // 
-            // btnEhtiyatHissəsiElaveEt
-            // 
-            btnEhtiyatHissəsiElaveEt.BackColor = Color.FromArgb(242, 242, 242);
-            btnEhtiyatHissəsiElaveEt.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            btnEhtiyatHissəsiElaveEt.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            btnEhtiyatHissəsiElaveEt.Location = new Point(105, 313);
-            btnEhtiyatHissəsiElaveEt.Name = "btnEhtiyatHissəsiElaveEt";
-            btnEhtiyatHissəsiElaveEt.Size = new Size(233, 29);
-            btnEhtiyatHissəsiElaveEt.TabIndex = 14;
-            btnEhtiyatHissəsiElaveEt.Text = "Ehtiyat Hissəsi Əlavə Et";
-            btnEhtiyatHissəsiElaveEt.UseVisualStyleBackColor = false;
-            btnEhtiyatHissəsiElaveEt.Click += btnEhtiyatHissəsiElaveEt_Click;
             // 
             // lblUsta
             // 
@@ -443,7 +418,7 @@
             lblUsta.Dock = DockStyle.Fill;
             lblUsta.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             lblUsta.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblUsta.Location = new Point(3, 310);
+            lblUsta.Location = new Point(3, 345);
             lblUsta.Name = "lblUsta";
             lblUsta.Size = new Size(96, 35);
             lblUsta.TabIndex = 16;
@@ -457,7 +432,7 @@
             cmbUsta.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             cmbUsta.ForeColor = Color.FromArgb(222, 0, 0, 0);
             cmbUsta.FormattingEnabled = true;
-            cmbUsta.Location = new Point(105, 313);
+            cmbUsta.Location = new Point(105, 348);
             cmbUsta.Name = "cmbUsta";
             cmbUsta.Size = new Size(233, 25);
             cmbUsta.TabIndex = 9;
@@ -467,7 +442,7 @@
             btnEhtiyatHissəsiElaveEt.BackColor = Color.FromArgb(242, 242, 242);
             btnEhtiyatHissəsiElaveEt.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             btnEhtiyatHissəsiElaveEt.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            btnEhtiyatHissəsiElaveEt.Location = new Point(105, 348);
+            btnEhtiyatHissəsiElaveEt.Location = new Point(105, 383);
             btnEhtiyatHissəsiElaveEt.Name = "btnEhtiyatHissəsiElaveEt";
             btnEhtiyatHissəsiElaveEt.Size = new Size(233, 29);
             btnEhtiyatHissəsiElaveEt.TabIndex = 14;
@@ -480,7 +455,7 @@
             btnÖdənişiTamamla.BackColor = Color.FromArgb(242, 242, 242);
             btnÖdənişiTamamla.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             btnÖdənişiTamamla.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            btnÖdənişiTamamla.Location = new Point(105, 383);
+            btnÖdənişiTamamla.Location = new Point(105, 418);
             btnÖdənişiTamamla.Name = "btnÖdənişiTamamla";
             btnÖdənişiTamamla.Size = new Size(233, 29);
             btnÖdənişiTamamla.TabIndex = 15;
@@ -603,7 +578,6 @@
             // 
             // errorProvider1
             // 
-            errorProvider1 = new ErrorProvider(components);
             errorProvider1.ContainerControl = this;
             // 
             // TemirIdareetmeFormu
@@ -628,6 +602,7 @@
             pnlDugmeler.ResumeLayout(false);
             grpSifarisler.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvSifarisler).EndInit();
+            ((System.ComponentModel.ISupportInitialize)errorProvider1).EndInit();
             ResumeLayout(false);
 
         }
