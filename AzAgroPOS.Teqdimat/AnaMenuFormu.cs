@@ -191,34 +191,26 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
 
     private void InitializeDashboard()
     {
-        // Dashboard panelinə kartları əlavə edirik
-        dashboardPanel.Controls.Add(dailySalesCard);
-        dashboardPanel.Controls.Add(activeShiftCard);
-        dashboardPanel.Controls.Add(debtorCustomersCard);
-        dashboardPanel.Controls.Add(lowStockProductsCard);
-
-        // Kartlara etiketləri əlavə edirik
-        dailySalesCard.Controls.Add(lblDailySales);
-        dailySalesCard.Controls.Add(lblDailySalesValue);
-
-        activeShiftCard.Controls.Add(lblActiveShift);
-        activeShiftCard.Controls.Add(lblActiveShiftValue);
-
-        debtorCustomersCard.Controls.Add(lblDebtorCustomers);
-        debtorCustomersCard.Controls.Add(lblDebtorCustomersValue);
-
-        lowStockProductsCard.Controls.Add(lblLowStockProducts);
-        lowStockProductsCard.Controls.Add(lblLowStockProductsValue);
-
         // Timeri konfiqurasiya edirik
-        dashboardTimer = new Timer();
+        if (dashboardTimer == null)
+        {
+            dashboardTimer = new Timer();
+        }
+        else
+        {
+            dashboardTimer.Stop();
+            dashboardTimer.Tick -= DashboardTimer_Tick;
+        }
+
         dashboardTimer.Interval = 300000; // 5 dəqiqə
-        dashboardTimer.Tick += async (s, e) => await UpdateDashboardData();
+        dashboardTimer.Tick += DashboardTimer_Tick;
         dashboardTimer.Start();
 
         // İlk dəfə məlumatları yükləyirik
         _ = UpdateDashboardData(); // Fire and forget
     }
+
+    private async void DashboardTimer_Tick(object? sender, EventArgs e) => await UpdateDashboardData();
 
     private async Task UpdateDashboardData()
     {
