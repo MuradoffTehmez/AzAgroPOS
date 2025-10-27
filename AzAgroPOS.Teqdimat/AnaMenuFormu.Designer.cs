@@ -56,7 +56,26 @@ namespace AzAgroPOS.Teqdimat
             baglaToolStripMenuItem = new ToolStripMenuItem();
             toolStripSeparator1 = new ToolStripSeparator();
             hamisiniBaglaToolStripMenuItem = new ToolStripMenuItem();
+            dashboardPanel = new Panel();
+            dailySalesCard = new MaterialSkin.Controls.MaterialCard();
+            activeShiftCard = new MaterialSkin.Controls.MaterialCard();
+            debtorCustomersCard = new MaterialSkin.Controls.MaterialCard();
+            lowStockProductsCard = new MaterialSkin.Controls.MaterialCard();
+            lblDailySales = new Label();
+            lblActiveShift = new Label();
+            lblDebtorCustomers = new Label();
+            lblLowStockProducts = new Label();
+            lblDailySalesValue = new Label();
+            lblActiveShiftValue = new Label();
+            lblDebtorCustomersValue = new Label();
+            lblLowStockProductsValue = new Label();
+            dashboardTimer = new System.Windows.Forms.Timer(components);
             pnlMenu.SuspendLayout();
+            dashboardPanel.SuspendLayout();
+            dailySalesCard.SuspendLayout();
+            activeShiftCard.SuspendLayout();
+            debtorCustomersCard.SuspendLayout();
+            lowStockProductsCard.SuspendLayout();
             pnlUserInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)picUserIcon).BeginInit();
             tabContextMenu.SuspendLayout();
@@ -741,6 +760,23 @@ namespace AzAgroPOS.Teqdimat
             lblLowStockProductsValue.Text = "0";
             
             // 
+            // Dashboard layout composition
+            // 
+            dailySalesCard.Controls.Add(lblDailySalesValue);
+            dailySalesCard.Controls.Add(lblDailySales);
+            activeShiftCard.Controls.Add(lblActiveShiftValue);
+            activeShiftCard.Controls.Add(lblActiveShift);
+            debtorCustomersCard.Controls.Add(lblDebtorCustomersValue);
+            debtorCustomersCard.Controls.Add(lblDebtorCustomers);
+            lowStockProductsCard.Controls.Add(lblLowStockProductsValue);
+            lowStockProductsCard.Controls.Add(lblLowStockProducts);
+
+            dashboardPanel.Controls.Add(lowStockProductsCard);
+            dashboardPanel.Controls.Add(debtorCustomersCard);
+            dashboardPanel.Controls.Add(activeShiftCard);
+            dashboardPanel.Controls.Add(dailySalesCard);
+
+            // 
             // dashboardTimer
             // 
             dashboardTimer.Interval = 300000; // 5 dəqiqə
@@ -788,6 +824,15 @@ namespace AzAgroPOS.Teqdimat
             WindowState = FormWindowState.Maximized;
             FormClosing += AnaMenuFormu_FormClosing;
             Load += AnaMenuFormu_Load;
+            dashboardPanel.ResumeLayout(false);
+            dailySalesCard.ResumeLayout(false);
+            dailySalesCard.PerformLayout();
+            activeShiftCard.ResumeLayout(false);
+            activeShiftCard.PerformLayout();
+            debtorCustomersCard.ResumeLayout(false);
+            debtorCustomersCard.PerformLayout();
+            lowStockProductsCard.ResumeLayout(false);
+            lowStockProductsCard.PerformLayout();
             pnlMenu.ResumeLayout(false);
             pnlUserInfo.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)picUserIcon).EndInit();
