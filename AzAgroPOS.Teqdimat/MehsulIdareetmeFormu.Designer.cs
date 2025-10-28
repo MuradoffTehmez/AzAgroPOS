@@ -31,6 +31,7 @@ namespace AzAgroPOS.Teqdimat
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MehsulIdareetmeFormu));
+            splitContainer1 = new SplitContainer();
             toolTip1 = new ToolTip(components);
             dgvMehsullar = new DataGridView();
             contextMenuStripMehsullar = new ContextMenuStrip(components);

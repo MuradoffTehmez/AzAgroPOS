@@ -8,23 +8,44 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 {
     public class MehsulPresenter
     {
-        private readonly IMehsulIdareetmeView _view;
+        private IMehsulIdareetmeView _view = null!;
         private readonly MehsulManager _mehsulManager;
         private readonly KateqoriyaMeneceri _kateqoriyaMeneceri;
         private readonly BrendMeneceri _brendMeneceri;
         private readonly TedarukcuMeneceri _tedarukcuMeneceri;
         private IEnumerable<MehsulDto>? _butunMehsullarCache;
+        private bool _isViewAttached;
 
-        public MehsulPresenter(IMehsulIdareetmeView view, MehsulManager mehsulManager,
+        public MehsulPresenter(MehsulManager mehsulManager,
             KateqoriyaMeneceri kateqoriyaMeneceri, BrendMeneceri brendMeneceri, TedarukcuMeneceri tedarukcuMeneceri)
         {
-            _view = view;
             _mehsulManager = mehsulManager;
             _kateqoriyaMeneceri = kateqoriyaMeneceri;
             _brendMeneceri = brendMeneceri;
             _tedarukcuMeneceri = tedarukcuMeneceri;
+        }
 
-            // Hadisələrə abunə oluruq (Subscribing to events)
+        public void AttachView(IMehsulIdareetmeView view)
+        {
+            if (view == null) throw new ArgumentNullException(nameof(view));
+
+            if (_isViewAttached)
+            {
+                if (!ReferenceEquals(_view, view))
+                {
+                    throw new InvalidOperationException("Bu presenter artıq başqa bir görünüşə qoşulub.");
+                }
+
+                return;
+            }
+
+            _view = view;
+            SubscribeToViewEvents();
+            _isViewAttached = true;
+        }
+
+        private void SubscribeToViewEvents()
+        {
             _view.FormYuklendi_Istek += async (s, e) => await FormuYukle();
             _view.MehsulElaveEt_Istek += async (s, e) => await MehsulElaveEt();
             _view.MehsulYenile_Istek += async (s, e) => await MehsulYenile();
