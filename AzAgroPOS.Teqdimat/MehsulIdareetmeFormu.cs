@@ -322,21 +322,9 @@ namespace AzAgroPOS.Teqdimat
         #region Auto-complete Setup
         private void SetupComboBoxAutoComplete()
         {
-            // Setup auto-complete for supplier ComboBox
-            cmbTedarukcu.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-            cmbTedarukcu.AutoCompleteSource = AutoCompleteSource.ListItems;
-
-            // Setup auto-complete for category ComboBox
-            cmbKateqoriya.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-            cmbKateqoriya.AutoCompleteSource = AutoCompleteSource.ListItems;
-
-            // Setup auto-complete for brand ComboBox
-            cmbBrend.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-            cmbBrend.AutoCompleteSource = AutoCompleteSource.ListItems;
-
-            // Setup auto-complete for unit of measure ComboBox
-            cmbOlcuVahidi.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-            cmbOlcuVahidi.AutoCompleteSource = AutoCompleteSource.ListItems;
+            // MaterialSkin ComboBoxes may not support AutoComplete with DropDownList style
+            // Skip autocomplete setup for MaterialSkin ComboBoxes
+            // AutoComplete is typically only needed for editable ComboBoxes
         }
         #endregion
 
