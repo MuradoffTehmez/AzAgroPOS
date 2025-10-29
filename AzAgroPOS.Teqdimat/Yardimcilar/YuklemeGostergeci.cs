@@ -1,127 +1,138 @@
-namespace AzAgroPOS.Teqdimat.Yardimcilar
+// Fayl: AzAgroPOS.Teqdimat\Yardimcilar\YuklemeGostergeci.cs
+namespace AzAgroPOS.Teqdimat.Yardimcilar;
+
+using System;
+using System.Windows.Forms;
+
+/// <summary>
+/// Yükləmə göstəricisi - uzun çəkən əməliyyatlar zamanı istifadəçiyə vizual göstərici təmin edir
+/// diqqət: Bu sinif formdakı kontrollerlərə yükləmə göstəricisi əlavə edir
+/// qeyd: Asinxron əməliyyatlar üçün əlverişlidir
+/// </summary>
+public class YuklemeGostergeci
 {
-    /// <summary>
-    /// Professional green-toned loading overlay with animated spinner
-    /// </summary>
-    public partial class YuklemeGostergeci : UserControl
+    private readonly Form _form;
+    private Panel _yuklemePaneli;
+    private Label _yuklemeEtiketi;
+    private ProgressBar _yuklemeCubugu;
+
+    public YuklemeGostergeci(Form form)
     {
-        private System.Windows.Forms.Timer _animationTimer;
-        private int _currentAngle = 0;
-        private string _loadingText = "Məlumatlar yüklənir...";
-        private bool _isAnimating = false;
+        _form = form;
+        _yuklemePaneli = new Panel();
+        _yuklemeEtiketi = new Label();
+        _yuklemeCubugu = new ProgressBar();
+    }
 
-        public YuklemeGostergeci()
+    /// <summary>
+    /// Yükləmə göstəricisini başlatır
+    /// </summary>
+    /// <param name="mesaj">İstifadəçiyə göstəriləcək mesaj</param>
+    public void Baslat(string mesaj = "Yüklənir...")
+    {
+        // Yükləmə panelini konfiqurasiya et
+        _yuklemePaneli.BackColor = System.Drawing.Color.FromArgb(100, 0, 0, 0); // Yarı şəffaf arxa fon
+        _yuklemePaneli.Dock = DockStyle.Fill;
+        _yuklemePaneli.BringToFront();
+        _yuklemePaneli.Name = "YuklemePaneli";
+
+        // Etiketi konfiqurasiya et
+        _yuklemeEtiketi.Text = mesaj;
+        _yuklemeEtiketi.ForeColor = System.Drawing.Color.White;
+        _yuklemeEtiketi.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+        _yuklemeEtiketi.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+        _yuklemeEtiketi.AutoSize = false;
+        _yuklemeEtiketi.Dock = DockStyle.Top;
+        _yuklemeEtiketi.Height = 40;
+
+        // Cərgəyi konfiqurasiya et
+        _yuklemeCubugu.Style = ProgressBarStyle.Marquee; // Davamlı hərəkətli cərgə
+        _yuklemeCubugu.Dock = DockStyle.Top;
+        _yuklemeCubugu.Height = 5;
+        _yuklemeCubugu.Name = "YuklemeCubugu";
+
+        // Elementləri əlavə et
+        _yuklemePaneli.Controls.Add(_yuklemeEtiketi);
+        _yuklemePaneli.Controls.Add(_yuklemeCubugu);
+
+        // Formdakı digər kontrollerləri deaktiv et
+        _form.Controls.Add(_yuklemePaneli);
+        _yuklemePaneli.BringToFront();
+
+        // Digər kontrollerləri müvəqqəti deaktiv et
+        foreach (Control control in _form.Controls)
         {
-            InitializeComponent();
-            this.Visible = false;
-            this.BackColor = Color.FromArgb(160, 0, 0, 0); // Overlay: yarı şəffaf qara
-            this.Dock = DockStyle.Fill;
-
-            // Timer animasiya
-            _animationTimer = new System.Windows.Forms.Timer
+            if (control != _yuklemePaneli)
             {
-                Interval = 60 // ~16 FPS
-            };
-            _animationTimer.Tick += AnimationTimer_Tick;
+                control.Enabled = false;
+            }
         }
+    }
 
-        public string LoadingText
+    /// <summary>
+    /// Yükləmə göstəricisini dayandırır
+    /// </summary>
+    public void Dayandir()
+    {
+        // Formdakı digər kontrollerləri yenidən aktiv et
+        foreach (Control control in _form.Controls)
         {
-            get => _loadingText;
-            set
+            if (control != _yuklemePaneli)
             {
-                _loadingText = value;
-                if (lblMessage != null)
-                    lblMessage.Text = value;
+                control.Enabled = true;
             }
         }
 
-        public bool IsAnimating => _isAnimating;
-
-        public void Start()
+        // Yükləmə panelini sil
+        if (_yuklemePaneli.Parent != null)
         {
-            if (!_isAnimating)
-            {
-                _isAnimating = true;
-                _currentAngle = 0;
-                this.Visible = true;
-                _animationTimer.Start();
-            }
+            _yuklemePaneli.Parent.Controls.Remove(_yuklemePaneli);
         }
 
-        public void Stop()
+        _yuklemePaneli.Dispose();
+        _yuklemeEtiketi.Dispose();
+        _yuklemeCubugu.Dispose();
+    }
+
+    /// <summary>
+    /// Asinxron əməliyyatı icra edən və yükləmə göstəricisini idarə edən metod
+    /// </summary>
+    /// <typeparam name="T">Əməliyyatın nəticə tipi</typeparam>
+    /// <param name="emeliyyat">İcra ediləcək əməliyyat</param>
+    /// <param name="mesaj">Yükləmə zamanı göstəriləcək mesaj</param>
+    /// <returns>Əməliyyat nəticəsi</returns>
+    public async System.Threading.Tasks.Task<T> EmeliyyatIcraEtAsync<T>(Func<System.Threading.Tasks.Task<T>> emeliyyat, string mesaj = "Yüklənir...")
+    {
+        T netice = default(T);
+
+        try
         {
-            if (_isAnimating)
-            {
-                _isAnimating = false;
-                _animationTimer.Stop();
-                this.Visible = false;
-            }
+            Baslat(mesaj);
+            netice = await emeliyyat();
+        }
+        finally
+        {
+            Dayandir();
         }
 
-        private void AnimationTimer_Tick(object sender, EventArgs e)
+        return netice;
+    }
+
+    /// <summary>
+    /// Void qaytaran asinxron əməliyyatı icra edən və yükləmə göstəricisini idarə edən metod
+    /// </summary>
+    /// <param name="emeliyyat">İcra ediləcək əməliyyat</param>
+    /// <param name="mesaj">Yükləmə zamanı göstəriləcək mesaj</param>
+    public async System.Threading.Tasks.Task EmeliyyatIcraEtAsync(Func<System.Threading.Tasks.Task> emeliyyat, string mesaj = "Yüklənir...")
+    {
+        try
         {
-            _currentAngle = (_currentAngle + 30) % 360;
-            this.Invalidate();
+            Baslat(mesaj);
+            await emeliyyat();
         }
-
-        protected override void OnPaint(PaintEventArgs e)
+        finally
         {
-            base.OnPaint(e);
-            if (!_isAnimating) return;
-
-            var g = e.Graphics;
-            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-
-            // Mərkəz nöqtəsi
-            var centerX = this.Width / 2;
-            var centerY = this.Height / 2 - 30;
-            var radius = 40;
-            var circleRadius = 7;
-
-            // Spinner elementləri
-            for (int i = 0; i < 12; i++)
-            {
-                var angle = (_currentAngle + i * 30) * Math.PI / 180;
-                var x = centerX + (int)(radius * Math.Cos(angle)) - circleRadius;
-                var y = centerY + (int)(radius * Math.Sin(angle)) - circleRadius;
-
-                int opacity = 255 - (i * 18);
-                if (opacity < 50) opacity = 50;
-
-                // Yaşıl tonlu gradient effekti
-                Color dotColor = Color.FromArgb(opacity, 0, 200 - (i * 10), 0 + (i * 15));
-                using (var brush = new SolidBrush(dotColor))
-                {
-                    g.FillEllipse(brush, x, y, circleRadius * 2, circleRadius * 2);
-                }
-            }
+            Dayandir();
         }
-
-        private void InitializeComponent()
-        {
-            lblMessage = new Label();
-            SuspendLayout();
-            // 
-            // lblMessage
-            // 
-            lblMessage.AutoSize = false;
-            lblMessage.Font = new Font("Segoe UI Semibold", 13F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblMessage.ForeColor = Color.FromArgb(0, 230, 118); // Yaşıl vurğu
-            lblMessage.BackColor = Color.Transparent;
-            lblMessage.TextAlign = ContentAlignment.MiddleCenter;
-            lblMessage.Dock = DockStyle.Bottom;
-            lblMessage.Padding = new Padding(0, 10, 0, 30);
-            lblMessage.Text = "Məlumatlar yüklənir...";
-            // 
-            // YuklemeGostergeci
-            // 
-            Controls.Add(lblMessage);
-            Name = "YuklemeGostergeci";
-            Size = new Size(500, 400);
-            ResumeLayout(false);
-        }
-
-        private Label lblMessage;
     }
 }

@@ -335,5 +335,57 @@ namespace AzAgroPOS.Teqdimat
         }
 
         #endregion
+
+        #region Yükləmə Göstərici Metodları
+
+        private YuklemeGostergeci? _yuklemeGostergeci;
+
+        /// <summary>
+        /// Yükləmə göstəricisini başlatır
+        /// diqqət: Uzun çəkən əməliyyatlar üçün istifadə olunur
+        /// qeyd: Formun digər elementlərini müvəqqəti deaktiv edir
+        /// </summary>
+        /// <param name="mesaj">İstifadəçiyə göstəriləcək mesaj</param>
+        protected void YuklemeGoster(string mesaj = "Yüklənir...")
+        {
+            _yuklemeGostergeci ??= new YuklemeGostergeci(this);
+            _yuklemeGostergeci.Baslat(mesaj);
+        }
+
+        /// <summary>
+        /// Yükləmə göstəricisini gizlədir
+        /// diqqət: Əməliyyat bitdikdə çağrılmalıdır
+        /// qeyd: Formun digər elementlərini yenidən aktiv edir
+        /// </summary>
+        protected void YuklemeGizle()
+        {
+            _yuklemeGostergeci?.Dayandir();
+        }
+
+        /// <summary>
+        /// Asinxron əməliyyatı icra edən və yükləmə göstəricisi ilə idarə edən metod
+        /// </summary>
+        /// <typeparam name="T">Əməliyyatın nəticə tipi</typeparam>
+        /// <param name="emeliyyat">İcra ediləcək asinxron əməliyyat</param>
+        /// <param name="mesaj">Yükləmə zamanı göstəriləcək mesaj</param>
+        /// <returns>Əməliyyat nəticəsi</returns>
+        protected async Task<T> AsyncEmeliyyatIcraEtAsync<T>(Func<Task<T>> emeliyyat, string mesaj = "Yüklənir...")
+        {
+            _yuklemeGostergeci ??= new YuklemeGostergeci(this);
+            return await _yuklemeGostergeci.EmeliyyatIcraEtAsync(emeliyyat, mesaj);
+        }
+
+        /// <summary>
+        /// Void qaytaran asinxron əməliyyatı icra edən və yükləmə göstəricisi ilə idarə edən metod
+        /// </summary>
+        /// <param name="emeliyyat">İcra ediləcək asinxron əməliyyat</param>
+        /// <param name="mesaj">Yükləmə zamanı göstəriləcək mesaj</param>
+        protected async Task AsyncEmeliyyatIcraEtAsync(Func<Task> emeliyyat, string mesaj = "Yüklənir...")
+        {
+            _yuklemeGostergeci ??= new YuklemeGostergeci(this);
+            await _yuklemeGostergeci.EmeliyyatIcraEtAsync(emeliyyat, mesaj);
+        }
+
+        #endregion
     }
 }
