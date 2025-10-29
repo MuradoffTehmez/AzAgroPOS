@@ -67,19 +67,37 @@ public class SatisManager
                 MusteriId = satisDto.MusteriId
             };
 
-            // Satış detallarını və stokları yenilə
+            await _unitOfWork.Satislar.ElaveEtAsync(satis);
+            await _unitOfWork.EmeliyyatiTesdiqleAsync(); // Satış ID-sini əldə etmək üçün
+
+            // Satış detallarını əlavə et və stok hərəkətlərini qeydə al
             foreach (var element in satisDto.SebetElementleri)
             {
-                satis.SatisDetallari.Add(new SatisDetali { MehsulId = element.MehsulId, Miqdar = element.Miqdar, Qiymet = element.VahidinQiymeti, UmumiMebleg = element.Miqdar * element.VahidinQiymeti });
-                var mehsul = await _unitOfWork.Mehsullar.GetirAsync(element.MehsulId);
-                if (mehsul != null)
+                satis.SatisDetallari.Add(new SatisDetali
                 {
-                    mehsul.MovcudSay -= (int)element.Miqdar;
-                    _unitOfWork.Mehsullar.Yenile(mehsul);
+                    MehsulId = element.MehsulId,
+                    Miqdar = element.Miqdar,
+                    Qiymet = element.VahidinQiymeti,
+                    UmumiMebleg = element.Miqdar * element.VahidinQiymeti
+                });
+
+                // Stok hərəkətini qeydə al (Çıxış)
+                var stokNeticesi = await _stokHareketiManager.StokHareketiQeydeAlAsync(
+                    StokHareketTipi.Cixis,
+                    SenedNovu.Satis,
+                    satis.Id,
+                    element.MehsulId,
+                    (int)element.Miqdar,
+                    $"Satış: ID={satis.Id}",
+                    null // İstifadəçi ID-si
+                );
+
+                if (!stokNeticesi.UgurluDur)
+                {
+                    Logger.XəbərdarlıqYaz($"Stok hərəkəti qeydə alınarkən xəta: {stokNeticesi.Mesaj}");
+                    return EmeliyyatNeticesi<Satis>.Ugursuz($"Stok hərəkəti qeydə alınarkən xəta: {stokNeticesi.Mesaj}");
                 }
             }
-
-            await _unitOfWork.Satislar.ElaveEtAsync(satis);
 
             // Əgər nisyədirsə, borcu qeydə al
             if (satis.OdenisMetodu == OdenisMetodu.Nisyə)
@@ -92,7 +110,7 @@ public class SatisManager
                 }
             }
 
-            // Vacib: Bütün əməliyyatları vahid tranzaksiya kimi saxlayırıq
+            // Vacib: Bütün dəyişiklikləri təsdiqlə
             await _unitOfWork.EmeliyyatiTesdiqleAsync();
 
             Logger.MelumatYaz("Satış uğurla yaradıldı");
@@ -187,7 +205,11 @@ public class SatisManager
                 UmumiMebleg = qaytarilanMehsullar.Sum(e => e.UmumiMebleg)
             };
 
-            // Qaytarma detallarını və stokları yenilə
+            // Qaytarma qeydini əlavə et
+            await _unitOfWork.Qaytarmalar.ElaveEtAsync(qaytarma);
+            await _unitOfWork.EmeliyyatiTesdiqleAsync(); // Qaytarma ID-sini əldə etmək üçün
+
+            // Qaytarma detallarını əlavə et və stok hərəkətlərini qeydə al
             foreach (var element in qaytarilanMehsullar)
             {
                 // Qaytarma detallarını əlavə et
@@ -199,12 +221,21 @@ public class SatisManager
                     UmumiMebleg = element.UmumiMebleg
                 });
 
-                // Stokları artır
-                var mehsul = await _unitOfWork.Mehsullar.GetirAsync(element.MehsulId);
-                if (mehsul != null)
+                // Stok hərəkətini qeydə al (Daxilolma - qaytarma)
+                var stokNeticesi = await _stokHareketiManager.StokHareketiQeydeAlAsync(
+                    StokHareketTipi.Daxilolma,
+                    SenedNovu.Qaytarma,
+                    qaytarma.Id,
+                    element.MehsulId,
+                    (int)element.Miqdar,
+                    $"Qaytarma: ID={qaytarma.Id}, Səbəb: {sebeb}",
+                    kassirId
+                );
+
+                if (!stokNeticesi.UgurluDur)
                 {
-                    mehsul.MovcudSay += (int)element.Miqdar;
-                    _unitOfWork.Mehsullar.Yenile(mehsul);
+                    Logger.XəbərdarlıqYaz($"Stok hərəkəti qeydə alınarkən xəta: {stokNeticesi.Mesaj}");
+                    return EmeliyyatNeticesi<bool>.Ugursuz($"Stok hərəkəti qeydə alınarkən xəta: {stokNeticesi.Mesaj}");
                 }
             }
 
@@ -229,9 +260,6 @@ public class SatisManager
                     await _unitOfWork.NisyeHereketleri.ElaveEtAsync(nisyeHereketi);
                 }
             }
-
-            // Qaytarma qeydini əlavə et
-            await _unitOfWork.Qaytarmalar.ElaveEtAsync(qaytarma);
 
             // Kassirin aktiv növbəsindəki nağd və ya kart məbləğini azalt
             if (aktivNovbeId.HasValue)
