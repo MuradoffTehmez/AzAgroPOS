@@ -41,10 +41,12 @@
             txtUnvan = new MaterialSkin.Controls.MaterialTextBox2();
             txtTelefon = new MaterialSkin.Controls.MaterialTextBox2();
             txtTamAd = new MaterialSkin.Controls.MaterialTextBox2();
+            btnIxracEt = new MaterialSkin.Controls.MaterialButton();
             contextMenuStripMusteriler = new ContextMenuStrip(components);
             tsmiMusteriDetallar = new ToolStripMenuItem();
             tsmiMusteriRedakteEt = new ToolStripMenuItem();
             tsmiMusteriSil = new ToolStripMenuItem();
+            tsmiMusteriBarkodCapEt = new ToolStripMenuItem();
             errorProvider1 = new ErrorProvider(components);
                 ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
@@ -155,6 +157,7 @@
             materialCard1.Controls.Add(txtKreditLimiti);
             materialCard1.Controls.Add(btnYeni);
             materialCard1.Controls.Add(btnSil);
+            materialCard1.Controls.Add(btnIxracEt);
             materialCard1.Controls.Add(btnYaddaSaxla);
             materialCard1.Controls.Add(txtUnvan);
             materialCard1.Controls.Add(txtTelefon);
@@ -235,12 +238,12 @@
             btnSil.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnSil.HighEmphasis = true;
             btnSil.Icon = null;
-            btnSil.Location = new Point(274, 276);
+            btnSil.Location = new Point(146, 276);
             btnSil.Margin = new Padding(4, 6, 4, 6);
             btnSil.MouseState = MaterialSkin.MouseState.HOVER;
             btnSil.Name = "btnSil";
             btnSil.NoAccentTextColor = Color.Empty;
-            btnSil.Size = new Size(133, 40);
+            btnSil.Size = new Size(120, 40);
             btnSil.TabIndex = 5;
             btnSil.Text = "Sil";
             btnSil.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -263,7 +266,7 @@
             btnIxracEt.MouseState = MaterialSkin.MouseState.HOVER;
             btnIxracEt.Name = "btnIxracEt";
             btnIxracEt.NoAccentTextColor = Color.Empty;
-            btnIxracEt.Size = new Size(150, 40);
+            btnIxracEt.Size = new Size(120, 40);
             btnIxracEt.TabIndex = 6;
             btnIxracEt.Text = "Excel-ə İxrac Et";
             btnIxracEt.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -287,7 +290,7 @@
             btnYaddaSaxla.Name = "btnYaddaSaxla";
             btnYaddaSaxla.NoAccentTextColor = Color.Empty;
             btnYaddaSaxla.Size = new Size(133, 40);
-            btnYaddaSaxla.TabIndex = 5;
+            btnYaddaSaxla.TabIndex = 4;
             btnYaddaSaxla.Text = "Yadda Saxla";
             btnYaddaSaxla.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnYaddaSaxla.UseAccentColor = false;
