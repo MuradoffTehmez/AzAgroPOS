@@ -48,7 +48,8 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
             { typeof(BarkodCapiFormu), btnBarkodCapi },
             { typeof(IsciIdareetmeFormu), btnIsciIdareetme },
             { typeof(MinimumStokMehsullariFormu), btnMinimumStokMehsullari }, // Əlavə edildi
-            { typeof(KonfiqurasiyaFormu), btnKonfiqurasiya } // Əlavə edildi
+            { typeof(KonfiqurasiyaFormu), btnKonfiqurasiya }, // Əlavə edildi
+            { typeof(AlisSenedFormu), btnAlisSened } // Əlavə edildi
         };
 
         // Dashboard panelini hazırlayırıq
@@ -207,75 +208,85 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
         dashboardTimer.Start();
 
         // İlk dəfə məlumatları yükləyirik
-        _ = UpdateDashboardData(); // Fire and forget
+        _ = UpdateDashboardDataSafe();
     }
 
-    private async void DashboardTimer_Tick(object? sender, EventArgs e) => await UpdateDashboardData();
+    private void DashboardTimer_Tick(object? sender, EventArgs e)
+    {
+        _ = UpdateDashboardDataSafe();
+    }
 
-    private async Task UpdateDashboardData()
+    private async Task UpdateDashboardDataSafe()
     {
         try
         {
-            // Günlük satış məbləğini hesablayırıq
-            var hesabatManager = _serviceProvider.GetRequiredService<HesabatManager>();
-            var gunlukHesabat = await hesabatManager.GunlukSatisHesabatiGetirAsync(DateTime.Today);
-            if (gunlukHesabat.UgurluDur)
-            {
-                lblDailySalesValue.Text = $"{gunlukHesabat.Data.UmumiDovriyye:N2} AZN";
-            }
-            else
-            {
-                lblDailySalesValue.Text = "0.00 AZN";
-            }
-
-            // Aktiv növbə məlumatlarını göstəririk
-            if (AktivSessiya.AktivNovbeId.HasValue)
-            {
-                var novbeManager = _serviceProvider.GetRequiredService<NovbeManager>();
-                var novbe = await novbeManager.NovbeGetirAsync(AktivSessiya.AktivNovbeId.Value);
-                if (novbe != null)
-                {
-                    lblActiveShiftValue.Text = $"{AktivSessiya.AktivIstifadeci?.TamAd}\n{novbe.AcilmaTarixi:HH:mm}";
-                }
-                else
-                {
-                    lblActiveShiftValue.Text = "Məlumat tapılmadı";
-                }
-            }
-            else
-            {
-                lblActiveShiftValue.Text = "Növbə Yoxdur";
-            }
-
-            // Borclu müştəri sayını hesablayırıq
-            var musteriManager = _serviceProvider.GetRequiredService<MusteriManager>();
-            var musteriler = await musteriManager.ButunMusterileriGetirAsync();
-            if (musteriler.UgurluDur)
-            {
-                var borcluMusteriSayi = musteriler.Data.Count(m => m.UmumiBorc > 0);
-                lblDebtorCustomersValue.Text = borcluMusteriSayi.ToString();
-            }
-            else
-            {
-                lblDebtorCustomersValue.Text = "0";
-            }
-
-            // Aşağı stoklu məhsulların sayını hesablayırıq
-            var mehsulMeneceri = _serviceProvider.GetRequiredService<MehsulMeneceri>();
-            var minimumStokMehsullari = await mehsulMeneceri.MinimumStokMehsullariniGetirAsync();
-            if (minimumStokMehsullari.UgurluDur)
-            {
-                lblLowStockProductsValue.Text = minimumStokMehsullari.Data.Count.ToString();
-            }
-            else
-            {
-                lblLowStockProductsValue.Text = "0";
-            }
+            await UpdateDashboardData();
         }
         catch (Exception ex)
         {
-            // Xətanı log edirik amma dashboardu ləğv etmirik
-            System.Diagnostics.Debug.WriteLine($"Dashboard update error: {ex.Message}");
+            // Xətanı log edirik və ya istifadəçiyə bildiririk
+            System.Diagnostics.Debug.WriteLine($"Dashboard yenilənərkən xəta: {ex.Message}");
+            // Kritik xətalarda istifadəçiyə də məlumat verə bilərik
+            MessageBox.Show($"Dashboard yenilənərkən xəta: {ex.Message}", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+    }
+
+    private async Task UpdateDashboardData()
+    {
+        // Günlük satış məbləğini hesablayırıq
+        var hesabatManager = _serviceProvider.GetRequiredService<HesabatManager>();
+        var gunlukHesabat = await hesabatManager.GunlukSatisHesabatiGetirAsync(DateTime.Today);
+        if (gunlukHesabat.UgurluDur)
+        {
+            lblDailySalesValue.Text = $"{gunlukHesabat.Data.UmumiDovriyye:N2} AZN";
+        }
+        else
+        {
+            lblDailySalesValue.Text = "0.00 AZN";
+        }
+
+        // Aktiv növbə məlumatlarını göstəririk
+        if (AktivSessiya.AktivNovbeId.HasValue)
+        {
+            var novbeManager = _serviceProvider.GetRequiredService<NovbeManager>();
+            var novbe = await novbeManager.NovbeGetirAsync(AktivSessiya.AktivNovbeId.Value);
+            if (novbe != null)
+            {
+                lblActiveShiftValue.Text = $"{AktivSessiya.AktivIstifadeci?.TamAd}\n{novbe.AcilmaTarixi:HH:mm}";
+            }
+            else
+            {
+                lblActiveShiftValue.Text = "Məlumat tapılmadı";
+            }
+        }
+        else
+        {
+            lblActiveShiftValue.Text = "Növbə Yoxdur";
+        }
+
+        // Borclu müştəri sayını hesablayırıq
+        var musteriManager = _serviceProvider.GetRequiredService<MusteriManager>();
+        var musteriler = await musteriManager.ButunMusterileriGetirAsync();
+        if (musteriler.UgurluDur)
+        {
+            var borcluMusteriSayi = musteriler.Data.Count(m => m.UmumiBorc > 0);
+            lblDebtorCustomersValue.Text = borcluMusteriSayi.ToString();
+        }
+        else
+        {
+            lblDebtorCustomersValue.Text = "0";
+        }
+
+        // Aşağı stoklu məhsulların sayını hesablayırıq
+        var mehsulMeneceri = _serviceProvider.GetRequiredService<MehsulMeneceri>();
+        var minimumStokMehsullari = await mehsulMeneceri.MinimumStokMehsullariniGetirAsync();
+        if (minimumStokMehsullari.UgurluDur)
+        {
+            lblLowStockProductsValue.Text = minimumStokMehsullari.Data.Count.ToString();
+        }
+        else
+        {
+            lblLowStockProductsValue.Text = "0";
         }
     }
 
@@ -326,7 +337,40 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
     }
 
     private void btnMehsulIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<MehsulIdareetmeFormu>();
-    private void btnYeniSatis_Click(object sender, EventArgs e) => UsaqFormuAc<SatisFormu>();
+
+    private void btnYeniSatis_Click(object sender, EventArgs e)
+    {
+        // Növbə açılmayıbsa istifadəçiyə növbə açmaq təklif edirik
+        if (!AktivSessiya.AktivNovbeId.HasValue)
+        {
+            var netice = MessageBox.Show(
+                "Satış əməliyyatı üçün növbə açılmalıdır.\n\nİndi növbə açmaq istəyirsiniz?",
+                "Növbə Tələb Olunur",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+
+            if (netice == DialogResult.Yes)
+            {
+                // Növbə idarəetməsi formasını açırıq
+                using (var form = _serviceProvider.GetRequiredService<NovbeIdareetmesiFormu>())
+                {
+                    form.ShowDialog();
+                }
+                IcazeleriYoxla(); // İcazələri yeniləyirik
+
+                // Növbə açılıbsa satış formasını açırıq
+                if (AktivSessiya.AktivNovbeId.HasValue)
+                {
+                    UsaqFormuAc<SatisFormu>();
+                }
+            }
+        }
+        else
+        {
+            UsaqFormuAc<SatisFormu>();
+        }
+    }
     private void btnQaytarma_Click(object sender, EventArgs e) => UsaqFormuAc<QaytarmaFormu>();
     private void btnNisyeIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<NisyeIdareetmeFormu>();
     private void btnTemirIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<TemirIdareetmeFormu>();
@@ -349,6 +393,7 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
     private void btnIsciIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<IsciIdareetmeFormu>();
     private void btnMinimumStokMehsullari_Click(object sender, EventArgs e) => UsaqFormuAc<MinimumStokMehsullariFormu>(); // Əlavə edildi
     private void btnKonfiqurasiya_Click(object sender, EventArgs e) => UsaqFormuAc<KonfiqurasiyaFormu>(); // Əlavə edildi
+    private void btnAlisSened_Click(object sender, EventArgs e) => UsaqFormuAc<AlisSenedFormu>(); // Əlavə edildi
 
     private void AnaMenuFormu_FormClosing(object sender, FormClosingEventArgs e)
     {

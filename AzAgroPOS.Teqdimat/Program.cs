@@ -102,6 +102,7 @@ namespace AzAgroPOS.Teqdimat
                 services.AddTransient<SatisPresenter>();
                 services.AddTransient<TemirPresenter>();
                 services.AddTransient<QaytarmaPresenter>();
+                services.AddTransient<AlisSenedPresenter>();
 
                 // Interface-lər və onların implementasiyaları
                 services.AddTransient<IAnaMenuView, AnaMenuFormu>();
@@ -123,6 +124,7 @@ namespace AzAgroPOS.Teqdimat
                 services.AddTransient<IIsciView, IsciIdareetmeFormu>();
                 services.AddTransient<IQaytarmaView, QaytarmaFormu>();
                 services.AddTransient<IKonfiqurasiyaView, KonfiqurasiyaFormu>();
+                services.AddTransient<IAlisSenedView, AlisSenedFormu>();
 
                 // Login form has a special registration to avoid circular dependency
                 services.AddTransient<LoginFormu>();
@@ -147,6 +149,7 @@ namespace AzAgroPOS.Teqdimat
                 services.AddTransient<IsciIdareetmeFormu>();
                 services.AddTransient<QaytarmaFormu>();
                 services.AddTransient<KonfiqurasiyaFormu>(); // Əlavə edildi
+                services.AddTransient<AlisSenedFormu>(); // Əlavə edildi
             }
             catch (Exception ex)
             {
