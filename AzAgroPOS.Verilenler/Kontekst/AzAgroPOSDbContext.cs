@@ -38,6 +38,8 @@ public class AzAgroPOSDbContext : DbContext
     public DbSet<Icaze> Icazeler { get; set; } // Əlavə edildi
     public DbSet<RolIcazesi> RolIcazeleri { get; set; } // Əlavə edildi
     public DbSet<StokHareketi> StokHareketleri { get; set; } // Əlavə edildi - Anbar stok hərəkətləri
+    public DbSet<Xerc> Xercler { get; set; } // Əlavə edildi - Xərc qeydləri
+    public DbSet<KassaHareketi> KassaHareketleri { get; set; } // Əlavə edildi - Kassa hərəkətləri
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -49,9 +51,13 @@ public class AzAgroPOSDbContext : DbContext
         modelBuilder.Entity<Mehsul>().Property(m => m.AlisQiymeti).HasColumnType("decimal(18, 2)");
         modelBuilder.Entity<Satis>().Property(s => s.UmumiMebleg).HasColumnType("decimal(18, 2)");
         modelBuilder.Entity<SatisDetali>().Property(sd => sd.Qiymet).HasColumnType("decimal(18, 2)");
+        modelBuilder.Entity<SatisDetali>().Property(sd => sd.Miqdar).HasColumnType("decimal(18, 3)");
+        modelBuilder.Entity<SatisDetali>().Property(sd => sd.UmumiMebleg).HasColumnType("decimal(18, 2)");
         modelBuilder.Entity<Musteri>().Property(m => m.UmumiBorc).HasColumnType("decimal(18, 2)");
+        modelBuilder.Entity<Musteri>().Property(m => m.KreditLimiti).HasColumnType("decimal(18, 2)");
         modelBuilder.Entity<Temir>().Property(t => t.TemirXerci).HasColumnType("decimal(18, 2)");
         modelBuilder.Entity<Temir>().Property(t => t.YekunMebleg).HasColumnType("decimal(18, 2)");
+        modelBuilder.Entity<Temir>().Property(t => t.ServisHaqqi).HasColumnType("decimal(18, 2)");
         modelBuilder.Entity<NisyeHereketi>().Property(n => n.Mebleg).HasColumnType("decimal(18, 2)");
         modelBuilder.Entity<Novbe>().Property(n => n.BaslangicMebleg).HasColumnType("decimal(18, 2)");
         modelBuilder.Entity<Novbe>().Property(n => n.GozlenilenMebleg).HasColumnType("decimal(18, 2)");
@@ -63,6 +69,7 @@ public class AzAgroPOSDbContext : DbContext
         modelBuilder.Entity<AlisSened>().Property(a => a.UmumiMebleg).HasColumnType("decimal(18, 2)");
         modelBuilder.Entity<AlisSenedSetiri>().Property(a => a.BirVahidQiymet).HasColumnType("decimal(18, 2)");
         modelBuilder.Entity<AlisSenedSetiri>().Property(a => a.CemiMebleg).HasColumnType("decimal(18, 2)");
+        modelBuilder.Entity<AlisSenedSetiri>().Property(a => a.Miqdar).HasColumnType("decimal(18, 3)");
         modelBuilder.Entity<TedarukcuOdeme>().Property(t => t.Mebleg).HasColumnType("decimal(18, 2)");
 
         // Configure Silinib property for all entities
@@ -81,13 +88,20 @@ public class AzAgroPOSDbContext : DbContext
         modelBuilder.Entity<Tedarukcu>().Property(t => t.Silinib).HasDefaultValue(false);
         modelBuilder.Entity<AlisSifaris>().Property(asif => asif.Silinib).HasDefaultValue(false);
         modelBuilder.Entity<AlisSifarisSetiri>().Property(ass => ass.Silinib).HasDefaultValue(false);
+        modelBuilder.Entity<AlisSifarisSetiri>().Property(ass => ass.Miqdar).HasColumnType("decimal(18, 3)");
+        modelBuilder.Entity<AlisSifarisSetiri>().Property(ass => ass.TehvilAlinanMiqdar).HasColumnType("decimal(18, 3)");
         modelBuilder.Entity<AlisSened>().Property(asen => asen.Silinib).HasDefaultValue(false);
         modelBuilder.Entity<AlisSenedSetiri>().Property(assen => assen.Silinib).HasDefaultValue(false);
+        modelBuilder.Entity<AlisSenedSetiri>().Property(assen => assen.Miqdar).HasColumnType("decimal(18, 3)");
         modelBuilder.Entity<TedarukcuOdeme>().Property(to => to.Silinib).HasDefaultValue(false);
         modelBuilder.Entity<Kateqoriya>().Property(k => k.Silinib).HasDefaultValue(false);
         modelBuilder.Entity<Brend>().Property(b => b.Silinib).HasDefaultValue(false);
         modelBuilder.Entity<Qaytarma>().Property(q => q.Silinib).HasDefaultValue(false);
+        modelBuilder.Entity<Qaytarma>().Property(q => q.UmumiMebleg).HasColumnType("decimal(18, 2)");
         modelBuilder.Entity<QaytarmaDetali>().Property(qd => qd.Silinib).HasDefaultValue(false);
+        modelBuilder.Entity<QaytarmaDetali>().Property(qd => qd.Miqdar).HasColumnType("decimal(18, 3)");
+        modelBuilder.Entity<QaytarmaDetali>().Property(qd => qd.Qiymet).HasColumnType("decimal(18, 2)");
+        modelBuilder.Entity<QaytarmaDetali>().Property(qd => qd.UmumiMebleg).HasColumnType("decimal(18, 2)");
         modelBuilder.Entity<EmeliyyatJurnali>().Property(ej => ej.Silinib).HasDefaultValue(false);
         modelBuilder.Entity<Konfiqurasiya>().Property(k => k.Silinib).HasDefaultValue(false);
         modelBuilder.Entity<Icaze>().Property(i => i.Silinib).HasDefaultValue(false);
@@ -307,6 +321,50 @@ public class AzAgroPOSDbContext : DbContext
         modelBuilder.Entity<StokHareketi>()
             .HasIndex(sh => new { sh.SenedNovu, sh.SenedId })
             .HasDatabaseName("IX_StokHareketi_Sened");
+
+        // Xerc konfiqurasiyası
+        modelBuilder.Entity<Xerc>()
+            .Property(x => x.Mebleg).HasColumnType("decimal(18, 2)");
+        
+        modelBuilder.Entity<Xerc>()
+            .HasOne(x => x.Istifadeci)
+            .WithMany()
+            .HasForeignKey(x => x.IstifadeciId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        modelBuilder.Entity<Xerc>()
+            .Property(x => x.Silinib).HasDefaultValue(false);
+
+        // KassaHareketi konfiqurasiyası
+        modelBuilder.Entity<KassaHareketi>()
+            .Property(kh => kh.Mebleg).HasColumnType("decimal(18, 2)");
+
+        modelBuilder.Entity<KassaHareketi>()
+            .HasOne(kh => kh.Istifadeci)
+            .WithMany()
+            .HasForeignKey(kh => kh.IstifadeciId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        modelBuilder.Entity<KassaHareketi>()
+            .Property(kh => kh.Silinib).HasDefaultValue(false);
+
+        // Xerc üçün indexlər
+        modelBuilder.Entity<Xerc>()
+            .HasIndex(x => x.Tarix)
+            .HasDatabaseName("IX_Xerc_Tarix");
+
+        modelBuilder.Entity<Xerc>()
+            .HasIndex(x => x.Novu)
+            .HasDatabaseName("IX_Xerc_Novu");
+
+        // KassaHareketi üçün indexlər
+        modelBuilder.Entity<KassaHareketi>()
+            .HasIndex(kh => kh.Tarix)
+            .HasDatabaseName("IX_KassaHareketi_Tarix");
+
+        modelBuilder.Entity<KassaHareketi>()
+            .HasIndex(kh => new { kh.EmeliyyatNovu, kh.EmeliyyatId })
+            .HasDatabaseName("IX_KassaHareketi_Emeliyyat");
 
         SeedData(modelBuilder);
     }
