@@ -413,7 +413,7 @@
             btnSebetdenSil.NoAccentTextColor = Color.Empty;
             btnSebetdenSil.Size = new Size(150, 46);
             btnSebetdenSil.TabIndex = 16;
-            btnSebetdenSil.Text = "Səbətdən Sil";
+            btnSebetdenSil.Text = "Səbətdən Sil (F8)";
             btnSebetdenSil.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnSebetdenSil.UseAccentColor = true;
             btnSebetdenSil.UseVisualStyleBackColor = false;
@@ -436,7 +436,7 @@
             btnSebetTemizle.NoAccentTextColor = Color.Empty;
             btnSebetTemizle.Size = new Size(150, 46);
             btnSebetTemizle.TabIndex = 17;
-            btnSebetTemizle.Text = "Səbəti Təmizlə";
+            btnSebetTemizle.Text = "Səbəti Təmizlə (F9)";
             btnSebetTemizle.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
             btnSebetTemizle.UseAccentColor = false;
             btnSebetTemizle.UseVisualStyleBackColor = false;

@@ -33,7 +33,8 @@ namespace AzAgroPOS.Teqdimat
                 var loginFormu = ServiceProvider.GetRequiredService<LoginFormu>();
                 var tehlukesizlikManager = ServiceProvider.GetRequiredService<TehlukesizlikManager>();
                 var unitOfWork = ServiceProvider.GetRequiredService<IUnitOfWork>();
-                var loginPresenter = new LoginPresenter(loginFormu, tehlukesizlikManager, unitOfWork);
+                var icazeManager = ServiceProvider.GetRequiredService<IcazeManager>();
+                var loginPresenter = new LoginPresenter(loginFormu, tehlukesizlikManager, unitOfWork, icazeManager);
                 loginFormu.InitializePresenter(loginPresenter);
                 var dialogResult = loginFormu.ShowDialog();
 

@@ -20,8 +20,19 @@ namespace AzAgroPOS.Teqdimat
             this.Load += (s, e) => FormYuklendiIstek?.Invoke(this, EventArgs.Empty);
             ConfigureDataGridViewStyles();
             AddCartActionButtons();
+            ConfigureKeyboardShortcutHints();
 
             StatusMesajiGostericisi.Initialize(toolStripStatusLabel1);
+        }
+
+        /// <summary>
+        /// Klaviatura qısayolları üçün tooltip-lər təyin edir
+        /// </summary>
+        private void ConfigureKeyboardShortcutHints()
+        {
+            toolTip1.SetToolTip(btnYeniMusteri, "Yeni müştəri əlavə et (F10 və ya Ctrl+N)");
+            toolTip1.SetToolTip(txtAxtaris, "Məhsul axtarın (Ctrl+F axtarışa fokus verir)");
+            toolTip1.SetToolTip(dgvSebet, "Məhsulu silmək üçün Delete və ya F8 düyməsini basın");
         }
 
         public void InitializePresenter(ISatisPresenter presenter)
@@ -276,11 +287,26 @@ namespace AzAgroPOS.Teqdimat
         #endregion
 
         #region Hadisə Ötürücüləri
-        private async void txtAxtaris_TextChanged(object sender, EventArgs e) =>
-            await AsyncIslemYardimcisi.IslemiIcraEt(this, async () =>
+        private void txtAxtaris_TextChanged(object sender, EventArgs e)
+        {
+            // Debounced axtarış - istifadəçi yazmağı dayandırdıqdan 300ms sonra axtarış başlayır
+            AsyncIslemYardimcisi.DebouncedAxtaris("SatisFormu_MehsulAxtaris", async (cancellationToken) =>
             {
-                await Task.Run(() => MehsulAxtarIstek?.Invoke(this, EventArgs.Empty));
+                // UI thread-də işləməliyik
+                if (InvokeRequired)
+                {
+                    Invoke(new Action(() =>
+                    {
+                        MehsulAxtarIstek?.Invoke(this, EventArgs.Empty);
+                    }));
+                }
+                else
+                {
+                    MehsulAxtarIstek?.Invoke(this, EventArgs.Empty);
+                }
             });
+        }
+
         private void btnSebeteElaveEt_Click(object sender, EventArgs e) => SebeteElaveEtIstek?.Invoke(this, EventArgs.Empty);
         private void dgvAxtarisNeticeleri_DoubleClick(object sender, EventArgs e) => btnSebeteElaveEt.PerformClick();
         private void SuretliSatisButton_Click(object sender, EventArgs e)
@@ -358,17 +384,86 @@ namespace AzAgroPOS.Teqdimat
         }
         private void SatisFormu_KeyDown(object sender, KeyEventArgs e)
         {
+            // Əgər TextBox-da yazı yazılırsa, bəzi qısayolları deaktiv et
+            bool isTextBoxFocused = ActiveControl is TextBox || ActiveControl is ComboBox;
+
             switch (e.KeyCode)
             {
-                case Keys.F1: btnNagd.PerformClick(); break;
-                case Keys.F2: btnKart.PerformClick(); break;
-                case Keys.F3: btnNisye.PerformClick(); break;
-                case Keys.F4: btnSatisiGozlet.PerformClick(); break;
-                case Keys.F5: btnGozleyenSatislar.PerformClick(); break;
-                case Keys.F6: btnIndirim.PerformClick(); break;
-                case Keys.F7: btnSebeteElaveEt.PerformClick(); break;
+                case Keys.F1:
+                    btnNagd.PerformClick();
+                    e.Handled = true;
+                    break;
+                case Keys.F2:
+                    btnKart.PerformClick();
+                    e.Handled = true;
+                    break;
+                case Keys.F3:
+                    btnNisye.PerformClick();
+                    e.Handled = true;
+                    break;
+                case Keys.F4:
+                    btnSatisiGozlet.PerformClick();
+                    e.Handled = true;
+                    break;
+                case Keys.F5:
+                    btnGozleyenSatislar.PerformClick();
+                    e.Handled = true;
+                    break;
+                case Keys.F6:
+                    btnIndirim.PerformClick();
+                    e.Handled = true;
+                    break;
+                case Keys.F7:
+                    btnSebeteElaveEt.PerformClick();
+                    e.Handled = true;
+                    break;
+                case Keys.F8:
+                    btnSebetdenSil.PerformClick();
+                    e.Handled = true;
+                    break;
+                case Keys.F9:
+                    btnSebetTemizle.PerformClick();
+                    e.Handled = true;
+                    break;
+                case Keys.F10:
+                    btnYeniMusteri.PerformClick();
+                    e.Handled = true;
+                    break;
+                case Keys.Delete:
+                    // Delete açarı yalnız DataGridView-də işləyəcək
+                    if (dgvSebet.Focused && !isTextBoxFocused)
+                    {
+                        btnSebetdenSil.PerformClick();
+                        e.Handled = true;
+                    }
+                    break;
+                case Keys.Escape:
+                    // ESC açarı formu bağlamır, sadəcə axtarış mətnini təmizləyir
+                    if (!isTextBoxFocused)
+                    {
+                        txtAxtaris.Clear();
+                        txtAxtaris.Focus();
+                        e.Handled = true;
+                    }
+                    break;
+                case Keys.N:
+                    // Ctrl+N: Yeni müştəri
+                    if (e.Control)
+                    {
+                        btnYeniMusteri.PerformClick();
+                        e.Handled = true;
+                    }
+                    break;
+                case Keys.F:
+                    // Ctrl+F: Axtarış sahəsinə fokus
+                    if (e.Control)
+                    {
+                        txtAxtaris.Focus();
+                        txtAxtaris.SelectAll();
+                        e.Handled = true;
+                    }
+                    break;
             }
-            e.Handled = true;
         }
         #endregion
 
