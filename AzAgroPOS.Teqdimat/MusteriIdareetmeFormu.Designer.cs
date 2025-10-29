@@ -29,6 +29,7 @@
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MusteriIdareetmeFormu));
+            splitContainer1 = new SplitContainer();
             toolTip1 = new ToolTip(components);
             dgvMusteriler = new DataGridView();
             txtAxtaris = new MaterialSkin.Controls.MaterialTextBox2();
@@ -45,7 +46,7 @@
             tsmiMusteriRedakteEt = new ToolStripMenuItem();
             tsmiMusteriSil = new ToolStripMenuItem();
             errorProvider1 = new ErrorProvider(components);
-            ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
+                ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
             splitContainer1.SuspendLayout();

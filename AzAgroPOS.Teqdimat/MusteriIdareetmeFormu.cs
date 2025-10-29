@@ -8,14 +8,13 @@ namespace AzAgroPOS.Teqdimat
 {
     public partial class MusteriIdareetmeFormu : BazaForm, IMusteriView
     {
-        private readonly MusteriPresenter _presenter;
+        private MusteriPresenter _presenter;
         private readonly IServiceProvider _serviceProvider;
         public int SecilenMusteriId { get; private set; } = 0;
 
-        public MusteriIdareetmeFormu(MusteriManager musteriManager, MusteriPresenter musteriPresenter, IServiceProvider serviceProvider)
+        public MusteriIdareetmeFormu(IServiceProvider serviceProvider)
         {
             InitializeComponent();
-            _presenter = musteriPresenter;
             _serviceProvider = serviceProvider;
             // Form yüklənəndə Presenter-ə xəbər veririk
             this.Load += (s, e) =>
@@ -27,6 +26,11 @@ namespace AzAgroPOS.Teqdimat
 
             // Add conditional formatting for customers with debt exceeding credit limit
             dgvMusteriler.CellFormatting += DgvMusteriler_CellFormatting;
+        }
+
+        public void InitializePresenter(MusteriPresenter presenter)
+        {
+            _presenter = presenter;
         }
 
         private void SetupTooltips()
