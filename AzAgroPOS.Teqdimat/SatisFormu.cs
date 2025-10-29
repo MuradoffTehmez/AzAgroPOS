@@ -556,7 +556,7 @@ namespace AzAgroPOS.Teqdimat
             }
         }
 
-        private void tsmiAxtarisSil_Click(object sender, EventArgs e)
+        private async void tsmiAxtarisSil_Click(object sender, EventArgs e)
         {
             // Delete selected product
             if (dgvAxtarisNeticeleri.CurrentRow?.DataBoundItem is MehsulDto mehsul)
@@ -568,7 +568,7 @@ namespace AzAgroPOS.Teqdimat
                 {
                     try
                     {
-                        var silindi = _presenter.MehsulSilAsync(mehsul.Id).Result;
+                        var silindi = await _presenter.MehsulSilAsync(mehsul.Id);
                         if (silindi)
                         {
                             MessageBox.Show("Məhsul uğurla silindi.", "Uğur", MessageBoxButtons.OK, MessageBoxIcon.Information);
