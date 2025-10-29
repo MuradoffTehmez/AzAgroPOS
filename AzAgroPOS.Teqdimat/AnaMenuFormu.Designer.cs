@@ -836,6 +836,9 @@ namespace AzAgroPOS.Teqdimat
             WindowState = FormWindowState.Maximized;
             FormClosing += AnaMenuFormu_FormClosing;
             Load += AnaMenuFormu_Load;
+            Controls.SetChildIndex(pnlMenu, 0);
+            Controls.SetChildIndex(mdiTabControl, 0);
+            Controls.SetChildIndex(dashboardPanel, 0);
             pnlMenu.ResumeLayout(false);
             pnlMenu.PerformLayout();
             pnlUserInfo.ResumeLayout(false);
@@ -851,6 +854,7 @@ namespace AzAgroPOS.Teqdimat
             dailySalesCard.ResumeLayout(false);
             dailySalesCard.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion

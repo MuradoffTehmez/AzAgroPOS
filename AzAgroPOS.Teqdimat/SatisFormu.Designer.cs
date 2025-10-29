@@ -95,7 +95,7 @@
             pnlMainContainer.Location = new Point(3, 64);
             pnlMainContainer.Name = "pnlMainContainer";
             pnlMainContainer.Padding = new Padding(10);
-            pnlMainContainer.Size = new Size(1614, 769);
+            pnlMainContainer.Size = new Size(1774, 769);
             pnlMainContainer.TabIndex = 0;
             // 
             // tableLayoutPanel1
@@ -113,7 +113,7 @@
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 1;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel1.Size = new Size(1594, 749);
+            tableLayoutPanel1.Size = new Size(1754, 749);
             tableLayoutPanel1.TabIndex = 4;
             // 
             // panel1
@@ -127,7 +127,7 @@
             panel1.ForeColor = Color.FromArgb(222, 0, 0, 0);
             panel1.Location = new Point(3, 3);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1138, 743);
+            panel1.Size = new Size(1298, 743);
             panel1.TabIndex = 0;
             // 
             // pnlSearchSection
@@ -321,7 +321,7 @@
             pnlCartSection.MouseState = MaterialSkin.MouseState.HOVER;
             pnlCartSection.Name = "pnlCartSection";
             pnlCartSection.Padding = new Padding(14);
-            pnlCartSection.Size = new Size(693, 552);
+            pnlCartSection.Size = new Size(853, 552);
             pnlCartSection.TabIndex = 1;
             // 
             // dgvSebet
@@ -352,7 +352,7 @@
             dgvSebet.Location = new Point(17, 17);
             dgvSebet.Name = "dgvSebet";
             dgvSebet.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvSebet.Size = new Size(659, 447);
+            dgvSebet.Size = new Size(819, 447);
             dgvSebet.TabIndex = 0;
             dgvSebet.CellContentClick += dgvSebet_CellContentClick;
             // 
@@ -393,7 +393,7 @@
             pnlCartControls.ForeColor = Color.FromArgb(222, 0, 0, 0);
             pnlCartControls.Location = new Point(17, 481);
             pnlCartControls.Name = "pnlCartControls";
-            pnlCartControls.Size = new Size(659, 54);
+            pnlCartControls.Size = new Size(819, 54);
             pnlCartControls.TabIndex = 1;
             // 
             // btnSebetdenSil
@@ -457,7 +457,7 @@
             pnlPaymentSection.MouseState = MaterialSkin.MouseState.HOVER;
             pnlPaymentSection.Name = "pnlPaymentSection";
             pnlPaymentSection.Padding = new Padding(14);
-            pnlPaymentSection.Size = new Size(1138, 171);
+            pnlPaymentSection.Size = new Size(1298, 171);
             pnlPaymentSection.TabIndex = 2;
             // 
             // lblTotalTitle
@@ -503,9 +503,9 @@
             pnlPaymentMethods.Controls.Add(btn100AZN);
             pnlPaymentMethods.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             pnlPaymentMethods.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            pnlPaymentMethods.Location = new Point(659, 4);
+            pnlPaymentMethods.Location = new Point(819, 4);
             pnlPaymentMethods.Name = "pnlPaymentMethods";
-            pnlPaymentMethods.Size = new Size(453, 107);
+            pnlPaymentMethods.Size = new Size(479, 107);
             pnlPaymentMethods.TabIndex = 2;
             // 
             // btnNagd
@@ -696,16 +696,16 @@
             // 
             pnlAdvancedOptions.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             pnlAdvancedOptions.BackColor = Color.FromArgb(255, 255, 255);
+            pnlAdvancedOptions.Controls.Add(btnIndirim);
+            pnlAdvancedOptions.Controls.Add(btnGozleyenSatislar);
             pnlAdvancedOptions.Controls.Add(btnYeniMusteri);
             pnlAdvancedOptions.Controls.Add(cmbMusteriler);
             pnlAdvancedOptions.Controls.Add(btnSatisiGozlet);
-            pnlAdvancedOptions.Controls.Add(btnGozleyenSatislar);
-            pnlAdvancedOptions.Controls.Add(btnIndirim);
             pnlAdvancedOptions.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             pnlAdvancedOptions.ForeColor = Color.FromArgb(222, 0, 0, 0);
             pnlAdvancedOptions.Location = new Point(17, 113);
             pnlAdvancedOptions.Name = "pnlAdvancedOptions";
-            pnlAdvancedOptions.Size = new Size(1098, 46);
+            pnlAdvancedOptions.Size = new Size(1258, 46);
             pnlAdvancedOptions.TabIndex = 3;
             // 
             // btnYeniMusteri
@@ -719,7 +719,7 @@
             btnYeniMusteri.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnYeniMusteri.HighEmphasis = true;
             btnYeniMusteri.Icon = null;
-            btnYeniMusteri.Location = new Point(1052, 2);
+            btnYeniMusteri.Location = new Point(1212, 2);
             btnYeniMusteri.Margin = new Padding(4, 6, 4, 6);
             btnYeniMusteri.MouseState = MaterialSkin.MouseState.HOVER;
             btnYeniMusteri.Name = "btnYeniMusteri";
@@ -747,7 +747,7 @@
             cmbMusteriler.Hint = "Müştəri Seçin";
             cmbMusteriler.IntegralHeight = false;
             cmbMusteriler.ItemHeight = 43;
-            cmbMusteriler.Location = new Point(645, -3);
+            cmbMusteriler.Location = new Point(805, -3);
             cmbMusteriler.MaxDropDownItems = 4;
             cmbMusteriler.MouseState = MaterialSkin.MouseState.OUT;
             cmbMusteriler.Name = "cmbMusteriler";
@@ -834,7 +834,7 @@
             flpSuretliSatis.Dock = DockStyle.Fill;
             flpSuretliSatis.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             flpSuretliSatis.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            flpSuretliSatis.Location = new Point(1147, 3);
+            flpSuretliSatis.Location = new Point(1307, 3);
             flpSuretliSatis.Name = "flpSuretliSatis";
             flpSuretliSatis.Padding = new Padding(5);
             flpSuretliSatis.Size = new Size(444, 743);
@@ -853,7 +853,7 @@
             statusStrip1.ForeColor = Color.FromArgb(222, 0, 0, 0);
             statusStrip1.Location = new Point(3, 833);
             statusStrip1.Name = "statusStrip1";
-            statusStrip1.Size = new Size(1614, 22);
+            statusStrip1.Size = new Size(1774, 22);
             statusStrip1.TabIndex = 1;
             statusStrip1.Text = "statusStrip1";
             // 
@@ -871,7 +871,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1620, 858);
+            ClientSize = new Size(1780, 858);
             Controls.Add(pnlMainContainer);
             Controls.Add(statusStrip1);
             KeyPreview = true;
@@ -880,6 +880,8 @@
             Text = "Yeni Satış";
             WindowState = FormWindowState.Maximized;
             KeyDown += SatisFormu_KeyDown;
+            Controls.SetChildIndex(statusStrip1, 0);
+            Controls.SetChildIndex(pnlMainContainer, 0);
             pnlMainContainer.ResumeLayout(false);
             tableLayoutPanel1.ResumeLayout(false);
             panel1.ResumeLayout(false);
