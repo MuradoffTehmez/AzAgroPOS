@@ -111,6 +111,10 @@ namespace AzAgroPOS.Teqdimat
             Name = "AnbarQaliqHesabatFormu";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Anbar Qalığı Hesabatı";
+            Controls.SetChildIndex(btnGoster, 0);
+            Controls.SetChildIndex(dgvHesabat, 0);
+            Controls.SetChildIndex(lblMesaj, 0);
+            Controls.SetChildIndex(txtLimit, 0);
             ((System.ComponentModel.ISupportInitialize)dgvHesabat).EndInit();
             ResumeLayout(false);
             PerformLayout();

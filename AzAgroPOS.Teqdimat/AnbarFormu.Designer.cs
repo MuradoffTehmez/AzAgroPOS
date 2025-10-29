@@ -184,6 +184,10 @@ namespace AzAgroPOS.Teqdimat
             Name = "AnbarFormu";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Anbar Qeydiyyatı";
+            Controls.SetChildIndex(txtAxtaris, 0);
+            Controls.SetChildIndex(btnAxtar, 0);
+            Controls.SetChildIndex(pnlMelumat, 0);
+            Controls.SetChildIndex(lblMehsulId, 0);
             pnlMelumat.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)errorProvider1).EndInit();
             ResumeLayout(false);
