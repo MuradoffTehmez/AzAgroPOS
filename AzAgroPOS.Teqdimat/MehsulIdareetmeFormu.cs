@@ -366,15 +366,11 @@ namespace AzAgroPOS.Teqdimat
             {
                 try
                 {
-                    // TODO: Burada barkod çap etmə funksionallığını tətbiq etmək lazımdır
-                    // Nümunə:
-                    // using (var barkodCapiFormu = _serviceProvider.GetRequiredService<BarkodCapiFormu>())
-                    // {
-                    //     barkodCapiFormu.BarkodCapEt(mehsul.Barkod, mehsul.Ad, mehsul.PerakendeSatisQiymeti);
-                    // }
-
-                    MessageBox.Show($"'{mehsul.Ad}' məhsulunun barkodu çap edilmək üçün hazırdır.\n\nBarkod: {mehsul.Barkod}",
-                        "Barkod Çapı", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    // Barkod çapı formasını açırıq və məhsulu əlavə edirik
+                    using (var barkodCapiFormu = _serviceProvider.GetRequiredService<BarkodCapiFormu>())
+                    {
+                        barkodCapiFormu.ShowDialog();
+                    }
                 }
                 catch (Exception ex)
                 {

@@ -125,12 +125,14 @@ namespace AzAgroPOS.Teqdimat
                 services.AddTransient<IQaytarmaView, QaytarmaFormu>();
                 services.AddTransient<IKonfiqurasiyaView, KonfiqurasiyaFormu>();
                 services.AddTransient<IAlisSenedView, AlisSenedFormu>();
+                services.AddTransient<IMinimumStokMehsullariView, MinimumStokMehsullariFormu>();
 
                 // Login form has a special registration to avoid circular dependency
                 services.AddTransient<LoginFormu>();
 
                 // Other forms
                 services.AddTransient<AnaMenuFormu>();
+                services.AddTransient<MinimumStokMehsullariFormu>();
                 services.AddTransient<IstifadeciIdareetmeFormu>();
                 services.AddTransient<AnbarFormu>();
                 services.AddTransient<AnbarQaliqHesabatFormu>();
@@ -148,8 +150,8 @@ namespace AzAgroPOS.Teqdimat
                 services.AddTransient<TedarukcuIdareetmeFormu>();
                 services.AddTransient<IsciIdareetmeFormu>();
                 services.AddTransient<QaytarmaFormu>();
-                services.AddTransient<KonfiqurasiyaFormu>(); // Əlavə edildi
-                services.AddTransient<AlisSenedFormu>(); // Əlavə edildi
+                services.AddTransient<KonfiqurasiyaFormu>();
+                services.AddTransient<AlisSenedFormu>();
             }
             catch (Exception ex)
             {

@@ -8,6 +8,7 @@ using AzAgroPOS.Teqdimat.Teqdimatcilar;
 using AzAgroPOS.Varliglar;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 public partial class IsciIdareetmeFormu : BazaForm, IIsciView
@@ -173,14 +174,51 @@ public partial class IsciIdareetmeFormu : BazaForm, IIsciView
 
     public void PerformansQeydleriniGoster(List<IsciPerformansDto> performansQeydleri)
     {
-        // TODO: Performans qeydlərini göstərmək üçün uyğun forma elementləri əlavə edilməlidir
-        MesajGoster($"İşçinin {performansQeydleri.Count} performans qeydi tapıldı.", false);
+        if (performansQeydleri == null || !performansQeydleri.Any())
+        {
+            MesajGoster("İşçinin heç bir performans qeydi tapılmadı.", false);
+            return;
+        }
+
+        // Performans qeydlərini mətn formatında göstəririk
+        var mesaj = $"İşçinin {performansQeydleri.Count} performans qeydi:\n\n";
+        foreach (var qeyd in performansQeydleri.Take(5)) // İlk 5 qeydi göstəririk
+        {
+            mesaj += $"• Tarix: {qeyd.Tarix:dd.MM.yyyy} | Dövr: {qeyd.QeydDovru}\n";
+            mesaj += $"  Qiymət: {qeyd.Qiymet}/10 | Qeydlər: {qeyd.Qeydler}\n\n";
+        }
+
+        if (performansQeydleri.Count > 5)
+        {
+            mesaj += $"... və daha {performansQeydleri.Count - 5} qeyd.\n";
+        }
+
+        MesajGoster(mesaj, "Performans Qeydləri", MessageBoxIcon.Information);
     }
 
     public void IzinQeydleriniGoster(List<IsciIzniDto> izinQeydleri)
     {
-        // TODO: İzn qeydlərini göstərmək üçün uyğun forma elementləri əlavə edilməlidir
-        MesajGoster($"İşçinin {izinQeydleri.Count} məzuniyyət/icazə qeydi tapıldı.", false);
+        if (izinQeydleri == null || !izinQeydleri.Any())
+        {
+            MesajGoster("İşçinin heç bir məzuniyyət/icazə qeydi tapılmadı.", false);
+            return;
+        }
+
+        // İzin qeydlərini mətn formatında göstəririk
+        var mesaj = $"İşçinin {izinQeydleri.Count} məzuniyyət/icazə qeydi:\n\n";
+        foreach (var izin in izinQeydleri.Take(5)) // İlk 5 qeydi göstəririk
+        {
+            mesaj += $"• {izin.IzinNovu}: {izin.BaslamaTarixi:dd.MM.yyyy} - {izin.BitmeTarixi:dd.MM.yyyy}\n";
+            mesaj += $"  Günlər: {izin.IzinGunu} | Status: {izin.Status}\n";
+            mesaj += $"  Səbəb: {izin.Sebeb}\n\n";
+        }
+
+        if (izinQeydleri.Count > 5)
+        {
+            mesaj += $"... və daha {izinQeydleri.Count - 5} qeyd.\n";
+        }
+
+        MesajGoster(mesaj, "Məzuniyyət Qeydləri", MessageBoxIcon.Information);
     }
 
     #endregion
