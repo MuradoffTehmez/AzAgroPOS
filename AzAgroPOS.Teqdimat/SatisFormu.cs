@@ -10,19 +10,23 @@ namespace AzAgroPOS.Teqdimat
 {
     public partial class SatisFormu : BazaForm, ISatisView
     {
-        private readonly ISatisPresenter _presenter;
+        private ISatisPresenter _presenter;
         private readonly IServiceProvider _serviceProvider;
 
-        public SatisFormu(ISatisPresenter satisPresenter, IServiceProvider serviceProvider)
+        public SatisFormu(IServiceProvider serviceProvider)
         {
             InitializeComponent();
-            _presenter = satisPresenter;
             _serviceProvider = serviceProvider;
             this.Load += (s, e) => FormYuklendiIstek?.Invoke(this, EventArgs.Empty);
             ConfigureDataGridViewStyles();
             AddCartActionButtons();
 
             StatusMesajiGostericisi.Initialize(toolStripStatusLabel1);
+        }
+
+        public void InitializePresenter(ISatisPresenter presenter)
+        {
+            _presenter = presenter;
         }
 
         #region ISatisView Implementasiyası

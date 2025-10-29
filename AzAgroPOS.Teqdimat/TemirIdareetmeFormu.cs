@@ -6,13 +6,17 @@ namespace AzAgroPOS.Teqdimat
 {
     public partial class TemirIdareetmeFormu : BazaForm, ITemirView
     {
-        private readonly TemirPresenter _presenter;
+        private TemirPresenter _presenter;
 
-        public TemirIdareetmeFormu(TemirPresenter temirPresenter)
+        public TemirIdareetmeFormu()
         {
             InitializeComponent();
-            _presenter = temirPresenter;
             StilVerDataGridView(dgvSifarisler);
+        }
+
+        public void InitializePresenter(TemirPresenter presenter)
+        {
+            _presenter = presenter;
         }
 
         #region ITemirView Implementasiyası

@@ -99,9 +99,7 @@ namespace AzAgroPOS.Teqdimat
                 // Presenterlər
                 services.AddTransient<MehsulPresenter>();
                 services.AddTransient<MusteriPresenter>();
-                services.AddTransient<SatisPresenter>();
-                services.AddTransient<ISatisPresenter, SatisPresenter>();
-                services.AddTransient<TemirPresenter>();
+                // SatisPresenter and TemirPresenter are now manually created in AnaMenuFormu to avoid circular dependency
                 services.AddTransient<QaytarmaPresenter>();
                 services.AddTransient<AlisSenedPresenter>();
 
@@ -117,8 +115,7 @@ namespace AzAgroPOS.Teqdimat
                 services.AddTransient<IMusteriView, MusteriIdareetmeFormu>();
                 services.AddTransient<INisyeView, NisyeIdareetmeFormu>();
                 services.AddTransient<INovbeView, NovbeIdareetmesiFormu>();
-                services.AddTransient<ISatisView, SatisFormu>();
-                services.AddTransient<ITemirView, TemirIdareetmeFormu>();
+                // ISatisView and ITemirView removed to avoid circular dependency
                 services.AddTransient<IEhtiyatHissəsiView, EhtiyatHissəsiFormu>();
                 services.AddTransient<IZHesabatArxivView, ZHesabatArxivFormu>();
                 services.AddTransient<ITedarukcuView, TedarukcuIdareetmeFormu>();
