@@ -99,6 +99,7 @@ namespace AzAgroPOS.Teqdimat
                 services.AddScoped<KonfiqurasiyaManager>();
                 services.AddScoped<IcazeManager>();
                 services.AddScoped<StokHareketiManager>();
+                services.AddScoped<QaytarmaManager>();
 
                 // Presenterlər
                 services.AddTransient<MehsulPresenter>();
