@@ -1,9 +1,7 @@
-using System.IO;
 using AzAgroPOS.Verilenler.Kontekst;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System.Linq;
 
 class Program
 {

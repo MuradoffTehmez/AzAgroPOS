@@ -26,7 +26,7 @@ public class KonfiqurasiyaManager
     /// <returns>Konfiqurasiya DTO obyekti</returns>
     public async Task<EmeliyyatNeticesi<KonfiqurasiyaDto>> AcarlaGetirAsync(string acar)
     {
-        
+
         Logger.MelumatYaz(acar);
         try
         {
@@ -92,7 +92,7 @@ public class KonfiqurasiyaManager
     /// <returns>Əməliyyat nəticəsi</returns>
     public async Task<EmeliyyatNeticesi<bool>> KonfiqurasiyaElaveEtVəYaYenileAsync(KonfiqurasiyaDto dto)
     {
-       
+
         try
         {
             var movcudKonfiqurasiya = await _unitOfWork.Konfiqurasiyalar.AcarlaGetirAsync(dto.Acar);

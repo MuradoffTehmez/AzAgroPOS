@@ -1,6 +1,3 @@
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Yardimcilar;
