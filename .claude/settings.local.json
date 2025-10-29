@@ -5,7 +5,9 @@
       "Bash(Select-String -Pattern \"error|warning\")",
       "Bash(Select-Object -First 30)",
       "Bash(Select-String -Pattern \"error\")",
-      "Bash(dotnet clean:*)"
+      "Bash(dotnet clean:*)",
+      "Bash(dotnet list:*)",
+      "Bash(Select-String -Pattern \"EPPlus\")"
     ],
     "deny": [],
     "ask": []

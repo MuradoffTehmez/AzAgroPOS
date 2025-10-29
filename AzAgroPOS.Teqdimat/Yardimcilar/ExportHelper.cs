@@ -8,8 +8,16 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
     {
         static ExportHelper()
         {
-            // EPPlus lisensiyasını qur
-            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            try
+            {
+                // EPPlus lisensiyasını qur - EPPlus 5.0+ tələb edir
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            }
+            catch
+            {
+                // Əgər lisensiya quruluşunda xəta olarsa, davam et
+                // Lisensiya ilk istifadə zamanı yenidən qurulacaq
+            }
         }
 
         /// <summary>
@@ -21,6 +29,12 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         {
             try
             {
+                // Lisensiya kontekstini qur (əgər static constructor işləməyibsə)
+                if (ExcelPackage.LicenseContext == LicenseContext.Commercial)
+                {
+                    ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                }
+
                 // Yeni Excel paketi yarat
                 using (var package = new ExcelPackage())
                 {

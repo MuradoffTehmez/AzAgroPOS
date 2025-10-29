@@ -57,6 +57,7 @@ namespace AzAgroPOS.Teqdimat
             btnSil = new MaterialSkin.Controls.MaterialButton();
             btnBarkodYarat = new MaterialSkin.Controls.MaterialButton();
             btnStokKoduYarat = new MaterialSkin.Controls.MaterialButton();
+            btnIxracEt = new MaterialSkin.Controls.MaterialButton();
             txtMevcudSay = new MaterialSkin.Controls.MaterialTextBox2();
             txtAlisQiymeti = new MaterialSkin.Controls.MaterialTextBox2();
             txtPerakendeSatisQiymeti = new MaterialSkin.Controls.MaterialTextBox2();
@@ -96,6 +97,7 @@ namespace AzAgroPOS.Teqdimat
             // splitContainer1.Panel1
             // 
             splitContainer1.Panel1.BackColor = Color.FromArgb(242, 242, 242);
+            splitContainer1.Panel1.Controls.Add(btnIxracEt);
             splitContainer1.Panel1.Controls.Add(dgvMehsullar);
             splitContainer1.Panel1.Controls.Add(txtAxtar);
             splitContainer1.Panel1.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
@@ -550,10 +552,10 @@ namespace AzAgroPOS.Teqdimat
             btnTemizle.UseAccentColor = false;
             btnTemizle.UseVisualStyleBackColor = false;
             btnTemizle.Click += btnTemizle_Click;
-            // 
+            //
             // btnIxracEt
-            // 
-            btnIxracEt.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            //
+            btnIxracEt.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnIxracEt.AutoSize = false;
             btnIxracEt.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             btnIxracEt.BackColor = Color.FromArgb(242, 242, 242);
@@ -562,7 +564,7 @@ namespace AzAgroPOS.Teqdimat
             btnIxracEt.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnIxracEt.HighEmphasis = true;
             btnIxracEt.Icon = null;
-            btnIxracEt.Location = new Point(18, 700);
+            btnIxracEt.Location = new Point(343, 648);
             btnIxracEt.Margin = new Padding(4, 6, 4, 6);
             btnIxracEt.MouseState = MaterialSkin.MouseState.HOVER;
             btnIxracEt.Name = "btnIxracEt";
