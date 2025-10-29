@@ -1,6 +1,8 @@
 ﻿// Fayl: AzAgroPOS.Teqdimat/BazaForm.cs
 using MaterialSkin;
 using MaterialSkin.Controls;
+using AzAgroPOS.Mentiq.Yardimcilar;
+using AzAgroPOS.Teqdimat.Yardimcilar;
 
 namespace AzAgroPOS.Teqdimat
 {
@@ -15,6 +17,15 @@ namespace AzAgroPOS.Teqdimat
             InitializeComponent();
             this.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
             InitializeMaterialSkin();
+            InitializeStatusMesaji();
+        }
+
+        private void InitializeStatusMesaji()
+        {
+            if (toolStripStatusLabel1 != null)
+            {
+                StatusMesajiGostericisi.Initialize(toolStripStatusLabel1);
+            }
         }
 
         private void InitializeMaterialSkin()
@@ -168,5 +179,161 @@ namespace AzAgroPOS.Teqdimat
                 EnableControls(c);
             }
         }
+
+        #region İcazə Yoxlama Metodları
+
+        /// <summary>
+        /// İstifadəçinin icazəsi olub-olmadığını yoxlayır
+        /// diqqət: Bu metod IcazeYoxlayici singleton istifadə edir
+        /// qeyd: İcazə yoxdursa false qaytarır
+        /// </summary>
+        /// <param name="icazeAdi">Yoxlanılacaq icazənin adı</param>
+        /// <returns>İcazə varsa true, yoxsa false</returns>
+        protected bool IcazeVarmi(string icazeAdi)
+        {
+            return AzAgroPOS.Mentiq.Yardimcilar.IcazeYoxlayici.Instance.IcazeVarmi(icazeAdi);
+        }
+
+        /// <summary>
+        /// İstifadəçinin icazəsi olub-olmadığını yoxlayır və mesaj göstərir
+        /// diqqət: İcazə yoxdursa istifadəçiyə xəbərdarlıq mesajı göstərilir
+        /// qeyd: MessageBox.Show ilə mesaj göstərilir
+        /// </summary>
+        /// <param name="icazeAdi">Yoxlanılacaq icazənin adı</param>
+        /// <returns>İcazə varsa true, yoxsa false</returns>
+        protected bool IcazeVarmiMesajla(string icazeAdi)
+        {
+            bool icazeVar = AzAgroPOS.Mentiq.Yardimcilar.IcazeYoxlayici.Instance.IcazeVarmiMesajla(icazeAdi, out string mesaj);
+
+            if (!icazeVar)
+            {
+                MessageBox.Show(mesaj, "İcazə Yoxdur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
+            return icazeVar;
+        }
+
+        /// <summary>
+        /// İcazəyə əsasən button-u gizlədir və ya göstərir
+        /// diqqət: İcazə yoxdursa button Visible = false olur
+        /// qeyd: Formun Load event-də çağırılmalıdır
+        /// </summary>
+        /// <param name="button">İcazəyə görə gizlədilə biləcək button</param>
+        /// <param name="icazeAdi">Tələb olunan icazənin adı</param>
+        protected void ButtonIcazeIleGoster(Control button, string icazeAdi)
+        {
+            if (button == null)
+                return;
+
+            button.Visible = IcazeVarmi(icazeAdi);
+        }
+
+        /// <summary>
+        /// İcazəyə əsasən button-u aktivləşdirir və ya deaktivləşdirir
+        /// diqqət: İcazə yoxdursa button Enabled = false olur
+        /// qeyd: Formun Load event-də çağırılmalıdır
+        /// </summary>
+        /// <param name="button">İcazəyə görə deaktivləşdirilə biləcək button</param>
+        /// <param name="icazeAdi">Tələb olunan icazənin adı</param>
+        protected void ButtonIcazeIleAktivleshdir(Control button, string icazeAdi)
+        {
+            if (button == null)
+                return;
+
+            button.Enabled = IcazeVarmi(icazeAdi);
+        }
+
+        /// <summary>
+        /// Çoxsaylı buttonları icazələrə görə konfiqurasiya edir
+        /// diqqət: Dictionary formatında button və icazə cütləri verilir
+        /// qeyd: Formun Load event-də çağırılmalıdır
+        /// </summary>
+        /// <param name="buttonIcazeler">Button-İcazə cütləri</param>
+        /// <param name="gizlet">true olarsa buttonlar gizlədilir, false olarsa deaktivləşdirilir</param>
+        protected void ButtonlariIcazeIleKonfiqureEt(Dictionary<Control, string> buttonIcazeler, bool gizlet = false)
+        {
+            if (buttonIcazeler == null)
+                return;
+
+            foreach (var pair in buttonIcazeler)
+            {
+                if (pair.Key == null)
+                    continue;
+
+                bool icazeVar = IcazeVarmi(pair.Value);
+
+                if (gizlet)
+                {
+                    pair.Key.Visible = icazeVar;
+                }
+                else
+                {
+                    pair.Key.Enabled = icazeVar;
+                }
+            }
+        }
+
+        /// <summary>
+        /// İstifadəçinin admin olub-olmadığını yoxlayır
+        /// </summary>
+        protected bool AdminDirmi()
+        {
+            return AzAgroPOS.Mentiq.Yardimcilar.IcazeYoxlayici.Instance.AdminDirmi();
+        }
+
+        /// <summary>
+        /// İstifadəçinin manager olub-olmadığını yoxlayır
+        /// </summary>
+        protected bool ManagerDirmi()
+        {
+            return AzAgroPOS.Mentiq.Yardimcilar.IcazeYoxlayici.Instance.ManagerDirmi();
+        }
+
+        /// <summary>
+        /// İstifadəçinin kassir olub-olmadığını yoxlayır
+        /// </summary>
+        protected bool KassirDirmi()
+        {
+            return AzAgroPOS.Mentiq.Yardimcilar.IcazeYoxlayici.Instance.KassirDirmi();
+        }
+
+        #endregion
+
+        #region Status Mesajı Metodları
+
+        /// <summary>
+        /// Status stripda uğurlu mesaj göstərir
+        /// diqqət: Mesaj avtomatik olaraq 3 saniyə sonra təmizlənir
+        /// qeyd: Yaşıl rənglə göstərilir
+        /// </summary>
+        /// <param name="mesaj">Göstəriləcək mesaj</param>
+        protected void UgurluMesajGoster(string mesaj)
+        {
+            StatusMesajiGostericisi.UgurluMesajGoster(mesaj);
+        }
+
+        /// <summary>
+        /// Status stripda xəta mesajı göstərir
+        /// diqqət: Mesaj avtomatik olaraq 3 saniyə sonra təmizlənir
+        /// qeyd: Qırmızı rənglə göstərilir
+        /// </summary>
+        /// <param name="mesaj">Göstəriləcək mesaj</param>
+        protected void XetaMesajiGoster(string mesaj)
+        {
+            StatusMesajiGostericisi.XetaMesajiGoster(mesaj);
+        }
+
+        /// <summary>
+        /// Status stripda məlumat mesajı göstərir
+        /// diqqət: Mesaj avtomatik olaraq 3 saniyə sonra təmizlənir
+        /// qeyd: Mavi rənglə göstərilir
+        /// </summary>
+        /// <param name="mesaj">Göstəriləcək mesaj</param>
+        protected void MelumatMesajiGoster(string mesaj)
+        {
+            StatusMesajiGostericisi.MelumatMesajiGoster(mesaj);
+        }
+
+        #endregion
     }
 }
