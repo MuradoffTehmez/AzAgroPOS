@@ -18,8 +18,10 @@ namespace AzAgroPOS.Teqdimat
         public SatisFormu(IServiceProvider serviceProvider)
         {
             InitializeComponent();
+            this.KeyPreview = true; // Klaviatura hadisələrini forma səviyyəsində qəbul etmək üçün
             _serviceProvider = serviceProvider;
             this.Load += (s, e) => FormYuklendiIstek?.Invoke(this, EventArgs.Empty);
+            this.KeyUp += SatisFormu_KeyUp; // Klaviatura hadisələrini idarə etmək üçün
             ConfigureDataGridViewStyles();
             AddCartActionButtons();
             ConfigureKeyboardShortcutHints();
@@ -64,6 +66,13 @@ namespace AzAgroPOS.Teqdimat
         public event EventHandler<int> SebetMiqdarAzaltIstek;
         public event EventHandler YeniMusteriFormuAcIstek;
         public event EventHandler MusteriSiyahisiniYenileIstek;
+        public event EventHandler OdemeIstek;
+        public event EventHandler NisyeEtIstek;
+        public event EventHandler TaxirEtIstek;
+        public event EventHandler TemizleIstek;
+        public event EventHandler SatisEtIstek;
+        public event EventHandler YeniMusteriIstek;
+        public event EventHandler BarkodCapIstek;
 
         public void SuretliSatisMehsullariniGoster(List<MehsulDto> mehsullar)
         {
@@ -721,6 +730,80 @@ namespace AzAgroPOS.Teqdimat
             if (dgvSebet.CurrentRow?.DataBoundItem is SatisSebetiElementiDto)
             {
                 SebetdenSilIstek?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        #endregion
+
+        #region Klaviatura Qısayolları
+
+        private void SatisFormu_KeyUp(object sender, KeyEventArgs e)
+        {
+            // F1 - Ödəniş ekranı
+            if (e.KeyCode == Keys.F1)
+            {
+                OdemeIstek?.Invoke(this, EventArgs.Empty);
+            }
+            // F2 - Nisyə
+            else if (e.KeyCode == Keys.F2)
+            {
+                NisyeEtIstek?.Invoke(this, EventArgs.Empty);
+            }
+            // F3 - Təxirə sal
+            else if (e.KeyCode == Keys.F3)
+            {
+                TaxirEtIstek?.Invoke(this, EventArgs.Empty);
+            }
+            // F4 - Təmizlə
+            else if (e.KeyCode == Keys.F4)
+            {
+                TemizleIstek?.Invoke(this, EventArgs.Empty);
+            }
+            // F5 - Axtarışa fokus
+            else if (e.KeyCode == Keys.F5)
+            {
+                txtAxtaris.Focus();
+            }
+            // F6 - Miqdar sahəsinə fokus
+            else if (e.KeyCode == Keys.F6)
+            {
+                txtMiqdar.Focus();
+            }
+            // F7 - Səbətə fokus
+            else if (e.KeyCode == Keys.F7)
+            {
+                dgvSebet.Focus();
+            }
+            // F8 - Səbətdən sil
+            else if (e.KeyCode == Keys.F8)
+            {
+                SebetdenSilIstek?.Invoke(this, EventArgs.Empty);
+            }
+            // Ctrl+N - Yeni müştəri
+            else if (e.Control && e.KeyCode == Keys.N)
+            {
+                YeniMusteriIstek?.Invoke(this, EventArgs.Empty);
+            }
+            // Ctrl+S - Satış et
+            else if (e.Control && e.KeyCode == Keys.S)
+            {
+                SatisEtIstek?.Invoke(this, EventArgs.Empty);
+            }
+            // Ctrl+F - Axtarışa fokus
+            else if (e.Control && e.KeyCode == Keys.F)
+            {
+                txtAxtaris.Focus();
+            }
+            // Ctrl+P - Barkod çapı
+            else if (e.Control && e.KeyCode == Keys.P)
+            {
+                BarkodCapIstek?.Invoke(this, EventArgs.Empty);
+            }
+            // Escape - Axtarış sahəsini təmizlə
+            else if (e.KeyCode == Keys.Escape)
+            {
+                txtAxtaris.Clear();
+                txtAxtaris.Focus();
             }
         }
 

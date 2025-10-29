@@ -29,6 +29,13 @@ namespace AzAgroPOS.Teqdimat.Interfeysler
         event EventHandler<int> SebetMiqdarAzaltIstek;
         event EventHandler YeniMusteriFormuAcIstek;
         event EventHandler MusteriSiyahisiniYenileIstek;
+        event EventHandler OdemeIstek;
+        event EventHandler NisyeEtIstek;
+        event EventHandler TaxirEtIstek;
+        event EventHandler TemizleIstek;
+        event EventHandler SatisEtIstek;
+        event EventHandler YeniMusteriIstek;
+        event EventHandler BarkodCapIstek;
 
         // View-a məlumat göndərmək
         void SuretliSatisMehsullariniGoster(List<MehsulDto> mehsullar);
