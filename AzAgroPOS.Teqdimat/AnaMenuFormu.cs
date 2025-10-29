@@ -440,4 +440,9 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
     {
         Application.Exit();
     }
+
+    private void lblActiveShiftValue_Click(object sender, EventArgs e)
+    {
+
+    }
 }

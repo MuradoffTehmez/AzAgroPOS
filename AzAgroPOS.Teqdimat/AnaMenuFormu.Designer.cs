@@ -116,7 +116,7 @@ namespace AzAgroPOS.Teqdimat
             pnlMenu.ForeColor = Color.FromArgb(222, 0, 0, 0);
             pnlMenu.Location = new Point(3, 64);
             pnlMenu.Name = "pnlMenu";
-            pnlMenu.Size = new Size(240, 673);
+            pnlMenu.Size = new Size(240, 841);
             pnlMenu.TabIndex = 0;
             // 
             // btnMinimumStokMehsullari
@@ -137,7 +137,7 @@ namespace AzAgroPOS.Teqdimat
             btnMinimumStokMehsullari.MouseState = MaterialSkin.MouseState.HOVER;
             btnMinimumStokMehsullari.Name = "btnMinimumStokMehsullari";
             btnMinimumStokMehsullari.NoAccentTextColor = Color.Empty;
-            btnMinimumStokMehsullari.Size = new Size(223, 45);
+            btnMinimumStokMehsullari.Size = new Size(240, 45);
             btnMinimumStokMehsullari.TabIndex = 18;
             btnMinimumStokMehsullari.Text = "Minimum Stok Məhsulları";
             btnMinimumStokMehsullari.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
@@ -164,7 +164,7 @@ namespace AzAgroPOS.Teqdimat
             btnIsciIdareetme.MouseState = MaterialSkin.MouseState.HOVER;
             btnIsciIdareetme.Name = "btnIsciIdareetme";
             btnIsciIdareetme.NoAccentTextColor = Color.Empty;
-            btnIsciIdareetme.Size = new Size(223, 45);
+            btnIsciIdareetme.Size = new Size(240, 45);
             btnIsciIdareetme.TabIndex = 16;
             btnIsciIdareetme.Text = "İşçi İdarəetmə";
             btnIsciIdareetme.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
@@ -191,7 +191,7 @@ namespace AzAgroPOS.Teqdimat
             btnBarkodCapi.MouseState = MaterialSkin.MouseState.HOVER;
             btnBarkodCapi.Name = "btnBarkodCapi";
             btnBarkodCapi.NoAccentTextColor = Color.Empty;
-            btnBarkodCapi.Size = new Size(223, 45);
+            btnBarkodCapi.Size = new Size(240, 45);
             btnBarkodCapi.TabIndex = 15;
             btnBarkodCapi.Text = "Barkod Çapı";
             btnBarkodCapi.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
@@ -217,7 +217,7 @@ namespace AzAgroPOS.Teqdimat
             btnZHesabatArxivi.MouseState = MaterialSkin.MouseState.HOVER;
             btnZHesabatArxivi.Name = "btnZHesabatArxivi";
             btnZHesabatArxivi.NoAccentTextColor = Color.Empty;
-            btnZHesabatArxivi.Size = new Size(223, 45);
+            btnZHesabatArxivi.Size = new Size(240, 45);
             btnZHesabatArxivi.TabIndex = 14;
             btnZHesabatArxivi.Text = "Z-Hesabat Arxivi";
             btnZHesabatArxivi.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
@@ -243,7 +243,7 @@ namespace AzAgroPOS.Teqdimat
             btnAnbarQaliqHesabati.MouseState = MaterialSkin.MouseState.HOVER;
             btnAnbarQaliqHesabati.Name = "btnAnbarQaliqHesabati";
             btnAnbarQaliqHesabati.NoAccentTextColor = Color.Empty;
-            btnAnbarQaliqHesabati.Size = new Size(223, 45);
+            btnAnbarQaliqHesabati.Size = new Size(240, 45);
             btnAnbarQaliqHesabati.TabIndex = 13;
             btnAnbarQaliqHesabati.Text = "Anbar Qalıq Hesabatı";
             btnAnbarQaliqHesabati.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
@@ -269,7 +269,7 @@ namespace AzAgroPOS.Teqdimat
             btnMehsulSatisHesabati.MouseState = MaterialSkin.MouseState.HOVER;
             btnMehsulSatisHesabati.Name = "btnMehsulSatisHesabati";
             btnMehsulSatisHesabati.NoAccentTextColor = Color.Empty;
-            btnMehsulSatisHesabati.Size = new Size(223, 45);
+            btnMehsulSatisHesabati.Size = new Size(240, 45);
             btnMehsulSatisHesabati.TabIndex = 12;
             btnMehsulSatisHesabati.Text = "Məhsul Satış Hesabatı";
             btnMehsulSatisHesabati.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
@@ -296,7 +296,7 @@ namespace AzAgroPOS.Teqdimat
             btnHesabatlar.MouseState = MaterialSkin.MouseState.HOVER;
             btnHesabatlar.Name = "btnHesabatlar";
             btnHesabatlar.NoAccentTextColor = Color.Empty;
-            btnHesabatlar.Size = new Size(223, 45);
+            btnHesabatlar.Size = new Size(240, 45);
             btnHesabatlar.TabIndex = 11;
             btnHesabatlar.Text = "Hesabatlar";
             btnHesabatlar.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
@@ -323,7 +323,7 @@ namespace AzAgroPOS.Teqdimat
             btnIstifadeciIdareetme.MouseState = MaterialSkin.MouseState.HOVER;
             btnIstifadeciIdareetme.Name = "btnIstifadeciIdareetme";
             btnIstifadeciIdareetme.NoAccentTextColor = Color.Empty;
-            btnIstifadeciIdareetme.Size = new Size(223, 45);
+            btnIstifadeciIdareetme.Size = new Size(240, 45);
             btnIstifadeciIdareetme.TabIndex = 10;
             btnIstifadeciIdareetme.Text = "İstifadəçi İdarəetmə";
             btnIstifadeciIdareetme.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
@@ -350,7 +350,7 @@ namespace AzAgroPOS.Teqdimat
             btnTemirIdareetme.MouseState = MaterialSkin.MouseState.HOVER;
             btnTemirIdareetme.Name = "btnTemirIdareetme";
             btnTemirIdareetme.NoAccentTextColor = Color.Empty;
-            btnTemirIdareetme.Size = new Size(223, 45);
+            btnTemirIdareetme.Size = new Size(240, 45);
             btnTemirIdareetme.TabIndex = 9;
             btnTemirIdareetme.Text = "Təmir İdarəetmə";
             btnTemirIdareetme.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
@@ -376,7 +376,7 @@ namespace AzAgroPOS.Teqdimat
             btnNisyeIdareetme.MouseState = MaterialSkin.MouseState.HOVER;
             btnNisyeIdareetme.Name = "btnNisyeIdareetme";
             btnNisyeIdareetme.NoAccentTextColor = Color.Empty;
-            btnNisyeIdareetme.Size = new Size(223, 45);
+            btnNisyeIdareetme.Size = new Size(240, 45);
             btnNisyeIdareetme.TabIndex = 8;
             btnNisyeIdareetme.Text = "Nisyə İdarəetmə";
             btnNisyeIdareetme.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
@@ -402,7 +402,7 @@ namespace AzAgroPOS.Teqdimat
             btnQaytarma.MouseState = MaterialSkin.MouseState.HOVER;
             btnQaytarma.Name = "btnQaytarma";
             btnQaytarma.NoAccentTextColor = Color.Empty;
-            btnQaytarma.Size = new Size(223, 45);
+            btnQaytarma.Size = new Size(240, 45);
             btnQaytarma.TabIndex = 19;
             btnQaytarma.Text = "Qaytarma";
             btnQaytarma.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
@@ -429,7 +429,7 @@ namespace AzAgroPOS.Teqdimat
             btnYeniSatis.MouseState = MaterialSkin.MouseState.HOVER;
             btnYeniSatis.Name = "btnYeniSatis";
             btnYeniSatis.NoAccentTextColor = Color.Empty;
-            btnYeniSatis.Size = new Size(223, 45);
+            btnYeniSatis.Size = new Size(240, 45);
             btnYeniSatis.TabIndex = 7;
             btnYeniSatis.Text = "Yeni Satış";
             btnYeniSatis.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
@@ -456,7 +456,7 @@ namespace AzAgroPOS.Teqdimat
             btnMehsulIdareetme.MouseState = MaterialSkin.MouseState.HOVER;
             btnMehsulIdareetme.Name = "btnMehsulIdareetme";
             btnMehsulIdareetme.NoAccentTextColor = Color.Empty;
-            btnMehsulIdareetme.Size = new Size(223, 45);
+            btnMehsulIdareetme.Size = new Size(240, 45);
             btnMehsulIdareetme.TabIndex = 6;
             btnMehsulIdareetme.Text = "Məhsul İdarəetmə";
             btnMehsulIdareetme.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
@@ -483,7 +483,7 @@ namespace AzAgroPOS.Teqdimat
             btnNovbeIdareetme.MouseState = MaterialSkin.MouseState.HOVER;
             btnNovbeIdareetme.Name = "btnNovbeIdareetme";
             btnNovbeIdareetme.NoAccentTextColor = Color.Empty;
-            btnNovbeIdareetme.Size = new Size(223, 45);
+            btnNovbeIdareetme.Size = new Size(240, 45);
             btnNovbeIdareetme.TabIndex = 5;
             btnNovbeIdareetme.Text = "Növbə İdarəetmə";
             btnNovbeIdareetme.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
@@ -510,7 +510,7 @@ namespace AzAgroPOS.Teqdimat
             btnKonfiqurasiya.MouseState = MaterialSkin.MouseState.HOVER;
             btnKonfiqurasiya.Name = "btnKonfiqurasiya";
             btnKonfiqurasiya.NoAccentTextColor = Color.Empty;
-            btnKonfiqurasiya.Size = new Size(223, 45);
+            btnKonfiqurasiya.Size = new Size(240, 45);
             btnKonfiqurasiya.TabIndex = 17;
             btnKonfiqurasiya.Text = "Konfiqurasiya";
             btnKonfiqurasiya.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
@@ -546,7 +546,7 @@ namespace AzAgroPOS.Teqdimat
             separator2.ForeColor = Color.FromArgb(222, 0, 0, 0);
             separator2.Location = new Point(0, 25);
             separator2.Name = "separator2";
-            separator2.Size = new Size(223, 5);
+            separator2.Size = new Size(240, 5);
             separator2.TabIndex = 2;
             // 
             // separator1
@@ -557,7 +557,7 @@ namespace AzAgroPOS.Teqdimat
             separator1.ForeColor = Color.FromArgb(222, 0, 0, 0);
             separator1.Location = new Point(0, 20);
             separator1.Name = "separator1";
-            separator1.Size = new Size(223, 5);
+            separator1.Size = new Size(240, 5);
             separator1.TabIndex = 1;
             // 
             // pnlUserInfo
@@ -570,7 +570,7 @@ namespace AzAgroPOS.Teqdimat
             pnlUserInfo.ForeColor = Color.FromArgb(222, 0, 0, 0);
             pnlUserInfo.Location = new Point(0, 0);
             pnlUserInfo.Name = "pnlUserInfo";
-            pnlUserInfo.Size = new Size(223, 20);
+            pnlUserInfo.Size = new Size(240, 20);
             pnlUserInfo.TabIndex = 0;
             // 
             // lblUserName
@@ -581,7 +581,7 @@ namespace AzAgroPOS.Teqdimat
             lblUserName.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblUserName.Location = new Point(20, 0);
             lblUserName.Name = "lblUserName";
-            lblUserName.Size = new Size(203, 20);
+            lblUserName.Size = new Size(220, 20);
             lblUserName.TabIndex = 1;
             lblUserName.Text = "İstifadəçi Adı";
             lblUserName.TextAlign = ContentAlignment.MiddleLeft;
@@ -609,7 +609,7 @@ namespace AzAgroPOS.Teqdimat
             mdiTabControl.Multiline = true;
             mdiTabControl.Name = "mdiTabControl";
             mdiTabControl.SelectedIndex = 0;
-            mdiTabControl.Size = new Size(954, 673);
+            mdiTabControl.Size = new Size(1257, 841);
             mdiTabControl.TabIndex = 1;
             mdiTabControl.SelectedIndexChanged += mdiTabControl_SelectedIndexChanged;
             mdiTabControl.MouseClick += mdiTabControl_MouseClick;
@@ -654,7 +654,7 @@ namespace AzAgroPOS.Teqdimat
             dashboardPanel.ForeColor = Color.FromArgb(222, 0, 0, 0);
             dashboardPanel.Location = new Point(243, 64);
             dashboardPanel.Name = "dashboardPanel";
-            dashboardPanel.Size = new Size(954, 150);
+            dashboardPanel.Size = new Size(1257, 66);
             dashboardPanel.TabIndex = 2;
             // 
             // lowStockProductsCard
@@ -662,14 +662,15 @@ namespace AzAgroPOS.Teqdimat
             lowStockProductsCard.BackColor = Color.FromArgb(255, 255, 255);
             lowStockProductsCard.Controls.Add(lblLowStockProductsValue);
             lowStockProductsCard.Controls.Add(lblLowStockProducts);
+            lowStockProductsCard.Cursor = Cursors.WaitCursor;
             lowStockProductsCard.Depth = 0;
             lowStockProductsCard.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lowStockProductsCard.Location = new Point(730, 10);
+            lowStockProductsCard.Location = new Point(962, 4);
             lowStockProductsCard.Margin = new Padding(14);
             lowStockProductsCard.MouseState = MaterialSkin.MouseState.HOVER;
             lowStockProductsCard.Name = "lowStockProductsCard";
             lowStockProductsCard.Padding = new Padding(14);
-            lowStockProductsCard.Size = new Size(220, 130);
+            lowStockProductsCard.Size = new Size(285, 53);
             lowStockProductsCard.TabIndex = 3;
             // 
             // lblLowStockProductsValue
@@ -678,7 +679,7 @@ namespace AzAgroPOS.Teqdimat
             lblLowStockProductsValue.BackColor = Color.FromArgb(255, 255, 255);
             lblLowStockProductsValue.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             lblLowStockProductsValue.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblLowStockProductsValue.Location = new Point(20, 60);
+            lblLowStockProductsValue.Location = new Point(15, 29);
             lblLowStockProductsValue.Name = "lblLowStockProductsValue";
             lblLowStockProductsValue.Size = new Size(16, 17);
             lblLowStockProductsValue.TabIndex = 1;
@@ -690,7 +691,7 @@ namespace AzAgroPOS.Teqdimat
             lblLowStockProducts.BackColor = Color.FromArgb(255, 255, 255);
             lblLowStockProducts.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             lblLowStockProducts.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblLowStockProducts.Location = new Point(20, 20);
+            lblLowStockProducts.Location = new Point(9, 7);
             lblLowStockProducts.Name = "lblLowStockProducts";
             lblLowStockProducts.Size = new Size(149, 17);
             lblLowStockProducts.TabIndex = 0;
@@ -701,14 +702,15 @@ namespace AzAgroPOS.Teqdimat
             debtorCustomersCard.BackColor = Color.FromArgb(255, 255, 255);
             debtorCustomersCard.Controls.Add(lblDebtorCustomersValue);
             debtorCustomersCard.Controls.Add(lblDebtorCustomers);
+            debtorCustomersCard.Cursor = Cursors.WaitCursor;
             debtorCustomersCard.Depth = 0;
             debtorCustomersCard.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            debtorCustomersCard.Location = new Point(490, 10);
+            debtorCustomersCard.Location = new Point(646, 4);
             debtorCustomersCard.Margin = new Padding(14);
             debtorCustomersCard.MouseState = MaterialSkin.MouseState.HOVER;
             debtorCustomersCard.Name = "debtorCustomersCard";
             debtorCustomersCard.Padding = new Padding(14);
-            debtorCustomersCard.Size = new Size(220, 130);
+            debtorCustomersCard.Size = new Size(285, 53);
             debtorCustomersCard.TabIndex = 2;
             // 
             // lblDebtorCustomersValue
@@ -717,7 +719,7 @@ namespace AzAgroPOS.Teqdimat
             lblDebtorCustomersValue.BackColor = Color.FromArgb(255, 255, 255);
             lblDebtorCustomersValue.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             lblDebtorCustomersValue.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblDebtorCustomersValue.Location = new Point(20, 60);
+            lblDebtorCustomersValue.Location = new Point(15, 29);
             lblDebtorCustomersValue.Name = "lblDebtorCustomersValue";
             lblDebtorCustomersValue.Size = new Size(16, 17);
             lblDebtorCustomersValue.TabIndex = 1;
@@ -729,7 +731,7 @@ namespace AzAgroPOS.Teqdimat
             lblDebtorCustomers.BackColor = Color.FromArgb(255, 255, 255);
             lblDebtorCustomers.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             lblDebtorCustomers.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblDebtorCustomers.Location = new Point(20, 20);
+            lblDebtorCustomers.Location = new Point(9, 7);
             lblDebtorCustomers.Name = "lblDebtorCustomers";
             lblDebtorCustomers.Size = new Size(113, 17);
             lblDebtorCustomers.TabIndex = 0;
@@ -740,14 +742,15 @@ namespace AzAgroPOS.Teqdimat
             activeShiftCard.BackColor = Color.FromArgb(255, 255, 255);
             activeShiftCard.Controls.Add(lblActiveShiftValue);
             activeShiftCard.Controls.Add(lblActiveShift);
+            activeShiftCard.Cursor = Cursors.WaitCursor;
             activeShiftCard.Depth = 0;
             activeShiftCard.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            activeShiftCard.Location = new Point(250, 10);
+            activeShiftCard.Location = new Point(330, 4);
             activeShiftCard.Margin = new Padding(14);
             activeShiftCard.MouseState = MaterialSkin.MouseState.HOVER;
             activeShiftCard.Name = "activeShiftCard";
             activeShiftCard.Padding = new Padding(14);
-            activeShiftCard.Size = new Size(220, 130);
+            activeShiftCard.Size = new Size(285, 53);
             activeShiftCard.TabIndex = 1;
             // 
             // lblActiveShiftValue
@@ -756,11 +759,12 @@ namespace AzAgroPOS.Teqdimat
             lblActiveShiftValue.BackColor = Color.FromArgb(255, 255, 255);
             lblActiveShiftValue.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             lblActiveShiftValue.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblActiveShiftValue.Location = new Point(20, 60);
+            lblActiveShiftValue.Location = new Point(15, 29);
             lblActiveShiftValue.Name = "lblActiveShiftValue";
             lblActiveShiftValue.Size = new Size(95, 17);
             lblActiveShiftValue.TabIndex = 1;
             lblActiveShiftValue.Text = "Növbə Yoxdur";
+            lblActiveShiftValue.Click += lblActiveShiftValue_Click;
             // 
             // lblActiveShift
             // 
@@ -768,7 +772,7 @@ namespace AzAgroPOS.Teqdimat
             lblActiveShift.BackColor = Color.FromArgb(255, 255, 255);
             lblActiveShift.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             lblActiveShift.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblActiveShift.Location = new Point(20, 20);
+            lblActiveShift.Location = new Point(9, 7);
             lblActiveShift.Name = "lblActiveShift";
             lblActiveShift.Size = new Size(82, 17);
             lblActiveShift.TabIndex = 0;
@@ -779,14 +783,15 @@ namespace AzAgroPOS.Teqdimat
             dailySalesCard.BackColor = Color.FromArgb(255, 255, 255);
             dailySalesCard.Controls.Add(lblDailySalesValue);
             dailySalesCard.Controls.Add(lblDailySales);
+            dailySalesCard.Cursor = Cursors.WaitCursor;
             dailySalesCard.Depth = 0;
             dailySalesCard.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            dailySalesCard.Location = new Point(10, 10);
+            dailySalesCard.Location = new Point(14, 4);
             dailySalesCard.Margin = new Padding(14);
             dailySalesCard.MouseState = MaterialSkin.MouseState.HOVER;
             dailySalesCard.Name = "dailySalesCard";
             dailySalesCard.Padding = new Padding(14);
-            dailySalesCard.Size = new Size(220, 130);
+            dailySalesCard.Size = new Size(285, 53);
             dailySalesCard.TabIndex = 0;
             // 
             // lblDailySalesValue
@@ -795,7 +800,7 @@ namespace AzAgroPOS.Teqdimat
             lblDailySalesValue.BackColor = Color.FromArgb(255, 255, 255);
             lblDailySalesValue.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             lblDailySalesValue.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblDailySalesValue.Location = new Point(20, 60);
+            lblDailySalesValue.Location = new Point(15, 29);
             lblDailySalesValue.Name = "lblDailySalesValue";
             lblDailySalesValue.Size = new Size(36, 17);
             lblDailySalesValue.TabIndex = 1;
@@ -807,7 +812,7 @@ namespace AzAgroPOS.Teqdimat
             lblDailySales.BackColor = Color.FromArgb(255, 255, 255);
             lblDailySales.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             lblDailySales.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblDailySales.Location = new Point(20, 20);
+            lblDailySales.Location = new Point(9, 7);
             lblDailySales.Name = "lblDailySales";
             lblDailySales.Size = new Size(102, 17);
             lblDailySales.TabIndex = 0;
@@ -821,7 +826,7 @@ namespace AzAgroPOS.Teqdimat
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1200, 740);
+            ClientSize = new Size(1503, 908);
             Controls.Add(dashboardPanel);
             Controls.Add(mdiTabControl);
             Controls.Add(pnlMenu);
