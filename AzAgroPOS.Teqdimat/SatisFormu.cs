@@ -1,5 +1,7 @@
 ﻿using AzAgroPOS.Mentiq.DTOs;
+using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
+using AzAgroPOS.Teqdimat.Teqdimatcilar;
 using AzAgroPOS.Teqdimat.Yardimcilar;
 using AzAgroPOS.Varliglar;
 using MaterialSkin.Controls;
@@ -352,6 +354,10 @@ namespace AzAgroPOS.Teqdimat
         private void btnYeniMusteri_Click(object sender, EventArgs e)
         {
             var musteriFormu = _serviceProvider.GetRequiredService<MusteriIdareetmeFormu>();
+            var musteriManager = _serviceProvider.GetRequiredService<MusteriManager>();
+            var musteriPresenter = new MusteriPresenter(musteriFormu, musteriManager);
+            musteriFormu.InitializePresenter(musteriPresenter);
+
             if (musteriFormu.ShowDialog() == DialogResult.OK)
             {
                 MusteriSiyahisiniYenileIstek?.Invoke(this, EventArgs.Empty);
