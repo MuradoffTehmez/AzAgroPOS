@@ -75,6 +75,9 @@ namespace AzAgroPOS.Teqdimat
 
                 services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+                // Repozitorilər
+                services.AddScoped<IStokHareketiRepozitori, StokHareketiRepozitori>();
+
                 // Menecerlər (Scoped çünki DbContext Scoped-dir)
                 services.AddScoped<TehlukesizlikManager>();
                 services.AddScoped<IstifadeciManager>();
@@ -95,6 +98,7 @@ namespace AzAgroPOS.Teqdimat
                 services.AddScoped<TedarukcuMeneceri>();
                 services.AddScoped<KonfiqurasiyaManager>();
                 services.AddScoped<IcazeManager>();
+                services.AddScoped<StokHareketiManager>();
 
                 // Presenterlər
                 services.AddTransient<MehsulPresenter>();

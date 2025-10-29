@@ -1192,6 +1192,59 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.ToTable("SatisDetallari");
                 });
 
+            modelBuilder.Entity("AzAgroPOS.Varliglar.StokHareketi", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("HareketTipi")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("IstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MehsulId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Miqdar")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Qeyd")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("SenedId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SenedNovu")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Silinib")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<DateTime>("Tarix")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IstifadeciId");
+
+                    b.HasIndex("MehsulId")
+                        .HasDatabaseName("IX_StokHareketi_MehsulId");
+
+                    b.HasIndex("Tarix")
+                        .HasDatabaseName("IX_StokHareketi_Tarix");
+
+                    b.HasIndex("SenedNovu", "SenedId")
+                        .HasDatabaseName("IX_StokHareketi_Sened");
+
+                    b.ToTable("StokHareketleri");
+                });
+
             modelBuilder.Entity("AzAgroPOS.Varliglar.Tedarukcu", b =>
                 {
                     b.Property<int>("Id")
@@ -1634,6 +1687,24 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.Navigation("Mehsul");
 
                     b.Navigation("Satis");
+                });
+
+            modelBuilder.Entity("AzAgroPOS.Varliglar.StokHareketi", b =>
+                {
+                    b.HasOne("AzAgroPOS.Varliglar.Istifadeci", "Istifadeci")
+                        .WithMany()
+                        .HasForeignKey("IstifadeciId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("AzAgroPOS.Varliglar.Mehsul", "Mehsul")
+                        .WithMany()
+                        .HasForeignKey("MehsulId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Istifadeci");
+
+                    b.Navigation("Mehsul");
                 });
 
             modelBuilder.Entity("AzAgroPOS.Varliglar.TedarukcuOdeme", b =>

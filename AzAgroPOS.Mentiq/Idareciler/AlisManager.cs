@@ -536,7 +536,7 @@ public class AlisManager
                     null // İstifadəçi ID-si
                 );
 
-                if (!stokNeticesi.Ugurlu)
+                if (!stokNeticesi.UgurluDur)
                 {
                     Logger.XəbərdarlıqYaz($"Stok hərəkəti qeydə alınarkən xəta: {stokNeticesi.Mesaj}");
                     return EmeliyyatNeticesi<int>.Ugursuz($"Stok hərəkəti qeydə alınarkən xəta: {stokNeticesi.Mesaj}");
