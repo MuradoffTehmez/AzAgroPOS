@@ -86,6 +86,9 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
             yeniForm.FormBorderStyle = FormBorderStyle.None;
             yeniForm.Dock = DockStyle.Fill;
 
+            // Initialize presenter for forms that need it
+            InitializeFormPresenter(yeniForm, scope.ServiceProvider);
+
             var yeniSehife = new TabPage(yeniForm.Text) { Tag = yeniForm };
             yeniSehife.Controls.Add(yeniForm);
             mdiTabControl.TabPages.Add(yeniSehife);
@@ -104,6 +107,29 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
             };
 
             yeniForm.Show();
+        }
+    }
+
+    private void InitializeFormPresenter(Form form, IServiceProvider serviceProvider)
+    {
+        // Initialize presenter for SatisFormu
+        if (form is SatisFormu satisFormu)
+        {
+            var satisManager = serviceProvider.GetRequiredService<SatisManager>();
+            var mehsulManager = serviceProvider.GetRequiredService<MehsulManager>();
+            var musteriManager = serviceProvider.GetRequiredService<MusteriManager>();
+            var satisPresenter = new Teqdimatcilar.SatisPresenter(satisFormu, satisManager, mehsulManager, musteriManager);
+            satisFormu.InitializePresenter(satisPresenter);
+        }
+        // Initialize presenter for TemirIdareetmeFormu
+        else if (form is TemirIdareetmeFormu temirFormu)
+        {
+            var temirManager = serviceProvider.GetRequiredService<TemirManager>();
+            var musteriManager = serviceProvider.GetRequiredService<MusteriManager>();
+            var istifadeciManager = serviceProvider.GetRequiredService<IstifadeciManager>();
+            var mehsulManager = serviceProvider.GetRequiredService<MehsulManager>();
+            var temirPresenter = new Teqdimatcilar.TemirPresenter(temirFormu, temirManager, musteriManager, istifadeciManager, mehsulManager);
+            temirFormu.InitializePresenter(temirPresenter);
         }
     }
 
