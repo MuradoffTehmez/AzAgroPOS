@@ -38,6 +38,7 @@ namespace AzAgroPOS.Teqdimat
             tsmiMehsulDetallar = new ToolStripMenuItem();
             tsmiMehsulRedakteEt = new ToolStripMenuItem();
             tsmiMehsulSil = new ToolStripMenuItem();
+            tsmiMehsulBarkodCapEt = new ToolStripMenuItem();
             txtAxtar = new MaterialSkin.Controls.MaterialTextBox2();
             materialTabControl1 = new MaterialSkin.Controls.MaterialTabControl();
             tabPage2 = new TabPage();

@@ -17,6 +17,7 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
 {
     private readonly IServiceProvider _serviceProvider;
     private readonly Dictionary<Type, MaterialButton> _formButtonMap;
+    private readonly Dictionary<TabPage, IServiceScope> _tabScopes = new Dictionary<TabPage, IServiceScope>();
 
     // IAnaMenuView interface implementasiyası
     public IServiceProvider ServiceProvider => _serviceProvider;
@@ -78,8 +79,9 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
         }
         else
         {
-            // Formanı 'new' ilə deyil, Service Provider ilə yaradırıq
-            var yeniForm = _serviceProvider.GetRequiredService<T>();
+            // Hər form üçün yeni scope yaradırıq
+            var scope = _serviceProvider.CreateScope();
+            var yeniForm = scope.ServiceProvider.GetRequiredService<T>();
             yeniForm.TopLevel = false;
             yeniForm.FormBorderStyle = FormBorderStyle.None;
             yeniForm.Dock = DockStyle.Fill;
@@ -88,6 +90,19 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
             yeniSehife.Controls.Add(yeniForm);
             mdiTabControl.TabPages.Add(yeniSehife);
             mdiTabControl.SelectedTab = yeniSehife;
+
+            // Scope-u saxlayırıq
+            _tabScopes[yeniSehife] = scope;
+
+            // Tab bağlananda scope-u dispose edirik
+            mdiTabControl.Deselecting += (s, e) =>
+            {
+                if (e.TabPage != null && _tabScopes.ContainsKey(e.TabPage) && e.Action == TabControlAction.Deselected)
+                {
+                    // Burada dispose etmirik, yalnız tab remove olunanda edəcəyik
+                }
+            };
+
             yeniForm.Show();
         }
     }
