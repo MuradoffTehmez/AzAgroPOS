@@ -30,5 +30,7 @@ public enum EmeliyyatNovu
     /// referans: Bu əməliyyat, müştərinin əvvəlki alışını qaytarması və borcun azalması ilə əlaqəlidir.
     /// rol: Bu əməliyyat, müştərinin əvvəlki alışını qaytarması və borcun azalması üçün istifadə olunur.
     /// </summary>
-    Qaytarma = 3 // Satış qaytarma (borcu azaldır)
+    Qaytarma = 3, // Satış qaytarma (borcu azaldır)
+    Xerc = 4,
+    Gelir = 5
 }

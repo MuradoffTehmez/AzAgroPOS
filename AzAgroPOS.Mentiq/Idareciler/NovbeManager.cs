@@ -4,6 +4,7 @@ namespace AzAgroPOS.Mentiq.Idareciler;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Uslublar;
+using AzAgroPOS.Mentiq.Yardimcilar;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using System;
@@ -19,7 +20,13 @@ using System.Threading.Tasks;
 public class NovbeManager
 {
     private readonly IUnitOfWork _unitOfWork;
-    public NovbeManager(IUnitOfWork unitOfWork) { _unitOfWork = unitOfWork; }
+    private readonly MaliyyeManager _maliyyeManager;
+
+    public NovbeManager(IUnitOfWork unitOfWork, MaliyyeManager maliyyeManager) 
+    { 
+        _unitOfWork = unitOfWork; 
+        _maliyyeManager = maliyyeManager;
+    }
 
     /// <summary>
     /// Növbəni ID-sinə görə gətirir.
@@ -85,6 +92,23 @@ public class NovbeManager
         var novbeSatislar = await _unitOfWork.Satislar.AxtarAsync(s => s.NovbeId == novbeId);
         decimal nagdSatislar = novbeSatislar.Where(s => s.OdenisMetodu == OdenisMetodu.Nağd).Sum(s => s.UmumiMebleg);
         decimal kartSatislar = novbeSatislar.Where(s => s.OdenisMetodu == OdenisMetodu.Kart).Sum(s => s.UmumiMebleg);
+
+        // Kassa hərəkətini qeydə al - növbə gəliri
+        if (nagdSatislar > 0)
+        {
+            var kassaGeliriNetice = await _maliyyeManager.KassaGeliriElaveEtAsync(
+                nagdSatislar, 
+                novbeId, 
+                $"Növbə #{novbeId} nağd satış gəliri", 
+                novbe.IsciId
+            );
+            
+            if (!kassaGeliriNetice.UgurluDur)
+            {
+                Logger.XəbərdarlıqYaz($"Kassa gəliri qeydə alınarkən xəta: {kassaGeliriNetice.Mesaj}");
+                // Xətaya baxmayaraq əməliyyatı davam etdiririk, çünki bu kritik deyil
+            }
+        }
 
         novbe.BaglanmaTarixi = DateTime.Now;
         novbe.FaktikiMebleg = faktikiMebleg;

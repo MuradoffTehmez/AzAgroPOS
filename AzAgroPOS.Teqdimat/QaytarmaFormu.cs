@@ -1,10 +1,12 @@
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Teqdimat.Interfeysler;
+using AzAgroPOS.Teqdimat.Teqdimatcilar;
 
 namespace AzAgroPOS.Teqdimat
 {
     public partial class QaytarmaFormu : BazaForm, IQaytarmaView
     {
+        private QaytarmaPresenter _presenter;
         public QaytarmaFormu()
         {
             InitializeComponent();
@@ -119,6 +121,11 @@ namespace AzAgroPOS.Teqdimat
         private void btnQaytar_Click(object sender, EventArgs e)
         {
             QaytarmaEmeliyyatiIstek?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void InitializePresenter(QaytarmaPresenter presenter)
+        {
+            _presenter = presenter;
         }
     }
 }
