@@ -71,35 +71,36 @@ namespace AzAgroPOS.Teqdimat
                 services.AddSingleton(configuration);
 
                 services.AddDbContext<AzAgroPOSDbContext>(options =>
-                    options.UseSqlServer(connectionString, sql => sql.EnableRetryOnFailure()), ServiceLifetime.Transient);
+                    options.UseSqlServer(connectionString, sql => sql.EnableRetryOnFailure()), ServiceLifetime.Scoped);
 
-                services.AddTransient<IUnitOfWork, UnitOfWork>();
+                services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-                // Menecerlər
-                services.AddTransient<TehlukesizlikManager>();
-                services.AddTransient<IstifadeciManager>();
-                services.AddTransient<MehsulManager>();
-                services.AddTransient<MehsulMeneceri>(); // Əlavə edildi
-                services.AddTransient<MusteriManager>();
-                services.AddTransient<SatisManager>();
-                services.AddTransient<NisyeManager>();
-                services.AddTransient<NovbeManager>();
-                services.AddTransient<HesabatManager>();
-                services.AddTransient<AnbarManager>();
-                services.AddTransient<BarkodCapiManager>();
-                services.AddTransient<TemirManager>();
-                services.AddTransient<IsciManager>();
-                services.AddTransient<AlisManager>();
-                services.AddTransient<KateqoriyaMeneceri>(); // Əlavə edildi
-                services.AddTransient<BrendMeneceri>(); // Əlavə edildi
-                services.AddTransient<TedarukcuMeneceri>(); // Əlavə edildi
-                services.AddTransient<KonfiqurasiyaManager>(); // Əlavə edildi
-                services.AddTransient<IcazeManager>(); // Əlavə edildi
+                // Menecerlər (Scoped çünki DbContext Scoped-dir)
+                services.AddScoped<TehlukesizlikManager>();
+                services.AddScoped<IstifadeciManager>();
+                services.AddScoped<MehsulManager>();
+                services.AddScoped<MehsulMeneceri>();
+                services.AddScoped<MusteriManager>();
+                services.AddScoped<SatisManager>();
+                services.AddScoped<NisyeManager>();
+                services.AddScoped<NovbeManager>();
+                services.AddScoped<HesabatManager>();
+                services.AddScoped<AnbarManager>();
+                services.AddScoped<BarkodCapiManager>();
+                services.AddScoped<TemirManager>();
+                services.AddScoped<IsciManager>();
+                services.AddScoped<AlisManager>();
+                services.AddScoped<KateqoriyaMeneceri>();
+                services.AddScoped<BrendMeneceri>();
+                services.AddScoped<TedarukcuMeneceri>();
+                services.AddScoped<KonfiqurasiyaManager>();
+                services.AddScoped<IcazeManager>();
 
                 // Presenterlər
                 services.AddTransient<MehsulPresenter>();
                 services.AddTransient<MusteriPresenter>();
                 services.AddTransient<SatisPresenter>();
+                services.AddTransient<ISatisPresenter, SatisPresenter>();
                 services.AddTransient<TemirPresenter>();
                 services.AddTransient<QaytarmaPresenter>();
                 services.AddTransient<AlisSenedPresenter>();
