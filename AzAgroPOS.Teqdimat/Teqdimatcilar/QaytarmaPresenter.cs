@@ -9,12 +9,14 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
     public class QaytarmaPresenter
     {
         private readonly IQaytarmaView _view;
+        private readonly QaytarmaManager _qaytarmaManager;
         private readonly SatisManager _satisManager;
         private readonly MehsulManager _mehsulManager;
 
-        public QaytarmaPresenter(IQaytarmaView view, SatisManager satisManager, MehsulManager mehsulManager)
+        public QaytarmaPresenter(IQaytarmaView view, QaytarmaManager qaytarmaManager, SatisManager satisManager, MehsulManager mehsulManager)
         {
             _view = view;
+            _qaytarmaManager = qaytarmaManager;
             _satisManager = satisManager;
             _mehsulManager = mehsulManager;
 
@@ -76,8 +78,11 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             int kassirId = Yardimcilar.AktivSessiya.AktivIstifadeci?.Id ?? 0;
             int? aktivNovbeId = Yardimcilar.AktivSessiya.AktivNovbeId;
 
+            // Qaytarma məhsullarını formatlayaq (SatisSebetiElementiDto-dan uyğun formata)
+            var qaytarilanMehsullar = secilmisMehsullar.Select(m => (m.MehsulId, (int)m.Miqdar, m.VahidinQiymeti)).ToList();
+
             // Seçilmiş məhsulları qaytarmaq
-            var netice = await _satisManager.QaytarmaEmeliyyatiAsync(secilmisMehsullar, satisId, sebeb, kassirId, aktivNovbeId);
+            var netice = await _qaytarmaManager.QaytarmaYaratAsync(satisId, qaytarilanMehsullar, sebeb, kassirId, aktivNovbeId);
 
             if (netice.UgurluDur)
             {

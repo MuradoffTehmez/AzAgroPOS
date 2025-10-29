@@ -4,6 +4,7 @@ namespace AzAgroPOS.Verilenler.Realizasialar;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using AzAgroPOS.Verilenler.Kontekst;
+using AzAgroPOS.Verilenler.Realisasialar;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -202,6 +203,20 @@ public class UnitOfWork : IUnitOfWork
     public IRolIcazesiRepozitori RolIcazeleri { get; private set; }
 
     /// <summary>
+    /// Xərc Repozitorisi - Xərc əməliyyatlarını idarə edir.
+    /// Diqqət: Bu repozitoriya şirkətin xərc qeydiyyatlarını saxlayır və idarə edir.
+    /// Qeyd: Xərc qeydiyyatlarının yaradılması, axtarışı, yenilənməsi və silinməsi əməliyyatlarını həyata keçirir.
+    /// </summary>
+    public IXercRepozitori Xercler { get; private set; }
+
+    /// <summary>
+    /// Kassa Hərəkəti Repozitorisi - Kassa hərəkətlərini idarə edir.
+    /// Diqqət: Bu repozitoriya kassadakı gəlir və xərc hərəkətlərini saxlayır və idarə edir.
+    /// Qeyd: Kassa hərəkətlərinin yaradılması, axtarışı, yenilənməsi və silinməsi əməliyyatlarını həyata keçirir.
+    /// </summary>
+    public IKassaHareketiRepozitori KassaHareketleri { get; private set; }
+
+    /// <summary>
     /// unitOfWork konstruktoru, verilənlər bazası kontekstini qəbul edir və repozitoriyaların instansiyalarını yaradır.
     /// Diqqət: Bu konstruktor, verilənlər bazası kontekstini bazaya ötürür.
     /// Qeyd: Bu konstruktor, konkret varlıq repozitoriyaları üçün istifadə olunur.
@@ -236,6 +251,8 @@ public class UnitOfWork : IUnitOfWork
         Konfiqurasiyalar = new KonfiqurasiyaRepozitori(_kontekst);
         Icazeler = new IcazeRepozitori(_kontekst);
         RolIcazeleri = new RolIcazesiRepozitori(_kontekst);
+        Xercler = new XercRepozitori(_kontekst);
+        KassaHareketleri = new KassaHareketiRepozitori(_kontekst);
     }
     /// <summary>
     /// EMELIYYATI TƏSDİQLƏ metod, edilmiş bütün dəyişiklikləri vahid bir tranzaksiya kimi verilənlər bazasına tətbiq edir.

@@ -1,4 +1,5 @@
 using AzAgroPOS.Mentiq.DTOs;
+using AzAgroPOS.Teqdimat.Teqdimatcilar;
 
 namespace AzAgroPOS.Teqdimat.Interfeysler
 {
@@ -13,5 +14,6 @@ namespace AzAgroPOS.Teqdimat.Interfeysler
 
         void SatisMehsullariniGoster(List<SatisSebetiElementiDto> mehsullar);
         DialogResult MesajGoster(string mesaj, string basliq, MessageBoxButtons buttons, MessageBoxIcon icon);
+        void InitializePresenter(QaytarmaPresenter presenter);
     }
 }

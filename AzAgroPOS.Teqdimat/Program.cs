@@ -4,6 +4,7 @@ using AzAgroPOS.Teqdimat.Konfiqurasiya;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using AzAgroPOS.Verilenler.Kontekst;
+using AzAgroPOS.Verilenler.Realisasialar;
 using AzAgroPOS.Verilenler.Realizasialar;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -78,6 +79,8 @@ namespace AzAgroPOS.Teqdimat
 
                 // Repozitorilər
                 services.AddScoped<IStokHareketiRepozitori, StokHareketiRepozitori>();
+                services.AddScoped<IXercRepozitori, XercRepozitori>();
+                services.AddScoped<IKassaHareketiRepozitori, KassaHareketiRepozitori>();
 
                 // Menecerlər (Scoped çünki DbContext Scoped-dir)
                 services.AddScoped<TehlukesizlikManager>();
@@ -101,6 +104,7 @@ namespace AzAgroPOS.Teqdimat
                 services.AddScoped<IcazeManager>();
                 services.AddScoped<StokHareketiManager>();
                 services.AddScoped<QaytarmaManager>();
+                services.AddScoped<MaliyyeManager>();
 
                 // Presenterlər
                 services.AddTransient<MehsulPresenter>();

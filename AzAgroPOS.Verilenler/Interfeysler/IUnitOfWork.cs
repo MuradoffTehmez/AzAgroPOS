@@ -182,6 +182,20 @@ public interface IUnitOfWork : IAsyncDisposable
     IRolIcazesiRepozitori RolIcazeleri { get; }
 
     /// <summary>
+    /// Xərc Repozitorisi - Xərc əməliyyatlarını idarə edir.
+    /// Diqqət: Bu repozitoriya şirkətin xərc qeydiyyatlarını saxlayır və idarə edir.
+    /// Qeyd: Xərc qeydiyyatlarının yaradılması, axtarışı, yenilənməsi və silinməsi əməliyyatlarını həyata keçirir.
+    /// </summary>
+    IXercRepozitori Xercler { get; }
+
+    /// <summary>
+    /// Kassa Hərəkəti Repozitorisi - Kassa hərəkətlərini idarə edir.
+    /// Diqqət: Bu repozitoriya kassadakı gəlir və xərc hərəkətlərini saxlayır və idarə edir.
+    /// Qeyd: Kassa hərəkətlərinin yaradılması, axtarışı, yenilənməsi və silinməsi əməliyyatlarını həyata keçirir.
+    /// </summary>
+    IKassaHareketiRepozitori KassaHareketleri { get; }
+
+    /// <summary>
     /// Edilmiş bütün dəyişiklikləri vahid bir tranzaksiya kimi verilənlər bazasına tətbiq edir.
     /// dəyişikliklər uğurla tətbiq olunarsa, təsdiqlənir; əks halda, ləğv edilir.
     /// Bu metod asinxron olaraq işləyir və təsirlənən sətirlərin sayını qaytarır.
