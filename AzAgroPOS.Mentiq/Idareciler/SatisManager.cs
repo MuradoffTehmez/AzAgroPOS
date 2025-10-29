@@ -18,11 +18,13 @@ public class SatisManager
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly NisyeManager _nisyeManager;
+    private readonly StokHareketiManager _stokHareketiManager;
 
-    public SatisManager(IUnitOfWork unitOfWork, NisyeManager nisyeManager)
+    public SatisManager(IUnitOfWork unitOfWork, NisyeManager nisyeManager, StokHareketiManager stokHareketiManager)
     {
         _unitOfWork = unitOfWork;
         _nisyeManager = nisyeManager;
+        _stokHareketiManager = stokHareketiManager;
     }
 
     /// <summary>

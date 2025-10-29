@@ -37,6 +37,7 @@ public class AzAgroPOSDbContext : DbContext
     public DbSet<Konfiqurasiya> Konfiqurasiyalar { get; set; } // Əlavə edildi
     public DbSet<Icaze> Icazeler { get; set; } // Əlavə edildi
     public DbSet<RolIcazesi> RolIcazeleri { get; set; } // Əlavə edildi
+    public DbSet<StokHareketi> StokHareketleri { get; set; } // Əlavə edildi - Anbar stok hərəkətləri
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -91,6 +92,7 @@ public class AzAgroPOSDbContext : DbContext
         modelBuilder.Entity<Konfiqurasiya>().Property(k => k.Silinib).HasDefaultValue(false);
         modelBuilder.Entity<Icaze>().Property(i => i.Silinib).HasDefaultValue(false);
         modelBuilder.Entity<RolIcazesi>().Property(ri => ri.Silinib).HasDefaultValue(false);
+        modelBuilder.Entity<StokHareketi>().Property(sh => sh.Silinib).HasDefaultValue(false);
 
         modelBuilder.Entity<RolIcazesi>()
             .HasOne(ri => ri.Rol)
@@ -279,6 +281,32 @@ public class AzAgroPOSDbContext : DbContext
             .WithMany(i => i.Rollar)
             .HasForeignKey(ri => ri.IcazeId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        // StokHareketi konfiqurasiyası
+        modelBuilder.Entity<StokHareketi>()
+            .HasOne(sh => sh.Mehsul)
+            .WithMany()
+            .HasForeignKey(sh => sh.MehsulId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<StokHareketi>()
+            .HasOne(sh => sh.Istifadeci)
+            .WithMany()
+            .HasForeignKey(sh => sh.IstifadeciId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        // StokHareketi üçün indexlər - performans üçün vacibdir
+        modelBuilder.Entity<StokHareketi>()
+            .HasIndex(sh => sh.MehsulId)
+            .HasDatabaseName("IX_StokHareketi_MehsulId");
+
+        modelBuilder.Entity<StokHareketi>()
+            .HasIndex(sh => sh.Tarix)
+            .HasDatabaseName("IX_StokHareketi_Tarix");
+
+        modelBuilder.Entity<StokHareketi>()
+            .HasIndex(sh => new { sh.SenedNovu, sh.SenedId })
+            .HasDatabaseName("IX_StokHareketi_Sened");
 
         SeedData(modelBuilder);
     }

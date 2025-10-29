@@ -221,8 +221,8 @@ public class StokHareketiManager
 
             if (ferq == 0)
             {
-                Logger.MelumatYaz("İnventarizasiya fərqi yoxdur");
-                return EmeliyyatNeticesi<int>.Ugurlu(0, "Fərq yoxdur, düzəliş tələb olunmur.");
+                Logger.MelumatYaz("İnventarizasiya fərqi yoxdur - düzəliş tələb olunmur");
+                return EmeliyyatNeticesi<int>.Ugurlu(0);
             }
 
             // Fərqə görə hərəkət tipi müəyyən et
@@ -246,7 +246,7 @@ public class StokHareketiManager
                 qeydMetni,
                 istifadeciId);
 
-            if (netice.Ugurlu)
+            if (netice.UgurluDur)
             {
                 Logger.MelumatYaz($"İnventarizasiya düzəlişi yaradıldı: Fərq={ferq}");
             }
