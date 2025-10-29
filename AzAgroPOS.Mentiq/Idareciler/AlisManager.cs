@@ -19,10 +19,12 @@ using System.Threading.Tasks;
 public class AlisManager
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly StokHareketiManager _stokHareketiManager;
 
-    public AlisManager(IUnitOfWork unitOfWork)
+    public AlisManager(IUnitOfWork unitOfWork, StokHareketiManager stokHareketiManager)
     {
         _unitOfWork = unitOfWork;
+        _stokHareketiManager = stokHareketiManager;
     }
 
     #region Tədarükçü Əməliyyatları
@@ -515,13 +517,29 @@ public class AlisManager
 
                 await _unitOfWork.AlisSenedSetirleri.ElaveEtAsync(setir);
 
-                // Məhsulun anbar miqdarını artırırıq
+                // Məhsulun alış qiymətini yeniləyirik
                 var mehsul = await _unitOfWork.Mehsullar.GetirAsync(setirDto.MehsulId);
                 if (mehsul != null)
                 {
-                    mehsul.MovcudSay += (int)setirDto.Miqdar;
                     mehsul.AlisQiymeti = setirDto.BirVahidQiymet;
                     _unitOfWork.Mehsullar.Yenile(mehsul);
+                }
+
+                // Stok hərəkətini qeydə alırıq (Daxilolma)
+                var stokNeticesi = await _stokHareketiManager.StokHareketiQeydeAlAsync(
+                    StokHareketTipi.Daxilolma,
+                    SenedNovu.Alis,
+                    yeniSened.Id,
+                    setirDto.MehsulId,
+                    (int)setirDto.Miqdar,
+                    $"Alış sənədi: {dto.SenedNomresi}",
+                    null // İstifadəçi ID-si
+                );
+
+                if (!stokNeticesi.Ugurlu)
+                {
+                    Logger.XəbərdarlıqYaz($"Stok hərəkəti qeydə alınarkən xəta: {stokNeticesi.Mesaj}");
+                    return EmeliyyatNeticesi<int>.Ugursuz($"Stok hərəkəti qeydə alınarkən xəta: {stokNeticesi.Mesaj}");
                 }
             }
 

@@ -1,0 +1,262 @@
+// Fayl: AzAgroPOS.Mentiq/Idareciler/StokHareketiManager.cs
+namespace AzAgroPOS.Mentiq.Idareciler;
+
+using AzAgroPOS.Mentiq.Uslublar;
+using AzAgroPOS.Mentiq.Yardimcilar;
+using AzAgroPOS.Varliglar;
+using AzAgroPOS.Verilenler.Interfeysler;
+
+/// <summary>
+/// Anbar stok hərəkətləri ilə bağlı biznes məntiqini idarə edir
+/// diqqət: Bu sinif, stok hərəkətlərinin qeydiyyatı və anbar qalıqlarının hesablanması üçün mərkəzi mənbədir.
+/// qeyd: Bütün alış, satış, qaytarma və inventarizasiya əməliyyatları bu Manager vasitəsilə qeydə alınır.
+/// rol: Anbar uçotunun dəqiqliyini təmin edir və stok tarixini izləyir.
+/// </summary>
+public class StokHareketiManager
+{
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IStokHareketiRepozitori _stokHareketiRepo;
+
+    public StokHareketiManager(IUnitOfWork unitOfWork, IStokHareketiRepozitori stokHareketiRepo)
+    {
+        _unitOfWork = unitOfWork;
+        _stokHareketiRepo = stokHareketiRepo;
+    }
+
+    /// <summary>
+    /// Yeni stok hərəkəti qeydə alır
+    /// diqqət: Bu metod, məhsulun anbara daxil olması və ya anbardançıxması hallarını qeydə alır.
+    /// qeyd: Hərəkət qeydə alındıqdan sonra avtomatik olaraq verilənlər bazasına yazılır (UnitOfWork.Save() çağırılmalıdır).
+    /// </summary>
+    /// <param name="hareketTipi">Hərəkət tipi (Daxilolma və ya Çıxış)</param>
+    /// <param name="senedNovu">Sənədin növü (Alış, Satış və s.)</param>
+    /// <param name="senedId">Sənədin ID-si (nullable)</param>
+    /// <param name="mehsulId">Məhsulun ID-si</param>
+    /// <param name="miqdar">Hərəkət edilən miqdar (həmişə müsbət)</param>
+    /// <param name="qeyd">Əlavə qeyd (nullable)</param>
+    /// <param name="istifadeciId">İstifadəçinin ID-si (nullable)</param>
+    /// <returns>Əməliyyat nəticəsi</returns>
+    public async Task<EmeliyyatNeticesi<int>> StokHareketiQeydeAlAsync(
+        StokHareketTipi hareketTipi,
+        SenedNovu senedNovu,
+        int? senedId,
+        int mehsulId,
+        int miqdar,
+        string? qeyd = null,
+        int? istifadeciId = null)
+    {
+        Logger.MelumatYaz($"Stok hərəkəti qeydə alınır: MəhsulId={mehsulId}, Tip={hareketTipi}, Miqdar={miqdar}");
+
+        try
+        {
+            // Validasiya
+            if (mehsulId <= 0)
+            {
+                Logger.XəbərdarlıqYaz("Mehsul ID düzgün deyil");
+                return EmeliyyatNeticesi<int>.Ugursuz("Məhsul ID-si düzgün deyil.");
+            }
+
+            if (miqdar <= 0)
+            {
+                Logger.XəbərdarlıqYaz("Miqdar müsbət olmalıdır");
+                return EmeliyyatNeticesi<int>.Ugursuz("Miqdar müsbət olmalıdır.");
+            }
+
+            // Məhsulun mövcudluğunu yoxla
+            var mehsul = await _unitOfWork.Mehsullar.GetirAsync(mehsulId);
+            if (mehsul == null)
+            {
+                Logger.XəbərdarlıqYaz($"Məhsul tapılmadı: ID={mehsulId}");
+                return EmeliyyatNeticesi<int>.Ugursuz("Məhsul tapılmadı.");
+            }
+
+            // Yeni stok hərəkəti yarat
+            var stokHareketi = new StokHareketi
+            {
+                HareketTipi = hareketTipi,
+                SenedNovu = senedNovu,
+                SenedId = senedId,
+                MehsulId = mehsulId,
+                Miqdar = miqdar,
+                Tarix = DateTime.Now,
+                Qeyd = qeyd,
+                IstifadeciId = istifadeciId
+            };
+
+            await _stokHareketiRepo.ElaveEtAsync(stokHareketi);
+            // QEYD: UnitOfWork.Save() çağıran tərəf tərəfindən həyata keçirilməlidir
+
+            Logger.MelumatYaz($"Stok hərəkəti uğurla qeydə alındı: ID={stokHareketi.Id}");
+            return EmeliyyatNeticesi<int>.Ugurlu(stokHareketi.Id);
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Stok hərəkəti qeydə alınarkən xəta baş verdi");
+            return EmeliyyatNeticesi<int>.Ugursuz($"Stok hərəkəti qeydə alınarkən xəta: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Məhsulun cari anbar qalığını hesablayır
+    /// diqqət: Bu metod, məhsulun bütün stok hərəkətlərini təhlil edərək qalığı hesablayır.
+    /// qeyd: Qalıq = Daxilolmalar - Çıxışlar
+    /// </summary>
+    public async Task<EmeliyyatNeticesi<int>> MehsulQaliginGetirAsync(int mehsulId)
+    {
+        Logger.MelumatYaz($"Məhsul qalığı hesablanır: MəhsulId={mehsulId}");
+
+        try
+        {
+            var qaliq = await _stokHareketiRepo.MehsulQaliginHesabla(mehsulId);
+
+            Logger.MelumatYaz($"Məhsul qalığı hesablandı: Qalıq={qaliq}");
+            return EmeliyyatNeticesi<int>.Ugurlu(qaliq);
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Məhsul qalığı hesablanarkən xəta baş verdi");
+            return EmeliyyatNeticesi<int>.Ugursuz($"Qalıq hesablanarkən xəta: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Məhsulun stok hərəkətləri tarixçəsini gətirir
+    /// diqqət: Tarix aralığı verilməzsə, bütün hərəkətlər qaytarılır.
+    /// qeyd: Hesabat və audit üçün istifadə olunur.
+    /// </summary>
+    public async Task<EmeliyyatNeticesi<IEnumerable<StokHareketi>>> MehsulHereketTarixcesiniGetirAsync(
+        int mehsulId,
+        DateTime? baslangicTarixi = null,
+        DateTime? bitisTarixi = null)
+    {
+        Logger.MelumatYaz($"Məhsul hərəkət tarixçəsi əldə edilir: MəhsulId={mehsulId}");
+
+        try
+        {
+            var hereketler = await _stokHareketiRepo.MehsulHereketleriniGetir(mehsulId, baslangicTarixi, bitisTarixi);
+
+            Logger.MelumatYaz($"Məhsul hərəkət tarixçəsi əldə edildi: Say={hereketler.Count()}");
+            return EmeliyyatNeticesi<IEnumerable<StokHareketi>>.Ugurlu(hereketler);
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Məhsul hərəkət tarixçəsi əldə edilərkən xəta baş verdi");
+            return EmeliyyatNeticesi<IEnumerable<StokHareketi>>.Ugursuz($"Hərəkət tarixçəsi əldə edilərkən xəta: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Sənədə aid stok hərəkətlərini gətirir
+    /// diqqət: Bu metod, müəyyən sənədin (alış, satış və s.) anbar təsirini izləyir.
+    /// qeyd: Sənədin geri qaytarılması və ya düzəlişi zamanı istifadə olunur.
+    /// </summary>
+    public async Task<EmeliyyatNeticesi<IEnumerable<StokHareketi>>> SenedHereketleriniGetirAsync(
+        SenedNovu senedNovu,
+        int senedId)
+    {
+        Logger.MelumatYaz($"Sənəd hərəkətləri əldə edilir: Növ={senedNovu}, ID={senedId}");
+
+        try
+        {
+            var hereketler = await _stokHareketiRepo.SenedHereketleriniGetir(senedNovu, senedId);
+
+            Logger.MelumatYaz($"Sənəd hərəkətləri əldə edildi: Say={hereketler.Count()}");
+            return EmeliyyatNeticesi<IEnumerable<StokHareketi>>.Ugurlu(hereketler);
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Sənəd hərəkətləri əldə edilərkən xəta baş verdi");
+            return EmeliyyatNeticesi<IEnumerable<StokHareketi>>.Ugursuz($"Sənəd hərəkətləri əldə edilərkən xəta: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Bütün məhsulların anbar qalıqlarını hesablayır
+    /// diqqət: Bu əməliyyat resource-intensive olduğundan ehtiyatla istifadə edilməlidir.
+    /// qeyd: Anbar qalıq hesabatı üçün istifadə olunur.
+    /// </summary>
+    public async Task<EmeliyyatNeticesi<Dictionary<int, int>>> ButunMehsulQaliqlariniGetirAsync()
+    {
+        Logger.MelumatYaz("Bütün məhsul qalıqları hesablanır");
+
+        try
+        {
+            var qaliqlar = await _stokHareketiRepo.ButunMehsulQaliqlariniHesabla();
+
+            Logger.MelumatYaz($"Bütün məhsul qalıqları hesablandı: Say={qaliqlar.Count}");
+            return EmeliyyatNeticesi<Dictionary<int, int>>.Ugurlu(qaliqlar);
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Bütün məhsul qalıqları hesablanarkən xəta baş verdi");
+            return EmeliyyatNeticesi<Dictionary<int, int>>.Ugursuz($"Qalıqlar hesablanarkən xəta: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// İnventarizasiya düzəlişi yaradır
+    /// diqqət: Fiziki sayım nəticəsində sistem stoku ilə real stok arasındakı fərqi düzəldir.
+    /// qeyd: Fərq müsbətdirsə Daxilolma, mənfidirsə Çıxış hərəkəti yaradılır.
+    /// </summary>
+    /// <param name="mehsulId">Məhsulun ID-si</param>
+    /// <param name="fizikiQaliq">Fiziki sayım nəticəsi</param>
+    /// <param name="qeyd">İzahat</param>
+    /// <param name="istifadeciId">İstifadəçinin ID-si</param>
+    /// <returns>Əməliyyat nəticəsi</returns>
+    public async Task<EmeliyyatNeticesi<int>> InventarizasiyaDuzelisinYaradAsync(
+        int mehsulId,
+        int fizikiQaliq,
+        string? qeyd,
+        int? istifadeciId)
+    {
+        Logger.MelumatYaz($"İnventarizasiya düzəlişi yaradılır: MəhsulId={mehsulId}, Fiziki={fizikiQaliq}");
+
+        try
+        {
+            // Sistem qalığını hesabla
+            var sistemQaliqi = await _stokHareketiRepo.MehsulQaliginHesabla(mehsulId);
+
+            // Fərqi hesabla
+            var ferq = fizikiQaliq - sistemQaliqi;
+
+            if (ferq == 0)
+            {
+                Logger.MelumatYaz("İnventarizasiya fərqi yoxdur");
+                return EmeliyyatNeticesi<int>.Ugurlu(0, "Fərq yoxdur, düzəliş tələb olunmur.");
+            }
+
+            // Fərqə görə hərəkət tipi müəyyən et
+            var hareketTipi = ferq > 0 ? StokHareketTipi.Daxilolma : StokHareketTipi.Cixis;
+            var miqdar = Math.Abs(ferq);
+            var senedNovu = ferq > 0 ? SenedNovu.DuzeltmeArtirim : SenedNovu.DuzeltmeAzalma;
+
+            var qeydMetni = $"İnventarizasiya düzəlişi. Sistem: {sistemQaliqi}, Fiziki: {fizikiQaliq}, Fərq: {ferq}";
+            if (!string.IsNullOrWhiteSpace(qeyd))
+            {
+                qeydMetni += $" - {qeyd}";
+            }
+
+            // Stok hərəkəti yarat
+            var netice = await StokHareketiQeydeAlAsync(
+                hareketTipi,
+                senedNovu,
+                null, // Sənəd ID-si yoxdur
+                mehsulId,
+                miqdar,
+                qeydMetni,
+                istifadeciId);
+
+            if (netice.Ugurlu)
+            {
+                Logger.MelumatYaz($"İnventarizasiya düzəlişi yaradıldı: Fərq={ferq}");
+            }
+
+            return netice;
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "İnventarizasiya düzəlişi yaradılarkən xəta baş verdi");
+            return EmeliyyatNeticesi<int>.Ugursuz($"İnventarizasiya düzəlişi xətası: {ex.Message}");
+        }
+    }
+}
