@@ -297,6 +297,34 @@ namespace AzAgroPOS.Teqdimat
             return AzAgroPOS.Mentiq.Yardimcilar.IcazeYoxlayici.Instance.KassirDirmi();
         }
 
+        /// <summary>
+        /// İcazələri formun elementlərinə tətbiq edən virtual metod.
+        /// diqqət: Bu metod hər formda override edilərək konkret icazə tələbləri konfiqurasiya edilir.
+        /// qeyd: Form_Load event-də avtomatik çağırılmalıdır.
+        /// nümunə: protected override void IcazeleriTetbiqEt()
+        /// {
+        ///     ButtonlariIcazeIleKonfiqureEt(new Dictionary&lt;Control, string&gt;
+        ///     {
+        ///         { btnSil, "Satis.Silme" },
+        ///         { btnEndirim, "Satis.Endirim" }
+        ///     }, gizlet: false);
+        /// }
+        /// </summary>
+        protected virtual void IcazeleriTetbiqEt()
+        {
+            // Miras alan formlarda override edilir
+        }
+
+        /// <summary>
+        /// Form yükləndikdə icazələri avtomatik tətbiq edir.
+        /// diqqət: Bu metod Form_Load event-də çağırılmalıdır.
+        /// qeyd: Bütün miras alan formlar bu metodu Load event-də çağırmalıdır.
+        /// </summary>
+        protected void FormYuklendiIcazeleriTetbiqEt()
+        {
+            IcazeleriTetbiqEt();
+        }
+
         #endregion
 
         #region Status Mesajı Metodları

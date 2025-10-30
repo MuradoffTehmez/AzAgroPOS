@@ -40,6 +40,7 @@ public class AzAgroPOSDbContext : DbContext
     public DbSet<StokHareketi> StokHareketleri { get; set; } // Əlavə edildi - Anbar stok hərəkətləri
     public DbSet<Xerc> Xercler { get; set; } // Əlavə edildi - Xərc qeydləri
     public DbSet<KassaHareketi> KassaHareketleri { get; set; } // Əlavə edildi - Kassa hərəkətləri
+    public DbSet<EmekHaqqi> EmekHaqqilari { get; set; } // Əlavə edildi - Əmək haqqı qeydləri
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -374,6 +375,44 @@ public class AzAgroPOSDbContext : DbContext
         modelBuilder.Entity<KassaHareketi>()
             .HasIndex(kh => new { kh.EmeliyyatNovu, kh.EmeliyyatId })
             .HasDatabaseName("IX_KassaHareketi_Emeliyyat");
+
+        // EmekHaqqi konfiqurasiyası
+        modelBuilder.Entity<EmekHaqqi>()
+            .Property(eh => eh.EsasMaas).HasColumnType("decimal(18, 2)");
+
+        modelBuilder.Entity<EmekHaqqi>()
+            .Property(eh => eh.Bonuslar).HasColumnType("decimal(18, 2)");
+
+        modelBuilder.Entity<EmekHaqqi>()
+            .Property(eh => eh.ElaveOdenisler).HasColumnType("decimal(18, 2)");
+
+        modelBuilder.Entity<EmekHaqqi>()
+            .Property(eh => eh.IcazeTutulmasi).HasColumnType("decimal(18, 2)");
+
+        modelBuilder.Entity<EmekHaqqi>()
+            .Property(eh => eh.DigerTutulmalar).HasColumnType("decimal(18, 2)");
+
+        modelBuilder.Entity<EmekHaqqi>()
+            .HasOne(eh => eh.Isci)
+            .WithMany(i => i.EmekHaqqiQeydleri)
+            .HasForeignKey(eh => eh.IsciId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<EmekHaqqi>()
+            .Property(eh => eh.Silinib).HasDefaultValue(false);
+
+        // EmekHaqqi üçün indexlər
+        modelBuilder.Entity<EmekHaqqi>()
+            .HasIndex(eh => eh.IsciId)
+            .HasDatabaseName("IX_EmekHaqqi_IsciId");
+
+        modelBuilder.Entity<EmekHaqqi>()
+            .HasIndex(eh => eh.Dovr)
+            .HasDatabaseName("IX_EmekHaqqi_Dovr");
+
+        modelBuilder.Entity<EmekHaqqi>()
+            .HasIndex(eh => eh.Status)
+            .HasDatabaseName("IX_EmekHaqqi_Status");
 
         SeedData(modelBuilder);
     }

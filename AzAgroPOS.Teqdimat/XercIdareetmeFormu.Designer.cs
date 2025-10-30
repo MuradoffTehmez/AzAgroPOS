@@ -148,7 +148,7 @@ namespace AzAgroPOS.Teqdimat
             // 
             // nudXercMeblegi
             // 
-            nudXercMeblegi.BackColor = Color.FromArgb(240, 244, 248);
+            nudXercMeblegi.BackColor = Color.FromArgb(242, 242, 242);
             nudXercMeblegi.DecimalPlaces = 2;
             nudXercMeblegi.Dock = DockStyle.Fill;
             nudXercMeblegi.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
@@ -178,7 +178,7 @@ namespace AzAgroPOS.Teqdimat
             // 
             // dtpXercTarixi
             // 
-            dtpXercTarixi.BackColor = Color.FromArgb(240, 244, 248);
+            dtpXercTarixi.BackColor = Color.FromArgb(242, 242, 242);
             dtpXercTarixi.Dock = DockStyle.Fill;
             dtpXercTarixi.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             dtpXercTarixi.ForeColor = Color.FromArgb(222, 0, 0, 0);
@@ -238,7 +238,7 @@ namespace AzAgroPOS.Teqdimat
             // 
             // txtQeyd
             // 
-            txtQeyd.BackColor = Color.FromArgb(240, 244, 248);
+            txtQeyd.BackColor = Color.FromArgb(242, 242, 242);
             tableLayoutPanel2.SetColumnSpan(txtQeyd, 3);
             txtQeyd.Dock = DockStyle.Fill;
             txtQeyd.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
@@ -412,7 +412,7 @@ namespace AzAgroPOS.Teqdimat
             // 
             // tableLayoutPanel1
             // 
-            tableLayoutPanel1.BackColor = Color.FromArgb(240, 244, 248);
+            tableLayoutPanel1.BackColor = Color.FromArgb(242, 242, 242);
             tableLayoutPanel1.ColumnCount = 1;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel1.Controls.Add(dgvXercler, 0, 2);
@@ -436,7 +436,7 @@ namespace AzAgroPOS.Teqdimat
             // 
             actionPanel.AutoSize = true;
             actionPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            actionPanel.BackColor = Color.FromArgb(240, 244, 248);
+            actionPanel.BackColor = Color.FromArgb(242, 242, 242);
             actionPanel.Controls.Add(btnYenidenYukle);
             actionPanel.Controls.Add(btnFormuSifirla);
             actionPanel.Dock = DockStyle.Fill;
@@ -452,7 +452,7 @@ namespace AzAgroPOS.Teqdimat
             // 
             // detailsPanel
             // 
-            detailsPanel.BackColor = Color.FromArgb(240, 244, 248);
+            detailsPanel.BackColor = Color.FromArgb(242, 242, 242);
             detailsPanel.Controls.Add(tableLayoutPanel2);
             detailsPanel.Dock = DockStyle.Fill;
             detailsPanel.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
@@ -466,7 +466,7 @@ namespace AzAgroPOS.Teqdimat
             // 
             // tableLayoutPanel2
             // 
-            tableLayoutPanel2.BackColor = Color.FromArgb(240, 244, 248);
+            tableLayoutPanel2.BackColor = Color.FromArgb(242, 242, 242);
             tableLayoutPanel2.ColumnCount = 8;
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 18F));
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 18F));
@@ -509,7 +509,7 @@ namespace AzAgroPOS.Teqdimat
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.FromArgb(240, 244, 248);
+            BackColor = Color.FromArgb(242, 242, 242);
             ClientSize = new Size(1090, 617);
             Controls.Add(tableLayoutPanel1);
             Name = "XercIdareetmeFormu";

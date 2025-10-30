@@ -3,6 +3,7 @@ namespace AzAgroPOS.Mentiq.Idareciler;
 // using-lər
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Uslublar;
+using AzAgroPOS.Mentiq.Yardimcilar;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using System;
@@ -19,9 +20,12 @@ using System.Threading.Tasks;
 public class TemirManager
 {
     private readonly IUnitOfWork _unitOfWork;
-    public TemirManager(IUnitOfWork unitOfWork)
+    private readonly StokHareketiManager _stokHareketiManager;
+
+    public TemirManager(IUnitOfWork unitOfWork, StokHareketiManager stokHareketiManager)
     {
         _unitOfWork = unitOfWork;
+        _stokHareketiManager = stokHareketiManager;
     }
     /// <summary>
     /// bütün təmir sifarişlərini gətirir və TemirDto formatına çevirir.
@@ -206,6 +210,134 @@ public class TemirManager
         catch (Exception ex)
         {
             return EmeliyyatNeticesi.Ugursuz($"Təmir sifarişi statusunu dəyişmək alınmadı: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Təmiri tamamlayır və istifadə olunan ehtiyat hissələrini stokdan çıxır.
+    /// diqqət: Bu metod təmir sifarişini "Hazırdır" statusuna keçirir və ehtiyat hissələrini stokdan avtomatik çıxır.
+    /// qeyd: Ehtiyat hissələri üçün StokHareketiManager istifadə edilir.
+    /// rol: Təmir tamamlandıqda anbar qalığı avtomatik yenilənir.
+    /// </summary>
+    /// <param name="temirId">Tamamlanacaq təmir sifarişinin ID-si</param>
+    /// <param name="ehtiyatHissəleri">İstifadə olunan ehtiyat hissələrinin siyahısı</param>
+    /// <param name="istifadeciId">Əməliyyatı icra edən istifadəçinin ID-si</param>
+    /// <returns>Əməliyyat nəticəsi</returns>
+    public async Task<EmeliyyatNeticesi> TemiriTamamlaVeStokCixisEtAsync(
+        int temirId,
+        List<EhtiyatHissəsiDto> ehtiyatHissəleri,
+        int? istifadeciId = null)
+    {
+        try
+        {
+            // Təmir sifarişini tap
+            var sifaris = await _unitOfWork.TemirSifarisleri.GetirAsync(temirId);
+            if (sifaris == null)
+                return EmeliyyatNeticesi.Ugursuz("Təmir sifarişi tapılmadı.");
+
+            // Təmiri tamamla
+            sifaris.Status = TemirStatusu.Hazırdır;
+            sifaris.TamamlanmaTarixi = DateTime.Now;
+
+            _unitOfWork.TemirSifarisleri.Yenile(sifaris);
+            await _unitOfWork.EmeliyyatiTesdiqleAsync(); // Təmir ID-ni təmin etmək üçün
+
+            // Ehtiyat hissələrini stokdan çıxar
+            if (ehtiyatHissəleri != null && ehtiyatHissəleri.Any())
+            {
+                foreach (var hisse in ehtiyatHissəleri)
+                {
+                    // Məhsulun mövcudluğunu yoxla
+                    var mehsul = await _unitOfWork.Mehsullar.GetirAsync(hisse.MehsulId);
+                    if (mehsul == null)
+                    {
+                        Logger.XəbərdarlıqYaz($"Ehtiyat hissəsi məhsulu tapılmadı: ID={hisse.MehsulId}");
+                        continue; // Bu hissəni atlayıb digərinə keç
+                    }
+
+                    // Stokda kifayət qədər məhsul olub-olmadığını yoxla
+                    var qaliqNetice = await _stokHareketiManager.MehsulQaliginGetirAsync(hisse.MehsulId);
+                    if (!qaliqNetice.UgurluDur || qaliqNetice.Data < (int)hisse.Miqdar)
+                    {
+                        return EmeliyyatNeticesi.Ugursuz(
+                            $"Stokda kifayət qədər '{hisse.MehsulAdi}' yoxdur. " +
+                            $"Tələb olunan: {hisse.Miqdar}, Mövcud: {(qaliqNetice.UgurluDur ? qaliqNetice.Data : 0)}");
+                    }
+
+                    // Stok çıxışı yarat
+                    var stokCixisNetice = await _stokHareketiManager.StokHareketiQeydeAlAsync(
+                        StokHareketTipi.Cixis,
+                        SenedNovu.Temir,
+                        temirId,
+                        hisse.MehsulId,
+                        (int)hisse.Miqdar,
+                        0, // alisQiymeti - təmir üçün 0
+                        hisse.Qiymet, // satisQiymeti - ehtiyat hissəsinin qiyməti
+                        $"Təmir #{temirId} - {sifaris.CihazAdi} - {sifaris.MusteriAdi}",
+                        istifadeciId);
+
+                    if (!stokCixisNetice.UgurluDur)
+                    {
+                        return EmeliyyatNeticesi.Ugursuz(
+                            $"Ehtiyat hissəsi '{hisse.MehsulAdi}' üçün stok çıxışı yaradılarkən xəta baş verdi: {stokCixisNetice.Mesaj}");
+                    }
+                }
+
+                await _unitOfWork.EmeliyyatiTesdiqleAsync();
+            }
+
+            Logger.MelumatYaz($"Təmir tamamlandı və ehtiyat hissələri stokdan çıxıldı: Təmir ID={temirId}");
+            return EmeliyyatNeticesi.Ugurlu();
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Təmir tamamlanarkən xəta baş verdi");
+            return EmeliyyatNeticesi.Ugursuz($"Təmir tamamlanarkən xəta baş verdi: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Təmirə aid istifadə olunan ehtiyat hissələrinin siyahısını gətirir.
+    /// diqqət: Təmir üçün istifadə olunan bütün ehtiyat hissələrini stok hərəkətləri əsasında tapır.
+    /// qeyd: Yalnız "Təmir" sənəd növü ilə qeydə alınmış stok çıxışlarını qaytarır.
+    /// </summary>
+    /// <param name="temirId">Təmir sifarişinin ID-si</param>
+    /// <returns>İstifadə olunan ehtiyat hissələrinin siyahısı</returns>
+    public async Task<EmeliyyatNeticesi<List<EhtiyatHissəsiDto>>> TemirEhtiyatHisseleriniGetirAsync(int temirId)
+    {
+        try
+        {
+            // Təmirə aid stok hərəkətlərini tap
+            var hereketlerNetice = await _stokHareketiManager.SenedHereketleriniGetirAsync(SenedNovu.Temir, temirId);
+            if (!hereketlerNetice.UgurluDur)
+                return EmeliyyatNeticesi<List<EhtiyatHissəsiDto>>.Ugursuz(hereketlerNetice.Mesaj);
+
+            var hereketler = hereketlerNetice.Data;
+            var ehtiyatHissəleri = new List<EhtiyatHissəsiDto>();
+
+            // Hər bir hərəkət üçün məhsul məlumatlarını əlavə et
+            foreach (var hereket in hereketler)
+            {
+                var mehsul = await _unitOfWork.Mehsullar.GetirAsync(hereket.MehsulId);
+                if (mehsul != null)
+                {
+                    ehtiyatHissəleri.Add(new EhtiyatHissəsiDto
+                    {
+                        MehsulId = hereket.MehsulId,
+                        MehsulAdi = mehsul.Ad,
+                        Miqdar = hereket.Miqdar,
+                        Qiymet = hereket.SatisQiymeti
+                    });
+                }
+            }
+
+            Logger.MelumatYaz($"Təmir ehtiyat hissələri tapıldı: Təmir ID={temirId}, Say={ehtiyatHissəleri.Count}");
+            return EmeliyyatNeticesi<List<EhtiyatHissəsiDto>>.Ugurlu(ehtiyatHissəleri);
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Təmir ehtiyat hissələri əldə edilərkən xəta baş verdi");
+            return EmeliyyatNeticesi<List<EhtiyatHissəsiDto>>.Ugursuz($"Təmir ehtiyat hissələri əldə edilərkən xəta: {ex.Message}");
         }
     }
 }

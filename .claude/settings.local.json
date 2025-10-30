@@ -1,14 +1,69 @@
 {
   "permissions": {
     "allow": [
+      // ============================
+      // 🧱 .NET ƏMRLƏRİ
+      // ============================
       "Bash(dotnet build:*)",
-      "Bash(Select-String -Pattern \"error|warning\")",
-      "Bash(Select-Object -First 30)",
-      "Bash(Select-String -Pattern \"error\")",
+      "Bash(dotnet run:*)",
       "Bash(dotnet clean:*)",
-      "Bash(dotnet list:*)",
-      "Bash(Select-String -Pattern \"EPPlus\")",
-      "Bash(dotnet ef migrations add:*)"
+      "Bash(dotnet publish:*)",
+      "Bash(dotnet restore:*)",
+      "Bash(dotnet test:*)",
+      "Bash(dotnet watch run:*)",
+      "Bash(dotnet ef migrations add:*)",
+      "Bash(dotnet ef migrations remove:*)",
+      "Bash(dotnet ef database update:*)",
+      "Bash(dotnet ef database drop:*)",
+      "Bash(dotnet list package:*)",
+      "Bash(dotnet new:*)",
+
+      // ============================
+      // ⚙️ FAYL ƏMƏLİYYATLARI
+      // ============================
+      "Bash(mkdir:*)",
+      "Bash(rmdir:*)",
+      "Bash(rm:*)",
+      "Bash(cp:*)",
+      "Bash(mv:*)",
+      "Bash(ls:*)",
+      "Bash(dir:*)",
+      "Bash(cat:*)",
+      "Bash(echo:*)",
+
+      // ============================
+      // 🧩 KOD ANALİZİ / AXTARIŞ
+      // ============================
+      "Bash(Select-String -Pattern \"error|warning\")",
+      "Bash(Select-Object -First 50)",
+      "Bash(Select-String -Pattern \"EPPlus|System.Data|SqlClient\")",
+      "Bash(FindStr:*)",
+
+      // ============================
+      // 🧰 ƏLAVƏ TEXNOLOGİYALAR
+      // ============================
+      "Bash(msbuild:*)",
+      "Bash(pip install:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run build:*)",
+      "Bash(choco install:*)",
+      "Bash(winget install:*)",
+
+      // ============================
+      // 🗄️ VERİLƏNLƏR BAZASI
+      // ============================
+      "Bash(sqlcmd:*)",
+      "Bash(psql:*)",
+      "Bash(mysql:*)",
+      "Bash(ping:*)",
+
+      // ============================
+      // 🔒 SİSTEM YOXLAMALARI
+      // ============================
+      "Bash(whoami:*)",
+      "Bash(timeout:*)",
+      "Bash(python:*)",
+      "Bash(python manage.py:*)"
     ],
     "deny": [],
     "ask": []

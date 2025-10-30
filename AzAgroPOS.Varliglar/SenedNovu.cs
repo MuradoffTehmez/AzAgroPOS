@@ -48,5 +48,12 @@ public enum SenedNovu
     /// diqqət: Bu sənəd növü, xüsusi hallarda stokun əl ilə azaldıldığını göstərir.
     /// qeyd: Məsələn, məhsul xarab olması, oğurluq, uçot xətası düzəlişi.
     /// </summary>
-    DuzeltmeAzalma = 6
+    DuzeltmeAzalma = 6,
+
+    /// <summary>
+    /// Təmir sənədi - Təmir üçün ehtiyat hissələrinin istifadəsi
+    /// diqqət: Bu sənəd növü, təmir zamanı istifadə olunan ehtiyat hissələrinin stokdan çıxdığını göstərir.
+    /// qeyd: Təmir sənədi, Temir cədvəlinə istinad edir.
+    /// </summary>
+    Temir = 7
 }
