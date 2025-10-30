@@ -2,54 +2,6 @@
 namespace AzAgroPOS.Varliglar;
 
 /// <summary>
-/// Xərc növü və ya kateqoriyasını təyin edir
-/// diqqət: Bu enum sistemə daxil olan bütün xərc növlərini təyin edir.
-/// qeyd: Xərc növü, maliyyə hesabatlarında analiz üçün vacibdir.
-/// </summary>
-public enum XercNovu
-{
-    /// <summary>
-    /// Əmək haqqı xərci
-    /// </summary>
-    EmekHaqqi = 1,
-    
-    /// <summary>
-    /// Kommunal xərclər
-    /// </summary>
-    Kommunal = 2,
-    
-    /// <summary>
-    /// Kirayə haqqı
-    /// </summary>
-    Kira = 3,
-    
-    /// <summary>
-    /// Marketinq və reklam xərcləri
-    /// </summary>
-    Marketinq = 4,
-    
-    /// <summary>
-    /// Təmir və saxlanma xərcləri
-    /// </summary>
-    TemirSaxlanma = 5,
-    
-    /// <summary>
-    /// Ofis avadanlıqları xərci
-    /// </summary>
-    OfisAvadanliqi = 6,
-    
-    /// <summary>
-    /// Nəqliyyat xərcləri
-    /// </summary>
-    Nenqliyyat = 7,
-    
-    /// <summary>
-    /// Digər xərclər
-    /// </summary>
-    Diger = 99
-}
-
-/// <summary>
 /// Xərc qeydlərini təmsil edən varlıq
 /// diqqət: Bu varlıq, şirkətin həyata keçirdiyi xərc qeydlərini saxlayır.
 /// qeyd: Bütün əsas və əlavə xərclər bu cədvəldə qeyd olunur.

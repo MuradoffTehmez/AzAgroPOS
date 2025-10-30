@@ -52,6 +52,20 @@ public class StokHareketi : BazaVarligi
     public int Miqdar { get; set; }
 
     /// <summary>
+    /// Məhsulun vahid alış qiyməti (daxilolma üçün)
+    /// diqqət: Bu sahə, məhsulun alış qiymətini saxlayır.
+    /// qeyd: Mənfəət hesablamaları üçün vacibdir. Daxilolma hərəkətlərində istifadə olunur.
+    /// </summary>
+    public decimal AlisQiymeti { get; set; }
+
+    /// <summary>
+    /// Məhsulun vahid satış qiyməti (çıxış üçün)
+    /// diqqət: Bu sahə, məhsulun satış qiymətini saxlayır.
+    /// qeyd: Mənfəət hesablamaları üçün vacibdir. Çıxış hərəkətlərində istifadə olunur.
+    /// </summary>
+    public decimal SatisQiymeti { get; set; }
+
+    /// <summary>
     /// Stok hərəkətinin baş verdiyi tarix və vaxt
     /// diqqət: Bu sahə, hərəkətin nə zaman baş verdiyini göstərir.
     /// qeyd: Tarix və vaxt məlumatı, anbar tarixini izləməyə kömək edir.
@@ -78,4 +92,11 @@ public class StokHareketi : BazaVarligi
     /// diqqət: Bu navigasiya xassəsi, istifadəçi məlumatlarına asanlıqla çatmağa imkan verir.
     /// </summary>
     public Istifadeci? Istifadeci { get; set; }
+
+    /// <summary>
+    /// Məhsulun cəmi dəyəri (Miqdar * qiymət)
+    /// diqqət: Bu sahə, hərəkətin cəmi dəyərini hesablayır.
+    /// qeyd: Mənfəət hesablamaları üçün istifadə olunur. Daxilolma üçün (Miqdar * AlisQiymeti), çıxış üçün (Miqdar * SatisQiymeti).
+    /// </summary>
+    public decimal UmumiDeyer => HareketTipi == StokHareketTipi.Daxilolma ? Miqdar * AlisQiymeti : Miqdar * SatisQiymeti;
 }
