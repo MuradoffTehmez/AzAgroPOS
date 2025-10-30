@@ -203,6 +203,20 @@ public interface IUnitOfWork : IAsyncDisposable
     IEmekHaqqiRepozitori EmekHaqqilari { get; }
 
     /// <summary>
+    /// Müştəri Bonus Repozitorisi - Müştəri bonus/loyallıq proqramını idarə edir.
+    /// Diqqət: Bu repozitoriya müştərilərin toplam, istifadə edilmiş və mövcud ballarını saxlayır.
+    /// Qeyd: Müştəri bonus qeydlərinin yaradılması, axtarışı, yenilənməsi və silinməsi əməliyyatlarını həyata keçirir.
+    /// </summary>
+    IMusteriBonusRepozitori MusteriBonuslari { get; }
+
+    /// <summary>
+    /// Bonus Qeydi Repozitorisi - Müştəri bonus tarixçəsini idarə edir.
+    /// Diqqət: Bu repozitoriya müştərilərin bal qazanma və istifadə tarixçəsini saxlayır.
+    /// Qeyd: Bonus qeydi əlavə etmə, axtarma və silmə əməliyyatlarını həyata keçirir.
+    /// </summary>
+    IBonusQeydiRepozitori BonusQeydleri { get; }
+
+    /// <summary>
     /// Edilmiş bütün dəyişiklikləri vahid bir tranzaksiya kimi verilənlər bazasına tətbiq edir.
     /// dəyişikliklər uğurla tətbiq olunarsa, təsdiqlənir; əks halda, ləğv edilir.
     /// Bu metod asinxron olaraq işləyir və təsirlənən sətirlərin sayını qaytarır.

@@ -77,5 +77,43 @@ namespace AzAgroPOS.Mentiq.Idareciler
             await _unitOfWork.EmeliyyatiTesdiqleAsync();
             return EmeliyyatNeticesi.Ugurlu();
         }
+
+        /// <summary>
+        /// Səhifələnmiş müştəri siyahısını əldə edir.
+        /// Diqqət: Bu metod böyük müştəri bazaları üçün əlverişlidir.
+        /// </summary>
+        /// <param name="parametrler">Səhifələmə parametrləri</param>
+        /// <returns>Səhifələnmiş müştəri məlumatları</returns>
+        public async Task<EmeliyyatNeticesi<SehifelenmisMelumat<MusteriDto>>> MusterileriSehifelenmisGetirAsync(SehifeParametrleri parametrler)
+        {
+            try
+            {
+                var (musteriler, umumiSay) = await _unitOfWork.Musteriler.SehifelenmisGetirAsync(
+                    parametrler.SehifeNomresi,
+                    parametrler.SehifeOlcusu);
+
+                var dtolar = musteriler.Select(m => new MusteriDto
+                {
+                    Id = m.Id,
+                    TamAd = m.TamAd,
+                    TelefonNomresi = m.TelefonNomresi,
+                    Unvan = m.Unvan,
+                    UmumiBorc = m.UmumiBorc,
+                    KreditLimiti = m.KreditLimiti
+                }).OrderBy(m => m.TamAd).ToList();
+
+                var sehifelenmis = new SehifelenmisMelumat<MusteriDto>(
+                    dtolar,
+                    umumiSay,
+                    parametrler.SehifeNomresi,
+                    parametrler.SehifeOlcusu);
+
+                return EmeliyyatNeticesi<SehifelenmisMelumat<MusteriDto>>.Ugurlu(sehifelenmis);
+            }
+            catch (Exception ex)
+            {
+                return EmeliyyatNeticesi<SehifelenmisMelumat<MusteriDto>>.Ugursuz($"Səhifələnmiş müştərilər əldə edilərkən xəta: {ex.Message}");
+            }
+        }
     }
 }

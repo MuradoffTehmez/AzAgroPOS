@@ -194,6 +194,50 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.ToTable("AlisSifarisSetirleri");
                 });
 
+            modelBuilder.Entity("AzAgroPOS.Varliglar.BonusQeydi", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Aciklama")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("BalMiqdari")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<int>("EmeliyyatNovu")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EmeliyyatTarixi")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("MusteriBonusId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SatisId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Silinib")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmeliyyatTarixi")
+                        .HasDatabaseName("IX_BonusQeydi_EmeliyyatTarixi");
+
+                    b.HasIndex("MusteriBonusId")
+                        .HasDatabaseName("IX_BonusQeydi_MusteriBonusId");
+
+                    b.HasIndex("SatisId");
+
+                    b.ToTable("BonusQeydleri");
+                });
+
             modelBuilder.Entity("AzAgroPOS.Varliglar.Brend", b =>
                 {
                     b.Property<int>("Id")
@@ -974,6 +1018,46 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.ToTable("Musteriler");
                 });
 
+            modelBuilder.Entity("AzAgroPOS.Varliglar.MusteriBonus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("IstifadeEdilmisBal")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<int>("MusteriId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Seviyye")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Silinib")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<DateTime?>("SonBalIstifadeTarixi")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("SonBalQazanmaTarixi")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("ToplamBal")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MusteriId")
+                        .IsUnique()
+                        .HasDatabaseName("IX_MusteriBonus_MusteriId");
+
+                    b.ToTable("MusteriBonuslari");
+                });
+
             modelBuilder.Entity("AzAgroPOS.Varliglar.NisyeHereketi", b =>
                 {
                     b.Property<int>("Id")
@@ -1661,6 +1745,24 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.Navigation("Mehsul");
                 });
 
+            modelBuilder.Entity("AzAgroPOS.Varliglar.BonusQeydi", b =>
+                {
+                    b.HasOne("AzAgroPOS.Varliglar.MusteriBonus", "MusteriBonus")
+                        .WithMany("BonusQeydleri")
+                        .HasForeignKey("MusteriBonusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AzAgroPOS.Varliglar.Satis", "Satis")
+                        .WithMany()
+                        .HasForeignKey("SatisId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("MusteriBonus");
+
+                    b.Navigation("Satis");
+                });
+
             modelBuilder.Entity("AzAgroPOS.Varliglar.EmekHaqqi", b =>
                 {
                     b.HasOne("AzAgroPOS.Varliglar.Isci", "Isci")
@@ -1759,6 +1861,17 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.Navigation("Kateqoriya");
 
                     b.Navigation("Tedarukcu");
+                });
+
+            modelBuilder.Entity("AzAgroPOS.Varliglar.MusteriBonus", b =>
+                {
+                    b.HasOne("AzAgroPOS.Varliglar.Musteri", "Musteri")
+                        .WithOne()
+                        .HasForeignKey("AzAgroPOS.Varliglar.MusteriBonus", "MusteriId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Musteri");
                 });
 
             modelBuilder.Entity("AzAgroPOS.Varliglar.NisyeHereketi", b =>
@@ -1979,6 +2092,11 @@ namespace AzAgroPOS.Verilenler.Migrations
             modelBuilder.Entity("AzAgroPOS.Varliglar.Kateqoriya", b =>
                 {
                     b.Navigation("Mehsullar");
+                });
+
+            modelBuilder.Entity("AzAgroPOS.Varliglar.MusteriBonus", b =>
+                {
+                    b.Navigation("BonusQeydleri");
                 });
 
             modelBuilder.Entity("AzAgroPOS.Varliglar.Novbe", b =>
