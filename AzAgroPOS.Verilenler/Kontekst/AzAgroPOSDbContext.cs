@@ -309,6 +309,15 @@ public class AzAgroPOSDbContext : DbContext
             .HasForeignKey(sh => sh.IstifadeciId)
             .OnDelete(DeleteBehavior.SetNull);
 
+        // Decimal precision konfiqurasiyası
+        modelBuilder.Entity<StokHareketi>()
+            .Property(sh => sh.AlisQiymeti)
+            .HasColumnType("decimal(18, 2)");
+
+        modelBuilder.Entity<StokHareketi>()
+            .Property(sh => sh.SatisQiymeti)
+            .HasColumnType("decimal(18, 2)");
+
         // StokHareketi üçün indexlər - performans üçün vacibdir
         modelBuilder.Entity<StokHareketi>()
             .HasIndex(sh => sh.MehsulId)
