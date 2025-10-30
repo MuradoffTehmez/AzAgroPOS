@@ -892,6 +892,7 @@ namespace AzAgroPOS.Teqdimat
         private MaterialSkin.Controls.MaterialButton btnQaytarma;
         private MaterialSkin.Controls.MaterialButton btnBarkodCapi;
         private MaterialSkin.Controls.MaterialButton btnZHesabatArxivi;
+        private MaterialSkin.Controls.MaterialButton btnXercIdareetme;
         private MaterialSkin.Controls.MaterialButton btnAnbarQaliqHesabati;
         private MaterialSkin.Controls.MaterialButton btnMehsulSatisHesabati;
         private MaterialSkin.Controls.MaterialButton btnHesabatlar;

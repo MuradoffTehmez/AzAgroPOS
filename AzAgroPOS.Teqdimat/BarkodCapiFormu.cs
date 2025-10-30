@@ -25,8 +25,6 @@ public partial class BarkodCapiFormu : BazaForm, IBarkodCapiView
     public string AxtarisMetni => txtAxtar.Text;
     public List<BarkodEtiketDto> CapSiyahisi => _capSiyahisiBindingList.ToList();
 
-    List<BarkodEtiketDto> IBarkodCapiView.CapSiyahisi => throw new NotImplementedException();
-
     public event EventHandler AxtarisIstek;
     public event EventHandler SiyahiniCapaGonderIstek;
 
@@ -149,13 +147,4 @@ public partial class BarkodCapiFormu : BazaForm, IBarkodCapiView
         SiyahiniCapaGonderIstek?.Invoke(this, EventArgs.Empty);
     }
 
-    public void AxtarisNeticeleriniGoster(List<MehsulDto> mehsullar)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void CapSiyahisiniYenile(List<BarkodEtiketDto> siyahı)
-    {
-        throw new NotImplementedException();
-    }
 }
