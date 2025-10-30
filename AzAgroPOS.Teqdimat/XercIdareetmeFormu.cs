@@ -19,7 +19,7 @@ public partial class XercIdareetmeFormu : BazaForm, IXercView
         InitializeComponent();
         StilVerDataGridView(dgvXercler);
         dgvXercler.DataSource = _xercBindingList;
-        ConfigureDataGridViewStyles();
+        dgvXercler.DataBindingComplete += (_, __) => ConfigureDataGridViewStyles();
     }
 
     public XercNovu SecilmisXercNovu => (XercNovu)(cmbXercNovu.SelectedItem ?? XercNovu.Diger);
@@ -49,6 +49,8 @@ public partial class XercIdareetmeFormu : BazaForm, IXercView
         {
             _xercBindingList.Add(xerc);
         }
+
+        ConfigureDataGridViewStyles();
 
         if (dgvXercler.Columns.Contains("Novu"))
             dgvXercler.Columns["Novu"].HeaderText = "Növ";
@@ -118,6 +120,9 @@ public partial class XercIdareetmeFormu : BazaForm, IXercView
 
     private void ConfigureDataGridViewStyles()
     {
+        if (dgvXercler.Columns.Count == 0)
+            return;
+
         if (dgvXercler.Columns.Contains("Novu"))
             dgvXercler.Columns["Novu"].Width = 120;
         if (dgvXercler.Columns.Contains("Ad"))
