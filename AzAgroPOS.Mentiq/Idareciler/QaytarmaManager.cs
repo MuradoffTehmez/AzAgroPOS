@@ -23,11 +23,13 @@ public class QaytarmaManager
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly StokHareketiManager _stokHareketiManager;
+    private readonly MaliyyeManager _maliyyeManager;
 
-    public QaytarmaManager(IUnitOfWork unitOfWork, StokHareketiManager stokHareketiManager)
+    public QaytarmaManager(IUnitOfWork unitOfWork, StokHareketiManager stokHareketiManager, MaliyyeManager maliyyeManager)
     {
         _unitOfWork = unitOfWork;
         _stokHareketiManager = stokHareketiManager;
+        _maliyyeManager = maliyyeManager;
     }
 
     /// <summary>
@@ -136,6 +138,8 @@ public class QaytarmaManager
                     qaytarma.Id,
                     mehsulId,
                     miqdar,
+                    vahidinQiymeti, // Alış qiyməti
+                    vahidinQiymeti, // Satış qiyməti
                     $"Qaytarma: ID={qaytarma.Id}, Səbəb: {sebeb}",
                     kassirId
                 );
@@ -184,13 +188,57 @@ public class QaytarmaManager
                     {
                         novbe.FaktikiMebleg -= umumiMebleg;
                         Logger.MelumatYaz($"Növbə nağd pulu azaldıldı: {umumiMebleg}");
+                        
+                        // Maliyyə jurnalına giriş qeydi əlavə et (nağd qaytarma)
+                        try
+                        {
+                            var kassaHareketiNetice = await _maliyyeManager.KassaHareketiElaveEtAsync(
+                                KassaHareketiNovu.Cixis,  // Pul geri qaytarılır, ona görə çıxış
+                                EmeliyyatNovu.Qaytarma,
+                                emeliyyatId: qaytarma.Id,
+                                mebleg: -umumiMebleg,  // Mənfi, çünki pulu geri qaytarırıq
+                                qeyd: $"Qaytarma ödənişinin geri qaytarılması (Nağd): {sebeb}, Satış ID={satisId}",
+                                istifadeciId: kassirId
+                            );
+                            
+                            if (!kassaHareketiNetice.UgurluDur)
+                            {
+                                Logger.XəbərdarlıqYaz($"Kassa hərəkəti qeydiyyatı zamanı xəta: {kassaHareketiNetice.Mesaj}");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.XetaYaz(ex, "Kassa hərəkəti qeydiyyatı zamanı istisna baş verdi");
+                        }
                     }
                     else if (satis.OdenisMetodu == OdenisMetodu.Kart)
                     {
-                        // Kart ödənişləri üçün ayrıca field olsa düzəliş edilməlidir
+                        // Kart ödənişləri üçün ayrı-ayrı field olsa düzəliş edilməlidir
                         // Hazırda fərz edirik ki, FaktikiMebleg həm nağd, həm də kart üçündür
                         novbe.FaktikiMebleg -= umumiMebleg;
                         Logger.MelumatYaz($"Növbə kart məbləği azaldıldı: {umumiMebleg}");
+                        
+                        // Maliyyə jurnalına giriş qeydi əlavə et (kart qaytarma)
+                        try
+                        {
+                            var kassaHareketiNetice = await _maliyyeManager.KassaHareketiElaveEtAsync(
+                                KassaHareketiNovu.Cixis,  // Pul geri qaytarılır, ona görə çıxış
+                                EmeliyyatNovu.Qaytarma,
+                                emeliyyatId: qaytarma.Id,
+                                mebleg: -umumiMebleg,  // Mənfi, çünki pulu geri qaytarırıq
+                                qeyd: $"Qaytarma ödənişinin geri qaytarılması (Kart): {sebeb}, Satış ID={satisId}",
+                                istifadeciId: kassirId
+                            );
+                            
+                            if (!kassaHareketiNetice.UgurluDur)
+                            {
+                                Logger.XəbərdarlıqYaz($"Kassa hərəkəti qeydiyyatı zamanı xəta: {kassaHareketiNetice.Mesaj}");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.XetaYaz(ex, "Kassa hərəkəti qeydiyyatı zamanı istisna baş verdi");
+                        }
                     }
                     // Nisyə ödənişləri növbəni təsir etmir
 
