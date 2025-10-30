@@ -224,6 +224,20 @@ public class UnitOfWork : IUnitOfWork
     public IEmekHaqqiRepozitori EmekHaqqilari { get; private set; }
 
     /// <summary>
+    /// Müştəri Bonus Repozitorisi - Müştəri bonus/loyallıq proqramını idarə edir.
+    /// Diqqət: Bu repozitoriya müştərilərin toplam, istifadə edilmiş və mövcud ballarını saxlayır.
+    /// Qeyd: Müştəri bonus qeydlərinin yaradılması, axtarışı, yenilənməsi və silinməsi əməliyyatlarını həyata keçirir.
+    /// </summary>
+    public IMusteriBonusRepozitori MusteriBonuslari { get; private set; }
+
+    /// <summary>
+    /// Bonus Qeydi Repozitorisi - Müştəri bonus tarixçəsini idarə edir.
+    /// Diqqət: Bu repozitoriya müştərilərin bal qazanma və istifadə tarixçəsini saxlayır.
+    /// Qeyd: Bonus qeydi əlavə etmə, axtarma və silmə əməliyyatlarını həyata keçirir.
+    /// </summary>
+    public IBonusQeydiRepozitori BonusQeydleri { get; private set; }
+
+    /// <summary>
     /// unitOfWork konstruktoru, verilənlər bazası kontekstini qəbul edir və repozitoriyaların instansiyalarını yaradır.
     /// Diqqət: Bu konstruktor, verilənlər bazası kontekstini bazaya ötürür.
     /// Qeyd: Bu konstruktor, konkret varlıq repozitoriyaları üçün istifadə olunur.
@@ -261,6 +275,8 @@ public class UnitOfWork : IUnitOfWork
         Xercler = new XercRepozitori(_kontekst);
         KassaHareketleri = new KassaHareketiRepozitori(_kontekst);
         EmekHaqqilari = new EmekHaqqiRepozitori(_kontekst);
+        MusteriBonuslari = new MusteriBonusRepozitori(_kontekst);
+        BonusQeydleri = new BonusQeydiRepozitori(_kontekst);
     }
     /// <summary>
     /// EMELIYYATI TƏSDİQLƏ metod, edilmiş bütün dəyişiklikləri vahid bir tranzaksiya kimi verilənlər bazasına tətbiq edir.

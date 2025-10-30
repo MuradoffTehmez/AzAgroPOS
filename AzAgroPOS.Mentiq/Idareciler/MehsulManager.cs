@@ -304,4 +304,50 @@ public class MehsulManager
             return EmeliyyatNeticesi<List<MehsulDto>>.Ugursuz("Məhsul axtarışı zamanı istisna baş verdi: " + ex.Message);
         }
     }
+
+    /// <summary>
+    /// Səhifələnmiş məhsul siyahısını əldə edir.
+    /// Diqqət: Bu metod böyük məlumat bazaları üçün əlverişlidir.
+    /// </summary>
+    /// <param name="parametrler">Səhifələmə parametrləri</param>
+    /// <returns>Səhifələnmiş məhsul məlumatları</returns>
+    public async Task<EmeliyyatNeticesi<SehifelenmisMelumat<MehsulDto>>> MehsullariSehifelenmisGetirAsync(SehifeParametrleri parametrler)
+    {
+        Logger.MelumatYaz($"Səhifələnmiş məhsullar əldə edilir - Səhifə: {parametrler.SehifeNomresi}, Ölçü: {parametrler.SehifeOlcusu}");
+        try
+        {
+            var (mehsullar, umumiSay) = await _unitOfWork.Mehsullar.SehifelenmisGetirAsync(
+                parametrler.SehifeNomresi,
+                parametrler.SehifeOlcusu,
+                m => m.Aktivdir);
+
+            var mehsulDtolar = mehsullar.Select(m => new MehsulDto
+            {
+                Id = m.Id,
+                Ad = m.Ad,
+                StokKodu = m.StokKodu,
+                Barkod = m.Barkod,
+                PerakendeSatisQiymeti = m.PerakendeSatisQiymeti,
+                TopdanSatisQiymeti = m.TopdanSatisQiymeti,
+                TekEdedSatisQiymeti = m.TekEdedSatisQiymeti,
+                AlisQiymeti = m.AlisQiymeti,
+                MovcudSay = m.MovcudSay,
+                OlcuVahidi = m.OlcuVahidi
+            }).ToList();
+
+            var sehifelenmis = new SehifelenmisMelumat<MehsulDto>(
+                mehsulDtolar,
+                umumiSay,
+                parametrler.SehifeNomresi,
+                parametrler.SehifeOlcusu);
+
+            Logger.MelumatYaz($"Səhifələnmiş məhsullar uğurla əldə edildi - {mehsulDtolar.Count}/{umumiSay}");
+            return EmeliyyatNeticesi<SehifelenmisMelumat<MehsulDto>>.Ugurlu(sehifelenmis);
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Səhifələnmiş məhsullar əldə edilərkən istisna baş verdi");
+            return EmeliyyatNeticesi<SehifelenmisMelumat<MehsulDto>>.Ugursuz($"Səhifələnmiş məhsullar əldə edilərkən xəta: {ex.Message}");
+        }
+    }
 }

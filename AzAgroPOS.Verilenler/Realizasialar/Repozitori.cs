@@ -133,5 +133,52 @@ namespace AzAgroPOS.Verilenler.Realizasialar
 
             return await query.ToListAsync();
         }
+
+        /// <summary>
+        /// Səhifələnmiş məlumat əldə edir
+        /// </summary>
+        /// <param name="sehifeNomresi">Səhifə nömrəsi (1-dən başlayır)</param>
+        /// <param name="sehifeOlcusu">Hər səhifədə göstəriləcək qeyd sayı</param>
+        /// <param name="filter">Filtr şərti</param>
+        /// <param name="includeProperties">Əlaqəli xüsusiyyətlər</param>
+        /// <returns>Səhifələnmiş məlumat və ümumi say</returns>
+        public async Task<(IEnumerable<T> Melumatlar, int UmumiSay)> SehifelenmisGetirAsync(
+            int sehifeNomresi,
+            int sehifeOlcusu,
+            Expression<Func<T, bool>>? filter = null,
+            string[]? includeProperties = null)
+        {
+            IQueryable<T> query = _dbSet;
+
+            // Silinmiş qeydləri filter et
+            query = query.Where(e => !e.Silinib);
+
+            // Əlavə filtr tətbiq et
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            // Ümumi say
+            var umumiSay = await query.CountAsync();
+
+            // Include properties
+            if (includeProperties != null)
+            {
+                foreach (var includeProperty in includeProperties)
+                {
+                    query = query.Include(includeProperty);
+                }
+            }
+
+            // Səhifələmə - SKIP və TAKE
+            var kec = (sehifeNomresi - 1) * sehifeOlcusu;
+            var melumatlar = await query
+                .Skip(kec)
+                .Take(sehifeOlcusu)
+                .ToListAsync();
+
+            return (melumatlar, umumiSay);
+        }
     }
 }

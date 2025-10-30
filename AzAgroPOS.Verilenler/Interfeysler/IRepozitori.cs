@@ -16,5 +16,19 @@ namespace AzAgroPOS.Verilenler.Interfeysler
         // Silinmiş varlıqları əldə etmək üçün metodlar
         Task<IEnumerable<T>> SilinmisleriGetirAsync(Expression<Func<T, bool>>? filter = null, string[]? includeProperties = null);
         Task<IEnumerable<T>> ButununuVeSilinmisleriGetirAsync(Expression<Func<T, bool>>? filter = null, string[]? includeProperties = null);
+
+        /// <summary>
+        /// Səhifələnmiş məlumat əldə edir
+        /// </summary>
+        /// <param name="sehifeNomresi">Səhifə nömrəsi (1-dən başlayır)</param>
+        /// <param name="sehifeOlcusu">Hər səhifədə göstəriləcək qeyd sayı</param>
+        /// <param name="filter">Filtr şərti</param>
+        /// <param name="includeProperties">Əlaqəli xüsusiyyətlər</param>
+        /// <returns>Səhifələnmiş məlumat və ümumi say</returns>
+        Task<(IEnumerable<T> Melumatlar, int UmumiSay)> SehifelenmisGetirAsync(
+            int sehifeNomresi,
+            int sehifeOlcusu,
+            Expression<Func<T, bool>>? filter = null,
+            string[]? includeProperties = null);
     }
 }

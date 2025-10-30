@@ -41,6 +41,8 @@ public class AzAgroPOSDbContext : DbContext
     public DbSet<Xerc> Xercler { get; set; } // Əlavə edildi - Xərc qeydləri
     public DbSet<KassaHareketi> KassaHareketleri { get; set; } // Əlavə edildi - Kassa hərəkətləri
     public DbSet<EmekHaqqi> EmekHaqqilari { get; set; } // Əlavə edildi - Əmək haqqı qeydləri
+    public DbSet<MusteriBonus> MusteriBonuslari { get; set; } // Əlavə edildi - Müştəri bonus/loyallıq proqramı
+    public DbSet<BonusQeydi> BonusQeydleri { get; set; } // Əlavə edildi - Bonus tarixçəsi
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -413,6 +415,54 @@ public class AzAgroPOSDbContext : DbContext
         modelBuilder.Entity<EmekHaqqi>()
             .HasIndex(eh => eh.Status)
             .HasDatabaseName("IX_EmekHaqqi_Status");
+
+        // MusteriBonus konfiqurasiyası
+        modelBuilder.Entity<MusteriBonus>()
+            .Property(mb => mb.ToplamBal).HasColumnType("decimal(18, 2)");
+
+        modelBuilder.Entity<MusteriBonus>()
+            .Property(mb => mb.IstifadeEdilmisBal).HasColumnType("decimal(18, 2)");
+
+        modelBuilder.Entity<MusteriBonus>()
+            .HasOne(mb => mb.Musteri)
+            .WithOne()
+            .HasForeignKey<MusteriBonus>(mb => mb.MusteriId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<MusteriBonus>()
+            .Property(mb => mb.Silinib).HasDefaultValue(false);
+
+        modelBuilder.Entity<MusteriBonus>()
+            .HasIndex(mb => mb.MusteriId)
+            .HasDatabaseName("IX_MusteriBonus_MusteriId")
+            .IsUnique();
+
+        // BonusQeydi konfiqurasiyası
+        modelBuilder.Entity<BonusQeydi>()
+            .Property(bq => bq.BalMiqdari).HasColumnType("decimal(18, 2)");
+
+        modelBuilder.Entity<BonusQeydi>()
+            .HasOne(bq => bq.MusteriBonus)
+            .WithMany(mb => mb.BonusQeydleri)
+            .HasForeignKey(bq => bq.MusteriBonusId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<BonusQeydi>()
+            .HasOne(bq => bq.Satis)
+            .WithMany()
+            .HasForeignKey(bq => bq.SatisId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        modelBuilder.Entity<BonusQeydi>()
+            .Property(bq => bq.Silinib).HasDefaultValue(false);
+
+        modelBuilder.Entity<BonusQeydi>()
+            .HasIndex(bq => bq.MusteriBonusId)
+            .HasDatabaseName("IX_BonusQeydi_MusteriBonusId");
+
+        modelBuilder.Entity<BonusQeydi>()
+            .HasIndex(bq => bq.EmeliyyatTarixi)
+            .HasDatabaseName("IX_BonusQeydi_EmeliyyatTarixi");
 
         SeedData(modelBuilder);
     }
