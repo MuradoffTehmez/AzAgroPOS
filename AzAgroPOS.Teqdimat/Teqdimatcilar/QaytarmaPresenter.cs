@@ -12,13 +12,15 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
         private readonly QaytarmaManager _qaytarmaManager;
         private readonly SatisManager _satisManager;
         private readonly MehsulManager _mehsulManager;
+        private readonly MaliyyeManager _maliyyeManager;
 
-        public QaytarmaPresenter(IQaytarmaView view, QaytarmaManager qaytarmaManager, SatisManager satisManager, MehsulManager mehsulManager)
+        public QaytarmaPresenter(IQaytarmaView view, QaytarmaManager qaytarmaManager, SatisManager satisManager, MehsulManager mehsulManager, MaliyyeManager maliyyeManager)
         {
             _view = view;
             _qaytarmaManager = qaytarmaManager;
             _satisManager = satisManager;
             _mehsulManager = mehsulManager;
+            _maliyyeManager = maliyyeManager;
 
             AbuneOl();
         }
