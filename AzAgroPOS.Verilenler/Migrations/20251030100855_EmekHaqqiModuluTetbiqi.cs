@@ -6,24 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AzAgroPOS.Verilenler.Migrations
 {
     /// <inheritdoc />
-    public partial class EmekHaqqiCedveliElave : Migration
+    public partial class EmekHaqqiModuluTetbiqi : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<int>(
-                name: "IsciId1",
-                table: "TemirSifarisleri",
-                type: "int",
-                nullable: true);
-
-            migrationBuilder.AddColumn<int>(
-                name: "IsciId1",
-                table: "Novbeler",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
-
             migrationBuilder.CreateTable(
                 name: "EmekHaqqilari",
                 columns: table => new
@@ -61,16 +48,6 @@ namespace AzAgroPOS.Verilenler.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_TemirSifarisleri_IsciId1",
-                table: "TemirSifarisleri",
-                column: "IsciId1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Novbeler_IsciId1",
-                table: "Novbeler",
-                column: "IsciId1");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_EmekHaqqi_Dovr",
                 table: "EmekHaqqilari",
                 column: "Dovr");
@@ -89,52 +66,13 @@ namespace AzAgroPOS.Verilenler.Migrations
                 name: "IX_EmekHaqqilari_IstifadeciId",
                 table: "EmekHaqqilari",
                 column: "IstifadeciId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Novbeler_Isciler_IsciId1",
-                table: "Novbeler",
-                column: "IsciId1",
-                principalTable: "Isciler",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_TemirSifarisleri_Isciler_IsciId1",
-                table: "TemirSifarisleri",
-                column: "IsciId1",
-                principalTable: "Isciler",
-                principalColumn: "Id");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Novbeler_Isciler_IsciId1",
-                table: "Novbeler");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_TemirSifarisleri_Isciler_IsciId1",
-                table: "TemirSifarisleri");
-
             migrationBuilder.DropTable(
                 name: "EmekHaqqilari");
-
-            migrationBuilder.DropIndex(
-                name: "IX_TemirSifarisleri_IsciId1",
-                table: "TemirSifarisleri");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Novbeler_IsciId1",
-                table: "Novbeler");
-
-            migrationBuilder.DropColumn(
-                name: "IsciId1",
-                table: "TemirSifarisleri");
-
-            migrationBuilder.DropColumn(
-                name: "IsciId1",
-                table: "Novbeler");
         }
     }
 }

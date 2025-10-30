@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AzAgroPOS.Verilenler.Migrations
 {
     [DbContext(typeof(AzAgroPOSDbContext))]
-    [Migration("20251030100703_EmekHaqqiCedveliElave")]
-    partial class EmekHaqqiCedveliElave
+    [Migration("20251030100855_EmekHaqqiModuluTetbiqi")]
+    partial class EmekHaqqiModuluTetbiqi
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1043,9 +1043,6 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.Property<int>("IsciId")
                         .HasColumnType("int");
 
-                    b.Property<int>("IsciId1")
-                        .HasColumnType("int");
-
                     b.Property<bool>("Silinib")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
@@ -1057,8 +1054,6 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("IsciId");
-
-                    b.HasIndex("IsciId1");
 
                     b.ToTable("Novbeler");
                 });
@@ -1506,9 +1501,6 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.Property<int?>("IsciId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("IsciId1")
-                        .HasColumnType("int");
-
                     b.Property<string>("MusteriAdi")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -1554,8 +1546,6 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("IsciId");
-
-                    b.HasIndex("IsciId1");
 
                     b.ToTable("TemirSifarisleri");
                 });
@@ -1799,12 +1789,6 @@ namespace AzAgroPOS.Verilenler.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("AzAgroPOS.Varliglar.Isci", null)
-                        .WithMany("Novbeler")
-                        .HasForeignKey("IsciId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Isci");
                 });
 
@@ -1944,10 +1928,6 @@ namespace AzAgroPOS.Verilenler.Migrations
                         .HasForeignKey("IsciId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("AzAgroPOS.Varliglar.Isci", null)
-                        .WithMany("TemirSifarisleri")
-                        .HasForeignKey("IsciId1");
-
                     b.Navigation("Isci");
                 });
 
@@ -1989,11 +1969,7 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.Navigation("IzinQeydleri");
 
-                    b.Navigation("Novbeler");
-
                     b.Navigation("PerformansQeydleri");
-
-                    b.Navigation("TemirSifarisleri");
                 });
 
             modelBuilder.Entity("AzAgroPOS.Varliglar.Istifadeci", b =>

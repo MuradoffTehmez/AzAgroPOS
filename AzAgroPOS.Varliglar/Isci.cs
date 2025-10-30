@@ -91,16 +91,6 @@ public class Isci : BazaVarligi
     public ICollection<EmekHaqqi> EmekHaqqiQeydleri { get; set; } = new List<EmekHaqqi>();
 
     /// <summary>
-    /// Bu işçiyə aid təmir sifarişləri.
-    /// </summary>
-    public ICollection<Temir> TemirSifarisleri { get; set; } = new List<Temir>();
-
-    /// <summary>
-    /// Bu işçiyə aid növbələr.
-    /// </summary>
-    public ICollection<Novbe> Novbeler { get; set; } = new List<Novbe>();
-
-    /// <summary>
     /// Bu işçiyə aid sistem giriş məlumatları (əgər varsa).
     /// </summary>
     public Istifadeci? SistemIstifadecisi { get; set; }
