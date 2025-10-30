@@ -6,6 +6,7 @@ using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
 using AzAgroPOS.Varliglar;
 using System.ComponentModel;
+using System.Drawing;
 using System.Windows.Forms;
 
 public partial class XercIdareetmeFormu : BazaForm, IXercView
@@ -78,7 +79,7 @@ public partial class XercIdareetmeFormu : BazaForm, IXercView
 
         cmbXercNovu.SelectedIndex = -1;
         txtXercAdi.Clear();
-        nudXercMeblegi.Value = 0;
+        nudXercMeblegi.Value = nudXercMeblegi.Minimum;
         dtpXercTarixi.Value = DateTime.Now;
         txtSenedNomresi.Clear();
         txtQeyd.Clear();
@@ -98,7 +99,8 @@ public partial class XercIdareetmeFormu : BazaForm, IXercView
 
         cmbXercNovu.SelectedItem = xerc.Novu;
         txtXercAdi.Text = xerc.Ad ?? string.Empty;
-        nudXercMeblegi.Value = xerc.Mebleg;
+        var mebleg = decimal.Clamp(xerc.Mebleg, nudXercMeblegi.Minimum, nudXercMeblegi.Maximum);
+        nudXercMeblegi.Value = mebleg;
         dtpXercTarixi.Value = xerc.Tarix;
         txtSenedNomresi.Text = xerc.SenedNomresi ?? string.Empty;
         txtQeyd.Text = xerc.Qeyd ?? string.Empty;
@@ -122,6 +124,16 @@ public partial class XercIdareetmeFormu : BazaForm, IXercView
     {
         if (dgvXercler.Columns.Count == 0)
             return;
+
+        dgvXercler.RowTemplate.Height = 38;
+        dgvXercler.DefaultCellStyle.Padding = new Padding(8, 4, 8, 4);
+        dgvXercler.DefaultCellStyle.SelectionBackColor = Color.FromArgb(224, 242, 254);
+        dgvXercler.DefaultCellStyle.SelectionForeColor = Color.FromArgb(34, 43, 53);
+        dgvXercler.BackgroundColor = Color.White;
+        dgvXercler.EnableHeadersVisualStyles = false;
+        dgvXercler.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(33, 150, 243);
+        dgvXercler.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+        dgvXercler.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
 
         if (dgvXercler.Columns.Contains("Novu"))
             dgvXercler.Columns["Novu"].Width = 120;
