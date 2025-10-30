@@ -9,13 +9,8 @@ using System;
 /// diqqət: Bu sinif xərc əməliyyatları üçün məlumat transferi üçündür.
 /// qeyd: UI və biznes məntiqi arasında məlumat ötürmək üçün istifadə olunur.
 /// </summary>
-public class XercDto
+public class XercDto : BazaDto
 {
-    /// <summary>
-    /// Xərcin ID-si (yeni yaradılan xərclər üçün 0 olur)
-    /// </summary>
-    public int Id { get; set; }
-
     /// <summary>
     /// Xərcin növü (kategoriya)
     /// </summary>
@@ -45,6 +40,11 @@ public class XercDto
     /// Xərcə aid qeyd
     /// </summary>
     public string? Qeyd { get; set; }
+
+    /// <summary>
+    /// Xərci qeydə alan istifadəçinin ID-si
+    /// </summary>
+    public int? IstifadeciId { get; set; }
 
     /// <summary>
     /// Xərci qeydə alan istifadəçinin adı
