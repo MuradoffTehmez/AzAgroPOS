@@ -39,13 +39,14 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
             { typeof(MehsulIdareetmeFormu), btnMehsulIdareetme },
             { typeof(SatisFormu), btnYeniSatis },
             { typeof(QaytarmaFormu), btnQaytarma },
+            { typeof(XercIdareetmeFormu), btnXercIdareetme },
             { typeof(NisyeIdareetmeFormu), btnNisyeIdareetme },
             { typeof(TemirIdareetmeFormu), btnTemirIdareetme },
             { typeof(IstifadeciIdareetmeFormu), btnIstifadeciIdareetme },
             { typeof(HesabatFormu), btnHesabatlar },
             { typeof(MehsulSatisHesabatFormu), btnMehsulSatisHesabati },
             { typeof(AnbarQaliqHesabatFormu), btnAnbarQaliqHesabati },
-            { typeof(ZHesabatArxivFormu), btnZHesabatArxivi },
+            { typeof(ZHesabatArxivFormu), btnZHesabatArxivivi },
             { typeof(BarkodCapiFormu), btnBarkodCapi },
             { typeof(IsciIdareetmeFormu), btnIsciIdareetme },
             { typeof(MinimumStokMehsullariFormu), btnMinimumStokMehsullari }, // Əlavə edildi
@@ -59,12 +60,89 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
 
     private void AnaMenuFormu_Load(object sender, EventArgs e)
     {
+        // Xərc idarəetmə düyməsini əlavə edin (proqramatik şəkildə)
+        AddXercIdareetmeButton();
+
         IcazeleriYoxla();
         mdiTabControl.TabPages.Clear();
         UpdateActiveButtonHighlight();
 
         // Dashboard məlumatlarını yükləyirik
         _ = UpdateDashboardData(); // Fire and forget
+    }
+
+    /// <summary>
+    /// Xərc idarəetmə düyməsini menyu panelinə proqramatik şəkildə əlavə edir
+    /// diqqət: Bu metod designer faylının təsiri olmadan düymə əlavə edir
+    /// qeyd: Düymə mövcud qaytarma düyməsindən sonra əlavə olunur
+    /// </summary>
+    private void AddXercIdareetmeButton()
+    {
+        // Yeni düymə yaradırıq
+        var xercButton = new MaterialSkin.Controls.MaterialButton
+        {
+            Name = "btnXercIdareetme",
+            Text = "Xərc İdarəetmə",
+            Dock = DockStyle.Top,
+            Depth = 0,
+            HighEmphasis = false,
+            Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text,
+            UseAccentColor = false,
+            AutoSize = false,
+            AutoSizeMode = AutoSizeMode.GrowAndShrink,
+            BackColor = Color.FromArgb(242, 242, 242),
+            ForeColor = Color.FromArgb(222, 0, 0, 0),
+            Margin = new Padding(4, 6, 4, 6),
+            MouseState = MaterialSkin.MouseState.HOVER,
+            NoAccentTextColor = Color.Empty,
+            Size = new Size(240, 45)
+        };
+
+        // Düyməyə şəkil əlavə etmək üçün imagelist-dən istifadə edə bilərik
+        if (sidebarImageList.Images.ContainsKey("expense.png"))
+        {
+            xercButton.ImageList = sidebarImageList;
+            xercButton.ImageKey = "expense.png";
+            xercButton.ImageAlign = ContentAlignment.MiddleLeft;
+        }
+
+        // Click hadisəsini qoşuruq
+        xercButton.Click += btnXercIdareetme_Click;
+
+        // Düyməni doğru yerdə yerləşdirmək üçün mövcud düymələrin yerlərini dəyişirik
+        // Əvvəlcə mövcud düymələrin yerlərini tapaq
+        var existingButtons = pnlMenu.Controls.OfType<MaterialSkin.Controls.MaterialButton>()
+            .Where(b => b.Name != "btnXercIdareetme") // Özümüzü istisna edirik
+            .OrderBy(b => b.Location.Y)
+            .ToList();
+
+        // Qaytarma düyməsini tapaq
+        var qaytarmaButton = existingButtons.FirstOrDefault(b => b.Name == "btnQaytarma");
+        if (qaytarmaButton != null)
+        {
+            // Qaytarma düyməsindən sonra yeni düymə əlavə edirik
+            var newY = qaytarmaButton.Location.Y + qaytarmaButton.Height;
+            
+            // Yeni düymənin yerini təyin edirik
+            xercButton.Location = new Point(qaytarmaButton.Location.X, newY);
+            
+            // Digər düymələri aşağı endiririk
+            foreach (var button in existingButtons.Where(b => b.Location.Y > newY))
+            {
+                button.Location = new Point(button.Location.X, button.Location.Y + xercButton.Height);
+            }
+        }
+        else
+        {
+            // Əgər qaytarma düyməsi tapılmazsa, default yerə əlavə edirik
+            xercButton.Location = new Point(0, 255); // Default yer
+        }
+
+        // Düyməni panelə əlavə edirik
+        pnlMenu.Controls.Add(xercButton);
+        
+        // Düyməni _formButtonMap-ə də əlavə edirik
+        _formButtonMap[typeof(XercIdareetmeFormu)] = xercButton;
     }
 
     #region Tab İdarəetməsi
@@ -137,7 +215,8 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
             var qaytarmaManager = serviceProvider.GetRequiredService<QaytarmaManager>();
             var satisManager = serviceProvider.GetRequiredService<SatisManager>();
             var mehsulManager = serviceProvider.GetRequiredService<MehsulManager>();
-            var qaytarmaPresenter = new Teqdimatcilar.QaytarmaPresenter(qaytarmaFormu, qaytarmaManager, satisManager, mehsulManager);
+            var maliyyeManager = serviceProvider.GetRequiredService<MaliyyeManager>();
+            var qaytarmaPresenter = new Teqdimatcilar.QaytarmaPresenter(qaytarmaFormu, qaytarmaManager, satisManager, mehsulManager, maliyyeManager);
             qaytarmaFormu.InitializePresenter(qaytarmaPresenter);
         }
     }
@@ -422,6 +501,7 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
         }
     }
     private void btnQaytarma_Click(object sender, EventArgs e) => UsaqFormuAc<QaytarmaFormu>();
+    private void btnXercIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<XercIdareetmeFormu>();
     private void btnNisyeIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<NisyeIdareetmeFormu>();
     private void btnTemirIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<TemirIdareetmeFormu>();
 

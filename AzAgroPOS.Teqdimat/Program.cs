@@ -111,6 +111,7 @@ namespace AzAgroPOS.Teqdimat
                 // MusteriPresenter is now manually created to avoid circular dependency
                 // SatisPresenter and TemirPresenter are now manually created in AnaMenuFormu to avoid circular dependency
                 services.AddTransient<QaytarmaPresenter>();
+                services.AddTransient<XercPresenter>();
                 services.AddTransient<AlisSenedPresenter>();
 
                 // Interface-lər və onların implementasiyaları
@@ -131,6 +132,7 @@ namespace AzAgroPOS.Teqdimat
                 services.AddTransient<ITedarukcuView, TedarukcuIdareetmeFormu>();
                 services.AddTransient<IIsciView, IsciIdareetmeFormu>();
                 services.AddTransient<IQaytarmaView, QaytarmaFormu>();
+                services.AddTransient<IXercView, XercIdareetmeFormu>();
                 services.AddTransient<IKonfiqurasiyaView, KonfiqurasiyaFormu>();
                 services.AddTransient<IAlisSenedView, AlisSenedFormu>();
                 services.AddTransient<IMinimumStokMehsullariView, MinimumStokMehsullariFormu>();
@@ -158,6 +160,7 @@ namespace AzAgroPOS.Teqdimat
                 services.AddTransient<TedarukcuIdareetmeFormu>();
                 services.AddTransient<IsciIdareetmeFormu>();
                 services.AddTransient<QaytarmaFormu>();
+                services.AddTransient<XercIdareetmeFormu>();
                 services.AddTransient<KonfiqurasiyaFormu>();
                 services.AddTransient<AlisSenedFormu>();
             }
