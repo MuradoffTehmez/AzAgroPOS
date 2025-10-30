@@ -135,4 +135,29 @@ public class YuklemeGostergeci
             Dayandir();
         }
     }
+
+    /// <summary>
+    /// Static helper metod - yükləmə göstəricisi ilə əməliyyat icra edir
+    /// </summary>
+    /// <param name="form">Ana form</param>
+    /// <param name="mesaj">Yükləmə mesajı</param>
+    /// <param name="emeliyyat">İcra ediləcək əməliyyat</param>
+    public static async System.Threading.Tasks.Task GosterVeIcraEtAsync(Form form, string mesaj, Func<System.Threading.Tasks.Task> emeliyyat)
+    {
+        var gosterici = new YuklemeGostergeci(form);
+        await gosterici.EmeliyyatIcraEtAsync(emeliyyat, mesaj);
+    }
+
+    /// <summary>
+    /// Static helper metod - yükləmə göstəricisi ilə əməliyyat icra edir (generic version)
+    /// </summary>
+    /// <typeparam name="T">Nəticə tipi</typeparam>
+    /// <param name="form">Ana form</param>
+    /// <param name="mesaj">Yükləmə mesajı</param>
+    /// <param name="emeliyyat">İcra ediləcək əməliyyat</param>
+    public static async System.Threading.Tasks.Task<T> GosterVeIcraEtAsync<T>(Form form, string mesaj, Func<System.Threading.Tasks.Task<T>> emeliyyat)
+    {
+        var gosterici = new YuklemeGostergeci(form);
+        return await gosterici.EmeliyyatIcraEtAsync(emeliyyat, mesaj);
+    }
 }
