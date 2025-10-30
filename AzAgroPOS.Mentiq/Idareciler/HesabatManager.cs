@@ -17,10 +17,14 @@ using System.Threading.Tasks;
 public class HesabatManager
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly StokHareketiManager _stokHareketiManager;
+    private readonly MaliyyeManager _maliyyeManager;
 
-    public HesabatManager(IUnitOfWork unitOfWork)
+    public HesabatManager(IUnitOfWork unitOfWork, StokHareketiManager stokHareketiManager, MaliyyeManager maliyyeManager)
     {
         _unitOfWork = unitOfWork;
+        _stokHareketiManager = stokHareketiManager;
+        _maliyyeManager = maliyyeManager;
     }
 
     /// <summary>
@@ -231,6 +235,77 @@ public class HesabatManager
         {
             Logger.XetaYaz(ex, "Z-Hesabat hazırlanarkən xəta baş verdi: "); // Xətanı qeyd etmək üçün
             return EmeliyyatNeticesi<ZHesabatDto>.Ugursuz($"Z-Hesabat hazırlanarkən xəta baş verdi: {ex.Message}+ {ex.StackTrace}");
+        }
+    }
+
+    /// <summary>
+    /// Mənfəət və Zərər (P&L - Profit & Loss) hesabatını hazırlayır.
+    /// diqqət: Bu hesabat satış gəlirlərini, COGS-u (Cost of Goods Sold), və ümumi xərcləri birləşdirir.
+    /// qeyd: Hesabat müəyyən tarix aralığı üçün hazırlanır.
+    /// rol: Maliyyə təhlili və qərar qəbuletmə üçün əsas göstəricidir.
+    /// </summary>
+    /// <param name="baslangic">Hesabatın başlanğıc tarixi</param>
+    /// <param name="bitis">Hesabatın bitmə tarixi</param>
+    /// <returns>P&L hesabat məlumatları</returns>
+    public async Task<EmeliyyatNeticesi<MenfeetZererHesabatDto>> MenfeetZererHesabatiGetirAsync(DateTime baslangic, DateTime bitis)
+    {
+        Logger.MelumatYaz($"Mənfəət və Zərər hesabatı hazırlanır: {baslangic.ToShortDateString()} - {bitis.ToShortDateString()}");
+        try
+        {
+            var baslangicTarixi = baslangic.Date;
+            var bitisTarixi = bitis.Date.AddDays(1).AddTicks(-1);
+
+            // 1. Ümumi Satış Gəlirini hesabla
+            var satislar = await _unitOfWork.Satislar.AxtarAsync(s => s.Tarix >= baslangicTarixi && s.Tarix <= bitisTarixi);
+            var umumiSatisGeliri = satislar.Sum(s => s.UmumiMebleg);
+
+            // 2. Satılan Malların Maya Dəyərini (COGS) hesabla
+            // COGS = Satılan məhsulların alış qiymətlərinin cəmi
+            decimal cogs = 0;
+            foreach (var satis in satislar)
+            {
+                // Satış detallarını əldə et
+                var satisDetallari = satis.SatisDetallari;
+                foreach (var detal in satisDetallari)
+                {
+                    // Məhsulun alış qiymətini tap
+                    var mehsul = await _unitOfWork.Mehsullar.GetirAsync(detal.MehsulId);
+                    if (mehsul != null && mehsul.AlisQiymeti > 0)
+                    {
+                        cogs += detal.Miqdar * mehsul.AlisQiymeti;
+                    }
+                }
+            }
+
+            // 3. Əməliyyat Xərclərini hesabla (Xərc cədvəlindən)
+            var xerclerNetice = await _maliyyeManager.ButunXercleriGetirAsync(baslangicTarixi, bitisTarixi);
+            var emeliyyatXercleri = xerclerNetice.UgurluDur
+                ? xerclerNetice.Data.Where(x => x.Novu != XercNovu.EmekHaqqi).Sum(x => x.Mebleg)
+                : 0;
+
+            // 4. Əmək Haqqı Xərclərini hesabla
+            var emekHaqqiXercleri = xerclerNetice.UgurluDur
+                ? xerclerNetice.Data.Where(x => x.Novu == XercNovu.EmekHaqqi).Sum(x => x.Mebleg)
+                : 0;
+
+            // 5. Hesabatı yarat
+            var hesabat = new MenfeetZererHesabatDto
+            {
+                BaslangicTarixi = baslangicTarixi,
+                BitisTarixi = bitisTarixi,
+                UmumiSatisGeliri = umumiSatisGeliri,
+                SatilanMallarinMayaDeyeri = cogs,
+                EmeliyyatXercleri = emeliyyatXercleri,
+                EmekHaqqiXercleri = emekHaqqiXercleri
+            };
+
+            Logger.MelumatYaz($"Mənfəət və Zərər hesabatı hazırlandı: Gəlir={umumiSatisGeliri}, COGS={cogs}, Xərclər={hesabat.UmumiXercler}, Nəticə={hesabat.YekunMenfeetZerer}");
+            return EmeliyyatNeticesi<MenfeetZererHesabatDto>.Ugurlu(hesabat);
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Mənfəət və Zərər hesabatı hazırlanarkən xəta baş verdi");
+            return EmeliyyatNeticesi<MenfeetZererHesabatDto>.Ugursuz($"Mənfəət və Zərər hesabatı hazırlanarkən xəta baş verdi: {ex.Message}");
         }
     }
 }

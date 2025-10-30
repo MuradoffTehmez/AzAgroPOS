@@ -217,6 +217,13 @@ public class UnitOfWork : IUnitOfWork
     public IKassaHareketiRepozitori KassaHareketleri { get; private set; }
 
     /// <summary>
+    /// Əmək Haqqı Repozitorisi - Əmək haqqı əməliyyatlarını idarə edir.
+    /// Diqqət: Bu repozitoriya işçilərin əmək haqqı qeydlərini saxlayır və idarə edir.
+    /// Qeyd: Əmək haqqı qeydlərinin yaradılması, axtarışı, yenilənməsi və silinməsi əməliyyatlarını həyata keçirir.
+    /// </summary>
+    public IEmekHaqqiRepozitori EmekHaqqilari { get; private set; }
+
+    /// <summary>
     /// unitOfWork konstruktoru, verilənlər bazası kontekstini qəbul edir və repozitoriyaların instansiyalarını yaradır.
     /// Diqqət: Bu konstruktor, verilənlər bazası kontekstini bazaya ötürür.
     /// Qeyd: Bu konstruktor, konkret varlıq repozitoriyaları üçün istifadə olunur.
@@ -253,6 +260,7 @@ public class UnitOfWork : IUnitOfWork
         RolIcazeleri = new RolIcazesiRepozitori(_kontekst);
         Xercler = new XercRepozitori(_kontekst);
         KassaHareketleri = new KassaHareketiRepozitori(_kontekst);
+        EmekHaqqilari = new EmekHaqqiRepozitori(_kontekst);
     }
     /// <summary>
     /// EMELIYYATI TƏSDİQLƏ metod, edilmiş bütün dəyişiklikləri vahid bir tranzaksiya kimi verilənlər bazasına tətbiq edir.

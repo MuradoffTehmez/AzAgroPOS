@@ -196,6 +196,13 @@ public interface IUnitOfWork : IAsyncDisposable
     IKassaHareketiRepozitori KassaHareketleri { get; }
 
     /// <summary>
+    /// Əmək Haqqı Repozitorisi - Əmək haqqı əməliyyatlarını idarə edir.
+    /// Diqqət: Bu repozitoriya işçilərin əmək haqqı qeydlərini saxlayır və idarə edir.
+    /// Qeyd: Əmək haqqı qeydlərinin yaradılması, axtarışı, yenilənməsi və silinməsi əməliyyatlarını həyata keçirir.
+    /// </summary>
+    IEmekHaqqiRepozitori EmekHaqqilari { get; }
+
+    /// <summary>
     /// Edilmiş bütün dəyişiklikləri vahid bir tranzaksiya kimi verilənlər bazasına tətbiq edir.
     /// dəyişikliklər uğurla tətbiq olunarsa, təsdiqlənir; əks halda, ləğv edilir.
     /// Bu metod asinxron olaraq işləyir və təsirlənən sətirlərin sayını qaytarır.

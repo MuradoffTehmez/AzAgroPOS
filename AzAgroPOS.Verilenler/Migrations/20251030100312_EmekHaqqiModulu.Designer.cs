@@ -4,6 +4,7 @@ using AzAgroPOS.Verilenler.Kontekst;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AzAgroPOS.Verilenler.Migrations
 {
     [DbContext(typeof(AzAgroPOSDbContext))]
-    partial class AzAgroPOSDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251030100312_EmekHaqqiModulu")]
+    partial class EmekHaqqiModulu
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -261,72 +264,6 @@ namespace AzAgroPOS.Verilenler.Migrations
                             Tesvir = "Təmizlik vasitələri",
                             Vebsayt = "www.cleanhome.de"
                         });
-                });
-
-            modelBuilder.Entity("AzAgroPOS.Varliglar.EmekHaqqi", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("Bonuslar")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.Property<decimal>("DigerTutulmalar")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.Property<string>("Dovr")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<decimal>("ElaveOdenisler")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.Property<decimal>("EsasMaas")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.Property<DateTime>("HesablanmaTarixi")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("IcazeTutulmasi")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.Property<int>("IsciId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("IstifadeciId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("OdenisTarixi")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Qeyd")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Silinib")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Dovr")
-                        .HasDatabaseName("IX_EmekHaqqi_Dovr");
-
-                    b.HasIndex("IsciId")
-                        .HasDatabaseName("IX_EmekHaqqi_IsciId");
-
-                    b.HasIndex("IstifadeciId");
-
-                    b.HasIndex("Status")
-                        .HasDatabaseName("IX_EmekHaqqi_Status");
-
-                    b.ToTable("EmekHaqqilari");
                 });
 
             modelBuilder.Entity("AzAgroPOS.Varliglar.EmeliyyatJurnali", b =>
@@ -1040,9 +977,6 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.Property<int>("IsciId")
                         .HasColumnType("int");
 
-                    b.Property<int>("IsciId1")
-                        .HasColumnType("int");
-
                     b.Property<bool>("Silinib")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
@@ -1054,8 +988,6 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("IsciId");
-
-                    b.HasIndex("IsciId1");
 
                     b.ToTable("Novbeler");
                 });
@@ -1503,9 +1435,6 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.Property<int?>("IsciId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("IsciId1")
-                        .HasColumnType("int");
-
                     b.Property<string>("MusteriAdi")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -1551,8 +1480,6 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("IsciId");
-
-                    b.HasIndex("IsciId1");
 
                     b.ToTable("TemirSifarisleri");
                 });
@@ -1671,23 +1598,6 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.Navigation("Mehsul");
                 });
 
-            modelBuilder.Entity("AzAgroPOS.Varliglar.EmekHaqqi", b =>
-                {
-                    b.HasOne("AzAgroPOS.Varliglar.Isci", "Isci")
-                        .WithMany("EmekHaqqiQeydleri")
-                        .HasForeignKey("IsciId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("AzAgroPOS.Varliglar.Istifadeci", "Istifadeci")
-                        .WithMany()
-                        .HasForeignKey("IstifadeciId");
-
-                    b.Navigation("Isci");
-
-                    b.Navigation("Istifadeci");
-                });
-
             modelBuilder.Entity("AzAgroPOS.Varliglar.Isci", b =>
                 {
                     b.HasOne("AzAgroPOS.Varliglar.Istifadeci", "SistemIstifadecisi")
@@ -1794,12 +1704,6 @@ namespace AzAgroPOS.Verilenler.Migrations
                         .WithMany("Novbeler")
                         .HasForeignKey("IsciId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("AzAgroPOS.Varliglar.Isci", null)
-                        .WithMany("Novbeler")
-                        .HasForeignKey("IsciId1")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Isci");
@@ -1941,10 +1845,6 @@ namespace AzAgroPOS.Verilenler.Migrations
                         .HasForeignKey("IsciId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("AzAgroPOS.Varliglar.Isci", null)
-                        .WithMany("TemirSifarisleri")
-                        .HasForeignKey("IsciId1");
-
                     b.Navigation("Isci");
                 });
 
@@ -1982,15 +1882,9 @@ namespace AzAgroPOS.Verilenler.Migrations
 
             modelBuilder.Entity("AzAgroPOS.Varliglar.Isci", b =>
                 {
-                    b.Navigation("EmekHaqqiQeydleri");
-
                     b.Navigation("IzinQeydleri");
 
-                    b.Navigation("Novbeler");
-
                     b.Navigation("PerformansQeydleri");
-
-                    b.Navigation("TemirSifarisleri");
                 });
 
             modelBuilder.Entity("AzAgroPOS.Varliglar.Istifadeci", b =>
