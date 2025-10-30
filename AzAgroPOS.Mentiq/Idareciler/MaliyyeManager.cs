@@ -442,6 +442,54 @@ public class MaliyyeManager
     }
 
     /// <summary>
+    /// Kassa hərəkəti qeydə alır (ümumi metod)
+    /// diqqət: Bu metod həm gəlir, həm də xərc kimi müxtəlif kassa hərəkətlərini qeydə alır.
+    /// qeyd: Qaytarma kimi xüsusi əməliyyatlar üçün istifadə olunur.
+    /// </summary>
+    public async Task<EmeliyyatNeticesi<int>> KassaHareketiElaveEtAsync(
+        KassaHareketiNovu hareketNovu,
+        EmeliyyatNovu emeliyyatNovu,
+        int? emeliyyatId,
+        decimal mebleg,
+        string? qeyd = null,
+        int? istifadeciId = null)
+    {
+        Logger.MelumatYaz($"Kassa hərəkəti əlavə olunur: Növ={hareketNovu}, Əməliyyat={emeliyyatNovu}, Məbləğ={mebleg}");
+
+        try
+        {
+            // Məbləğin müsbət olması vacib (növ və əməliyyat növünə görə istiqamət müəyyən olunur)
+            if (Math.Abs(mebleg) <= 0)
+            {
+                Logger.XəbərdarlıqYaz("Hərəkət məbləği sıfır ola bilməz");
+                return EmeliyyatNeticesi<int>.Ugursuz("Hərəkət məbləği sıfır ola bilməz.");
+            }
+
+            var kassaHareketi = new KassaHareketi
+            {
+                HareketNovu = hareketNovu,
+                EmeliyyatNovu = emeliyyatNovu,
+                EmeliyyatId = emeliyyatId,
+                Mebleg = Math.Abs(mebleg), // Həmişə müsbət saxlayırıq, istiqamət HareketNovu ilə müəyyən olunur
+                Tarix = DateTime.Now,
+                Qeyd = qeyd,
+                IstifadeciId = istifadeciId
+            };
+
+            await _unitOfWork.KassaHareketleri.ElaveEtAsync(kassaHareketi);
+            await _unitOfWork.EmeliyyatiTesdiqleAsync();
+
+            Logger.MelumatYaz($"Kassa hərəkəti uğurla əlavə olundu: ID={kassaHareketi.Id}");
+            return EmeliyyatNeticesi<int>.Ugurlu(kassaHareketi.Id);
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Kassa hərəkəti əlavə edilərkən xəta baş verdi");
+            return EmeliyyatNeticesi<int>.Ugursuz($"Kassa hərəkəti əlavə edilərkən xəta: {ex.Message}");
+        }
+    }
+
+    /// <summary>
     /// Mənfəət və ya zərər hesablayır
     /// diqqət: Bu metod müəyyən dövrdə əldə edilən gəliri və xərcləri müqayisə edir.
     /// qeyd: Mənfəət = Gəlir - Xərc

@@ -532,6 +532,8 @@ public class AlisManager
                     yeniSened.Id,
                     setirDto.MehsulId,
                     (int)setirDto.Miqdar,
+                    setirDto.BirVahidQiymet, // Alış qiyməti
+                    setirDto.BirVahidQiymet, // Satış qiyməti (alımda təyin olunmur, ona görə eyni qoyuruq)
                     $"Alış sənədi: {dto.SenedNomresi}",
                     null // İstifadəçi ID-si
                 );

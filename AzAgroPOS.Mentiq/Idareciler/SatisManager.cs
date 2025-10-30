@@ -88,6 +88,8 @@ public class SatisManager
                     satis.Id,
                     element.MehsulId,
                     (int)element.Miqdar,
+                    element.VahidinQiymeti, // Alış qiyməti (satışda bu satış qiymətidir, amma metod parametr olaraq istəyir)
+                    element.VahidinQiymeti, // Satış qiyməti
                     $"Satış: ID={satis.Id}",
                     null // İstifadəçi ID-si
                 );
@@ -228,6 +230,8 @@ public class SatisManager
                     qaytarma.Id,
                     element.MehsulId,
                     (int)element.Miqdar,
+                    element.VahidinQiymeti, // alisQiymeti
+                    element.VahidinQiymeti, // satisQiymeti
                     $"Qaytarma: ID={qaytarma.Id}, Səbəb: {sebeb}",
                     kassirId
                 );

@@ -33,6 +33,8 @@ public class StokHareketiManager
     /// <param name="senedId">Sənədin ID-si (nullable)</param>
     /// <param name="mehsulId">Məhsulun ID-si</param>
     /// <param name="miqdar">Hərəkət edilən miqdar (həmişə müsbət)</param>
+    /// <param name="alisQiymeti">Məhsulun vahid alış qiyməti (daxilolma üçün)</param>
+    /// <param name="satisQiymeti">Məhsulun vahid satış qiyməti (çıxış üçün)</param>
     /// <param name="qeyd">Əlavə qeyd (nullable)</param>
     /// <param name="istifadeciId">İstifadəçinin ID-si (nullable)</param>
     /// <returns>Əməliyyat nəticəsi</returns>
@@ -42,6 +44,8 @@ public class StokHareketiManager
         int? senedId,
         int mehsulId,
         int miqdar,
+        decimal alisQiymeti,
+        decimal satisQiymeti,
         string? qeyd = null,
         int? istifadeciId = null)
     {
@@ -78,6 +82,8 @@ public class StokHareketiManager
                 SenedId = senedId,
                 MehsulId = mehsulId,
                 Miqdar = miqdar,
+                AlisQiymeti = alisQiymeti,
+                SatisQiymeti = satisQiymeti,
                 Tarix = DateTime.Now,
                 Qeyd = qeyd,
                 IstifadeciId = istifadeciId
@@ -243,6 +249,8 @@ public class StokHareketiManager
                 null, // Sənəd ID-si yoxdur
                 mehsulId,
                 miqdar,
+                0, // alisQiymeti
+                0, // satisQiymeti
                 qeydMetni,
                 istifadeciId);
 
@@ -257,6 +265,120 @@ public class StokHareketiManager
         {
             Logger.XetaYaz(ex, "İnventarizasiya düzəlişi yaradılarkən xəta baş verdi");
             return EmeliyyatNeticesi<int>.Ugursuz($"İnventarizasiya düzəlişi xətası: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Məhsul üçün mənfəət hesablayır
+    /// diqqət: Bu metod, məhsulun alış qiyməti və satış qiyməti əsasında mənfəəti hesablayır.
+    /// qeyd: Mənfəət = Satış Qiyməti - Alış Qiyməti
+    /// </summary>
+    /// <param name="mehsulId">Məhsulun ID-si</param>
+    /// <param name="baslangicTarixi">Hesablama üçün başlanğıc tarixi (nullable)</param>
+    /// <param name="bitisTarixi">Hesablama üçün bitmə tarixi (nullable)</param>
+    /// <returns>Mənfəət nəticəsi</returns>
+    public async Task<EmeliyyatNeticesi<decimal>> MehsulMenfeetiHesablaAsync(
+        int mehsulId,
+        DateTime? baslangicTarixi = null,
+        DateTime? bitisTarixi = null)
+    {
+        Logger.MelumatYaz($"Məhsul mənfəəti hesablanır: MəhsulId={mehsulId}");
+
+        try
+        {
+            var filter = baslangicTarixi.HasValue && bitisTarixi.HasValue
+                ? (Func<StokHareketi, bool>)(sh => sh.MehsulId == mehsulId && 
+                                                sh.Tarix.Date >= baslangicTarixi.Value.Date && 
+                                                sh.Tarix.Date <= bitisTarixi.Value.Date)
+                : baslangicTarixi.HasValue
+                    ? (Func<StokHareketi, bool>)(sh => sh.MehsulId == mehsulId && 
+                                                    sh.Tarix.Date >= baslangicTarixi.Value.Date)
+                    : bitisTarixi.HasValue
+                        ? (Func<StokHareketi, bool>)(sh => sh.MehsulId == mehsulId && 
+                                                        sh.Tarix.Date <= bitisTarixi.Value.Date)
+                        : (Func<StokHareketi, bool>)(sh => sh.MehsulId == mehsulId);
+
+            var hereketler = (await _stokHareketiRepo.ButununuGetirAsync()).Where(filter).ToList();
+
+            decimal menfeetToplami = 0;
+
+            foreach (var hereket in hereketler)
+            {
+                // Mənfəət hərəkətə görə hesablanır
+                if (hereket.HareketTipi == StokHareketTipi.Cixis && 
+                   (hereket.SenedNovu == SenedNovu.Satis || hereket.SenedNovu == SenedNovu.Qaytarma))
+                {
+                    // Satış və ya qaytarma çıxışı - gəlir qazanılır
+                    menfeetToplami += hereket.UmumiDeyer; // Miqdar * SatisQiymeti
+                }
+                else if (hereket.HareketTipi == StokHareketTipi.Daxilolma && 
+                        (hereket.SenedNovu == SenedNovu.Alis || hereket.SenedNovu == SenedNovu.Qaytarma))
+                {
+                    // Alış və ya qaytarma daxilolması - xərc tutulur
+                    menfeetToplami -= hereket.UmumiDeyer; // Miqdar * AlisQiymeti
+                }
+            }
+
+            Logger.MelumatYaz($"Məhsul mənfəəti hesablandı: MəhsulId={mehsulId}, Mənfəət={menfeetToplami}");
+            return EmeliyyatNeticesi<decimal>.Ugurlu(menfeetToplami);
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Məhsul mənfəəti hesablanarkən xəta baş verdi");
+            return EmeliyyatNeticesi<decimal>.Ugursuz($"Mənfəət hesablanarkən xəta: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Ümumi mənfəəti hesablayır
+    /// diqqət: Bu metod, bütün məhsullar üçün ümumi mənfəəti hesablayır.
+    /// qeyd: Mənfəət = Satış Qiyməti - Alış Qiyməti
+    /// </summary>
+    public async Task<EmeliyyatNeticesi<decimal>> UmumiMenfeetiHesablaAsync(
+        DateTime? baslangicTarixi = null,
+        DateTime? bitisTarixi = null)
+    {
+        Logger.MelumatYaz("Ümumi mənfəət hesablanır");
+
+        try
+        {
+            var filter = baslangicTarixi.HasValue && bitisTarixi.HasValue
+                ? (Func<StokHareketi, bool>)(sh => sh.Tarix.Date >= baslangicTarixi.Value.Date && 
+                                                sh.Tarix.Date <= bitisTarixi.Value.Date)
+                : baslangicTarixi.HasValue
+                    ? (Func<StokHareketi, bool>)(sh => sh.Tarix.Date >= baslangicTarixi.Value.Date)
+                    : bitisTarixi.HasValue
+                        ? (Func<StokHareketi, bool>)(sh => sh.Tarix.Date <= bitisTarixi.Value.Date)
+                        : (Func<StokHareketi, bool>)(sh => true);
+
+            var hereketler = (await _stokHareketiRepo.ButununuGetirAsync()).Where(filter).ToList();
+
+            decimal menfeetToplami = 0;
+
+            foreach (var hereket in hereketler)
+            {
+                // Mənfəət hərəkətə görə hesablanır
+                if (hereket.HareketTipi == StokHareketTipi.Cixis && 
+                   (hereket.SenedNovu == SenedNovu.Satis || hereket.SenedNovu == SenedNovu.Qaytarma))
+                {
+                    // Satış və ya qaytarma çıxışı - gəlir qazanılır
+                    menfeetToplami += hereket.UmumiDeyer; // Miqdar * SatisQiymeti
+                }
+                else if (hereket.HareketTipi == StokHareketTipi.Daxilolma && 
+                        (hereket.SenedNovu == SenedNovu.Alis || hereket.SenedNovu == SenedNovu.Qaytarma))
+                {
+                    // Alış və ya qaytarma daxilolması - xərc tutulur
+                    menfeetToplami -= hereket.UmumiDeyer; // Miqdar * AlisQiymeti
+                }
+            }
+
+            Logger.MelumatYaz($"Ümumi mənfəət hesablandı: Mənfəət={menfeetToplami}");
+            return EmeliyyatNeticesi<decimal>.Ugurlu(menfeetToplami);
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Ümumi mənfəət hesablanarkən xəta baş verdi");
+            return EmeliyyatNeticesi<decimal>.Ugursuz($"Mənfəət hesablanarkən xəta: {ex.Message}");
         }
     }
 }
