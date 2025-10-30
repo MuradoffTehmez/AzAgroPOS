@@ -42,6 +42,7 @@ namespace AzAgroPOS.Teqdimat
             btnTemirIdareetme = new MaterialSkin.Controls.MaterialButton();
             btnNisyeIdareetme = new MaterialSkin.Controls.MaterialButton();
             btnQaytarma = new MaterialSkin.Controls.MaterialButton();
+            btnXercIdareetme = new MaterialSkin.Controls.MaterialButton();
             btnYeniSatis = new MaterialSkin.Controls.MaterialButton();
             btnMehsulIdareetme = new MaterialSkin.Controls.MaterialButton();
             btnNovbeIdareetme = new MaterialSkin.Controls.MaterialButton();
@@ -409,6 +410,32 @@ namespace AzAgroPOS.Teqdimat
             btnQaytarma.UseAccentColor = false;
             btnQaytarma.UseVisualStyleBackColor = false;
             btnQaytarma.Click += btnQaytarma_Click;
+            // 
+            // btnXercIdareetme
+            // 
+            btnXercIdareetme.AutoSize = false;
+            btnXercIdareetme.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnXercIdareetme.BackColor = Color.FromArgb(242, 242, 242);
+            btnXercIdareetme.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnXercIdareetme.Depth = 0;
+            btnXercIdareetme.Dock = DockStyle.Top;
+            btnXercIdareetme.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            btnXercIdareetme.HighEmphasis = false;
+            btnXercIdareetme.Icon = null;
+            btnXercIdareetme.ImageAlign = ContentAlignment.MiddleLeft;
+            btnXercIdareetme.ImageList = sidebarImageList;
+            btnXercIdareetme.Location = new Point(0, 255);
+            btnXercIdareetme.Margin = new Padding(4, 6, 4, 6);
+            btnXercIdareetme.MouseState = MaterialSkin.MouseState.HOVER;
+            btnXercIdareetme.Name = "btnXercIdareetme";
+            btnXercIdareetme.NoAccentTextColor = Color.Empty;
+            btnXercIdareetme.Size = new Size(240, 45);
+            btnXercIdareetme.TabIndex = 20;
+            btnXercIdareetme.Text = "Xərc İdarəetmə";
+            btnXercIdareetme.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
+            btnXercIdareetme.UseAccentColor = false;
+            btnXercIdareetme.UseVisualStyleBackColor = false;
+            btnXercIdareetme.Click += btnXercIdareetme_Click;
             // 
             // btnYeniSatis
             // 
