@@ -36,17 +36,17 @@ namespace AzAgroPOS.Teqdimat
             lblXercAdi = new MaterialSkin.Controls.MaterialLabel();
             txtXercAdi = new MaterialSkin.Controls.MaterialTextBox();
             lblXercMeblegi = new MaterialSkin.Controls.MaterialLabel();
-            nudXercMeblegi = new MaterialSkin.Controls.MaterialNumericUpDown();
+            nudXercMeblegi = new NumericUpDown();
             lblXercTarixi = new MaterialSkin.Controls.MaterialLabel();
-            dtpXercTarixi = new MaterialSkin.Controls.MaterialDateTimePicker();
+            dtpXercTarixi = new DateTimePicker();
             lblSenedNomresi = new MaterialSkin.Controls.MaterialLabel();
             txtSenedNomresi = new MaterialSkin.Controls.MaterialTextBox();
             lblQeyd = new MaterialSkin.Controls.MaterialLabel();
-            txtQeyd = new MaterialSkin.Controls.MaterialMultiLineTextBox();
+            txtQeyd = new TextBox();
             btnXercElaveEt = new MaterialSkin.Controls.MaterialButton();
             btnXercYenile = new MaterialSkin.Controls.MaterialButton();
             btnXercSil = new MaterialSkin.Controls.MaterialButton();
-            dgvXercler = new MaterialSkin.Controls.MaterialDataGridView();
+            dgvXercler = new DataGridView();
             btnYenidenYukle = new MaterialSkin.Controls.MaterialButton();
             btnFormuSifirla = new MaterialSkin.Controls.MaterialButton();
             tableLayoutPanel1 = new TableLayoutPanel();
@@ -141,7 +141,6 @@ namespace AzAgroPOS.Teqdimat
             nudXercMeblegi.Location = new Point(415, 22);
             nudXercMeblegi.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
             nudXercMeblegi.Minimum = new decimal(new int[] { 1, 0, 0, 131072 });
-            nudXercMeblegi.MouseState = MaterialSkin.MouseState.HOVER;
             nudXercMeblegi.Name = "nudXercMeblegi";
             nudXercMeblegi.Size = new Size(120, 23);
             nudXercMeblegi.TabIndex = 5;
@@ -164,7 +163,6 @@ namespace AzAgroPOS.Teqdimat
             dtpXercTarixi.Dock = DockStyle.Fill;
             dtpXercTarixi.Location = new Point(541, 22);
             dtpXercTarixi.MinimumSize = new Size(0, 29);
-            dtpXercTarixi.MouseState = MaterialSkin.MouseState.HOVER;
             dtpXercTarixi.Name = "dtpXercTarixi";
             dtpXercTarixi.Size = new Size(200, 29);
             dtpXercTarixi.TabIndex = 7;
@@ -213,29 +211,14 @@ namespace AzAgroPOS.Teqdimat
             // 
             // txtQeyd
             // 
-            txtQeyd.AnimateReadOnly = false;
-            txtQeyd.BackgroundImageLayout = ImageLayout.None;
-            txtQeyd.CharacterCasing = CharacterCasing.Normal;
-            txtQeyd.Cursor = Cursors.IBeam;
-            txtQeyd.Depth = 0;
             txtQeyd.Dock = DockStyle.Fill;
-            txtQeyd.HideSelection = true;
             txtQeyd.Location = new Point(209, 79);
             txtQeyd.MaxLength = 32767;
-            txtQeyd.MouseState = MaterialSkin.MouseState.HOVER;
+            txtQeyd.Multiline = true;
             txtQeyd.Name = "txtQeyd";
-            txtQeyd.PasswordChar = '\0';
-            txtQeyd.ReadOnly = false;
-            txtQeyd.ScrollBars = ScrollBars.None;
-            txtQeyd.SelectedText = "";
-            txtQeyd.SelectionLength = 0;
-            txtQeyd.SelectionStart = 0;
-            txtQeyd.ShortcutsEnabled = true;
+            txtQeyd.ScrollBars = ScrollBars.Vertical;
             txtQeyd.Size = new Size(326, 100);
             txtQeyd.TabIndex = 11;
-            txtQeyd.TabStop = false;
-            txtQeyd.TextAlign = HorizontalAlignment.Left;
-            txtQeyd.UseSystemPasswordChar = false;
             // 
             // btnXercElaveEt
             // 
@@ -330,13 +313,11 @@ namespace AzAgroPOS.Teqdimat
             dataGridViewCellStyle3.SelectionForeColor = SystemColors.ControlText;
             dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
             dgvXercler.DefaultCellStyle = dataGridViewCellStyle3;
-            dgvXercler.Depth = 0;
             dgvXercler.Dock = DockStyle.Fill;
             dgvXercler.EnableHeadersVisualStyles = false;
             dgvXercler.Font = new Font("Segoe UI", 11F);
             dgvXercler.GridColor = Color.FromArgb(238, 239, 249);
             dgvXercler.Location = new Point(3, 188);
-            dgvXercler.MouseState = MaterialSkin.MouseState.HOVER;
             dgvXercler.Name = "dgvXercler";
             dgvXercler.ReadOnly = true;
             dgvXercler.RowHeadersWidth = 51;
@@ -467,17 +448,17 @@ namespace AzAgroPOS.Teqdimat
         private MaterialSkin.Controls.MaterialLabel lblXercAdi;
         private MaterialSkin.Controls.MaterialTextBox txtXercAdi;
         private MaterialSkin.Controls.MaterialLabel lblXercMeblegi;
-        private MaterialSkin.Controls.MaterialNumericUpDown nudXercMeblegi;
+        private NumericUpDown nudXercMeblegi;
         private MaterialSkin.Controls.MaterialLabel lblXercTarixi;
-        private MaterialSkin.Controls.MaterialDateTimePicker dtpXercTarixi;
+        private DateTimePicker dtpXercTarixi;
         private MaterialSkin.Controls.MaterialLabel lblSenedNomresi;
         private MaterialSkin.Controls.MaterialTextBox txtSenedNomresi;
         private MaterialSkin.Controls.MaterialLabel lblQeyd;
-        private MaterialSkin.Controls.MaterialMultiLineTextBox txtQeyd;
+        private TextBox txtQeyd;
         private MaterialSkin.Controls.MaterialButton btnXercElaveEt;
         private MaterialSkin.Controls.MaterialButton btnXercYenile;
         private MaterialSkin.Controls.MaterialButton btnXercSil;
-        private MaterialSkin.Controls.MaterialDataGridView dgvXercler;
+        private DataGridView dgvXercler;
         private MaterialSkin.Controls.MaterialButton btnYenidenYukle;
         private MaterialSkin.Controls.MaterialButton btnFormuSifirla;
         private TableLayoutPanel tableLayoutPanel1;

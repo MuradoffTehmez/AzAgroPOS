@@ -1,16 +1,13 @@
 // Fayl: AzAgroPOS.Teqdimat/Teqdimatcilar/XercPresenter.cs
-namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Mentiq.Yardimcilar;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Yardimcilar;
-using AzAgroPOS.Varliglar;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using IcazeYoxlayici = AzAgroPOS.Mentiq.Yardimcilar.IcazeYoxlayici;
 
+namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 /// <summary>
 /// Xərc idarəetməsi üçün presenter
 /// diqqət: Bu sinif xərc əməliyyatlarını idarə edir.
@@ -21,25 +18,25 @@ public class XercPresenter
 {
     private readonly IXercView _view;
     private readonly MaliyyeManager _maliyyeManager;
-    private readonly IcazeYoxlayici _icaezeYoxlayici;
+    private readonly IcazeYoxlayici _icazeYoxlayici;
 
     public XercPresenter(IXercView view, MaliyyeManager maliyyeManager)
     {
         _view = view;
         _maliyyeManager = maliyyeManager;
-        _icaezeYoxlayici = IcazeYoxlayici.Instance;
+        _icazeYoxlayici = IcazeYoxlayici.Instance;
 
         AbuneOl();
     }
 
-        private void AbuneOl()
-        {
-            _view.FormYuklendiIstek += async (s, e) => await FormYuklendi();
-            _view.XercElaveEtIstek += async (s, e) => await XercElaveEt();
-            _view.XercYenileIstek += async (s, e) => await XercYenile();
-            _view.XercSilIstek += async (s, e) => await XercSil();
-            _view.XercAxtarIstek += async (s, e) => await XercleriAxtar();
-        }
+    private void AbuneOl()
+    {
+        _view.FormYuklendiIstek += async (s, e) => await FormYuklendi();
+        _view.XercElaveEtIstek += async (s, e) => await XercElaveEt();
+        _view.XercYenileIstek += async (s, e) => await XercYenile();
+        _view.XercSilIstek += async (s, e) => await XercSil();
+        _view.XercAxtarIstek += async (s, e) => await XercleriAxtar();
+    }
 
         private async Task FormYuklendi()
         {
@@ -86,7 +83,7 @@ public class XercPresenter
         private async Task XercElaveEt()
         {
             // İcazəni yoxlayın
-            if (!_icaezeYoxlayici.IcazeVarmi("CanManageExpenses"))
+            if (!_icazeYoxlayici.IcazeVarmi("CanManageExpenses"))
             {
                 _view.MesajGoster("Sizin xərc idarə etmək icazəniz yoxdur.", 
                     "İcazə Yoxdur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -144,7 +141,7 @@ public class XercPresenter
         private async Task XercYenile()
         {
             // İcazəni yoxlayın
-            if (!_icaezeYoxlayici.IcazeVarmi("CanManageExpenses"))
+            if (!_icazeYoxlayici.IcazeVarmi("CanManageExpenses"))
             {
                 _view.MesajGoster("Sizin xərc idarə etmək icazəniz yoxdur.", 
                     "İcazə Yoxdur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -211,7 +208,7 @@ public class XercPresenter
         private async Task XercSil()
         {
             // İcazəni yoxlayın
-            if (!_icaezeYoxlayici.IcazeVarmi("CanManageExpenses"))
+            if (!_icazeYoxlayici.IcazeVarmi("CanManageExpenses"))
             {
                 _view.MesajGoster("Sizin xərc silmək icazəniz yoxdur.", 
                     "İcazə Yoxdur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -259,4 +256,3 @@ public class XercPresenter
             }
         }
     }
-}

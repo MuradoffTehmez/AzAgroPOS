@@ -46,7 +46,7 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
             { typeof(HesabatFormu), btnHesabatlar },
             { typeof(MehsulSatisHesabatFormu), btnMehsulSatisHesabati },
             { typeof(AnbarQaliqHesabatFormu), btnAnbarQaliqHesabati },
-            { typeof(ZHesabatArxivFormu), btnZHesabatArxivivi },
+            { typeof(ZHesabatArxivFormu), btnZHesabatArxivi },
             { typeof(BarkodCapiFormu), btnBarkodCapi },
             { typeof(IsciIdareetmeFormu), btnIsciIdareetme },
             { typeof(MinimumStokMehsullariFormu), btnMinimumStokMehsullari }, // Əlavə edildi
