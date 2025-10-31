@@ -325,6 +325,7 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "İstifadəçi İdarəetməsi";
             Load += IstifadeciIdareetmeFormu_Load;
+            Controls.SetChildIndex(splitContainer1, 0);
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
@@ -334,6 +335,7 @@
             materialCard1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)errorProvider1).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion

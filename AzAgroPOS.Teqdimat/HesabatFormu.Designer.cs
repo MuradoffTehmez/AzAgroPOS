@@ -308,6 +308,10 @@ namespace AzAgroPOS.Teqdimat
             Name = "HesabatFormu";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Günlük Satış Hesabatı";
+            Controls.SetChildIndex(dtpTarix, 0);
+            Controls.SetChildIndex(btnGoster, 0);
+            Controls.SetChildIndex(pnlNetice, 0);
+            Controls.SetChildIndex(lblMesaj, 0);
             pnlNetice.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvSatislar).EndInit();
             materialCard1.ResumeLayout(false);
