@@ -545,4 +545,80 @@ public class MaliyyeManager
             return EmeliyyatNeticesi<decimal>.Ugursuz($"Mənfəət/zərər hesablanarkən xəta: {ex.Message}");
         }
     }
+
+    /// <summary>
+    /// Səhifələnmiş xərc siyahısını əldə edir.
+    /// Diqqət: Bu metod böyük məlumat bazaları üçün əlverişlidir.
+    /// </summary>
+    /// <param name="parametrler">Səhifələmə parametrləri</param>
+    /// <returns>Səhifələnmiş xərc məlumatları</returns>
+    public async Task<EmeliyyatNeticesi<SehifelenmisMelumat<XercDto>>> XercleriSehifelenmisGetirAsync(SehifeParametrleri parametrler)
+    {
+        Logger.MelumatYaz($"Səhifələnmiş xərclər əldə edilir - Səhifə: {parametrler.SehifeNomresi}, Ölçü: {parametrler.SehifeOlcusu}");
+        try
+        {
+            var (xercler, umumiSay) = await _unitOfWork.Xercler.SehifelenmisGetirAsync(
+                parametrler.SehifeNomresi,
+                parametrler.SehifeOlcusu,
+                x => !x.Silinib);
+
+            var dtolar = xercler.Select(x => new XercDto
+            {
+                Id = x.Id,
+                Novu = x.Novu,
+                Ad = x.Ad,
+                Mebleg = x.Mebleg,
+                Tarix = x.Tarix,
+                SenedNomresi = x.SenedNomresi,
+                Qeyd = x.Qeyd,
+                IstifadeciAdi = x.Istifadeci?.TamAd
+            }).ToList();
+
+            var sehifelenmis = new SehifelenmisMelumat<XercDto>(
+                dtolar,
+                umumiSay,
+                parametrler.SehifeNomresi,
+                parametrler.SehifeOlcusu);
+
+            Logger.MelumatYaz($"Səhifələnmiş xərclər uğurla əldə edildi - {dtolar.Count}/{umumiSay}");
+            return EmeliyyatNeticesi<SehifelenmisMelumat<XercDto>>.Ugurlu(sehifelenmis);
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Səhifələnmiş xərclər əldə edilərkən istisna baş verdi");
+            return EmeliyyatNeticesi<SehifelenmisMelumat<XercDto>>.Ugursuz($"Səhifələnmiş xərclər əldə edilərkən xəta: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Səhifələnmiş kassa hərəkəti siyahısını əldə edir.
+    /// Diqqət: Bu metod böyük məlumat bazaları üçün əlverişlidir.
+    /// </summary>
+    /// <param name="parametrler">Səhifələmə parametrləri</param>
+    /// <returns>Səhifələnmiş kassa hərəkəti məlumatları</returns>
+    public async Task<EmeliyyatNeticesi<SehifelenmisMelumat<KassaHareketi>>> KassaHareketleriniSehifelenmisGetirAsync(SehifeParametrleri parametrler)
+    {
+        Logger.MelumatYaz($"Səhifələnmiş kassa hərəkətləri əldə edilir - Səhifə: {parametrler.SehifeNomresi}, Ölçü: {parametrler.SehifeOlcusu}");
+        try
+        {
+            var (hareketler, umumiSay) = await _unitOfWork.KassaHareketleri.SehifelenmisGetirAsync(
+                parametrler.SehifeNomresi,
+                parametrler.SehifeOlcusu,
+                k => !k.Silinib);
+
+            var sehifelenmis = new SehifelenmisMelumat<KassaHareketi>(
+                hareketler.ToList(),
+                umumiSay,
+                parametrler.SehifeNomresi,
+                parametrler.SehifeOlcusu);
+
+            Logger.MelumatYaz($"Səhifələnmiş kassa hərəkətləri uğurla əldə edildi - {hareketler.Count()}/{umumiSay}");
+            return EmeliyyatNeticesi<SehifelenmisMelumat<KassaHareketi>>.Ugurlu(sehifelenmis);
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Səhifələnmiş kassa hərəkətləri əldə edilərkən istisna baş verdi");
+            return EmeliyyatNeticesi<SehifelenmisMelumat<KassaHareketi>>.Ugursuz($"Səhifələnmiş kassa hərəkətləri əldə edilərkən xəta: {ex.Message}");
+        }
+    }
 }

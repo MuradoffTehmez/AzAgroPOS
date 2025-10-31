@@ -226,4 +226,43 @@ public class IstifadeciManager
             return EmeliyyatNeticesi<List<IstifadeciDto>>.Ugursuz($"Texnikləri gətirmək alınmadı: {ex.Message} + {ex.StackTrace}");
         }
     }
+
+    /// <summary>
+    /// Səhifələnmiş istifadəçi siyahısını əldə edir.
+    /// Diqqət: Bu metod böyük məlumat bazaları üçün əlverişlidir.
+    /// </summary>
+    /// <param name="parametrler">Səhifələmə parametrləri</param>
+    /// <returns>Səhifələnmiş istifadəçi məlumatları</returns>
+    public async Task<EmeliyyatNeticesi<SehifelenmisMelumat<IstifadeciDto>>> IstifadecileriSehifelenmisGetirAsync(SehifeParametrleri parametrler)
+    {
+        Logger.MelumatYaz($"Səhifələnmiş istifadəçilər əldə edilir - Səhifə: {parametrler.SehifeNomresi}, Ölçü: {parametrler.SehifeOlcusu}");
+        try
+        {
+            var (istifadeciler, umumiSay) = await _unitOfWork.Istifadeciler.SehifelenmisGetirAsync(
+                parametrler.SehifeNomresi,
+                parametrler.SehifeOlcusu,
+                i => true);
+
+            var rollar = await _unitOfWork.Rollar.ButununuGetirAsync();
+
+            var dtolar = istifadeciler.Select(i => new IstifadeciDto
+            {
+                Id = i.Id,
+                IstifadeciAdi = i.IstifadeciAdi,
+                TamAd = i.TamAd,
+                RolAdi = rollar.FirstOrDefault(r => r.Id == i.RolId)?.Ad ?? "Təyinatsız"
+            }).ToList();
+
+            var sehifelenmis = new SehifelenmisMelumat<IstifadeciDto>(
+                dtolar, umumiSay, parametrler.SehifeNomresi, parametrler.SehifeOlcusu);
+
+            Logger.MelumatYaz($"Səhifələnmiş istifadəçilər uğurla əldə edildi - {dtolar.Count}/{umumiSay}");
+            return EmeliyyatNeticesi<SehifelenmisMelumat<IstifadeciDto>>.Ugurlu(sehifelenmis);
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Səhifələnmiş istifadəçilər əldə edilərkən istisna baş verdi");
+            return EmeliyyatNeticesi<SehifelenmisMelumat<IstifadeciDto>>.Ugursuz($"Səhifələnmiş istifadəçilər əldə edilərkən xəta: {ex.Message} + {ex.StackTrace}");
+        }
+    }
 }

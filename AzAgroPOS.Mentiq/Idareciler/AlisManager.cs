@@ -781,4 +781,200 @@ public class AlisManager
         }
     }
     #endregion
+
+    #region Səhifələmə Əməliyyatları
+
+    /// <summary>
+    /// Səhifələnmiş tədarükçü siyahısını əldə edir.
+    /// Diqqət: Bu metod böyük məlumat bazaları üçün əlverişlidir.
+    /// </summary>
+    /// <param name="parametrler">Səhifələmə parametrləri</param>
+    /// <returns>Səhifələnmiş tədarükçü məlumatları</returns>
+    public async Task<EmeliyyatNeticesi<SehifelenmisMelumat<TedarukcuDto>>> TedarukculeriSehifelenmisGetirAsync(SehifeParametrleri parametrler)
+    {
+        Logger.MelumatYaz($"Səhifələnmiş tədarükçülər əldə edilir - Səhifə: {parametrler.SehifeNomresi}, Ölçü: {parametrler.SehifeOlcusu}");
+        try
+        {
+            var (tedarukculer, umumiSay) = await _unitOfWork.Tedarukculer.SehifelenmisGetirAsync(
+                parametrler.SehifeNomresi,
+                parametrler.SehifeOlcusu,
+                t => t.Aktivdir);
+
+            var dtolar = tedarukculer.Select(t => new TedarukcuDto
+            {
+                Id = t.Id,
+                Ad = t.Ad,
+                Voen = t.Voen,
+                Unvan = t.Unvan,
+                Telefon = t.Telefon,
+                Email = t.Email,
+                BankHesabi = t.BankHesabi,
+                Aktivdir = t.Aktivdir
+            }).ToList();
+
+            var sehifelenmis = new SehifelenmisMelumat<TedarukcuDto>(
+                dtolar,
+                umumiSay,
+                parametrler.SehifeNomresi,
+                parametrler.SehifeOlcusu);
+
+            Logger.MelumatYaz($"Səhifələnmiş tədarükçülər uğurla əldə edildi - {dtolar.Count}/{umumiSay}");
+            return EmeliyyatNeticesi<SehifelenmisMelumat<TedarukcuDto>>.Ugurlu(sehifelenmis);
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Səhifələnmiş tədarükçülər əldə edilərkən istisna baş verdi");
+            return EmeliyyatNeticesi<SehifelenmisMelumat<TedarukcuDto>>.Ugursuz($"Səhifələnmiş tədarükçülər əldə edilərkən xəta: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Səhifələnmiş alış sifarişi siyahısını əldə edir.
+    /// Diqqət: Bu metod böyük məlumat bazaları üçün əlverişlidir.
+    /// </summary>
+    /// <param name="parametrler">Səhifələmə parametrləri</param>
+    /// <returns>Səhifələnmiş alış sifarişi məlumatları</returns>
+    public async Task<EmeliyyatNeticesi<SehifelenmisMelumat<AlisSifarisDto>>> AlisSifarisleriniSehifelenmisGetirAsync(SehifeParametrleri parametrler)
+    {
+        Logger.MelumatYaz($"Səhifələnmiş alış sifarişləri əldə edilir - Səhifə: {parametrler.SehifeNomresi}, Ölçü: {parametrler.SehifeOlcusu}");
+        try
+        {
+            var (sifarisler, umumiSay) = await _unitOfWork.AlisSifarisleri.SehifelenmisGetirAsync(
+                parametrler.SehifeNomresi,
+                parametrler.SehifeOlcusu,
+                a => !a.Silinib);
+
+            var tedarukculer = await _unitOfWork.Tedarukculer.ButununuGetirAsync();
+
+            var dtolar = sifarisler.Select(s => new AlisSifarisDto
+            {
+                Id = s.Id,
+                SifarisNomresi = s.SifarisNomresi,
+                YaradilmaTarixi = s.YaradilmaTarixi,
+                TesdiqTarixi = s.TesdiqTarixi,
+                GozlenilenTehvilTarixi = s.GozlenilenTehvilTarixi,
+                FaktikiTehvilTarixi = s.FaktikiTehvilTarixi,
+                TedarukcuId = s.TedarukcuId,
+                TedarukcuAdi = tedarukculer.FirstOrDefault(t => t.Id == s.TedarukcuId)?.Ad ?? "Naməlum",
+                UmumiMebleg = s.UmumiMebleg,
+                Status = s.Status,
+                Qeydler = s.Qeydler
+            }).ToList();
+
+            var sehifelenmis = new SehifelenmisMelumat<AlisSifarisDto>(
+                dtolar,
+                umumiSay,
+                parametrler.SehifeNomresi,
+                parametrler.SehifeOlcusu);
+
+            Logger.MelumatYaz($"Səhifələnmiş alış sifarişləri uğurla əldə edildi - {dtolar.Count}/{umumiSay}");
+            return EmeliyyatNeticesi<SehifelenmisMelumat<AlisSifarisDto>>.Ugurlu(sehifelenmis);
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Səhifələnmiş alış sifarişləri əldə edilərkən istisna baş verdi");
+            return EmeliyyatNeticesi<SehifelenmisMelumat<AlisSifarisDto>>.Ugursuz($"Səhifələnmiş alış sifarişləri əldə edilərkən xəta: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Səhifələnmiş alış sənədi siyahısını əldə edir.
+    /// Diqqət: Bu metod böyük məlumat bazaları üçün əlverişlidir.
+    /// </summary>
+    /// <param name="parametrler">Səhifələmə parametrləri</param>
+    /// <returns>Səhifələnmiş alış sənədi məlumatları</returns>
+    public async Task<EmeliyyatNeticesi<SehifelenmisMelumat<AlisSenedDto>>> AlisSenetleriniSehifelenmisGetirAsync(SehifeParametrleri parametrler)
+    {
+        Logger.MelumatYaz($"Səhifələnmiş alış sənədləri əldə edilir - Səhifə: {parametrler.SehifeNomresi}, Ölçü: {parametrler.SehifeOlcusu}");
+        try
+        {
+            var (senetler, umumiSay) = await _unitOfWork.AlisSenetleri.SehifelenmisGetirAsync(
+                parametrler.SehifeNomresi,
+                parametrler.SehifeOlcusu,
+                a => !a.Silinib);
+
+            var tedarukculer = await _unitOfWork.Tedarukculer.ButununuGetirAsync();
+
+            var dtolar = senetler.Select(s => new AlisSenedDto
+            {
+                Id = s.Id,
+                SenedNomresi = s.SenedNomresi,
+                YaradilmaTarixi = s.YaradilmaTarixi,
+                TedarukcuId = s.TedarukcuId,
+                TedarukcuAdi = tedarukculer.FirstOrDefault(t => t.Id == s.TedarukcuId)?.Ad ?? "Naməlum",
+                TehvilTarixi = s.TehvilTarixi,
+                UmumiMebleg = s.UmumiMebleg,
+                Status = s.Status,
+                Qeydler = s.Qeydler
+            }).ToList();
+
+            var sehifelenmis = new SehifelenmisMelumat<AlisSenedDto>(
+                dtolar,
+                umumiSay,
+                parametrler.SehifeNomresi,
+                parametrler.SehifeOlcusu);
+
+            Logger.MelumatYaz($"Səhifələnmiş alış sənədləri uğurla əldə edildi - {dtolar.Count}/{umumiSay}");
+            return EmeliyyatNeticesi<SehifelenmisMelumat<AlisSenedDto>>.Ugurlu(sehifelenmis);
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Səhifələnmiş alış sənədləri əldə edilərkən istisna baş verdi");
+            return EmeliyyatNeticesi<SehifelenmisMelumat<AlisSenedDto>>.Ugursuz($"Səhifələnmiş alış sənədləri əldə edilərkən xəta: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Səhifələnmiş tədarükçü ödənişi siyahısını əldə edir.
+    /// Diqqət: Bu metod böyük məlumat bazaları üçün əlverişlidir.
+    /// </summary>
+    /// <param name="parametrler">Səhifələmə parametrləri</param>
+    /// <returns>Səhifələnmiş tədarükçü ödənişi məlumatları</returns>
+    public async Task<EmeliyyatNeticesi<SehifelenmisMelumat<TedarukcuOdemeDto>>> TedarukcuOdemeleriniSehifelenmisGetirAsync(SehifeParametrleri parametrler)
+    {
+        Logger.MelumatYaz($"Səhifələnmiş tədarükçü ödənişləri əldə edilir - Səhifə: {parametrler.SehifeNomresi}, Ölçü: {parametrler.SehifeOlcusu}");
+        try
+        {
+            var (odemeler, umumiSay) = await _unitOfWork.TedarukcuOdemeleri.SehifelenmisGetirAsync(
+                parametrler.SehifeNomresi,
+                parametrler.SehifeOlcusu,
+                o => !o.Silinib);
+
+            var tedarukculer = await _unitOfWork.Tedarukculer.ButununuGetirAsync();
+            var senetler = await _unitOfWork.AlisSenetleri.ButununuGetirAsync();
+
+            var dtolar = odemeler.Select(o => new TedarukcuOdemeDto
+            {
+                Id = o.Id,
+                OdemeNomresi = o.OdemeNomresi,
+                YaradilmaTarixi = o.YaradilmaTarixi,
+                TedarukcuId = o.TedarukcuId,
+                TedarukcuAdi = tedarukculer.FirstOrDefault(t => t.Id == o.TedarukcuId)?.Ad ?? "Naməlum",
+                AlisSenedId = o.AlisSenedId,
+                AlisSenedNomresi = o.AlisSenedId.HasValue ? senetler.FirstOrDefault(s => s.Id == o.AlisSenedId.Value)?.SenedNomresi : null,
+                OdemeTarixi = o.OdemeTarixi,
+                Mebleg = o.Mebleg,
+                OdemeUsulu = o.OdemeUsulu,
+                Status = o.Status,
+                Qeydler = o.Qeydler,
+                BankMelumatlari = o.BankMelumatlari
+            }).ToList();
+
+            var sehifelenmis = new SehifelenmisMelumat<TedarukcuOdemeDto>(
+                dtolar,
+                umumiSay,
+                parametrler.SehifeNomresi,
+                parametrler.SehifeOlcusu);
+
+            Logger.MelumatYaz($"Səhifələnmiş tədarükçü ödənişləri uğurla əldə edildi - {dtolar.Count}/{umumiSay}");
+            return EmeliyyatNeticesi<SehifelenmisMelumat<TedarukcuOdemeDto>>.Ugurlu(sehifelenmis);
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Səhifələnmiş tədarükçü ödənişləri əldə edilərkən istisna baş verdi");
+            return EmeliyyatNeticesi<SehifelenmisMelumat<TedarukcuOdemeDto>>.Ugursuz($"Səhifələnmiş tədarükçü ödənişləri əldə edilərkən xəta: {ex.Message}");
+        }
+    }
+
+    #endregion
 }

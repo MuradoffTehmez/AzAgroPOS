@@ -179,4 +179,44 @@ public class BrendMeneceri
             return EmeliyyatNeticesi.Ugursuz($"Brend silmək alınmadı: {ex.Message}+ {ex.StackTrace}");
         }
     }
+
+    /// <summary>
+    /// Səhifələnmiş brend siyahısını əldə edir.
+    /// Diqqət: Bu metod böyük məlumat bazaları üçün əlverişlidir.
+    /// </summary>
+    /// <param name="parametrler">Səhifələmə parametrləri</param>
+    /// <returns>Səhifələnmiş brend məlumatları</returns>
+    public async Task<EmeliyyatNeticesi<SehifelenmisMelumat<BrendDto>>> BrendleriSehifelenmisGetirAsync(SehifeParametrleri parametrler)
+    {
+        Logger.MelumatYaz($"Səhifələnmiş brendlər əldə edilir - Səhifə: {parametrler.SehifeNomresi}, Ölçü: {parametrler.SehifeOlcusu}");
+        try
+        {
+            var (brendler, umumiSay) = await _unitOfWork.Brendler.SehifelenmisGetirAsync(
+                parametrler.SehifeNomresi,
+                parametrler.SehifeOlcusu,
+                b => b.Aktivdir);
+
+            var dtolar = brendler.Select(b => new BrendDto
+            {
+                Id = b.Id,
+                Ad = b.Ad,
+                Olke = b.Olke,
+                Vebsayt = b.Vebsayt,
+                Tesvir = b.Tesvir,
+                LoqoFaylYolu = b.LoqoFaylYolu,
+                Aktivdir = b.Aktivdir
+            }).ToList();
+
+            var sehifelenmis = new SehifelenmisMelumat<BrendDto>(
+                dtolar, umumiSay, parametrler.SehifeNomresi, parametrler.SehifeOlcusu);
+
+            Logger.MelumatYaz($"Səhifələnmiş brendlər uğurla əldə edildi - {dtolar.Count}/{umumiSay}");
+            return EmeliyyatNeticesi<SehifelenmisMelumat<BrendDto>>.Ugurlu(sehifelenmis);
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Səhifələnmiş brendlər əldə edilərkən istisna baş verdi");
+            return EmeliyyatNeticesi<SehifelenmisMelumat<BrendDto>>.Ugursuz($"Səhifələnmiş brendlər əldə edilərkən xəta: {ex.Message}+ {ex.StackTrace}");
+        }
+    }
 }

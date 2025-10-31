@@ -168,4 +168,40 @@ public class IcazeManager
             return EmeliyyatNeticesi<IEnumerable<IcazeDto>>.Ugursuz($"Rol icazələri götürülərkən xəta baş verdi: {ex.Message}+ {ex.StackTrace}");
         }
     }
+
+    /// <summary>
+    /// Səhifələnmiş icazə siyahısını əldə edir.
+    /// Diqqət: Bu metod böyük məlumat bazaları üçün əlverişlidir.
+    /// </summary>
+    /// <param name="parametrler">Səhifələmə parametrləri</param>
+    /// <returns>Səhifələnmiş icazə məlumatları</returns>
+    public async Task<EmeliyyatNeticesi<SehifelenmisMelumat<IcazeDto>>> IcazeleriSehifelenmisGetirAsync(SehifeParametrleri parametrler)
+    {
+        Logger.MelumatYaz($"Səhifələnmiş icazələr əldə edilir - Səhifə: {parametrler.SehifeNomresi}, Ölçü: {parametrler.SehifeOlcusu}");
+        try
+        {
+            var (icazeler, umumiSay) = await _unitOfWork.Icazeler.SehifelenmisGetirAsync(
+                parametrler.SehifeNomresi,
+                parametrler.SehifeOlcusu,
+                i => true);
+
+            var dtolar = icazeler.Select(i => new IcazeDto
+            {
+                Id = i.Id,
+                Ad = i.Ad,
+                Tesvir = i.Tesvir
+            }).ToList();
+
+            var sehifelenmis = new SehifelenmisMelumat<IcazeDto>(
+                dtolar, umumiSay, parametrler.SehifeNomresi, parametrler.SehifeOlcusu);
+
+            Logger.MelumatYaz($"Səhifələnmiş icazələr uğurla əldə edildi - {dtolar.Count}/{umumiSay}");
+            return EmeliyyatNeticesi<SehifelenmisMelumat<IcazeDto>>.Ugurlu(sehifelenmis);
+        }
+        catch (System.Exception ex)
+        {
+            Logger.XetaYaz(ex, "Səhifələnmiş icazələr əldə edilərkən istisna baş verdi");
+            return EmeliyyatNeticesi<SehifelenmisMelumat<IcazeDto>>.Ugursuz($"Səhifələnmiş icazələr əldə edilərkən xəta: {ex.Message}+ {ex.StackTrace}");
+        }
+    }
 }

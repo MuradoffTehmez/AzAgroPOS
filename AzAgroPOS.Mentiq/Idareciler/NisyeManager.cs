@@ -4,6 +4,7 @@ namespace AzAgroPOS.Mentiq.Idareciler;
 // using-lər
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Uslublar;
+using AzAgroPOS.Mentiq.Yardimcilar;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 
@@ -135,5 +136,43 @@ public class NisyeManager
         await _unitOfWork.NisyeHereketleri.ElaveEtAsync(hereket);
 
         return EmeliyyatNeticesi.Ugurlu();
+    }
+
+    /// <summary>
+    /// Səhifələnmiş müştəri siyahısını əldə edir.
+    /// Diqqət: Bu metod böyük məlumat bazaları üçün əlverişlidir.
+    /// </summary>
+    /// <param name="parametrler">Səhifələmə parametrləri</param>
+    /// <returns>Səhifələnmiş müştəri məlumatları</returns>
+    public async Task<EmeliyyatNeticesi<SehifelenmisMelumat<MusteriDto>>> MusterileriSehifelenmisGetirAsync(SehifeParametrleri parametrler)
+    {
+        Logger.MelumatYaz($"Səhifələnmiş müştərilər əldə edilir - Səhifə: {parametrler.SehifeNomresi}, Ölçü: {parametrler.SehifeOlcusu}");
+        try
+        {
+            var (musteriler, umumiSay) = await _unitOfWork.Musteriler.SehifelenmisGetirAsync(
+                parametrler.SehifeNomresi,
+                parametrler.SehifeOlcusu,
+                m => true);
+
+            var dtolar = musteriler.Select(m => new MusteriDto
+            {
+                Id = m.Id,
+                TamAd = m.TamAd,
+                TelefonNomresi = m.TelefonNomresi,
+                Unvan = m.Unvan,
+                UmumiBorc = m.UmumiBorc
+            }).ToList();
+
+            var sehifelenmis = new SehifelenmisMelumat<MusteriDto>(
+                dtolar, umumiSay, parametrler.SehifeNomresi, parametrler.SehifeOlcusu);
+
+            Logger.MelumatYaz($"Səhifələnmiş müştərilər uğurla əldə edildi - {dtolar.Count}/{umumiSay}");
+            return EmeliyyatNeticesi<SehifelenmisMelumat<MusteriDto>>.Ugurlu(sehifelenmis);
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Səhifələnmiş müştərilər əldə edilərkən istisna baş verdi");
+            return EmeliyyatNeticesi<SehifelenmisMelumat<MusteriDto>>.Ugursuz($"Səhifələnmiş müştərilər əldə edilərkən xəta: {ex.Message}");
+        }
     }
 }

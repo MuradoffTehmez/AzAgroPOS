@@ -3,6 +3,7 @@ namespace AzAgroPOS.Mentiq.Idareciler;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Uslublar;
+using AzAgroPOS.Mentiq.Yardimcilar;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using System;
@@ -307,6 +308,60 @@ public class MehsulMeneceri
         catch (Exception ex)
         {
             return EmeliyyatNeticesi<List<MehsulDto>>.Ugursuz($"Minimum stok məhsullarını gətirmək alınmadı: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Səhifələnmiş məhsul siyahısını əldə edir.
+    /// Diqqət: Bu metod böyük məlumat bazaları üçün əlverişlidir.
+    /// </summary>
+    /// <param name="parametrler">Səhifələmə parametrləri</param>
+    /// <returns>Səhifələnmiş məhsul məlumatları</returns>
+    public async Task<EmeliyyatNeticesi<SehifelenmisMelumat<MehsulDto>>> MehsullariSehifelenmisGetirAsync(SehifeParametrleri parametrler)
+    {
+        Logger.MelumatYaz($"Səhifələnmiş məhsullar əldə edilir - Səhifə: {parametrler.SehifeNomresi}, Ölçü: {parametrler.SehifeOlcusu}");
+        try
+        {
+            var (mehsullar, umumiSay) = await _unitOfWork.Mehsullar.SehifelenmisGetirAsync(
+                parametrler.SehifeNomresi,
+                parametrler.SehifeOlcusu,
+                m => m.Aktivdir);
+
+            var dtolar = mehsullar.Select(m => new MehsulDto
+            {
+                Id = m.Id,
+                Ad = m.Ad,
+                Barkod = m.Barkod,
+                StokKodu = m.StokKodu,
+                AlisQiymeti = m.AlisQiymeti,
+                PerakendeSatisQiymeti = m.PerakendeSatisQiymeti,
+                TopdanSatisQiymeti = m.TopdanSatisQiymeti,
+                TekEdedSatisQiymeti = m.TekEdedSatisQiymeti,
+                MovcudSay = m.MovcudSay,
+                Aktivdir = m.Aktivdir,
+                OlcuVahidi = m.OlcuVahidi,
+                AnbarMiqdari = m.MovcudSay,
+                OlcuVahidiAdi = m.OlcuVahidi.ToString(),
+                KateqoriyaId = m.KateqoriyaId,
+                KateqoriyaAdi = m.Kateqoriya?.Ad,
+                BrendId = m.BrendId,
+                BrendAdi = m.Brend?.Ad,
+                TedarukcuId = m.TedarukcuId,
+                TedarukcuAdi = m.Tedarukcu?.Ad,
+                MinimumStok = m.MinimumStok,
+                SekilYolu = m.SekilYolu
+            }).ToList();
+
+            var sehifelenmis = new SehifelenmisMelumat<MehsulDto>(
+                dtolar, umumiSay, parametrler.SehifeNomresi, parametrler.SehifeOlcusu);
+
+            Logger.MelumatYaz($"Səhifələnmiş məhsullar uğurla əldə edildi - {dtolar.Count}/{umumiSay}");
+            return EmeliyyatNeticesi<SehifelenmisMelumat<MehsulDto>>.Ugurlu(sehifelenmis);
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Səhifələnmiş məhsullar əldə edilərkən istisna baş verdi");
+            return EmeliyyatNeticesi<SehifelenmisMelumat<MehsulDto>>.Ugursuz($"Səhifələnmiş məhsullar əldə edilərkən xəta: {ex.Message}");
         }
     }
 }

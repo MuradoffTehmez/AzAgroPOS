@@ -499,4 +499,62 @@ public class IsciIzniManager
             return EmeliyyatNeticesi<List<IsciIzniDto>>.Ugursuz($"Statusuna görə izinlər əldə edilərkən xəta: {ex.Message}");
         }
     }
+
+    /// <summary>
+    /// Səhifələnmiş işçi izni siyahısını əldə edir.
+    /// Diqqət: Bu metod böyük məlumat bazaları üçün əlverişlidir.
+    /// </summary>
+    /// <param name="parametrler">Səhifələmə parametrləri</param>
+    /// <returns>Səhifələnmiş işçi izni məlumatları</returns>
+    public async Task<EmeliyyatNeticesi<SehifelenmisMelumat<IsciIzniDto>>> IzinleriSehifelenmisGetirAsync(SehifeParametrleri parametrler)
+    {
+        Logger.MelumatYaz($"Səhifələnmiş işçi izinləri əldə edilir - Səhifə: {parametrler.SehifeNomresi}, Ölçü: {parametrler.SehifeOlcusu}");
+        try
+        {
+            var (izinler, umumiSay) = await _unitOfWork.IsciIznleri.SehifelenmisGetirAsync(
+                parametrler.SehifeNomresi,
+                parametrler.SehifeOlcusu,
+                i => !i.Silinib);
+
+            var dtolar = new List<IsciIzniDto>();
+            foreach (var izin in izinler)
+            {
+                var isci = await _unitOfWork.Isciler.GetirAsync(izin.IsciId);
+                var tesdiqEdenIsci = izin.TesdiqEdenIsciId.HasValue
+                    ? await _unitOfWork.Isciler.GetirAsync(izin.TesdiqEdenIsciId.Value)
+                    : null;
+
+                dtolar.Add(new IsciIzniDto
+                {
+                    Id = izin.Id,
+                    IsciId = izin.IsciId,
+                    IsciAdi = isci?.TamAd ?? "Naməlum",
+                    IzinNovu = izin.IzinNovu,
+                    BaslamaTarixi = izin.BaslamaTarixi,
+                    BitmeTarixi = izin.BitmeTarixi,
+                    IzinGunu = izin.IzinGunu,
+                    Sebeb = izin.Sebeb,
+                    Status = izin.Status,
+                    TesdiqEdenIsciId = izin.TesdiqEdenIsciId,
+                    TesdiqEdenIsciAdi = tesdiqEdenIsci?.TamAd ?? string.Empty,
+                    TesdiqTarixi = izin.TesdiqTarixi,
+                    Qeydler = izin.Qeydler
+                });
+            }
+
+            var sehifelenmis = new SehifelenmisMelumat<IsciIzniDto>(
+                dtolar,
+                umumiSay,
+                parametrler.SehifeNomresi,
+                parametrler.SehifeOlcusu);
+
+            Logger.MelumatYaz($"Səhifələnmiş işçi izinləri uğurla əldə edildi - {dtolar.Count}/{umumiSay}");
+            return EmeliyyatNeticesi<SehifelenmisMelumat<IsciIzniDto>>.Ugurlu(sehifelenmis);
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Səhifələnmiş işçi izinləri əldə edilərkən istisna baş verdi");
+            return EmeliyyatNeticesi<SehifelenmisMelumat<IsciIzniDto>>.Ugursuz($"Səhifələnmiş işçi izinləri əldə edilərkən xəta: {ex.Message}");
+        }
+    }
 }

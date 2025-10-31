@@ -337,4 +337,58 @@ public class EmekHaqqiManager
             return EmeliyyatNeticesi.Ugursuz($"Əmək haqqı ləğv edilərkən xəta: {ex.Message}");
         }
     }
+
+    /// <summary>
+    /// Səhifələnmiş əmək haqqı siyahısını əldə edir.
+    /// Diqqət: Bu metod böyük məlumat bazaları üçün əlverişlidir.
+    /// </summary>
+    /// <param name="parametrler">Səhifələmə parametrləri</param>
+    /// <returns>Səhifələnmiş əmək haqqı məlumatları</returns>
+    public async Task<EmeliyyatNeticesi<SehifelenmisMelumat<EmekHaqqiDto>>> EmekHaqqilariSehifelenmisGetirAsync(SehifeParametrleri parametrler)
+    {
+        Logger.MelumatYaz($"Səhifələnmiş əmək haqqıları əldə edilir - Səhifə: {parametrler.SehifeNomresi}, Ölçü: {parametrler.SehifeOlcusu}");
+        try
+        {
+            var (emekHaqqlari, umumiSay) = await _unitOfWork.EmekHaqqilari.SehifelenmisGetirAsync(
+                parametrler.SehifeNomresi,
+                parametrler.SehifeOlcusu,
+                e => !e.Silinib);
+
+            var dtolar = new List<EmekHaqqiDto>();
+            foreach (var eh in emekHaqqlari)
+            {
+                var isci = await _unitOfWork.Isciler.GetirAsync(eh.IsciId);
+                dtolar.Add(new EmekHaqqiDto
+                {
+                    Id = eh.Id,
+                    IsciId = eh.IsciId,
+                    IsciAdi = isci?.TamAd ?? "Naməlum",
+                    Dovr = eh.Dovr,
+                    HesablanmaTarixi = eh.HesablanmaTarixi,
+                    EsasMaas = eh.EsasMaas,
+                    Bonuslar = eh.Bonuslar,
+                    ElaveOdenisler = eh.ElaveOdenisler,
+                    IcazeTutulmasi = eh.IcazeTutulmasi,
+                    DigerTutulmalar = eh.DigerTutulmalar,
+                    OdenisTarixi = eh.OdenisTarixi,
+                    Status = eh.Status,
+                    Qeyd = eh.Qeyd
+                });
+            }
+
+            var sehifelenmis = new SehifelenmisMelumat<EmekHaqqiDto>(
+                dtolar,
+                umumiSay,
+                parametrler.SehifeNomresi,
+                parametrler.SehifeOlcusu);
+
+            Logger.MelumatYaz($"Səhifələnmiş əmək haqqıları uğurla əldə edildi - {dtolar.Count}/{umumiSay}");
+            return EmeliyyatNeticesi<SehifelenmisMelumat<EmekHaqqiDto>>.Ugurlu(sehifelenmis);
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Səhifələnmiş əmək haqqıları əldə edilərkən istisna baş verdi");
+            return EmeliyyatNeticesi<SehifelenmisMelumat<EmekHaqqiDto>>.Ugursuz($"Səhifələnmiş əmək haqqıları əldə edilərkən xəta: {ex.Message}");
+        }
+    }
 }

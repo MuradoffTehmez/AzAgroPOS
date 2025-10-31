@@ -29,13 +29,25 @@ public partial class EmekHaqqiFormu : BazaForm
         this.Load += EmekHaqqiFormu_Load;
     }
 
-    private async void EmekHaqqiFormu_Load(object sender, EventArgs e)
+    private void EmekHaqqiFormu_Load(object sender, EventArgs e)
     {
-        await IscileriYukle();
-        await EmekHaqqiTarixcesiniYukle();
+        _ = YukleAsync();
+    }
 
-        // Dövr üçün hazırkı ayı təyin et
-        dtpDovr.Value = DateTime.Now;
+    private async Task YukleAsync()
+    {
+        try
+        {
+            await IscileriYukle();
+            await EmekHaqqiTarixcesiniYukle();
+
+            // Dövr üçün hazırkı ayı təyin et
+            dtpDovr.Value = DateTime.Now;
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Forma yüklənərkən xəta: {ex.Message}", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
     }
 
     /// <summary>
@@ -121,7 +133,7 @@ public partial class EmekHaqqiFormu : BazaForm
     /// <summary>
     /// Əmək haqqını hesabla düyməsi
     /// </summary>
-    private async void btnHesabla_Click(object sender, EventArgs e)
+    private void btnHesabla_Click(object sender, EventArgs e)
     {
         if (cmbIsci.SelectedValue == null)
         {
@@ -129,6 +141,11 @@ public partial class EmekHaqqiFormu : BazaForm
             return;
         }
 
+        _ = HesablaAsync();
+    }
+
+    private async Task HesablaAsync()
+    {
         try
         {
             var isciId = (int)cmbIsci.SelectedValue;
@@ -165,7 +182,7 @@ public partial class EmekHaqqiFormu : BazaForm
     /// <summary>
     /// Ödə düyməsi - seçilmiş əmək haqqını ödə
     /// </summary>
-    private async void btnOde_Click(object sender, EventArgs e)
+    private void btnOde_Click(object sender, EventArgs e)
     {
         if (dgvEmekHaqqlari.SelectedRows.Count == 0)
         {
@@ -190,6 +207,11 @@ public partial class EmekHaqqiFormu : BazaForm
 
         if (tesdiq != DialogResult.Yes) return;
 
+        _ = OdeAsync(emekHaqqiId);
+    }
+
+    private async Task OdeAsync(int emekHaqqiId)
+    {
         try
         {
             var netice = await _emekHaqqiManager.EmekHaqqiOdeAsync(emekHaqqiId, AktivSessiya.AktivIstifadeci?.Id);
@@ -213,7 +235,7 @@ public partial class EmekHaqqiFormu : BazaForm
     /// <summary>
     /// Ləğv et düyməsi
     /// </summary>
-    private async void btnLegvEt_Click(object sender, EventArgs e)
+    private void btnLegvEt_Click(object sender, EventArgs e)
     {
         if (dgvEmekHaqqlari.SelectedRows.Count == 0)
         {
@@ -238,6 +260,11 @@ public partial class EmekHaqqiFormu : BazaForm
 
         if (tesdiq != DialogResult.Yes) return;
 
+        _ = LegvEtAsync(emekHaqqiId);
+    }
+
+    private async Task LegvEtAsync(int emekHaqqiId)
+    {
         try
         {
             var netice = await _emekHaqqiManager.EmekHaqqiLegvEtAsync(emekHaqqiId);
@@ -272,18 +299,23 @@ public partial class EmekHaqqiFormu : BazaForm
     /// <summary>
     /// Yenilə düyməsi
     /// </summary>
-    private async void btnYenile_Click(object sender, EventArgs e)
+    private void btnYenile_Click(object sender, EventArgs e)
     {
-        await EmekHaqqiTarixcesiniYukle();
+        _ = EmekHaqqiTarixcesiniYukle();
     }
 
     /// <summary>
     /// İşçi seçildikdə onun son əmək haqqı məlumatlarını göstər
     /// </summary>
-    private async void cmbIsci_SelectedIndexChanged(object sender, EventArgs e)
+    private void cmbIsci_SelectedIndexChanged(object sender, EventArgs e)
     {
         if (cmbIsci.SelectedValue == null) return;
 
+        _ = IsciSecildiAsync();
+    }
+
+    private async Task IsciSecildiAsync()
+    {
         try
         {
             var isciId = (int)cmbIsci.SelectedValue;

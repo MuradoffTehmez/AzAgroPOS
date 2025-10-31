@@ -381,4 +381,33 @@ public class StokHareketiManager
             return EmeliyyatNeticesi<decimal>.Ugursuz($"Mənfəət hesablanarkən xəta: {ex.Message}");
         }
     }
+
+    /// <summary>
+    /// Səhifələnmiş stok hərəkətləri siyahısını əldə edir.
+    /// Diqqət: Bu metod böyük məlumat bazaları üçün əlverişlidir.
+    /// </summary>
+    /// <param name="parametrler">Səhifələmə parametrləri</param>
+    /// <returns>Səhifələnmiş stok hərəkəti məlumatları</returns>
+    public async Task<EmeliyyatNeticesi<SehifelenmisMelumat<StokHareketi>>> StokHereketleriniSehifelenmisGetirAsync(SehifeParametrleri parametrler)
+    {
+        Logger.MelumatYaz($"Səhifələnmiş stok hərəkətləri əldə edilir - Səhifə: {parametrler.SehifeNomresi}, Ölçü: {parametrler.SehifeOlcusu}");
+        try
+        {
+            var (hereketler, umumiSay) = await _stokHareketiRepo.SehifelenmisGetirAsync(
+                parametrler.SehifeNomresi,
+                parametrler.SehifeOlcusu,
+                sh => true);
+
+            var sehifelenmis = new SehifelenmisMelumat<StokHareketi>(
+                hereketler.ToList(), umumiSay, parametrler.SehifeNomresi, parametrler.SehifeOlcusu);
+
+            Logger.MelumatYaz($"Səhifələnmiş stok hərəkətləri uğurla əldə edildi - {hereketler.Count()}/{umumiSay}");
+            return EmeliyyatNeticesi<SehifelenmisMelumat<StokHareketi>>.Ugurlu(sehifelenmis);
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Səhifələnmiş stok hərəkətləri əldə edilərkən istisna baş verdi");
+            return EmeliyyatNeticesi<SehifelenmisMelumat<StokHareketi>>.Ugursuz($"Səhifələnmiş stok hərəkətləri əldə edilərkən xəta: {ex.Message}");
+        }
+    }
 }

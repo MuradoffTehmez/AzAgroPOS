@@ -340,4 +340,53 @@ public class TemirManager
             return EmeliyyatNeticesi<List<EhtiyatHissəsiDto>>.Ugursuz($"Təmir ehtiyat hissələri əldə edilərkən xəta: {ex.Message}");
         }
     }
+
+    /// <summary>
+    /// Səhifələnmiş təmir sifarişi siyahısını əldə edir.
+    /// Diqqət: Bu metod böyük məlumat bazaları üçün əlverişlidir.
+    /// </summary>
+    /// <param name="parametrler">Səhifələmə parametrləri</param>
+    /// <returns>Səhifələnmiş təmir sifarişi məlumatları</returns>
+    public async Task<EmeliyyatNeticesi<SehifelenmisMelumat<TemirDto>>> TemirSifarisleriniSehifelenmisGetirAsync(SehifeParametrleri parametrler)
+    {
+        Logger.MelumatYaz($"Səhifələnmiş təmir sifarişləri əldə edilir - Səhifə: {parametrler.SehifeNomresi}, Ölçü: {parametrler.SehifeOlcusu}");
+        try
+        {
+            var (sifarisler, umumiSay) = await _unitOfWork.TemirSifarisleri.SehifelenmisGetirAsync(
+                parametrler.SehifeNomresi,
+                parametrler.SehifeOlcusu,
+                t => !t.Silinib);
+
+            var dtolar = sifarisler.Select(s => new TemirDto
+            {
+                Id = s.Id,
+                MusteriAdi = s.MusteriAdi,
+                MusteriTelefonu = s.MusteriTelefonu,
+                CihazAdi = s.CihazAdi,
+                SeriyaNomresi = s.SeriyaNomresi,
+                ProblemTesviri = s.ProblemTesviri,
+                QebulTarixi = s.QebulTarixi,
+                Status = s.Status,
+                TemirXerci = s.TemirXerci,
+                ServisHaqqi = s.ServisHaqqi,
+                YekunMebleg = s.YekunMebleg,
+                ZemanetMuddeti = s.ZemanetMuddeti,
+                IsciId = s.IsciId
+            }).ToList();
+
+            var sehifelenmis = new SehifelenmisMelumat<TemirDto>(
+                dtolar,
+                umumiSay,
+                parametrler.SehifeNomresi,
+                parametrler.SehifeOlcusu);
+
+            Logger.MelumatYaz($"Səhifələnmiş təmir sifarişləri uğurla əldə edildi - {dtolar.Count}/{umumiSay}");
+            return EmeliyyatNeticesi<SehifelenmisMelumat<TemirDto>>.Ugurlu(sehifelenmis);
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Səhifələnmiş təmir sifarişləri əldə edilərkən istisna baş verdi");
+            return EmeliyyatNeticesi<SehifelenmisMelumat<TemirDto>>.Ugursuz($"Səhifələnmiş təmir sifarişləri əldə edilərkən xəta: {ex.Message}");
+        }
+    }
 }

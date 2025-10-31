@@ -29,16 +29,28 @@ public partial class IsciIzniFormu : BazaForm
         this.Load += IsciIzniFormu_Load;
     }
 
-    private async void IsciIzniFormu_Load(object sender, EventArgs e)
+    private void IsciIzniFormu_Load(object sender, EventArgs e)
     {
-        InitializeEnums();
-        await IscileriYukle();
-        await IzinleriYukle();
+        _ = YukleAsync();
+    }
 
-        // Tarixləri təyin et
-        dtpBaslamaTarixi.Value = DateTime.Now;
-        dtpBitmeTarixi.Value = DateTime.Now.AddDays(1);
-        HesablaIzinGunu();
+    private async Task YukleAsync()
+    {
+        try
+        {
+            InitializeEnums();
+            await IscileriYukle();
+            await IzinleriYukle();
+
+            // Tarixləri təyin et
+            dtpBaslamaTarixi.Value = DateTime.Now;
+            dtpBitmeTarixi.Value = DateTime.Now.AddDays(1);
+            HesablaIzinGunu();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Forma yüklənərkən xəta: {ex.Message}", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
     }
 
     /// <summary>
@@ -151,13 +163,18 @@ public partial class IsciIzniFormu : BazaForm
     /// <summary>
     /// İzin yarat düyməsi
     /// </summary>
-    private async void btnYarat_Click(object sender, EventArgs e)
+    private void btnYarat_Click(object sender, EventArgs e)
     {
         if (!ValidateForm())
         {
             return;
         }
 
+        _ = YaratAsync();
+    }
+
+    private async Task YaratAsync()
+    {
         try
         {
             var netice = await _izniManager.IzinYaratAsync(
@@ -188,7 +205,7 @@ public partial class IsciIzniFormu : BazaForm
     /// <summary>
     /// İzin yenilə düyməsi
     /// </summary>
-    private async void btnYenile_Click(object sender, EventArgs e)
+    private void btnYenile_Click(object sender, EventArgs e)
     {
         if (_seciliIzinId == 0)
         {
@@ -201,6 +218,11 @@ public partial class IsciIzniFormu : BazaForm
             return;
         }
 
+        _ = YenileAsync();
+    }
+
+    private async Task YenileAsync()
+    {
         try
         {
             var netice = await _izniManager.IzinYenileAsync(
@@ -231,7 +253,7 @@ public partial class IsciIzniFormu : BazaForm
     /// <summary>
     /// İzin sil düyməsi
     /// </summary>
-    private async void btnSil_Click(object sender, EventArgs e)
+    private void btnSil_Click(object sender, EventArgs e)
     {
         if (_seciliIzinId == 0)
         {
@@ -247,6 +269,11 @@ public partial class IsciIzniFormu : BazaForm
 
         if (tesdiq != DialogResult.Yes) return;
 
+        _ = SilAsync();
+    }
+
+    private async Task SilAsync()
+    {
         try
         {
             var netice = await _izniManager.IzinSilAsync(_seciliIzinId);
@@ -271,7 +298,7 @@ public partial class IsciIzniFormu : BazaForm
     /// <summary>
     /// İzni təsdiqlə düyməsi
     /// </summary>
-    private async void btnTesdiqle_Click(object sender, EventArgs e)
+    private void btnTesdiqle_Click(object sender, EventArgs e)
     {
         if (_seciliIzinId == 0)
         {
@@ -287,6 +314,11 @@ public partial class IsciIzniFormu : BazaForm
 
         if (tesdiq != DialogResult.Yes) return;
 
+        _ = TesdiqleAsync();
+    }
+
+    private async Task TesdiqleAsync()
+    {
         try
         {
             var netice = await _izniManager.IzinTesdiqleAsync(_seciliIzinId, AktivSessiya.AktivIstifadeci?.Id ?? 0);
@@ -311,7 +343,7 @@ public partial class IsciIzniFormu : BazaForm
     /// <summary>
     /// İzni rədd et düyməsi
     /// </summary>
-    private async void btnReddEt_Click(object sender, EventArgs e)
+    private void btnReddEt_Click(object sender, EventArgs e)
     {
         if (_seciliIzinId == 0)
         {
@@ -333,6 +365,11 @@ public partial class IsciIzniFormu : BazaForm
             return;
         }
 
+        _ = ReddEtAsync(reddSebebi);
+    }
+
+    private async Task ReddEtAsync(string reddSebebi)
+    {
         try
         {
             var netice = await _izniManager.IzinReddEtAsync(_seciliIzinId, AktivSessiya.AktivIstifadeci?.Id ?? 0, reddSebebi);
@@ -357,7 +394,7 @@ public partial class IsciIzniFormu : BazaForm
     /// <summary>
     /// İzni ləğv et düyməsi
     /// </summary>
-    private async void btnLegvEt_Click(object sender, EventArgs e)
+    private void btnLegvEt_Click(object sender, EventArgs e)
     {
         if (_seciliIzinId == 0)
         {
@@ -373,6 +410,11 @@ public partial class IsciIzniFormu : BazaForm
 
         if (tesdiq != DialogResult.Yes) return;
 
+        _ = LegvEtAsync();
+    }
+
+    private async Task LegvEtAsync()
+    {
         try
         {
             var netice = await _izniManager.IzinLegvEtAsync(_seciliIzinId);
@@ -442,39 +484,49 @@ public partial class IsciIzniFormu : BazaForm
     /// <summary>
     /// Status filtri dəyişdikdə
     /// </summary>
-    private async void cmbStatusFiltre_SelectedIndexChanged(object sender, EventArgs e)
+    private void cmbStatusFiltre_SelectedIndexChanged(object sender, EventArgs e)
     {
         if (cmbStatusFiltre.SelectedIndex == 0) // Hamısı
         {
-            await IzinleriYukle();
+            _ = IzinleriYukle();
         }
         else
         {
-            try
-            {
-                var status = (IzinStatusu)cmbStatusFiltre.SelectedItem;
-                var netice = await _izniManager.StatusaGoreGetirAsync(status);
+            _ = FiltreAsync();
+        }
+    }
 
-                if (netice.UgurluDur && netice.Data != null)
-                {
-                    dgvIzinler.DataSource = netice.Data.ToList();
-                    FormatGrid();
-                }
-            }
-            catch (Exception ex)
+    private async Task FiltreAsync()
+    {
+        try
+        {
+            var status = (IzinStatusu)cmbStatusFiltre.SelectedItem;
+            var netice = await _izniManager.StatusaGoreGetirAsync(status);
+
+            if (netice.UgurluDur && netice.Data != null)
             {
-                XetaGostergeci.UmumiXetaGoster(ex, "Filtrələmə");
+                dgvIzinler.DataSource = netice.Data.ToList();
+                FormatGrid();
             }
+        }
+        catch (Exception ex)
+        {
+            XetaGostergeci.UmumiXetaGoster(ex, "Filtrələmə");
         }
     }
 
     /// <summary>
     /// İşçi seçildikdə onun izinlərini göstər
     /// </summary>
-    private async void cmbIsci_SelectedIndexChanged(object sender, EventArgs e)
+    private void cmbIsci_SelectedIndexChanged(object sender, EventArgs e)
     {
         if (cmbIsci.SelectedValue == null) return;
 
+        _ = IsciSecildiAsync();
+    }
+
+    private async Task IsciSecildiAsync()
+    {
         try
         {
             var isciId = (int)cmbIsci.SelectedValue;
@@ -568,10 +620,22 @@ public partial class IsciIzniFormu : BazaForm
     /// <summary>
     /// Bütün izinləri yenilə düyməsi
     /// </summary>
-    private async void btnYenileHamisi_Click(object sender, EventArgs e)
+    private void btnYenileHamisi_Click(object sender, EventArgs e)
     {
-        await IzinleriYukle();
-        FormuTemizle();
+        _ = YenileHamisiAsync();
+    }
+
+    private async Task YenileHamisiAsync()
+    {
+        try
+        {
+            await IzinleriYukle();
+            FormuTemizle();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"İzinlər yenilənərkən xəta: {ex.Message}", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
     }
 
     #endregion

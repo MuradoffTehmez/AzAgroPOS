@@ -296,4 +296,46 @@ public class SatisManager
             return EmeliyyatNeticesi<bool>.Ugursuz("Qaytarma əməliyyatı zamanı istisna baş verdi: " + ex.Message);
         }
     }
+
+    /// <summary>
+    /// Səhifələnmiş satış siyahısını əldə edir.
+    /// Diqqət: Bu metod böyük məlumat bazaları üçün əlverişlidir.
+    /// </summary>
+    /// <param name="parametrler">Səhifələmə parametrləri</param>
+    /// <returns>Səhifələnmiş satış məlumatları</returns>
+    public async Task<EmeliyyatNeticesi<SehifelenmisMelumat<SatisDto>>> SatislariSehifelenmisGetirAsync(SehifeParametrleri parametrler)
+    {
+        Logger.MelumatYaz($"Səhifələnmiş satışlar əldə edilir - Səhifə: {parametrler.SehifeNomresi}, Ölçü: {parametrler.SehifeOlcusu}");
+        try
+        {
+            var (satislar, umumiSay) = await _unitOfWork.Satislar.SehifelenmisGetirAsync(
+                parametrler.SehifeNomresi,
+                parametrler.SehifeOlcusu,
+                s => !s.Silinib);
+
+            var satisDtolar = satislar.Select(s => new SatisDto
+            {
+                Id = s.Id,
+                Tarix = s.Tarix,
+                OdenisMetodu = s.OdenisMetodu,
+                UmumiMebleg = s.UmumiMebleg,
+                NovbeId = s.NovbeId,
+                MusteriId = s.MusteriId
+            }).ToList();
+
+            var sehifelenmis = new SehifelenmisMelumat<SatisDto>(
+                satisDtolar,
+                umumiSay,
+                parametrler.SehifeNomresi,
+                parametrler.SehifeOlcusu);
+
+            Logger.MelumatYaz($"Səhifələnmiş satışlar uğurla əldə edildi - {satisDtolar.Count}/{umumiSay}");
+            return EmeliyyatNeticesi<SehifelenmisMelumat<SatisDto>>.Ugurlu(sehifelenmis);
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Səhifələnmiş satışlar əldə edilərkən istisna baş verdi");
+            return EmeliyyatNeticesi<SehifelenmisMelumat<SatisDto>>.Ugursuz($"Səhifələnmiş satışlar əldə edilərkən xəta: {ex.Message}");
+        }
+    }
 }

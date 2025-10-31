@@ -29,9 +29,21 @@ namespace AzAgroPOS.Teqdimat
             }
         }
 
-        private async void BazaIdareetmeFormu_Load(object sender, EventArgs e)
+        private void BazaIdareetmeFormu_Load(object sender, EventArgs e)
         {
-            await MəlumatlarıYenilə();
+            _ = YukleAsync();
+        }
+
+        private async Task YukleAsync()
+        {
+            try
+            {
+                await MəlumatlarıYenilə();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Forma yüklənərkən xəta: {ex.Message}", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private async Task MəlumatlarıYenilə()
@@ -104,35 +116,39 @@ namespace AzAgroPOS.Teqdimat
             }
         }
 
-        private async void btnBackupYarat_Click(object sender, EventArgs e)
+        private void btnBackupYarat_Click(object sender, EventArgs e)
+        {
+            // İstifadəçidən təsdiq alırıq
+            var təsdiq = MessageBox.Show(
+                "Verilənlər bazasının ehtiyat nüsxəsini yaratmaq istəyirsiniz?\n\n" +
+                "Bu əməliyyat bir neçə dəqiqə çəkə bilər.",
+                "Backup Yaratma",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (təsdiq != DialogResult.Yes)
+                return;
+
+            // SaveFileDialog göstəririk
+            using var saveDialog = new SaveFileDialog
+            {
+                Filter = "Backup Faylları (*.bak)|*.bak",
+                DefaultExt = "bak",
+                InitialDirectory = _standartBackupQovlugu,
+                FileName = BazaIdareetmeManager.StandartBackupAdiYarat(_standartBackupQovlugu)
+            };
+
+            if (saveDialog.ShowDialog() != DialogResult.OK)
+                return;
+
+            var backupYolu = saveDialog.FileName;
+            _ = BackupYaratAsync(backupYolu);
+        }
+
+        private async Task BackupYaratAsync(string backupYolu)
         {
             try
             {
-                // İstifadəçidən təsdiq alırıq
-                var təsdiq = MessageBox.Show(
-                    "Verilənlər bazasının ehtiyat nüsxəsini yaratmaq istəyirsiniz?\n\n" +
-                    "Bu əməliyyat bir neçə dəqiqə çəkə bilər.",
-                    "Backup Yaratma",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question);
-
-                if (təsdiq != DialogResult.Yes)
-                    return;
-
-                // SaveFileDialog göstəririk
-                using var saveDialog = new SaveFileDialog
-                {
-                    Filter = "Backup Faylları (*.bak)|*.bak",
-                    DefaultExt = "bak",
-                    InitialDirectory = _standartBackupQovlugu,
-                    FileName = BazaIdareetmeManager.StandartBackupAdiYarat(_standartBackupQovlugu)
-                };
-
-                if (saveDialog.ShowDialog() != DialogResult.OK)
-                    return;
-
-                var backupYolu = saveDialog.FileName;
-
                 // Yükləmə göstəricisi ilə backup yaradırıq
                 await YuklemeGostergeci.GosterVeIcraEtAsync(
                     this,
@@ -155,65 +171,70 @@ namespace AzAgroPOS.Teqdimat
             }
         }
 
-        private async void btnRestoreEt_Click(object sender, EventArgs e)
+        private void btnRestoreEt_Click(object sender, EventArgs e)
+        {
+            // Seçilmiş backup faylını yoxlayırıq
+            string? restoreYolu = null;
+
+            if (lstBackuplar.SelectedItems.Count > 0)
+            {
+                restoreYolu = lstBackuplar.SelectedItems[0].Tag as string;
+            }
+            else
+            {
+                // Əgər seçim yoxdursa, OpenFileDialog göstəririk
+                using var openDialog = new OpenFileDialog
+                {
+                    Filter = "Backup Faylları (*.bak)|*.bak",
+                    InitialDirectory = _standartBackupQovlugu,
+                    Title = "Bərpa ediləcək backup faylını seçin"
+                };
+
+                if (openDialog.ShowDialog() != DialogResult.OK)
+                    return;
+
+                restoreYolu = openDialog.FileName;
+            }
+
+            if (string.IsNullOrEmpty(restoreYolu) || !File.Exists(restoreYolu))
+            {
+                MessageBox.Show("Backup faylı tapılmadı!", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // Çox ciddi xəbərdarlıq!
+            var xəbərdarlıq = MessageBox.Show(
+                "⚠️ DİQQƏT! ⚠️\n\n" +
+                "Bu əməliyyat mövcud verilənlər bazasını SİLƏCƏK və seçilmiş " +
+                "backup ilə ƏVƏZ EDƏCƏK!\n\n" +
+                "Bütün hazırkı məlumatlar itiriləcək!\n\n" +
+                "Davam etmək istəyirsiniz?",
+                "Çox Təhlükəli Əməliyyat",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning);
+
+            if (xəbərdarlıq != DialogResult.Yes)
+                return;
+
+            // İkinci təsdiq
+            var ikinciTəsdiq = MessageBox.Show(
+                "Son dəfə soruşuruq:\n\n" +
+                "Həqiqətən restore etmək istəyirsiniz?\n\n" +
+                "Proqram bağlanacaq və yenidən açmalısınız!",
+                "Son Təsdiq",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Stop);
+
+            if (ikinciTəsdiq != DialogResult.Yes)
+                return;
+
+            _ = RestoreEtAsync(restoreYolu);
+        }
+
+        private async Task RestoreEtAsync(string restoreYolu)
         {
             try
             {
-                // Seçilmiş backup faylını yoxlayırıq
-                string? restoreYolu = null;
-
-                if (lstBackuplar.SelectedItems.Count > 0)
-                {
-                    restoreYolu = lstBackuplar.SelectedItems[0].Tag as string;
-                }
-                else
-                {
-                    // Əgər seçim yoxdursa, OpenFileDialog göstəririk
-                    using var openDialog = new OpenFileDialog
-                    {
-                        Filter = "Backup Faylları (*.bak)|*.bak",
-                        InitialDirectory = _standartBackupQovlugu,
-                        Title = "Bərpa ediləcək backup faylını seçin"
-                    };
-
-                    if (openDialog.ShowDialog() != DialogResult.OK)
-                        return;
-
-                    restoreYolu = openDialog.FileName;
-                }
-
-                if (string.IsNullOrEmpty(restoreYolu) || !File.Exists(restoreYolu))
-                {
-                    MessageBox.Show("Backup faylı tapılmadı!", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                // Çox ciddi xəbərdarlıq!
-                var xəbərdarlıq = MessageBox.Show(
-                    "⚠️ DİQQƏT! ⚠️\n\n" +
-                    "Bu əməliyyat mövcud verilənlər bazasını SİLƏCƏK və seçilmiş " +
-                    "backup ilə ƏVƏZ EDƏCƏK!\n\n" +
-                    "Bütün hazırkı məlumatlar itiriləcək!\n\n" +
-                    "Davam etmək istəyirsiniz?",
-                    "Çox Təhlükəli Əməliyyat",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Warning);
-
-                if (xəbərdarlıq != DialogResult.Yes)
-                    return;
-
-                // İkinci təsdiq
-                var ikinciTəsdiq = MessageBox.Show(
-                    "Son dəfə soruşuruq:\n\n" +
-                    "Həqiqətən restore etmək istəyirsiniz?\n\n" +
-                    "Proqram bağlanacaq və yenidən açmalısınız!",
-                    "Son Təsdiq",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Stop);
-
-                if (ikinciTəsdiq != DialogResult.Yes)
-                    return;
-
                 // Restore əməliyyatı
                 await YuklemeGostergeci.GosterVeIcraEtAsync(
                     this,
