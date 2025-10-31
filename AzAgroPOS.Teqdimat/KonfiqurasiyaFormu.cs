@@ -15,9 +15,21 @@ namespace AzAgroPOS.Teqdimat
             _konfiqurasiyaManager = konfiqurasiyaManager;
         }
 
-        private async void KonfiqurasiyaFormu_Load(object sender, EventArgs e)
+        private void KonfiqurasiyaFormu_Load(object sender, EventArgs e)
         {
-            await YukleKonfiqurasiyaParametrləri();
+            _ = YukleAsync();
+        }
+
+        private async Task YukleAsync()
+        {
+            try
+            {
+                await YukleKonfiqurasiyaParametrləri();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Forma yüklənərkən xəta: {ex.Message}", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private async Task YukleKonfiqurasiyaParametrləri()
@@ -99,7 +111,12 @@ namespace AzAgroPOS.Teqdimat
             }
         }
 
-        private async void btnSaxla_Click(object sender, EventArgs e)
+        private void btnSaxla_Click(object sender, EventArgs e)
+        {
+            _ = SaxlaAsync();
+        }
+
+        private async Task SaxlaAsync()
         {
             try
             {

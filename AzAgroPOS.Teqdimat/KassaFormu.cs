@@ -27,19 +27,31 @@ public partial class KassaFormu : BazaForm
         this.Load += KassaFormu_Load;
     }
 
-    private async void KassaFormu_Load(object sender, EventArgs e)
+    private void KassaFormu_Load(object sender, EventArgs e)
     {
-        InitializeEnums();
-        await XercleriYukle();
-        await KassaHareketleriniYukle();
-        await MaliyyeXulasesiniYukle();
+        _ = YukleAsync();
+    }
 
-        // Tarix aralığını cari ay üçün təyin et
-        dtpBaslangic.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-        dtpBitis.Value = DateTime.Now;
+    private async Task YukleAsync()
+    {
+        try
+        {
+            InitializeEnums();
+            await XercleriYukle();
+            await KassaHareketleriniYukle();
+            await MaliyyeXulasesiniYukle();
 
-        dtpXesabatBaslangic.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-        dtpXesabatBitis.Value = DateTime.Now;
+            // Tarix aralığını cari ay üçün təyin et
+            dtpBaslangic.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            dtpBitis.Value = DateTime.Now;
+
+            dtpXesabatBaslangic.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            dtpXesabatBitis.Value = DateTime.Now;
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Forma yüklənərkən xəta: {ex.Message}", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
     }
 
     /// <summary>
@@ -103,13 +115,18 @@ public partial class KassaFormu : BazaForm
     /// <summary>
     /// Xərc yarat düyməsi
     /// </summary>
-    private async void btnXercYarat_Click(object sender, EventArgs e)
+    private void btnXercYarat_Click(object sender, EventArgs e)
     {
         if (!ValidateXercForm())
         {
             return;
         }
 
+        _ = XercYaratAsync();
+    }
+
+    private async Task XercYaratAsync()
+    {
         try
         {
             var netice = await _maliyyeManager.XercYaratAsync(
@@ -143,7 +160,7 @@ public partial class KassaFormu : BazaForm
     /// <summary>
     /// Xərc yenilə düyməsi
     /// </summary>
-    private async void btnXercYenile_Click(object sender, EventArgs e)
+    private void btnXercYenile_Click(object sender, EventArgs e)
     {
         if (_seciliXercId == 0)
         {
@@ -156,6 +173,11 @@ public partial class KassaFormu : BazaForm
             return;
         }
 
+        _ = XercYenileAsync();
+    }
+
+    private async Task XercYenileAsync()
+    {
         try
         {
             var netice = await _maliyyeManager.XercYenileAsync(
@@ -190,7 +212,7 @@ public partial class KassaFormu : BazaForm
     /// <summary>
     /// Xərc sil düyməsi
     /// </summary>
-    private async void btnXercSil_Click(object sender, EventArgs e)
+    private void btnXercSil_Click(object sender, EventArgs e)
     {
         if (_seciliXercId == 0)
         {
@@ -206,6 +228,11 @@ public partial class KassaFormu : BazaForm
 
         if (tesdiq != DialogResult.Yes) return;
 
+        _ = XercSilAsync();
+    }
+
+    private async Task XercSilAsync()
+    {
         try
         {
             var netice = await _maliyyeManager.XercSilAsync(_seciliXercId);
@@ -375,9 +402,9 @@ public partial class KassaFormu : BazaForm
     /// <summary>
     /// Kassa hərəkətlərini filtrələ düyməsi
     /// </summary>
-    private async void btnFiltrele_Click(object sender, EventArgs e)
+    private void btnFiltrele_Click(object sender, EventArgs e)
     {
-        await KassaHareketleriniYukle();
+        _ = KassaHareketleriniYukle();
     }
 
     #endregion
@@ -454,9 +481,9 @@ public partial class KassaFormu : BazaForm
     /// <summary>
     /// Maliyyə hesabatı göstər düyməsi
     /// </summary>
-    private async void btnHesabatGoster_Click(object sender, EventArgs e)
+    private void btnHesabatGoster_Click(object sender, EventArgs e)
     {
-        await MaliyyeXulasesiniYukle();
+        _ = MaliyyeXulasesiniYukle();
     }
 
     #endregion
@@ -464,10 +491,22 @@ public partial class KassaFormu : BazaForm
     /// <summary>
     /// Yenilə düyməsi - bütün məlumatları yenidən yüklə
     /// </summary>
-    private async void btnYenile_Click(object sender, EventArgs e)
+    private void btnYenile_Click(object sender, EventArgs e)
     {
-        await XercleriYukle();
-        await KassaHareketleriniYukle();
-        await MaliyyeXulasesiniYukle();
+        _ = YenileAsync();
+    }
+
+    private async Task YenileAsync()
+    {
+        try
+        {
+            await XercleriYukle();
+            await KassaHareketleriniYukle();
+            await MaliyyeXulasesiniYukle();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Məlumatlar yenilənərkən xəta: {ex.Message}", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
     }
 }

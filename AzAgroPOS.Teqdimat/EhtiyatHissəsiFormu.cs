@@ -39,9 +39,21 @@ namespace AzAgroPOS.Teqdimat
             Yardimcilar.DataGridViewHelper.StilVerDataGridView(grid);
         }
 
-        private async void EhtiyatHissəsiFormu_Load(object sender, EventArgs e)
+        private void EhtiyatHissəsiFormu_Load(object sender, EventArgs e)
         {
-            await MehsullariYukle();
+            _ = YukleAsync();
+        }
+
+        private async Task YukleAsync()
+        {
+            try
+            {
+                await MehsullariYukle();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Forma yüklənərkən xəta: {ex.Message}", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private async Task MehsullariYukle()

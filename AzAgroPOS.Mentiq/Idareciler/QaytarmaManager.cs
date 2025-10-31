@@ -354,4 +354,33 @@ public class QaytarmaManager
             return EmeliyyatNeticesi<Qaytarma>.Ugursuz($"Qaytarma əldə edilərkən xəta: {ex.Message}");
         }
     }
+
+    /// <summary>
+    /// Səhifələnmiş qaytarma siyahısını əldə edir.
+    /// Diqqət: Bu metod böyük məlumat bazaları üçün əlverişlidir.
+    /// </summary>
+    /// <param name="parametrler">Səhifələmə parametrləri</param>
+    /// <returns>Səhifələnmiş qaytarma məlumatları</returns>
+    public async Task<EmeliyyatNeticesi<SehifelenmisMelumat<Qaytarma>>> QaytarmalariSehifelenmisGetirAsync(SehifeParametrleri parametrler)
+    {
+        Logger.MelumatYaz($"Səhifələnmiş qaytarmalar əldə edilir - Səhifə: {parametrler.SehifeNomresi}, Ölçü: {parametrler.SehifeOlcusu}");
+        try
+        {
+            var (qaytarmalar, umumiSay) = await _unitOfWork.Qaytarmalar.SehifelenmisGetirAsync(
+                parametrler.SehifeNomresi,
+                parametrler.SehifeOlcusu,
+                q => !q.Silinib);
+
+            var sehifelenmis = new SehifelenmisMelumat<Qaytarma>(
+                qaytarmalar.ToList(), umumiSay, parametrler.SehifeNomresi, parametrler.SehifeOlcusu);
+
+            Logger.MelumatYaz($"Səhifələnmiş qaytarmalar uğurla əldə edildi - {qaytarmalar.Count()}/{umumiSay}");
+            return EmeliyyatNeticesi<SehifelenmisMelumat<Qaytarma>>.Ugurlu(sehifelenmis);
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Səhifələnmiş qaytarmalar əldə edilərkən istisna baş verdi");
+            return EmeliyyatNeticesi<SehifelenmisMelumat<Qaytarma>>.Ugursuz($"Səhifələnmiş qaytarmalar əldə edilərkən xəta: {ex.Message}");
+        }
+    }
 }

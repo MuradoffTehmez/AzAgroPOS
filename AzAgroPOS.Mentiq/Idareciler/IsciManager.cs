@@ -287,4 +287,55 @@ public class IsciManager
             return EmeliyyatNeticesi<List<IsciIzniDto>>.Ugursuz($"İşçinin məzuniyyət/icazə qeydlərini gətirmək alınmadı: {ex.Message}+ {ex.StackTrace}");
         }
     }
+
+    /// <summary>
+    /// Səhifələnmiş işçi siyahısını əldə edir.
+    /// Diqqət: Bu metod böyük məlumat bazaları üçün əlverişlidir.
+    /// </summary>
+    /// <param name="parametrler">Səhifələmə parametrləri</param>
+    /// <returns>Səhifələnmiş işçi məlumatları</returns>
+    public async Task<EmeliyyatNeticesi<SehifelenmisMelumat<IsciDto>>> IscileriSehifelenmisGetirAsync(SehifeParametrleri parametrler)
+    {
+        Logger.MelumatYaz($"Səhifələnmiş işçilər əldə edilir - Səhifə: {parametrler.SehifeNomresi}, Ölçü: {parametrler.SehifeOlcusu}");
+        try
+        {
+            var (isciler, umumiSay) = await _unitOfWork.Isciler.SehifelenmisGetirAsync(
+                parametrler.SehifeNomresi,
+                parametrler.SehifeOlcusu,
+                i => !i.Silinib);
+
+            var dtolar = isciler.Select(i => new IsciDto
+            {
+                Id = i.Id,
+                TamAd = i.TamAd,
+                DogumTarixi = i.DogumTarixi,
+                TelefonNomresi = i.TelefonNomresi,
+                Unvan = i.Unvan,
+                Email = i.Email,
+                IseBaslamaTarixi = i.IseBaslamaTarixi,
+                Maas = i.Maas,
+                Vezife = i.Vezife,
+                Departament = i.Departament,
+                Status = i.Status,
+                SvsNo = i.SvsNo,
+                QeydiyyatUnvani = i.QeydiyyatUnvani,
+                BankMəlumatları = i.BankMəlumatları,
+                SistemIstifadeciAdi = i.SistemIstifadecisi?.IstifadeciAdi
+            }).ToList();
+
+            var sehifelenmis = new SehifelenmisMelumat<IsciDto>(
+                dtolar,
+                umumiSay,
+                parametrler.SehifeNomresi,
+                parametrler.SehifeOlcusu);
+
+            Logger.MelumatYaz($"Səhifələnmiş işçilər uğurla əldə edildi - {dtolar.Count}/{umumiSay}");
+            return EmeliyyatNeticesi<SehifelenmisMelumat<IsciDto>>.Ugurlu(sehifelenmis);
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Səhifələnmiş işçilər əldə edilərkən istisna baş verdi");
+            return EmeliyyatNeticesi<SehifelenmisMelumat<IsciDto>>.Ugursuz($"Səhifələnmiş işçilər əldə edilərkən xəta: {ex.Message}");
+        }
+    }
 }

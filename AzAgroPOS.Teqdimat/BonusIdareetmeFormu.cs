@@ -23,7 +23,12 @@ namespace AzAgroPOS.Teqdimat
             this.Load += BonusIdareetmeFormu_Load;
         }
 
-        private async void BonusIdareetmeFormu_Load(object? sender, EventArgs e)
+        private void BonusIdareetmeFormu_Load(object? sender, EventArgs e)
+        {
+            _ = YukleAsync();
+        }
+
+        private async Task YukleAsync()
         {
             try
             {
@@ -175,13 +180,12 @@ namespace AzAgroPOS.Teqdimat
 
         #region Müştəri Seçimi
 
-        private async void cmbMusteri_SelectedIndexChanged(object? sender, EventArgs e)
+        private void cmbMusteri_SelectedIndexChanged(object? sender, EventArgs e)
         {
             if (cmbMusteri.SelectedValue is int musteriId && musteriId > 0)
             {
                 _seciliMusteriId = musteriId;
-                await MusteriBonusMelumatlariniYukle();
-                await BonusTarixcesiniYukle();
+                _ = MusteriBonusMelumatlariniYukleAsync();
             }
             else
             {
@@ -191,6 +195,23 @@ namespace AzAgroPOS.Teqdimat
             }
 
             DuymeleriBloklama();
+        }
+
+        private async Task MusteriBonusMelumatlariniYukleAsync()
+        {
+            try
+            {
+                await MusteriBonusMelumatlariniYukle();
+                await BonusTarixcesiniYukle();
+            }
+            catch (Exception ex)
+            {
+                MaterialMessageBox.Show(
+                    $"Müştəri bonus məlumatı yüklənərkən xəta: {ex.Message}",
+                    "Xəta",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
         }
 
         private async Task MusteriBonusMelumatlariniYukle()
@@ -292,7 +313,7 @@ namespace AzAgroPOS.Teqdimat
 
         #region Əməliyyatlar
 
-        private async void btnBalElaveEt_Click(object? sender, EventArgs e)
+        private void btnBalElaveEt_Click(object? sender, EventArgs e)
         {
             if (_seciliMusteriId == 0)
             {
@@ -324,35 +345,51 @@ namespace AzAgroPOS.Teqdimat
                 return;
             }
 
-            var netice = await _musteriManager.BalElaveEtAsync(
-                _seciliMusteriId,
-                numBalMiqdari.Value,
-                txtAciklama.Text);
+            _ = BalElaveEtAsync();
+        }
 
-            if (netice.UgurluDur)
+        private async Task BalElaveEtAsync()
+        {
+            try
             {
-                MaterialMessageBox.Show(
-                    "Bal uğurla əlavə edildi",
-                    "Uğur",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
+                var netice = await _musteriManager.BalElaveEtAsync(
+                    _seciliMusteriId,
+                    numBalMiqdari.Value,
+                    txtAciklama.Text);
 
-                await MusteriBonusMelumatlariniYukle();
-                await BonusTarixcesiniYukle();
-                await ButunBonuslariYukle();
-                EmeliyyatSaheleriniTemizle();
+                if (netice.UgurluDur)
+                {
+                    MaterialMessageBox.Show(
+                        "Bal uğurla əlavə edildi",
+                        "Uğur",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+
+                    await MusteriBonusMelumatlariniYukle();
+                    await BonusTarixcesiniYukle();
+                    await ButunBonuslariYukle();
+                    EmeliyyatSaheleriniTemizle();
+                }
+                else
+                {
+                    MaterialMessageBox.Show(
+                        netice.Mesaj ?? "Bal əlavə edilə bilmədi",
+                        "Xəta",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
             }
-            else
+            catch (Exception ex)
             {
                 MaterialMessageBox.Show(
-                    netice.Mesaj ?? "Bal əlavə edilə bilmədi",
+                    $"Bal əlavə edilərkən xəta: {ex.Message}",
                     "Xəta",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
         }
 
-        private async void btnBalIstifadeEt_Click(object? sender, EventArgs e)
+        private void btnBalIstifadeEt_Click(object? sender, EventArgs e)
         {
             if (_seciliMusteriId == 0)
             {
@@ -394,35 +431,51 @@ namespace AzAgroPOS.Teqdimat
                 return;
             }
 
-            var netice = await _musteriManager.BalIstifadeEtAsync(
-                _seciliMusteriId,
-                numBalMiqdari.Value,
-                txtAciklama.Text);
+            _ = BalIstifadeEtAsync();
+        }
 
-            if (netice.UgurluDur)
+        private async Task BalIstifadeEtAsync()
+        {
+            try
             {
-                MaterialMessageBox.Show(
-                    "Bal uğurla istifadə edildi",
-                    "Uğur",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
+                var netice = await _musteriManager.BalIstifadeEtAsync(
+                    _seciliMusteriId,
+                    numBalMiqdari.Value,
+                    txtAciklama.Text);
 
-                await MusteriBonusMelumatlariniYukle();
-                await BonusTarixcesiniYukle();
-                await ButunBonuslariYukle();
-                EmeliyyatSaheleriniTemizle();
+                if (netice.UgurluDur)
+                {
+                    MaterialMessageBox.Show(
+                        "Bal uğurla istifadə edildi",
+                        "Uğur",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+
+                    await MusteriBonusMelumatlariniYukle();
+                    await BonusTarixcesiniYukle();
+                    await ButunBonuslariYukle();
+                    EmeliyyatSaheleriniTemizle();
+                }
+                else
+                {
+                    MaterialMessageBox.Show(
+                        netice.Mesaj ?? "Bal istifadə edilə bilmədi",
+                        "Xəta",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
             }
-            else
+            catch (Exception ex)
             {
                 MaterialMessageBox.Show(
-                    netice.Mesaj ?? "Bal istifadə edilə bilmədi",
+                    $"Bal istifadə edilərkən xəta: {ex.Message}",
                     "Xəta",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
         }
 
-        private async void btnBalLegvEt_Click(object? sender, EventArgs e)
+        private void btnBalLegvEt_Click(object? sender, EventArgs e)
         {
             if (_seciliMusteriId == 0)
             {
@@ -463,35 +516,51 @@ namespace AzAgroPOS.Teqdimat
             if (confirmResult != DialogResult.Yes)
                 return;
 
-            var netice = await _musteriManager.BalLegvEtAsync(
-                _seciliMusteriId,
-                numBalMiqdari.Value,
-                txtAciklama.Text);
+            _ = BalLegvEtAsync();
+        }
 
-            if (netice.UgurluDur)
+        private async Task BalLegvEtAsync()
+        {
+            try
             {
-                MaterialMessageBox.Show(
-                    "Bal uğurla ləğv edildi",
-                    "Uğur",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
+                var netice = await _musteriManager.BalLegvEtAsync(
+                    _seciliMusteriId,
+                    numBalMiqdari.Value,
+                    txtAciklama.Text);
 
-                await MusteriBonusMelumatlariniYukle();
-                await BonusTarixcesiniYukle();
-                await ButunBonuslariYukle();
-                EmeliyyatSaheleriniTemizle();
+                if (netice.UgurluDur)
+                {
+                    MaterialMessageBox.Show(
+                        "Bal uğurla ləğv edildi",
+                        "Uğur",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+
+                    await MusteriBonusMelumatlariniYukle();
+                    await BonusTarixcesiniYukle();
+                    await ButunBonuslariYukle();
+                    EmeliyyatSaheleriniTemizle();
+                }
+                else
+                {
+                    MaterialMessageBox.Show(
+                        netice.Mesaj ?? "Bal ləğv edilə bilmədi",
+                        "Xəta",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
             }
-            else
+            catch (Exception ex)
             {
                 MaterialMessageBox.Show(
-                    netice.Mesaj ?? "Bal ləğv edilə bilmədi",
+                    $"Bal ləğv edilərkən xəta: {ex.Message}",
                     "Xəta",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
         }
 
-        private async void btnManualElaveEt_Click(object? sender, EventArgs e)
+        private void btnManualElaveEt_Click(object? sender, EventArgs e)
         {
             if (_seciliMusteriId == 0)
             {
@@ -532,28 +601,44 @@ namespace AzAgroPOS.Teqdimat
             if (confirmResult != DialogResult.Yes)
                 return;
 
-            var netice = await _musteriManager.ManualBalElaveEtAsync(
-                _seciliMusteriId,
-                numBalMiqdari.Value,
-                txtAciklama.Text);
+            _ = ManualBalElaveEtAsync();
+        }
 
-            if (netice.UgurluDur)
+        private async Task ManualBalElaveEtAsync()
+        {
+            try
             {
-                MaterialMessageBox.Show(
-                    "Bal uğurla manual əlavə edildi",
-                    "Uğur",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
+                var netice = await _musteriManager.ManualBalElaveEtAsync(
+                    _seciliMusteriId,
+                    numBalMiqdari.Value,
+                    txtAciklama.Text);
 
-                await MusteriBonusMelumatlariniYukle();
-                await BonusTarixcesiniYukle();
-                await ButunBonuslariYukle();
-                EmeliyyatSaheleriniTemizle();
+                if (netice.UgurluDur)
+                {
+                    MaterialMessageBox.Show(
+                        "Bal uğurla manual əlavə edildi",
+                        "Uğur",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+
+                    await MusteriBonusMelumatlariniYukle();
+                    await BonusTarixcesiniYukle();
+                    await ButunBonuslariYukle();
+                    EmeliyyatSaheleriniTemizle();
+                }
+                else
+                {
+                    MaterialMessageBox.Show(
+                        netice.Mesaj ?? "Bal manual əlavə edilə bilmədi",
+                        "Xəta",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
             }
-            else
+            catch (Exception ex)
             {
                 MaterialMessageBox.Show(
-                    netice.Mesaj ?? "Bal manual əlavə edilə bilmədi",
+                    $"Bal manual əlavə edilərkən xəta: {ex.Message}",
                     "Xəta",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
@@ -570,22 +655,38 @@ namespace AzAgroPOS.Teqdimat
 
         #region Yeniləmə
 
-        private async void btnYenile_Click(object? sender, EventArgs e)
+        private void btnYenile_Click(object? sender, EventArgs e)
         {
-            await MusterileriYukle();
-            await ButunBonuslariYukle();
+            _ = YenileAsync();
+        }
 
-            if (_seciliMusteriId > 0)
+        private async Task YenileAsync()
+        {
+            try
             {
-                await MusteriBonusMelumatlariniYukle();
-                await BonusTarixcesiniYukle();
-            }
+                await MusterileriYukle();
+                await ButunBonuslariYukle();
 
-            MaterialMessageBox.Show(
-                "Məlumatlar yeniləndi",
-                "Uğur",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
+                if (_seciliMusteriId > 0)
+                {
+                    await MusteriBonusMelumatlariniYukle();
+                    await BonusTarixcesiniYukle();
+                }
+
+                MaterialMessageBox.Show(
+                    "Məlumatlar yeniləndi",
+                    "Uğur",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MaterialMessageBox.Show(
+                    $"Məlumatlar yenilənərkən xəta: {ex.Message}",
+                    "Xəta",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
         }
 
         #endregion

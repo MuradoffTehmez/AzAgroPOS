@@ -57,4 +57,15 @@ public class TedarukcuMeneceri
     {
         return await _alisManager.TedarukcuSilAsync(id);
     }
+
+    /// <summary>
+    /// Səhifələnmiş tədarükçü siyahısını əldə edir.
+    /// Diqqət: Bu metod böyük məlumat bazaları üçün əlverişlidir.
+    /// </summary>
+    /// <param name="parametrler">Səhifələmə parametrləri</param>
+    /// <returns>Səhifələnmiş tədarükçü məlumatları</returns>
+    public async Task<EmeliyyatNeticesi<SehifelenmisMelumat<TedarukcuDto>>> TedarukculeriSehifelenmisGetirAsync(SehifeParametrleri parametrler)
+    {
+        return await _alisManager.TedarukculeriSehifelenmisGetirAsync(parametrler);
+    }
 }

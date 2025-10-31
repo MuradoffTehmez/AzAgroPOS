@@ -169,4 +169,41 @@ public class KateqoriyaMeneceri
             return EmeliyyatNeticesi.Ugursuz($"Kateqoriya silmək alınmadı: {ex.Message} + {ex.StackTrace}");
         }
     }
+
+    /// <summary>
+    /// Səhifələnmiş kateqoriya siyahısını əldə edir.
+    /// Diqqət: Bu metod böyük məlumat bazaları üçün əlverişlidir.
+    /// </summary>
+    /// <param name="parametrler">Səhifələmə parametrləri</param>
+    /// <returns>Səhifələnmiş kateqoriya məlumatları</returns>
+    public async Task<EmeliyyatNeticesi<SehifelenmisMelumat<KateqoriyaDto>>> KateqoriyalariSehifelenmisGetirAsync(SehifeParametrleri parametrler)
+    {
+        Logger.MelumatYaz($"Səhifələnmiş kateqoriyalar əldə edilir - Səhifə: {parametrler.SehifeNomresi}, Ölçü: {parametrler.SehifeOlcusu}");
+        try
+        {
+            var (kateqoriyalar, umumiSay) = await _unitOfWork.Kateqoriyalar.SehifelenmisGetirAsync(
+                parametrler.SehifeNomresi,
+                parametrler.SehifeOlcusu,
+                k => k.Aktivdir);
+
+            var dtolar = kateqoriyalar.Select(k => new KateqoriyaDto
+            {
+                Id = k.Id,
+                Ad = k.Ad,
+                Tesvir = k.Tesvir,
+                Aktivdir = k.Aktivdir
+            }).ToList();
+
+            var sehifelenmis = new SehifelenmisMelumat<KateqoriyaDto>(
+                dtolar, umumiSay, parametrler.SehifeNomresi, parametrler.SehifeOlcusu);
+
+            Logger.MelumatYaz($"Səhifələnmiş kateqoriyalar uğurla əldə edildi - {dtolar.Count}/{umumiSay}");
+            return EmeliyyatNeticesi<SehifelenmisMelumat<KateqoriyaDto>>.Ugurlu(sehifelenmis);
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Səhifələnmiş kateqoriyalar əldə edilərkən istisna baş verdi");
+            return EmeliyyatNeticesi<SehifelenmisMelumat<KateqoriyaDto>>.Ugursuz($"Səhifələnmiş kateqoriyalar əldə edilərkən xəta: {ex.Message} + {ex.StackTrace}");
+        }
+    }
 }
