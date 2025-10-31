@@ -127,9 +127,9 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
                 }
 
                 // Texniki detalları göstərmək üçün (yalnız development mühitində)
-                #if DEBUG
+#if DEBUG
                 mesaj += $"\n\nTexniki detallar:\n{exception.Message}";
-                #endif
+#endif
 
                 MessageBox.Show(mesaj, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

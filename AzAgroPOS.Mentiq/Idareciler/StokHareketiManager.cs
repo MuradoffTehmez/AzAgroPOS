@@ -287,14 +287,14 @@ public class StokHareketiManager
         try
         {
             var filter = baslangicTarixi.HasValue && bitisTarixi.HasValue
-                ? (Func<StokHareketi, bool>)(sh => sh.MehsulId == mehsulId && 
-                                                sh.Tarix.Date >= baslangicTarixi.Value.Date && 
+                ? (Func<StokHareketi, bool>)(sh => sh.MehsulId == mehsulId &&
+                                                sh.Tarix.Date >= baslangicTarixi.Value.Date &&
                                                 sh.Tarix.Date <= bitisTarixi.Value.Date)
                 : baslangicTarixi.HasValue
-                    ? (Func<StokHareketi, bool>)(sh => sh.MehsulId == mehsulId && 
+                    ? (Func<StokHareketi, bool>)(sh => sh.MehsulId == mehsulId &&
                                                     sh.Tarix.Date >= baslangicTarixi.Value.Date)
                     : bitisTarixi.HasValue
-                        ? (Func<StokHareketi, bool>)(sh => sh.MehsulId == mehsulId && 
+                        ? (Func<StokHareketi, bool>)(sh => sh.MehsulId == mehsulId &&
                                                         sh.Tarix.Date <= bitisTarixi.Value.Date)
                         : (Func<StokHareketi, bool>)(sh => sh.MehsulId == mehsulId);
 
@@ -305,13 +305,13 @@ public class StokHareketiManager
             foreach (var hereket in hereketler)
             {
                 // Mənfəət hərəkətə görə hesablanır
-                if (hereket.HareketTipi == StokHareketTipi.Cixis && 
+                if (hereket.HareketTipi == StokHareketTipi.Cixis &&
                    (hereket.SenedNovu == SenedNovu.Satis || hereket.SenedNovu == SenedNovu.Qaytarma))
                 {
                     // Satış və ya qaytarma çıxışı - gəlir qazanılır
                     menfeetToplami += hereket.UmumiDeyer; // Miqdar * SatisQiymeti
                 }
-                else if (hereket.HareketTipi == StokHareketTipi.Daxilolma && 
+                else if (hereket.HareketTipi == StokHareketTipi.Daxilolma &&
                         (hereket.SenedNovu == SenedNovu.Alis || hereket.SenedNovu == SenedNovu.Qaytarma))
                 {
                     // Alış və ya qaytarma daxilolması - xərc tutulur
@@ -343,7 +343,7 @@ public class StokHareketiManager
         try
         {
             var filter = baslangicTarixi.HasValue && bitisTarixi.HasValue
-                ? (Func<StokHareketi, bool>)(sh => sh.Tarix.Date >= baslangicTarixi.Value.Date && 
+                ? (Func<StokHareketi, bool>)(sh => sh.Tarix.Date >= baslangicTarixi.Value.Date &&
                                                 sh.Tarix.Date <= bitisTarixi.Value.Date)
                 : baslangicTarixi.HasValue
                     ? (Func<StokHareketi, bool>)(sh => sh.Tarix.Date >= baslangicTarixi.Value.Date)
@@ -358,13 +358,13 @@ public class StokHareketiManager
             foreach (var hereket in hereketler)
             {
                 // Mənfəət hərəkətə görə hesablanır
-                if (hereket.HareketTipi == StokHareketTipi.Cixis && 
+                if (hereket.HareketTipi == StokHareketTipi.Cixis &&
                    (hereket.SenedNovu == SenedNovu.Satis || hereket.SenedNovu == SenedNovu.Qaytarma))
                 {
                     // Satış və ya qaytarma çıxışı - gəlir qazanılır
                     menfeetToplami += hereket.UmumiDeyer; // Miqdar * SatisQiymeti
                 }
-                else if (hereket.HareketTipi == StokHareketTipi.Daxilolma && 
+                else if (hereket.HareketTipi == StokHareketTipi.Daxilolma &&
                         (hereket.SenedNovu == SenedNovu.Alis || hereket.SenedNovu == SenedNovu.Qaytarma))
                 {
                     // Alış və ya qaytarma daxilolması - xərc tutulur

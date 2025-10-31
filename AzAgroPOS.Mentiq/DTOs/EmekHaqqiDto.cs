@@ -1,8 +1,8 @@
 // Fayl: AzAgroPOS.Mentiq/DTOs/EmekHaqqiDto.cs
 namespace AzAgroPOS.Mentiq.DTOs;
 
-using System;
 using AzAgroPOS.Varliglar;
+using System;
 
 /// <summary>
 /// Əmək haqqı hesablamaları üçün məlumatları daşıyan DTO.

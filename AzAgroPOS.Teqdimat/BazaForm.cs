@@ -1,8 +1,7 @@
 ﻿// Fayl: AzAgroPOS.Teqdimat/BazaForm.cs
+using AzAgroPOS.Teqdimat.Yardimcilar;
 using MaterialSkin;
 using MaterialSkin.Controls;
-using AzAgroPOS.Mentiq.Yardimcilar;
-using AzAgroPOS.Teqdimat.Yardimcilar;
 
 namespace AzAgroPOS.Teqdimat
 {

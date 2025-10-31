@@ -1,9 +1,6 @@
 // Fayl: AzAgroPOS.Teqdimat/BazaIdareetmeFormu.cs
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Yardimcilar;
-using System;
-using System.IO;
-using System.Windows.Forms;
 
 namespace AzAgroPOS.Teqdimat
 {

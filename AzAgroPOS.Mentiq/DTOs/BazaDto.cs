@@ -12,12 +12,12 @@ public abstract class BazaDto
     /// Unikal identifikator
     /// </summary>
     public int Id { get; set; }
-    
+
     /// <summary>
     /// Yaradılış tarixi
     /// </summary>
     public DateTime YaradilmaTarixi { get; set; }
-    
+
     /// <summary>
     /// Dəyişdirilmə tarixi
     /// </summary>

@@ -504,14 +504,14 @@ public class MaliyyeManager
         {
             // Gəlirləri hesabla
             var gelirFilter = baslangicTarixi.HasValue && bitisTarixi.HasValue
-                ? (Func<KassaHareketi, bool>)(k => k.HareketNovu == KassaHareketiNovu.Daxilolma && 
-                                                k.Tarix.Date >= baslangicTarixi.Value.Date && 
+                ? (Func<KassaHareketi, bool>)(k => k.HareketNovu == KassaHareketiNovu.Daxilolma &&
+                                                k.Tarix.Date >= baslangicTarixi.Value.Date &&
                                                 k.Tarix.Date <= bitisTarixi.Value.Date)
                 : baslangicTarixi.HasValue
-                    ? (Func<KassaHareketi, bool>)(k => k.HareketNovu == KassaHareketiNovu.Daxilolma && 
+                    ? (Func<KassaHareketi, bool>)(k => k.HareketNovu == KassaHareketiNovu.Daxilolma &&
                                                     k.Tarix.Date >= baslangicTarixi.Value.Date)
                     : bitisTarixi.HasValue
-                        ? (Func<KassaHareketi, bool>)(k => k.HareketNovu == KassaHareketiNovu.Daxilolma && 
+                        ? (Func<KassaHareketi, bool>)(k => k.HareketNovu == KassaHareketiNovu.Daxilolma &&
                                                         k.Tarix.Date <= bitisTarixi.Value.Date)
                         : (Func<KassaHareketi, bool>)(k => k.HareketNovu == KassaHareketiNovu.Daxilolma);
 
@@ -520,14 +520,14 @@ public class MaliyyeManager
 
             // Xərcləri hesabla
             var xercFilter = baslangicTarixi.HasValue && bitisTarixi.HasValue
-                ? (Func<KassaHareketi, bool>)(k => k.HareketNovu == KassaHareketiNovu.Cixis && 
-                                                k.Tarix.Date >= baslangicTarixi.Value.Date && 
+                ? (Func<KassaHareketi, bool>)(k => k.HareketNovu == KassaHareketiNovu.Cixis &&
+                                                k.Tarix.Date >= baslangicTarixi.Value.Date &&
                                                 k.Tarix.Date <= bitisTarixi.Value.Date)
                 : baslangicTarixi.HasValue
-                    ? (Func<KassaHareketi, bool>)(k => k.HareketNovu == KassaHareketiNovu.Cixis && 
+                    ? (Func<KassaHareketi, bool>)(k => k.HareketNovu == KassaHareketiNovu.Cixis &&
                                                     k.Tarix.Date >= baslangicTarixi.Value.Date)
                     : bitisTarixi.HasValue
-                        ? (Func<KassaHareketi, bool>)(k => k.HareketNovu == KassaHareketiNovu.Cixis && 
+                        ? (Func<KassaHareketi, bool>)(k => k.HareketNovu == KassaHareketiNovu.Cixis &&
                                                         k.Tarix.Date <= bitisTarixi.Value.Date)
                         : (Func<KassaHareketi, bool>)(k => k.HareketNovu == KassaHareketiNovu.Cixis);
 
