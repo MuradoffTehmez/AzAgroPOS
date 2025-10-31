@@ -79,7 +79,7 @@ public class IsciIzniManager
                 Qeydler = qeydler ?? string.Empty
             };
 
-            await _unitOfWork.IsciIzinleri.ElaveEtAsync(izin);
+            await _unitOfWork.IsciIznleri.ElaveEtAsync(izin);
             await _unitOfWork.EmeliyyatiTesdiqleAsync();
 
             Logger.MelumatYaz($"İşçi izni uğurla yaradıldı: ID={izin.Id}");
@@ -122,7 +122,7 @@ public class IsciIzniManager
             }
 
             // Mövcud izni tap
-            var movcudIzin = await _unitOfWork.IsciIzinleri.GetirAsync(izinId);
+            var movcudIzin = await _unitOfWork.IsciIznleri.GetirAsync(izinId);
             if (movcudIzin == null)
             {
                 Logger.XəbərdarlıqYaz("İzin tapılmadı");
@@ -147,7 +147,7 @@ public class IsciIzniManager
             movcudIzin.Sebeb = sebeb;
             movcudIzin.Qeydler = qeydler ?? string.Empty;
 
-            _unitOfWork.IsciIzinleri.Yenile(movcudIzin);
+            _unitOfWork.IsciIznleri.Yenile(movcudIzin);
             await _unitOfWork.EmeliyyatiTesdiqleAsync();
 
             Logger.MelumatYaz($"İşçi izni uğurla yeniləndi: ID={izinId}");
@@ -171,7 +171,7 @@ public class IsciIzniManager
         try
         {
             // Mövcud izni tap
-            var izin = await _unitOfWork.IsciIzinleri.GetirAsync(izinId);
+            var izin = await _unitOfWork.IsciIznleri.GetirAsync(izinId);
             if (izin == null)
             {
                 Logger.XəbərdarlıqYaz("İzin tapılmadı");
@@ -186,7 +186,7 @@ public class IsciIzniManager
             }
 
             // İzni sil
-            _unitOfWork.IsciIzinleri.Sil(izin);
+            _unitOfWork.IsciIznleri.Sil(izin);
             await _unitOfWork.EmeliyyatiTesdiqleAsync();
 
             Logger.MelumatYaz($"İşçi izni uğurla silindi: ID={izinId}");
@@ -209,7 +209,7 @@ public class IsciIzniManager
         try
         {
             // Mövcud izni tap
-            var izin = await _unitOfWork.IsciIzinleri.GetirAsync(izinId);
+            var izin = await _unitOfWork.IsciIznleri.GetirAsync(izinId);
             if (izin == null)
             {
                 Logger.XəbərdarlıqYaz("İzin tapılmadı");
@@ -228,7 +228,7 @@ public class IsciIzniManager
             izin.TesdiqEdenIsciId = tesdiqEdenIsciId;
             izin.TesdiqTarixi = DateTime.Now;
 
-            _unitOfWork.IsciIzinleri.Yenile(izin);
+            _unitOfWork.IsciIznleri.Yenile(izin);
             await _unitOfWork.EmeliyyatiTesdiqleAsync();
 
             Logger.MelumatYaz($"İşçi izni uğurla təsdiqləndi: ID={izinId}");
@@ -257,7 +257,7 @@ public class IsciIzniManager
             }
 
             // Mövcud izni tap
-            var izin = await _unitOfWork.IsciIzinleri.GetirAsync(izinId);
+            var izin = await _unitOfWork.IsciIznleri.GetirAsync(izinId);
             if (izin == null)
             {
                 Logger.XəbərdarlıqYaz("İzin tapılmadı");
@@ -277,7 +277,7 @@ public class IsciIzniManager
             izin.TesdiqTarixi = DateTime.Now;
             izin.Qeydler += $"\nRədd səbəbi: {reddSebebi}";
 
-            _unitOfWork.IsciIzinleri.Yenile(izin);
+            _unitOfWork.IsciIznleri.Yenile(izin);
             await _unitOfWork.EmeliyyatiTesdiqleAsync();
 
             Logger.MelumatYaz($"İşçi izni uğurla rədd edildi: ID={izinId}");
@@ -301,7 +301,7 @@ public class IsciIzniManager
         try
         {
             // Mövcud izni tap
-            var izin = await _unitOfWork.IsciIzinleri.GetirAsync(izinId);
+            var izin = await _unitOfWork.IsciIznleri.GetirAsync(izinId);
             if (izin == null)
             {
                 Logger.XəbərdarlıqYaz("İzin tapılmadı");
@@ -311,7 +311,7 @@ public class IsciIzniManager
             // İzni ləğv et
             izin.Status = IzinStatusu.LegvEdilib;
 
-            _unitOfWork.IsciIzinleri.Yenile(izin);
+            _unitOfWork.IsciIznleri.Yenile(izin);
             await _unitOfWork.EmeliyyatiTesdiqleAsync();
 
             Logger.MelumatYaz($"İşçi izni uğurla ləğv edildi: ID={izinId}");
@@ -333,7 +333,7 @@ public class IsciIzniManager
 
         try
         {
-            var izinler = (await _unitOfWork.IsciIzinleri.ButununuGetirAsync())
+            var izinler = (await _unitOfWork.IsciIznleri.ButununuGetirAsync())
                 .OrderByDescending(i => i.BaslamaTarixi)
                 .ToList();
 
@@ -356,7 +356,7 @@ public class IsciIzniManager
 
         try
         {
-            var izinler = (await _unitOfWork.IsciIzinleri.ButununuGetirAsync())
+            var izinler = (await _unitOfWork.IsciIznleri.ButununuGetirAsync())
                 .OrderByDescending(i => i.BaslamaTarixi)
                 .ToList();
 
@@ -407,7 +407,7 @@ public class IsciIzniManager
 
         try
         {
-            var izinler = (await _unitOfWork.IsciIzinleri.ButununuGetirAsync())
+            var izinler = (await _unitOfWork.IsciIznleri.ButununuGetirAsync())
                 .Where(i => i.IsciId == isciId)
                 .OrderByDescending(i => i.BaslamaTarixi)
                 .ToList();
@@ -458,7 +458,7 @@ public class IsciIzniManager
 
         try
         {
-            var izinler = (await _unitOfWork.IsciIzinleri.ButununuGetirAsync())
+            var izinler = (await _unitOfWork.IsciIznleri.ButununuGetirAsync())
                 .Where(i => i.Status == status)
                 .OrderByDescending(i => i.BaslamaTarixi)
                 .ToList();
