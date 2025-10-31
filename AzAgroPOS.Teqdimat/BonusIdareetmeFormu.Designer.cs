@@ -447,6 +447,7 @@ namespace AzAgroPOS.Teqdimat
             // tabButunBonuslar
             // 
             tabButunBonuslar.BackColor = Color.FromArgb(242, 242, 242);
+            tabButunBonuslar.Controls.Add(btnYenile);
             tabButunBonuslar.Controls.Add(dgvButunBonuslar);
             tabButunBonuslar.Location = new Point(4, 26);
             tabButunBonuslar.Name = "tabButunBonuslar";
@@ -470,7 +471,6 @@ namespace AzAgroPOS.Teqdimat
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
             dgvButunBonuslar.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dgvButunBonuslar.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvButunBonuslar.Dock = DockStyle.Fill;
             dgvButunBonuslar.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             dgvButunBonuslar.Location = new Point(3, 3);
             dgvButunBonuslar.MultiSelect = false;
@@ -478,7 +478,7 @@ namespace AzAgroPOS.Teqdimat
             dgvButunBonuslar.ReadOnly = true;
             dgvButunBonuslar.RowHeadersVisible = false;
             dgvButunBonuslar.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvButunBonuslar.Size = new Size(1380, 675);
+            dgvButunBonuslar.Size = new Size(1219, 697);
             dgvButunBonuslar.TabIndex = 0;
             // 
             // btnYenile
@@ -491,7 +491,7 @@ namespace AzAgroPOS.Teqdimat
             btnYenile.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnYenile.HighEmphasis = true;
             btnYenile.Icon = null;
-            btnYenile.Location = new Point(1230, 12);
+            btnYenile.Location = new Point(1229, 9);
             btnYenile.Margin = new Padding(4, 6, 4, 6);
             btnYenile.MouseState = MaterialSkin.MouseState.HOVER;
             btnYenile.Name = "btnYenile";
@@ -509,13 +509,11 @@ namespace AzAgroPOS.Teqdimat
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1400, 800);
-            Controls.Add(btnYenile);
             Controls.Add(tabControl);
             Name = "BonusIdareetmeFormu";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Bonus İdarəetməsi";
             Controls.SetChildIndex(tabControl, 0);
-            Controls.SetChildIndex(btnYenile, 0);
             tabControl.ResumeLayout(false);
             tabMusteriBonus.ResumeLayout(false);
             grpBonusTarixcesi.ResumeLayout(false);
