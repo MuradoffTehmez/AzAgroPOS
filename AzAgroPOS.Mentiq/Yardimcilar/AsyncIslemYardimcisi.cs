@@ -1,7 +1,5 @@
 // Fayl: AzAgroPOS.Mentiq/Yardimcilar/AsyncIslemYardimcisi.cs
 
-using System;
-using System.Threading.Tasks;
 //using System.Windows.Forms;
 
 namespace AzAgroPOS.Mentiq.Yardimcilar;
@@ -23,8 +21,8 @@ public static class AsyncIslemYardimcisi
     /// <param name="bitmeMesaji">Əməliyyat bitərkən göstəriləcək mesaj</param>
     /// <returns>Əməliyyat nəticəsi</returns>
     public static async Task<T> IslemIcraEtAsync<T>(
-        Func<Task<T>> emeliyyat, 
-        string? baslamaMesaji = null, 
+        Func<Task<T>> emeliyyat,
+        string? baslamaMesaji = null,
         string? bitmeMesaji = null)
     {
         try
@@ -61,8 +59,8 @@ public static class AsyncIslemYardimcisi
     /// <param name="baslamaMesaji">Əməliyyat başlayarkən göstəriləcək mesaj</param>
     /// <param name="bitmeMesaji">Əməliyyat bitərkən göstəriləcək mesaj</param>
     public static async Task IslemIcraEtAsync(
-        Func<Task> emeliyyat, 
-        string? baslamaMesaji = null, 
+        Func<Task> emeliyyat,
+        string? baslamaMesaji = null,
         string? bitmeMesaji = null)
     {
         try

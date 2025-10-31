@@ -1,11 +1,9 @@
 // Fayl: AzAgroPOS.Verilenler/Realizasialar/XercRepozitori.cs
 namespace AzAgroPOS.Verilenler.Realisasialar;
 
+using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using AzAgroPOS.Verilenler.Kontekst;
-using AzAgroPOS.Varliglar;
-using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 using AzAgroPOS.Verilenler.Realizasialar;
 
 /// <summary>

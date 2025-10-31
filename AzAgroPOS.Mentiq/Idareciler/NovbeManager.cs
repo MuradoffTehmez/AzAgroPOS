@@ -22,9 +22,9 @@ public class NovbeManager
     private readonly IUnitOfWork _unitOfWork;
     private readonly MaliyyeManager _maliyyeManager;
 
-    public NovbeManager(IUnitOfWork unitOfWork, MaliyyeManager maliyyeManager) 
-    { 
-        _unitOfWork = unitOfWork; 
+    public NovbeManager(IUnitOfWork unitOfWork, MaliyyeManager maliyyeManager)
+    {
+        _unitOfWork = unitOfWork;
         _maliyyeManager = maliyyeManager;
     }
 
@@ -97,12 +97,12 @@ public class NovbeManager
         if (nagdSatislar > 0)
         {
             var kassaGeliriNetice = await _maliyyeManager.KassaGeliriElaveEtAsync(
-                nagdSatislar, 
-                novbeId, 
-                $"Növbə #{novbeId} nağd satış gəliri", 
+                nagdSatislar,
+                novbeId,
+                $"Növbə #{novbeId} nağd satış gəliri",
                 novbe.IsciId
             );
-            
+
             if (!kassaGeliriNetice.UgurluDur)
             {
                 Logger.XəbərdarlıqYaz($"Kassa gəliri qeydə alınarkən xəta: {kassaGeliriNetice.Mesaj}");

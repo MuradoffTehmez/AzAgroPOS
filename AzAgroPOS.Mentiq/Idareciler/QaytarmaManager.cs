@@ -188,7 +188,7 @@ public class QaytarmaManager
                     {
                         novbe.FaktikiMebleg -= umumiMebleg;
                         Logger.MelumatYaz($"Növbə nağd pulu azaldıldı: {umumiMebleg}");
-                        
+
                         // Maliyyə jurnalına giriş qeydi əlavə et (nağd qaytarma)
                         try
                         {
@@ -200,7 +200,7 @@ public class QaytarmaManager
                                 qeyd: $"Qaytarma ödənişinin geri qaytarılması (Nağd): {sebeb}, Satış ID={satisId}",
                                 istifadeciId: kassirId
                             );
-                            
+
                             if (!kassaHareketiNetice.UgurluDur)
                             {
                                 Logger.XəbərdarlıqYaz($"Kassa hərəkəti qeydiyyatı zamanı xəta: {kassaHareketiNetice.Mesaj}");
@@ -217,7 +217,7 @@ public class QaytarmaManager
                         // Hazırda fərz edirik ki, FaktikiMebleg həm nağd, həm də kart üçündür
                         novbe.FaktikiMebleg -= umumiMebleg;
                         Logger.MelumatYaz($"Növbə kart məbləği azaldıldı: {umumiMebleg}");
-                        
+
                         // Maliyyə jurnalına giriş qeydi əlavə et (kart qaytarma)
                         try
                         {
@@ -229,7 +229,7 @@ public class QaytarmaManager
                                 qeyd: $"Qaytarma ödənişinin geri qaytarılması (Kart): {sebeb}, Satış ID={satisId}",
                                 istifadeciId: kassirId
                             );
-                            
+
                             if (!kassaHareketiNetice.UgurluDur)
                             {
                                 Logger.XəbərdarlıqYaz($"Kassa hərəkəti qeydiyyatı zamanı xəta: {kassaHareketiNetice.Mesaj}");

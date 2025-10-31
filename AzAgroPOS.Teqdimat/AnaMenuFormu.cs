@@ -122,10 +122,10 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
         {
             // Qaytarma düyməsindən sonra yeni düymə əlavə edirik
             var newY = qaytarmaButton.Location.Y + qaytarmaButton.Height;
-            
+
             // Yeni düymənin yerini təyin edirik
             xercButton.Location = new Point(qaytarmaButton.Location.X, newY);
-            
+
             // Digər düymələri aşağı endiririk
             foreach (var button in existingButtons.Where(b => b.Location.Y > newY))
             {
@@ -140,7 +140,7 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
 
         // Düyməni panelə əlavə edirik
         pnlMenu.Controls.Add(xercButton);
-        
+
         // Düyməni _formButtonMap-ə də əlavə edirik
         _formButtonMap[typeof(XercIdareetmeFormu)] = xercButton;
     }

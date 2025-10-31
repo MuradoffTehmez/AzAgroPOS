@@ -3,9 +3,6 @@
 using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Mentiq.Yardimcilar;
 using Microsoft.Data.SqlClient;
-using System;
-using System.IO;
-using System.Threading.Tasks;
 
 namespace AzAgroPOS.Mentiq.Idareciler;
 /// <summary>

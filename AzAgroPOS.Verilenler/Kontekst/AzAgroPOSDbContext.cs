@@ -337,7 +337,7 @@ public class AzAgroPOSDbContext : DbContext
         // Xerc konfiqurasiyası
         modelBuilder.Entity<Xerc>()
             .Property(x => x.Mebleg).HasColumnType("decimal(18, 2)");
-        
+
         modelBuilder.Entity<Xerc>()
             .HasOne(x => x.Istifadeci)
             .WithMany()

@@ -2,7 +2,6 @@ using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace AzAgroPOS.Teqdimat
 {
