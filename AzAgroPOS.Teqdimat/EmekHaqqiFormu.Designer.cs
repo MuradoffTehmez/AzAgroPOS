@@ -100,7 +100,7 @@ namespace AzAgroPOS.Teqdimat
             panelForm.Location = new Point(4, 143);
             panelForm.Margin = new Padding(4, 3, 4, 3);
             panelForm.Name = "panelForm";
-            panelForm.Padding = new Padding(23, 23, 23, 23);
+            panelForm.Padding = new Padding(23);
             panelForm.Size = new Size(1392, 288);
             panelForm.TabIndex = 1;
             // 
@@ -302,7 +302,7 @@ namespace AzAgroPOS.Teqdimat
             panelGrid.Margin = new Padding(4, 3, 4, 3);
             panelGrid.Name = "panelGrid";
             panelGrid.Padding = new Padding(23, 12, 23, 12);
-            panelGrid.Size = new Size(1392, 316);
+            panelGrid.Size = new Size(1392, 294);
             panelGrid.TabIndex = 2;
             // 
             // dgvEmekHaqqlari
@@ -336,7 +336,7 @@ namespace AzAgroPOS.Teqdimat
             dgvEmekHaqqlari.Name = "dgvEmekHaqqlari";
             dgvEmekHaqqlari.ReadOnly = true;
             dgvEmekHaqqlari.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvEmekHaqqlari.Size = new Size(1346, 292);
+            dgvEmekHaqqlari.Size = new Size(1346, 270);
             dgvEmekHaqqlari.TabIndex = 0;
             // 
             // panelButtons
@@ -348,7 +348,7 @@ namespace AzAgroPOS.Teqdimat
             panelButtons.Dock = DockStyle.Bottom;
             panelButtons.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             panelButtons.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            panelButtons.Location = new Point(4, 747);
+            panelButtons.Location = new Point(4, 725);
             panelButtons.Margin = new Padding(4, 3, 4, 3);
             panelButtons.Name = "panelButtons";
             panelButtons.Padding = new Padding(23, 12, 23, 12);

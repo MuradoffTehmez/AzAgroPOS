@@ -29,491 +29,599 @@ namespace AzAgroPOS.Teqdimat
         /// </summary>
         private void InitializeComponent()
         {
-            this.panelTop = new System.Windows.Forms.Panel();
-            this.lblBasliq = new MaterialSkin.Controls.MaterialLabel();
-            this.panelForm = new System.Windows.Forms.Panel();
-            this.txtBankMelumatlari = new MaterialSkin.Controls.MaterialTextBox();
-            this.lblBankMelumatlari = new MaterialSkin.Controls.MaterialLabel();
-            this.txtQeydler = new MaterialSkin.Controls.MaterialTextBox();
-            this.lblQeydler = new MaterialSkin.Controls.MaterialLabel();
-            this.cmbStatus = new System.Windows.Forms.ComboBox();
-            this.lblStatus = new MaterialSkin.Controls.MaterialLabel();
-            this.cmbOdemeUsulu = new System.Windows.Forms.ComboBox();
-            this.lblOdemeUsulu = new MaterialSkin.Controls.MaterialLabel();
-            this.numMebleg = new System.Windows.Forms.NumericUpDown();
-            this.lblMebleg = new MaterialSkin.Controls.MaterialLabel();
-            this.dtpOdemeTarixi = new System.Windows.Forms.DateTimePicker();
-            this.lblOdemeTarixi = new MaterialSkin.Controls.MaterialLabel();
-            this.cmbAlisSened = new System.Windows.Forms.ComboBox();
-            this.lblAlisSened = new MaterialSkin.Controls.MaterialLabel();
-            this.cmbTedarukcu = new System.Windows.Forms.ComboBox();
-            this.lblTedarukcu = new MaterialSkin.Controls.MaterialLabel();
-            this.dtpYaradilmaTarixi = new System.Windows.Forms.DateTimePicker();
-            this.lblYaradilmaTarixi = new MaterialSkin.Controls.MaterialLabel();
-            this.txtOdemeNomresi = new MaterialSkin.Controls.MaterialTextBox();
-            this.lblOdemeNomresi = new MaterialSkin.Controls.MaterialLabel();
-            this.panelGrid = new System.Windows.Forms.Panel();
-            this.dgvOdemeler = new System.Windows.Forms.DataGridView();
-            this.panelButtons = new System.Windows.Forms.Panel();
-            this.btnTemizle = new MaterialSkin.Controls.MaterialButton();
-            this.btnSil = new MaterialSkin.Controls.MaterialButton();
-            this.btnYenile = new MaterialSkin.Controls.MaterialButton();
-            this.btnYarat = new MaterialSkin.Controls.MaterialButton();
-            this.panelTop.SuspendLayout();
-            this.panelForm.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numMebleg)).BeginInit();
-            this.panelGrid.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvOdemeler)).BeginInit();
-            this.panelButtons.SuspendLayout();
-            this.SuspendLayout();
-            //
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            panelTop = new Panel();
+            lblBasliq = new MaterialSkin.Controls.MaterialLabel();
+            panelForm = new Panel();
+            txtBankMelumatlari = new MaterialSkin.Controls.MaterialTextBox();
+            lblBankMelumatlari = new MaterialSkin.Controls.MaterialLabel();
+            txtQeydler = new MaterialSkin.Controls.MaterialTextBox();
+            lblQeydler = new MaterialSkin.Controls.MaterialLabel();
+            cmbStatus = new ComboBox();
+            lblStatus = new MaterialSkin.Controls.MaterialLabel();
+            cmbOdemeUsulu = new ComboBox();
+            lblOdemeUsulu = new MaterialSkin.Controls.MaterialLabel();
+            numMebleg = new NumericUpDown();
+            lblMebleg = new MaterialSkin.Controls.MaterialLabel();
+            dtpOdemeTarixi = new DateTimePicker();
+            lblOdemeTarixi = new MaterialSkin.Controls.MaterialLabel();
+            cmbAlisSened = new ComboBox();
+            lblAlisSened = new MaterialSkin.Controls.MaterialLabel();
+            cmbTedarukcu = new ComboBox();
+            lblTedarukcu = new MaterialSkin.Controls.MaterialLabel();
+            dtpYaradilmaTarixi = new DateTimePicker();
+            lblYaradilmaTarixi = new MaterialSkin.Controls.MaterialLabel();
+            txtOdemeNomresi = new MaterialSkin.Controls.MaterialTextBox();
+            lblOdemeNomresi = new MaterialSkin.Controls.MaterialLabel();
+            panelGrid = new Panel();
+            dgvOdemeler = new DataGridView();
+            panelButtons = new Panel();
+            btnTemizle = new MaterialSkin.Controls.MaterialButton();
+            btnSil = new MaterialSkin.Controls.MaterialButton();
+            btnYenile = new MaterialSkin.Controls.MaterialButton();
+            btnYarat = new MaterialSkin.Controls.MaterialButton();
+            panelTop.SuspendLayout();
+            panelForm.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numMebleg).BeginInit();
+            panelGrid.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvOdemeler).BeginInit();
+            panelButtons.SuspendLayout();
+            SuspendLayout();
+            // 
             // panelTop
-            //
-            this.panelTop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(150)))), ((int)(((byte)(243)))));
-            this.panelTop.Controls.Add(this.lblBasliq);
-            this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelTop.Location = new System.Drawing.Point(3, 64);
-            this.panelTop.Name = "panelTop";
-            this.panelTop.Size = new System.Drawing.Size(1194, 60);
-            this.panelTop.TabIndex = 0;
-            //
+            // 
+            panelTop.BackColor = Color.FromArgb(242, 242, 242);
+            panelTop.Controls.Add(lblBasliq);
+            panelTop.Dock = DockStyle.Top;
+            panelTop.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            panelTop.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            panelTop.Location = new Point(4, 74);
+            panelTop.Margin = new Padding(4, 3, 4, 3);
+            panelTop.Name = "panelTop";
+            panelTop.Size = new Size(1392, 69);
+            panelTop.TabIndex = 0;
+            // 
             // lblBasliq
-            //
-            this.lblBasliq.AutoSize = true;
-            this.lblBasliq.Depth = 0;
-            this.lblBasliq.Font = new System.Drawing.Font("Roboto", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
-            this.lblBasliq.FontType = MaterialSkin.MaterialSkinManager.fontType.H5;
-            this.lblBasliq.ForeColor = System.Drawing.Color.White;
-            this.lblBasliq.Location = new System.Drawing.Point(15, 15);
-            this.lblBasliq.MouseState = MaterialSkin.MouseState.HOVER;
-            this.lblBasliq.Name = "lblBasliq";
-            this.lblBasliq.Size = new System.Drawing.Size(275, 29);
-            this.lblBasliq.TabIndex = 0;
-            this.lblBasliq.Text = "Tədarükçü Ödənişləri";
-            //
+            // 
+            lblBasliq.AutoSize = true;
+            lblBasliq.BackColor = Color.FromArgb(242, 242, 242);
+            lblBasliq.Depth = 0;
+            lblBasliq.Font = new Font("Roboto", 24F, FontStyle.Bold, GraphicsUnit.Pixel);
+            lblBasliq.FontType = MaterialSkin.MaterialSkinManager.fontType.H5;
+            lblBasliq.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lblBasliq.Location = new Point(18, 17);
+            lblBasliq.Margin = new Padding(4, 0, 4, 0);
+            lblBasliq.MouseState = MaterialSkin.MouseState.HOVER;
+            lblBasliq.Name = "lblBasliq";
+            lblBasliq.Size = new Size(228, 29);
+            lblBasliq.TabIndex = 0;
+            lblBasliq.Text = "Tədarükçü Ödənişləri";
+            // 
             // panelForm
-            //
-            this.panelForm.Controls.Add(this.txtBankMelumatlari);
-            this.panelForm.Controls.Add(this.lblBankMelumatlari);
-            this.panelForm.Controls.Add(this.txtQeydler);
-            this.panelForm.Controls.Add(this.lblQeydler);
-            this.panelForm.Controls.Add(this.cmbStatus);
-            this.panelForm.Controls.Add(this.lblStatus);
-            this.panelForm.Controls.Add(this.cmbOdemeUsulu);
-            this.panelForm.Controls.Add(this.lblOdemeUsulu);
-            this.panelForm.Controls.Add(this.numMebleg);
-            this.panelForm.Controls.Add(this.lblMebleg);
-            this.panelForm.Controls.Add(this.dtpOdemeTarixi);
-            this.panelForm.Controls.Add(this.lblOdemeTarixi);
-            this.panelForm.Controls.Add(this.cmbAlisSened);
-            this.panelForm.Controls.Add(this.lblAlisSened);
-            this.panelForm.Controls.Add(this.cmbTedarukcu);
-            this.panelForm.Controls.Add(this.lblTedarukcu);
-            this.panelForm.Controls.Add(this.dtpYaradilmaTarixi);
-            this.panelForm.Controls.Add(this.lblYaradilmaTarixi);
-            this.panelForm.Controls.Add(this.txtOdemeNomresi);
-            this.panelForm.Controls.Add(this.lblOdemeNomresi);
-            this.panelForm.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelForm.Location = new System.Drawing.Point(3, 124);
-            this.panelForm.Name = "panelForm";
-            this.panelForm.Padding = new System.Windows.Forms.Padding(10);
-            this.panelForm.Size = new System.Drawing.Size(1194, 280);
-            this.panelForm.TabIndex = 1;
-            //
+            // 
+            panelForm.BackColor = Color.FromArgb(242, 242, 242);
+            panelForm.Controls.Add(txtBankMelumatlari);
+            panelForm.Controls.Add(lblBankMelumatlari);
+            panelForm.Controls.Add(txtQeydler);
+            panelForm.Controls.Add(lblQeydler);
+            panelForm.Controls.Add(cmbStatus);
+            panelForm.Controls.Add(lblStatus);
+            panelForm.Controls.Add(cmbOdemeUsulu);
+            panelForm.Controls.Add(lblOdemeUsulu);
+            panelForm.Controls.Add(numMebleg);
+            panelForm.Controls.Add(lblMebleg);
+            panelForm.Controls.Add(dtpOdemeTarixi);
+            panelForm.Controls.Add(lblOdemeTarixi);
+            panelForm.Controls.Add(cmbAlisSened);
+            panelForm.Controls.Add(lblAlisSened);
+            panelForm.Controls.Add(cmbTedarukcu);
+            panelForm.Controls.Add(lblTedarukcu);
+            panelForm.Controls.Add(dtpYaradilmaTarixi);
+            panelForm.Controls.Add(lblYaradilmaTarixi);
+            panelForm.Controls.Add(txtOdemeNomresi);
+            panelForm.Controls.Add(lblOdemeNomresi);
+            panelForm.Dock = DockStyle.Top;
+            panelForm.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            panelForm.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            panelForm.Location = new Point(4, 143);
+            panelForm.Margin = new Padding(4, 3, 4, 3);
+            panelForm.Name = "panelForm";
+            panelForm.Padding = new Padding(12, 12, 12, 12);
+            panelForm.Size = new Size(1392, 323);
+            panelForm.TabIndex = 1;
+            // 
             // txtBankMelumatlari
-            //
-            this.txtBankMelumatlari.AnimateReadOnly = false;
-            this.txtBankMelumatlari.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtBankMelumatlari.Depth = 0;
-            this.txtBankMelumatlari.Enabled = false;
-            this.txtBankMelumatlari.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.txtBankMelumatlari.LeadingIcon = null;
-            this.txtBankMelumatlari.Location = new System.Drawing.Point(630, 220);
-            this.txtBankMelumatlari.MaxLength = 500;
-            this.txtBankMelumatlari.MouseState = MaterialSkin.MouseState.OUT;
-            this.txtBankMelumatlari.Multiline = false;
-            this.txtBankMelumatlari.Name = "txtBankMelumatlari";
-            this.txtBankMelumatlari.Size = new System.Drawing.Size(550, 50);
-            this.txtBankMelumatlari.TabIndex = 19;
-            this.txtBankMelumatlari.Text = "";
-            this.txtBankMelumatlari.TrailingIcon = null;
-            //
+            // 
+            txtBankMelumatlari.AnimateReadOnly = false;
+            txtBankMelumatlari.BackColor = Color.FromArgb(242, 242, 242);
+            txtBankMelumatlari.BorderStyle = BorderStyle.None;
+            txtBankMelumatlari.Depth = 0;
+            txtBankMelumatlari.Enabled = false;
+            txtBankMelumatlari.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            txtBankMelumatlari.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            txtBankMelumatlari.LeadingIcon = null;
+            txtBankMelumatlari.Location = new Point(735, 254);
+            txtBankMelumatlari.Margin = new Padding(4, 3, 4, 3);
+            txtBankMelumatlari.MaxLength = 500;
+            txtBankMelumatlari.MouseState = MaterialSkin.MouseState.OUT;
+            txtBankMelumatlari.Multiline = false;
+            txtBankMelumatlari.Name = "txtBankMelumatlari";
+            txtBankMelumatlari.Size = new Size(642, 50);
+            txtBankMelumatlari.TabIndex = 19;
+            txtBankMelumatlari.Text = "";
+            txtBankMelumatlari.TrailingIcon = null;
+            // 
             // lblBankMelumatlari
-            //
-            this.lblBankMelumatlari.AutoSize = true;
-            this.lblBankMelumatlari.Depth = 0;
-            this.lblBankMelumatlari.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.lblBankMelumatlari.Location = new System.Drawing.Point(630, 195);
-            this.lblBankMelumatlari.MouseState = MaterialSkin.MouseState.HOVER;
-            this.lblBankMelumatlari.Name = "lblBankMelumatlari";
-            this.lblBankMelumatlari.Size = new System.Drawing.Size(132, 19);
-            this.lblBankMelumatlari.TabIndex = 18;
-            this.lblBankMelumatlari.Text = "Bank Məlumatları:";
-            //
+            // 
+            lblBankMelumatlari.AutoSize = true;
+            lblBankMelumatlari.BackColor = Color.FromArgb(242, 242, 242);
+            lblBankMelumatlari.Depth = 0;
+            lblBankMelumatlari.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblBankMelumatlari.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lblBankMelumatlari.Location = new Point(735, 225);
+            lblBankMelumatlari.Margin = new Padding(4, 0, 4, 0);
+            lblBankMelumatlari.MouseState = MaterialSkin.MouseState.HOVER;
+            lblBankMelumatlari.Name = "lblBankMelumatlari";
+            lblBankMelumatlari.Size = new Size(130, 19);
+            lblBankMelumatlari.TabIndex = 18;
+            lblBankMelumatlari.Text = "Bank Məlumatları:";
+            // 
             // txtQeydler
-            //
-            this.txtQeydler.AnimateReadOnly = false;
-            this.txtQeydler.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtQeydler.Depth = 0;
-            this.txtQeydler.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.txtQeydler.LeadingIcon = null;
-            this.txtQeydler.Location = new System.Drawing.Point(15, 220);
-            this.txtQeydler.MaxLength = 500;
-            this.txtQeydler.MouseState = MaterialSkin.MouseState.OUT;
-            this.txtQeydler.Multiline = false;
-            this.txtQeydler.Name = "txtQeydler";
-            this.txtQeydler.Size = new System.Drawing.Size(600, 50);
-            this.txtQeydler.TabIndex = 17;
-            this.txtQeydler.Text = "";
-            this.txtQeydler.TrailingIcon = null;
-            //
+            // 
+            txtQeydler.AnimateReadOnly = false;
+            txtQeydler.BackColor = Color.FromArgb(242, 242, 242);
+            txtQeydler.BorderStyle = BorderStyle.None;
+            txtQeydler.Depth = 0;
+            txtQeydler.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            txtQeydler.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            txtQeydler.LeadingIcon = null;
+            txtQeydler.Location = new Point(18, 254);
+            txtQeydler.Margin = new Padding(4, 3, 4, 3);
+            txtQeydler.MaxLength = 500;
+            txtQeydler.MouseState = MaterialSkin.MouseState.OUT;
+            txtQeydler.Multiline = false;
+            txtQeydler.Name = "txtQeydler";
+            txtQeydler.Size = new Size(700, 50);
+            txtQeydler.TabIndex = 17;
+            txtQeydler.Text = "";
+            txtQeydler.TrailingIcon = null;
+            // 
             // lblQeydler
-            //
-            this.lblQeydler.AutoSize = true;
-            this.lblQeydler.Depth = 0;
-            this.lblQeydler.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.lblQeydler.Location = new System.Drawing.Point(15, 195);
-            this.lblQeydler.MouseState = MaterialSkin.MouseState.HOVER;
-            this.lblQeydler.Name = "lblQeydler";
-            this.lblQeydler.Size = new System.Drawing.Size(67, 19);
-            this.lblQeydler.TabIndex = 16;
-            this.lblQeydler.Text = "Qeydlər:";
-            //
+            // 
+            lblQeydler.AutoSize = true;
+            lblQeydler.BackColor = Color.FromArgb(242, 242, 242);
+            lblQeydler.Depth = 0;
+            lblQeydler.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblQeydler.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lblQeydler.Location = new Point(18, 225);
+            lblQeydler.Margin = new Padding(4, 0, 4, 0);
+            lblQeydler.MouseState = MaterialSkin.MouseState.HOVER;
+            lblQeydler.Name = "lblQeydler";
+            lblQeydler.Size = new Size(58, 19);
+            lblQeydler.TabIndex = 16;
+            lblQeydler.Text = "Qeydlər:";
+            // 
             // cmbStatus
-            //
-            this.cmbStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbStatus.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.cmbStatus.FormattingEnabled = true;
-            this.cmbStatus.Location = new System.Drawing.Point(880, 150);
-            this.cmbStatus.Name = "cmbStatus";
-            this.cmbStatus.Size = new System.Drawing.Size(300, 29);
-            this.cmbStatus.TabIndex = 15;
-            //
+            // 
+            cmbStatus.BackColor = Color.FromArgb(242, 242, 242);
+            cmbStatus.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbStatus.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            cmbStatus.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            cmbStatus.FormattingEnabled = true;
+            cmbStatus.Location = new Point(1027, 173);
+            cmbStatus.Margin = new Padding(4, 3, 4, 3);
+            cmbStatus.Name = "cmbStatus";
+            cmbStatus.Size = new Size(349, 25);
+            cmbStatus.TabIndex = 15;
+            // 
             // lblStatus
-            //
-            this.lblStatus.AutoSize = true;
-            this.lblStatus.Depth = 0;
-            this.lblStatus.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.lblStatus.Location = new System.Drawing.Point(880, 125);
-            this.lblStatus.MouseState = MaterialSkin.MouseState.HOVER;
-            this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(55, 19);
-            this.lblStatus.TabIndex = 14;
-            this.lblStatus.Text = "Status:";
-            //
+            // 
+            lblStatus.AutoSize = true;
+            lblStatus.BackColor = Color.FromArgb(242, 242, 242);
+            lblStatus.Depth = 0;
+            lblStatus.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblStatus.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lblStatus.Location = new Point(1027, 144);
+            lblStatus.Margin = new Padding(4, 0, 4, 0);
+            lblStatus.MouseState = MaterialSkin.MouseState.HOVER;
+            lblStatus.Name = "lblStatus";
+            lblStatus.Size = new Size(51, 19);
+            lblStatus.TabIndex = 14;
+            lblStatus.Text = "Status:";
+            // 
             // cmbOdemeUsulu
-            //
-            this.cmbOdemeUsulu.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbOdemeUsulu.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.cmbOdemeUsulu.FormattingEnabled = true;
-            this.cmbOdemeUsulu.Location = new System.Drawing.Point(445, 150);
-            this.cmbOdemeUsulu.Name = "cmbOdemeUsulu";
-            this.cmbOdemeUsulu.Size = new System.Drawing.Size(420, 29);
-            this.cmbOdemeUsulu.TabIndex = 13;
-            this.cmbOdemeUsulu.SelectedIndexChanged += new System.EventHandler(this.cmbOdemeUsulu_SelectedIndexChanged);
-            //
+            // 
+            cmbOdemeUsulu.BackColor = Color.FromArgb(242, 242, 242);
+            cmbOdemeUsulu.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbOdemeUsulu.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            cmbOdemeUsulu.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            cmbOdemeUsulu.FormattingEnabled = true;
+            cmbOdemeUsulu.Location = new Point(519, 173);
+            cmbOdemeUsulu.Margin = new Padding(4, 3, 4, 3);
+            cmbOdemeUsulu.Name = "cmbOdemeUsulu";
+            cmbOdemeUsulu.Size = new Size(489, 25);
+            cmbOdemeUsulu.TabIndex = 13;
+            cmbOdemeUsulu.SelectedIndexChanged += cmbOdemeUsulu_SelectedIndexChanged;
+            // 
             // lblOdemeUsulu
-            //
-            this.lblOdemeUsulu.AutoSize = true;
-            this.lblOdemeUsulu.Depth = 0;
-            this.lblOdemeUsulu.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.lblOdemeUsulu.Location = new System.Drawing.Point(445, 125);
-            this.lblOdemeUsulu.MouseState = MaterialSkin.MouseState.HOVER;
-            this.lblOdemeUsulu.Name = "lblOdemeUsulu";
-            this.lblOdemeUsulu.Size = new System.Drawing.Size(112, 19);
-            this.lblOdemeUsulu.TabIndex = 12;
-            this.lblOdemeUsulu.Text = "Ödəniş Üsulu:";
-            //
+            // 
+            lblOdemeUsulu.AutoSize = true;
+            lblOdemeUsulu.BackColor = Color.FromArgb(242, 242, 242);
+            lblOdemeUsulu.Depth = 0;
+            lblOdemeUsulu.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblOdemeUsulu.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lblOdemeUsulu.Location = new Point(519, 144);
+            lblOdemeUsulu.Margin = new Padding(4, 0, 4, 0);
+            lblOdemeUsulu.MouseState = MaterialSkin.MouseState.HOVER;
+            lblOdemeUsulu.Name = "lblOdemeUsulu";
+            lblOdemeUsulu.Size = new Size(98, 19);
+            lblOdemeUsulu.TabIndex = 12;
+            lblOdemeUsulu.Text = "Ödəniş Üsulu:";
+            // 
             // numMebleg
-            //
-            this.numMebleg.DecimalPlaces = 2;
-            this.numMebleg.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.numMebleg.Location = new System.Drawing.Point(15, 150);
-            this.numMebleg.Maximum = new decimal(new int[] {
-            1000000,
-            0,
-            0,
-            0});
-            this.numMebleg.Name = "numMebleg";
-            this.numMebleg.Size = new System.Drawing.Size(415, 29);
-            this.numMebleg.TabIndex = 11;
-            this.numMebleg.ThousandsSeparator = true;
-            //
+            // 
+            numMebleg.BackColor = Color.FromArgb(242, 242, 242);
+            numMebleg.DecimalPlaces = 2;
+            numMebleg.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            numMebleg.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            numMebleg.Location = new Point(18, 173);
+            numMebleg.Margin = new Padding(4, 3, 4, 3);
+            numMebleg.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
+            numMebleg.Name = "numMebleg";
+            numMebleg.Size = new Size(484, 24);
+            numMebleg.TabIndex = 11;
+            numMebleg.ThousandsSeparator = true;
+            // 
             // lblMebleg
-            //
-            this.lblMebleg.AutoSize = true;
-            this.lblMebleg.Depth = 0;
-            this.lblMebleg.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.lblMebleg.Location = new System.Drawing.Point(15, 125);
-            this.lblMebleg.MouseState = MaterialSkin.MouseState.HOVER;
-            this.lblMebleg.Name = "lblMebleg";
-            this.lblMebleg.Size = new System.Drawing.Size(64, 19);
-            this.lblMebleg.TabIndex = 10;
-            this.lblMebleg.Text = "Məbləğ:";
-            //
+            // 
+            lblMebleg.AutoSize = true;
+            lblMebleg.BackColor = Color.FromArgb(242, 242, 242);
+            lblMebleg.Depth = 0;
+            lblMebleg.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblMebleg.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lblMebleg.Location = new Point(18, 144);
+            lblMebleg.Margin = new Padding(4, 0, 4, 0);
+            lblMebleg.MouseState = MaterialSkin.MouseState.HOVER;
+            lblMebleg.Name = "lblMebleg";
+            lblMebleg.Size = new Size(57, 19);
+            lblMebleg.TabIndex = 10;
+            lblMebleg.Text = "Məbləğ:";
+            // 
             // dtpOdemeTarixi
-            //
-            this.dtpOdemeTarixi.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.dtpOdemeTarixi.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpOdemeTarixi.Location = new System.Drawing.Point(880, 80);
-            this.dtpOdemeTarixi.Name = "dtpOdemeTarixi";
-            this.dtpOdemeTarixi.Size = new System.Drawing.Size(300, 29);
-            this.dtpOdemeTarixi.TabIndex = 9;
-            //
+            // 
+            dtpOdemeTarixi.BackColor = Color.FromArgb(242, 242, 242);
+            dtpOdemeTarixi.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            dtpOdemeTarixi.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            dtpOdemeTarixi.Format = DateTimePickerFormat.Short;
+            dtpOdemeTarixi.Location = new Point(1027, 92);
+            dtpOdemeTarixi.Margin = new Padding(4, 3, 4, 3);
+            dtpOdemeTarixi.Name = "dtpOdemeTarixi";
+            dtpOdemeTarixi.Size = new Size(349, 24);
+            dtpOdemeTarixi.TabIndex = 9;
+            // 
             // lblOdemeTarixi
-            //
-            this.lblOdemeTarixi.AutoSize = true;
-            this.lblOdemeTarixi.Depth = 0;
-            this.lblOdemeTarixi.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.lblOdemeTarixi.Location = new System.Drawing.Point(880, 55);
-            this.lblOdemeTarixi.MouseState = MaterialSkin.MouseState.HOVER;
-            this.lblOdemeTarixi.Name = "lblOdemeTarixi";
-            this.lblOdemeTarixi.Size = new System.Drawing.Size(116, 19);
-            this.lblOdemeTarixi.TabIndex = 8;
-            this.lblOdemeTarixi.Text = "Ödəniş Tarixi:";
-            //
+            // 
+            lblOdemeTarixi.AutoSize = true;
+            lblOdemeTarixi.BackColor = Color.FromArgb(242, 242, 242);
+            lblOdemeTarixi.Depth = 0;
+            lblOdemeTarixi.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblOdemeTarixi.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lblOdemeTarixi.Location = new Point(1027, 63);
+            lblOdemeTarixi.Margin = new Padding(4, 0, 4, 0);
+            lblOdemeTarixi.MouseState = MaterialSkin.MouseState.HOVER;
+            lblOdemeTarixi.Name = "lblOdemeTarixi";
+            lblOdemeTarixi.Size = new Size(98, 19);
+            lblOdemeTarixi.TabIndex = 8;
+            lblOdemeTarixi.Text = "Ödəniş Tarixi:";
+            // 
             // cmbAlisSened
-            //
-            this.cmbAlisSened.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbAlisSened.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.cmbAlisSened.FormattingEnabled = true;
-            this.cmbAlisSened.Location = new System.Drawing.Point(445, 80);
-            this.cmbAlisSened.Name = "cmbAlisSened";
-            this.cmbAlisSened.Size = new System.Drawing.Size(420, 29);
-            this.cmbAlisSened.TabIndex = 7;
-            //
+            // 
+            cmbAlisSened.BackColor = Color.FromArgb(242, 242, 242);
+            cmbAlisSened.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbAlisSened.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            cmbAlisSened.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            cmbAlisSened.FormattingEnabled = true;
+            cmbAlisSened.Location = new Point(519, 92);
+            cmbAlisSened.Margin = new Padding(4, 3, 4, 3);
+            cmbAlisSened.Name = "cmbAlisSened";
+            cmbAlisSened.Size = new Size(489, 25);
+            cmbAlisSened.TabIndex = 7;
+            // 
             // lblAlisSened
-            //
-            this.lblAlisSened.AutoSize = true;
-            this.lblAlisSened.Depth = 0;
-            this.lblAlisSened.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.lblAlisSened.Location = new System.Drawing.Point(445, 55);
-            this.lblAlisSened.MouseState = MaterialSkin.MouseState.HOVER;
-            this.lblAlisSened.Name = "lblAlisSened";
-            this.lblAlisSened.Size = new System.Drawing.Size(142, 19);
-            this.lblAlisSened.TabIndex = 6;
-            this.lblAlisSened.Text = "Alış Sənədi (İxtiyari):";
-            //
+            // 
+            lblAlisSened.AutoSize = true;
+            lblAlisSened.BackColor = Color.FromArgb(242, 242, 242);
+            lblAlisSened.Depth = 0;
+            lblAlisSened.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblAlisSened.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lblAlisSened.Location = new Point(519, 63);
+            lblAlisSened.Margin = new Padding(4, 0, 4, 0);
+            lblAlisSened.MouseState = MaterialSkin.MouseState.HOVER;
+            lblAlisSened.Name = "lblAlisSened";
+            lblAlisSened.Size = new Size(145, 19);
+            lblAlisSened.TabIndex = 6;
+            lblAlisSened.Text = "Alış Sənədi (İxtiyari):";
+            // 
             // cmbTedarukcu
-            //
-            this.cmbTedarukcu.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbTedarukcu.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.cmbTedarukcu.FormattingEnabled = true;
-            this.cmbTedarukcu.Location = new System.Drawing.Point(15, 80);
-            this.cmbTedarukcu.Name = "cmbTedarukcu";
-            this.cmbTedarukcu.Size = new System.Drawing.Size(415, 29);
-            this.cmbTedarukcu.TabIndex = 5;
-            //
+            // 
+            cmbTedarukcu.BackColor = Color.FromArgb(242, 242, 242);
+            cmbTedarukcu.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbTedarukcu.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            cmbTedarukcu.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            cmbTedarukcu.FormattingEnabled = true;
+            cmbTedarukcu.Location = new Point(18, 92);
+            cmbTedarukcu.Margin = new Padding(4, 3, 4, 3);
+            cmbTedarukcu.Name = "cmbTedarukcu";
+            cmbTedarukcu.Size = new Size(483, 25);
+            cmbTedarukcu.TabIndex = 5;
+            // 
             // lblTedarukcu
-            //
-            this.lblTedarukcu.AutoSize = true;
-            this.lblTedarukcu.Depth = 0;
-            this.lblTedarukcu.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.lblTedarukcu.Location = new System.Drawing.Point(15, 55);
-            this.lblTedarukcu.MouseState = MaterialSkin.MouseState.HOVER;
-            this.lblTedarukcu.Name = "lblTedarukcu";
-            this.lblTedarukcu.Size = new System.Drawing.Size(85, 19);
-            this.lblTedarukcu.TabIndex = 4;
-            this.lblTedarukcu.Text = "Tədarükçü:";
-            //
+            // 
+            lblTedarukcu.AutoSize = true;
+            lblTedarukcu.BackColor = Color.FromArgb(242, 242, 242);
+            lblTedarukcu.Depth = 0;
+            lblTedarukcu.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblTedarukcu.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lblTedarukcu.Location = new Point(18, 63);
+            lblTedarukcu.Margin = new Padding(4, 0, 4, 0);
+            lblTedarukcu.MouseState = MaterialSkin.MouseState.HOVER;
+            lblTedarukcu.Name = "lblTedarukcu";
+            lblTedarukcu.Size = new Size(80, 19);
+            lblTedarukcu.TabIndex = 4;
+            lblTedarukcu.Text = "Tədarükçü:";
+            // 
             // dtpYaradilmaTarixi
-            //
-            this.dtpYaradilmaTarixi.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.dtpYaradilmaTarixi.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpYaradilmaTarixi.Location = new System.Drawing.Point(630, 15);
-            this.dtpYaradilmaTarixi.Name = "dtpYaradilmaTarixi";
-            this.dtpYaradilmaTarixi.Size = new System.Drawing.Size(550, 29);
-            this.dtpYaradilmaTarixi.TabIndex = 3;
-            //
+            // 
+            dtpYaradilmaTarixi.BackColor = Color.FromArgb(242, 242, 242);
+            dtpYaradilmaTarixi.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            dtpYaradilmaTarixi.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            dtpYaradilmaTarixi.Format = DateTimePickerFormat.Short;
+            dtpYaradilmaTarixi.Location = new Point(735, 17);
+            dtpYaradilmaTarixi.Margin = new Padding(4, 3, 4, 3);
+            dtpYaradilmaTarixi.Name = "dtpYaradilmaTarixi";
+            dtpYaradilmaTarixi.Size = new Size(641, 24);
+            dtpYaradilmaTarixi.TabIndex = 3;
+            // 
             // lblYaradilmaTarixi
-            //
-            this.lblYaradilmaTarixi.AutoSize = true;
-            this.lblYaradilmaTarixi.Depth = 0;
-            this.lblYaradilmaTarixi.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.lblYaradilmaTarixi.Location = new System.Drawing.Point(490, 20);
-            this.lblYaradilmaTarixi.MouseState = MaterialSkin.MouseState.HOVER;
-            this.lblYaradilmaTarixi.Name = "lblYaradilmaTarixi";
-            this.lblYaradilmaTarixi.Size = new System.Drawing.Size(133, 19);
-            this.lblYaradilmaTarixi.TabIndex = 2;
-            this.lblYaradilmaTarixi.Text = "Yaradılma Tarixi:";
-            //
+            // 
+            lblYaradilmaTarixi.AutoSize = true;
+            lblYaradilmaTarixi.BackColor = Color.FromArgb(242, 242, 242);
+            lblYaradilmaTarixi.Depth = 0;
+            lblYaradilmaTarixi.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblYaradilmaTarixi.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lblYaradilmaTarixi.Location = new Point(572, 23);
+            lblYaradilmaTarixi.Margin = new Padding(4, 0, 4, 0);
+            lblYaradilmaTarixi.MouseState = MaterialSkin.MouseState.HOVER;
+            lblYaradilmaTarixi.Name = "lblYaradilmaTarixi";
+            lblYaradilmaTarixi.Size = new Size(122, 19);
+            lblYaradilmaTarixi.TabIndex = 2;
+            lblYaradilmaTarixi.Text = "Yaradılma Tarixi:";
+            // 
             // txtOdemeNomresi
-            //
-            this.txtOdemeNomresi.AnimateReadOnly = false;
-            this.txtOdemeNomresi.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtOdemeNomresi.Depth = 0;
-            this.txtOdemeNomresi.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.txtOdemeNomresi.LeadingIcon = null;
-            this.txtOdemeNomresi.Location = new System.Drawing.Point(15, 15);
-            this.txtOdemeNomresi.MaxLength = 50;
-            this.txtOdemeNomresi.MouseState = MaterialSkin.MouseState.OUT;
-            this.txtOdemeNomresi.Multiline = false;
-            this.txtOdemeNomresi.Name = "txtOdemeNomresi";
-            this.txtOdemeNomresi.Size = new System.Drawing.Size(415, 36);
-            this.txtOdemeNomresi.TabIndex = 1;
-            this.txtOdemeNomresi.Text = "";
-            this.txtOdemeNomresi.TrailingIcon = null;
-            //
+            // 
+            txtOdemeNomresi.AnimateReadOnly = false;
+            txtOdemeNomresi.BackColor = Color.FromArgb(242, 242, 242);
+            txtOdemeNomresi.BorderStyle = BorderStyle.None;
+            txtOdemeNomresi.Depth = 0;
+            txtOdemeNomresi.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            txtOdemeNomresi.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            txtOdemeNomresi.LeadingIcon = null;
+            txtOdemeNomresi.Location = new Point(18, 17);
+            txtOdemeNomresi.Margin = new Padding(4, 3, 4, 3);
+            txtOdemeNomresi.MaxLength = 50;
+            txtOdemeNomresi.MouseState = MaterialSkin.MouseState.OUT;
+            txtOdemeNomresi.Multiline = false;
+            txtOdemeNomresi.Name = "txtOdemeNomresi";
+            txtOdemeNomresi.Size = new Size(484, 50);
+            txtOdemeNomresi.TabIndex = 1;
+            txtOdemeNomresi.Text = "";
+            txtOdemeNomresi.TrailingIcon = null;
+            // 
             // lblOdemeNomresi
-            //
-            this.lblOdemeNomresi.AutoSize = true;
-            this.lblOdemeNomresi.Depth = 0;
-            this.lblOdemeNomresi.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.lblOdemeNomresi.Location = new System.Drawing.Point(15, -5);
-            this.lblOdemeNomresi.MouseState = MaterialSkin.MouseState.HOVER;
-            this.lblOdemeNomresi.Name = "lblOdemeNomresi";
-            this.lblOdemeNomresi.Size = new System.Drawing.Size(123, 19);
-            this.lblOdemeNomresi.TabIndex = 0;
-            this.lblOdemeNomresi.Text = "Ödəniş Nömrəsi:";
-            //
+            // 
+            lblOdemeNomresi.AutoSize = true;
+            lblOdemeNomresi.BackColor = Color.FromArgb(242, 242, 242);
+            lblOdemeNomresi.Depth = 0;
+            lblOdemeNomresi.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblOdemeNomresi.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lblOdemeNomresi.Location = new Point(18, -6);
+            lblOdemeNomresi.Margin = new Padding(4, 0, 4, 0);
+            lblOdemeNomresi.MouseState = MaterialSkin.MouseState.HOVER;
+            lblOdemeNomresi.Name = "lblOdemeNomresi";
+            lblOdemeNomresi.Size = new Size(117, 19);
+            lblOdemeNomresi.TabIndex = 0;
+            lblOdemeNomresi.Text = "Ödəniş Nömrəsi:";
+            // 
             // panelGrid
-            //
-            this.panelGrid.Controls.Add(this.dgvOdemeler);
-            this.panelGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelGrid.Location = new System.Drawing.Point(3, 404);
-            this.panelGrid.Name = "panelGrid";
-            this.panelGrid.Padding = new System.Windows.Forms.Padding(10);
-            this.panelGrid.Size = new System.Drawing.Size(1194, 283);
-            this.panelGrid.TabIndex = 2;
-            //
+            // 
+            panelGrid.BackColor = Color.FromArgb(242, 242, 242);
+            panelGrid.Controls.Add(dgvOdemeler);
+            panelGrid.Dock = DockStyle.Fill;
+            panelGrid.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            panelGrid.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            panelGrid.Location = new Point(4, 466);
+            panelGrid.Margin = new Padding(4, 3, 4, 3);
+            panelGrid.Name = "panelGrid";
+            panelGrid.Padding = new Padding(12, 12, 12, 12);
+            panelGrid.Size = new Size(1392, 327);
+            panelGrid.TabIndex = 2;
+            // 
             // dgvOdemeler
-            //
-            this.dgvOdemeler.AllowUserToAddRows = false;
-            this.dgvOdemeler.AllowUserToDeleteRows = false;
-            this.dgvOdemeler.BackgroundColor = System.Drawing.Color.White;
-            this.dgvOdemeler.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvOdemeler.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvOdemeler.Location = new System.Drawing.Point(10, 10);
-            this.dgvOdemeler.MultiSelect = false;
-            this.dgvOdemeler.Name = "dgvOdemeler";
-            this.dgvOdemeler.ReadOnly = true;
-            this.dgvOdemeler.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvOdemeler.Size = new System.Drawing.Size(1174, 263);
-            this.dgvOdemeler.TabIndex = 0;
-            this.dgvOdemeler.SelectionChanged += new System.EventHandler(this.dgvOdemeler_SelectionChanged);
-            //
+            // 
+            dgvOdemeler.AllowUserToAddRows = false;
+            dgvOdemeler.AllowUserToDeleteRows = false;
+            dgvOdemeler.BackgroundColor = Color.White;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Control;
+            dataGridViewCellStyle1.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dgvOdemeler.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dgvOdemeler.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            dataGridViewCellStyle2.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            dgvOdemeler.DefaultCellStyle = dataGridViewCellStyle2;
+            dgvOdemeler.Dock = DockStyle.Fill;
+            dgvOdemeler.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            dgvOdemeler.Location = new Point(12, 12);
+            dgvOdemeler.Margin = new Padding(4, 3, 4, 3);
+            dgvOdemeler.MultiSelect = false;
+            dgvOdemeler.Name = "dgvOdemeler";
+            dgvOdemeler.ReadOnly = true;
+            dgvOdemeler.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvOdemeler.Size = new Size(1368, 303);
+            dgvOdemeler.TabIndex = 0;
+            dgvOdemeler.SelectionChanged += dgvOdemeler_SelectionChanged;
+            // 
             // panelButtons
-            //
-            this.panelButtons.Controls.Add(this.btnTemizle);
-            this.panelButtons.Controls.Add(this.btnSil);
-            this.panelButtons.Controls.Add(this.btnYenile);
-            this.panelButtons.Controls.Add(this.btnYarat);
-            this.panelButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelButtons.Location = new System.Drawing.Point(3, 687);
-            this.panelButtons.Name = "panelButtons";
-            this.panelButtons.Padding = new System.Windows.Forms.Padding(10);
-            this.panelButtons.Size = new System.Drawing.Size(1194, 60);
-            this.panelButtons.TabIndex = 3;
-            //
+            // 
+            panelButtons.BackColor = Color.FromArgb(242, 242, 242);
+            panelButtons.Controls.Add(btnTemizle);
+            panelButtons.Controls.Add(btnSil);
+            panelButtons.Controls.Add(btnYenile);
+            panelButtons.Controls.Add(btnYarat);
+            panelButtons.Dock = DockStyle.Bottom;
+            panelButtons.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            panelButtons.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            panelButtons.Location = new Point(4, 793);
+            panelButtons.Margin = new Padding(4, 3, 4, 3);
+            panelButtons.Name = "panelButtons";
+            panelButtons.Padding = new Padding(12, 12, 12, 12);
+            panelButtons.Size = new Size(1392, 69);
+            panelButtons.TabIndex = 3;
+            // 
             // btnTemizle
-            //
-            this.btnTemizle.AutoSize = false;
-            this.btnTemizle.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnTemizle.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            this.btnTemizle.Depth = 0;
-            this.btnTemizle.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnTemizle.HighEmphasis = true;
-            this.btnTemizle.Icon = null;
-            this.btnTemizle.Location = new System.Drawing.Point(1039, 10);
-            this.btnTemizle.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.btnTemizle.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btnTemizle.Name = "btnTemizle";
-            this.btnTemizle.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btnTemizle.Size = new System.Drawing.Size(145, 40);
-            this.btnTemizle.TabIndex = 3;
-            this.btnTemizle.Text = "TƏMİZLƏ";
-            this.btnTemizle.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            this.btnTemizle.UseAccentColor = false;
-            this.btnTemizle.UseVisualStyleBackColor = true;
-            this.btnTemizle.Click += new System.EventHandler(this.btnTemizle_Click);
-            //
+            // 
+            btnTemizle.AutoSize = false;
+            btnTemizle.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnTemizle.BackColor = Color.FromArgb(242, 242, 242);
+            btnTemizle.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnTemizle.Depth = 0;
+            btnTemizle.Dock = DockStyle.Right;
+            btnTemizle.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            btnTemizle.HighEmphasis = true;
+            btnTemizle.Icon = null;
+            btnTemizle.Location = new Point(1211, 12);
+            btnTemizle.Margin = new Padding(5, 7, 5, 7);
+            btnTemizle.MouseState = MaterialSkin.MouseState.HOVER;
+            btnTemizle.Name = "btnTemizle";
+            btnTemizle.NoAccentTextColor = Color.Empty;
+            btnTemizle.Size = new Size(169, 45);
+            btnTemizle.TabIndex = 3;
+            btnTemizle.Text = "TƏMİZLƏ";
+            btnTemizle.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnTemizle.UseAccentColor = false;
+            btnTemizle.UseVisualStyleBackColor = false;
+            btnTemizle.Click += btnTemizle_Click;
+            // 
             // btnSil
-            //
-            this.btnSil.AutoSize = false;
-            this.btnSil.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnSil.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            this.btnSil.Depth = 0;
-            this.btnSil.Dock = System.Windows.Forms.DockStyle.Left;
-            this.btnSil.HighEmphasis = true;
-            this.btnSil.Icon = null;
-            this.btnSil.Location = new System.Drawing.Point(310, 10);
-            this.btnSil.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.btnSil.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btnSil.Name = "btnSil";
-            this.btnSil.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btnSil.Size = new System.Drawing.Size(150, 40);
-            this.btnSil.TabIndex = 2;
-            this.btnSil.Text = "SİL";
-            this.btnSil.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            this.btnSil.UseAccentColor = false;
-            this.btnSil.UseVisualStyleBackColor = true;
-            this.btnSil.Click += new System.EventHandler(this.btnSil_Click);
-            //
+            // 
+            btnSil.AutoSize = false;
+            btnSil.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnSil.BackColor = Color.FromArgb(242, 242, 242);
+            btnSil.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnSil.Depth = 0;
+            btnSil.Dock = DockStyle.Left;
+            btnSil.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            btnSil.HighEmphasis = true;
+            btnSil.Icon = null;
+            btnSil.Location = new Point(362, 12);
+            btnSil.Margin = new Padding(5, 7, 5, 7);
+            btnSil.MouseState = MaterialSkin.MouseState.HOVER;
+            btnSil.Name = "btnSil";
+            btnSil.NoAccentTextColor = Color.Empty;
+            btnSil.Size = new Size(175, 45);
+            btnSil.TabIndex = 2;
+            btnSil.Text = "SİL";
+            btnSil.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnSil.UseAccentColor = false;
+            btnSil.UseVisualStyleBackColor = false;
+            btnSil.Click += btnSil_Click;
+            // 
             // btnYenile
-            //
-            this.btnYenile.AutoSize = false;
-            this.btnYenile.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnYenile.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            this.btnYenile.Depth = 0;
-            this.btnYenile.Dock = System.Windows.Forms.DockStyle.Left;
-            this.btnYenile.HighEmphasis = true;
-            this.btnYenile.Icon = null;
-            this.btnYenile.Location = new System.Drawing.Point(160, 10);
-            this.btnYenile.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.btnYenile.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btnYenile.Name = "btnYenile";
-            this.btnYenile.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btnYenile.Size = new System.Drawing.Size(150, 40);
-            this.btnYenile.TabIndex = 1;
-            this.btnYenile.Text = "YENİLƏ";
-            this.btnYenile.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            this.btnYenile.UseAccentColor = false;
-            this.btnYenile.UseVisualStyleBackColor = true;
-            this.btnYenile.Click += new System.EventHandler(this.btnYenile_Click);
-            //
+            // 
+            btnYenile.AutoSize = false;
+            btnYenile.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnYenile.BackColor = Color.FromArgb(242, 242, 242);
+            btnYenile.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnYenile.Depth = 0;
+            btnYenile.Dock = DockStyle.Left;
+            btnYenile.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            btnYenile.HighEmphasis = true;
+            btnYenile.Icon = null;
+            btnYenile.Location = new Point(187, 12);
+            btnYenile.Margin = new Padding(5, 7, 5, 7);
+            btnYenile.MouseState = MaterialSkin.MouseState.HOVER;
+            btnYenile.Name = "btnYenile";
+            btnYenile.NoAccentTextColor = Color.Empty;
+            btnYenile.Size = new Size(175, 45);
+            btnYenile.TabIndex = 1;
+            btnYenile.Text = "YENİLƏ";
+            btnYenile.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnYenile.UseAccentColor = false;
+            btnYenile.UseVisualStyleBackColor = false;
+            btnYenile.Click += btnYenile_Click;
+            // 
             // btnYarat
-            //
-            this.btnYarat.AutoSize = false;
-            this.btnYarat.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnYarat.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            this.btnYarat.Depth = 0;
-            this.btnYarat.Dock = System.Windows.Forms.DockStyle.Left;
-            this.btnYarat.HighEmphasis = true;
-            this.btnYarat.Icon = null;
-            this.btnYarat.Location = new System.Drawing.Point(10, 10);
-            this.btnYarat.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.btnYarat.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btnYarat.Name = "btnYarat";
-            this.btnYarat.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btnYarat.Size = new System.Drawing.Size(150, 40);
-            this.btnYarat.TabIndex = 0;
-            this.btnYarat.Text = "YARAT";
-            this.btnYarat.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            this.btnYarat.UseAccentColor = false;
-            this.btnYarat.UseVisualStyleBackColor = true;
-            this.btnYarat.Click += new System.EventHandler(this.btnYarat_Click);
-            //
+            // 
+            btnYarat.AutoSize = false;
+            btnYarat.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnYarat.BackColor = Color.FromArgb(242, 242, 242);
+            btnYarat.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnYarat.Depth = 0;
+            btnYarat.Dock = DockStyle.Left;
+            btnYarat.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            btnYarat.HighEmphasis = true;
+            btnYarat.Icon = null;
+            btnYarat.Location = new Point(12, 12);
+            btnYarat.Margin = new Padding(5, 7, 5, 7);
+            btnYarat.MouseState = MaterialSkin.MouseState.HOVER;
+            btnYarat.Name = "btnYarat";
+            btnYarat.NoAccentTextColor = Color.Empty;
+            btnYarat.Size = new Size(175, 45);
+            btnYarat.TabIndex = 0;
+            btnYarat.Text = "YARAT";
+            btnYarat.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnYarat.UseAccentColor = false;
+            btnYarat.UseVisualStyleBackColor = false;
+            btnYarat.Click += btnYarat_Click;
+            // 
             // TedarukcuOdemeFormu
-            //
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1200, 750);
-            this.Controls.Add(this.panelGrid);
-            this.Controls.Add(this.panelButtons);
-            this.Controls.Add(this.panelForm);
-            this.Controls.Add(this.panelTop);
-            this.Name = "TedarukcuOdemeFormu";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Tədarükçü Ödənişləri";
-            this.panelTop.ResumeLayout(false);
-            this.panelTop.PerformLayout();
-            this.panelForm.ResumeLayout(false);
-            this.panelForm.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numMebleg)).EndInit();
-            this.panelGrid.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvOdemeler)).EndInit();
-            this.panelButtons.ResumeLayout(false);
-            this.ResumeLayout(false);
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1400, 865);
+            Controls.Add(panelGrid);
+            Controls.Add(panelButtons);
+            Controls.Add(panelForm);
+            Controls.Add(panelTop);
+            Margin = new Padding(4, 3, 4, 3);
+            Name = "TedarukcuOdemeFormu";
+            Padding = new Padding(4, 74, 4, 3);
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Tədarükçü Ödənişləri";
+            Controls.SetChildIndex(panelTop, 0);
+            Controls.SetChildIndex(panelForm, 0);
+            Controls.SetChildIndex(panelButtons, 0);
+            Controls.SetChildIndex(panelGrid, 0);
+            panelTop.ResumeLayout(false);
+            panelTop.PerformLayout();
+            panelForm.ResumeLayout(false);
+            panelForm.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numMebleg).EndInit();
+            panelGrid.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dgvOdemeler).EndInit();
+            panelButtons.ResumeLayout(false);
+            ResumeLayout(false);
+            PerformLayout();
 
         }
 
