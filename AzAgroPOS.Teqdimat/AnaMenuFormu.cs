@@ -297,61 +297,131 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
 
     private async Task UpdateDashboardData()
     {
-        // Günlük satış məbləğini hesablayırıq
-        var hesabatManager = _serviceProvider.GetRequiredService<HesabatManager>();
-        var gunlukHesabat = await hesabatManager.GunlukSatisHesabatiGetirAsync(DateTime.Today);
-        if (gunlukHesabat.UgurluDur)
+        try
         {
-            lblDailySalesValue.Text = $"{gunlukHesabat.Data.UmumiDovriyye:N2} AZN";
+            // Günlük satış məbləğini hesablayırıq
+            var hesabatManager = _serviceProvider.GetRequiredService<HesabatManager>();
+            var gunlukHesabat = await hesabatManager.GunlukSatisHesabatiGetirAsync(DateTime.Today);
+            if (gunlukHesabat.UgurluDur && lblDailySalesValue != null)
+            {
+                lblDailySalesValue.Text = $"{gunlukHesabat.Data.UmumiDovriyye:N2} AZN";
+            }
+            else if (lblDailySalesValue != null)
+            {
+                lblDailySalesValue.Text = "0.00 AZN";
+            }
         }
-        else
+        catch
         {
-            lblDailySalesValue.Text = "0.00 AZN";
+            if (lblDailySalesValue != null)
+                lblDailySalesValue.Text = "0.00 AZN";
         }
 
         // Aktiv növbə məlumatlarını göstəririk
-        if (AktivSessiya.AktivNovbeId.HasValue)
+        try
         {
-            var novbeManager = _serviceProvider.GetRequiredService<NovbeManager>();
-            var novbe = await novbeManager.NovbeGetirAsync(AktivSessiya.AktivNovbeId.Value);
-            if (novbe != null)
+            if (lblActiveShiftValue != null)
             {
-                lblActiveShiftValue.Text = $"{AktivSessiya.AktivIstifadeci?.TamAd}\n{novbe.AcilmaTarixi:HH:mm}";
-            }
-            else
-            {
-                lblActiveShiftValue.Text = "Məlumat tapılmadı";
+                if (AktivSessiya.AktivNovbeId.HasValue)
+                {
+                    var novbeManager = _serviceProvider.GetRequiredService<NovbeManager>();
+                    var novbe = await novbeManager.NovbeGetirAsync(AktivSessiya.AktivNovbeId.Value);
+                    if (novbe != null)
+                    {
+                        lblActiveShiftValue.Text = $"{AktivSessiya.AktivIstifadeci?.TamAd}\n{novbe.AcilmaTarixi:HH:mm}";
+                    }
+                    else
+                    {
+                        lblActiveShiftValue.Text = "Məlumat tapılmadı";
+                    }
+                }
+                else
+                {
+                    lblActiveShiftValue.Text = "Növbə Yoxdur";
+                }
             }
         }
-        else
+        catch
         {
-            lblActiveShiftValue.Text = "Növbə Yoxdur";
+            if (lblActiveShiftValue != null)
+                lblActiveShiftValue.Text = "Xəta";
         }
 
-        // Borclu müştəri sayını hesablayırıq
-        var musteriManager = _serviceProvider.GetRequiredService<MusteriManager>();
-        var musteriler = await musteriManager.ButunMusterileriGetirAsync();
-        if (musteriler.UgurluDur)
+        // Borclu müştəri sayını və ümumi borcu hesablayırıq
+        try
         {
-            var borcluMusteriSayi = musteriler.Data.Count(m => m.UmumiBorc > 0);
-            lblDebtorCustomersValue.Text = borcluMusteriSayi.ToString();
+            var musteriManager = _serviceProvider.GetRequiredService<MusteriManager>();
+            var musteriler = await musteriManager.ButunMusterileriGetirAsync();
+
+            if (lblDebtorCustomersValue != null)
+            {
+                if (musteriler.UgurluDur && musteriler.Data != null)
+                {
+                    var borcluMusteriSayi = musteriler.Data.Count(m => m.UmumiBorc > 0);
+                    lblDebtorCustomersValue.Text = borcluMusteriSayi.ToString();
+                }
+                else
+                {
+                    lblDebtorCustomersValue.Text = "0";
+                }
+            }
+
+            // Ümumi borc məbləğini hesablayırıq
+            if (lblTotalDebtValue != null)
+            {
+                if (musteriler.UgurluDur && musteriler.Data != null)
+                {
+                    var umumiBorc = musteriler.Data.Sum(m => m.UmumiBorc);
+                    lblTotalDebtValue.Text = $"{umumiBorc:N2} AZN";
+                }
+                else
+                {
+                    lblTotalDebtValue.Text = "0.00 AZN";
+                }
+            }
         }
-        else
+        catch
         {
-            lblDebtorCustomersValue.Text = "0";
+            if (lblDebtorCustomersValue != null)
+                lblDebtorCustomersValue.Text = "0";
+            if (lblTotalDebtValue != null)
+                lblTotalDebtValue.Text = "0.00 AZN";
         }
 
         // Aşağı stoklu məhsulların sayını hesablayırıq
-        var mehsulMeneceri = _serviceProvider.GetRequiredService<MehsulMeneceri>();
-        var minimumStokMehsullari = await mehsulMeneceri.MinimumStokMehsullariniGetirAsync();
-        if (minimumStokMehsullari.UgurluDur)
+        try
         {
-            lblLowStockProductsValue.Text = minimumStokMehsullari.Data.Count.ToString();
+            if (lblLowStockProductsValue != null)
+            {
+                var mehsulMeneceri = _serviceProvider.GetRequiredService<MehsulMeneceri>();
+                var minimumStokMehsullari = await mehsulMeneceri.MinimumStokMehsullariniGetirAsync();
+                if (minimumStokMehsullari.UgurluDur)
+                {
+                    lblLowStockProductsValue.Text = minimumStokMehsullari.Data.Count.ToString();
+                }
+                else
+                {
+                    lblLowStockProductsValue.Text = "0";
+                }
+            }
         }
-        else
+        catch
         {
-            lblLowStockProductsValue.Text = "0";
+            if (lblLowStockProductsValue != null)
+                lblLowStockProductsValue.Text = "0";
         }
+
+        // Aylıq satış məbləğini hesablayırıq (placeholder)
+        if (lblMonthlySalesValue != null)
+            lblMonthlySalesValue.Text = "N/A";
+
+        // Aktiv təmir sayını hesablayırıq (placeholder)
+        if (lblActiveRepairsValue != null)
+            lblActiveRepairsValue.Text = "N/A";
+
+        // Tədarükçü borcu (placeholder)
+        if (lblSupplierDebtValue != null)
+            lblSupplierDebtValue.Text = "N/A";
     }
 
     #endregion

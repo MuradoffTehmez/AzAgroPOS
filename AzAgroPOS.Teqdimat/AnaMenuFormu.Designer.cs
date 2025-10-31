@@ -79,6 +79,18 @@ namespace AzAgroPOS.Teqdimat
             lowStockProductsCard = new MaterialSkin.Controls.MaterialCard();
             lblLowStockProductsValue = new Label();
             lblLowStockProducts = new Label();
+            monthlySalesCard = new MaterialSkin.Controls.MaterialCard();
+            lblMonthlySalesValue = new Label();
+            lblMonthlySales = new Label();
+            totalDebtCard = new MaterialSkin.Controls.MaterialCard();
+            lblTotalDebtValue = new Label();
+            lblTotalDebt = new Label();
+            activeRepairsCard = new MaterialSkin.Controls.MaterialCard();
+            lblActiveRepairsValue = new Label();
+            lblActiveRepairs = new Label();
+            supplierDebtCard = new MaterialSkin.Controls.MaterialCard();
+            lblSupplierDebtValue = new Label();
+            lblSupplierDebt = new Label();
             dashboardTimer = new System.Windows.Forms.Timer(components);
             pnlMenu.SuspendLayout();
             pnlUserInfo.SuspendLayout();
@@ -89,6 +101,10 @@ namespace AzAgroPOS.Teqdimat
             activeShiftCard.SuspendLayout();
             debtorCustomersCard.SuspendLayout();
             lowStockProductsCard.SuspendLayout();
+            monthlySalesCard.SuspendLayout();
+            totalDebtCard.SuspendLayout();
+            activeRepairsCard.SuspendLayout();
+            supplierDebtCard.SuspendLayout();
             SuspendLayout();
             // 
             // sidebarImageList
@@ -901,12 +917,16 @@ namespace AzAgroPOS.Teqdimat
             dashboardPanel.Controls.Add(activeShiftCard);
             dashboardPanel.Controls.Add(debtorCustomersCard);
             dashboardPanel.Controls.Add(lowStockProductsCard);
+            dashboardPanel.Controls.Add(monthlySalesCard);
+            dashboardPanel.Controls.Add(totalDebtCard);
+            dashboardPanel.Controls.Add(activeRepairsCard);
+            dashboardPanel.Controls.Add(supplierDebtCard);
             dashboardPanel.Dock = DockStyle.Top;
             dashboardPanel.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             dashboardPanel.ForeColor = Color.FromArgb(222, 0, 0, 0);
             dashboardPanel.Location = new Point(243, 64);
             dashboardPanel.Name = "dashboardPanel";
-            dashboardPanel.Size = new Size(1257, 69);
+            dashboardPanel.Size = new Size(1257, 65);
             dashboardPanel.TabIndex = 2;
             // 
             // dailySalesCard
@@ -917,12 +937,12 @@ namespace AzAgroPOS.Teqdimat
             dailySalesCard.Cursor = Cursors.WaitCursor;
             dailySalesCard.Depth = 0;
             dailySalesCard.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            dailySalesCard.Location = new Point(13, 5);
+            dailySalesCard.Location = new Point(9, 9);
             dailySalesCard.Margin = new Padding(7);
             dailySalesCard.MouseState = MaterialSkin.MouseState.HOVER;
             dailySalesCard.Name = "dailySalesCard";
             dailySalesCard.Padding = new Padding(14);
-            dailySalesCard.Size = new Size(285, 53);
+            dailySalesCard.Size = new Size(113, 46);
             dailySalesCard.TabIndex = 0;
             // 
             // lblDailySalesValue
@@ -931,7 +951,7 @@ namespace AzAgroPOS.Teqdimat
             lblDailySalesValue.BackColor = Color.FromArgb(255, 255, 255);
             lblDailySalesValue.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             lblDailySalesValue.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblDailySalesValue.Location = new Point(15, 29);
+            lblDailySalesValue.Location = new Point(5, 24);
             lblDailySalesValue.Name = "lblDailySalesValue";
             lblDailySalesValue.Size = new Size(36, 17);
             lblDailySalesValue.TabIndex = 1;
@@ -943,7 +963,7 @@ namespace AzAgroPOS.Teqdimat
             lblDailySales.BackColor = Color.FromArgb(255, 255, 255);
             lblDailySales.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             lblDailySales.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblDailySales.Location = new Point(9, 7);
+            lblDailySales.Location = new Point(4, 4);
             lblDailySales.Name = "lblDailySales";
             lblDailySales.Size = new Size(102, 17);
             lblDailySales.TabIndex = 0;
@@ -957,12 +977,12 @@ namespace AzAgroPOS.Teqdimat
             activeShiftCard.Cursor = Cursors.WaitCursor;
             activeShiftCard.Depth = 0;
             activeShiftCard.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            activeShiftCard.Location = new Point(328, 5);
+            activeShiftCard.Location = new Point(125, 9);
             activeShiftCard.Margin = new Padding(7);
             activeShiftCard.MouseState = MaterialSkin.MouseState.HOVER;
             activeShiftCard.Name = "activeShiftCard";
             activeShiftCard.Padding = new Padding(14);
-            activeShiftCard.Size = new Size(285, 53);
+            activeShiftCard.Size = new Size(113, 46);
             activeShiftCard.TabIndex = 1;
             // 
             // lblActiveShiftValue
@@ -971,7 +991,7 @@ namespace AzAgroPOS.Teqdimat
             lblActiveShiftValue.BackColor = Color.FromArgb(255, 255, 255);
             lblActiveShiftValue.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             lblActiveShiftValue.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblActiveShiftValue.Location = new Point(15, 29);
+            lblActiveShiftValue.Location = new Point(3, 23);
             lblActiveShiftValue.Name = "lblActiveShiftValue";
             lblActiveShiftValue.Size = new Size(95, 17);
             lblActiveShiftValue.TabIndex = 1;
@@ -984,7 +1004,7 @@ namespace AzAgroPOS.Teqdimat
             lblActiveShift.BackColor = Color.FromArgb(255, 255, 255);
             lblActiveShift.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             lblActiveShift.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblActiveShift.Location = new Point(9, 7);
+            lblActiveShift.Location = new Point(4, 4);
             lblActiveShift.Name = "lblActiveShift";
             lblActiveShift.Size = new Size(82, 17);
             lblActiveShift.TabIndex = 0;
@@ -998,12 +1018,12 @@ namespace AzAgroPOS.Teqdimat
             debtorCustomersCard.Cursor = Cursors.WaitCursor;
             debtorCustomersCard.Depth = 0;
             debtorCustomersCard.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            debtorCustomersCard.Location = new Point(643, 5);
+            debtorCustomersCard.Location = new Point(476, 9);
             debtorCustomersCard.Margin = new Padding(7);
             debtorCustomersCard.MouseState = MaterialSkin.MouseState.HOVER;
             debtorCustomersCard.Name = "debtorCustomersCard";
             debtorCustomersCard.Padding = new Padding(14);
-            debtorCustomersCard.Size = new Size(285, 53);
+            debtorCustomersCard.Size = new Size(120, 46);
             debtorCustomersCard.TabIndex = 2;
             // 
             // lblDebtorCustomersValue
@@ -1012,7 +1032,7 @@ namespace AzAgroPOS.Teqdimat
             lblDebtorCustomersValue.BackColor = Color.FromArgb(255, 255, 255);
             lblDebtorCustomersValue.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             lblDebtorCustomersValue.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblDebtorCustomersValue.Location = new Point(15, 29);
+            lblDebtorCustomersValue.Location = new Point(4, 23);
             lblDebtorCustomersValue.Name = "lblDebtorCustomersValue";
             lblDebtorCustomersValue.Size = new Size(16, 17);
             lblDebtorCustomersValue.TabIndex = 1;
@@ -1024,7 +1044,7 @@ namespace AzAgroPOS.Teqdimat
             lblDebtorCustomers.BackColor = Color.FromArgb(255, 255, 255);
             lblDebtorCustomers.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             lblDebtorCustomers.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblDebtorCustomers.Location = new Point(9, 7);
+            lblDebtorCustomers.Location = new Point(4, 4);
             lblDebtorCustomers.Name = "lblDebtorCustomers";
             lblDebtorCustomers.Size = new Size(113, 17);
             lblDebtorCustomers.TabIndex = 0;
@@ -1038,12 +1058,12 @@ namespace AzAgroPOS.Teqdimat
             lowStockProductsCard.Cursor = Cursors.WaitCursor;
             lowStockProductsCard.Depth = 0;
             lowStockProductsCard.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lowStockProductsCard.Location = new Point(958, 5);
+            lowStockProductsCard.Location = new Point(610, 9);
             lowStockProductsCard.Margin = new Padding(7);
             lowStockProductsCard.MouseState = MaterialSkin.MouseState.HOVER;
             lowStockProductsCard.Name = "lowStockProductsCard";
             lowStockProductsCard.Padding = new Padding(14);
-            lowStockProductsCard.Size = new Size(285, 53);
+            lowStockProductsCard.Size = new Size(154, 46);
             lowStockProductsCard.TabIndex = 3;
             // 
             // lblLowStockProductsValue
@@ -1052,7 +1072,7 @@ namespace AzAgroPOS.Teqdimat
             lblLowStockProductsValue.BackColor = Color.FromArgb(255, 255, 255);
             lblLowStockProductsValue.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             lblLowStockProductsValue.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblLowStockProductsValue.Location = new Point(15, 29);
+            lblLowStockProductsValue.Location = new Point(4, 23);
             lblLowStockProductsValue.Name = "lblLowStockProductsValue";
             lblLowStockProductsValue.Size = new Size(16, 17);
             lblLowStockProductsValue.TabIndex = 1;
@@ -1064,11 +1084,172 @@ namespace AzAgroPOS.Teqdimat
             lblLowStockProducts.BackColor = Color.FromArgb(255, 255, 255);
             lblLowStockProducts.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             lblLowStockProducts.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblLowStockProducts.Location = new Point(9, 7);
+            lblLowStockProducts.Location = new Point(4, 4);
             lblLowStockProducts.Name = "lblLowStockProducts";
             lblLowStockProducts.Size = new Size(149, 17);
             lblLowStockProducts.TabIndex = 0;
             lblLowStockProducts.Text = "Aşağı Stoklu Məhsullar";
+            // 
+            // monthlySalesCard
+            // 
+            monthlySalesCard.BackColor = Color.FromArgb(255, 255, 255);
+            monthlySalesCard.Controls.Add(lblMonthlySalesValue);
+            monthlySalesCard.Controls.Add(lblMonthlySales);
+            monthlySalesCard.Cursor = Cursors.WaitCursor;
+            monthlySalesCard.Depth = 0;
+            monthlySalesCard.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            monthlySalesCard.Location = new Point(242, 9);
+            monthlySalesCard.Margin = new Padding(7);
+            monthlySalesCard.MouseState = MaterialSkin.MouseState.HOVER;
+            monthlySalesCard.Name = "monthlySalesCard";
+            monthlySalesCard.Padding = new Padding(14);
+            monthlySalesCard.Size = new Size(113, 46);
+            monthlySalesCard.TabIndex = 4;
+            // 
+            // lblMonthlySalesValue
+            // 
+            lblMonthlySalesValue.AutoSize = true;
+            lblMonthlySalesValue.BackColor = Color.FromArgb(255, 255, 255);
+            lblMonthlySalesValue.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblMonthlySalesValue.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lblMonthlySalesValue.Location = new Point(4, 23);
+            lblMonthlySalesValue.Name = "lblMonthlySalesValue";
+            lblMonthlySalesValue.Size = new Size(36, 17);
+            lblMonthlySalesValue.TabIndex = 1;
+            lblMonthlySalesValue.Text = "0.00";
+            // 
+            // lblMonthlySales
+            // 
+            lblMonthlySales.AutoSize = true;
+            lblMonthlySales.BackColor = Color.FromArgb(255, 255, 255);
+            lblMonthlySales.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblMonthlySales.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lblMonthlySales.Location = new Point(4, 4);
+            lblMonthlySales.Name = "lblMonthlySales";
+            lblMonthlySales.Size = new Size(88, 17);
+            lblMonthlySales.TabIndex = 0;
+            lblMonthlySales.Text = "Aylıq Satışlar";
+            // 
+            // totalDebtCard
+            // 
+            totalDebtCard.BackColor = Color.FromArgb(255, 255, 255);
+            totalDebtCard.Controls.Add(lblTotalDebtValue);
+            totalDebtCard.Controls.Add(lblTotalDebt);
+            totalDebtCard.Cursor = Cursors.WaitCursor;
+            totalDebtCard.Depth = 0;
+            totalDebtCard.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            totalDebtCard.Location = new Point(359, 9);
+            totalDebtCard.Margin = new Padding(7);
+            totalDebtCard.MouseState = MaterialSkin.MouseState.HOVER;
+            totalDebtCard.Name = "totalDebtCard";
+            totalDebtCard.Padding = new Padding(14);
+            totalDebtCard.Size = new Size(113, 46);
+            totalDebtCard.TabIndex = 5;
+            // 
+            // lblTotalDebtValue
+            // 
+            lblTotalDebtValue.AutoSize = true;
+            lblTotalDebtValue.BackColor = Color.FromArgb(255, 255, 255);
+            lblTotalDebtValue.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblTotalDebtValue.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lblTotalDebtValue.Location = new Point(4, 23);
+            lblTotalDebtValue.Name = "lblTotalDebtValue";
+            lblTotalDebtValue.Size = new Size(36, 17);
+            lblTotalDebtValue.TabIndex = 1;
+            lblTotalDebtValue.Text = "0.00";
+            // 
+            // lblTotalDebt
+            // 
+            lblTotalDebt.AutoSize = true;
+            lblTotalDebt.BackColor = Color.FromArgb(255, 255, 255);
+            lblTotalDebt.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblTotalDebt.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lblTotalDebt.Location = new Point(4, 4);
+            lblTotalDebt.Name = "lblTotalDebt";
+            lblTotalDebt.Size = new Size(84, 17);
+            lblTotalDebt.TabIndex = 0;
+            lblTotalDebt.Text = "Ümumi Borc";
+            // 
+            // activeRepairsCard
+            // 
+            activeRepairsCard.BackColor = Color.FromArgb(255, 255, 255);
+            activeRepairsCard.Controls.Add(lblActiveRepairsValue);
+            activeRepairsCard.Controls.Add(lblActiveRepairs);
+            activeRepairsCard.Cursor = Cursors.WaitCursor;
+            activeRepairsCard.Depth = 0;
+            activeRepairsCard.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            activeRepairsCard.Location = new Point(1234, 3);
+            activeRepairsCard.Margin = new Padding(7);
+            activeRepairsCard.MouseState = MaterialSkin.MouseState.HOVER;
+            activeRepairsCard.Name = "activeRepairsCard";
+            activeRepairsCard.Padding = new Padding(14);
+            activeRepairsCard.Size = new Size(19, 42);
+            activeRepairsCard.TabIndex = 6;
+            activeRepairsCard.Visible = false;
+            // 
+            // lblActiveRepairsValue
+            // 
+            lblActiveRepairsValue.AutoSize = true;
+            lblActiveRepairsValue.BackColor = Color.FromArgb(255, 255, 255);
+            lblActiveRepairsValue.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblActiveRepairsValue.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lblActiveRepairsValue.Location = new Point(15, 29);
+            lblActiveRepairsValue.Name = "lblActiveRepairsValue";
+            lblActiveRepairsValue.Size = new Size(16, 17);
+            lblActiveRepairsValue.TabIndex = 1;
+            lblActiveRepairsValue.Text = "0";
+            // 
+            // lblActiveRepairs
+            // 
+            lblActiveRepairs.AutoSize = true;
+            lblActiveRepairs.BackColor = Color.FromArgb(255, 255, 255);
+            lblActiveRepairs.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblActiveRepairs.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lblActiveRepairs.Location = new Point(9, 7);
+            lblActiveRepairs.Name = "lblActiveRepairs";
+            lblActiveRepairs.Size = new Size(92, 17);
+            lblActiveRepairs.TabIndex = 0;
+            lblActiveRepairs.Text = "Aktiv Təmirlər";
+            // 
+            // supplierDebtCard
+            // 
+            supplierDebtCard.BackColor = Color.FromArgb(255, 255, 255);
+            supplierDebtCard.Controls.Add(lblSupplierDebtValue);
+            supplierDebtCard.Controls.Add(lblSupplierDebt);
+            supplierDebtCard.Cursor = Cursors.WaitCursor;
+            supplierDebtCard.Depth = 0;
+            supplierDebtCard.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            supplierDebtCard.Location = new Point(770, 9);
+            supplierDebtCard.Margin = new Padding(7);
+            supplierDebtCard.MouseState = MaterialSkin.MouseState.HOVER;
+            supplierDebtCard.Name = "supplierDebtCard";
+            supplierDebtCard.Padding = new Padding(14);
+            supplierDebtCard.Size = new Size(120, 46);
+            supplierDebtCard.TabIndex = 7;
+            // 
+            // lblSupplierDebtValue
+            // 
+            lblSupplierDebtValue.AutoSize = true;
+            lblSupplierDebtValue.BackColor = Color.FromArgb(255, 255, 255);
+            lblSupplierDebtValue.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblSupplierDebtValue.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lblSupplierDebtValue.Location = new Point(4, 23);
+            lblSupplierDebtValue.Name = "lblSupplierDebtValue";
+            lblSupplierDebtValue.Size = new Size(36, 17);
+            lblSupplierDebtValue.TabIndex = 1;
+            lblSupplierDebtValue.Text = "0.00";
+            // 
+            // lblSupplierDebt
+            // 
+            lblSupplierDebt.AutoSize = true;
+            lblSupplierDebt.BackColor = Color.FromArgb(255, 255, 255);
+            lblSupplierDebt.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblSupplierDebt.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lblSupplierDebt.Location = new Point(4, 4);
+            lblSupplierDebt.Name = "lblSupplierDebt";
+            lblSupplierDebt.Size = new Size(114, 17);
+            lblSupplierDebt.TabIndex = 0;
+            lblSupplierDebt.Text = "Tədarükçü Borcu";
             // 
             // dashboardTimer
             // 
@@ -1105,6 +1286,14 @@ namespace AzAgroPOS.Teqdimat
             debtorCustomersCard.PerformLayout();
             lowStockProductsCard.ResumeLayout(false);
             lowStockProductsCard.PerformLayout();
+            monthlySalesCard.ResumeLayout(false);
+            monthlySalesCard.PerformLayout();
+            totalDebtCard.ResumeLayout(false);
+            totalDebtCard.PerformLayout();
+            activeRepairsCard.ResumeLayout(false);
+            activeRepairsCard.PerformLayout();
+            supplierDebtCard.ResumeLayout(false);
+            supplierDebtCard.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -1156,14 +1345,26 @@ namespace AzAgroPOS.Teqdimat
         private MaterialSkin.Controls.MaterialCard activeShiftCard;
         private MaterialSkin.Controls.MaterialCard debtorCustomersCard;
         private MaterialSkin.Controls.MaterialCard lowStockProductsCard;
+        private MaterialSkin.Controls.MaterialCard monthlySalesCard;
+        private MaterialSkin.Controls.MaterialCard totalDebtCard;
+        private MaterialSkin.Controls.MaterialCard activeRepairsCard;
+        private MaterialSkin.Controls.MaterialCard supplierDebtCard;
         private Label lblDailySales;
         private Label lblActiveShift;
         private Label lblDebtorCustomers;
         private Label lblLowStockProducts;
+        private Label lblMonthlySales;
+        private Label lblTotalDebt;
+        private Label lblActiveRepairs;
+        private Label lblSupplierDebt;
         private Label lblDailySalesValue;
         private Label lblActiveShiftValue;
         private Label lblDebtorCustomersValue;
         private Label lblLowStockProductsValue;
+        private Label lblMonthlySalesValue;
+        private Label lblTotalDebtValue;
+        private Label lblActiveRepairsValue;
+        private Label lblSupplierDebtValue;
         private System.Windows.Forms.Timer dashboardTimer;
     }
 }
