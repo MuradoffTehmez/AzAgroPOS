@@ -36,22 +36,31 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
 
         _formButtonMap = new Dictionary<Type, MaterialButton>
         {
-            { typeof(MehsulIdareetmeFormu), btnMehsulIdareetme },
+            { typeof(NovbeIdareetmesiFormu), btnNovbeIdareetme },
             { typeof(SatisFormu), btnYeniSatis },
             { typeof(QaytarmaFormu), btnQaytarma },
             { typeof(XercIdareetmeFormu), btnXercIdareetme },
             { typeof(NisyeIdareetmeFormu), btnNisyeIdareetme },
             { typeof(TemirIdareetmeFormu), btnTemirIdareetme },
+            { typeof(MehsulIdareetmeFormu), btnMehsulIdareetme },
             { typeof(IstifadeciIdareetmeFormu), btnIstifadeciIdareetme },
+            { typeof(IsciIdareetmeFormu), btnIsciIdareetme },
             { typeof(HesabatFormu), btnHesabatlar },
             { typeof(MehsulSatisHesabatFormu), btnMehsulSatisHesabati },
             { typeof(AnbarQaliqHesabatFormu), btnAnbarQaliqHesabati },
             { typeof(ZHesabatArxivFormu), btnZHesabatArxivi },
             { typeof(BarkodCapiFormu), btnBarkodCapi },
-            { typeof(IsciIdareetmeFormu), btnIsciIdareetme },
-            { typeof(MinimumStokMehsullariFormu), btnMinimumStokMehsullari }, // Əlavə edildi
-            { typeof(KonfiqurasiyaFormu), btnKonfiqurasiya }, // Əlavə edildi
-            { typeof(AlisSenedFormu), btnAlisSened } // Əlavə edildi
+            { typeof(MinimumStokMehsullariFormu), btnMinimumStokMehsullari },
+            { typeof(KonfiqurasiyaFormu), btnKonfiqurasiya },
+            { typeof(AlisSenedFormu), btnAlisSened },
+            { typeof(KassaFormu), btnKassaIdareetme },
+            { typeof(AlisSifarisFormu), btnAlisSifaris },
+            { typeof(EhtiyatHissəsiFormu), btnEhtiyatHisse },
+            { typeof(EmekHaqqiFormu), btnEmekHaqqi },
+            { typeof(TedarukcuOdemeFormu), btnTedarukcuOdeme },
+            { typeof(AnbarFormu), btnAnbar },
+            { typeof(QebzFormu), btnQebz },
+            { typeof(TedarukcuIdareetmeFormu), btnTedarukcuIdareetme },
         };
 
         // Dashboard panelini hazırlayırıq
@@ -60,89 +69,12 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
 
     private void AnaMenuFormu_Load(object sender, EventArgs e)
     {
-        // Xərc idarəetmə düyməsini əlavə edin (proqramatik şəkildə)
-        AddXercIdareetmeButton();
-
         IcazeleriYoxla();
         mdiTabControl.TabPages.Clear();
         UpdateActiveButtonHighlight();
 
         // Dashboard məlumatlarını yükləyirik
         _ = UpdateDashboardData(); // Fire and forget
-    }
-
-    /// <summary>
-    /// Xərc idarəetmə düyməsini menyu panelinə proqramatik şəkildə əlavə edir
-    /// diqqət: Bu metod designer faylının təsiri olmadan düymə əlavə edir
-    /// qeyd: Düymə mövcud qaytarma düyməsindən sonra əlavə olunur
-    /// </summary>
-    private void AddXercIdareetmeButton()
-    {
-        // Yeni düymə yaradırıq
-        var xercButton = new MaterialSkin.Controls.MaterialButton
-        {
-            Name = "btnXercIdareetme",
-            Text = "Xərc İdarəetmə",
-            Dock = DockStyle.Top,
-            Depth = 0,
-            HighEmphasis = false,
-            Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text,
-            UseAccentColor = false,
-            AutoSize = false,
-            AutoSizeMode = AutoSizeMode.GrowAndShrink,
-            BackColor = Color.FromArgb(242, 242, 242),
-            ForeColor = Color.FromArgb(222, 0, 0, 0),
-            Margin = new Padding(4, 6, 4, 6),
-            MouseState = MaterialSkin.MouseState.HOVER,
-            NoAccentTextColor = Color.Empty,
-            Size = new Size(240, 45)
-        };
-
-        // Düyməyə şəkil əlavə etmək üçün imagelist-dən istifadə edə bilərik
-        if (sidebarImageList.Images.ContainsKey("expense.png"))
-        {
-            xercButton.ImageList = sidebarImageList;
-            xercButton.ImageKey = "expense.png";
-            xercButton.ImageAlign = ContentAlignment.MiddleLeft;
-        }
-
-        // Click hadisəsini qoşuruq
-        xercButton.Click += btnXercIdareetme_Click;
-
-        // Düyməni doğru yerdə yerləşdirmək üçün mövcud düymələrin yerlərini dəyişirik
-        // Əvvəlcə mövcud düymələrin yerlərini tapaq
-        var existingButtons = pnlMenu.Controls.OfType<MaterialSkin.Controls.MaterialButton>()
-            .Where(b => b.Name != "btnXercIdareetme") // Özümüzü istisna edirik
-            .OrderBy(b => b.Location.Y)
-            .ToList();
-
-        // Qaytarma düyməsini tapaq
-        var qaytarmaButton = existingButtons.FirstOrDefault(b => b.Name == "btnQaytarma");
-        if (qaytarmaButton != null)
-        {
-            // Qaytarma düyməsindən sonra yeni düymə əlavə edirik
-            var newY = qaytarmaButton.Location.Y + qaytarmaButton.Height;
-
-            // Yeni düymənin yerini təyin edirik
-            xercButton.Location = new Point(qaytarmaButton.Location.X, newY);
-
-            // Digər düymələri aşağı endiririk
-            foreach (var button in existingButtons.Where(b => b.Location.Y > newY))
-            {
-                button.Location = new Point(button.Location.X, button.Location.Y + xercButton.Height);
-            }
-        }
-        else
-        {
-            // Əgər qaytarma düyməsi tapılmazsa, default yerə əlavə edirik
-            xercButton.Location = new Point(0, 255); // Default yer
-        }
-
-        // Düyməni panelə əlavə edirik
-        pnlMenu.Controls.Add(xercButton);
-
-        // Düyməni _formButtonMap-ə də əlavə edirik
-        _formButtonMap[typeof(XercIdareetmeFormu)] = xercButton;
     }
 
     #region Tab İdarəetməsi
@@ -319,6 +251,9 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
 
     #region Dashboard Methods
 
+    /// <summary>
+    /// Dashboard panelini və təkmilləşmiş məlumat yeniləmə funksiyasını başlatır
+    /// </summary>
     private void InitializeDashboard()
     {
         // Timeri konfiqurasiya edirik
@@ -465,7 +400,17 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
         MessageBox.Show(mesaj, basliq, düymələr, ikon);
     }
 
-    private void btnMehsulIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<MehsulIdareetmeFormu>();
+    #region Button Click Events
+
+    // Operational Functions
+    private void btnNovbeIdareetme_Click(object sender, EventArgs e)
+    {
+        using (var form = _serviceProvider.GetRequiredService<NovbeIdareetmesiFormu>())
+        {
+            form.ShowDialog();
+        }
+        IcazeleriYoxla();
+    }
 
     private void btnYeniSatis_Click(object sender, EventArgs e)
     {
@@ -500,38 +445,59 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
             UsaqFormuAc<SatisFormu>();
         }
     }
+
     private void btnQaytarma_Click(object sender, EventArgs e) => UsaqFormuAc<QaytarmaFormu>();
-    private void btnXercIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<XercIdareetmeFormu>();
     private void btnNisyeIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<NisyeIdareetmeFormu>();
+    
+    // Product Management
+    private void btnMehsulIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<MehsulIdareetmeFormu>();
+    private void btnMinimumStokMehsullari_Click(object sender, EventArgs e) => UsaqFormuAc<MinimumStokMehsullariFormu>();
+    private void btnBarkodCapi_Click(object sender, EventArgs e) => UsaqFormuAc<BarkodCapiFormu>();
+    
+    // Financial Management
+    private void btnXercIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<XercIdareetmeFormu>();
     private void btnTemirIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<TemirIdareetmeFormu>();
-
-    private void btnNovbeIdareetme_Click(object sender, EventArgs e)
-    {
-        using (var form = _serviceProvider.GetRequiredService<NovbeIdareetmesiFormu>())
-        {
-            form.ShowDialog();
-        }
-        IcazeleriYoxla();
-    }
-
+    private void btnAlisSened_Click(object sender, EventArgs e) => UsaqFormuAc<AlisSenedFormu>();
+    private void btnAlisSifaris_Click(object sender, EventArgs e) => UsaqFormuAc<AlisSifarisFormu>();
+    private void btnKassaIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<KassaFormu>();
+    private void btnQebz_Click(object sender, EventArgs e) => UsaqFormuAc<QebzFormu>();
+    private void btnTedarukcuOdeme_Click(object sender, EventArgs e) => UsaqFormuAc<TedarukcuOdemeFormu>();
+    private void btnTedarukcuIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<TedarukcuIdareetmeFormu>();
+    private void btnEhtiyatHisse_Click(object sender, EventArgs e) => UsaqFormuAc<EhtiyatHissəsiFormu>();
+    private void btnEmekHaqqi_Click(object sender, EventArgs e) => UsaqFormuAc<EmekHaqqiFormu>();
+    
+    // Inventory & Storage
+    private void btnAnbar_Click(object sender, EventArgs e) => UsaqFormuAc<AnbarFormu>();
+    
+    // Staff & User Management
     private void btnIstifadeciIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<IstifadeciIdareetmeFormu>();
+    private void btnIsciIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<IsciIdareetmeFormu>();
+    
+    // Reports
     private void btnHesabatlar_Click(object sender, EventArgs e) => UsaqFormuAc<HesabatFormu>();
     private void btnMehsulSatisHesabati_Click(object sender, EventArgs e) => UsaqFormuAc<MehsulSatisHesabatFormu>();
     private void btnAnbarQaliqHesabati_Click(object sender, EventArgs e) => UsaqFormuAc<AnbarQaliqHesabatFormu>();
     private void btnZHesabatArxivi_Click(object sender, EventArgs e) => UsaqFormuAc<ZHesabatArxivFormu>();
-    private void btnBarkodCapi_Click(object sender, EventArgs e) => UsaqFormuAc<BarkodCapiFormu>();
-    private void btnIsciIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<IsciIdareetmeFormu>();
-    private void btnMinimumStokMehsullari_Click(object sender, EventArgs e) => UsaqFormuAc<MinimumStokMehsullariFormu>(); // Əlavə edildi
-    private void btnKonfiqurasiya_Click(object sender, EventArgs e) => UsaqFormuAc<KonfiqurasiyaFormu>(); // Əlavə edildi
-    private void btnAlisSened_Click(object sender, EventArgs e) => UsaqFormuAc<AlisSenedFormu>(); // Əlavə edildi
+    
+    // System Configuration
+    private void btnKonfiqurasiya_Click(object sender, EventArgs e) => UsaqFormuAc<KonfiqurasiyaFormu>();
+
+    #endregion
+
+    #region Form Events
 
     private void AnaMenuFormu_FormClosing(object sender, FormClosingEventArgs e)
     {
+        // Tətbiqi düzgün şəkildə bağlayırıq
         Application.Exit();
     }
 
     private void lblActiveShiftValue_Click(object sender, EventArgs e)
     {
-
+        // Aktiv növbəyə aid əlavə funksionallıq burada tətbiq edilə bilər
     }
+
+    #endregion
+
+   
 }
