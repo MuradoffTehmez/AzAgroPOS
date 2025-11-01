@@ -151,6 +151,13 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
             var qaytarmaPresenter = new Teqdimatcilar.QaytarmaPresenter(qaytarmaFormu, qaytarmaManager, satisManager, mehsulManager, maliyyeManager);
             qaytarmaFormu.InitializePresenter(qaytarmaPresenter);
         }
+        // Initialize presenter for XercIdareetmeFormu
+        else if (form is XercIdareetmeFormu xercFormu)
+        {
+            var maliyyeManager = serviceProvider.GetRequiredService<MaliyyeManager>();
+            var xercPresenter = new Teqdimatcilar.XercPresenter(xercFormu, maliyyeManager);
+            xercFormu.InitializePresenter(xercPresenter);
+        }
     }
 
     private void mdiTabControl_MouseClick(object sender, MouseEventArgs e)

@@ -116,6 +116,54 @@ namespace AzAgroPOS.Mentiq.Idareciler
             }
         }
 
+        /// <summary>
+        /// Axtarış termini əsasında məhdud sayda müştəri qaytarır.
+        /// Lazy loading və search-before-load pattern-i üçün istifadə olunur.
+        /// </summary>
+        /// <param name="axtarisTer mini">Axtarış termini (ad və ya telefon nömrəsinə görə)</param>
+        /// <param name="maksimumSay">Qaytarılacaq maksimum qeyd sayı</param>
+        /// <returns>Tapılan müştəri siyahısı</returns>
+        public async Task<EmeliyyatNeticesi<List<MusteriDto>>> MusterileriAxtarisIleGetirAsync(string axtarisTermini, int maksimumSay = 50)
+        {
+            try
+            {
+                IEnumerable<Musteri> musteriler;
+
+                if (string.IsNullOrWhiteSpace(axtarisTermini))
+                {
+                    // Axtarış termini yoxdursa, ilk N qeydi qaytarırıq
+                    var (topMusteriler, _) = await _unitOfWork.Musteriler.SehifelenmisGetirAsync(1, maksimumSay);
+                    musteriler = topMusteriler;
+                }
+                else
+                {
+                    // Axtarış termini əsasında filtrləyirik
+                    var axtarisLower = axtarisTermini.ToLower();
+                    var butunMusteriler = await _unitOfWork.Musteriler.AxtarAsync(m =>
+                        m.TamAd.ToLower().Contains(axtarisLower) ||
+                        (m.TelefonNomresi != null && m.TelefonNomresi.Contains(axtarisTermini)));
+
+                    musteriler = butunMusteriler.Take(maksimumSay);
+                }
+
+                var dtolar = musteriler.Select(m => new MusteriDto
+                {
+                    Id = m.Id,
+                    TamAd = m.TamAd,
+                    TelefonNomresi = m.TelefonNomresi,
+                    Unvan = m.Unvan,
+                    UmumiBorc = m.UmumiBorc,
+                    KreditLimiti = m.KreditLimiti
+                }).OrderBy(m => m.TamAd).ToList();
+
+                return EmeliyyatNeticesi<List<MusteriDto>>.Ugurlu(dtolar);
+            }
+            catch (Exception ex)
+            {
+                return EmeliyyatNeticesi<List<MusteriDto>>.Ugursuz($"Müştəri axtarışı xətası: {ex.Message}");
+            }
+        }
+
         #region Bonus İdarəetməsi
 
         /// <summary>
