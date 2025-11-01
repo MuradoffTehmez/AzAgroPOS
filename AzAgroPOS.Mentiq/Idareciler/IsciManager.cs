@@ -62,6 +62,68 @@ public class IsciManager
     }
 
     /// <summary>
+    /// Axtarış termini əsasında məhdud sayda işçi qaytarır.
+    /// Lazy loading və search-before-load pattern-i üçün istifadə olunur.
+    /// </summary>
+    /// <param name="axtarisTermini">Axtarış termini (ad, telefon və ya vəzifəyə görə)</param>
+    /// <param name="maksimumSay">Qaytarılacaq maksimum qeyd sayı</param>
+    /// <returns>Tapılan işçi siyahısı</returns>
+    public async Task<EmeliyyatNeticesi<List<IsciDto>>> IscileriAxtarisIleGetirAsync(string axtarisTermini, int maksimumSay = 50)
+    {
+        Logger.MelumatYaz($"IscileriAxtarisIleGetirAsync metodu çağırıldı. Axtarış: '{axtarisTermini}', Maksimum: {maksimumSay}");
+        try
+        {
+            IEnumerable<Isci> isciler;
+
+            if (string.IsNullOrWhiteSpace(axtarisTermini))
+            {
+                // Axtarış termini yoxdursa, aktiv işçilərdən ilk N qeydi qaytarırıq
+                var butunIsciler = await _unitOfWork.Isciler.AxtarAsync(i => i.Status == IsciStatusu.Aktiv);
+                isciler = butunIsciler.Take(maksimumSay);
+            }
+            else
+            {
+                // Axtarış termini əsasında filtrləyirik
+                var axtarisLower = axtarisTermini.ToLower();
+                var tapilmisIsciler = await _unitOfWork.Isciler.AxtarAsync(i =>
+                    i.Status == IsciStatusu.Aktiv &&
+                    (i.TamAd.ToLower().Contains(axtarisLower) ||
+                     (i.TelefonNomresi != null && i.TelefonNomresi.Contains(axtarisTermini)) ||
+                     (i.Vezife != null && i.Vezife.ToLower().Contains(axtarisLower))));
+
+                isciler = tapilmisIsciler.Take(maksimumSay);
+            }
+
+            var dtolar = isciler.Select(i => new IsciDto
+            {
+                Id = i.Id,
+                TamAd = i.TamAd,
+                DogumTarixi = i.DogumTarixi,
+                TelefonNomresi = i.TelefonNomresi,
+                Unvan = i.Unvan,
+                Email = i.Email,
+                IseBaslamaTarixi = i.IseBaslamaTarixi,
+                Maas = i.Maas,
+                Vezife = i.Vezife,
+                Departament = i.Departament,
+                Status = i.Status,
+                SvsNo = i.SvsNo,
+                QeydiyyatUnvani = i.QeydiyyatUnvani,
+                BankMəlumatları = i.BankMəlumatları,
+                SistemIstifadeciAdi = i.SistemIstifadecisi?.IstifadeciAdi
+            }).OrderBy(i => i.TamAd).ToList();
+
+            Logger.MelumatYaz($"İşçi axtarışı tamamlandı. {dtolar.Count} qeyd tapıldı.");
+            return EmeliyyatNeticesi<List<IsciDto>>.Ugurlu(dtolar);
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "İşçi axtarışı xətası: ");
+            return EmeliyyatNeticesi<List<IsciDto>>.Ugursuz($"İşçi axtarışı xətası: {ex.Message}");
+        }
+    }
+
+    /// <summary>
     /// Verilmiş ID-yə görə işçi məlumatlarını gətirir.
     /// </summary>
     public async Task<EmeliyyatNeticesi<IsciDto>> IsciGetirAsync(int id)
