@@ -61,7 +61,7 @@ public class BazaIdareetmePresenter
             var ölçüNetice = await _bazaManager.BazaOlcusunuGetirAsync();
             if (ölçüNetice.UgurluDur)
             {
-                _view.BazaOlcusunuGoster(ölçüNetice.Data);
+                _view.BazaOlcusunuGoster((double)ölçüNetice.Data);
             }
 
             // Son backup tarixini göstəririk

@@ -22,7 +22,7 @@ public class LazyLoadComboBoxHelper<T>
     private readonly string _valueMember;
     private readonly int _pageSize;
     private CancellationTokenSource? _searchCancellationTokenSource;
-    private System.Windows.Forms.Timer? _debounceTimer;
+    private System.Threading.Timer? _debounceTimer;
     private const int DebounceMilliseconds = 300;
 
     /// <summary>
@@ -96,7 +96,7 @@ public class LazyLoadComboBoxHelper<T>
     {
         // Debounce ilə axtarış
         _debounceTimer?.Dispose();
-        _debounceTimer = new Timer(_ =>
+        _debounceTimer = new System.Threading.Timer(_ =>
         {
             if (_searchTextBox?.InvokeRequired == true)
             {

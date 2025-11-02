@@ -10,6 +10,8 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
         private readonly IMusteriView _view;
         private readonly MusteriManager _musteriManager;
         private List<MusteriDto> _musteriCache;
+        private readonly SehifeParametrleri _sehifeParametrleri = new SehifeParametrleri { SehifeOlcusu = 50 };
+        private bool _paginationEnabled = true;
 
         public MusteriPresenter(IMusteriView view, MusteriManager musteriManager)
         {
@@ -22,39 +24,90 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             _view.YeniMusteriIstek += (s, e) => _view.FormuTemizle();
             _view.YaddaSaxlaIstek += async (s, e) => await YaddaSaxla();
             _view.SilIstek += async (s, e) => await Sil();
-            _view.AxtarIstek += (s, e) => Axtar();
+            _view.AxtarIstek += async (s, e) => await Axtar();
+            _view.NovbetiSehifeIstek += async (s, e) => await NovbetiSehife();
+            _view.EvvelkiSehifeIstek += async (s, e) => await EvvelkiSehife();
         }
 
         private async Task FormuYukle()
         {
-            var netice = await _musteriManager.ButunMusterileriGetirAsync();
-            if (netice.UgurluDur)
+            await _view.EmeliyyatIcraEtAsync(async () =>
             {
-                _musteriCache = netice.Data;
-                _view.MusterileriGoster(_musteriCache);
+                _sehifeParametrleri.SehifeNomresi = 1;
+                await MusterileriYukle();
+                _view.FormuTemizle();
+            }, "Müştərilər yüklənir...");
+        }
+
+        private async Task MusterileriYukle()
+        {
+            if (_paginationEnabled)
+            {
+                var netice = await _musteriManager.MusterileriSehifelenmisGetirAsync(_sehifeParametrleri);
+                if (netice.UgurluDur && netice.Data != null)
+                {
+                    var sehifelenmis = netice.Data;
+                    var axtarisMetni = _view.AxtarisMetni;
+
+                    IEnumerable<MusteriDto> musteriler = sehifelenmis.Melumatlar;
+                    if (!string.IsNullOrWhiteSpace(axtarisMetni))
+                    {
+                        var axtarisLower = axtarisMetni.ToLower();
+                        musteriler = musteriler.Where(m =>
+                            m.TamAd.ToLower().Contains(axtarisLower) ||
+                            m.TelefonNomresi.Contains(axtarisLower));
+                    }
+
+                    _view.MusterileriGoster(musteriler.ToList());
+                    _view.SehifeMelumatlariGoster(
+                        sehifelenmis.CariSehife,
+                        sehifelenmis.UmumiSehifeSayi,
+                        sehifelenmis.UmumiQeydSayi,
+                        sehifelenmis.EvvelkiSehifeVar,
+                        sehifelenmis.NovbetiSehifeVar
+                    );
+                }
             }
             else
             {
-                _view.MesajGoster(netice.Mesaj, "Xəta", MessageBoxIcon.Error);
+                var netice = await _musteriManager.ButunMusterileriGetirAsync();
+                if (netice.UgurluDur)
+                {
+                    _musteriCache = netice.Data;
+                    _view.MusterileriGoster(_musteriCache);
+                }
+                else
+                {
+                    _view.MesajGoster(netice.Mesaj, "Xəta", MessageBoxIcon.Error);
+                }
             }
-            _view.FormuTemizle();
         }
 
-        private void Axtar()
+        private async Task Axtar()
         {
-            var axtarisMetni = _view.AxtarisMetni.ToLower();
-            if (string.IsNullOrWhiteSpace(axtarisMetni))
+            _sehifeParametrleri.SehifeNomresi = 1;
+            await MusterileriYukle();
+        }
+
+        private async Task NovbetiSehife()
+        {
+            await _view.EmeliyyatIcraEtAsync(async () =>
             {
-                _view.MusterileriGoster(_musteriCache);
-                return;
-            }
+                _sehifeParametrleri.SehifeNomresi++;
+                await MusterileriYukle();
+            }, "Səhifə yüklənir...");
+        }
 
-            var netice = _musteriCache.Where(m =>
-                m.TamAd.ToLower().Contains(axtarisMetni) ||
-                m.TelefonNomresi.Contains(axtarisMetni)
-            ).ToList();
-
-            _view.MusterileriGoster(netice);
+        private async Task EvvelkiSehife()
+        {
+            await _view.EmeliyyatIcraEtAsync(async () =>
+            {
+                if (_sehifeParametrleri.SehifeNomresi > 1)
+                {
+                    _sehifeParametrleri.SehifeNomresi--;
+                    await MusterileriYukle();
+                }
+            }, "Səhifə yüklənir...");
         }
 
         private void MusteriFormunuDoldur()
@@ -77,8 +130,10 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 
         private async Task YaddaSaxla()
         {
-            // Clear previous validation errors
-            _view.ButunXetalariTemizle();
+            await _view.EmeliyyatIcraEtAsync(async () =>
+            {
+                // Clear previous validation errors
+                _view.ButunXetalariTemizle();
 
             // Validate required fields
             bool valid = true;
@@ -123,15 +178,16 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                 netice = await _musteriManager.MusteriYaratAsync(musteriDto);
             }
 
-            if (netice.UgurluDur)
-            {
-                _view.MesajGoster("Əməliyyat uğurla tamamlandı.", "Uğurlu", MessageBoxIcon.Information);
-                await FormuYukle();
-            }
-            else
-            {
-                _view.MesajGoster(netice.Mesaj, "Xəta", MessageBoxIcon.Error);
-            }
+                if (netice.UgurluDur)
+                {
+                    _view.MesajGoster("Əməliyyat uğurla tamamlandı.", "Uğurlu", MessageBoxIcon.Information);
+                    await FormuYukle();
+                }
+                else
+                {
+                    _view.MesajGoster(netice.Mesaj, "Xəta", MessageBoxIcon.Error);
+                }
+            }, "Müştəri yadda saxlanılır...");
         }
 
         /// <summary>

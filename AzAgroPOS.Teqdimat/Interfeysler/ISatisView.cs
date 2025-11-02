@@ -57,5 +57,8 @@ namespace AzAgroPOS.Teqdimat.Interfeysler
 
         // Müştəri borcuna görə rəngləmə üçün məlumat
         string GetMusteriBorcRengi(decimal borc);
+
+        // Async əməliyyatlar üçün yükləmə göstərgəsi
+        Task EmeliyyatIcraEtAsync(Func<Task> emeliyyat, string mesaj);
     }
 }
