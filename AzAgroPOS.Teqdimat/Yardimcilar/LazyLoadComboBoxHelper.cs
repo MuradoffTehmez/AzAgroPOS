@@ -22,7 +22,7 @@ public class LazyLoadComboBoxHelper<T>
     private readonly string _valueMember;
     private readonly int _pageSize;
     private CancellationTokenSource? _searchCancellationTokenSource;
-    private Timer? _debounceTimer;
+    private System.Windows.Forms.Timer? _debounceTimer;
     private const int DebounceMilliseconds = 300;
 
     /// <summary>
