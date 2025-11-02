@@ -28,6 +28,12 @@ namespace AzAgroPOS.Teqdimat
             dgvMehsullar.CellFormatting += DgvMehsullar_CellFormatting;
         }
 
+        // Pagination UI kontrolları (runtime-da yaradılır)
+        private Panel? _paginationPanel;
+        private Button? _btnEvvelki;
+        private Button? _btnNovbeti;
+        private Label? _lblSehifeMelumati;
+
         #region View Xassə və Hadisələri (Properties and Events)
         public string MehsulId { get => txtId.Text; set => txtId.Text = value; }
         public string MehsulAdi { get => txtAd.Text; set => txtAd.Text = value; }
@@ -55,6 +61,8 @@ namespace AzAgroPOS.Teqdimat
         public event EventHandler StokKoduGeneralasiyaIstek;
         public event EventHandler BarkodGeneralasiyaIstek;
         public event EventHandler Kopyala_Istek;
+        public event EventHandler NovbetiSehifeIstek;
+        public event EventHandler EvvelkiSehifeIstek;
         #endregion
 
         #region View Metodları
@@ -221,6 +229,36 @@ namespace AzAgroPOS.Teqdimat
         }
 
         /// <summary>
+        /// Səhifələmə məlumatlarını göstərir və düymələri aktiv/deaktiv edir
+        /// </summary>
+        public void SehifeMelumatlariGoster(int cariSehife, int umumiSehife, int umumiQeyd, bool evvelkiVar, bool novbetiVar)
+        {
+            if (_lblSehifeMelumati != null)
+            {
+                _lblSehifeMelumati.Text = $"Səhifə {cariSehife}/{umumiSehife} - Cəmi: {umumiQeyd} qeyd";
+            }
+
+            if (_btnEvvelki != null)
+            {
+                _btnEvvelki.Enabled = evvelkiVar;
+            }
+
+            if (_btnNovbeti != null)
+            {
+                _btnNovbeti.Enabled = novbetiVar;
+            }
+        }
+
+        /// <summary>
+        /// Async əməliyyatı YuklemeGostergeci ilə icra edir
+        /// </summary>
+        public async Task EmeliyyatIcraEtAsync(Func<Task> emeliyyat, string mesaj)
+        {
+            var gosterici = new Yardimcilar.YuklemeGostergeci(this);
+            await gosterici.EmeliyyatIcraEtAsync(emeliyyat, mesaj);
+        }
+
+        /// <summary>
         /// Recursively clears errors from all controls
         /// </summary>
         /// <param name="control">Control to clear errors from</param>
@@ -237,8 +275,66 @@ namespace AzAgroPOS.Teqdimat
         #region Hadisə Ötürücüləri (Event Handlers)
         private void MehsulIdareetmeFormu_Load(object sender, EventArgs e)
         {
+            SetupPaginationUI();
             FormYuklendi_Istek?.Invoke(this, EventArgs.Empty);
             SetupTooltips();
+        }
+
+        /// <summary>
+        /// Səhifələmə UI-ni yaradır (düymələr və məlumat paneli)
+        /// </summary>
+        private void SetupPaginationUI()
+        {
+            // Pagination Panel (DataGridView-in altında)
+            _paginationPanel = new Panel
+            {
+                Height = 35,
+                Dock = DockStyle.Bottom,
+                BackColor = Color.WhiteSmoke
+            };
+
+            // Əvvəlki düyməsi
+            _btnEvvelki = new Button
+            {
+                Text = "◀ Əvvəlki",
+                Width = 100,
+                Height = 28,
+                Location = new Point(10, 3),
+                Enabled = false
+            };
+            _btnEvvelki.Click += (s, e) => EvvelkiSehifeIstek?.Invoke(this, EventArgs.Empty);
+
+            // Növbəti düyməsi
+            _btnNovbeti = new Button
+            {
+                Text = "Növbəti ▶",
+                Width = 100,
+                Height = 28,
+                Location = new Point(120, 3),
+                Enabled = false
+            };
+            _btnNovbeti.Click += (s, e) => NovbetiSehifeIstek?.Invoke(this, EventArgs.Empty);
+
+            // Səhifə məlumatı
+            _lblSehifeMelumati = new Label
+            {
+                Text = "Səhifə 0/0 - Cəmi: 0 qeyd",
+                AutoSize = false,
+                Width = 250,
+                Height = 28,
+                TextAlign = ContentAlignment.MiddleLeft,
+                Location = new Point(230, 3),
+                Font = new Font("Segoe UI", 9F, FontStyle.Regular)
+            };
+
+            // Kontrolları panel-ə əlavə et
+            _paginationPanel.Controls.Add(_btnEvvelki);
+            _paginationPanel.Controls.Add(_btnNovbeti);
+            _paginationPanel.Controls.Add(_lblSehifeMelumati);
+
+            // Panel-i formaya əlavə et
+            this.Controls.Add(_paginationPanel);
+            _paginationPanel.BringToFront();
         }
 
         private void SetupTooltips()

@@ -30,6 +30,11 @@ public interface IMehsulIdareetmeView
     void BrendleriGoster(IEnumerable<BrendDto> brendler);
     void TedarukculeriGoster(IEnumerable<TedarukcuDto> tedarukculer);
     void FormuTemizle();
+    void SehifeMelumatlariGoster(int cariSehife, int umumiSehife, int umumiQeyd, bool evvelkiVar, bool novbetiVar);
+    void XetaGoster(Control control, string message);
+    void XetaniTemizle(Control control);
+    void ButunXetalariTemizle();
+    Task EmeliyyatIcraEtAsync(Func<Task> emeliyyat, string mesaj);
 
     event EventHandler FormYuklendi_Istek;
     event EventHandler MehsulElaveEt_Istek;
@@ -41,6 +46,8 @@ public interface IMehsulIdareetmeView
     event EventHandler StokKoduGeneralasiyaIstek;
     event EventHandler BarkodGeneralasiyaIstek;
     event EventHandler Kopyala_Istek;
+    event EventHandler NovbetiSehifeIstek;
+    event EventHandler EvvelkiSehifeIstek;
 
     DialogResult MesajGoster(string mesaj, string basliq, MessageBoxButtons düymələr, MessageBoxIcon ikon);
 }

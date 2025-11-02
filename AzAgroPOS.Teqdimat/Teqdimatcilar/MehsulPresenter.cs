@@ -1,6 +1,7 @@
 // Fayl: AzAgroPOS.Teqdimat/Teqdimatcilar/MehsulPresenter.cs
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Varliglar;
 
@@ -15,6 +16,8 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
         private readonly TedarukcuMeneceri _tedarukcuMeneceri;
         private IEnumerable<MehsulDto>? _butunMehsullarCache;
         private bool _isViewAttached;
+        private readonly SehifeParametrleri _sehifeParametrleri = new SehifeParametrleri { SehifeOlcusu = 50 };
+        private bool _paginationEnabled = true;
 
         public MehsulPresenter(MehsulManager mehsulManager,
             KateqoriyaMeneceri kateqoriyaMeneceri, BrendMeneceri brendMeneceri, TedarukcuMeneceri tedarukcuMeneceri)
@@ -52,39 +55,40 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             _view.MehsulSil_Istek += async (s, e) => await MehsulSil();
             _view.FormuTemizle_Istek += (s, e) => FormuTemizle();
             _view.CedvelSecimiDeyisdi_Istek += (s, e) => CedvelSeciminiDoldur();
-            _view.Axtaris_Istek += (s, e) => AxtarisEt();
+            _view.Axtaris_Istek += async (s, e) => await AxtarisEt();
             _view.StokKoduGeneralasiyaIstek += async (s, e) => await StokKoduGeneralasiyaEt();
             _view.BarkodGeneralasiyaIstek += async (s, e) => await BarkodGeneralasiyaEt();
             _view.Kopyala_Istek += (s, e) => Kopyala();
+            _view.NovbetiSehifeIstek += async (s, e) => await NovbetiSehife();
+            _view.EvvelkiSehifeIstek += async (s, e) => await EvvelkiSehife();
         }
 
         private async Task FormuYukle()
         {
-            _view.OlcuVahidleriniGoster(Enum.GetValues(typeof(OlcuVahidi)));
-
-            // Kateqoriyaları yükləyirik
-            var kateqoriyaNetice = await _kateqoriyaMeneceri.ButunKateqoriyalariGetirAsync();
-            if (kateqoriyaNetice.UgurluDur)
-                _view.KateqoriyalariGoster(kateqoriyaNetice.Data);
-
-            // Brendləri yükləyirik
-            var brendNetice = await _brendMeneceri.ButunBrendleriGetirAsync();
-            if (brendNetice.UgurluDur)
-                _view.BrendleriGoster(brendNetice.Data);
-
-            // Tedarukçuları yükləyirik
-            var tedarukcuNetice = await _tedarukcuMeneceri.ButunTedarukculeriGetirAsync();
-            if (tedarukcuNetice.UgurluDur)
-                _view.TedarukculeriGoster(tedarukcuNetice.Data);
-
-            // Bütün məhsulları yükləyirik (cache üçün)
-            var netice = await _mehsulManager.ButunMehsullariGetirAsync();
-            if (netice.UgurluDur)
+            await _view.EmeliyyatIcraEtAsync(async () =>
             {
-                _butunMehsullarCache = netice.Data;
-                _view.MehsullariGoster(_butunMehsullarCache);
-            }
-            _view.FormuTemizle();
+                _view.OlcuVahidleriniGoster(Enum.GetValues(typeof(OlcuVahidi)));
+
+                // Kateqoriyaları yükləyirik
+                var kateqoriyaNetice = await _kateqoriyaMeneceri.ButunKateqoriyalariGetirAsync();
+                if (kateqoriyaNetice.UgurluDur)
+                    _view.KateqoriyalariGoster(kateqoriyaNetice.Data);
+
+                // Brendləri yükləyirik
+                var brendNetice = await _brendMeneceri.ButunBrendleriGetirAsync();
+                if (brendNetice.UgurluDur)
+                    _view.BrendleriGoster(brendNetice.Data);
+
+                // Tedarukçuları yükləyirik
+                var tedarukcuNetice = await _tedarukcuMeneceri.ButunTedarukculeriGetirAsync();
+                if (tedarukcuNetice.UgurluDur)
+                    _view.TedarukculeriGoster(tedarukcuNetice.Data);
+
+                // Səhifə 1-dən başlayırıq
+                _sehifeParametrleri.SehifeNomresi = 1;
+                await MehsullariYukle();
+                _view.FormuTemizle();
+            }, "Məhsullar yüklənir...");
         }
 
         private async Task MehsulElaveEt()
@@ -95,19 +99,22 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                 return;
             }
 
-            var yeniMehsul = ViewDanMehsulYarat();
-            var netice = await _mehsulManager.MehsulYaratAsync(yeniMehsul);
+            await _view.EmeliyyatIcraEtAsync(async () =>
+            {
+                var yeniMehsul = ViewDanMehsulYarat();
+                var netice = await _mehsulManager.MehsulYaratAsync(yeniMehsul);
 
-            if (netice.UgurluDur)
-            {
-                _view.MesajGoster("Məhsul uğurla əlavə edildi.", "Məlumat", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                await FormuYukle();
-                FormuTemizle();
-            }
-            else
-            {
-                _view.MesajGoster(netice.Mesaj, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+                if (netice.UgurluDur)
+                {
+                    _view.MesajGoster("Məhsul uğurla əlavə edildi.", "Məlumat", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    await FormuYukle();
+                    FormuTemizle();
+                }
+                else
+                {
+                    _view.MesajGoster(netice.Mesaj, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }, "Məhsul əlavə edilir...");
         }
 
         private async Task MehsulYenile()
@@ -118,19 +125,22 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                 return;
             }
 
-            var movcudMehsul = ViewDanMehsulYarat();
-            var netice = await _mehsulManager.MehsulYenileAsync(movcudMehsul);
+            await _view.EmeliyyatIcraEtAsync(async () =>
+            {
+                var movcudMehsul = ViewDanMehsulYarat();
+                var netice = await _mehsulManager.MehsulYenileAsync(movcudMehsul);
 
-            if (netice.UgurluDur)
-            {
-                _view.MesajGoster("Məhsul məlumatları uğurla yeniləndi.", "Məlumat", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                await FormuYukle();
-                FormuTemizle();
-            }
-            else
-            {
-                _view.MesajGoster(netice.Mesaj, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+                if (netice.UgurluDur)
+                {
+                    _view.MesajGoster("Məhsul məlumatları uğurla yeniləndi.", "Məlumat", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    await FormuYukle();
+                    FormuTemizle();
+                }
+                else
+                {
+                    _view.MesajGoster(netice.Mesaj, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }, "Məhsul yenilənir...");
         }
 
         private async Task MehsulSil()
@@ -202,17 +212,84 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                 _view.MesajGoster(netice.Mesaj, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        private void AxtarisEt()
+        private async Task AxtarisEt()
         {
-            if (_butunMehsullarCache == null) return;
-            var axtarisMetni = _view.AxtarisMetni.ToLower();
-            var filterlenmis = string.IsNullOrWhiteSpace(axtarisMetni)
-                ? _butunMehsullarCache
-                : _butunMehsullarCache.Where(m =>
-                    m.Ad.ToLower().Contains(axtarisMetni) ||
-                    m.StokKodu.ToLower().Contains(axtarisMetni) ||
-                    m.Barkod.ToLower().Contains(axtarisMetni));
-            _view.MehsullariGoster(filterlenmis);
+            // Axtarış zamanı səhifə 1-ə qayıt
+            _sehifeParametrleri.SehifeNomresi = 1;
+            await MehsullariYukle();
+        }
+
+        private async Task MehsullariYukle()
+        {
+            if (_paginationEnabled)
+            {
+                // Səhifələnmiş yükləmə
+                var axtarisMetni = string.IsNullOrWhiteSpace(_view.AxtarisMetni) ? null : _view.AxtarisMetni;
+                var netice = await _mehsulManager.MehsullariSehifelenmisGetirAsync(_sehifeParametrleri);
+
+                if (netice.UgurluDur && netice.Data != null)
+                {
+                    var sehifelenmis = netice.Data;
+
+                    // Əgər axtarış varsa, client-side filtering tətbiq et
+                    IEnumerable<MehsulDto> mehsullar = sehifelenmis.Melumatlar;
+                    if (!string.IsNullOrWhiteSpace(axtarisMetni))
+                    {
+                        var axtarisLower = axtarisMetni.ToLower();
+                        mehsullar = mehsullar.Where(m =>
+                            m.Ad.ToLower().Contains(axtarisLower) ||
+                            m.StokKodu.ToLower().Contains(axtarisLower) ||
+                            m.Barkod.ToLower().Contains(axtarisLower));
+                    }
+
+                    _view.MehsullariGoster(mehsullar);
+                    _view.SehifeMelumatlariGoster(
+                        sehifelenmis.CariSehife,
+                        sehifelenmis.UmumiSehifeSayi,
+                        sehifelenmis.UmumiQeydSayi,
+                        sehifelenmis.EvvelkiSehifeVar,
+                        sehifelenmis.NovbetiSehifeVar
+                    );
+                }
+            }
+            else
+            {
+                // Köhnə yanaşma - hamısını yüklə və cache-lə
+                var netice = await _mehsulManager.ButunMehsullariGetirAsync();
+                if (netice.UgurluDur)
+                {
+                    _butunMehsullarCache = netice.Data;
+                    var axtarisMetni = _view.AxtarisMetni.ToLower();
+                    var filterlenmis = string.IsNullOrWhiteSpace(axtarisMetni)
+                        ? _butunMehsullarCache
+                        : _butunMehsullarCache.Where(m =>
+                            m.Ad.ToLower().Contains(axtarisMetni) ||
+                            m.StokKodu.ToLower().Contains(axtarisMetni) ||
+                            m.Barkod.ToLower().Contains(axtarisMetni));
+                    _view.MehsullariGoster(filterlenmis);
+                }
+            }
+        }
+
+        private async Task NovbetiSehife()
+        {
+            await _view.EmeliyyatIcraEtAsync(async () =>
+            {
+                _sehifeParametrleri.SehifeNomresi++;
+                await MehsullariYukle();
+            }, "Səhifə yüklənir...");
+        }
+
+        private async Task EvvelkiSehife()
+        {
+            await _view.EmeliyyatIcraEtAsync(async () =>
+            {
+                if (_sehifeParametrleri.SehifeNomresi > 1)
+                {
+                    _sehifeParametrleri.SehifeNomresi--;
+                    await MehsullariYukle();
+                }
+            }, "Səhifə yüklənir...");
         }
 
         private void CedvelSeciminiDoldur()
