@@ -12,6 +12,12 @@ namespace AzAgroPOS.Teqdimat
         private readonly IServiceProvider _serviceProvider;
         public int SecilenMusteriId { get; private set; } = 0;
 
+        // Pagination UI kontrolları
+        private Panel? _paginationPanel;
+        private Button? _btnEvvelki;
+        private Button? _btnNovbeti;
+        private Label? _lblSehifeMelumati;
+
         public MusteriIdareetmeFormu(IServiceProvider serviceProvider)
         {
             InitializeComponent();
@@ -19,6 +25,7 @@ namespace AzAgroPOS.Teqdimat
             // Form yüklənəndə Presenter-ə xəbər veririk
             this.Load += (s, e) =>
             {
+                SetupPaginationUI();
                 FormYuklendi?.Invoke(this, EventArgs.Empty);
                 SetupTooltips();
             };
@@ -65,6 +72,8 @@ namespace AzAgroPOS.Teqdimat
         public event EventHandler SilIstek;
         public event EventHandler AxtarIstek;
         public event EventHandler Axtar_Istek;
+        public event EventHandler NovbetiSehifeIstek;
+        public event EventHandler EvvelkiSehifeIstek;
 
         public void MusterileriGoster(List<MusteriDto> musteriler)
         {
@@ -156,6 +165,87 @@ namespace AzAgroPOS.Teqdimat
             {
                 ClearErrorsRecursive(child);
             }
+        }
+
+        /// <summary>
+        /// Səhifələmə UI-ni yaradır
+        /// </summary>
+        private void SetupPaginationUI()
+        {
+            _paginationPanel = new Panel
+            {
+                Height = 35,
+                Dock = DockStyle.Bottom,
+                BackColor = Color.WhiteSmoke
+            };
+
+            _btnEvvelki = new Button
+            {
+                Text = "◀ Əvvəlki",
+                Width = 100,
+                Height = 28,
+                Location = new Point(10, 3),
+                Enabled = false
+            };
+            _btnEvvelki.Click += (s, e) => EvvelkiSehifeIstek?.Invoke(this, EventArgs.Empty);
+
+            _btnNovbeti = new Button
+            {
+                Text = "Növbəti ▶",
+                Width = 100,
+                Height = 28,
+                Location = new Point(120, 3),
+                Enabled = false
+            };
+            _btnNovbeti.Click += (s, e) => NovbetiSehifeIstek?.Invoke(this, EventArgs.Empty);
+
+            _lblSehifeMelumati = new Label
+            {
+                Text = "Səhifə 0/0 - Cəmi: 0 qeyd",
+                AutoSize = false,
+                Width = 250,
+                Height = 28,
+                TextAlign = ContentAlignment.MiddleLeft,
+                Location = new Point(230, 3),
+                Font = new Font("Segoe UI", 9F, FontStyle.Regular)
+            };
+
+            _paginationPanel.Controls.Add(_btnEvvelki);
+            _paginationPanel.Controls.Add(_btnNovbeti);
+            _paginationPanel.Controls.Add(_lblSehifeMelumati);
+
+            this.Controls.Add(_paginationPanel);
+            _paginationPanel.BringToFront();
+        }
+
+        /// <summary>
+        /// Səhifələmə məlumatlarını göstərir
+        /// </summary>
+        public void SehifeMelumatlariGoster(int cariSehife, int umumiSehife, int umumiQeyd, bool evvelkiVar, bool novbetiVar)
+        {
+            if (_lblSehifeMelumati != null)
+            {
+                _lblSehifeMelumati.Text = $"Səhifə {cariSehife}/{umumiSehife} - Cəmi: {umumiQeyd} qeyd";
+            }
+
+            if (_btnEvvelki != null)
+            {
+                _btnEvvelki.Enabled = evvelkiVar;
+            }
+
+            if (_btnNovbeti != null)
+            {
+                _btnNovbeti.Enabled = novbetiVar;
+            }
+        }
+
+        /// <summary>
+        /// Async əməliyyatı YuklemeGostergeci ilə icra edir
+        /// </summary>
+        public async Task EmeliyyatIcraEtAsync(Func<Task> emeliyyat, string mesaj)
+        {
+            var gosterici = new Yardimcilar.YuklemeGostergeci(this);
+            await gosterici.EmeliyyatIcraEtAsync(emeliyyat, mesaj);
         }
 
         #endregion

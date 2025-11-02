@@ -14,12 +14,62 @@ using System.Windows.Forms;
 public partial class IsciIdareetmeFormu : BazaForm, IIsciView
 {
     private readonly IsciPresenter _presenter;
+    private Panel? _paginationPanel;
+    private Button? _btnEvvelki;
+    private Button? _btnNovbeti;
+    private Label? _lblSehifeMelumati;
 
     public IsciIdareetmeFormu(IsciManager isciManager)
     {
         InitializeComponent();
         _presenter = new IsciPresenter(this, isciManager);
         StilVerDataGridView(dgvIsciler);
+        SetupPaginationUI();
+    }
+
+    private void SetupPaginationUI()
+    {
+        // Pagination panel yaradırıq
+        _paginationPanel = new Panel
+        {
+            Height = 35,
+            Dock = DockStyle.Bottom,
+            BackColor = Color.WhiteSmoke,
+            Padding = new Padding(5)
+        };
+
+        // Əvvəlki səhifə düyməsi
+        _btnEvvelki = new Button
+        {
+            Text = "← Əvvəlki",
+            Width = 100,
+            Height = 28,
+            Location = new Point(10, 3),
+            Enabled = false
+        };
+        _btnEvvelki.Click += (s, e) => EvvelkiSehifeIstek?.Invoke(this, EventArgs.Empty);
+
+        // Növbəti səhifə düyməsi
+        _btnNovbeti = new Button
+        {
+            Text = "Növbəti →",
+            Width = 100,
+            Height = 28,
+            Location = new Point(120, 3),
+            Enabled = false
+        };
+        _btnNovbeti.Click += (s, e) => NovbetiSehifeIstek?.Invoke(this, EventArgs.Empty);
+
+        // Səhifə məlumatı label
+        _lblSehifeMelumati = new Label
+        {
+            AutoSize = true,
+            Location = new Point(230, 8),
+            Text = "Səhifə 1/1 - Cəmi: 0 qeyd"
+        };
+
+        _paginationPanel.Controls.AddRange(new Control[] { _btnEvvelki, _btnNovbeti, _lblSehifeMelumati });
+        this.Controls.Add(_paginationPanel);
     }
 
     #region IIsciView Implementasiyası
@@ -114,11 +164,16 @@ public partial class IsciIdareetmeFormu : BazaForm, IIsciView
         set => txtSistemIstifadeciAdi.Text = value;
     }
 
+    public string AxtarisMetni => string.Empty; // Axtarış textbox-u hələ əlavə edilməyib
+
     public event EventHandler FormYuklendi;
     public event EventHandler IsciYarat_Istek;
     public event EventHandler IsciYenile_Istek;
     public event EventHandler IsciSil_Istek;
     public event EventHandler FormuTemizle_Istek;
+    public event EventHandler AxtarIstek;
+    public event EventHandler NovbetiSehifeIstek;
+    public event EventHandler EvvelkiSehifeIstek;
 
     public void IscileriGoster(List<IsciDto> isciler)
     {
@@ -219,6 +274,30 @@ public partial class IsciIdareetmeFormu : BazaForm, IIsciView
         }
 
         MesajGoster(mesaj, "Məzuniyyət Qeydləri", MessageBoxIcon.Information);
+    }
+
+    public void SehifeMelumatlariGoster(int cariSehife, int umumiSehife, int umumiQeyd, bool evvelkiVar, bool novbetiVar)
+    {
+        if (_lblSehifeMelumati != null)
+        {
+            _lblSehifeMelumati.Text = $"Səhifə {cariSehife}/{umumiSehife} - Cəmi: {umumiQeyd} qeyd";
+        }
+
+        if (_btnEvvelki != null)
+        {
+            _btnEvvelki.Enabled = evvelkiVar;
+        }
+
+        if (_btnNovbeti != null)
+        {
+            _btnNovbeti.Enabled = novbetiVar;
+        }
+    }
+
+    public async Task EmeliyyatIcraEtAsync(Func<Task> emeliyyat, string mesaj)
+    {
+        var gosterici = new Yardimcilar.YuklemeGostergeci(this);
+        await gosterici.EmeliyyatIcraEtAsync(emeliyyat, mesaj);
     }
 
     #endregion

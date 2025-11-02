@@ -3,6 +3,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,11 +16,15 @@ public class IsciPresenter
 {
     private readonly IIsciView _view;
     private readonly IsciManager _isciManager;
+    private List<IsciDto> _isciCache;
+    private readonly SehifeParametrleri _sehifeParametrleri = new SehifeParametrleri { SehifeOlcusu = 50 };
+    private bool _paginationEnabled = true;
 
     public IsciPresenter(IIsciView view, IsciManager isciManager)
     {
         _view = view;
         _isciManager = isciManager;
+        _isciCache = new List<IsciDto>();
 
         // Hadisələrə abunə oluruq
         _view.FormYuklendi += async (s, e) => await FormuYukle();
@@ -27,20 +32,91 @@ public class IsciPresenter
         _view.IsciYenile_Istek += async (s, e) => await IsciYenile();
         _view.IsciSil_Istek += async (s, e) => await IsciSil();
         _view.FormuTemizle_Istek += (s, e) => _view.FormuTemizle();
+        _view.AxtarIstek += async (s, e) => await Axtar();
+        _view.NovbetiSehifeIstek += async (s, e) => await NovbetiSehife();
+        _view.EvvelkiSehifeIstek += async (s, e) => await EvvelkiSehife();
     }
 
     private async Task FormuYukle()
     {
-        var netice = await _isciManager.ButunIscileriGetirAsync();
-        if (netice.UgurluDur)
+        await _view.EmeliyyatIcraEtAsync(async () =>
         {
-            _view.IscileriGoster(netice.Data.OrderBy(i => i.TamAd).ToList());
+            _sehifeParametrleri.SehifeNomresi = 1;
+            await IscileriYukle();
+            _view.FormuTemizle();
+        }, "İşçilər yüklənir...");
+    }
+
+    private async Task IscileriYukle()
+    {
+        if (_paginationEnabled)
+        {
+            var netice = await _isciManager.IscileriSehifelenmisGetirAsync(_sehifeParametrleri);
+            if (netice.UgurluDur && netice.Data != null)
+            {
+                var sehifelenmis = netice.Data;
+                var axtarisMetni = _view.AxtarisMetni;
+
+                IEnumerable<IsciDto> isciler = sehifelenmis.Melumatlar;
+                if (!string.IsNullOrWhiteSpace(axtarisMetni))
+                {
+                    var axtarisLower = axtarisMetni.ToLower();
+                    isciler = isciler.Where(i =>
+                        i.TamAd.ToLower().Contains(axtarisLower) ||
+                        i.TelefonNomresi.Contains(axtarisLower) ||
+                        i.Vezife.ToLower().Contains(axtarisLower));
+                }
+
+                _view.IscileriGoster(isciler.ToList());
+                _view.SehifeMelumatlariGoster(
+                    sehifelenmis.CariSehife,
+                    sehifelenmis.UmumiSehifeSayi,
+                    sehifelenmis.UmumiQeydSayi,
+                    sehifelenmis.EvvelkiSehifeVar,
+                    sehifelenmis.NovbetiSehifeVar
+                );
+            }
         }
         else
         {
-            _view.IscileriGoster(new List<IsciDto>());
-            _view.MesajGoster(netice.Mesaj, true);
+            var netice = await _isciManager.ButunIscileriGetirAsync();
+            if (netice.UgurluDur)
+            {
+                _isciCache = netice.Data;
+                _view.IscileriGoster(_isciCache);
+            }
+            else
+            {
+                _view.MesajGoster(netice.Mesaj, true);
+            }
         }
+    }
+
+    private async Task Axtar()
+    {
+        _sehifeParametrleri.SehifeNomresi = 1;
+        await IscileriYukle();
+    }
+
+    private async Task NovbetiSehife()
+    {
+        await _view.EmeliyyatIcraEtAsync(async () =>
+        {
+            _sehifeParametrleri.SehifeNomresi++;
+            await IscileriYukle();
+        }, "Səhifə yüklənir...");
+    }
+
+    private async Task EvvelkiSehife()
+    {
+        await _view.EmeliyyatIcraEtAsync(async () =>
+        {
+            if (_sehifeParametrleri.SehifeNomresi > 1)
+            {
+                _sehifeParametrleri.SehifeNomresi--;
+                await IscileriYukle();
+            }
+        }, "Səhifə yüklənir...");
     }
 
     private async Task IsciYarat()

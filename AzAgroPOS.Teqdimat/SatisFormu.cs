@@ -295,6 +295,12 @@ namespace AzAgroPOS.Teqdimat
                 return "Black";
         }
 
+        public async Task EmeliyyatIcraEtAsync(Func<Task> emeliyyat, string mesaj)
+        {
+            var gosterici = new YuklemeGostergeci(this);
+            await gosterici.EmeliyyatIcraEtAsync(emeliyyat, mesaj);
+        }
+
         #endregion
 
         #region Hadisə Ötürücüləri

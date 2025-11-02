@@ -52,14 +52,19 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 
         private async Task FormuYukle()
         {
-            await MusterileriYukle();
-            await MehsulAxtar();
-            await SuretliSatisMehsullariniGetir();
+            await _view.EmeliyyatIcraEtAsync(async () =>
+            {
+                await MusterileriYukle();
+                await MehsulAxtar();
+                await SuretliSatisMehsullariniGetir();
+            }, "Satış formu yüklənir...");
         }
 
         public async Task MusterileriYukle()
         {
-            var musteriNetice = await _musteriManager.ButunMusterileriGetirAsync();
+            // Lazy loading: Yalnız ilk 50 müştərini yükləyirik
+            // İstifadəçi ComboBox-da axtarış etdikdə daha çox məlumat yüklənəcək
+            var musteriNetice = await _musteriManager.MusterileriAxtarisIleGetirAsync("", 50);
             if (musteriNetice.UgurluDur)
             {
                 _view.MusteriSiyahisiniGoster(musteriNetice.Data);
@@ -262,33 +267,36 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                 return;
             }
 
-            decimal umumiMebleg = _aktivSebet.Sum(e => e.VahidinQiymeti * e.Miqdar); // Total before any discount
-            decimal totalItemDiscount = _aktivSebet.Sum(e => e.EndirimMeblegi); // Total discount from items
-            decimal totalDiscount = totalItemDiscount + _cartLevelEndirimMeblegi;
-            decimal yekunMebleg = umumiMebleg - totalDiscount;
-
-            var satisDto = new SatisYaratDto
+            await _view.EmeliyyatIcraEtAsync(async () =>
             {
-                SebetElementleri = _aktivSebet.ToList(),
-                OdenisMetodu = odenisMetodu,
-                NovbeId = AktivSessiya.AktivNovbeId.Value,
-                MusteriId = musteriId,
-                UmumiMebleg = umumiMebleg,
-                Endirim = _cartLevelEndirimMeblegi,
-                YekunMebleg = yekunMebleg
-            };
+                decimal umumiMebleg = _aktivSebet.Sum(e => e.VahidinQiymeti * e.Miqdar); // Total before any discount
+                decimal totalItemDiscount = _aktivSebet.Sum(e => e.EndirimMeblegi); // Total discount from items
+                decimal totalDiscount = totalItemDiscount + _cartLevelEndirimMeblegi;
+                decimal yekunMebleg = umumiMebleg - totalDiscount;
 
-            var netice = await _satisManager.SatisYaratAsync(satisDto);
+                var satisDto = new SatisYaratDto
+                {
+                    SebetElementleri = _aktivSebet.ToList(),
+                    OdenisMetodu = odenisMetodu,
+                    NovbeId = AktivSessiya.AktivNovbeId.Value,
+                    MusteriId = musteriId,
+                    UmumiMebleg = umumiMebleg,
+                    Endirim = _cartLevelEndirimMeblegi,
+                    YekunMebleg = yekunMebleg
+                };
 
-            if (netice.UgurluDur)
-            {
-                _view.StatusMesajiGoster("Satış uğurla tamamlandı!", StatusMesajiNovu.Ugurlu);
-                FormuTamSifirla();
-            }
-            else
-            {
-                _view.MesajGoster(netice.Mesaj, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+                var netice = await _satisManager.SatisYaratAsync(satisDto);
+
+                if (netice.UgurluDur)
+                {
+                    _view.StatusMesajiGoster("Satış uğurla tamamlandı!", StatusMesajiNovu.Ugurlu);
+                    FormuTamSifirla();
+                }
+                else
+                {
+                    _view.MesajGoster(netice.Mesaj, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }, "Satış təsdiq edilir...");
         }
 
         private void GosterisleriYenile()

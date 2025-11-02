@@ -27,6 +27,7 @@ public interface IIsciView
     string QeydiyyatUnvani { get; set; }
     string BankMəlumatları { get; set; }
     string SistemIstifadeciAdi { get; set; }
+    string AxtarisMetni { get; }
 
     // View metodları
     void IscileriGoster(List<IsciDto> isciler);
@@ -34,6 +35,8 @@ public interface IIsciView
     void IzinQeydleriniGoster(List<IsciIzniDto> izinQeydleri); // Əlavə edildi
     void MesajGoster(string mesaj, bool xetadir = false);
     void FormuTemizle();
+    void SehifeMelumatlariGoster(int cariSehife, int umumiSehife, int umumiQeyd, bool evvelkiVar, bool novbetiVar);
+    Task EmeliyyatIcraEtAsync(Func<Task> emeliyyat, string mesaj);
 
     // Hadisələr
     event EventHandler FormYuklendi;
@@ -41,4 +44,7 @@ public interface IIsciView
     event EventHandler IsciYenile_Istek;
     event EventHandler IsciSil_Istek;
     event EventHandler FormuTemizle_Istek;
+    event EventHandler AxtarIstek;
+    event EventHandler NovbetiSehifeIstek;
+    event EventHandler EvvelkiSehifeIstek;
 }
