@@ -53,4 +53,31 @@ public class Istifadeci : BazaVarligi
 
     public ICollection<Novbe> Novbeler { get; set; } = new List<Novbe>();
 
+    // ====== Authentication Security Fields ======
+
+    /// <summary>
+    /// Uğursuz giriş cəhdlərinin sayı
+    /// </summary>
+    public int UgursuzGirisCehdi { get; set; } = 0;
+
+    /// <summary>
+    /// Hesabın kilidlənmə tarixi (null olarsa, kilidlənməyib)
+    /// </summary>
+    public DateTime? HesabKilidlenmeTarixi { get; set; }
+
+    /// <summary>
+    /// Sonuncu uğurlu giriş tarixi
+    /// </summary>
+    public DateTime? SonGirisTarixi { get; set; }
+
+    /// <summary>
+    /// Son şifrə dəyişdirilmə tarixi
+    /// </summary>
+    public DateTime? SonSifreDeyismeTarixi { get; set; }
+
+    /// <summary>
+    /// Hesab aktiv/deaktiv statusu
+    /// </summary>
+    public bool HesabAktivdir { get; set; } = true;
+
 }
