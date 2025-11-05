@@ -43,6 +43,8 @@ public class AzAgroPOSDbContext : DbContext
     public DbSet<EmekHaqqi> EmekHaqqilari { get; set; } // Əlavə edildi - Əmək haqqı qeydləri
     public DbSet<MusteriBonus> MusteriBonuslari { get; set; } // Əlavə edildi - Müştəri bonus/loyallıq proqramı
     public DbSet<BonusQeydi> BonusQeydleri { get; set; } // Əlavə edildi - Bonus tarixçəsi
+    public DbSet<IstifadeciSessiyasi> IstifadeciSessiyalari { get; set; } // Əlavə edildi - İstifadəçi sessiyaları
+    public DbSet<GirisLoquKaydi> GirisLoquKaydlari { get; set; } // Əlavə edildi - Giriş audit loqu
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
