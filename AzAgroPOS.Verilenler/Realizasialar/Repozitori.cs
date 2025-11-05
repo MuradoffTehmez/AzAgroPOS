@@ -3,7 +3,6 @@ using AzAgroPOS.Verilenler.Interfeysler;
 using AzAgroPOS.Verilenler.Kontekst;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using System.Threading;
 
 namespace AzAgroPOS.Verilenler.Realizasialar
 {
@@ -11,7 +10,6 @@ namespace AzAgroPOS.Verilenler.Realizasialar
     {
         protected readonly AzAgroPOSDbContext _kontekst;
         protected readonly DbSet<T> _dbSet;
-        private readonly SemaphoreSlim _semaphore = new(1, 1); // Only allow 1 operation at a time
         private bool _disposed = false;
 
         public Repozitori(AzAgroPOSDbContext kontekst)
@@ -37,85 +35,61 @@ namespace AzAgroPOS.Verilenler.Realizasialar
         {
             if (!_disposed)
             {
-                if (disposing)
-                {
-                    // Managed resurları azad et
-                    _semaphore?.Dispose();
-                }
-
+                // EF Core DbContext artıq thread-safe-dir, əlavə dispose lazım deyil
                 _disposed = true;
             }
         }
 
         public async Task<IEnumerable<T>> AxtarAsync(Expression<Func<T, bool>>? filter = null, string[]? includeProperties = null)
         {
-            await _semaphore.WaitAsync();
-            try
+            IQueryable<T> query = _dbSet;
+
+            // Filter out deleted records by default
+            query = query.Where(e => !e.Silinib);
+
+            if (filter != null)
             {
-                IQueryable<T> query = _dbSet;
-
-                // Filter out deleted records by default
-                query = query.Where(e => !e.Silinib);
-
-                if (filter != null)
-                {
-                    query = query.Where(filter);
-                }
-
-                if (includeProperties != null)
-                {
-                    foreach (var includeProperty in includeProperties)
-                    {
-                        query = query.Include(includeProperty);
-                    }
-                }
-
-                // Execute the query and return results - this should be thread-safe within the scope
-                return await query.AsNoTracking().ToListAsync();
+                query = query.Where(filter);
             }
-            finally
+
+            if (includeProperties != null)
             {
-                _semaphore.Release();
+                foreach (var includeProperty in includeProperties)
+                {
+                    query = query.Include(includeProperty);
+                }
             }
+
+            // Execute the query and return results - this should be thread-safe within the scope
+            return await query.AsNoTracking().ToListAsync();
         }
 
         public async Task<T> GetirAsync(int id)
         {
-            await _semaphore.WaitAsync();
-            try
+            return await _dbSet.AsNoTracking().FirstOrDefaultAsync(e => e.Id == id && !e.Silinib);
+        }
+
+        public async Task<T> GetirAsync(int id, string[] includeProperties)
+        {
+            IQueryable<T> query = _dbSet.AsNoTracking();
+
+            // Include related entities
+            foreach (var includeProperty in includeProperties)
             {
-                return await _dbSet.AsNoTracking().FirstOrDefaultAsync(e => e.Id == id && !e.Silinib);
+                query = query.Include(includeProperty);
             }
-            finally
-            {
-                _semaphore.Release();
-            }
+
+            return await query.FirstOrDefaultAsync(e => e.Id == id && !e.Silinib);
         }
 
         public async Task<IEnumerable<T>> ButununuGetirAsync()
         {
-            await _semaphore.WaitAsync();
-            try
-            {
-                return await _dbSet.Where(e => !e.Silinib).AsNoTracking().ToListAsync();
-            }
-            finally
-            {
-                _semaphore.Release();
-            }
+            return await _dbSet.Where(e => !e.Silinib).AsNoTracking().ToListAsync();
         }
 
         public async Task ElaveEtAsync(T varliq)
         {
-            await _semaphore.WaitAsync();
-            try
-            {
-                await _dbSet.AddAsync(varliq);
-            }
-            finally
-            {
-                _semaphore.Release();
-            }
+            await _dbSet.AddAsync(varliq);
         }
 
         public void Yenile(T varliq)
@@ -150,33 +124,25 @@ namespace AzAgroPOS.Verilenler.Realizasialar
         /// <returns>Silinmiş varlıqların siyahısı</returns>
         public async Task<IEnumerable<T>> SilinmisleriGetirAsync(Expression<Func<T, bool>>? filter = null, string[]? includeProperties = null)
         {
-            await _semaphore.WaitAsync();
-            try
+            IQueryable<T> query = _dbSet;
+
+            // Only show deleted records
+            query = query.Where(e => e.Silinib);
+
+            if (filter != null)
             {
-                IQueryable<T> query = _dbSet;
-
-                // Only show deleted records
-                query = query.Where(e => e.Silinib);
-
-                if (filter != null)
-                {
-                    query = query.Where(filter);
-                }
-
-                if (includeProperties != null)
-                {
-                    foreach (var includeProperty in includeProperties)
-                    {
-                        query = query.Include(includeProperty);
-                    }
-                }
-
-                return await query.AsNoTracking().ToListAsync();
+                query = query.Where(filter);
             }
-            finally
+
+            if (includeProperties != null)
             {
-                _semaphore.Release();
+                foreach (var includeProperty in includeProperties)
+                {
+                    query = query.Include(includeProperty);
+                }
             }
+
+            return await query.AsNoTracking().ToListAsync();
         }
 
         /// <summary>
@@ -187,30 +153,22 @@ namespace AzAgroPOS.Verilenler.Realizasialar
         /// <returns>Bütün varlıqların siyahısı</returns>
         public async Task<IEnumerable<T>> ButununuVeSilinmisleriGetirAsync(Expression<Func<T, bool>>? filter = null, string[]? includeProperties = null)
         {
-            await _semaphore.WaitAsync();
-            try
+            IQueryable<T> query = _dbSet;
+
+            if (filter != null)
             {
-                IQueryable<T> query = _dbSet;
-
-                if (filter != null)
-                {
-                    query = query.Where(filter);
-                }
-
-                if (includeProperties != null)
-                {
-                    foreach (var includeProperty in includeProperties)
-                    {
-                        query = query.Include(includeProperty);
-                    }
-                }
-
-                return await query.AsNoTracking().ToListAsync();
+                query = query.Where(filter);
             }
-            finally
+
+            if (includeProperties != null)
             {
-                _semaphore.Release();
+                foreach (var includeProperty in includeProperties)
+                {
+                    query = query.Include(includeProperty);
+                }
             }
+
+            return await query.AsNoTracking().ToListAsync();
         }
 
         /// <summary>
@@ -227,46 +185,38 @@ namespace AzAgroPOS.Verilenler.Realizasialar
             Expression<Func<T, bool>>? filter = null,
             string[]? includeProperties = null)
         {
-            await _semaphore.WaitAsync();
-            try
+            IQueryable<T> query = _dbSet;
+
+            // Silinmiş qeydləri filter et
+            query = query.Where(e => !e.Silinib);
+
+            // Əlavə filtr tətbiq et
+            if (filter != null)
             {
-                IQueryable<T> query = _dbSet;
-
-                // Silinmiş qeydləri filter et
-                query = query.Where(e => !e.Silinib);
-
-                // Əlavə filtr tətbiq et
-                if (filter != null)
-                {
-                    query = query.Where(filter);
-                }
-
-                // Ümumi say
-                var umumiSay = await query.CountAsync();
-
-                // Include properties
-                if (includeProperties != null)
-                {
-                    foreach (var includeProperty in includeProperties)
-                    {
-                        query = query.Include(includeProperty);
-                    }
-                }
-
-                // Səhifələmə - SKIP və TAKE
-                var kec = (sehifeNomresi - 1) * sehifeOlcusu;
-                var melumatlar = await query
-                    .Skip(kec)
-                    .Take(sehifeOlcusu)
-                    .AsNoTracking()
-                    .ToListAsync();
-
-                return (melumatlar, umumiSay);
+                query = query.Where(filter);
             }
-            finally
+
+            // Ümumi say
+            var umumiSay = await query.CountAsync();
+
+            // Include properties
+            if (includeProperties != null)
             {
-                _semaphore.Release();
+                foreach (var includeProperty in includeProperties)
+                {
+                    query = query.Include(includeProperty);
+                }
             }
+
+            // Səhifələmə - SKIP və TAKE
+            var kec = (sehifeNomresi - 1) * sehifeOlcusu;
+            var melumatlar = await query
+                .Skip(kec)
+                .Take(sehifeOlcusu)
+                .AsNoTracking()
+                .ToListAsync();
+
+            return (melumatlar, umumiSay);
         }
     }
 }
