@@ -7,16 +7,44 @@ using System.Threading;
 
 namespace AzAgroPOS.Verilenler.Realizasialar
 {
-    public class Repozitori<T> : IRepozitori<T> where T : BazaVarligi
+    public class Repozitori<T> : IRepozitori<T>, IDisposable where T : BazaVarligi
     {
         protected readonly AzAgroPOSDbContext _kontekst;
         protected readonly DbSet<T> _dbSet;
         private readonly SemaphoreSlim _semaphore = new(1, 1); // Only allow 1 operation at a time
+        private bool _disposed = false;
 
         public Repozitori(AzAgroPOSDbContext kontekst)
         {
             _kontekst = kontekst;
             _dbSet = _kontekst.Set<T>();
+        }
+
+        /// <summary>
+        /// Resurları azad edir (Dispose pattern)
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Resurları azad edir (protected virtual method)
+        /// </summary>
+        /// <param name="disposing">Managed resurları azad etmək üçün true</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    // Managed resurları azad et
+                    _semaphore?.Dispose();
+                }
+
+                _disposed = true;
+            }
         }
 
         public async Task<IEnumerable<T>> AxtarAsync(Expression<Func<T, bool>>? filter = null, string[]? includeProperties = null)
