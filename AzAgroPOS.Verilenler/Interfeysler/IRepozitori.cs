@@ -6,6 +6,7 @@ namespace AzAgroPOS.Verilenler.Interfeysler
     public interface IRepozitori<T> : IDisposable where T : BazaVarligi
     {
         Task<T> GetirAsync(int id);
+        Task<T> GetirAsync(int id, string[] includeProperties);
         Task<IEnumerable<T>> ButununuGetirAsync();
         Task<IEnumerable<T>> AxtarAsync(Expression<Func<T, bool>>? filter = null, string[]? includeProperties = null);
         Task ElaveEtAsync(T varliq);

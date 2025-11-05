@@ -140,29 +140,25 @@ public class SatisManager
                 return EmeliyyatNeticesi<SatisQebzDto>.Ugursuz("Yanlış satış nömrəsi formatı.");
             }
 
-            var satis = await _unitOfWork.Satislar.GetirAsync(satisId);
+            // Eager Loading: Satışı SatisDetallari və onların Mehsul məlumatları ilə yüklə
+            var satis = await _unitOfWork.Satislar.GetirAsync(satisId, new[] { "SatisDetallari.Mehsul" });
             if (satis == null)
             {
                 Logger.XəbərdarlıqYaz("Satış tapılmadı");
                 return EmeliyyatNeticesi<SatisQebzDto>.Ugursuz("Satış tapılmadı.");
             }
 
-            // Satış detallarını və məhsul məlumatlarını yükləyin
-            var sebetElementleri = new List<SatisSebetiElementiDto>();
-            foreach (var detali in satis.SatisDetallari)
-            {
-                var mehsul = await _unitOfWork.Mehsullar.GetirAsync(detali.MehsulId);
-                if (mehsul != null)
+            // Satış detallarını və məhsul məlumatlarını map et (artıq database query yoxdur)
+            var sebetElementleri = satis.SatisDetallari
+                .Where(detali => detali.Mehsul != null)
+                .Select(detali => new SatisSebetiElementiDto
                 {
-                    sebetElementleri.Add(new SatisSebetiElementiDto
-                    {
-                        MehsulId = detali.MehsulId,
-                        MehsulAdi = mehsul.Ad,
-                        Miqdar = detali.Miqdar,
-                        VahidinQiymeti = detali.Qiymet
-                    });
-                }
-            }
+                    MehsulId = detali.MehsulId,
+                    MehsulAdi = detali.Mehsul.Ad,
+                    Miqdar = detali.Miqdar,
+                    VahidinQiymeti = detali.Qiymet
+                })
+                .ToList();
 
             var satisDto = new SatisQebzDto
             {
