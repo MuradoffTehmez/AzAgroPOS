@@ -24,6 +24,18 @@ public static class InMemoryDbContextFactory
         // Database-i initialize et
         context.Database.EnsureCreated();
 
+        // Seed data-nı təmizləyirik - testlər üçün lazım deyil
+        context.Mehsullar.RemoveRange(context.Mehsullar);
+        context.Istifadeciler.RemoveRange(context.Istifadeciler);
+        context.Rollar.RemoveRange(context.Rollar);
+        context.Isciler.RemoveRange(context.Isciler);
+        context.Tedarukculer.RemoveRange(context.Tedarukculer);
+        context.Kateqoriyalar.RemoveRange(context.Kateqoriyalar);
+        context.Brendler.RemoveRange(context.Brendler);
+        context.Icazeler.RemoveRange(context.Icazeler);
+        context.RolIcazeleri.RemoveRange(context.RolIcazeleri);
+        context.SaveChanges();
+
         return context;
     }
 
