@@ -183,16 +183,17 @@ public class BazaIdareetmeManager
             var builder = new SqlConnectionStringBuilder(_connectionString);
             var databaseName = builder.InitialCatalog;
 
-            var sizeSql = $@"
+            var sizeSql = @"
                 SELECT
                     SUM(size) * 8.0 / 1024 AS DatabaseSizeMB
                 FROM sys.master_files
-                WHERE database_id = DB_ID('{databaseName}');";
+                WHERE database_id = DB_ID(@DatabaseName);";
 
             await using var connection = new SqlConnection(_connectionString);
             await connection.OpenAsync();
 
             await using var command = new SqlCommand(sizeSql, connection);
+            command.Parameters.AddWithValue("@DatabaseName", databaseName);
             var result = await command.ExecuteScalarAsync();
 
             if (result != null && result != DBNull.Value)
@@ -221,10 +222,10 @@ public class BazaIdareetmeManager
             var builder = new SqlConnectionStringBuilder(_connectionString);
             var databaseName = builder.InitialCatalog;
 
-            var lastBackupSql = $@"
+            var lastBackupSql = @"
                 SELECT TOP 1 backup_finish_date
                 FROM msdb.dbo.backupset
-                WHERE database_name = '{databaseName}'
+                WHERE database_name = @DatabaseName
                   AND type = 'D' -- Full backup
                 ORDER BY backup_finish_date DESC;";
 
@@ -232,6 +233,7 @@ public class BazaIdareetmeManager
             await connection.OpenAsync();
 
             await using var command = new SqlCommand(lastBackupSql, connection);
+            command.Parameters.AddWithValue("@DatabaseName", databaseName);
             var result = await command.ExecuteScalarAsync();
 
             if (result != null && result != DBNull.Value)

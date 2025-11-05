@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace AzAgroPOS.Verilenler.Interfeysler
 {
-    public interface IRepozitori<T> where T : BazaVarligi
+    public interface IRepozitori<T> : IDisposable where T : BazaVarligi
     {
         Task<T> GetirAsync(int id);
         Task<IEnumerable<T>> ButununuGetirAsync();
