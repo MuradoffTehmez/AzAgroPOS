@@ -20,8 +20,12 @@ namespace AzAgroPOS.Teqdimat
         [STAThread]
         static void Main()
         {
-            ApplicationConfiguration.Initialize();
+            // Global exception handler-lər
+            Application.ThreadException += Application_ThreadException;
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
 
+            ApplicationConfiguration.Initialize();
 
             AzAgroPOS.Mentiq.Yardimcilar.Logger.KonfiqurasiyaEt();
 
@@ -184,6 +188,70 @@ namespace AzAgroPOS.Teqdimat
                 throw new InvalidOperationException(
                     "Verilənlər bazasına qoşulmaq mümkün olmadı. Zəhmət olmasa appsettings.json faylındakı \"DefaultConnection\" sətirini yeniləyin və ya AZAGROPOS__CONNECTIONSTRING mühit dəyişənini təyin edin.",
                     ex);
+            }
+        }
+
+        /// <summary>
+        /// UI thread-də baş verən tutulmamış istisnaları idarə edir
+        /// </summary>
+        private static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
+        {
+            HandleUnhandledException(e.Exception, "UI Thread Exception");
+        }
+
+        /// <summary>
+        /// Non-UI thread-də baş verən tutulmamış istisnaları idarə edir
+        /// </summary>
+        private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            if (e.ExceptionObject is Exception exception)
+            {
+                HandleUnhandledException(exception, "Non-UI Thread Exception", e.IsTerminating);
+            }
+        }
+
+        /// <summary>
+        /// Tutulmamış istisnaları log edir və istifadəçiyə bildirir
+        /// </summary>
+        private static void HandleUnhandledException(Exception exception, string source, bool isTerminating = false)
+        {
+            try
+            {
+                // Xətanı log-a yaz
+                AzAgroPOS.Mentiq.Yardimcilar.Logger.XetaYaz(exception, $"{source} - Tutulmamış istisna baş verdi");
+
+                // İstifadəçiyə mesaj göstər
+                string message = isTerminating
+                    ? $"Tətbiqdə kritik xəta baş verdi və tətbiq bağlanacaq.\n\nXəta: {exception.Message}\n\nTəfərrüatlar log faylına yazıldı."
+                    : $"Tətbiqdə gözlənilməyən xəta baş verdi.\n\nXəta: {exception.Message}\n\nTəfərrüatlar log faylına yazıldı.";
+
+                MessageBox.Show(
+                    message,
+                    "Xəta",
+                    MessageBoxButtons.OK,
+                    isTerminating ? MessageBoxIcon.Error : MessageBoxIcon.Warning);
+            }
+            catch
+            {
+                // Əgər log yazmaq belə uğursuz olarsa, ən azı MessageBox göstər
+                try
+                {
+                    MessageBox.Show(
+                        $"Tətbiqdə kritik xəta baş verdi və log faylı yaradıla bilmədi.\n\nXəta: {exception.Message}",
+                        "Kritik Xəta",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+                catch
+                {
+                    // Son çarə - heç nə etmə, tətbiqi çökməyə qoy
+                }
+            }
+
+            // Əgər terminating isə, tətbiqi bağla
+            if (isTerminating)
+            {
+                Environment.Exit(1);
             }
         }
     }
