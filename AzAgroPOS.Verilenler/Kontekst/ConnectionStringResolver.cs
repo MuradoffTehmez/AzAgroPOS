@@ -17,11 +17,17 @@ public static class ConnectionStringResolver
     /// </summary>
     public static IConfiguration BuildConfiguration(string basePath)
     {
-        return new ConfigurationBuilder()
+        var environment = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT")
+                          ?? Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
+                          ?? "Production";
+
+        var builder = new ConfigurationBuilder()
             .SetBasePath(basePath)
             .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-            .AddJsonFile("appsettings.local.json", optional: true, reloadOnChange: true)
-            .Build();
+            .AddJsonFile($"appsettings.{environment}.json", optional: true, reloadOnChange: true)
+            .AddJsonFile("appsettings.local.json", optional: true, reloadOnChange: true);
+
+        return builder.Build();
     }
 
     /// <summary>

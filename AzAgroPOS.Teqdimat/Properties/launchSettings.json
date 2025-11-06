@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "AzAgroPOS.Teqdimat": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

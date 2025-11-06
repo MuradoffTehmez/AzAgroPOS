@@ -112,6 +112,35 @@ dotnet user-secrets clear
 dotnet user-secrets set "ConnectionStrings:DefaultConnection" "NEW_CONNECTION_STRING"
 ```
 
+## Log Files Location
+
+Əməliyyat zamanı yaranan log faylları **logs** qovluğunda saxlanılır:
+
+### Log Fayllarının Yeri
+- **Ümumi log (JSON format)**: `logs/app-YYYYMMDD.json`
+- **Xəta log (JSON format)**: `logs/error-YYYYMMDD.json`
+- **Debug log (Text format)**: `logs/debug-YYYYMMDD.txt`
+
+### Logs qovluğunun tam yolu
+```
+C:\Users\murad\Tam\AzAgroPOS\AzAgroPOS.Teqdimat\logs\
+```
+
+### Log Fayllarına Baxış
+```bash
+# Ən son debug log-u oxumaq
+cd AzAgroPOS.Teqdimat
+type logs\debug-20251106.txt
+
+# JSON log-u oxumaq (bu gün)
+type logs\app-20251106.json
+
+# Xəta log-u oxumaq
+type logs\error-20251106.json
+```
+
+**Qeyd**: Log faylları hər gün yeni fayla bölünür (rolling interval), maksimum fayl həcmi 10 MB-dır.
+
 ## Additional Resources
 
 - [ASP.NET Core Configuration](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration/)
