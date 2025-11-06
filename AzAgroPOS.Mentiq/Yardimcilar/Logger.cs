@@ -31,6 +31,13 @@ namespace AzAgroPOS.Mentiq.Yardimcilar
                         Directory.CreateDirectory(logDirectory);
                     }
 
+                    // Fallback logger (console only, no file I/O) - initialize first
+                    _fallbackLogger = new LoggerConfiguration()
+                        .MinimumLevel.Warning()
+                        .WriteTo.Console(
+                            outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
+                        .CreateLogger();
+
                     // Main logger with JSON format and enrichers
                     _logger = new LoggerConfiguration()
                         .MinimumLevel.Debug()
@@ -64,25 +71,27 @@ namespace AzAgroPOS.Mentiq.Yardimcilar
                             outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] [{ThreadId}] {Message:lj}{NewLine}{Exception}")
                         .CreateLogger();
 
-                    // Fallback logger (console only, no file I/O)
-                    _fallbackLogger = new LoggerConfiguration()
-                        .MinimumLevel.Warning()
-                        .WriteTo.Console(
-                            outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
-                        .CreateLogger();
-
                     MelumatYaz("Logger uğurla konfiqurasiya edildi");
                 }
                 catch (Exception ex)
                 {
-                    // Fallback to console-only logging
-                    _fallbackLogger = new LoggerConfiguration()
-                        .MinimumLevel.Information()
-                        .WriteTo.Console()
-                        .CreateLogger();
+                    // Fallback to console-only logging if main logger fails
+                    if (_fallbackLogger == null)
+                    {
+                        _fallbackLogger = new LoggerConfiguration()
+                            .MinimumLevel.Information()
+                            .WriteTo.Console(
+                                outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
+                            .CreateLogger();
+                    }
 
                     _fallbackLogger?.Error(ex, "Logging konfiqurasiya edilərkən xəta baş verdi");
-                    _logger = null;
+
+                    // Set _logger to fallback so we still have some logging capability
+                    if (_logger == null)
+                    {
+                        _logger = _fallbackLogger;
+                    }
                 }
             }
         }
