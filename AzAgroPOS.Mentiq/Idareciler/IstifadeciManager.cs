@@ -85,12 +85,16 @@ public class IstifadeciManager
     {
         Logger.MelumatYaz("IstifadeciYaratAsync metodu çağırıldı.");
         Logger.MelumatYaz(yeniIstifadeci.ToString());
-        Logger.MelumatYaz(parol.ToLower());
 
         try
         {
             if (string.IsNullOrWhiteSpace(yeniIstifadeci.IstifadeciAdi) || string.IsNullOrWhiteSpace(parol))
                 return EmeliyyatNeticesi.Ugursuz("İstifadəçi adı və parol boş ola bilməz.");
+
+            // Şifrə mürəkkəblik yoxlaması
+            var (kecerlidir, mesaj) = SifreValidator.Yoxla(parol);
+            if (!kecerlidir)
+                return EmeliyyatNeticesi.Ugursuz(mesaj);
 
             var movcudIstifadeci = (await _unitOfWork.Istifadeciler.AxtarAsync(i => i.IstifadeciAdi == yeniIstifadeci.IstifadeciAdi)).FirstOrDefault();
             if (movcudIstifadeci != null)
@@ -101,7 +105,9 @@ public class IstifadeciManager
                 IstifadeciAdi = yeniIstifadeci.IstifadeciAdi,
                 TamAd = yeniIstifadeci.TamAd,
                 RolId = yeniIstifadeci.RolId,
-                ParolHash = BCrypt.Net.BCrypt.HashPassword(parol)
+                ParolHash = BCrypt.Net.BCrypt.HashPassword(parol),
+                SonSifreDeyismeTarixi = DateTime.Now,
+                HesabAktivdir = true
             };
 
             await _unitOfWork.Istifadeciler.ElaveEtAsync(istifadeci);
@@ -175,10 +181,16 @@ public class IstifadeciManager
             movcudIstifadeci.TamAd = istifadeciDto.TamAd;
             movcudIstifadeci.RolId = istifadeciDto.RolId;
 
-            // Əgər yeni parol daxil edilibsə, onu hash-ləyib yeniləyirik
+            // Əgər yeni parol daxil edilibsə, validation keçib hash-ləyib yeniləyirik
             if (!string.IsNullOrWhiteSpace(yeniParol))
             {
+                // Şifrə mürəkkəblik yoxlaması
+                var (kecerlidir, mesaj) = SifreValidator.Yoxla(yeniParol);
+                if (!kecerlidir)
+                    return EmeliyyatNeticesi.Ugursuz(mesaj);
+
                 movcudIstifadeci.ParolHash = BCrypt.Net.BCrypt.HashPassword(yeniParol);
+                movcudIstifadeci.SonSifreDeyismeTarixi = DateTime.Now;
             }
 
             _unitOfWork.Istifadeciler.Yenile(movcudIstifadeci);

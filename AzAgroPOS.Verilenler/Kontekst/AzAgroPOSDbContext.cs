@@ -466,6 +466,244 @@ public class AzAgroPOSDbContext : DbContext
             .HasIndex(bq => bq.EmeliyyatTarixi)
             .HasDatabaseName("IX_BonusQeydi_EmeliyyatTarixi");
 
+        // ================== PHASE 1: CRITICAL INDEXES ==================
+        // Performance optimization indexes for frequently accessed fields
+        // Added: 2025-11-06 - Task 11: Database Index Optimization
+
+        // Musteri indexes - High-frequency customer searches
+        modelBuilder.Entity<Musteri>()
+            .HasIndex(m => m.TamAd)
+            .HasDatabaseName("IX_Musteri_TamAd");
+
+        modelBuilder.Entity<Musteri>()
+            .HasIndex(m => m.TelefonNomresi)
+            .HasDatabaseName("IX_Musteri_TelefonNomresi");
+
+        modelBuilder.Entity<Musteri>()
+            .HasIndex(m => m.UmumiBorc)
+            .HasDatabaseName("IX_Musteri_UmumiBorc");
+
+        // Mehsul indexes - Critical for product search and POS operations
+        modelBuilder.Entity<Mehsul>()
+            .HasIndex(m => m.Ad)
+            .HasDatabaseName("IX_Mehsul_Ad");
+
+        modelBuilder.Entity<Mehsul>()
+            .HasIndex(m => m.Barkod)
+            .HasDatabaseName("IX_Mehsul_Barkod");
+
+        modelBuilder.Entity<Mehsul>()
+            .HasIndex(m => m.StokKodu)
+            .HasDatabaseName("IX_Mehsul_StokKodu");
+
+        modelBuilder.Entity<Mehsul>()
+            .HasIndex(m => m.Aktivdir)
+            .HasDatabaseName("IX_Mehsul_Aktivdir");
+
+        modelBuilder.Entity<Mehsul>()
+            .HasIndex(m => m.KateqoriyaId)
+            .HasDatabaseName("IX_Mehsul_KateqoriyaId");
+
+        modelBuilder.Entity<Mehsul>()
+            .HasIndex(m => m.BrendId)
+            .HasDatabaseName("IX_Mehsul_BrendId");
+
+        // Composite index for pagination + filtering (high-value optimization)
+        modelBuilder.Entity<Mehsul>()
+            .HasIndex(m => new { m.Aktivdir, m.Id })
+            .HasDatabaseName("IX_Mehsul_Aktivdir_Id");
+
+        // Istifadeci indexes - Authentication and user management
+        modelBuilder.Entity<Istifadeci>()
+            .HasIndex(i => i.IstifadeciAdi)
+            .IsUnique()
+            .HasDatabaseName("IX_Istifadeci_IstifadeciAdi");
+
+        modelBuilder.Entity<Istifadeci>()
+            .HasIndex(i => i.HesabAktivdir)
+            .HasDatabaseName("IX_Istifadeci_HesabAktivdir");
+
+        modelBuilder.Entity<Istifadeci>()
+            .HasIndex(i => i.RolId)
+            .HasDatabaseName("IX_Istifadeci_RolId");
+
+        modelBuilder.Entity<Istifadeci>()
+            .HasIndex(i => i.SonGirisTarixi)
+            .HasDatabaseName("IX_Istifadeci_SonGirisTarixi");
+
+        // Satis indexes - High-volume sales operations
+        modelBuilder.Entity<Satis>()
+            .HasIndex(s => s.Tarix)
+            .HasDatabaseName("IX_Satis_Tarix");
+
+        modelBuilder.Entity<Satis>()
+            .HasIndex(s => s.NovbeId)
+            .HasDatabaseName("IX_Satis_NovbeId");
+
+        modelBuilder.Entity<Satis>()
+            .HasIndex(s => s.MusteriId)
+            .HasDatabaseName("IX_Satis_MusteriId");
+
+        modelBuilder.Entity<Satis>()
+            .HasIndex(s => s.OdenisMetodu)
+            .HasDatabaseName("IX_Satis_OdenisMetodu");
+
+        modelBuilder.Entity<Satis>()
+            .HasIndex(s => s.Silinib)
+            .HasDatabaseName("IX_Satis_Silinib");
+
+        // Composite index for date range + filtering queries (covering index)
+        modelBuilder.Entity<Satis>()
+            .HasIndex(s => new { s.Silinib, s.Tarix, s.MusteriId })
+            .HasDatabaseName("IX_Satis_Silinib_Tarix_MusteriId");
+
+        // Novbe indexes - Shift management (critical for POS operations)
+        modelBuilder.Entity<Novbe>()
+            .HasIndex(n => new { n.IsciId, n.Status })
+            .HasDatabaseName("IX_Novbe_IsciId_Status");
+
+        modelBuilder.Entity<Novbe>()
+            .HasIndex(n => n.Status)
+            .HasDatabaseName("IX_Novbe_Status");
+
+        // Isci indexes - Employee search and filtering
+        modelBuilder.Entity<Isci>()
+            .HasIndex(i => i.TamAd)
+            .HasDatabaseName("IX_Isci_TamAd");
+
+        modelBuilder.Entity<Isci>()
+            .HasIndex(i => i.Status)
+            .HasDatabaseName("IX_Isci_Status");
+
+        // Composite index for search + filter operations
+        modelBuilder.Entity<Isci>()
+            .HasIndex(i => new { i.Silinib, i.Status, i.TamAd })
+            .HasDatabaseName("IX_Isci_Silinib_Status_TamAd");
+
+        // ================== PHASE 2: HIGH PRIORITY INDEXES ==================
+
+        // SatisDetali indexes - Product lookup in sales
+        modelBuilder.Entity<SatisDetali>()
+            .HasIndex(sd => sd.MehsulId)
+            .HasDatabaseName("IX_SatisDetali_MehsulId");
+
+        modelBuilder.Entity<SatisDetali>()
+            .HasIndex(sd => sd.Silinib)
+            .HasDatabaseName("IX_SatisDetali_Silinib");
+
+        // Tedarukcu indexes - Supplier search
+        modelBuilder.Entity<Tedarukcu>()
+            .HasIndex(t => t.Ad)
+            .HasDatabaseName("IX_Tedarukcu_Ad");
+
+        modelBuilder.Entity<Tedarukcu>()
+            .HasIndex(t => t.Aktivdir)
+            .HasDatabaseName("IX_Tedarukcu_Aktivdir");
+
+        // AlisSifaris indexes - Purchase order management
+        modelBuilder.Entity<AlisSifaris>()
+            .HasIndex(a => a.TedarukcuId)
+            .HasDatabaseName("IX_AlisSifaris_TedarukcuId");
+
+        modelBuilder.Entity<AlisSifaris>()
+            .HasIndex(a => a.YaradilmaTarixi)
+            .HasDatabaseName("IX_AlisSifaris_YaradilmaTarixi");
+
+        modelBuilder.Entity<AlisSifaris>()
+            .HasIndex(a => a.Silinib)
+            .HasDatabaseName("IX_AlisSifaris_Silinib");
+
+        // AlisSened indexes
+        modelBuilder.Entity<AlisSened>()
+            .HasIndex(a => a.YaradilmaTarixi)
+            .HasDatabaseName("IX_AlisSened_YaradilmaTarixi");
+
+        // IsciPerformans & IsciIzni indexes
+        modelBuilder.Entity<IsciPerformans>()
+            .HasIndex(ip => ip.IsciId)
+            .HasDatabaseName("IX_IsciPerformans_IsciId");
+
+        modelBuilder.Entity<IsciIzni>()
+            .HasIndex(ii => ii.IsciId)
+            .HasDatabaseName("IX_IsciIzni_IsciId");
+
+        modelBuilder.Entity<IsciIzni>()
+            .HasIndex(ii => ii.BaslamaTarixi)
+            .HasDatabaseName("IX_IsciIzni_BaslamaTarixi");
+
+        // Qaytarma indexes - Return operations
+        modelBuilder.Entity<Qaytarma>()
+            .HasIndex(q => q.SatisId)
+            .HasDatabaseName("IX_Qaytarma_SatisId");
+
+        modelBuilder.Entity<Qaytarma>()
+            .HasIndex(q => q.Tarix)
+            .HasDatabaseName("IX_Qaytarma_Tarix");
+
+        modelBuilder.Entity<Qaytarma>()
+            .HasIndex(q => q.KassirId)
+            .HasDatabaseName("IX_Qaytarma_KassirId");
+
+        modelBuilder.Entity<QaytarmaDetali>()
+            .HasIndex(qd => qd.MehsulId)
+            .HasDatabaseName("IX_QaytarmaDetali_MehsulId");
+
+        // ================== PHASE 3: MEDIUM PRIORITY INDEXES ==================
+
+        // Xerc additional indexes
+        modelBuilder.Entity<Xerc>()
+            .HasIndex(x => x.IstifadeciId)
+            .HasDatabaseName("IX_Xerc_IstifadeciId");
+
+        // KassaHareketi additional indexes
+        modelBuilder.Entity<KassaHareketi>()
+            .HasIndex(kh => kh.IstifadeciId)
+            .HasDatabaseName("IX_KassaHareketi_IstifadeciId");
+
+        // NisyeHereketi indexes - Debt tracking
+        modelBuilder.Entity<NisyeHereketi>()
+            .HasIndex(nh => nh.MusteriId)
+            .HasDatabaseName("IX_NisyeHereketi_MusteriId");
+
+        modelBuilder.Entity<NisyeHereketi>()
+            .HasIndex(nh => nh.Tarix)
+            .HasDatabaseName("IX_NisyeHereketi_Tarix");
+
+        // Kateqoriya & Brend indexes
+        modelBuilder.Entity<Kateqoriya>()
+            .HasIndex(k => k.Ad)
+            .HasDatabaseName("IX_Kateqoriya_Ad");
+
+        modelBuilder.Entity<Kateqoriya>()
+            .HasIndex(k => k.Aktivdir)
+            .HasDatabaseName("IX_Kateqoriya_Aktivdir");
+
+        modelBuilder.Entity<Brend>()
+            .HasIndex(b => b.Ad)
+            .HasDatabaseName("IX_Brend_Ad");
+
+        modelBuilder.Entity<Brend>()
+            .HasIndex(b => b.Aktivdir)
+            .HasDatabaseName("IX_Brend_Aktivdir");
+
+        // GirisLoquKaydi indexes - Audit trail
+        modelBuilder.Entity<GirisLoquKaydi>()
+            .HasIndex(gl => gl.IstifadeciAdi)
+            .HasDatabaseName("IX_GirisLoquKaydi_IstifadeciAdi");
+
+        modelBuilder.Entity<GirisLoquKaydi>()
+            .HasIndex(gl => gl.CehdTarixi)
+            .HasDatabaseName("IX_GirisLoquKaydi_CehdTarixi");
+
+        // IstifadeciSessiyasi indexes - Session management
+        modelBuilder.Entity<IstifadeciSessiyasi>()
+            .HasIndex(sess => sess.IstifadeciId)
+            .HasDatabaseName("IX_IstifadeciSessiyasi_IstifadeciId");
+
+        modelBuilder.Entity<IstifadeciSessiyasi>()
+            .HasIndex(sess => sess.BaslamaTarixi)
+            .HasDatabaseName("IX_IstifadeciSessiyasi_BaslamaTarixi");
+
         SeedData(modelBuilder);
     }
 
