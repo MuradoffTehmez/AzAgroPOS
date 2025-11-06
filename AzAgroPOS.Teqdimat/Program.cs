@@ -27,7 +27,19 @@ namespace AzAgroPOS.Teqdimat
 
             ApplicationConfiguration.Initialize();
 
-            AzAgroPOS.Mentiq.Yardimcilar.Logger.KonfiqurasiyaEt();
+            try
+            {
+                AzAgroPOS.Mentiq.Yardimcilar.Logger.KonfiqurasiyaEt();
+            }
+            catch (Exception logEx)
+            {
+                // Logger konfiqurasiyası uğursuz olsa belə, davam edirik
+                MessageBox.Show(
+                    $"Log sistemi konfiqurasiya edilərkən xəta baş verdi:\n{logEx.Message}\n\nTətbiq davam edəcək, lakin loglar yazılmayacaq.",
+                    "Xəbərdarlıq",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
 
             try
             {
@@ -51,15 +63,23 @@ namespace AzAgroPOS.Teqdimat
             }
             catch (Exception ex)
             {
-                //MessageBox.Show("XƏTA - " + ex.Message + ex.StackTrace , "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 try
                 {
                     AzAgroPOS.Mentiq.Yardimcilar.Logger.XetaYaz(ex, "Tətbiq səviyyəsində tutulmayan istisna baş verdi");
-                    MessageBox.Show("Tətbiqdə gözlənilməyən xəta baş verdi. \nTəfərrüatlar log faylına yazıldı. \n\n" + ex.Message + ex.StackTrace, "Xəta ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(
+                        $"Tətbiqdə gözlənilməyən xəta baş verdi.\n\nXəta: {ex.Message}\n\nTəfərrüatlar log faylına yazıldı.",
+                        "Xəta",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
                 }
                 catch
                 {
-                    MessageBox.Show("Tətbiqdə gözlənilməyən xəta baş verdi. Log faylı yaradıla bilmədi.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    // Logger işləmirsə, tam xəta məlumatını göstər
+                    MessageBox.Show(
+                        $"Tətbiqdə gözlənilməyən xəta baş verdi və log faylı yaradıla bilmədi.\n\nXəta: {ex.Message}\n\nStackTrace:\n{ex.StackTrace}",
+                        "Kritik Xəta",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
                 }
             }
         }
@@ -182,13 +202,36 @@ namespace AzAgroPOS.Teqdimat
             try
             {
                 connection.Open();
+                AzAgroPOS.Mentiq.Yardimcilar.Logger.MelumatYaz("Verilənlər bazasına uğurla qoşuldu");
             }
             catch (SqlException ex)
             {
-                throw new InvalidOperationException(
-                    "Verilənlər bazasına qoşulmaq mümkün olmadı. Zəhmət olmasa appsettings.json faylındakı \"DefaultConnection\" sətirini yeniləyin və ya AZAGROPOS__CONNECTIONSTRING mühit dəyişənini təyin edin.",
-                    ex);
+                string detailedMessage = $"Verilənlər bazasına qoşulmaq mümkün olmadı.\n\n" +
+                    $"İstifadə edilən connection string: {MaskConnectionString(connectionString)}\n\n" +
+                    $"Xəta kodu: {ex.Number}\n" +
+                    $"Xəta mesajı: {ex.Message}\n\n" +
+                    $"Həll yolları:\n" +
+                    $"1. SQL Server (LocalDB) quraşdırılıb və işləyir?\n" +
+                    $"   - Visual Studio ilə gəlir və ya ayrıca quraşdırıla bilər\n" +
+                    $"   - Yoxlamaq üçün: Services.msc-də 'SQL Server' axtarın\n\n" +
+                    $"2. appsettings.json faylındakı \"DefaultConnection\" sətirini yoxlayın\n" +
+                    $"   Fayl yolu: {Path.Combine(AppContext.BaseDirectory, "appsettings.json")}\n\n" +
+                    $"3. Və ya AZAGROPOS__CONNECTIONSTRING mühit dəyişənini təyin edin\n\n" +
+                    $"4. SQL Server Management Studio (SSMS) ilə bağlantını test edin";
+
+                throw new InvalidOperationException(detailedMessage, ex);
             }
+        }
+
+        private static string MaskConnectionString(string connectionString)
+        {
+            // Password-u gizlətmək üçün
+            var builder = new SqlConnectionStringBuilder(connectionString);
+            if (!string.IsNullOrEmpty(builder.Password))
+            {
+                builder.Password = "****";
+            }
+            return builder.ConnectionString;
         }
 
         /// <summary>
