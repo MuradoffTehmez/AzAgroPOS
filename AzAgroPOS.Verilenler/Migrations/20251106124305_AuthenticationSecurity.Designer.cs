@@ -4,6 +4,7 @@ using AzAgroPOS.Verilenler.Kontekst;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AzAgroPOS.Verilenler.Migrations
 {
     [DbContext(typeof(AzAgroPOSDbContext))]
-    partial class AzAgroPOSDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251106124305_AuthenticationSecurity")]
+    partial class AuthenticationSecurity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -60,9 +63,6 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("TedarukcuId");
-
-                    b.HasIndex("YaradilmaTarixi")
-                        .HasDatabaseName("IX_AlisSened_YaradilmaTarixi");
 
                     b.ToTable("AlisSenetleri");
                 });
@@ -152,14 +152,7 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Silinib")
-                        .HasDatabaseName("IX_AlisSifaris_Silinib");
-
-                    b.HasIndex("TedarukcuId")
-                        .HasDatabaseName("IX_AlisSifaris_TedarukcuId");
-
-                    b.HasIndex("YaradilmaTarixi")
-                        .HasDatabaseName("IX_AlisSifaris_YaradilmaTarixi");
+                    b.HasIndex("TedarukcuId");
 
                     b.ToTable("AlisSifarisleri");
                 });
@@ -258,7 +251,7 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.Property<string>("Ad")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Aktivdir")
                         .HasColumnType("bit");
@@ -281,12 +274,6 @@ namespace AzAgroPOS.Verilenler.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Ad")
-                        .HasDatabaseName("IX_Brend_Ad");
-
-                    b.HasIndex("Aktivdir")
-                        .HasDatabaseName("IX_Brend_Aktivdir");
 
                     b.ToTable("Brendler");
 
@@ -443,7 +430,7 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.Property<string>("IstifadeciAdi")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("KomputerAdi")
                         .HasColumnType("nvarchar(max)");
@@ -458,12 +445,6 @@ namespace AzAgroPOS.Verilenler.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CehdTarixi")
-                        .HasDatabaseName("IX_GirisLoquKaydi_CehdTarixi");
-
-                    b.HasIndex("IstifadeciAdi")
-                        .HasDatabaseName("IX_GirisLoquKaydi_IstifadeciAdi");
 
                     b.ToTable("GirisLoquKaydlari");
                 });
@@ -581,7 +562,7 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.Property<string>("TamAd")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TelefonNomresi")
                         .IsRequired()
@@ -598,15 +579,6 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("SistemIstifadecisiId");
-
-                    b.HasIndex("Status")
-                        .HasDatabaseName("IX_Isci_Status");
-
-                    b.HasIndex("TamAd")
-                        .HasDatabaseName("IX_Isci_TamAd");
-
-                    b.HasIndex("Silinib", "Status", "TamAd")
-                        .HasDatabaseName("IX_Isci_Silinib_Status_TamAd");
 
                     b.ToTable("Isciler");
 
@@ -696,11 +668,7 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BaslamaTarixi")
-                        .HasDatabaseName("IX_IsciIzni_BaslamaTarixi");
-
-                    b.HasIndex("IsciId")
-                        .HasDatabaseName("IX_IsciIzni_IsciId");
+                    b.HasIndex("IsciId");
 
                     b.HasIndex("TesdiqEdenIsciId");
 
@@ -747,8 +715,7 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IsciId")
-                        .HasDatabaseName("IX_IsciPerformans_IsciId");
+                    b.HasIndex("IsciId");
 
                     b.ToTable("IsciPerformanslari");
                 });
@@ -769,7 +736,7 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.Property<string>("IstifadeciAdi")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ParolHash")
                         .IsRequired()
@@ -798,18 +765,7 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("HesabAktivdir")
-                        .HasDatabaseName("IX_Istifadeci_HesabAktivdir");
-
-                    b.HasIndex("IstifadeciAdi")
-                        .IsUnique()
-                        .HasDatabaseName("IX_Istifadeci_IstifadeciAdi");
-
-                    b.HasIndex("RolId")
-                        .HasDatabaseName("IX_Istifadeci_RolId");
-
-                    b.HasIndex("SonGirisTarixi")
-                        .HasDatabaseName("IX_Istifadeci_SonGirisTarixi");
+                    b.HasIndex("RolId");
 
                     b.ToTable("Istifadeciler");
 
@@ -861,11 +817,7 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BaslamaTarixi")
-                        .HasDatabaseName("IX_IstifadeciSessiyasi_BaslamaTarixi");
-
-                    b.HasIndex("IstifadeciId")
-                        .HasDatabaseName("IX_IstifadeciSessiyasi_IstifadeciId");
+                    b.HasIndex("IstifadeciId");
 
                     b.ToTable("IstifadeciSessiyalari");
                 });
@@ -906,8 +858,7 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IstifadeciId")
-                        .HasDatabaseName("IX_KassaHareketi_IstifadeciId");
+                    b.HasIndex("IstifadeciId");
 
                     b.HasIndex("Tarix")
                         .HasDatabaseName("IX_KassaHareketi_Tarix");
@@ -928,7 +879,7 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.Property<string>("Ad")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Aktivdir")
                         .HasColumnType("bit");
@@ -942,12 +893,6 @@ namespace AzAgroPOS.Verilenler.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Ad")
-                        .HasDatabaseName("IX_Kateqoriya_Ad");
-
-                    b.HasIndex("Aktivdir")
-                        .HasDatabaseName("IX_Kateqoriya_Aktivdir");
 
                     b.ToTable("Kateqoriyalar");
 
@@ -1022,7 +967,7 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.Property<string>("Ad")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Aktivdir")
                         .HasColumnType("bit");
@@ -1031,7 +976,7 @@ namespace AzAgroPOS.Verilenler.Migrations
                         .HasColumnType("decimal(18, 2)");
 
                     b.Property<string>("Barkod")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("BrendId")
                         .HasColumnType("int");
@@ -1060,7 +1005,7 @@ namespace AzAgroPOS.Verilenler.Migrations
                         .HasDefaultValue(false);
 
                     b.Property<string>("StokKodu")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("TedarukcuId")
                         .HasColumnType("int");
@@ -1073,28 +1018,11 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Ad")
-                        .HasDatabaseName("IX_Mehsul_Ad");
+                    b.HasIndex("BrendId");
 
-                    b.HasIndex("Aktivdir")
-                        .HasDatabaseName("IX_Mehsul_Aktivdir");
-
-                    b.HasIndex("Barkod")
-                        .HasDatabaseName("IX_Mehsul_Barkod");
-
-                    b.HasIndex("BrendId")
-                        .HasDatabaseName("IX_Mehsul_BrendId");
-
-                    b.HasIndex("KateqoriyaId")
-                        .HasDatabaseName("IX_Mehsul_KateqoriyaId");
-
-                    b.HasIndex("StokKodu")
-                        .HasDatabaseName("IX_Mehsul_StokKodu");
+                    b.HasIndex("KateqoriyaId");
 
                     b.HasIndex("TedarukcuId");
-
-                    b.HasIndex("Aktivdir", "Id")
-                        .HasDatabaseName("IX_Mehsul_Aktivdir_Id");
 
                     b.ToTable("Mehsullar");
 
@@ -1167,11 +1095,11 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.Property<string>("TamAd")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TelefonNomresi")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("UmumiBorc")
                         .HasColumnType("decimal(18, 2)");
@@ -1180,15 +1108,6 @@ namespace AzAgroPOS.Verilenler.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("TamAd")
-                        .HasDatabaseName("IX_Musteri_TamAd");
-
-                    b.HasIndex("TelefonNomresi")
-                        .HasDatabaseName("IX_Musteri_TelefonNomresi");
-
-                    b.HasIndex("UmumiBorc")
-                        .HasDatabaseName("IX_Musteri_UmumiBorc");
 
                     b.ToTable("Musteriler");
                 });
@@ -1266,13 +1185,9 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MusteriId")
-                        .HasDatabaseName("IX_NisyeHereketi_MusteriId");
+                    b.HasIndex("MusteriId");
 
                     b.HasIndex("SatisId");
-
-                    b.HasIndex("Tarix")
-                        .HasDatabaseName("IX_NisyeHereketi_Tarix");
 
                     b.ToTable("NisyeHereketleri");
                 });
@@ -1313,11 +1228,7 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Status")
-                        .HasDatabaseName("IX_Novbe_Status");
-
-                    b.HasIndex("IsciId", "Status")
-                        .HasDatabaseName("IX_Novbe_IsciId_Status");
+                    b.HasIndex("IsciId");
 
                     b.ToTable("Novbeler");
                 });
@@ -1353,14 +1264,9 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("KassirId")
-                        .HasDatabaseName("IX_Qaytarma_KassirId");
+                    b.HasIndex("KassirId");
 
-                    b.HasIndex("SatisId")
-                        .HasDatabaseName("IX_Qaytarma_SatisId");
-
-                    b.HasIndex("Tarix")
-                        .HasDatabaseName("IX_Qaytarma_Tarix");
+                    b.HasIndex("SatisId");
 
                     b.ToTable("Qaytarmalar");
                 });
@@ -1395,8 +1301,7 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MehsulId")
-                        .HasDatabaseName("IX_QaytarmaDetali_MehsulId");
+                    b.HasIndex("MehsulId");
 
                     b.HasIndex("QaytarmaId");
 
@@ -1534,23 +1439,9 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MusteriId")
-                        .HasDatabaseName("IX_Satis_MusteriId");
+                    b.HasIndex("MusteriId");
 
-                    b.HasIndex("NovbeId")
-                        .HasDatabaseName("IX_Satis_NovbeId");
-
-                    b.HasIndex("OdenisMetodu")
-                        .HasDatabaseName("IX_Satis_OdenisMetodu");
-
-                    b.HasIndex("Silinib")
-                        .HasDatabaseName("IX_Satis_Silinib");
-
-                    b.HasIndex("Tarix")
-                        .HasDatabaseName("IX_Satis_Tarix");
-
-                    b.HasIndex("Silinib", "Tarix", "MusteriId")
-                        .HasDatabaseName("IX_Satis_Silinib_Tarix_MusteriId");
+                    b.HasIndex("NovbeId");
 
                     b.ToTable("Satislar");
                 });
@@ -1585,13 +1476,9 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MehsulId")
-                        .HasDatabaseName("IX_SatisDetali_MehsulId");
+                    b.HasIndex("MehsulId");
 
                     b.HasIndex("SatisId");
-
-                    b.HasIndex("Silinib")
-                        .HasDatabaseName("IX_SatisDetali_Silinib");
 
                     b.ToTable("SatisDetallari");
                 });
@@ -1665,7 +1552,7 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.Property<string>("Ad")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Aktivdir")
                         .HasColumnType("bit");
@@ -1691,12 +1578,6 @@ namespace AzAgroPOS.Verilenler.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Ad")
-                        .HasDatabaseName("IX_Tedarukcu_Ad");
-
-                    b.HasIndex("Aktivdir")
-                        .HasDatabaseName("IX_Tedarukcu_Aktivdir");
 
                     b.ToTable("Tedarukculer");
 
@@ -1880,8 +1761,7 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IstifadeciId")
-                        .HasDatabaseName("IX_Xerc_IstifadeciId");
+                    b.HasIndex("IstifadeciId");
 
                     b.HasIndex("Novu")
                         .HasDatabaseName("IX_Xerc_Novu");
