@@ -187,6 +187,14 @@ namespace AzAgroPOS.Teqdimat
                 services.AddTransient<XercIdareetmeFormu>();
                 services.AddTransient<KonfiqurasiyaFormu>();
                 services.AddTransient<AlisSenedFormu>();
+                services.AddTransient<EmekHaqqiFormu>();
+                services.AddTransient<IsciIzniFormu>();
+                services.AddTransient<KassaFormu>();
+                services.AddTransient<QebzFormu>();
+                services.AddTransient<BazaIdareetmeFormu>();
+                services.AddTransient<TedarukcuOdemeFormu>();
+                services.AddTransient<AlisSifarisFormu>();
+                services.AddTransient<BonusIdareetmeFormu>();
             }
             catch (Exception ex)
             {
