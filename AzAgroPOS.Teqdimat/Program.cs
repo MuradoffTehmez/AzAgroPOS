@@ -271,23 +271,18 @@ namespace AzAgroPOS.Teqdimat
         {
             try
             {
-                // Xətanı log-a yaz
-                AzAgroPOS.Mentiq.Yardimcilar.Logger.XetaYaz(exception, $"{source} - Tutulmamış istisna baş verdi");
-
-                // İstifadəçiyə mesaj göstər
-                string message = isTerminating
-                    ? $"Tətbiqdə kritik xəta baş verdi və tətbiq bağlanacaq.\n\nXəta: {exception.Message}\n\nTəfərrüatlar log faylına yazıldı."
-                    : $"Tətbiqdə gözlənilməyən xəta baş verdi.\n\nXəta: {exception.Message}\n\nTəfərrüatlar log faylına yazıldı.";
+                // GlobalExceptionHandler istifadə edərək exception-ı idarə et
+                string message = Yardimcilar.GlobalExceptionHandler.Handle(exception, source, isTerminating);
 
                 MessageBox.Show(
                     message,
-                    "Xəta",
+                    isTerminating ? "Kritik Xəta" : "Xəta",
                     MessageBoxButtons.OK,
                     isTerminating ? MessageBoxIcon.Error : MessageBoxIcon.Warning);
             }
             catch
             {
-                // Əgər log yazmaq belə uğursuz olarsa, ən azı MessageBox göstər
+                // Əgər exception handling özü uğursuz olarsa
                 try
                 {
                     MessageBox.Show(
