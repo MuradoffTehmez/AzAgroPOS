@@ -94,16 +94,45 @@ namespace AzAgroPOS.Verilenler.Realizasialar
 
         public void Yenile(T varliq)
         {
-            _dbSet.Attach(varliq);
-            _kontekst.Entry(varliq).State = EntityState.Modified;
+            // Əvvəlcə yoxla ki, entity artıq tracking olunur ya yox
+            var trackedEntity = _kontekst.ChangeTracker.Entries<T>()
+                .FirstOrDefault(e => e.Entity.Id == varliq.Id);
+
+            if (trackedEntity != null)
+            {
+                // Əgər artıq tracking olunursa, onun dəyərlərini yenilə
+                trackedEntity.CurrentValues.SetValues(varliq);
+                trackedEntity.State = EntityState.Modified;
+            }
+            else
+            {
+                // Əgər tracking olunmursa, attach et
+                _dbSet.Attach(varliq);
+                _kontekst.Entry(varliq).State = EntityState.Modified;
+            }
         }
 
         public void Sil(T varliq)
         {
             // Soft delete - mark as deleted instead of physical removal
             varliq.Silinib = true;
-            _dbSet.Attach(varliq);
-            _kontekst.Entry(varliq).State = EntityState.Modified;
+
+            // Əvvəlcə yoxla ki, entity artıq tracking olunur ya yox
+            var trackedEntity = _kontekst.ChangeTracker.Entries<T>()
+                .FirstOrDefault(e => e.Entity.Id == varliq.Id);
+
+            if (trackedEntity != null)
+            {
+                // Əgər artıq tracking olunursa, onun dəyərlərini yenilə
+                trackedEntity.Entity.Silinib = true;
+                trackedEntity.State = EntityState.Modified;
+            }
+            else
+            {
+                // Əgər tracking olunmursa, attach et
+                _dbSet.Attach(varliq);
+                _kontekst.Entry(varliq).State = EntityState.Modified;
+            }
         }
 
         /// <summary>
@@ -113,7 +142,21 @@ namespace AzAgroPOS.Verilenler.Realizasialar
         public void FizikiSil(T varliq)
         {
             // Hard delete - physically remove from database
-            _dbSet.Remove(varliq);
+            // Əvvəlcə yoxla ki, entity artıq tracking olunur ya yox
+            var trackedEntity = _kontekst.ChangeTracker.Entries<T>()
+                .FirstOrDefault(e => e.Entity.Id == varliq.Id);
+
+            if (trackedEntity != null)
+            {
+                // Əgər artıq tracking olunursa, onu sil
+                _dbSet.Remove(trackedEntity.Entity);
+            }
+            else
+            {
+                // Əgər tracking olunmursa, attach edib sil
+                _dbSet.Attach(varliq);
+                _dbSet.Remove(varliq);
+            }
         }
 
         /// <summary>
