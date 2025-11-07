@@ -289,15 +289,23 @@ public class UnitOfWork : IUnitOfWork
         // Əməliyyat jurnalı qeydlərini yaradırıq
         var auditEntries = OnBeforeSaveChanges();
 
+        // İlk SaveChangesAsync - əsas dəyişiklikləri saxlayır
         var result = await _kontekst.SaveChangesAsync();
 
         // Əgər audit qeydləri varsa, onları verilənlər bazasına əlavə edirik
+        // ChangeTracker.Clear() ilə DbContext-i təmizləyirik ki, concurrency problemi yaranmasın
         if (auditEntries.Any())
         {
+            // ChangeTracker-i təmizləyirik - bu, DbContext-in tracking state-ni sıfırlayır
+            _kontekst.ChangeTracker.Clear();
+
             foreach (var auditEntry in auditEntries)
             {
-                await EmeliyyatJurnallari.ElaveEtAsync(auditEntry);
+                // Audit qeydini birbaşa DbSet-ə əlavə edirik
+                _kontekst.Set<EmeliyyatJurnali>().Add(auditEntry);
             }
+
+            // İkinci SaveChangesAsync artıq yalnız audit qeydlərini saxlayacaq
             await _kontekst.SaveChangesAsync();
         }
 
@@ -311,11 +319,15 @@ public class UnitOfWork : IUnitOfWork
     private List<EmeliyyatJurnali> OnBeforeSaveChanges()
     {
         var auditEntries = new List<EmeliyyatJurnali>();
+
+        // ChangeTracker.Entries()-i bir dəfə çağırıb, ToList() ilə materiallı edirik
+        // Bu, concurrent DbContext access-i önləyir
         var entries = _kontekst.ChangeTracker.Entries()
             .Where(e => e.Entity is BazaVarligi &&
                         (e.State == EntityState.Added ||
                          e.State == EntityState.Modified ||
-                         e.State == EntityState.Deleted));
+                         e.State == EntityState.Deleted))
+            .ToList(); // Materialize the query to avoid lazy evaluation during async operations
 
         foreach (var entry in entries)
         {
