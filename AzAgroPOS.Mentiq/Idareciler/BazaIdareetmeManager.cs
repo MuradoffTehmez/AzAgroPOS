@@ -24,6 +24,22 @@ public class BazaIdareetmeManager
     }
 
     /// <summary>
+    /// SQL Server identifikatorunu (database, table, column adı) təhlükəsiz şəkildə quote edir.
+    /// SQL Injection hücumlarından qorunmaq üçün istifadə olunur.
+    /// </summary>
+    /// <param name="identifier">Identifikator adı</param>
+    /// <returns>Quote edilmiş identifikator (məsələn: [DatabaseName])</returns>
+    private static string QuoteName(string identifier)
+    {
+        if (string.IsNullOrWhiteSpace(identifier))
+            throw new ArgumentException("Identifikator boş ola bilməz", nameof(identifier));
+
+        // SQL Server QUOTENAME funksiyasının davranışını təqlid edirik:
+        // ] simvolunu ]] ilə əvəz edirik və [..] arasında qaytarırıq
+        return "[" + identifier.Replace("]", "]]") + "]";
+    }
+
+    /// <summary>
     /// Verilənlər bazasının ehtiyat nüsxəsini (backup) yaradır.
     /// </summary>
     /// <param name="backupPath">Backup faylının saxlanacağı tam yol (məsələn: C:\Backups\AzAgroPOS_2025-01-30.bak)</param>
@@ -57,12 +73,13 @@ public class BazaIdareetmeManager
             }
 
             // Backup SQL komandası
+            // Use QUOTENAME to safely escape database name
             var backupSql = $@"
-                BACKUP DATABASE [{databaseName}]
+                BACKUP DATABASE {QuoteName(databaseName)}
                 TO DISK = @BackupPath
                 WITH FORMAT,
                      MEDIANAME = 'AzAgroPOSBackup',
-                     NAME = 'Full Backup of {databaseName}';";
+                     NAME = 'Full Backup of ' + @DatabaseName;";
 
             await using var connection = new SqlConnection(_connectionString);
             await connection.OpenAsync();
@@ -70,6 +87,7 @@ public class BazaIdareetmeManager
             await using var command = new SqlCommand(backupSql, connection);
             command.CommandTimeout = 600; // 10 dəqiqə timeout (böyük verilənlər bazaları üçün)
             command.Parameters.AddWithValue("@BackupPath", backupPath);
+            command.Parameters.AddWithValue("@DatabaseName", databaseName);
 
             await command.ExecuteNonQueryAsync();
 
@@ -119,7 +137,7 @@ public class BazaIdareetmeManager
 
             // 1. Bütün aktiv bağlantıları bağlayırıq
             var killConnectionsSql = $@"
-                ALTER DATABASE [{databaseName}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;";
+                ALTER DATABASE {QuoteName(databaseName)} SET SINGLE_USER WITH ROLLBACK IMMEDIATE;";
 
             await using (var killCommand = new SqlCommand(killConnectionsSql, connection))
             {
@@ -129,7 +147,7 @@ public class BazaIdareetmeManager
 
             // 2. Restore əməliyyatını icra edirik
             var restoreSql = $@"
-                RESTORE DATABASE [{databaseName}]
+                RESTORE DATABASE {QuoteName(databaseName)}
                 FROM DISK = @BackupPath
                 WITH REPLACE;";
 
@@ -142,7 +160,7 @@ public class BazaIdareetmeManager
 
             // 3. Verilənlər bazasını yenidən multi-user rejimə qaytarırıq
             var multiUserSql = $@"
-                ALTER DATABASE [{databaseName}] SET MULTI_USER;";
+                ALTER DATABASE {QuoteName(databaseName)} SET MULTI_USER;";
 
             await using (var multiUserCommand = new SqlCommand(multiUserSql, connection))
             {

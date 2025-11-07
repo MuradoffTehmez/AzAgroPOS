@@ -51,14 +51,17 @@ namespace AzAgroPOS.Teqdimat
                 var tehlukesizlikManager = ServiceProvider.GetRequiredService<TehlukesizlikManager>();
                 var unitOfWork = ServiceProvider.GetRequiredService<IUnitOfWork>();
                 var icazeManager = ServiceProvider.GetRequiredService<IcazeManager>();
-                var loginPresenter = new LoginPresenter(loginFormu, tehlukesizlikManager, unitOfWork, icazeManager);
-                loginFormu.InitializePresenter(loginPresenter);
-                var dialogResult = loginFormu.ShowDialog();
 
-                if (dialogResult == DialogResult.OK && loginFormu.UgurluDaxilOlundu)
+                using (var loginPresenter = new LoginPresenter(loginFormu, tehlukesizlikManager, unitOfWork, icazeManager))
                 {
-                    var anaMenuFormu = ServiceProvider.GetRequiredService<AnaMenuFormu>();
-                    Application.Run(anaMenuFormu);
+                    loginFormu.InitializePresenter(loginPresenter);
+                    var dialogResult = loginFormu.ShowDialog();
+
+                    if (dialogResult == DialogResult.OK && loginFormu.UgurluDaxilOlundu)
+                    {
+                        var anaMenuFormu = ServiceProvider.GetRequiredService<AnaMenuFormu>();
+                        Application.Run(anaMenuFormu);
+                    }
                 }
             }
             catch (Exception ex)
