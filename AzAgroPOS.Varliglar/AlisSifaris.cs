@@ -15,11 +15,6 @@ public class AlisSifaris : BazaVarligi
     public string SifarisNomresi { get; set; } = string.Empty;
 
     /// <summary>
-    /// Sifarişin yaradıldığı tarix.
-    /// </summary>
-    public DateTime YaradilmaTarixi { get; set; } = DateTime.Now;
-
-    /// <summary>
     /// Sifarişin təsdiq edildiyi tarix.
     /// </summary>
     public DateTime? TesdiqTarixi { get; set; }

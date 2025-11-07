@@ -30,6 +30,12 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("DeyisdirenIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeyisdirilmeTarixi")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Qeydler")
                         .HasColumnType("nvarchar(max)");
 
@@ -53,6 +59,9 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.Property<decimal>("UmumiMebleg")
                         .HasColumnType("decimal(18, 2)");
+
+                    b.Property<int?>("YaradanIstifadeciId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("YaradilmaTarixi")
                         .HasColumnType("datetime2");
@@ -87,6 +96,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.Property<decimal>("CemiMebleg")
                         .HasColumnType("decimal(18, 2)");
 
+                    b.Property<int?>("DeyisdirenIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeyisdirilmeTarixi")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("MehsulId")
                         .HasColumnType("int");
 
@@ -97,6 +112,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
+
+                    b.Property<int?>("YaradanIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("YaradilmaTarixi")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -116,6 +137,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("DeyisdirenIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeyisdirilmeTarixi")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("FaktikiTehvilTarixi")
                         .HasColumnType("datetime2");
@@ -146,6 +173,9 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.Property<decimal>("UmumiMebleg")
                         .HasColumnType("decimal(18, 2)");
+
+                    b.Property<int?>("YaradanIstifadeciId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("YaradilmaTarixi")
                         .HasColumnType("datetime2");
@@ -181,6 +211,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.Property<decimal>("CemiMebleg")
                         .HasColumnType("decimal(18, 2)");
 
+                    b.Property<int?>("DeyisdirenIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeyisdirilmeTarixi")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("MehsulId")
                         .HasColumnType("int");
 
@@ -194,6 +230,12 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.Property<decimal>("TehvilAlinanMiqdar")
                         .HasColumnType("decimal(18, 3)");
+
+                    b.Property<int?>("YaradanIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("YaradilmaTarixi")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -218,6 +260,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.Property<decimal>("BalMiqdari")
                         .HasColumnType("decimal(18, 2)");
 
+                    b.Property<int?>("DeyisdirenIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeyisdirilmeTarixi")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("EmeliyyatNovu")
                         .HasColumnType("int");
 
@@ -234,6 +282,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
+
+                    b.Property<int?>("YaradanIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("YaradilmaTarixi")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -263,6 +317,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.Property<bool>("Aktivdir")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("DeyisdirenIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeyisdirilmeTarixi")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("LoqoFaylYolu")
                         .HasColumnType("nvarchar(max)");
 
@@ -279,6 +339,12 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.Property<string>("Vebsayt")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("YaradanIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("YaradilmaTarixi")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -299,7 +365,8 @@ namespace AzAgroPOS.Verilenler.Migrations
                             Olke = "Azərbaycan",
                             Silinib = false,
                             Tesvir = "Yerli brend",
-                            Vebsayt = "www.enanevi.az"
+                            Vebsayt = "www.enanevi.az",
+                            YaradilmaTarixi = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -309,7 +376,8 @@ namespace AzAgroPOS.Verilenler.Migrations
                             Olke = "Azərbaycan",
                             Silinib = false,
                             Tesvir = "Təzə məhsullar",
-                            Vebsayt = "www.fresh.az"
+                            Vebsayt = "www.fresh.az",
+                            YaradilmaTarixi = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -319,7 +387,8 @@ namespace AzAgroPOS.Verilenler.Migrations
                             Olke = "Almaniya",
                             Silinib = false,
                             Tesvir = "Təmizlik vasitələri",
-                            Vebsayt = "www.cleanhome.de"
+                            Vebsayt = "www.cleanhome.de",
+                            YaradilmaTarixi = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -333,6 +402,12 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.Property<decimal>("Bonuslar")
                         .HasColumnType("decimal(18, 2)");
+
+                    b.Property<int?>("DeyisdirenIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeyisdirilmeTarixi")
+                        .HasColumnType("datetime2");
 
                     b.Property<decimal>("DigerTutulmalar")
                         .HasColumnType("decimal(18, 2)");
@@ -373,6 +448,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
+                    b.Property<int?>("YaradanIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("YaradilmaTarixi")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Dovr")
@@ -405,6 +486,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("DeyisdirenIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeyisdirilmeTarixi")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("EmeliyyatNovu")
                         .HasColumnType("int");
 
@@ -422,6 +509,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
 
+                    b.Property<int?>("YaradanIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("YaradilmaTarixi")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
 
                     b.ToTable("EmeliyyatJurnallari");
@@ -436,6 +529,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CehdTarixi")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DeyisdirenIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeyisdirilmeTarixi")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("IpUnvani")
@@ -456,6 +555,12 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.Property<string>("UgursuzluqSebebi")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("YaradanIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("YaradilmaTarixi")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -480,6 +585,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("DeyisdirenIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeyisdirilmeTarixi")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("Silinib")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
@@ -488,6 +599,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.Property<string>("Tesvir")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("YaradanIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("YaradilmaTarixi")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -499,35 +616,40 @@ namespace AzAgroPOS.Verilenler.Migrations
                             Id = 1,
                             Ad = "CanDeleteSale",
                             Silinib = false,
-                            Tesvir = "Satış silmək imkanı"
+                            Tesvir = "Satış silmək imkanı",
+                            YaradilmaTarixi = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 2,
                             Ad = "CanGiveDiscount",
                             Silinib = false,
-                            Tesvir = "Endirim tətbiq etmək imkanı"
+                            Tesvir = "Endirim tətbiq etmək imkanı",
+                            YaradilmaTarixi = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 3,
                             Ad = "CanViewReports",
                             Silinib = false,
-                            Tesvir = "Hesabatları görmək imkanı"
+                            Tesvir = "Hesabatları görmək imkanı",
+                            YaradilmaTarixi = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 4,
                             Ad = "CanManageProducts",
                             Silinib = false,
-                            Tesvir = "Məhsulları idarə etmək imkanı"
+                            Tesvir = "Məhsulları idarə etmək imkanı",
+                            YaradilmaTarixi = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 5,
                             Ad = "CanManageUsers",
                             Silinib = false,
-                            Tesvir = "İstifadəçiləri idarə etmək imkanı"
+                            Tesvir = "İstifadəçiləri idarə etmək imkanı",
+                            YaradilmaTarixi = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -546,6 +668,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.Property<string>("Departament")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("DeyisdirenIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeyisdirilmeTarixi")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DogumTarixi")
                         .HasColumnType("datetime2");
@@ -595,6 +723,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("YaradanIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("YaradilmaTarixi")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
 
                     b.HasIndex("SistemIstifadecisiId");
@@ -627,7 +761,8 @@ namespace AzAgroPOS.Verilenler.Migrations
                             TamAd = "Əli Məmmədov",
                             TelefonNomresi = "+994501234567",
                             Unvan = "Bakı şəh., Nərimanov r-nu, Sədərək m/s",
-                            Vezife = "Kassir"
+                            Vezife = "Kassir",
+                            YaradilmaTarixi = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -645,7 +780,8 @@ namespace AzAgroPOS.Verilenler.Migrations
                             TamAd = "Nərgiz Quliyeva",
                             TelefonNomresi = "+994552345678",
                             Unvan = "Bakı şəh., Xətai r-nu, Mərdəkan m/s",
-                            Vezife = "Menecer"
+                            Vezife = "Menecer",
+                            YaradilmaTarixi = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -661,6 +797,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("BitmeTarixi")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DeyisdirenIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeyisdirilmeTarixi")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("IsciId")
@@ -694,6 +836,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.Property<DateTime?>("TesdiqTarixi")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("YaradanIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("YaradilmaTarixi")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BaslamaTarixi")
@@ -714,6 +862,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("DeyisdirenIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeyisdirilmeTarixi")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Emsallar")
                         .IsRequired()
@@ -745,6 +899,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("YaradanIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("YaradilmaTarixi")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
 
                     b.HasIndex("IsciId")
@@ -760,6 +920,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("DeyisdirenIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeyisdirilmeTarixi")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("HesabAktivdir")
                         .HasColumnType("bit");
@@ -796,6 +962,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.Property<int>("UgursuzGirisCehdi")
                         .HasColumnType("int");
 
+                    b.Property<int?>("YaradanIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("YaradilmaTarixi")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
 
                     b.HasIndex("HesabAktivdir")
@@ -823,7 +995,8 @@ namespace AzAgroPOS.Verilenler.Migrations
                             RolId = 1,
                             Silinib = false,
                             TamAd = "Sistem Administratoru",
-                            UgursuzGirisCehdi = 0
+                            UgursuzGirisCehdi = 0,
+                            YaradilmaTarixi = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -844,6 +1017,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.Property<DateTime?>("BitməTarixi")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("DeyisdirenIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeyisdirilmeTarixi")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("IpUnvani")
                         .HasColumnType("nvarchar(max)");
 
@@ -857,6 +1036,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("SonAktivlikTarixi")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("YaradanIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("YaradilmaTarixi")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -877,6 +1062,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("DeyisdirenIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeyisdirilmeTarixi")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("EmeliyyatId")
                         .HasColumnType("int");
@@ -902,6 +1093,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                         .HasDefaultValue(false);
 
                     b.Property<DateTime>("Tarix")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("YaradanIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("YaradilmaTarixi")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -933,6 +1130,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.Property<bool>("Aktivdir")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("DeyisdirenIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeyisdirilmeTarixi")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("Silinib")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
@@ -940,6 +1143,12 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.Property<string>("Tesvir")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("YaradanIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("YaradilmaTarixi")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -958,7 +1167,8 @@ namespace AzAgroPOS.Verilenler.Migrations
                             Ad = "Qida Məhsulları",
                             Aktivdir = true,
                             Silinib = false,
-                            Tesvir = "Yemək və içki məhsulları"
+                            Tesvir = "Yemək və içki məhsulları",
+                            YaradilmaTarixi = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -966,7 +1176,8 @@ namespace AzAgroPOS.Verilenler.Migrations
                             Ad = "Təmizlik Vasitələri",
                             Aktivdir = true,
                             Silinib = false,
-                            Tesvir = "Ev təmizliyi üçün vasitələr"
+                            Tesvir = "Ev təmizliyi üçün vasitələr",
+                            YaradilmaTarixi = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -974,7 +1185,8 @@ namespace AzAgroPOS.Verilenler.Migrations
                             Ad = "Şəxsi Gigiyena",
                             Aktivdir = true,
                             Silinib = false,
-                            Tesvir = "Şəxsi gigiyena məhsulları"
+                            Tesvir = "Şəxsi gigiyena məhsulları",
+                            YaradilmaTarixi = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -994,6 +1206,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("DeyisdirenIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeyisdirilmeTarixi")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Qrup")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -1006,6 +1224,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.Property<string>("Tesvir")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("YaradanIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("YaradilmaTarixi")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -1035,6 +1259,12 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.Property<int?>("BrendId")
                         .HasColumnType("int");
+
+                    b.Property<int?>("DeyisdirenIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeyisdirilmeTarixi")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("KateqoriyaId")
                         .HasColumnType("int");
@@ -1070,6 +1300,12 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.Property<decimal>("TopdanSatisQiymeti")
                         .HasColumnType("decimal(18, 2)");
+
+                    b.Property<int?>("YaradanIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("YaradilmaTarixi")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -1113,7 +1349,8 @@ namespace AzAgroPOS.Verilenler.Migrations
                             Silinib = false,
                             StokKodu = "SK001",
                             TekEdedSatisQiymeti = 0m,
-                            TopdanSatisQiymeti = 0m
+                            TopdanSatisQiymeti = 0m,
+                            YaradilmaTarixi = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -1129,7 +1366,8 @@ namespace AzAgroPOS.Verilenler.Migrations
                             Silinib = false,
                             StokKodu = "SK002",
                             TekEdedSatisQiymeti = 0m,
-                            TopdanSatisQiymeti = 0m
+                            TopdanSatisQiymeti = 0m,
+                            YaradilmaTarixi = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -1145,7 +1383,8 @@ namespace AzAgroPOS.Verilenler.Migrations
                             Silinib = false,
                             StokKodu = "SK003",
                             TekEdedSatisQiymeti = 0m,
-                            TopdanSatisQiymeti = 0m
+                            TopdanSatisQiymeti = 0m,
+                            YaradilmaTarixi = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -1156,6 +1395,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("DeyisdirenIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeyisdirilmeTarixi")
+                        .HasColumnType("datetime2");
 
                     b.Property<decimal>("KreditLimiti")
                         .HasColumnType("decimal(18, 2)");
@@ -1179,6 +1424,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.Property<string>("Unvan")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("YaradanIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("YaradilmaTarixi")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
 
                     b.HasIndex("TamAd")
@@ -1200,6 +1451,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("DeyisdirenIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeyisdirilmeTarixi")
+                        .HasColumnType("datetime2");
 
                     b.Property<decimal>("IstifadeEdilmisBal")
                         .HasColumnType("decimal(18, 2)");
@@ -1224,6 +1481,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.Property<decimal>("ToplamBal")
                         .HasColumnType("decimal(18, 2)");
 
+                    b.Property<int?>("YaradanIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("YaradilmaTarixi")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
 
                     b.HasIndex("MusteriId")
@@ -1240,6 +1503,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("DeyisdirenIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeyisdirilmeTarixi")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("EmeliyyatNovu")
                         .HasColumnType("int");
@@ -1262,6 +1531,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                         .HasDefaultValue(false);
 
                     b.Property<DateTime>("Tarix")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("YaradanIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("YaradilmaTarixi")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -1294,6 +1569,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.Property<decimal>("BaslangicMebleg")
                         .HasColumnType("decimal(18, 2)");
 
+                    b.Property<int?>("DeyisdirenIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeyisdirilmeTarixi")
+                        .HasColumnType("datetime2");
+
                     b.Property<decimal>("FaktikiMebleg")
                         .HasColumnType("decimal(18, 2)");
 
@@ -1310,6 +1591,12 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
+
+                    b.Property<int?>("YaradanIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("YaradilmaTarixi")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -1329,6 +1616,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("DeyisdirenIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeyisdirilmeTarixi")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("KassirId")
                         .HasColumnType("int");
@@ -1350,6 +1643,12 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.Property<decimal>("UmumiMebleg")
                         .HasColumnType("decimal(18, 2)");
+
+                    b.Property<int?>("YaradanIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("YaradilmaTarixi")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -1373,6 +1672,12 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("DeyisdirenIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeyisdirilmeTarixi")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("MehsulId")
                         .HasColumnType("int");
 
@@ -1392,6 +1697,12 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.Property<decimal>("UmumiMebleg")
                         .HasColumnType("decimal(18, 2)");
+
+                    b.Property<int?>("YaradanIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("YaradilmaTarixi")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -1415,10 +1726,22 @@ namespace AzAgroPOS.Verilenler.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("DeyisdirenIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeyisdirilmeTarixi")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("Silinib")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
+
+                    b.Property<int?>("YaradanIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("YaradilmaTarixi")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -1429,13 +1752,15 @@ namespace AzAgroPOS.Verilenler.Migrations
                         {
                             Id = 1,
                             Ad = "Admin",
-                            Silinib = false
+                            Silinib = false,
+                            YaradilmaTarixi = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 2,
                             Ad = "Kassir",
-                            Silinib = false
+                            Silinib = false,
+                            YaradilmaTarixi = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -1447,6 +1772,12 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("DeyisdirenIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeyisdirilmeTarixi")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("IcazeId")
                         .HasColumnType("int");
 
@@ -1457,6 +1788,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
+
+                    b.Property<int?>("YaradanIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("YaradilmaTarixi")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -1472,35 +1809,40 @@ namespace AzAgroPOS.Verilenler.Migrations
                             Id = 1,
                             IcazeId = 1,
                             RolId = 1,
-                            Silinib = false
+                            Silinib = false,
+                            YaradilmaTarixi = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 2,
                             IcazeId = 2,
                             RolId = 1,
-                            Silinib = false
+                            Silinib = false,
+                            YaradilmaTarixi = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 3,
                             IcazeId = 3,
                             RolId = 1,
-                            Silinib = false
+                            Silinib = false,
+                            YaradilmaTarixi = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 4,
                             IcazeId = 4,
                             RolId = 1,
-                            Silinib = false
+                            Silinib = false,
+                            YaradilmaTarixi = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 5,
                             IcazeId = 5,
                             RolId = 1,
-                            Silinib = false
+                            Silinib = false,
+                            YaradilmaTarixi = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -1511,6 +1853,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("DeyisdirenIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeyisdirilmeTarixi")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("MusteriId")
                         .HasColumnType("int");
@@ -1531,6 +1879,12 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.Property<decimal>("UmumiMebleg")
                         .HasColumnType("decimal(18, 2)");
+
+                    b.Property<int?>("YaradanIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("YaradilmaTarixi")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -1563,6 +1917,12 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("DeyisdirenIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeyisdirilmeTarixi")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("MehsulId")
                         .HasColumnType("int");
 
@@ -1582,6 +1942,12 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.Property<decimal>("UmumiMebleg")
                         .HasColumnType("decimal(18, 2)");
+
+                    b.Property<int?>("YaradanIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("YaradilmaTarixi")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -1606,6 +1972,12 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.Property<decimal>("AlisQiymeti")
                         .HasColumnType("decimal(18, 2)");
+
+                    b.Property<int?>("DeyisdirenIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeyisdirilmeTarixi")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("HareketTipi")
                         .HasColumnType("int");
@@ -1637,6 +2009,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                         .HasDefaultValue(false);
 
                     b.Property<DateTime>("Tarix")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("YaradanIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("YaradilmaTarixi")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -1673,6 +2051,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.Property<string>("BankHesabi")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("DeyisdirenIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeyisdirilmeTarixi")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
@@ -1689,6 +2073,12 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.Property<string>("Voen")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("YaradanIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("YaradilmaTarixi")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -1711,7 +2101,8 @@ namespace AzAgroPOS.Verilenler.Migrations
                             Silinib = false,
                             Telefon = "+994123456789",
                             Unvan = "Bakı şəh., Nəsimi r-nu, Cavid prospekti 45",
-                            Voen = "1234567890"
+                            Voen = "1234567890",
+                            YaradilmaTarixi = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -1723,7 +2114,8 @@ namespace AzAgroPOS.Verilenler.Migrations
                             Silinib = false,
                             Telefon = "+994181234567",
                             Unvan = "Sumqayıt şəh., Sənaye rayonu, Zavod küçəsi 12",
-                            Voen = "0987654321"
+                            Voen = "0987654321",
+                            YaradilmaTarixi = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -1740,6 +2132,12 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.Property<string>("BankMelumatlari")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("DeyisdirenIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeyisdirilmeTarixi")
+                        .HasColumnType("datetime2");
 
                     b.Property<decimal>("Mebleg")
                         .HasColumnType("decimal(18, 2)");
@@ -1768,6 +2166,9 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.Property<int>("TedarukcuId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("YaradanIstifadeciId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("YaradilmaTarixi")
                         .HasColumnType("datetime2");
 
@@ -1791,6 +2192,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.Property<string>("CihazAdi")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("DeyisdirenIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeyisdirilmeTarixi")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("IsciId")
                         .HasColumnType("int");
@@ -1831,6 +2238,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.Property<decimal>("TemirXerci")
                         .HasColumnType("decimal(18, 2)");
 
+                    b.Property<int?>("YaradanIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("YaradilmaTarixi")
+                        .HasColumnType("datetime2");
+
                     b.Property<decimal>("YekunMebleg")
                         .HasColumnType("decimal(18, 2)");
 
@@ -1855,6 +2268,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.Property<string>("Ad")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("DeyisdirenIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeyisdirilmeTarixi")
+                        .HasColumnType("datetime2");
+
                     b.Property<int?>("IstifadeciId")
                         .HasColumnType("int");
 
@@ -1876,6 +2295,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                         .HasDefaultValue(false);
 
                     b.Property<DateTime>("Tarix")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("YaradanIstifadeciId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("YaradilmaTarixi")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");

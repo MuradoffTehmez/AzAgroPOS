@@ -14,11 +14,6 @@ public class TedarukcuOdeme : BazaVarligi
     public string OdemeNomresi { get; set; } = string.Empty;
 
     /// <summary>
-    /// Ödənişin yaradıldığı tarix.
-    /// </summary>
-    public DateTime YaradilmaTarixi { get; set; } = DateTime.Now;
-
-    /// <summary>
     /// Tədarükçü ID-si.
     /// </summary>
     public int TedarukcuId { get; set; }

@@ -33,11 +33,13 @@ public class UnitOfWork : IUnitOfWork
 
     /// <summary>
     /// Aktiv istifadəçi ID-sini təyin edir
+    /// Həm audit jurnalı, həm də audit sahələri üçün istifadə olunur
     /// </summary>
     /// <param name="istifadeciId">Aktiv istifadəçinin ID-si</param>
     public void AktivIstifadeciniTeyinEt(int istifadeciId)
     {
         AktivIstifadeciId = istifadeciId;
+        _kontekst.SetCurrentUser(istifadeciId); // Audit sahələri üçün
     }
 
     // Repozitorilərin instansiyaları

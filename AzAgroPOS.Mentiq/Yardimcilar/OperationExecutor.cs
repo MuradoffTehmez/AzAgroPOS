@@ -1,5 +1,6 @@
 // Fayl: AzAgroPOS.Mentiq/Yardimcilar/OperationExecutor.cs
 using AzAgroPOS.Mentiq.Uslublar;
+using AzAgroPOS.Mentiq.Istisnalar;
 
 namespace AzAgroPOS.Mentiq.Yardimcilar;
 
@@ -30,25 +31,35 @@ public static class OperationExecutor
 
             return EmeliyyatNeticesi<T>.Ugurlu(result);
         }
-        catch (Mentiq.Exceptions.ValidationException ex)
+        catch (TesdiqIstisnasi ex)
         {
-            Logger.XəbərdarlıqYaz($"{operationName} - Validation xətası: {ex.Message}");
-            return EmeliyyatNeticesi<T>.Ugursuz(ex.Message);
+            Logger.XəbərdarlıqYaz($"{operationName} - Validasiya xətası: {ex.IstifadeciMesaji}");
+            return EmeliyyatNeticesi<T>.Ugursuz(ex.IstifadeciMesaji);
         }
-        catch (Mentiq.Exceptions.BusinessRuleException ex)
+        catch (BiznesQaydasiIstisnasi ex)
         {
-            Logger.XəbərdarlıqYaz($"{operationName} - Business rule xətası: {ex.Message}");
-            return EmeliyyatNeticesi<T>.Ugursuz(ex.Message);
+            Logger.XəbərdarlıqYaz($"{operationName} - Biznes qaydası pozuldu: {ex.IstifadeciMesaji}");
+            return EmeliyyatNeticesi<T>.Ugursuz(ex.IstifadeciMesaji);
         }
-        catch (Mentiq.Exceptions.DataNotFoundException ex)
+        catch (MelumatTapilmadiIstisnasi ex)
         {
-            Logger.XəbərdarlıqYaz($"{operationName} - Məlumat tapılmadı: {ex.Message}");
-            return EmeliyyatNeticesi<T>.Ugursuz(ex.Message);
+            Logger.XəbərdarlıqYaz($"{operationName} - Məlumat tapılmadı: {ex.IstifadeciMesaji}");
+            return EmeliyyatNeticesi<T>.Ugursuz(ex.IstifadeciMesaji);
+        }
+        catch (TehlukesizlikIstisnasi ex)
+        {
+            Logger.XəbərdarlıqYaz($"{operationName} - Təhlükəsizlik xətası: {ex.IstifadeciMesaji}");
+            return EmeliyyatNeticesi<T>.Ugursuz(ex.IstifadeciMesaji);
+        }
+        catch (VerilenlerBazasiIstisnasi ex)
+        {
+            Logger.XetaYaz(ex, $"{operationName} - Verilənlər bazası xətası");
+            return EmeliyyatNeticesi<T>.Ugursuz(ex.IstifadeciMesaji);
         }
         catch (Exception ex)
         {
             Logger.XetaYaz(ex, $"{operationName} zamanı gözlənilməz xəta baş verdi");
-            return EmeliyyatNeticesi<T>.Ugursuz($"{operationName} uğursuz oldu: {ex.Message}");
+            return EmeliyyatNeticesi<T>.Ugursuz("Əməliyyat zamanı gözlənilməz xəta baş verdi. Zəhmət olmasa administrator ilə əlaqə saxlayın.");
         }
     }
 
@@ -73,25 +84,35 @@ public static class OperationExecutor
 
             return EmeliyyatNeticesi.Ugurlu();
         }
-        catch (Mentiq.Exceptions.ValidationException ex)
+        catch (TesdiqIstisnasi ex)
         {
-            Logger.XəbərdarlıqYaz($"{operationName} - Validation xətası: {ex.Message}");
-            return EmeliyyatNeticesi.Ugursuz(ex.Message);
+            Logger.XəbərdarlıqYaz($"{operationName} - Validasiya xətası: {ex.IstifadeciMesaji}");
+            return EmeliyyatNeticesi.Ugursuz(ex.IstifadeciMesaji);
         }
-        catch (Mentiq.Exceptions.BusinessRuleException ex)
+        catch (BiznesQaydasiIstisnasi ex)
         {
-            Logger.XəbərdarlıqYaz($"{operationName} - Business rule xətası: {ex.Message}");
-            return EmeliyyatNeticesi.Ugursuz(ex.Message);
+            Logger.XəbərdarlıqYaz($"{operationName} - Biznes qaydası pozuldu: {ex.IstifadeciMesaji}");
+            return EmeliyyatNeticesi.Ugursuz(ex.IstifadeciMesaji);
         }
-        catch (Mentiq.Exceptions.DataNotFoundException ex)
+        catch (MelumatTapilmadiIstisnasi ex)
         {
-            Logger.XəbərdarlıqYaz($"{operationName} - Məlumat tapılmadı: {ex.Message}");
-            return EmeliyyatNeticesi.Ugursuz(ex.Message);
+            Logger.XəbərdarlıqYaz($"{operationName} - Məlumat tapılmadı: {ex.IstifadeciMesaji}");
+            return EmeliyyatNeticesi.Ugursuz(ex.IstifadeciMesaji);
+        }
+        catch (TehlukesizlikIstisnasi ex)
+        {
+            Logger.XəbərdarlıqYaz($"{operationName} - Təhlükəsizlik xətası: {ex.IstifadeciMesaji}");
+            return EmeliyyatNeticesi.Ugursuz(ex.IstifadeciMesaji);
+        }
+        catch (VerilenlerBazasiIstisnasi ex)
+        {
+            Logger.XetaYaz(ex, $"{operationName} - Verilənlər bazası xətası");
+            return EmeliyyatNeticesi.Ugursuz(ex.IstifadeciMesaji);
         }
         catch (Exception ex)
         {
             Logger.XetaYaz(ex, $"{operationName} zamanı gözlənilməz xəta baş verdi");
-            return EmeliyyatNeticesi.Ugursuz($"{operationName} uğursuz oldu: {ex.Message}");
+            return EmeliyyatNeticesi.Ugursuz("Əməliyyat zamanı gözlənilməz xəta baş verdi. Zəhmət olmasa administrator ilə əlaqə saxlayın.");
         }
     }
 
@@ -116,25 +137,35 @@ public static class OperationExecutor
 
             return EmeliyyatNeticesi<T>.Ugurlu(result);
         }
-        catch (Mentiq.Exceptions.ValidationException ex)
+        catch (TesdiqIstisnasi ex)
         {
-            Logger.XəbərdarlıqYaz($"{operationName} - Validation xətası: {ex.Message}");
-            return EmeliyyatNeticesi<T>.Ugursuz(ex.Message);
+            Logger.XəbərdarlıqYaz($"{operationName} - Validasiya xətası: {ex.IstifadeciMesaji}");
+            return EmeliyyatNeticesi<T>.Ugursuz(ex.IstifadeciMesaji);
         }
-        catch (Mentiq.Exceptions.BusinessRuleException ex)
+        catch (BiznesQaydasiIstisnasi ex)
         {
-            Logger.XəbərdarlıqYaz($"{operationName} - Business rule xətası: {ex.Message}");
-            return EmeliyyatNeticesi<T>.Ugursuz(ex.Message);
+            Logger.XəbərdarlıqYaz($"{operationName} - Biznes qaydası pozuldu: {ex.IstifadeciMesaji}");
+            return EmeliyyatNeticesi<T>.Ugursuz(ex.IstifadeciMesaji);
         }
-        catch (Mentiq.Exceptions.DataNotFoundException ex)
+        catch (MelumatTapilmadiIstisnasi ex)
         {
-            Logger.XəbərdarlıqYaz($"{operationName} - Məlumat tapılmadı: {ex.Message}");
-            return EmeliyyatNeticesi<T>.Ugursuz(ex.Message);
+            Logger.XəbərdarlıqYaz($"{operationName} - Məlumat tapılmadı: {ex.IstifadeciMesaji}");
+            return EmeliyyatNeticesi<T>.Ugursuz(ex.IstifadeciMesaji);
+        }
+        catch (TehlukesizlikIstisnasi ex)
+        {
+            Logger.XəbərdarlıqYaz($"{operationName} - Təhlükəsizlik xətası: {ex.IstifadeciMesaji}");
+            return EmeliyyatNeticesi<T>.Ugursuz(ex.IstifadeciMesaji);
+        }
+        catch (VerilenlerBazasiIstisnasi ex)
+        {
+            Logger.XetaYaz(ex, $"{operationName} - Verilənlər bazası xətası");
+            return EmeliyyatNeticesi<T>.Ugursuz(ex.IstifadeciMesaji);
         }
         catch (Exception ex)
         {
             Logger.XetaYaz(ex, $"{operationName} zamanı gözlənilməz xəta baş verdi");
-            return EmeliyyatNeticesi<T>.Ugursuz($"{operationName} uğursuz oldu: {ex.Message}");
+            return EmeliyyatNeticesi<T>.Ugursuz("Əməliyyat zamanı gözlənilməz xəta baş verdi. Zəhmət olmasa administrator ilə əlaqə saxlayın.");
         }
     }
 
@@ -159,25 +190,35 @@ public static class OperationExecutor
 
             return EmeliyyatNeticesi.Ugurlu();
         }
-        catch (Mentiq.Exceptions.ValidationException ex)
+        catch (TesdiqIstisnasi ex)
         {
-            Logger.XəbərdarlıqYaz($"{operationName} - Validation xətası: {ex.Message}");
-            return EmeliyyatNeticesi.Ugursuz(ex.Message);
+            Logger.XəbərdarlıqYaz($"{operationName} - Validasiya xətası: {ex.IstifadeciMesaji}");
+            return EmeliyyatNeticesi.Ugursuz(ex.IstifadeciMesaji);
         }
-        catch (Mentiq.Exceptions.BusinessRuleException ex)
+        catch (BiznesQaydasiIstisnasi ex)
         {
-            Logger.XəbərdarlıqYaz($"{operationName} - Business rule xətası: {ex.Message}");
-            return EmeliyyatNeticesi.Ugursuz(ex.Message);
+            Logger.XəbərdarlıqYaz($"{operationName} - Biznes qaydası pozuldu: {ex.IstifadeciMesaji}");
+            return EmeliyyatNeticesi.Ugursuz(ex.IstifadeciMesaji);
         }
-        catch (Mentiq.Exceptions.DataNotFoundException ex)
+        catch (MelumatTapilmadiIstisnasi ex)
         {
-            Logger.XəbərdarlıqYaz($"{operationName} - Məlumat tapılmadı: {ex.Message}");
-            return EmeliyyatNeticesi.Ugursuz(ex.Message);
+            Logger.XəbərdarlıqYaz($"{operationName} - Məlumat tapılmadı: {ex.IstifadeciMesaji}");
+            return EmeliyyatNeticesi.Ugursuz(ex.IstifadeciMesaji);
+        }
+        catch (TehlukesizlikIstisnasi ex)
+        {
+            Logger.XəbərdarlıqYaz($"{operationName} - Təhlükəsizlik xətası: {ex.IstifadeciMesaji}");
+            return EmeliyyatNeticesi.Ugursuz(ex.IstifadeciMesaji);
+        }
+        catch (VerilenlerBazasiIstisnasi ex)
+        {
+            Logger.XetaYaz(ex, $"{operationName} - Verilənlər bazası xətası");
+            return EmeliyyatNeticesi.Ugursuz(ex.IstifadeciMesaji);
         }
         catch (Exception ex)
         {
             Logger.XetaYaz(ex, $"{operationName} zamanı gözlənilməz xəta baş verdi");
-            return EmeliyyatNeticesi.Ugursuz($"{operationName} uğursuz oldu: {ex.Message}");
+            return EmeliyyatNeticesi.Ugursuz("Əməliyyat zamanı gözlənilməz xəta baş verdi. Zəhmət olmasa administrator ilə əlaqə saxlayın.");
         }
     }
 }
