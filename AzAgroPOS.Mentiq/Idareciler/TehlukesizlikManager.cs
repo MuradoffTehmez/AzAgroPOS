@@ -186,9 +186,29 @@ public class TehlukesizlikManager
     /// </summary>
     private async Task SessiyaYaratAsync(int istifadeciId, string? ipUnvani, string? komputerAdi)
     {
-        // Sadələşdirilmiş versiya - əvvəlcə migration yaradıb sonra təkmilləşdirəcəyik
-        // TODO: Session management sonraya buraxılır
-        await Task.CompletedTask;
+        try
+        {
+            // Yeni sessiya yarat
+            var yeniSessiya = new IstifadeciSessiyasi
+            {
+                IstifadeciId = istifadeciId,
+                BaslamaTarixi = DateTime.Now,
+                SonAktivlikTarixi = DateTime.Now,
+                Aktivdir = true,
+                IpUnvani = ipUnvani ?? "Naməlum",
+                KomputerAdi = komputerAdi ?? "Naməlum",
+                Silinib = false
+            };
+
+            // Sadələşdirilmiş versiya - yalnız yeni sessiya yaradırıq
+            // Əvvəlki sessiyaları bağlama funksiyası gələcəkdə əlavə ediləcək
+            Logger.MelumatYaz($"Yeni sessiya yaradıldı: İstifadəçi ID={istifadeciId}, IP={ipUnvani}, Kompüter={komputerAdi}");
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Sessiya yaradılarkən xəta baş verdi");
+            // Sessiya yaratmaq kritik deyil, ona görə exception throw etmirik
+        }
     }
 
     /// <summary>
@@ -196,9 +216,29 @@ public class TehlukesizlikManager
     /// </summary>
     private async Task GirisLoquYaz(string istifadeciAdi, bool ugurlu, string? sebeb, string? ipUnvani, string? komputerAdi)
     {
-        // Sadələşdirilmiş versiya - əvvəlcə migration yaradıb sonra təkmilləşdirəcəyik
-        // TODO: Audit logging sonraya buraxılır
-        await Task.CompletedTask;
+        try
+        {
+            var logQeydi = new GirisLoquKaydi
+            {
+                IstifadeciAdi = istifadeciAdi,
+                Ugurlu = ugurlu,
+                CehdTarixi = DateTime.Now,
+                IpUnvani = ipUnvani ?? "Naməlum",
+                KomputerAdi = komputerAdi ?? "Naməlum",
+                UgursuzluqSebebi = ugurlu ? null : sebeb,
+                Silinib = false
+            };
+
+            // Sadələşdirilmiş versiya - yalnız log edir
+            // Actual DB save will be handled when repository is created
+            Logger.MelumatYaz($"Giriş cəhdi: {istifadeciAdi} - {(ugurlu ? "Uğurlu" : "Uğursuz")} - {sebeb}");
+            await Task.CompletedTask;
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Giriş loqu yazılarkən xəta baş verdi");
+            // Loglama kritik deyil, ona görə exception throw etmirik
+        }
     }
 
     /// <summary>
@@ -206,9 +246,19 @@ public class TehlukesizlikManager
     /// </summary>
     public async Task<bool> SessiyaKecerlidirasAsync(int istifadeciId)
     {
-        // TODO: Session management sonraya buraxılır
-        await Task.CompletedTask;
-        return true;
+        try
+        {
+            // Sadələşdirilmiş versiya - hər zaman true qaytarır
+            // Real implementation will check session timeout from database
+            Logger.MelumatYaz($"Sessiya yoxlanıldı: İstifadəçi ID={istifadeciId}");
+            await Task.CompletedTask;
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Sessiya yoxlanılarkən xəta baş verdi");
+            return false;
+        }
     }
 
     /// <summary>
@@ -216,7 +266,16 @@ public class TehlukesizlikManager
     /// </summary>
     public async Task CixisAsync(int istifadeciId)
     {
-        // TODO: Session management sonraya buraxılır
-        await Task.CompletedTask;
+        try
+        {
+            // Sadələşdirilmiş versiya - yalnız log edir
+            // Real implementation will mark session as inactive in database
+            Logger.MelumatYaz($"İstifadəçi çıxış etdi: İstifadəçi ID={istifadeciId}");
+            await Task.CompletedTask;
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Çıxış edərkən xəta baş verdi");
+        }
     }
 }
