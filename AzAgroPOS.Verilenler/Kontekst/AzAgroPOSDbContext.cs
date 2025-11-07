@@ -2,13 +2,59 @@
 namespace AzAgroPOS.Verilenler.Kontekst;
 
 using AzAgroPOS.Varliglar;
+using AzAgroPOS.Varliglar.Interfeysler;
 using Microsoft.EntityFrameworkCore;
 
 public class AzAgroPOSDbContext : DbContext
 {
+    private int? _currentUserId;
+
     public AzAgroPOSDbContext(DbContextOptions<AzAgroPOSDbContext> options) : base(options)
     {
         //Database.EnsureCreated(); // Verilənlər bazasının yaradılmasını təmin edir
+    }
+
+    /// <summary>
+    /// Cari istifadəçinin ID-sini təyin edir (audit üçün)
+    /// Bu metod, UnitOfWork tərəfindən çağırılır
+    /// </summary>
+    public void SetCurrentUser(int? userId)
+    {
+        _currentUserId = userId;
+    }
+
+    public override int SaveChanges()
+    {
+        UpdateAuditFields();
+        return base.SaveChanges();
+    }
+
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        UpdateAuditFields();
+        return base.SaveChangesAsync(cancellationToken);
+    }
+
+    /// <summary>
+    /// Audit sahələrini avtomatik doldurur
+    /// </summary>
+    private void UpdateAuditFields()
+    {
+        var entries = ChangeTracker.Entries<IAuditableEntity>();
+
+        foreach (var entry in entries)
+        {
+            if (entry.State == EntityState.Added)
+            {
+                entry.Entity.YaradilmaTarixi = DateTime.Now;
+                entry.Entity.YaradanIstifadeciId = _currentUserId;
+            }
+            else if (entry.State == EntityState.Modified)
+            {
+                entry.Entity.DeyisdirilmeTarixi = DateTime.Now;
+                entry.Entity.DeyisdirenIstifadeciId = _currentUserId;
+            }
+        }
     }
 
     public DbSet<Mehsul> Mehsullar { get; set; }

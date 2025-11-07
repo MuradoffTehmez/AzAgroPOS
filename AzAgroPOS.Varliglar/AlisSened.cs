@@ -15,11 +15,6 @@ public class AlisSened : BazaVarligi
     public string SenedNomresi { get; set; } = string.Empty;
 
     /// <summary>
-    /// Sənədin yaradıldığı tarix.
-    /// </summary>
-    public DateTime YaradilmaTarixi { get; set; } = DateTime.Now;
-
-    /// <summary>
     /// Tədarükçü ID-si.
     /// </summary>
     public int TedarukcuId { get; set; }

@@ -1,11 +1,14 @@
 ﻿// Fayl: AzAgroPOS.Varliglar/BazaVarligi.cs
+using AzAgroPOS.Varliglar.Interfeysler;
+
 namespace AzAgroPOS.Varliglar;
 
 /// <summary>
 /// Bütün verilənlər bazası varlıqları üçün təməl sinif.
 /// Hər bir varlığın unikal bir identifikatorunun olmasını təmin edir.
+/// Audit sahələrini (kim, nə vaxt yaratdı/dəyişdi) avtomatik izləyir.
 /// </summary>
-public abstract class BazaVarligi
+public abstract class BazaVarligi : IAuditableEntity
 {
     /// <summary>
     /// Varlığın unikal identifikatoru. Verilənlər bazasında birincili açar (Primary Key).
@@ -19,4 +22,26 @@ public abstract class BazaVarligi
     /// Varlığın silinib-silinmədiyini göstərir. True olduqda varlıq silinmiş sayılır.
     /// </summary>
     public bool Silinib { get; set; } = false;
+
+    // ====== Audit Sahələri ======
+
+    /// <summary>
+    /// Varlığı yaradan istifadəçinin ID-si
+    /// </summary>
+    public int? YaradanIstifadeciId { get; set; }
+
+    /// <summary>
+    /// Varlığın yaradılma tarixi və vaxtı
+    /// </summary>
+    public DateTime YaradilmaTarixi { get; set; }
+
+    /// <summary>
+    /// Varlığı son dəyişdirən istifadəçinin ID-si
+    /// </summary>
+    public int? DeyisdirenIstifadeciId { get; set; }
+
+    /// <summary>
+    /// Varlığın son dəyişdirilmə tarixi və vaxtı
+    /// </summary>
+    public DateTime? DeyisdirilmeTarixi { get; set; }
 }
