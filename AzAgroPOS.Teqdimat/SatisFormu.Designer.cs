@@ -86,52 +86,54 @@
             SuspendLayout();
             // 
             // pnlMainContainer
-            // 
-            pnlMainContainer.BackColor = Color.FromArgb(242, 242, 242);
+            //
+            pnlMainContainer.BackColor = Color.FromArgb(250, 250, 250);
             pnlMainContainer.Controls.Add(tableLayoutPanel1);
             pnlMainContainer.Dock = DockStyle.Fill;
             pnlMainContainer.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             pnlMainContainer.ForeColor = Color.FromArgb(222, 0, 0, 0);
             pnlMainContainer.Location = new Point(3, 64);
             pnlMainContainer.Name = "pnlMainContainer";
-            pnlMainContainer.Padding = new Padding(10);
+            pnlMainContainer.Padding = new Padding(15);
             pnlMainContainer.Size = new Size(1774, 769);
             pnlMainContainer.TabIndex = 0;
             // 
             // tableLayoutPanel1
-            // 
-            tableLayoutPanel1.BackColor = Color.FromArgb(242, 242, 242);
+            //
+            tableLayoutPanel1.BackColor = Color.FromArgb(250, 250, 250);
             tableLayoutPanel1.ColumnCount = 2;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 450F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 480F));
             tableLayoutPanel1.Controls.Add(panel1, 0, 0);
             tableLayoutPanel1.Controls.Add(flpSuretliSatis, 1, 0);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             tableLayoutPanel1.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            tableLayoutPanel1.Location = new Point(10, 10);
+            tableLayoutPanel1.Location = new Point(15, 15);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.Padding = new Padding(0, 0, 0, 0);
             tableLayoutPanel1.RowCount = 1;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tableLayoutPanel1.Size = new Size(1754, 749);
             tableLayoutPanel1.TabIndex = 4;
             // 
             // panel1
-            // 
-            panel1.BackColor = Color.FromArgb(242, 242, 242);
+            //
+            panel1.BackColor = Color.FromArgb(250, 250, 250);
             panel1.Controls.Add(pnlSearchSection);
             panel1.Controls.Add(pnlCartSection);
             panel1.Controls.Add(pnlPaymentSection);
             panel1.Dock = DockStyle.Fill;
             panel1.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             panel1.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            panel1.Location = new Point(3, 3);
+            panel1.Location = new Point(0, 0);
+            panel1.Margin = new Padding(0, 0, 8, 0);
             panel1.Name = "panel1";
             panel1.Size = new Size(1298, 743);
             panel1.TabIndex = 0;
             // 
             // pnlSearchSection
-            // 
+            //
             pnlSearchSection.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             pnlSearchSection.BackColor = Color.FromArgb(255, 255, 255);
             pnlSearchSection.Controls.Add(dgvAxtarisNeticeleri);
@@ -139,12 +141,12 @@
             pnlSearchSection.Controls.Add(pnlQuantityControls);
             pnlSearchSection.Depth = 0;
             pnlSearchSection.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            pnlSearchSection.Location = new Point(3, 3);
-            pnlSearchSection.Margin = new Padding(14);
+            pnlSearchSection.Location = new Point(0, 0);
+            pnlSearchSection.Margin = new Padding(0, 0, 8, 0);
             pnlSearchSection.MouseState = MaterialSkin.MouseState.HOVER;
             pnlSearchSection.Name = "pnlSearchSection";
-            pnlSearchSection.Padding = new Padding(14);
-            pnlSearchSection.Size = new Size(439, 552);
+            pnlSearchSection.Padding = new Padding(16);
+            pnlSearchSection.Size = new Size(450, 558);
             pnlSearchSection.TabIndex = 0;
             // 
             // dgvAxtarisNeticeleri
@@ -171,13 +173,15 @@
             dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
             dgvAxtarisNeticeleri.DefaultCellStyle = dataGridViewCellStyle2;
-            dgvAxtarisNeticeleri.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            dgvAxtarisNeticeleri.Location = new Point(17, 72);
+            dgvAxtarisNeticeleri.Font = new Font("Roboto", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            dgvAxtarisNeticeleri.Location = new Point(16, 78);
             dgvAxtarisNeticeleri.MultiSelect = false;
             dgvAxtarisNeticeleri.Name = "dgvAxtarisNeticeleri";
             dgvAxtarisNeticeleri.ReadOnly = true;
+            dgvAxtarisNeticeleri.RowHeadersWidth = 24;
+            dgvAxtarisNeticeleri.RowTemplate.Height = 36;
             dgvAxtarisNeticeleri.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvAxtarisNeticeleri.Size = new Size(405, 392);
+            dgvAxtarisNeticeleri.Size = new Size(418, 398);
             dgvAxtarisNeticeleri.TabIndex = 1;
             dgvAxtarisNeticeleri.DoubleClick += dgvAxtarisNeticeleri_DoubleClick;
             // 
@@ -216,11 +220,11 @@
             txtAxtaris.BackgroundImageLayout = ImageLayout.None;
             txtAxtaris.CharacterCasing = CharacterCasing.Normal;
             txtAxtaris.Depth = 0;
-            txtAxtaris.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            txtAxtaris.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             txtAxtaris.HideSelection = true;
-            txtAxtaris.Hint = "Barkod, Ad və ya Kod ilə axtar";
+            txtAxtaris.Hint = "🔍 Barkod, ad və ya kod ilə axtar...";
             txtAxtaris.LeadingIcon = null;
-            txtAxtaris.Location = new Point(17, 17);
+            txtAxtaris.Location = new Point(16, 16);
             txtAxtaris.MaxLength = 32767;
             txtAxtaris.MouseState = MaterialSkin.MouseState.OUT;
             txtAxtaris.Name = "txtAxtaris";
@@ -232,7 +236,7 @@
             txtAxtaris.SelectionLength = 0;
             txtAxtaris.SelectionStart = 0;
             txtAxtaris.ShortcutsEnabled = true;
-            txtAxtaris.Size = new Size(405, 48);
+            txtAxtaris.Size = new Size(418, 52);
             txtAxtaris.TabIndex = 0;
             txtAxtaris.TabStop = false;
             txtAxtaris.TextAlign = HorizontalAlignment.Left;
@@ -248,9 +252,9 @@
             pnlQuantityControls.Controls.Add(btnSebeteElaveEt);
             pnlQuantityControls.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             pnlQuantityControls.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            pnlQuantityControls.Location = new Point(17, 481);
+            pnlQuantityControls.Location = new Point(16, 486);
             pnlQuantityControls.Name = "pnlQuantityControls";
-            pnlQuantityControls.Size = new Size(405, 54);
+            pnlQuantityControls.Size = new Size(418, 56);
             pnlQuantityControls.TabIndex = 2;
             // 
             // txtMiqdar
@@ -260,11 +264,11 @@
             txtMiqdar.BackgroundImageLayout = ImageLayout.None;
             txtMiqdar.CharacterCasing = CharacterCasing.Normal;
             txtMiqdar.Depth = 0;
-            txtMiqdar.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            txtMiqdar.Font = new Font("Roboto", 16F, FontStyle.Bold, GraphicsUnit.Pixel);
             txtMiqdar.HideSelection = true;
             txtMiqdar.Hint = "Miqdar";
             txtMiqdar.LeadingIcon = null;
-            txtMiqdar.Location = new Point(3, 3);
+            txtMiqdar.Location = new Point(0, 4);
             txtMiqdar.MaxLength = 32767;
             txtMiqdar.MouseState = MaterialSkin.MouseState.OUT;
             txtMiqdar.Name = "txtMiqdar";
@@ -276,7 +280,7 @@
             txtMiqdar.SelectionLength = 0;
             txtMiqdar.SelectionStart = 0;
             txtMiqdar.ShortcutsEnabled = true;
-            txtMiqdar.Size = new Size(117, 48);
+            txtMiqdar.Size = new Size(125, 48);
             txtMiqdar.TabIndex = 1;
             txtMiqdar.TabStop = false;
             txtMiqdar.Text = "1";
@@ -295,33 +299,33 @@
             btnSebeteElaveEt.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnSebeteElaveEt.HighEmphasis = true;
             btnSebeteElaveEt.Icon = null;
-            btnSebeteElaveEt.Location = new Point(127, 4);
+            btnSebeteElaveEt.Location = new Point(133, 4);
             btnSebeteElaveEt.Margin = new Padding(4, 6, 4, 6);
             btnSebeteElaveEt.MouseState = MaterialSkin.MouseState.HOVER;
             btnSebeteElaveEt.Name = "btnSebeteElaveEt";
             btnSebeteElaveEt.NoAccentTextColor = Color.Empty;
-            btnSebeteElaveEt.Size = new Size(274, 46);
+            btnSebeteElaveEt.Size = new Size(285, 48);
             btnSebeteElaveEt.TabIndex = 2;
-            btnSebeteElaveEt.Text = "Səbətə Əlavə Et (F7)";
+            btnSebeteElaveEt.Text = "➕ Səbətə Əlavə Et (F7)";
             btnSebeteElaveEt.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnSebeteElaveEt.UseAccentColor = false;
             btnSebeteElaveEt.UseVisualStyleBackColor = false;
             btnSebeteElaveEt.Click += btnSebeteElaveEt_Click;
             // 
             // pnlCartSection
-            // 
+            //
             pnlCartSection.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             pnlCartSection.BackColor = Color.FromArgb(255, 255, 255);
             pnlCartSection.Controls.Add(dgvSebet);
             pnlCartSection.Controls.Add(pnlCartControls);
             pnlCartSection.Depth = 0;
             pnlCartSection.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            pnlCartSection.Location = new Point(442, 3);
-            pnlCartSection.Margin = new Padding(14);
+            pnlCartSection.Location = new Point(458, 0);
+            pnlCartSection.Margin = new Padding(0);
             pnlCartSection.MouseState = MaterialSkin.MouseState.HOVER;
             pnlCartSection.Name = "pnlCartSection";
-            pnlCartSection.Padding = new Padding(14);
-            pnlCartSection.Size = new Size(853, 552);
+            pnlCartSection.Padding = new Padding(16);
+            pnlCartSection.Size = new Size(840, 558);
             pnlCartSection.TabIndex = 1;
             // 
             // dgvSebet
@@ -348,11 +352,13 @@
             dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
             dataGridViewCellStyle4.WrapMode = DataGridViewTriState.False;
             dgvSebet.DefaultCellStyle = dataGridViewCellStyle4;
-            dgvSebet.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            dgvSebet.Location = new Point(17, 17);
+            dgvSebet.Font = new Font("Roboto", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            dgvSebet.Location = new Point(16, 16);
             dgvSebet.Name = "dgvSebet";
+            dgvSebet.RowHeadersWidth = 24;
+            dgvSebet.RowTemplate.Height = 40;
             dgvSebet.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvSebet.Size = new Size(819, 447);
+            dgvSebet.Size = new Size(808, 458);
             dgvSebet.TabIndex = 0;
             dgvSebet.CellContentClick += dgvSebet_CellContentClick;
             // 
@@ -391,9 +397,9 @@
             pnlCartControls.Controls.Add(btnSebetTemizle);
             pnlCartControls.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             pnlCartControls.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            pnlCartControls.Location = new Point(17, 481);
+            pnlCartControls.Location = new Point(16, 486);
             pnlCartControls.Name = "pnlCartControls";
-            pnlCartControls.Size = new Size(819, 54);
+            pnlCartControls.Size = new Size(808, 56);
             pnlCartControls.TabIndex = 1;
             // 
             // btnSebetdenSil
@@ -406,14 +412,14 @@
             btnSebetdenSil.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnSebetdenSil.HighEmphasis = true;
             btnSebetdenSil.Icon = null;
-            btnSebetdenSil.Location = new Point(3, 4);
+            btnSebetdenSil.Location = new Point(0, 4);
             btnSebetdenSil.Margin = new Padding(4, 6, 4, 6);
             btnSebetdenSil.MouseState = MaterialSkin.MouseState.HOVER;
             btnSebetdenSil.Name = "btnSebetdenSil";
             btnSebetdenSil.NoAccentTextColor = Color.Empty;
-            btnSebetdenSil.Size = new Size(150, 46);
+            btnSebetdenSil.Size = new Size(180, 48);
             btnSebetdenSil.TabIndex = 16;
-            btnSebetdenSil.Text = "Səbətdən Sil (F8)";
+            btnSebetdenSil.Text = "🗑️ Səbətdən Sil (F8)";
             btnSebetdenSil.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnSebetdenSil.UseAccentColor = true;
             btnSebetdenSil.UseVisualStyleBackColor = false;
@@ -429,21 +435,21 @@
             btnSebetTemizle.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnSebetTemizle.HighEmphasis = false;
             btnSebetTemizle.Icon = null;
-            btnSebetTemizle.Location = new Point(161, 4);
+            btnSebetTemizle.Location = new Point(188, 4);
             btnSebetTemizle.Margin = new Padding(4, 6, 4, 6);
             btnSebetTemizle.MouseState = MaterialSkin.MouseState.HOVER;
             btnSebetTemizle.Name = "btnSebetTemizle";
             btnSebetTemizle.NoAccentTextColor = Color.Empty;
-            btnSebetTemizle.Size = new Size(150, 46);
+            btnSebetTemizle.Size = new Size(180, 48);
             btnSebetTemizle.TabIndex = 17;
-            btnSebetTemizle.Text = "Səbəti Təmizlə (F9)";
+            btnSebetTemizle.Text = "🧹 Səbəti Təmizlə (F9)";
             btnSebetTemizle.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
             btnSebetTemizle.UseAccentColor = false;
             btnSebetTemizle.UseVisualStyleBackColor = false;
             btnSebetTemizle.Click += btnSebetTemizle_Click;
             // 
             // pnlPaymentSection
-            // 
+            //
             pnlPaymentSection.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             pnlPaymentSection.BackColor = Color.FromArgb(255, 255, 255);
             pnlPaymentSection.Controls.Add(lblTotalTitle);
@@ -452,40 +458,40 @@
             pnlPaymentSection.Controls.Add(pnlAdvancedOptions);
             pnlPaymentSection.Depth = 0;
             pnlPaymentSection.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            pnlPaymentSection.Location = new Point(0, 571);
-            pnlPaymentSection.Margin = new Padding(14);
+            pnlPaymentSection.Location = new Point(0, 568);
+            pnlPaymentSection.Margin = new Padding(0, 10, 0, 0);
             pnlPaymentSection.MouseState = MaterialSkin.MouseState.HOVER;
             pnlPaymentSection.Name = "pnlPaymentSection";
-            pnlPaymentSection.Padding = new Padding(14);
-            pnlPaymentSection.Size = new Size(1298, 171);
+            pnlPaymentSection.Padding = new Padding(16);
+            pnlPaymentSection.Size = new Size(1298, 175);
             pnlPaymentSection.TabIndex = 2;
             // 
             // lblTotalTitle
-            // 
+            //
             lblTotalTitle.AutoSize = true;
-            lblTotalTitle.BackColor = Color.FromArgb(242, 242, 242);
+            lblTotalTitle.BackColor = Color.Transparent;
             lblTotalTitle.Depth = 0;
-            lblTotalTitle.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            lblTotalTitle.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblTotalTitle.Location = new Point(17, 14);
+            lblTotalTitle.Font = new Font("Roboto Medium", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            lblTotalTitle.ForeColor = Color.FromArgb(100, 100, 100);
+            lblTotalTitle.Location = new Point(16, 16);
             lblTotalTitle.MouseState = MaterialSkin.MouseState.HOVER;
             lblTotalTitle.Name = "lblTotalTitle";
-            lblTotalTitle.Size = new Size(123, 19);
+            lblTotalTitle.Size = new Size(135, 19);
             lblTotalTitle.TabIndex = 4;
-            lblTotalTitle.Text = "ÜMUMİ MƏBLƏĞ";
+            lblTotalTitle.Text = "💰 ÜMUMİ MƏBLƏĞ";
             // 
             // lblUmumiMebleg
-            // 
+            //
             lblUmumiMebleg.AutoSize = true;
-            lblUmumiMebleg.BackColor = Color.FromArgb(242, 242, 242);
+            lblUmumiMebleg.BackColor = Color.Transparent;
             lblUmumiMebleg.Depth = 0;
-            lblUmumiMebleg.Font = new Font("Roboto", 48F, FontStyle.Bold, GraphicsUnit.Pixel);
+            lblUmumiMebleg.Font = new Font("Roboto", 52F, FontStyle.Bold, GraphicsUnit.Pixel);
             lblUmumiMebleg.FontType = MaterialSkin.MaterialSkinManager.fontType.H3;
-            lblUmumiMebleg.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblUmumiMebleg.Location = new Point(17, 42);
+            lblUmumiMebleg.ForeColor = Color.FromArgb(33, 150, 243);
+            lblUmumiMebleg.Location = new Point(16, 44);
             lblUmumiMebleg.MouseState = MaterialSkin.MouseState.HOVER;
             lblUmumiMebleg.Name = "lblUmumiMebleg";
-            lblUmumiMebleg.Size = new Size(201, 58);
+            lblUmumiMebleg.Size = new Size(218, 62);
             lblUmumiMebleg.TabIndex = 0;
             lblUmumiMebleg.Text = "0.00 AZN";
             // 
@@ -503,9 +509,9 @@
             pnlPaymentMethods.Controls.Add(btn100AZN);
             pnlPaymentMethods.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             pnlPaymentMethods.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            pnlPaymentMethods.Location = new Point(819, 4);
+            pnlPaymentMethods.Location = new Point(796, 4);
             pnlPaymentMethods.Name = "pnlPaymentMethods";
-            pnlPaymentMethods.Size = new Size(479, 107);
+            pnlPaymentMethods.Size = new Size(486, 110);
             pnlPaymentMethods.TabIndex = 2;
             // 
             // btnNagd
@@ -518,14 +524,14 @@
             btnNagd.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnNagd.HighEmphasis = true;
             btnNagd.Icon = null;
-            btnNagd.Location = new Point(4, 4);
+            btnNagd.Location = new Point(0, 0);
             btnNagd.Margin = new Padding(4, 6, 4, 6);
             btnNagd.MouseState = MaterialSkin.MouseState.HOVER;
             btnNagd.Name = "btnNagd";
             btnNagd.NoAccentTextColor = Color.Empty;
-            btnNagd.Size = new Size(140, 60);
+            btnNagd.Size = new Size(150, 64);
             btnNagd.TabIndex = 13;
-            btnNagd.Text = "NAĞD (F1)";
+            btnNagd.Text = "💵 NAĞD (F1)";
             btnNagd.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnNagd.UseAccentColor = false;
             btnNagd.UseVisualStyleBackColor = false;
@@ -541,14 +547,14 @@
             btnKart.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnKart.HighEmphasis = true;
             btnKart.Icon = null;
-            btnKart.Location = new Point(152, 4);
+            btnKart.Location = new Point(158, 0);
             btnKart.Margin = new Padding(4, 6, 4, 6);
             btnKart.MouseState = MaterialSkin.MouseState.HOVER;
             btnKart.Name = "btnKart";
             btnKart.NoAccentTextColor = Color.Empty;
-            btnKart.Size = new Size(140, 60);
+            btnKart.Size = new Size(150, 64);
             btnKart.TabIndex = 14;
-            btnKart.Text = "KART (F2)";
+            btnKart.Text = "💳 KART (F2)";
             btnKart.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnKart.UseAccentColor = false;
             btnKart.UseVisualStyleBackColor = false;
@@ -564,14 +570,14 @@
             btnNisye.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnNisye.HighEmphasis = true;
             btnNisye.Icon = null;
-            btnNisye.Location = new Point(300, 4);
+            btnNisye.Location = new Point(316, 0);
             btnNisye.Margin = new Padding(4, 6, 4, 6);
             btnNisye.MouseState = MaterialSkin.MouseState.HOVER;
             btnNisye.Name = "btnNisye";
             btnNisye.NoAccentTextColor = Color.Empty;
-            btnNisye.Size = new Size(140, 60);
+            btnNisye.Size = new Size(170, 64);
             btnNisye.TabIndex = 15;
-            btnNisye.Text = "NİSYƏ (F3)";
+            btnNisye.Text = "📋 NİSYƏ (F3)";
             btnNisye.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnNisye.UseAccentColor = true;
             btnNisye.UseVisualStyleBackColor = false;
@@ -587,14 +593,14 @@
             btn5AZN.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btn5AZN.HighEmphasis = true;
             btn5AZN.Icon = null;
-            btn5AZN.Location = new Point(3, 70);
+            btn5AZN.Location = new Point(0, 72);
             btn5AZN.Margin = new Padding(4, 6, 4, 6);
             btn5AZN.MouseState = MaterialSkin.MouseState.HOVER;
             btn5AZN.Name = "btn5AZN";
             btn5AZN.NoAccentTextColor = Color.Empty;
-            btn5AZN.Size = new Size(70, 30);
+            btn5AZN.Size = new Size(74, 34);
             btn5AZN.TabIndex = 8;
-            btn5AZN.Text = "5 AZN";
+            btn5AZN.Text = "5";
             btn5AZN.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btn5AZN.UseAccentColor = false;
             btn5AZN.UseVisualStyleBackColor = false;
@@ -610,14 +616,14 @@
             btn10AZN.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btn10AZN.HighEmphasis = true;
             btn10AZN.Icon = null;
-            btn10AZN.Location = new Point(80, 70);
+            btn10AZN.Location = new Point(82, 72);
             btn10AZN.Margin = new Padding(4, 6, 4, 6);
             btn10AZN.MouseState = MaterialSkin.MouseState.HOVER;
             btn10AZN.Name = "btn10AZN";
             btn10AZN.NoAccentTextColor = Color.Empty;
-            btn10AZN.Size = new Size(70, 30);
+            btn10AZN.Size = new Size(74, 34);
             btn10AZN.TabIndex = 9;
-            btn10AZN.Text = "10 AZN";
+            btn10AZN.Text = "10";
             btn10AZN.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btn10AZN.UseAccentColor = false;
             btn10AZN.UseVisualStyleBackColor = false;
@@ -633,14 +639,14 @@
             btn20AZN.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btn20AZN.HighEmphasis = true;
             btn20AZN.Icon = null;
-            btn20AZN.Location = new Point(157, 70);
+            btn20AZN.Location = new Point(164, 72);
             btn20AZN.Margin = new Padding(4, 6, 4, 6);
             btn20AZN.MouseState = MaterialSkin.MouseState.HOVER;
             btn20AZN.Name = "btn20AZN";
             btn20AZN.NoAccentTextColor = Color.Empty;
-            btn20AZN.Size = new Size(70, 30);
+            btn20AZN.Size = new Size(74, 34);
             btn20AZN.TabIndex = 10;
-            btn20AZN.Text = "20 AZN";
+            btn20AZN.Text = "20";
             btn20AZN.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btn20AZN.UseAccentColor = false;
             btn20AZN.UseVisualStyleBackColor = false;
@@ -656,14 +662,14 @@
             btn50AZN.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btn50AZN.HighEmphasis = true;
             btn50AZN.Icon = null;
-            btn50AZN.Location = new Point(234, 70);
+            btn50AZN.Location = new Point(246, 72);
             btn50AZN.Margin = new Padding(4, 6, 4, 6);
             btn50AZN.MouseState = MaterialSkin.MouseState.HOVER;
             btn50AZN.Name = "btn50AZN";
             btn50AZN.NoAccentTextColor = Color.Empty;
-            btn50AZN.Size = new Size(70, 30);
+            btn50AZN.Size = new Size(74, 34);
             btn50AZN.TabIndex = 11;
-            btn50AZN.Text = "50 AZN";
+            btn50AZN.Text = "50";
             btn50AZN.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btn50AZN.UseAccentColor = false;
             btn50AZN.UseVisualStyleBackColor = false;
@@ -679,14 +685,14 @@
             btn100AZN.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btn100AZN.HighEmphasis = true;
             btn100AZN.Icon = null;
-            btn100AZN.Location = new Point(311, 70);
+            btn100AZN.Location = new Point(328, 72);
             btn100AZN.Margin = new Padding(4, 6, 4, 6);
             btn100AZN.MouseState = MaterialSkin.MouseState.HOVER;
             btn100AZN.Name = "btn100AZN";
             btn100AZN.NoAccentTextColor = Color.Empty;
-            btn100AZN.Size = new Size(70, 30);
+            btn100AZN.Size = new Size(74, 34);
             btn100AZN.TabIndex = 12;
-            btn100AZN.Text = "100 AZN";
+            btn100AZN.Text = "100";
             btn100AZN.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btn100AZN.UseAccentColor = false;
             btn100AZN.UseVisualStyleBackColor = false;
@@ -703,9 +709,9 @@
             pnlAdvancedOptions.Controls.Add(btnSatisiGozlet);
             pnlAdvancedOptions.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             pnlAdvancedOptions.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            pnlAdvancedOptions.Location = new Point(17, 113);
+            pnlAdvancedOptions.Location = new Point(16, 118);
             pnlAdvancedOptions.Name = "pnlAdvancedOptions";
-            pnlAdvancedOptions.Size = new Size(1258, 46);
+            pnlAdvancedOptions.Size = new Size(1266, 50);
             pnlAdvancedOptions.TabIndex = 3;
             // 
             // btnYeniMusteri
@@ -828,15 +834,16 @@
             btnIndirim.Click += btnIndirim_Click;
             // 
             // flpSuretliSatis
-            // 
+            //
             flpSuretliSatis.AutoScroll = true;
-            flpSuretliSatis.BackColor = Color.FromArgb(242, 242, 242);
+            flpSuretliSatis.BackColor = Color.FromArgb(250, 250, 250);
             flpSuretliSatis.Dock = DockStyle.Fill;
             flpSuretliSatis.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             flpSuretliSatis.ForeColor = Color.FromArgb(222, 0, 0, 0);
             flpSuretliSatis.Location = new Point(1307, 3);
+            flpSuretliSatis.Margin = new Padding(0);
             flpSuretliSatis.Name = "flpSuretliSatis";
-            flpSuretliSatis.Padding = new Padding(5);
+            flpSuretliSatis.Padding = new Padding(8);
             flpSuretliSatis.Size = new Size(444, 743);
             flpSuretliSatis.TabIndex = 1;
             // 
