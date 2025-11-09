@@ -248,11 +248,16 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 
         private async Task SatisiTesdiqle(OdenisMetodu odenisMetodu)
         {
+            System.Diagnostics.Debug.WriteLine($"[SatisPresenter] Satış təsdiqi başladı. AktivNovbeId: {AktivSessiya.AktivNovbeId}");
+
             if (!AktivSessiya.AktivNovbeId.HasValue)
             {
+                System.Diagnostics.Debug.WriteLine("[SatisPresenter] AktivNovbeId null-dur!");
                 _view.MesajGoster("Aktiv növbə yoxdur. Satış etmək mümkün deyil.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+
+            System.Diagnostics.Debug.WriteLine($"[SatisPresenter] Növbə mövcuddur: ID={AktivSessiya.AktivNovbeId.Value}");
 
             if (!_aktivSebet.Any())
             {

@@ -32,6 +32,7 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
         _serviceProvider = serviceProvider;
 
         this.Load += (sender, e) => FormYuklendi?.Invoke(this, EventArgs.Empty);
+        this.Shown += AnaMenuFormu_Shown;
         this.FormClosing += (sender, e) => FormBaglaniyor?.Invoke(this, e);
 
         _formButtonMap = new Dictionary<Type, MaterialButton>
@@ -75,6 +76,13 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
 
         // Dashboard məlumatlarını yükləyirik
         _ = UpdateDashboardData(); // Fire and forget
+    }
+
+    private void AnaMenuFormu_Shown(object sender, EventArgs e)
+    {
+        // Form tam göstərildikdən sonra növbə yoxlamasını yeniləyirik
+        // Bu, login zamanı növbənin yüklənməsini gözləyir
+        IcazeleriYoxla();
     }
 
     #region Tab İdarəetməsi

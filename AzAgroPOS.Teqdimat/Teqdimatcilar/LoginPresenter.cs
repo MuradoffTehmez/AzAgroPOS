@@ -2,6 +2,7 @@ using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Yardimcilar;
 using AzAgroPOS.Verilenler.Interfeysler;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 
@@ -11,17 +12,17 @@ public class LoginPresenter : IDisposable
     private readonly TehlukesizlikManager _tehlukesizlikManager;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IcazeManager _icazeManager;
-    private readonly NovbeManager _novbeManager;
+    private readonly IServiceProvider _serviceProvider;
     private readonly SemaphoreSlim _loginSemaphore = new(1, 1);
     private bool _disposed;
 
-    public LoginPresenter(ILoginView view, TehlukesizlikManager tehlukesizlikManager, IUnitOfWork unitOfWork, IcazeManager icazeManager, NovbeManager novbeManager)
+    public LoginPresenter(ILoginView view, TehlukesizlikManager tehlukesizlikManager, IUnitOfWork unitOfWork, IcazeManager icazeManager, IServiceProvider serviceProvider)
     {
         _view = view;
         _tehlukesizlikManager = tehlukesizlikManager;
         _unitOfWork = unitOfWork;
         _icazeManager = icazeManager;
-        _novbeManager = novbeManager;
+        _serviceProvider = serviceProvider;
         _view.DaxilOl_Istek += OnDaxilOl;
 
         // IcazeYoxlayici-ni initialize et
@@ -81,30 +82,41 @@ public class LoginPresenter : IDisposable
 
     /// <summary>
     /// İstifadəçinin açıq növbəsini yoxlayır və AktivSessiya-ya yükləyir
+    /// Threading problemini həll etmək üçün ayrı scope yaradır
     /// </summary>
     private async Task AciqNovbeniYukle(int istifadeciId)
     {
         try
         {
-            // İstifadəçinin açıq növbəsini tap
-            var aciqNovbe = await _novbeManager.AktivNovbeniGetirAsync(istifadeciId);
+            // Threading problemini həll etmək üçün yeni scope yaradırıq
+            // Bu DbContext-in eyni vaxtda müxtəlif thread-lər tərəfindən istifadəsini önləyir
+            using (var scope = _serviceProvider.CreateScope())
+            {
+                var novbeManager = scope.ServiceProvider.GetRequiredService<NovbeManager>();
 
-            if (aciqNovbe != null)
-            {
-                // Aktiv növbə ID-sini təyin et
-                AktivSessiya.AktivNovbeId = aciqNovbe.Id;
-            }
-            else
-            {
-                // Açıq növbə yoxdursa, null təyin et
-                AktivSessiya.AktivNovbeId = null;
+                // İstifadəçinin açıq növbəsini tap
+                var aciqNovbe = await novbeManager.AktivNovbeniGetirAsync(istifadeciId);
+
+                if (aciqNovbe != null)
+                {
+                    // Aktiv növbə ID-sini təyin et
+                    AktivSessiya.AktivNovbeId = aciqNovbe.Id;
+                    System.Diagnostics.Debug.WriteLine($"[LoginPresenter] Açıq növbə tapıldı və yükləndi: ID={aciqNovbe.Id}");
+                }
+                else
+                {
+                    // Açıq növbə yoxdursa, null təyin et
+                    AktivSessiya.AktivNovbeId = null;
+                    System.Diagnostics.Debug.WriteLine("[LoginPresenter] Açıq növbə tapılmadı");
+                }
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            // Xəta baş versə, növbə məlumatını yükləyə bilmərik
+            // Xəta baş versə də növbə məlumatını yükləyə bilmərik
             // Amma giriş prosesini dayandırma
             AktivSessiya.AktivNovbeId = null;
+            System.Diagnostics.Debug.WriteLine($"[LoginPresenter] Növbə yüklənərkən xəta: {ex.Message}");
         }
     }
 
