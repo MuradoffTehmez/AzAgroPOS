@@ -156,31 +156,105 @@ namespace AzAgroPOS.Teqdimat
         public void SebeteMehsullariGoster(BindingList<SatisSebetiElementiDto> sebet)
         {
             dgvSebet.DataSource = sebet;
+
+            // Sütunlar avtomatik yaradıldıqdan sonra konfiqurasiya et
             if (dgvSebet.Columns.Count > 0)
             {
-                dgvSebet.Columns["MehsulAdi"].HeaderText = "Məhsul Adı";
-                dgvSebet.Columns["Miqdar"].HeaderText = "Miqdar";
-                dgvSebet.Columns["VahidinQiymeti"].HeaderText = "Qiymət";
-                dgvSebet.Columns["QiymetNövü"].HeaderText = "Qiymət Növü";
-                dgvSebet.Columns["UmumiMebleg"].HeaderText = "Cəmi Məbləğ";
+                // Sütun adlarını Azərbaycan dilinə çevir
+                if (dgvSebet.Columns.Contains("MehsulAdi"))
+                    dgvSebet.Columns["MehsulAdi"].HeaderText = "Məhsul Adı";
 
-                dgvSebet.Columns["MehsulId"].Visible = false;
-                dgvSebet.Columns["VahidinQiymeti"].ReadOnly = true;
-                dgvSebet.Columns["UmumiMebleg"].ReadOnly = true;
-                dgvSebet.Columns["MehsulAdi"].ReadOnly = true;
-                dgvSebet.Columns["QiymetNövü"].ReadOnly = true;
+                if (dgvSebet.Columns.Contains("Miqdar"))
+                    dgvSebet.Columns["Miqdar"].HeaderText = "Miqdar";
 
-                dgvSebet.Columns["VahidinQiymeti"].DefaultCellStyle.Format = "c2";
-                dgvSebet.Columns["UmumiMebleg"].DefaultCellStyle.Format = "c2";
+                if (dgvSebet.Columns.Contains("VahidinQiymeti"))
+                    dgvSebet.Columns["VahidinQiymeti"].HeaderText = "Qiymət";
 
-                dgvSebet.Columns["Miqdar"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                dgvSebet.Columns["VahidinQiymeti"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                dgvSebet.Columns["UmumiMebleg"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                if (dgvSebet.Columns.Contains("QiymetNövü"))
+                    dgvSebet.Columns["QiymetNövü"].HeaderText = "Qiymət Növü";
 
-                dgvSebet.Columns["MehsulAdi"].SortMode = DataGridViewColumnSortMode.Automatic;
-                dgvSebet.Columns["Miqdar"].SortMode = DataGridViewColumnSortMode.Automatic;
-                dgvSebet.Columns["VahidinQiymeti"].SortMode = DataGridViewColumnSortMode.Automatic;
-                dgvSebet.Columns["UmumiMebleg"].SortMode = DataGridViewColumnSortMode.Automatic;
+                if (dgvSebet.Columns.Contains("UmumiMebleg"))
+                    dgvSebet.Columns["UmumiMebleg"].HeaderText = "Cəmi Məbləğ";
+
+                if (dgvSebet.Columns.Contains("EndirimMeblegi"))
+                    dgvSebet.Columns["EndirimMeblegi"].HeaderText = "Endirim";
+
+                if (dgvSebet.Columns.Contains("EndirimliQiymet"))
+                    dgvSebet.Columns["EndirimliQiymet"].HeaderText = "Endirimli Qiymət";
+
+                // Gizli sütunlar
+                if (dgvSebet.Columns.Contains("MehsulId"))
+                    dgvSebet.Columns["MehsulId"].Visible = false;
+
+                if (dgvSebet.Columns.Contains("EndirimliQiymet"))
+                    dgvSebet.Columns["EndirimliQiymet"].Visible = false; // Hesablanmış sahə
+
+                // ReadOnly sütunlar
+                if (dgvSebet.Columns.Contains("VahidinQiymeti"))
+                    dgvSebet.Columns["VahidinQiymeti"].ReadOnly = true;
+
+                if (dgvSebet.Columns.Contains("UmumiMebleg"))
+                    dgvSebet.Columns["UmumiMebleg"].ReadOnly = true;
+
+                if (dgvSebet.Columns.Contains("MehsulAdi"))
+                    dgvSebet.Columns["MehsulAdi"].ReadOnly = true;
+
+                if (dgvSebet.Columns.Contains("QiymetNövü"))
+                    dgvSebet.Columns["QiymetNövü"].ReadOnly = true;
+
+                // Format və alignment
+                if (dgvSebet.Columns.Contains("VahidinQiymeti"))
+                    dgvSebet.Columns["VahidinQiymeti"].DefaultCellStyle.Format = "c2";
+
+                if (dgvSebet.Columns.Contains("UmumiMebleg"))
+                    dgvSebet.Columns["UmumiMebleg"].DefaultCellStyle.Format = "c2";
+
+                if (dgvSebet.Columns.Contains("EndirimMeblegi"))
+                    dgvSebet.Columns["EndirimMeblegi"].DefaultCellStyle.Format = "c2";
+
+                if (dgvSebet.Columns.Contains("Miqdar"))
+                    dgvSebet.Columns["Miqdar"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+                if (dgvSebet.Columns.Contains("VahidinQiymeti"))
+                    dgvSebet.Columns["VahidinQiymeti"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+                if (dgvSebet.Columns.Contains("UmumiMebleg"))
+                    dgvSebet.Columns["UmumiMebleg"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+                if (dgvSebet.Columns.Contains("EndirimMeblegi"))
+                    dgvSebet.Columns["EndirimMeblegi"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+                // Sort mode
+                if (dgvSebet.Columns.Contains("MehsulAdi"))
+                    dgvSebet.Columns["MehsulAdi"].SortMode = DataGridViewColumnSortMode.Automatic;
+
+                if (dgvSebet.Columns.Contains("Miqdar"))
+                    dgvSebet.Columns["Miqdar"].SortMode = DataGridViewColumnSortMode.Automatic;
+
+                if (dgvSebet.Columns.Contains("VahidinQiymeti"))
+                    dgvSebet.Columns["VahidinQiymeti"].SortMode = DataGridViewColumnSortMode.Automatic;
+
+                if (dgvSebet.Columns.Contains("UmumiMebleg"))
+                    dgvSebet.Columns["UmumiMebleg"].SortMode = DataGridViewColumnSortMode.Automatic;
+
+                // Sütun sırası
+                if (dgvSebet.Columns.Contains("MehsulAdi"))
+                    dgvSebet.Columns["MehsulAdi"].DisplayIndex = 0;
+
+                if (dgvSebet.Columns.Contains("Miqdar"))
+                    dgvSebet.Columns["Miqdar"].DisplayIndex = 1;
+
+                if (dgvSebet.Columns.Contains("VahidinQiymeti"))
+                    dgvSebet.Columns["VahidinQiymeti"].DisplayIndex = 2;
+
+                if (dgvSebet.Columns.Contains("EndirimMeblegi"))
+                    dgvSebet.Columns["EndirimMeblegi"].DisplayIndex = 3;
+
+                if (dgvSebet.Columns.Contains("UmumiMebleg"))
+                    dgvSebet.Columns["UmumiMebleg"].DisplayIndex = 4;
+
+                if (dgvSebet.Columns.Contains("QiymetNövü"))
+                    dgvSebet.Columns["QiymetNövü"].DisplayIndex = 5;
             }
         }
 

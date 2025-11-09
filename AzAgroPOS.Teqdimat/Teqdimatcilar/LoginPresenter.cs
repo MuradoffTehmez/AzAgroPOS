@@ -11,15 +11,17 @@ public class LoginPresenter : IDisposable
     private readonly TehlukesizlikManager _tehlukesizlikManager;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IcazeManager _icazeManager;
+    private readonly NovbeManager _novbeManager;
     private readonly SemaphoreSlim _loginSemaphore = new(1, 1);
     private bool _disposed;
 
-    public LoginPresenter(ILoginView view, TehlukesizlikManager tehlukesizlikManager, IUnitOfWork unitOfWork, IcazeManager icazeManager)
+    public LoginPresenter(ILoginView view, TehlukesizlikManager tehlukesizlikManager, IUnitOfWork unitOfWork, IcazeManager icazeManager, NovbeManager novbeManager)
     {
         _view = view;
         _tehlukesizlikManager = tehlukesizlikManager;
         _unitOfWork = unitOfWork;
         _icazeManager = icazeManager;
+        _novbeManager = novbeManager;
         _view.DaxilOl_Istek += OnDaxilOl;
 
         // IcazeYoxlayici-ni initialize et
@@ -65,12 +67,44 @@ public class LoginPresenter : IDisposable
                 await AzAgroPOS.Mentiq.Yardimcilar.IcazeYoxlayici.Instance.AktivIstifadeciniTeyinEtAsync(istifadeci);
             }
 
+            // İstifadəçinin açıq növbəsini yoxla və yüklə
+            await AciqNovbeniYukle(netice.Data.Id);
+
             _view.UgurluDaxilOlundu = true;
             _view.FormuBagla();
         }
         else
         {
             _view.MesajGoster(netice.Mesaj);
+        }
+    }
+
+    /// <summary>
+    /// İstifadəçinin açıq növbəsini yoxlayır və AktivSessiya-ya yükləyir
+    /// </summary>
+    private async Task AciqNovbeniYukle(int istifadeciId)
+    {
+        try
+        {
+            // İstifadəçinin açıq növbəsini tap
+            var aciqNovbe = await _novbeManager.AktivNovbeniGetirAsync(istifadeciId);
+
+            if (aciqNovbe != null)
+            {
+                // Aktiv növbə ID-sini təyin et
+                AktivSessiya.AktivNovbeId = aciqNovbe.Id;
+            }
+            else
+            {
+                // Açıq növbə yoxdursa, null təyin et
+                AktivSessiya.AktivNovbeId = null;
+            }
+        }
+        catch (Exception)
+        {
+            // Xəta baş versə, növbə məlumatını yükləyə bilmərik
+            // Amma giriş prosesini dayandırma
+            AktivSessiya.AktivNovbeId = null;
         }
     }
 
