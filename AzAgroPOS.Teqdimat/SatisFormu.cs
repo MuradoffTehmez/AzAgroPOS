@@ -18,7 +18,7 @@ namespace AzAgroPOS.Teqdimat
         public SatisFormu(IServiceProvider serviceProvider)
         {
             InitializeComponent();
-            this.KeyPreview = true; // Klaviatura hadisələrini forma səviyyəsində qəbul etmək üçün
+            this.KeyPreview = true; // Klaviatura hadisələrini forma səviyyəsində qəbul etmək üçün istifade olunur
             _serviceProvider = serviceProvider;
             this.Load += (s, e) => FormYuklendiIstek?.Invoke(this, EventArgs.Empty);
             this.KeyUp += SatisFormu_KeyUp; // Klaviatura hadisələrini idarə etmək üçün
