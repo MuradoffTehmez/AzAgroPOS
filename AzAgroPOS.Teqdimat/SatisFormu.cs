@@ -2,6 +2,7 @@
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
+using AzAgroPOS.Teqdimat.Xidmetler;
 using AzAgroPOS.Teqdimat.Yardimcilar;
 using AzAgroPOS.Varliglar;
 using MaterialSkin.Controls;
@@ -14,12 +15,14 @@ namespace AzAgroPOS.Teqdimat
     {
         private ISatisPresenter _presenter;
         private readonly IServiceProvider _serviceProvider;
+        private readonly IDialogXidmeti _dialogXidmeti;
 
         public SatisFormu(IServiceProvider serviceProvider)
         {
             InitializeComponent();
             this.KeyPreview = true; // Klaviatura hadisələrini forma səviyyəsində qəbul etmək üçün istifade olunur
             _serviceProvider = serviceProvider;
+            _dialogXidmeti = new DialogXidmeti();
             this.Load += (s, e) => FormYuklendiIstek?.Invoke(this, EventArgs.Empty);
             this.KeyUp += SatisFormu_KeyUp; // Klaviatura hadisələrini idarə etmək üçün
             ConfigureDataGridViewStyles();
@@ -300,7 +303,35 @@ namespace AzAgroPOS.Teqdimat
 
         public DialogResult MesajGoster(string mesaj, string basliq, MessageBoxButtons düymələr, MessageBoxIcon ikon)
         {
-            return MessageBox.Show(this, mesaj, basliq, düymələr, ikon);
+            // Düymə tipinə və ikona görə uyğun dialog metodunu çağır
+            if (düymələr == MessageBoxButtons.YesNo && ikon == MessageBoxIcon.Question)
+            {
+                return _dialogXidmeti.TesdiqSorus(mesaj, basliq) ? DialogResult.Yes : DialogResult.No;
+            }
+            else if (düymələr == MessageBoxButtons.YesNoCancel)
+            {
+                return _dialogXidmeti.SecimSorus(mesaj, basliq);
+            }
+            else
+            {
+                // MessageBoxIcon-a görə metod seç
+                switch (ikon)
+                {
+                    case MessageBoxIcon.Information:
+                        _dialogXidmeti.MelumatGoster(mesaj, basliq);
+                        break;
+                    case MessageBoxIcon.Error:
+                        _dialogXidmeti.XetaGoster(mesaj, basliq);
+                        break;
+                    case MessageBoxIcon.Warning:
+                        _dialogXidmeti.XeberdarligGoster(mesaj, basliq);
+                        break;
+                    default:
+                        _dialogXidmeti.MelumatGoster(mesaj, basliq);
+                        break;
+                }
+                return DialogResult.OK;
+            }
         }
 
         /// <summary>
@@ -722,8 +753,8 @@ namespace AzAgroPOS.Teqdimat
             // Show details of selected product
             if (dgvAxtarisNeticeleri.CurrentRow?.DataBoundItem is MehsulDto mehsul)
             {
-                MessageBox.Show($"Məhsul Detalları:\n\nAd: {mehsul.Ad}\nBarkod: {mehsul.Barkod}\nStok Kodu: {mehsul.StokKodu}\nAlış Qiyməti: {mehsul.AlisQiymeti:N2} AZN\nPərakəndə Qiyməti: {mehsul.PerakendeSatisQiymeti:N2} AZN\nTopdan Qiyməti: {mehsul.TopdanSatisQiymeti:N2} AZN",
-                    "Məhsul Detalları", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                _dialogXidmeti.MelumatGoster($"Məhsul Detalları:\n\nAd: {mehsul.Ad}\nBarkod: {mehsul.Barkod}\nStok Kodu: {mehsul.StokKodu}\nAlış Qiyməti: {mehsul.AlisQiymeti:N2} AZN\nPərakəndə Qiyməti: {mehsul.PerakendeSatisQiymeti:N2} AZN\nTopdan Qiyməti: {mehsul.TopdanSatisQiymeti:N2} AZN",
+                    "Məhsul Detalları");
             }
         }
 
@@ -745,7 +776,7 @@ namespace AzAgroPOS.Teqdimat
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Məhsul redaktə edilərkən xəta baş verdi: {ex.Message}", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    _dialogXidmeti.XetaGoster($"Məhsul redaktə edilərkən xəta baş verdi: {ex.Message}", "Xəta");
                 }
             }
         }
@@ -755,29 +786,29 @@ namespace AzAgroPOS.Teqdimat
             // Delete selected product
             if (dgvAxtarisNeticeleri.CurrentRow?.DataBoundItem is MehsulDto mehsul)
             {
-                var result = MessageBox.Show($"{mehsul.Ad} məhsulunu silmək istədiyinizə əminsiniz?",
-                    "Təsdiq", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                var tesdiq = _dialogXidmeti.TesdiqSorus($"{mehsul.Ad} məhsulunu silmək istədiyinizə əminsiniz?",
+                    "Təsdiq");
 
-                if (result == DialogResult.Yes)
+                if (tesdiq)
                 {
                     try
                     {
                         var silindi = await _presenter.MehsulSilAsync(mehsul.Id);
                         if (silindi)
                         {
-                            MessageBox.Show("Məhsul uğurla silindi.", "Uğur", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            _dialogXidmeti.UgurGoster("Məhsul uğurla silindi.", "Uğur");
 
                             // Refresh search results after deletion
                             MehsulAxtarIstek?.Invoke(this, EventArgs.Empty);
                         }
                         else
                         {
-                            MessageBox.Show("Məhsul silinərkən xəta baş verdi.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            _dialogXidmeti.XetaGoster("Məhsul silinərkən xəta baş verdi.", "Xəta");
                         }
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Məhsul silinərkən xəta baş verdi: {ex.Message}", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        _dialogXidmeti.XetaGoster($"Məhsul silinərkən xəta baş verdi: {ex.Message}", "Xəta");
                     }
                 }
             }
@@ -788,8 +819,8 @@ namespace AzAgroPOS.Teqdimat
             // Show details of selected cart item
             if (dgvSebet.CurrentRow?.DataBoundItem is SatisSebetiElementiDto sebetElementi)
             {
-                MessageBox.Show($"Səbət Elementi Detalları:\n\nMəhsul: {sebetElementi.MehsulAdi}\nMiqdar: {sebetElementi.Miqdar}\nVahid Qiyməti: {sebetElementi.VahidinQiymeti:N2} AZN\nÜmumi Məbləğ: {sebetElementi.UmumiMebleg:N2} AZN",
-                    "Səbət Elementi Detalları", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                _dialogXidmeti.MelumatGoster($"Səbət Elementi Detalları:\n\nMəhsul: {sebetElementi.MehsulAdi}\nMiqdar: {sebetElementi.Miqdar}\nVahid Qiyməti: {sebetElementi.VahidinQiymeti:N2} AZN\nÜmumi Məbləğ: {sebetElementi.UmumiMebleg:N2} AZN",
+                    "Səbət Elementi Detalları");
             }
         }
 
@@ -799,8 +830,8 @@ namespace AzAgroPOS.Teqdimat
             if (dgvSebet.CurrentRow?.DataBoundItem is SatisSebetiElementiDto sebetElementi)
             {
                 // For simplicity, we'll just show a message here
-                MessageBox.Show("Səbət elementinin miqdarını dəyişdirmək üçün miqdar sahəsində düzəliş edin.",
-                    "İnfo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                _dialogXidmeti.MelumatGoster("Səbət elementinin miqdarını dəyişdirmək üçün miqdar sahəsində düzəliş edin.",
+                    "İnfo");
             }
         }
 
