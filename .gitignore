@@ -364,3 +364,11 @@ MigrationBackup/
 FodyWeavers.xsd
 .gemini/
 gha-creds-*.json
+
+# AzAgroPOS - Connection Strings və Secrets
+appsettings.Development.json
+appsettings.Production.json
+appsettings.Staging.json
+appsettings.*.json
+!appsettings.json
+secrets.json
