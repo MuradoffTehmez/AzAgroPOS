@@ -4,6 +4,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
+using AzAgroPOS.Teqdimat.Xidmetler;
 using AzAgroPOS.Varliglar;
 
 /// <summary>
@@ -17,19 +18,21 @@ public class TemirPresenter
     private readonly MusteriManager _musteriManager;
     private readonly IstifadeciManager _istifadeciManager;
     private readonly MehsulManager _mehsulManager;
+    private readonly IDialogXidmeti _dialogXidmeti;
 
     /// <summary>
     ///  bu presenter, temir view interfeysini alır və temir manager ilə əlaqələndirir.
     /// </summary>
     /// <param name="view"></param>
     public TemirPresenter(ITemirView view, TemirManager temirManager, MusteriManager musteriManager,
-        IstifadeciManager istifadeciManager, MehsulManager mehsulManager)
+        IstifadeciManager istifadeciManager, MehsulManager mehsulManager, IDialogXidmeti dialogXidmeti)
     {
         _view = view;
         _temirManager = temirManager;
         _musteriManager = musteriManager;
         _istifadeciManager = istifadeciManager;
         _mehsulManager = mehsulManager;
+        _dialogXidmeti = dialogXidmeti;
 
         _view.FormYuklendi += async (s, e) => await FormuYukle();
         _view.YeniSifarisYarat_Istek += async (s, e) => await YeniSifarisYarat();
@@ -141,13 +144,11 @@ public class TemirPresenter
             return;
         }
 
-        var tesdiq = MessageBox.Show(
+        var tesdiq = _dialogXidmeti.TesdiqSorus(
             "Bu sifarişi silmək istədiyinizə əminsiniz?",
-            "Təsdiq",
-            MessageBoxButtons.YesNo,
-            MessageBoxIcon.Question);
+            "Təsdiq");
 
-        if (tesdiq == DialogResult.Yes)
+        if (tesdiq)
         {
             var netice = await _temirManager.SifarisSilAsync(secilmisSifarisId);
             if (netice.UgurluDur)
@@ -201,13 +202,11 @@ public class TemirPresenter
             return;
         }
 
-        var tesdiq = MessageBox.Show(
+        var tesdiq = _dialogXidmeti.TesdiqSorus(
             "Bu sifarişin ödənişini tamamlamaq istədiyinizə əminsiniz?",
-            "Təsdiq",
-            MessageBoxButtons.YesNo,
-            MessageBoxIcon.Question);
+            "Təsdiq");
 
-        if (tesdiq == DialogResult.Yes)
+        if (tesdiq)
         {
             var netice = await _temirManager.StatusDeyisAsync(secilmisSifarisId, TemirStatusu.Hazırdır);
             if (netice.UgurluDur)
