@@ -146,7 +146,8 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
             var musteriManager = serviceProvider.GetRequiredService<MusteriManager>();
             var istifadeciManager = serviceProvider.GetRequiredService<IstifadeciManager>();
             var mehsulManager = serviceProvider.GetRequiredService<MehsulManager>();
-            var temirPresenter = new Teqdimatcilar.TemirPresenter(temirFormu, temirManager, musteriManager, istifadeciManager, mehsulManager);
+            var dialogXidmeti = new Xidmetler.DialogXidmeti();
+            var temirPresenter = new Teqdimatcilar.TemirPresenter(temirFormu, temirManager, musteriManager, istifadeciManager, mehsulManager, dialogXidmeti);
             temirFormu.InitializePresenter(temirPresenter);
         }
         // Initialize presenter for QaytarmaFormu
