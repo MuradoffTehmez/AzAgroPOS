@@ -2,6 +2,7 @@ using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
+using AzAgroPOS.Teqdimat.Xidmetler;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AzAgroPOS.Teqdimat
@@ -10,6 +11,7 @@ namespace AzAgroPOS.Teqdimat
     {
         private MusteriPresenter _presenter;
         private readonly IServiceProvider _serviceProvider;
+        private readonly IDialogXidmeti _dialogXidmeti;
         public int SecilenMusteriId { get; private set; } = 0;
 
         // Pagination UI kontrolları
@@ -22,6 +24,7 @@ namespace AzAgroPOS.Teqdimat
         {
             InitializeComponent();
             _serviceProvider = serviceProvider;
+            _dialogXidmeti = new DialogXidmeti();
             // Form yüklənəndə Presenter-ə xəbər veririk
             this.Load += (s, e) =>
             {
@@ -118,7 +121,22 @@ namespace AzAgroPOS.Teqdimat
 
         public void MesajGoster(string mesaj, string basliq, MessageBoxIcon ikon)
         {
-            MessageBox.Show(mesaj, basliq, MessageBoxButtons.OK, ikon);
+            // MessageBoxIcon-a görə uyğun dialog metodunu çağır
+            switch (ikon)
+            {
+                case MessageBoxIcon.Information:
+                    _dialogXidmeti.MelumatGoster(mesaj, basliq);
+                    break;
+                case MessageBoxIcon.Error:
+                    _dialogXidmeti.XetaGoster(mesaj, basliq);
+                    break;
+                case MessageBoxIcon.Warning:
+                    _dialogXidmeti.XeberdarligGoster(mesaj, basliq);
+                    break;
+                default:
+                    _dialogXidmeti.MelumatGoster(mesaj, basliq);
+                    break;
+            }
         }
 
         /// <summary>
@@ -320,8 +338,8 @@ namespace AzAgroPOS.Teqdimat
             // Show details of selected customer
             if (dgvMusteriler.CurrentRow?.DataBoundItem is MusteriDto musteri)
             {
-                MessageBox.Show($"Müştəri Detalları:\n\nAd Soyad: {musteri.TamAd}\nTelefon: {musteri.TelefonNomresi}\nÜnvan: {musteri.Unvan}\nCari Borc: {musteri.UmumiBorc:N2} AZN\nKredit Limiti: {musteri.KreditLimiti:N2} AZN",
-                    "Müştəri Detalları", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                _dialogXidmeti.MelumatGoster($"Müştəri Detalları:\n\nAd Soyad: {musteri.TamAd}\nTelefon: {musteri.TelefonNomresi}\nÜnvan: {musteri.Unvan}\nCari Borc: {musteri.UmumiBorc:N2} AZN\nKredit Limiti: {musteri.KreditLimiti:N2} AZN",
+                    "Müştəri Detalları");
             }
         }
 
@@ -347,7 +365,7 @@ namespace AzAgroPOS.Teqdimat
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Müştəri məlumatları yüklənərkən xəta baş verdi: {ex.Message}", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    _dialogXidmeti.XetaGoster($"Müştəri məlumatları yüklənərkən xəta baş verdi: {ex.Message}", "Xəta");
                 }
             }
         }
@@ -367,7 +385,7 @@ namespace AzAgroPOS.Teqdimat
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Barkod çap edilərkən xəta baş verdi: {ex.Message}", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    _dialogXidmeti.XetaGoster($"Barkod çap edilərkən xəta baş verdi: {ex.Message}", "Xəta");
                 }
             }
         }
@@ -377,10 +395,10 @@ namespace AzAgroPOS.Teqdimat
             // Delete selected customer
             if (dgvMusteriler.CurrentRow?.DataBoundItem is MusteriDto musteri)
             {
-                var result = MessageBox.Show($"{musteri.TamAd} müştərisini silmək istədiyinizə əminsiniz?",
-                    "Təsdiq", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                var tesdiq = _dialogXidmeti.TesdiqSorus($"{musteri.TamAd} müştərisini silmək istədiyinizə əminsiniz?",
+                    "Təsdiq");
 
-                if (result == DialogResult.Yes)
+                if (tesdiq)
                 {
                     try
                     {
@@ -388,19 +406,19 @@ namespace AzAgroPOS.Teqdimat
                         var silindi = await _musteriManager.MusteriSilAsync(musteri.Id);
                         if (silindi.UgurluDur)
                         {
-                            MessageBox.Show("Müştəri uğurla silindi.", "Uğur", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            _dialogXidmeti.UgurGoster("Müştəri uğurla silindi.", "Uğur");
 
                             // Refresh customers list after deletion
                             Axtar_Istek?.Invoke(this, EventArgs.Empty);
                         }
                         else
                         {
-                            MessageBox.Show($"Müştəri silinərkən xəta baş verdi: {silindi.Mesaj}", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            _dialogXidmeti.XetaGoster($"Müştəri silinərkən xəta baş verdi: {silindi.Mesaj}", "Xəta");
                         }
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Müştəri silinərkən xəta baş verdi: {ex.Message}", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        _dialogXidmeti.XetaGoster($"Müştəri silinərkən xəta baş verdi: {ex.Message}", "Xəta");
                     }
                 }
             }
