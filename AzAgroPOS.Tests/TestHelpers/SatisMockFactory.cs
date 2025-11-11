@@ -20,12 +20,9 @@ public static class SatisMockFactory
             Id = id,
             NovbeId = novbeId,
             MusteriId = musteriId,
-            OdenisMetodu = OdenisMetodu.Negd,
+            OdenisMetodu = OdenisMetodu.Nağd,
             UmumiMebleg = 100m,
-            Endirim = 0m,
-            YekunMebleg = 100m,
             Tarix = DateTime.Now,
-            Qeyd = $"Test satış {id}",
             Silinib = false,
             YaradilmaTarixi = DateTime.Now,
             YaradanIstifadeciId = 1
@@ -35,7 +32,7 @@ public static class SatisMockFactory
     /// <summary>
     /// SatisDetali ilə birlikdə satış yaradır
     /// </summary>
-    public static Satis CreateWithDetails(int id = 1, int mehsulId = 1, int miqdar = 2)
+    public static Satis CreateWithDetails(int id = 1, int mehsulId = 1, decimal miqdar = 2)
     {
         var satis = CreateValid(id);
         satis.SatisDetallari = new List<SatisDetali>
@@ -46,13 +43,11 @@ public static class SatisMockFactory
                 SatisId = id,
                 MehsulId = mehsulId,
                 Miqdar = miqdar,
-                VahidinQiymeti = 50m,
-                UmumiMebleg = miqdar * 50m,
-                Endirim = 0m
+                Qiymet = 50m,
+                UmumiMebleg = miqdar * 50m
             }
         };
         satis.UmumiMebleg = miqdar * 50m;
-        satis.YekunMebleg = miqdar * 50m;
         return satis;
     }
 
@@ -65,7 +60,7 @@ public static class SatisMockFactory
         {
             NovbeId = novbeId,
             MusteriId = null,
-            OdenisMetodu = OdenisMetodu.Negd,
+            OdenisMetodu = OdenisMetodu.Nağd,
             SebetElementleri = new List<SatisSebetiElementiDto>
             {
                 new SatisSebetiElementiDto
@@ -73,13 +68,10 @@ public static class SatisMockFactory
                     MehsulId = 1,
                     Miqdar = 2,
                     VahidinQiymeti = 50m,
-                    UmumiMebleg = 100m
+                    MehsulAdi = "Test Məhsul"
                 }
             },
-            UmumiMebleg = 100m,
-            Endirim = 0m,
-            YekunMebleg = 100m,
-            Qeyd = "Test satış"
+            UmumiMebleg = 100m
         };
     }
 
@@ -99,19 +91,7 @@ public static class SatisMockFactory
     public static Satis CreateCredit(int id = 1, int musteriId = 1)
     {
         var satis = CreateValid(id, musteriId);
-        satis.OdenisMetodu = OdenisMetodu.Nisye;
-        return satis;
-    }
-
-    /// <summary>
-    /// Endirimlə satış yaradır
-    /// </summary>
-    public static Satis CreateWithDiscount(int id = 1, decimal endirim = 10m)
-    {
-        var satis = CreateValid(id);
-        satis.UmumiMebleg = 100m;
-        satis.Endirim = endirim;
-        satis.YekunMebleg = 100m - endirim;
+        satis.OdenisMetodu = OdenisMetodu.Nisyə;
         return satis;
     }
 
@@ -129,7 +109,7 @@ public static class SatisMockFactory
                 SatisId = id,
                 MehsulId = 1,
                 Miqdar = 2,
-                VahidinQiymeti = 50m,
+                Qiymet = 50m,
                 UmumiMebleg = 100m
             },
             new SatisDetali
@@ -138,7 +118,7 @@ public static class SatisMockFactory
                 SatisId = id,
                 MehsulId = 2,
                 Miqdar = 3,
-                VahidinQiymeti = 30m,
+                Qiymet = 30m,
                 UmumiMebleg = 90m
             },
             new SatisDetali
@@ -147,12 +127,11 @@ public static class SatisMockFactory
                 SatisId = id,
                 MehsulId = 3,
                 Miqdar = 1,
-                VahidinQiymeti = 20m,
+                Qiymet = 20m,
                 UmumiMebleg = 20m
             }
         };
         satis.UmumiMebleg = 210m;
-        satis.YekunMebleg = 210m;
         return satis;
     }
 
@@ -163,8 +142,6 @@ public static class SatisMockFactory
     {
         var satis = CreateValid(id);
         satis.Silinib = true;
-        satis.SilinmeTarixi = DateTime.Now;
-        satis.SilenIstifadeciId = 1;
         return satis;
     }
 }
