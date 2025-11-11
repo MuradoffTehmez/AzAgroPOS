@@ -2,7 +2,7 @@
 
 **Başlanma Tarixi:** 2025-11-11
 **Status:** 🟡 Davam edir
-**Progress:** 30%
+**Progress:** 45%
 
 ---
 
@@ -43,10 +43,22 @@ public interface IDialogXidmeti
    - `tsmiMusteriBarkodCapEt_Click()` - XetaGoster (exception)
    - `tsmiMusteriSil_Click()` - TesdiqSorus, UgurGoster, XetaGoster
 
+2. **MehsulIdareetmeFormu.cs** (10 MessageBox → IDialogXidmeti)
+   - `MesajGoster()` - YesNo və YesNoCancel dəstəyi
+   - Context menu handlers refactor
+
+3. **SatisFormu.cs** (9 MessageBox → IDialogXidmeti)
+   - `MesajGoster()` - YesNo və YesNoCancel dəstəyi
+   - `tsmiAxtarisDetallar_Click()` - MelumatGoster
+   - `tsmiAxtarisRedakteEt_Click()` - XetaGoster (exception)
+   - `tsmiAxtarisSil_Click()` - TesdiqSorus, UgurGoster, XetaGoster x2
+   - `tsmiSebetDetallar_Click()` - MelumatGoster
+   - `tsmiSebetRedakteEt_Click()` - MelumatGoster
+
 #### Nəticələr:
 - ✅ Build: 0 xəta
 - ✅ Tests: 53/53 pass
-- ✅ 10 MessageBox çağırışı refactor edildi (2 Presenter + 8 Form)
+- ✅ 29 MessageBox çağırışı refactor edildi (2 Presenter + 27 Form)
 
 ---
 
@@ -95,8 +107,8 @@ public async Task<EmeliyyatNeticesi> MusteriYenileAsync(int id, MusteriDto dto)
 ### MessageBox.Show Refactoring
 
 **Tapılan:** 105 MessageBox.Show instance (20 faylda)
-**Refactor edildi:** 2 instance (TemirPresenter)
-**Qalan:** ~103 instance
+**Refactor edildi:** 29 instance (1 Presenter + 3 Form)
+**Qalan:** ~76 instance
 
 #### Növbəti Addımlar:
 1. ⏳ Daha çox Presenter-ləri refactor etmək
@@ -110,11 +122,11 @@ public async Task<EmeliyyatNeticesi> MusteriYenileAsync(int id, MusteriDto dto)
 
 | Metric | Əvvəl | İndi | Target |
 |--------|-------|------|--------|
-| MessageBox təkrarları | 105 | ~95 | 0 |
+| MessageBox təkrarları | 105 | ~76 | 0 |
 | Dialog Service Pattern | ❌ | ✅ | ✅ |
 | SaveChanges "təkrarı" | 81 | 81* | 81* |
 | Refactor edilmiş Presenter | 0 | 1 | 20+ |
-| Refactor edilmiş Form | 0 | 1 | 15+ |
+| Refactor edilmiş Form | 0 | 3 | 15+ |
 
 *SaveChanges çağırışları təkrar DEYİL, düzgün pattern-dir.
 
@@ -122,16 +134,16 @@ public async Task<EmeliyyatNeticesi> MusteriYenileAsync(int id, MusteriDto dto)
 
 ## 🎯 FAZA 3 Hədəfləri
 
-### Completed (30%):
+### Completed (45%):
 - ✅ Dialog Service Pattern yaradıldı
 - ✅ SaveChanges pattern analizi
 - ✅ 1 Presenter refactor edildi (TemirPresenter)
-- ✅ 1 Form refactor edildi (MusteriIdareetmeFormu)
-- ✅ 10 MessageBox çağırışı əvəz edildi
+- ✅ 3 Form refactor edildi (MusteriIdareetmeFormu, MehsulIdareetmeFormu, SatisFormu)
+- ✅ 29 MessageBox çağırışı əvəz edildi
 
-### Remaining (70%):
+### Remaining (55%):
 - ⏳ 19+ Presenter refactor
-- ⏳ 14+ Form refactor (MehsulIdareetmeFormu, SatisFormu, etc.)
+- ⏳ 12+ Form refactor (BonusIdareetmeFormu, IsciIzniFormu, etc.)
 - ⏳ View interface-lərə IDialogXidmeti DI
 - ⏳ Logger.MelumatYaz təkrarlarını analiz etmək
 - ⏳ Digər UI təkrarlarını (InputBox, etc.) analiz etmək
@@ -157,7 +169,7 @@ public async Task<EmeliyyatNeticesi> MusteriYenileAsync(int id, MusteriDto dto)
 
 ---
 
-**Son Yenilənmə:** 2025-11-11 (2-ci yeniləmə)
+**Son Yenilənmə:** 2025-11-12 (3-cü yeniləmə)
 **Növbəti Review:** FAZA 3 50% tamamlandıqda
 
 ## 📈 Progress Timeline
@@ -166,3 +178,5 @@ public async Task<EmeliyyatNeticesi> MusteriYenileAsync(int id, MusteriDto dto)
 - **2025-11-11 (Hissə 2):** TemirPresenter refactor edildi
 - **2025-11-11 (Hissə 3):** SaveChanges analizi, Progress report
 - **2025-11-11 (Hissə 4):** MusteriIdareetmeFormu refactor edildi (30% tamamlandı)
+- **2025-11-11 (Hissə 6):** MehsulIdareetmeFormu refactor edildi (40% tamamlandı)
+- **2025-11-12 (Hissə 7):** SatisFormu refactor edildi (45% tamamlandı)
