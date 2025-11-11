@@ -93,8 +93,6 @@ public static class MehsulMockFactory
     {
         var mehsul = CreateValid(id);
         mehsul.Silinib = true;
-        mehsul.SilinmeTarixi = DateTime.Now;
-        mehsul.SilenIstifadeciId = 1;
         return mehsul;
     }
 }

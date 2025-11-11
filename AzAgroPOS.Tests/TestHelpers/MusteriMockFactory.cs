@@ -20,11 +20,9 @@ public static class MusteriMockFactory
             Id = id,
             TamAd = $"Test Müştəri {id}",
             TelefonNomresi = $"+994501234{id:D3}",
-            Email = $"test{id}@azagropos.az",
             Unvan = $"Bakı şəhəri, Test küçəsi {id}",
             KreditLimiti = 1000m,
             UmumiBorc = 0m,
-            BonusBalans = 0m,
             Silinib = false,
             YaradilmaTarixi = DateTime.Now.AddDays(-60),
             YaradanIstifadeciId = 1
@@ -41,7 +39,6 @@ public static class MusteriMockFactory
             Id = id,
             TamAd = $"Test Müştəri {id}",
             TelefonNomresi = $"+994501234{id:D3}",
-            Email = $"test{id}@azagropos.az",
             Unvan = $"Bakı şəhəri, Test küçəsi {id}",
             KreditLimiti = 1000m,
             UmumiBorc = 0m
@@ -91,24 +88,12 @@ public static class MusteriMockFactory
     }
 
     /// <summary>
-    /// Bonus balansı olan müştəri yaradır
-    /// </summary>
-    public static Musteri CreateWithBonus(int id = 1, decimal bonus = 50m)
-    {
-        var musteri = CreateValid(id);
-        musteri.BonusBalans = bonus;
-        return musteri;
-    }
-
-    /// <summary>
     /// Silinmiş müştəri yaradır
     /// </summary>
     public static Musteri CreateDeleted(int id = 1)
     {
         var musteri = CreateValid(id);
         musteri.Silinib = true;
-        musteri.SilinmeTarixi = DateTime.Now;
-        musteri.SilenIstifadeciId = 1;
         return musteri;
     }
 }
