@@ -47,11 +47,14 @@ public class SatisManager
                 return EmeliyyatNeticesi<Satis>.Ugursuz("Nisyə satış üçün müştəri seçilməlidir.");
             }
 
-            // Stok yoxlaması
+            // Stok yoxlaması - Batch query (N+1 problemini həll edir)
+            var mehsulIdleri = satisDto.SebetElementleri.Select(e => e.MehsulId).ToList();
+            var mehsullar = (await _unitOfWork.Mehsullar.AxtarAsync(m => mehsulIdleri.Contains(m.Id)))
+                .ToDictionary(m => m.Id);
+
             foreach (var element in satisDto.SebetElementleri)
             {
-                var mehsul = await _unitOfWork.Mehsullar.GetirAsync(element.MehsulId);
-                if (mehsul == null || mehsul.MovcudSay < element.Miqdar)
+                if (!mehsullar.TryGetValue(element.MehsulId, out var mehsul) || mehsul.MovcudSay < element.Miqdar)
                 {
                     Logger.XəbərdarlıqYaz($"'{element.MehsulAdi}' üçün stokda kifayət qədər məhsul yoxdur");
                     return EmeliyyatNeticesi<Satis>.Ugursuz($"'{element.MehsulAdi}' üçün stokda kifayət qədər məhsul yoxdur.");
