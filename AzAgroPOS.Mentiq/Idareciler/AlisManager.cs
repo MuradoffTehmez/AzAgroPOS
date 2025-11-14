@@ -201,8 +201,13 @@ public class AlisManager
         Logger.MelumatYaz("ButunAlisSifarisleriniGetirAsync metodu çağırıldı.");
         try
         {
-            var sifarisler = await _unitOfWork.AlisSifarisleri.ButununuGetirAsync();
-            var tedarukculer = await _unitOfWork.Tedarukculer.ButununuGetirAsync();
+            // Parallel execution - performance optimization
+            var sifarislerTask = _unitOfWork.AlisSifarisleri.ButununuGetirAsync();
+            var tedarukculerTask = _unitOfWork.Tedarukculer.ButununuGetirAsync();
+            await Task.WhenAll(sifarislerTask, tedarukculerTask);
+
+            var sifarisler = sifarislerTask.Result;
+            var tedarukculer = tedarukculerTask.Result;
 
             var dtolar = sifarisler.Select(s => new AlisSifarisDto
             {
@@ -240,9 +245,15 @@ public class AlisManager
             if (sifaris == null)
                 return EmeliyyatNeticesi<AlisSifarisDto>.Ugursuz("Alış sifarişi tapılmadı.");
 
-            var tedarukcu = await _unitOfWork.Tedarukculer.GetirAsync(sifaris.TedarukcuId);
-            var sifarisSetirleri = await _unitOfWork.AlisSifarisSetirleri.AxtarAsync(s => s.AlisSifarisId == sifaris.Id);
-            var mehsullar = await _unitOfWork.Mehsullar.ButununuGetirAsync();
+            // Parallel execution - performance optimization
+            var tedarukcuTask = _unitOfWork.Tedarukculer.GetirAsync(sifaris.TedarukcuId);
+            var sifarisSetirTask = _unitOfWork.AlisSifarisSetirleri.AxtarAsync(s => s.AlisSifarisId == sifaris.Id);
+            var mehsullarTask = _unitOfWork.Mehsullar.ButununuGetirAsync();
+            await Task.WhenAll(tedarukcuTask, sifarisSetirTask, mehsullarTask);
+
+            var tedarukcu = tedarukcuTask.Result;
+            var sifarisSetirleri = sifarisSetirTask.Result;
+            var mehsullar = mehsullarTask.Result;
 
             var dto = new AlisSifarisDto
             {
