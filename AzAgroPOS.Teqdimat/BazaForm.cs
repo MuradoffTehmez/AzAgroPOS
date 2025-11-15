@@ -148,7 +148,7 @@ namespace AzAgroPOS.Teqdimat
         }
 
         /// <summary>
-        /// Disables all controls on the form
+        /// Disables all controls on the form f
         /// </summary>
         /// <param name="control">Control to disable</param>
         private void DisableControls(Control control)
