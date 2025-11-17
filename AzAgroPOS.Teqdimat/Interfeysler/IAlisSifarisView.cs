@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 
 /// <summary>
-/// Alış sifarişi idarəetmə forması üçün interfeys.
+/// Alış sifarişi idarəetmə forması üçün interfeys.   mnc
 /// </summary>
 public interface IAlisSifarisView
 {
