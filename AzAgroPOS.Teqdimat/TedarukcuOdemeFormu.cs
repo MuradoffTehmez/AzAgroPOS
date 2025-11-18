@@ -166,23 +166,47 @@ public partial class TedarukcuOdemeFormu : BazaForm, ITedarukcuOdemeView
     {
         if (dgvOdemeler.Columns.Count == 0) return;
 
-        dgvOdemeler.Columns["Id"].Visible = false;
-        dgvOdemeler.Columns["TedarukcuId"].Visible = false;
-        dgvOdemeler.Columns["AlisSenedId"].Visible = false;
+        // Sütunların mövcudluğunu yoxlayaraq formatla
+        if (dgvOdemeler.Columns["Id"] != null)
+            dgvOdemeler.Columns["Id"].Visible = false;
+        if (dgvOdemeler.Columns["TedarukcuId"] != null)
+            dgvOdemeler.Columns["TedarukcuId"].Visible = false;
+        if (dgvOdemeler.Columns["AlisSenedId"] != null)
+            dgvOdemeler.Columns["AlisSenedId"].Visible = false;
 
-        dgvOdemeler.Columns["OdemeNomresi"].HeaderText = "Ödəniş №";
-        dgvOdemeler.Columns["TedarukcuAdi"].HeaderText = "Tədarükçü";
-        dgvOdemeler.Columns["AlisSenedNomresi"].HeaderText = "Alış Sənədi";
-        dgvOdemeler.Columns["YaradilmaTarixi"].HeaderText = "Yaradılma Tarixi";
-        dgvOdemeler.Columns["YaradilmaTarixi"].DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
-        dgvOdemeler.Columns["OdemeTarixi"].HeaderText = "Ödəniş Tarixi";
-        dgvOdemeler.Columns["OdemeTarixi"].DefaultCellStyle.Format = "dd.MM.yyyy";
-        dgvOdemeler.Columns["Mebleg"].HeaderText = "Məbləğ";
-        dgvOdemeler.Columns["Mebleg"].DefaultCellStyle.Format = "N2";
-        dgvOdemeler.Columns["OdemeUsulu"].HeaderText = "Ödəniş Üsulu";
-        dgvOdemeler.Columns["Status"].HeaderText = "Status";
-        dgvOdemeler.Columns["Qeydler"].HeaderText = "Qeydlər";
-        dgvOdemeler.Columns["BankMelumatlari"].HeaderText = "Bank Məlumatları";
+        if (dgvOdemeler.Columns["OdemeNomresi"] != null)
+            dgvOdemeler.Columns["OdemeNomresi"].HeaderText = "Ödəniş №";
+        if (dgvOdemeler.Columns["TedarukcuAdi"] != null)
+            dgvOdemeler.Columns["TedarukcuAdi"].HeaderText = "Tədarükçü";
+        if (dgvOdemeler.Columns["AlisSenedNomresi"] != null)
+            dgvOdemeler.Columns["AlisSenedNomresi"].HeaderText = "Alış Sənədi";
+
+        if (dgvOdemeler.Columns["YaradilmaTarixi"] != null)
+        {
+            dgvOdemeler.Columns["YaradilmaTarixi"].HeaderText = "Yaradılma Tarixi";
+            dgvOdemeler.Columns["YaradilmaTarixi"].DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
+        }
+
+        if (dgvOdemeler.Columns["OdemeTarixi"] != null)
+        {
+            dgvOdemeler.Columns["OdemeTarixi"].HeaderText = "Ödəniş Tarixi";
+            dgvOdemeler.Columns["OdemeTarixi"].DefaultCellStyle.Format = "dd.MM.yyyy";
+        }
+
+        if (dgvOdemeler.Columns["Mebleg"] != null)
+        {
+            dgvOdemeler.Columns["Mebleg"].HeaderText = "Məbləğ";
+            dgvOdemeler.Columns["Mebleg"].DefaultCellStyle.Format = "N2";
+        }
+
+        if (dgvOdemeler.Columns["OdemeUsulu"] != null)
+            dgvOdemeler.Columns["OdemeUsulu"].HeaderText = "Ödəniş Üsulu";
+        if (dgvOdemeler.Columns["Status"] != null)
+            dgvOdemeler.Columns["Status"].HeaderText = "Status";
+        if (dgvOdemeler.Columns["Qeydler"] != null)
+            dgvOdemeler.Columns["Qeydler"].HeaderText = "Qeydlər";
+        if (dgvOdemeler.Columns["BankMelumatlari"] != null)
+            dgvOdemeler.Columns["BankMelumatlari"].HeaderText = "Bank Məlumatları";
 
         dgvOdemeler.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
     }

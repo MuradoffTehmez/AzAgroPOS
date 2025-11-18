@@ -96,18 +96,35 @@ public partial class KassaFormu : BazaForm
     {
         if (dgvXercler.Columns.Count == 0) return;
 
-        dgvXercler.Columns["Id"].Visible = false;
-        dgvXercler.Columns["IstifadeciId"].Visible = false;
+        // Sütunların mövcudluğunu yoxlayaraq formatla
+        if (dgvXercler.Columns["Id"] != null)
+            dgvXercler.Columns["Id"].Visible = false;
+        if (dgvXercler.Columns["IstifadeciId"] != null)
+            dgvXercler.Columns["IstifadeciId"].Visible = false;
 
-        dgvXercler.Columns["Novu"].HeaderText = "Növ";
-        dgvXercler.Columns["Ad"].HeaderText = "Ad";
-        dgvXercler.Columns["Mebleg"].HeaderText = "Məbləğ";
-        dgvXercler.Columns["Mebleg"].DefaultCellStyle.Format = "N2";
-        dgvXercler.Columns["Tarix"].HeaderText = "Tarix";
-        dgvXercler.Columns["Tarix"].DefaultCellStyle.Format = "dd.MM.yyyy";
-        dgvXercler.Columns["SenedNomresi"].HeaderText = "Sənəd №";
-        dgvXercler.Columns["Qeyd"].HeaderText = "Qeyd";
-        dgvXercler.Columns["IstifadeciAdi"].HeaderText = "İstifadəçi";
+        if (dgvXercler.Columns["Novu"] != null)
+            dgvXercler.Columns["Novu"].HeaderText = "Növ";
+        if (dgvXercler.Columns["Ad"] != null)
+            dgvXercler.Columns["Ad"].HeaderText = "Ad";
+
+        if (dgvXercler.Columns["Mebleg"] != null)
+        {
+            dgvXercler.Columns["Mebleg"].HeaderText = "Məbləğ";
+            dgvXercler.Columns["Mebleg"].DefaultCellStyle.Format = "N2";
+        }
+
+        if (dgvXercler.Columns["Tarix"] != null)
+        {
+            dgvXercler.Columns["Tarix"].HeaderText = "Tarix";
+            dgvXercler.Columns["Tarix"].DefaultCellStyle.Format = "dd.MM.yyyy";
+        }
+
+        if (dgvXercler.Columns["SenedNomresi"] != null)
+            dgvXercler.Columns["SenedNomresi"].HeaderText = "Sənəd №";
+        if (dgvXercler.Columns["Qeyd"] != null)
+            dgvXercler.Columns["Qeyd"].HeaderText = "Qeyd";
+        if (dgvXercler.Columns["IstifadeciAdi"] != null)
+            dgvXercler.Columns["IstifadeciAdi"].HeaderText = "İstifadəçi";
 
         dgvXercler.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
     }

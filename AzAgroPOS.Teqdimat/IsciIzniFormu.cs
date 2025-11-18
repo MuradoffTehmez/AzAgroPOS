@@ -126,23 +126,48 @@ public partial class IsciIzniFormu : BazaForm
     {
         if (dgvIzinler.Columns.Count == 0) return;
 
-        dgvIzinler.Columns["Id"].Visible = false;
-        dgvIzinler.Columns["IsciId"].Visible = false;
-        dgvIzinler.Columns["TesdiqEdenIsciId"].Visible = false;
+        // Sütunların mövcudluğunu yoxlayaraq formatla
+        if (dgvIzinler.Columns["Id"] != null)
+            dgvIzinler.Columns["Id"].Visible = false;
+        if (dgvIzinler.Columns["IsciId"] != null)
+            dgvIzinler.Columns["IsciId"].Visible = false;
+        if (dgvIzinler.Columns["TesdiqEdenIsciId"] != null)
+            dgvIzinler.Columns["TesdiqEdenIsciId"].Visible = false;
 
-        dgvIzinler.Columns["IsciAdi"].HeaderText = "İşçi";
-        dgvIzinler.Columns["IzinNovu"].HeaderText = "İzin Növü";
-        dgvIzinler.Columns["BaslamaTarixi"].HeaderText = "Başlama";
-        dgvIzinler.Columns["BaslamaTarixi"].DefaultCellStyle.Format = "dd.MM.yyyy";
-        dgvIzinler.Columns["BitmeTarixi"].HeaderText = "Bitmə";
-        dgvIzinler.Columns["BitmeTarixi"].DefaultCellStyle.Format = "dd.MM.yyyy";
-        dgvIzinler.Columns["IzinGunu"].HeaderText = "Gün";
-        dgvIzinler.Columns["Sebeb"].HeaderText = "Səbəb";
-        dgvIzinler.Columns["Status"].HeaderText = "Status";
-        dgvIzinler.Columns["TesdiqEdenIsciAdi"].HeaderText = "Təsdiqləyən";
-        dgvIzinler.Columns["TesdiqTarixi"].HeaderText = "Təsdiq Tarixi";
-        dgvIzinler.Columns["TesdiqTarixi"].DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
-        dgvIzinler.Columns["Qeydler"].HeaderText = "Qeydlər";
+        if (dgvIzinler.Columns["IsciAdi"] != null)
+            dgvIzinler.Columns["IsciAdi"].HeaderText = "İşçi";
+        if (dgvIzinler.Columns["IzinNovu"] != null)
+            dgvIzinler.Columns["IzinNovu"].HeaderText = "İzin Növü";
+
+        if (dgvIzinler.Columns["BaslamaTarixi"] != null)
+        {
+            dgvIzinler.Columns["BaslamaTarixi"].HeaderText = "Başlama";
+            dgvIzinler.Columns["BaslamaTarixi"].DefaultCellStyle.Format = "dd.MM.yyyy";
+        }
+
+        if (dgvIzinler.Columns["BitmeTarixi"] != null)
+        {
+            dgvIzinler.Columns["BitmeTarixi"].HeaderText = "Bitmə";
+            dgvIzinler.Columns["BitmeTarixi"].DefaultCellStyle.Format = "dd.MM.yyyy";
+        }
+
+        if (dgvIzinler.Columns["IzinGunu"] != null)
+            dgvIzinler.Columns["IzinGunu"].HeaderText = "Gün";
+        if (dgvIzinler.Columns["Sebeb"] != null)
+            dgvIzinler.Columns["Sebeb"].HeaderText = "Səbəb";
+        if (dgvIzinler.Columns["Status"] != null)
+            dgvIzinler.Columns["Status"].HeaderText = "Status";
+        if (dgvIzinler.Columns["TesdiqEdenIsciAdi"] != null)
+            dgvIzinler.Columns["TesdiqEdenIsciAdi"].HeaderText = "Təsdiqləyən";
+
+        if (dgvIzinler.Columns["TesdiqTarixi"] != null)
+        {
+            dgvIzinler.Columns["TesdiqTarixi"].HeaderText = "Təsdiq Tarixi";
+            dgvIzinler.Columns["TesdiqTarixi"].DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
+        }
+
+        if (dgvIzinler.Columns["Qeydler"] != null)
+            dgvIzinler.Columns["Qeydler"].HeaderText = "Qeydlər";
 
         dgvIzinler.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
     }

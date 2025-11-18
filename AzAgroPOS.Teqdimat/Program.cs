@@ -132,6 +132,10 @@ namespace AzAgroPOS.Teqdimat
                 services.AddScoped<StokHareketiManager>();
                 services.AddScoped<QaytarmaManager>();
                 services.AddScoped<MaliyyeManager>();
+                services.AddScoped<EmekHaqqiManager>();
+                services.AddScoped<IsciIzniManager>();
+                services.AddScoped<BazaIdareetmeManager>(sp =>
+                    new BazaIdareetmeManager(connectionString));
 
                 // Presenterlər
                 services.AddTransient<MehsulPresenter>();
