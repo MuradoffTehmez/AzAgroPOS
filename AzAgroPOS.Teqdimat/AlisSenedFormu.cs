@@ -111,24 +111,41 @@ namespace AzAgroPOS.Teqdimat
 
             if (dgvSenetler.Columns.Count > 0)
             {
-                dgvSenetler.Columns["Id"].Visible = false;
-                dgvSenetler.Columns["TedarukcuId"].Visible = false;
-                dgvSenetler.Columns["SenedSetirleri"].Visible = false;
-                dgvSenetler.Columns["SenedNomresi"].HeaderText = "Sənəd №";
-                dgvSenetler.Columns["YaradilmaTarixi"].HeaderText = "Yaradılma Tarixi";
-                dgvSenetler.Columns["TedarukcuAdi"].HeaderText = "Tədarükçü";
-                dgvSenetler.Columns["TehvilTarixi"].HeaderText = "Təhvil Tarixi";
-                dgvSenetler.Columns["UmumiMebleg"].HeaderText = "Ümumi Məbləğ";
-                dgvSenetler.Columns["Status"].HeaderText = "Status";
-                dgvSenetler.Columns["Qeydler"].HeaderText = "Qeydlər";
+                // Sütunların mövcudluğunu yoxlayaraq formatla
+                if (dgvSenetler.Columns["Id"] != null)
+                    dgvSenetler.Columns["Id"].Visible = false;
+                if (dgvSenetler.Columns["TedarukcuId"] != null)
+                    dgvSenetler.Columns["TedarukcuId"].Visible = false;
+                if (dgvSenetler.Columns["SenedSetirleri"] != null)
+                    dgvSenetler.Columns["SenedSetirleri"].Visible = false;
+
+                if (dgvSenetler.Columns["SenedNomresi"] != null)
+                    dgvSenetler.Columns["SenedNomresi"].HeaderText = "Sənəd №";
+                if (dgvSenetler.Columns["YaradilmaTarixi"] != null)
+                    dgvSenetler.Columns["YaradilmaTarixi"].HeaderText = "Yaradılma Tarixi";
+                if (dgvSenetler.Columns["TedarukcuAdi"] != null)
+                    dgvSenetler.Columns["TedarukcuAdi"].HeaderText = "Tədarükçü";
+                if (dgvSenetler.Columns["TehvilTarixi"] != null)
+                    dgvSenetler.Columns["TehvilTarixi"].HeaderText = "Təhvil Tarixi";
+                if (dgvSenetler.Columns["UmumiMebleg"] != null)
+                    dgvSenetler.Columns["UmumiMebleg"].HeaderText = "Ümumi Məbləğ";
+                if (dgvSenetler.Columns["Status"] != null)
+                    dgvSenetler.Columns["Status"].HeaderText = "Status";
+                if (dgvSenetler.Columns["Qeydler"] != null)
+                    dgvSenetler.Columns["Qeydler"].HeaderText = "Qeydlər";
 
                 // Format tarixi
-                dgvSenetler.Columns["YaradilmaTarixi"].DefaultCellStyle.Format = "dd.MM.yyyy";
-                dgvSenetler.Columns["TehvilTarixi"].DefaultCellStyle.Format = "dd.MM.yyyy";
+                if (dgvSenetler.Columns["YaradilmaTarixi"] != null)
+                    dgvSenetler.Columns["YaradilmaTarixi"].DefaultCellStyle.Format = "dd.MM.yyyy";
+                if (dgvSenetler.Columns["TehvilTarixi"] != null)
+                    dgvSenetler.Columns["TehvilTarixi"].DefaultCellStyle.Format = "dd.MM.yyyy";
 
                 // Format məbləğ
-                dgvSenetler.Columns["UmumiMebleg"].DefaultCellStyle.Format = "N2";
-                dgvSenetler.Columns["UmumiMebleg"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                if (dgvSenetler.Columns["UmumiMebleg"] != null)
+                {
+                    dgvSenetler.Columns["UmumiMebleg"].DefaultCellStyle.Format = "N2";
+                    dgvSenetler.Columns["UmumiMebleg"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                }
             }
 
             dgvSenetler.SelectionChanged += dgvSenetler_SelectionChanged;
@@ -148,24 +165,43 @@ namespace AzAgroPOS.Teqdimat
 
             if (dgvSenedSetirleri.Columns.Count > 0)
             {
-                dgvSenedSetirleri.Columns["Id"].Visible = false;
-                dgvSenedSetirleri.Columns["AlisSenedId"].Visible = false;
-                dgvSenedSetirleri.Columns["MehsulId"].Visible = false;
-                dgvSenedSetirleri.Columns["AlisSifarisSetiriId"].Visible = false;
-                dgvSenedSetirleri.Columns["AlisSifarisSetiriNomresi"].Visible = false;
-                dgvSenedSetirleri.Columns["MehsulAdi"].HeaderText = "Məhsul";
-                dgvSenedSetirleri.Columns["Miqdar"].HeaderText = "Miqdar";
-                dgvSenedSetirleri.Columns["BirVahidQiymet"].HeaderText = "Vahid Qiyməti";
-                dgvSenedSetirleri.Columns["CemiMebleg"].HeaderText = "Cəmi Məbləğ";
+                // Sütunların mövcudluğunu yoxlayaraq formatla
+                if (dgvSenedSetirleri.Columns["Id"] != null)
+                    dgvSenedSetirleri.Columns["Id"].Visible = false;
+                if (dgvSenedSetirleri.Columns["AlisSenedId"] != null)
+                    dgvSenedSetirleri.Columns["AlisSenedId"].Visible = false;
+                if (dgvSenedSetirleri.Columns["MehsulId"] != null)
+                    dgvSenedSetirleri.Columns["MehsulId"].Visible = false;
+                if (dgvSenedSetirleri.Columns["AlisSifarisSetiriId"] != null)
+                    dgvSenedSetirleri.Columns["AlisSifarisSetiriId"].Visible = false;
+                if (dgvSenedSetirleri.Columns["AlisSifarisSetiriNomresi"] != null)
+                    dgvSenedSetirleri.Columns["AlisSifarisSetiriNomresi"].Visible = false;
+
+                if (dgvSenedSetirleri.Columns["MehsulAdi"] != null)
+                    dgvSenedSetirleri.Columns["MehsulAdi"].HeaderText = "Məhsul";
+                if (dgvSenedSetirleri.Columns["Miqdar"] != null)
+                    dgvSenedSetirleri.Columns["Miqdar"].HeaderText = "Miqdar";
+                if (dgvSenedSetirleri.Columns["BirVahidQiymet"] != null)
+                    dgvSenedSetirleri.Columns["BirVahidQiymet"].HeaderText = "Vahid Qiyməti";
+                if (dgvSenedSetirleri.Columns["CemiMebleg"] != null)
+                    dgvSenedSetirleri.Columns["CemiMebleg"].HeaderText = "Cəmi Məbləğ";
 
                 // Format
-                dgvSenedSetirleri.Columns["Miqdar"].DefaultCellStyle.Format = "N2";
-                dgvSenedSetirleri.Columns["BirVahidQiymet"].DefaultCellStyle.Format = "N2";
-                dgvSenedSetirleri.Columns["CemiMebleg"].DefaultCellStyle.Format = "N2";
-
-                dgvSenedSetirleri.Columns["Miqdar"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                dgvSenedSetirleri.Columns["BirVahidQiymet"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                dgvSenedSetirleri.Columns["CemiMebleg"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                if (dgvSenedSetirleri.Columns["Miqdar"] != null)
+                {
+                    dgvSenedSetirleri.Columns["Miqdar"].DefaultCellStyle.Format = "N2";
+                    dgvSenedSetirleri.Columns["Miqdar"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                }
+                if (dgvSenedSetirleri.Columns["BirVahidQiymet"] != null)
+                {
+                    dgvSenedSetirleri.Columns["BirVahidQiymet"].DefaultCellStyle.Format = "N2";
+                    dgvSenedSetirleri.Columns["BirVahidQiymet"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                }
+                if (dgvSenedSetirleri.Columns["CemiMebleg"] != null)
+                {
+                    dgvSenedSetirleri.Columns["CemiMebleg"].DefaultCellStyle.Format = "N2";
+                    dgvSenedSetirleri.Columns["CemiMebleg"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                }
             }
 
             // Ümumi məbləği göstər
