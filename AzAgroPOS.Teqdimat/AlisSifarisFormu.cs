@@ -182,24 +182,53 @@ public partial class AlisSifarisFormu : BazaForm, IAlisSifarisView
     {
         if (dgvSifarisler.Columns.Count == 0) return;
 
-        dgvSifarisler.Columns["Id"].Visible = false;
-        dgvSifarisler.Columns["TedarukcuId"].Visible = false;
-        dgvSifarisler.Columns["SifarisSetirleri"].Visible = false;
+        // Sütunların mövcudluğunu yoxlayaraq formatla
+        if (dgvSifarisler.Columns["Id"] != null)
+            dgvSifarisler.Columns["Id"].Visible = false;
+        if (dgvSifarisler.Columns["TedarukcuId"] != null)
+            dgvSifarisler.Columns["TedarukcuId"].Visible = false;
+        if (dgvSifarisler.Columns["SifarisSetirleri"] != null)
+            dgvSifarisler.Columns["SifarisSetirleri"].Visible = false;
 
-        dgvSifarisler.Columns["SifarisNomresi"].HeaderText = "Sifariş №";
-        dgvSifarisler.Columns["TedarukcuAdi"].HeaderText = "Tədarükçü";
-        dgvSifarisler.Columns["YaradilmaTarixi"].HeaderText = "Yaradılma Tarixi";
-        dgvSifarisler.Columns["YaradilmaTarixi"].DefaultCellStyle.Format = "dd.MM.yyyy";
-        dgvSifarisler.Columns["TesdiqTarixi"].HeaderText = "Təsdiq Tarixi";
-        dgvSifarisler.Columns["TesdiqTarixi"].DefaultCellStyle.Format = "dd.MM.yyyy";
-        dgvSifarisler.Columns["GozlenilenTehvilTarixi"].HeaderText = "Gözlənilən Təhvil";
-        dgvSifarisler.Columns["GozlenilenTehvilTarixi"].DefaultCellStyle.Format = "dd.MM.yyyy";
-        dgvSifarisler.Columns["FaktikiTehvilTarixi"].HeaderText = "Faktiki Təhvil";
-        dgvSifarisler.Columns["FaktikiTehvilTarixi"].DefaultCellStyle.Format = "dd.MM.yyyy";
-        dgvSifarisler.Columns["UmumiMebleg"].HeaderText = "Ümumi Məbləğ";
-        dgvSifarisler.Columns["UmumiMebleg"].DefaultCellStyle.Format = "N2";
-        dgvSifarisler.Columns["Status"].HeaderText = "Status";
-        dgvSifarisler.Columns["Qeydler"].HeaderText = "Qeydlər";
+        if (dgvSifarisler.Columns["SifarisNomresi"] != null)
+            dgvSifarisler.Columns["SifarisNomresi"].HeaderText = "Sifariş №";
+        if (dgvSifarisler.Columns["TedarukcuAdi"] != null)
+            dgvSifarisler.Columns["TedarukcuAdi"].HeaderText = "Tədarükçü";
+
+        if (dgvSifarisler.Columns["YaradilmaTarixi"] != null)
+        {
+            dgvSifarisler.Columns["YaradilmaTarixi"].HeaderText = "Yaradılma Tarixi";
+            dgvSifarisler.Columns["YaradilmaTarixi"].DefaultCellStyle.Format = "dd.MM.yyyy";
+        }
+
+        if (dgvSifarisler.Columns["TesdiqTarixi"] != null)
+        {
+            dgvSifarisler.Columns["TesdiqTarixi"].HeaderText = "Təsdiq Tarixi";
+            dgvSifarisler.Columns["TesdiqTarixi"].DefaultCellStyle.Format = "dd.MM.yyyy";
+        }
+
+        if (dgvSifarisler.Columns["GozlenilenTehvilTarixi"] != null)
+        {
+            dgvSifarisler.Columns["GozlenilenTehvilTarixi"].HeaderText = "Gözlənilən Təhvil";
+            dgvSifarisler.Columns["GozlenilenTehvilTarixi"].DefaultCellStyle.Format = "dd.MM.yyyy";
+        }
+
+        if (dgvSifarisler.Columns["FaktikiTehvilTarixi"] != null)
+        {
+            dgvSifarisler.Columns["FaktikiTehvilTarixi"].HeaderText = "Faktiki Təhvil";
+            dgvSifarisler.Columns["FaktikiTehvilTarixi"].DefaultCellStyle.Format = "dd.MM.yyyy";
+        }
+
+        if (dgvSifarisler.Columns["UmumiMebleg"] != null)
+        {
+            dgvSifarisler.Columns["UmumiMebleg"].HeaderText = "Ümumi Məbləğ";
+            dgvSifarisler.Columns["UmumiMebleg"].DefaultCellStyle.Format = "N2";
+        }
+
+        if (dgvSifarisler.Columns["Status"] != null)
+            dgvSifarisler.Columns["Status"].HeaderText = "Status";
+        if (dgvSifarisler.Columns["Qeydler"] != null)
+            dgvSifarisler.Columns["Qeydler"].HeaderText = "Qeydlər";
 
         dgvSifarisler.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
     }
@@ -208,21 +237,46 @@ public partial class AlisSifarisFormu : BazaForm, IAlisSifarisView
     {
         if (dgvSetirler.Columns.Count == 0) return;
 
-        dgvSetirler.Columns["Id"].Visible = false;
-        dgvSetirler.Columns["AlisSifarisId"].Visible = false;
-        dgvSetirler.Columns["MehsulId"].Visible = false;
+        // Sütunların mövcudluğunu yoxlayaraq formatla
+        if (dgvSetirler.Columns["Id"] != null)
+            dgvSetirler.Columns["Id"].Visible = false;
+        if (dgvSetirler.Columns["AlisSifarisId"] != null)
+            dgvSetirler.Columns["AlisSifarisId"].Visible = false;
+        if (dgvSetirler.Columns["MehsulId"] != null)
+            dgvSetirler.Columns["MehsulId"].Visible = false;
 
-        dgvSetirler.Columns["MehsulAdi"].HeaderText = "Məhsul";
-        dgvSetirler.Columns["Miqdar"].HeaderText = "Miqdar";
-        dgvSetirler.Columns["Miqdar"].DefaultCellStyle.Format = "N2";
-        dgvSetirler.Columns["BirVahidQiymet"].HeaderText = "Vahid Qiymət";
-        dgvSetirler.Columns["BirVahidQiymet"].DefaultCellStyle.Format = "N2";
-        dgvSetirler.Columns["CemiMebleg"].HeaderText = "Cəmi";
-        dgvSetirler.Columns["CemiMebleg"].DefaultCellStyle.Format = "N2";
-        dgvSetirler.Columns["TehvilAlinanMiqdar"].HeaderText = "Təhvil Alınan";
-        dgvSetirler.Columns["TehvilAlinanMiqdar"].DefaultCellStyle.Format = "N2";
-        dgvSetirler.Columns["QalanMiqdar"].HeaderText = "Qalan";
-        dgvSetirler.Columns["QalanMiqdar"].DefaultCellStyle.Format = "N2";
+        if (dgvSetirler.Columns["MehsulAdi"] != null)
+            dgvSetirler.Columns["MehsulAdi"].HeaderText = "Məhsul";
+
+        if (dgvSetirler.Columns["Miqdar"] != null)
+        {
+            dgvSetirler.Columns["Miqdar"].HeaderText = "Miqdar";
+            dgvSetirler.Columns["Miqdar"].DefaultCellStyle.Format = "N2";
+        }
+
+        if (dgvSetirler.Columns["BirVahidQiymet"] != null)
+        {
+            dgvSetirler.Columns["BirVahidQiymet"].HeaderText = "Vahid Qiymət";
+            dgvSetirler.Columns["BirVahidQiymet"].DefaultCellStyle.Format = "N2";
+        }
+
+        if (dgvSetirler.Columns["CemiMebleg"] != null)
+        {
+            dgvSetirler.Columns["CemiMebleg"].HeaderText = "Cəmi";
+            dgvSetirler.Columns["CemiMebleg"].DefaultCellStyle.Format = "N2";
+        }
+
+        if (dgvSetirler.Columns["TehvilAlinanMiqdar"] != null)
+        {
+            dgvSetirler.Columns["TehvilAlinanMiqdar"].HeaderText = "Təhvil Alınan";
+            dgvSetirler.Columns["TehvilAlinanMiqdar"].DefaultCellStyle.Format = "N2";
+        }
+
+        if (dgvSetirler.Columns["QalanMiqdar"] != null)
+        {
+            dgvSetirler.Columns["QalanMiqdar"].HeaderText = "Qalan";
+            dgvSetirler.Columns["QalanMiqdar"].DefaultCellStyle.Format = "N2";
+        }
 
         dgvSetirler.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
     }

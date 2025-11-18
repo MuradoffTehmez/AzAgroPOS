@@ -104,28 +104,71 @@ public partial class EmekHaqqiFormu : BazaForm
     {
         if (dgvEmekHaqqlari.Columns.Count == 0) return;
 
-        dgvEmekHaqqlari.Columns["Id"].Visible = false;
-        dgvEmekHaqqlari.Columns["IsciId"].Visible = false;
+        // Sütunların mövcudluğunu yoxlayaraq formatla
+        if (dgvEmekHaqqlari.Columns["Id"] != null)
+            dgvEmekHaqqlari.Columns["Id"].Visible = false;
+        if (dgvEmekHaqqlari.Columns["IsciId"] != null)
+            dgvEmekHaqqlari.Columns["IsciId"].Visible = false;
 
-        dgvEmekHaqqlari.Columns["IsciAdi"].HeaderText = "İşçi";
-        dgvEmekHaqqlari.Columns["Dovr"].HeaderText = "Dövr";
-        dgvEmekHaqqlari.Columns["EsasMaas"].HeaderText = "Əsas Maaş";
-        dgvEmekHaqqlari.Columns["EsasMaas"].DefaultCellStyle.Format = "N2";
-        dgvEmekHaqqlari.Columns["Bonuslar"].HeaderText = "Bonuslar";
-        dgvEmekHaqqlari.Columns["Bonuslar"].DefaultCellStyle.Format = "N2";
-        dgvEmekHaqqlari.Columns["ElaveOdenisler"].HeaderText = "Əlavə Ödənişlər";
-        dgvEmekHaqqlari.Columns["ElaveOdenisler"].DefaultCellStyle.Format = "N2";
-        dgvEmekHaqqlari.Columns["IcazeTutulmasi"].HeaderText = "İcazə Tutulması";
-        dgvEmekHaqqlari.Columns["IcazeTutulmasi"].DefaultCellStyle.Format = "N2";
-        dgvEmekHaqqlari.Columns["DigerTutulmalar"].HeaderText = "Digər Tutulmalar";
-        dgvEmekHaqqlari.Columns["DigerTutulmalar"].DefaultCellStyle.Format = "N2";
-        dgvEmekHaqqlari.Columns["YekunEmekHaqqi"].HeaderText = "Yekun";
-        dgvEmekHaqqlari.Columns["YekunEmekHaqqi"].DefaultCellStyle.Format = "N2";
-        dgvEmekHaqqlari.Columns["Status"].HeaderText = "Status";
-        dgvEmekHaqqlari.Columns["HesablanmaTarixi"].HeaderText = "Hesablama Tarixi";
-        dgvEmekHaqqlari.Columns["HesablanmaTarixi"].DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
-        dgvEmekHaqqlari.Columns["OdenmeTarixi"].HeaderText = "Ödəmə Tarixi";
-        dgvEmekHaqqlari.Columns["OdenmeTarixi"].DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
+        if (dgvEmekHaqqlari.Columns["IsciAdi"] != null)
+            dgvEmekHaqqlari.Columns["IsciAdi"].HeaderText = "İşçi";
+        if (dgvEmekHaqqlari.Columns["Dovr"] != null)
+            dgvEmekHaqqlari.Columns["Dovr"].HeaderText = "Dövr";
+
+        if (dgvEmekHaqqlari.Columns["EsasMaas"] != null)
+        {
+            dgvEmekHaqqlari.Columns["EsasMaas"].HeaderText = "Əsas Maaş";
+            dgvEmekHaqqlari.Columns["EsasMaas"].DefaultCellStyle.Format = "N2";
+        }
+
+        if (dgvEmekHaqqlari.Columns["Bonuslar"] != null)
+        {
+            dgvEmekHaqqlari.Columns["Bonuslar"].HeaderText = "Bonuslar";
+            dgvEmekHaqqlari.Columns["Bonuslar"].DefaultCellStyle.Format = "N2";
+        }
+
+        if (dgvEmekHaqqlari.Columns["ElaveOdenisler"] != null)
+        {
+            dgvEmekHaqqlari.Columns["ElaveOdenisler"].HeaderText = "Əlavə Ödənişlər";
+            dgvEmekHaqqlari.Columns["ElaveOdenisler"].DefaultCellStyle.Format = "N2";
+        }
+
+        if (dgvEmekHaqqlari.Columns["IcazeTutulmasi"] != null)
+        {
+            dgvEmekHaqqlari.Columns["IcazeTutulmasi"].HeaderText = "İcazə Tutulması";
+            dgvEmekHaqqlari.Columns["IcazeTutulmasi"].DefaultCellStyle.Format = "N2";
+        }
+
+        if (dgvEmekHaqqlari.Columns["DigerTutulmalar"] != null)
+        {
+            dgvEmekHaqqlari.Columns["DigerTutulmalar"].HeaderText = "Digər Tutulmalar";
+            dgvEmekHaqqlari.Columns["DigerTutulmalar"].DefaultCellStyle.Format = "N2";
+        }
+
+        if (dgvEmekHaqqlari.Columns["YekunEmekHaqqi"] != null)
+        {
+            dgvEmekHaqqlari.Columns["YekunEmekHaqqi"].HeaderText = "Yekun";
+            dgvEmekHaqqlari.Columns["YekunEmekHaqqi"].DefaultCellStyle.Format = "N2";
+        }
+
+        if (dgvEmekHaqqlari.Columns["Status"] != null)
+            dgvEmekHaqqlari.Columns["Status"].HeaderText = "Status";
+
+        if (dgvEmekHaqqlari.Columns["HesablanmaTarixi"] != null)
+        {
+            dgvEmekHaqqlari.Columns["HesablanmaTarixi"].HeaderText = "Hesablama Tarixi";
+            dgvEmekHaqqlari.Columns["HesablanmaTarixi"].DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
+        }
+
+        // Düzgün ad: OdenisTarixi (OdenmeTarixi deyil)
+        if (dgvEmekHaqqlari.Columns["OdenisTarixi"] != null)
+        {
+            dgvEmekHaqqlari.Columns["OdenisTarixi"].HeaderText = "Ödəniş Tarixi";
+            dgvEmekHaqqlari.Columns["OdenisTarixi"].DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
+        }
+
+        if (dgvEmekHaqqlari.Columns["Qeyd"] != null)
+            dgvEmekHaqqlari.Columns["Qeyd"].HeaderText = "Qeyd";
 
         dgvEmekHaqqlari.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
     }
