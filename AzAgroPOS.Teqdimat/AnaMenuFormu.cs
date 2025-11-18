@@ -35,6 +35,10 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
         this.Shown += AnaMenuFormu_Shown;
         this.FormClosing += (sender, e) => FormBaglaniyor?.Invoke(this, e);
 
+        // Modern dizayn tətbiq edirik
+        AnaMenuFormModernStyle.ApplyModernStyle(pnlMenu);
+        AnaMenuFormModernStyle.StyleDashboardCards(dashboardPanel);
+
         _formButtonMap = new Dictionary<Type, MaterialButton>
         {
             { typeof(NovbeIdareetmesiFormu), btnNovbeIdareetme },
@@ -219,20 +223,20 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
     #region UI Təkmilləşdirmələri
     private void UpdateActiveButtonHighlight()
     {
+        // Bütün düymələri normal vəziyyətə qaytır
         foreach (var btn in _formButtonMap.Values)
         {
-            btn.HighEmphasis = false;
-            btn.Type = MaterialButton.MaterialButtonType.Text;
+            AnaMenuFormModernStyle.ResetButton(btn);
         }
 
+        // Aktiv düyməni vurğula
         if (mdiTabControl.SelectedTab?.Tag is Form aktivForm)
         {
             var formTipi = aktivForm.GetType();
             if (_formButtonMap.ContainsKey(formTipi))
             {
                 var aktivButton = _formButtonMap[formTipi];
-                aktivButton.HighEmphasis = true;
-                aktivButton.Type = MaterialButton.MaterialButtonType.Contained;
+                AnaMenuFormModernStyle.HighlightActiveButton(aktivButton);
             }
         }
     }
