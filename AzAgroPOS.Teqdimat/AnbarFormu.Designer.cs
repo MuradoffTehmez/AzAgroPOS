@@ -21,6 +21,23 @@ namespace AzAgroPOS.Teqdimat
             components = new System.ComponentModel.Container();
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+
+            // Main Split Container
+            splitContainer1 = new SplitContainer();
+
+            // Sol Tərəf - Məhsullar Siyahısı
+            grpMehsullar = new GroupBox();
+            dgvMehsullar = new DataGridView();
+            colMehsulId = new DataGridViewTextBoxColumn();
+            colMehsulAdi = new DataGridViewTextBoxColumn();
+            colStokKodu = new DataGridViewTextBoxColumn();
+            colBarkod = new DataGridViewTextBoxColumn();
+            colMovcudSay = new DataGridViewTextBoxColumn();
+
+            // Sağ Tərəf - Əməliyyatlar
+            pnlSag = new Panel();
 
             // Axtarış Paneli
             grpAxtaris = new GroupBox();
@@ -50,9 +67,8 @@ namespace AzAgroPOS.Teqdimat
             colTarix = new DataGridViewTextBoxColumn();
             colIstifadeci = new DataGridViewTextBoxColumn();
             colEmeliyyatNovu = new DataGridViewTextBoxColumn();
-            colKohneStok = new DataGridViewTextBoxColumn();
+            colMehsul = new DataGridViewTextBoxColumn();
             colDeyisiklik = new DataGridViewTextBoxColumn();
-            colYeniStok = new DataGridViewTextBoxColumn();
             colQeyd = new DataGridViewTextBoxColumn();
             btnTarixceYenile = new MaterialSkin.Controls.MaterialButton();
 
@@ -60,6 +76,13 @@ namespace AzAgroPOS.Teqdimat
             errorProvider1 = new ErrorProvider(components);
             toolTip1 = new ToolTip(components);
 
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
+            splitContainer1.Panel1.SuspendLayout();
+            splitContainer1.Panel2.SuspendLayout();
+            splitContainer1.SuspendLayout();
+            grpMehsullar.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvMehsullar).BeginInit();
+            pnlSag.SuspendLayout();
             grpAxtaris.SuspendLayout();
             pnlMehsulMelumat.SuspendLayout();
             grpEmeliyyat.SuspendLayout();
@@ -69,14 +92,148 @@ namespace AzAgroPOS.Teqdimat
             SuspendLayout();
 
             //
+            // splitContainer1
+            //
+            splitContainer1.Dock = DockStyle.Fill;
+            splitContainer1.Location = new Point(3, 64);
+            splitContainer1.Name = "splitContainer1";
+            splitContainer1.Panel1.Controls.Add(grpMehsullar);
+            splitContainer1.Panel2.Controls.Add(pnlSag);
+            splitContainer1.Size = new Size(1594, 769);
+            splitContainer1.SplitterDistance = 400;
+            splitContainer1.TabIndex = 0;
+
+            //
+            // grpMehsullar
+            //
+            grpMehsullar.Controls.Add(dgvMehsullar);
+            grpMehsullar.Dock = DockStyle.Fill;
+            grpMehsullar.Font = new Font("Roboto", 10F, FontStyle.Bold);
+            grpMehsullar.Location = new Point(0, 0);
+            grpMehsullar.Name = "grpMehsullar";
+            grpMehsullar.Size = new Size(400, 769);
+            grpMehsullar.TabIndex = 0;
+            grpMehsullar.TabStop = false;
+            grpMehsullar.Text = "Bütün Məhsullar";
+
+            //
+            // dgvMehsullar
+            //
+            dgvMehsullar.AllowUserToAddRows = false;
+            dgvMehsullar.AllowUserToDeleteRows = false;
+            dgvMehsullar.AllowUserToResizeRows = false;
+            dgvMehsullar.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvMehsullar.BackgroundColor = Color.White;
+            dgvMehsullar.BorderStyle = BorderStyle.None;
+            dgvMehsullar.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgvMehsullar.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(63, 81, 181);
+            dataGridViewCellStyle1.Font = new Font("Roboto", 9F, FontStyle.Bold);
+            dataGridViewCellStyle1.ForeColor = Color.White;
+            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(63, 81, 181);
+            dataGridViewCellStyle1.SelectionForeColor = Color.White;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dgvMehsullar.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dgvMehsullar.ColumnHeadersHeight = 30;
+            dgvMehsullar.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgvMehsullar.Columns.AddRange(new DataGridViewColumn[] {
+                colMehsulId,
+                colMehsulAdi,
+                colStokKodu,
+                colBarkod,
+                colMovcudSay
+            });
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = Color.White;
+            dataGridViewCellStyle2.Font = new Font("Roboto", 9F);
+            dataGridViewCellStyle2.ForeColor = Color.FromArgb(64, 64, 64);
+            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(224, 224, 224);
+            dataGridViewCellStyle2.SelectionForeColor = Color.FromArgb(64, 64, 64);
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            dgvMehsullar.DefaultCellStyle = dataGridViewCellStyle2;
+            dgvMehsullar.Dock = DockStyle.Fill;
+            dgvMehsullar.EnableHeadersVisualStyles = false;
+            dgvMehsullar.GridColor = Color.FromArgb(224, 224, 224);
+            dgvMehsullar.Location = new Point(3, 19);
+            dgvMehsullar.MultiSelect = false;
+            dgvMehsullar.Name = "dgvMehsullar";
+            dgvMehsullar.ReadOnly = true;
+            dgvMehsullar.RowHeadersVisible = false;
+            dgvMehsullar.RowTemplate.Height = 25;
+            dgvMehsullar.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvMehsullar.Size = new Size(394, 747);
+            dgvMehsullar.TabIndex = 0;
+
+            //
+            // colMehsulId
+            //
+            colMehsulId.DataPropertyName = "Id";
+            colMehsulId.HeaderText = "ID";
+            colMehsulId.Name = "colMehsulId";
+            colMehsulId.ReadOnly = true;
+            colMehsulId.Visible = false;
+
+            //
+            // colMehsulAdi
+            //
+            colMehsulAdi.DataPropertyName = "Ad";
+            colMehsulAdi.HeaderText = "Məhsul Adı";
+            colMehsulAdi.Name = "colMehsulAdi";
+            colMehsulAdi.ReadOnly = true;
+            colMehsulAdi.FillWeight = 40;
+
+            //
+            // colStokKodu
+            //
+            colStokKodu.DataPropertyName = "StokKodu";
+            colStokKodu.HeaderText = "Stok Kodu";
+            colStokKodu.Name = "colStokKodu";
+            colStokKodu.ReadOnly = true;
+            colStokKodu.FillWeight = 20;
+
+            //
+            // colBarkod
+            //
+            colBarkod.DataPropertyName = "Barkod";
+            colBarkod.HeaderText = "Barkod";
+            colBarkod.Name = "colBarkod";
+            colBarkod.ReadOnly = true;
+            colBarkod.FillWeight = 20;
+
+            //
+            // colMovcudSay
+            //
+            colMovcudSay.DataPropertyName = "MovcudSay";
+            colMovcudSay.HeaderText = "Stok";
+            colMovcudSay.Name = "colMovcudSay";
+            colMovcudSay.ReadOnly = true;
+            colMovcudSay.FillWeight = 20;
+            colMovcudSay.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            colMovcudSay.DefaultCellStyle.Format = "N2";
+
+            //
+            // pnlSag
+            //
+            pnlSag.Controls.Add(grpTarixce);
+            pnlSag.Controls.Add(grpEmeliyyat);
+            pnlSag.Controls.Add(pnlMehsulMelumat);
+            pnlSag.Controls.Add(grpAxtaris);
+            pnlSag.Dock = DockStyle.Fill;
+            pnlSag.Location = new Point(0, 0);
+            pnlSag.Name = "pnlSag";
+            pnlSag.Size = new Size(1190, 769);
+            pnlSag.TabIndex = 0;
+
+            //
             // grpAxtaris
             //
             grpAxtaris.Controls.Add(txtAxtaris);
             grpAxtaris.Controls.Add(btnAxtar);
             grpAxtaris.Font = new Font("Roboto", 10F, FontStyle.Bold);
-            grpAxtaris.Location = new Point(20, 85);
+            grpAxtaris.Location = new Point(10, 10);
             grpAxtaris.Name = "grpAxtaris";
-            grpAxtaris.Size = new Size(1160, 80);
+            grpAxtaris.Size = new Size(1170, 80);
             grpAxtaris.TabIndex = 0;
             grpAxtaris.TabStop = false;
             grpAxtaris.Text = "Məhsul Axtarışı";
@@ -105,7 +262,7 @@ namespace AzAgroPOS.Teqdimat
             txtAxtaris.SelectionLength = 0;
             txtAxtaris.SelectionStart = 0;
             txtAxtaris.ShortcutsEnabled = true;
-            txtAxtaris.Size = new Size(960, 48);
+            txtAxtaris.Size = new Size(970, 48);
             txtAxtaris.TabIndex = 0;
             txtAxtaris.TabStop = false;
             txtAxtaris.TextAlign = HorizontalAlignment.Left;
@@ -124,7 +281,7 @@ namespace AzAgroPOS.Teqdimat
             btnAxtar.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnAxtar.HighEmphasis = true;
             btnAxtar.Icon = null;
-            btnAxtar.Location = new Point(995, 31);
+            btnAxtar.Location = new Point(1005, 31);
             btnAxtar.Margin = new Padding(4, 6, 4, 6);
             btnAxtar.MouseState = MaterialSkin.MouseState.HOVER;
             btnAxtar.Name = "btnAxtar";
@@ -147,9 +304,9 @@ namespace AzAgroPOS.Teqdimat
             pnlMehsulMelumat.Controls.Add(lblMovcudStok);
             pnlMehsulMelumat.Controls.Add(lblOlcuVahidi);
             pnlMehsulMelumat.Controls.Add(lblMehsulId);
-            pnlMehsulMelumat.Location = new Point(20, 175);
+            pnlMehsulMelumat.Location = new Point(10, 100);
             pnlMehsulMelumat.Name = "pnlMehsulMelumat";
-            pnlMehsulMelumat.Size = new Size(1160, 120);
+            pnlMehsulMelumat.Size = new Size(1170, 120);
             pnlMehsulMelumat.TabIndex = 1;
             pnlMehsulMelumat.Visible = false;
 
@@ -164,7 +321,7 @@ namespace AzAgroPOS.Teqdimat
             lblMehsulAdi.Location = new Point(15, 10);
             lblMehsulAdi.MouseState = MaterialSkin.MouseState.HOVER;
             lblMehsulAdi.Name = "lblMehsulAdi";
-            lblMehsulAdi.Size = new Size(1130, 30);
+            lblMehsulAdi.Size = new Size(1140, 30);
             lblMehsulAdi.TabIndex = 0;
             lblMehsulAdi.Text = "Məhsul Adı";
 
@@ -234,9 +391,9 @@ namespace AzAgroPOS.Teqdimat
             grpEmeliyyat.Controls.Add(btnTemizle);
             grpEmeliyyat.Enabled = false;
             grpEmeliyyat.Font = new Font("Roboto", 10F, FontStyle.Bold);
-            grpEmeliyyat.Location = new Point(20, 305);
+            grpEmeliyyat.Location = new Point(10, 230);
             grpEmeliyyat.Name = "grpEmeliyyat";
-            grpEmeliyyat.Size = new Size(1160, 200);
+            grpEmeliyyat.Size = new Size(1170, 200);
             grpEmeliyyat.TabIndex = 2;
             grpEmeliyyat.TabStop = false;
             grpEmeliyyat.Text = "Stok Əməliyyatları";
@@ -297,7 +454,7 @@ namespace AzAgroPOS.Teqdimat
             txtQeyd.SelectionLength = 0;
             txtQeyd.SelectionStart = 0;
             txtQeyd.ShortcutsEnabled = true;
-            txtQeyd.Size = new Size(1120, 48);
+            txtQeyd.Size = new Size(1130, 48);
             txtQeyd.TabIndex = 1;
             txtQeyd.TabStop = false;
             txtQeyd.TextAlign = HorizontalAlignment.Left;
@@ -388,7 +545,7 @@ namespace AzAgroPOS.Teqdimat
             btnTemizle.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnTemizle.HighEmphasis = false;
             btnTemizle.Icon = null;
-            btnTemizle.Location = new Point(940, 150);
+            btnTemizle.Location = new Point(950, 150);
             btnTemizle.Margin = new Padding(4, 6, 4, 6);
             btnTemizle.MouseState = MaterialSkin.MouseState.HOVER;
             btnTemizle.Name = "btnTemizle";
@@ -407,9 +564,9 @@ namespace AzAgroPOS.Teqdimat
             grpTarixce.Controls.Add(dgvTarixce);
             grpTarixce.Controls.Add(btnTarixceYenile);
             grpTarixce.Font = new Font("Roboto", 10F, FontStyle.Bold);
-            grpTarixce.Location = new Point(20, 515);
+            grpTarixce.Location = new Point(10, 440);
             grpTarixce.Name = "grpTarixce";
-            grpTarixce.Size = new Size(1160, 285);
+            grpTarixce.Size = new Size(1170, 320);
             grpTarixce.TabIndex = 3;
             grpTarixce.TabStop = false;
             grpTarixce.Text = "Son Əməliyyatlar";
@@ -425,33 +582,32 @@ namespace AzAgroPOS.Teqdimat
             dgvTarixce.BorderStyle = BorderStyle.None;
             dgvTarixce.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
             dgvTarixce.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = Color.FromArgb(63, 81, 181);
-            dataGridViewCellStyle1.Font = new Font("Roboto", 10F, FontStyle.Bold);
-            dataGridViewCellStyle1.ForeColor = Color.White;
-            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(63, 81, 181);
-            dataGridViewCellStyle1.SelectionForeColor = Color.White;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            dgvTarixce.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = Color.FromArgb(63, 81, 181);
+            dataGridViewCellStyle3.Font = new Font("Roboto", 10F, FontStyle.Bold);
+            dataGridViewCellStyle3.ForeColor = Color.White;
+            dataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(63, 81, 181);
+            dataGridViewCellStyle3.SelectionForeColor = Color.White;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            dgvTarixce.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             dgvTarixce.ColumnHeadersHeight = 35;
             dgvTarixce.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dgvTarixce.Columns.AddRange(new DataGridViewColumn[] {
                 colTarix,
                 colIstifadeci,
                 colEmeliyyatNovu,
-                colKohneStok,
+                colMehsul,
                 colDeyisiklik,
-                colYeniStok,
                 colQeyd
             });
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = Color.White;
-            dataGridViewCellStyle2.Font = new Font("Roboto", 10F);
-            dataGridViewCellStyle2.ForeColor = Color.FromArgb(64, 64, 64);
-            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(224, 224, 224);
-            dataGridViewCellStyle2.SelectionForeColor = Color.FromArgb(64, 64, 64);
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
-            dgvTarixce.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = Color.White;
+            dataGridViewCellStyle4.Font = new Font("Roboto", 9F);
+            dataGridViewCellStyle4.ForeColor = Color.FromArgb(64, 64, 64);
+            dataGridViewCellStyle4.SelectionBackColor = Color.FromArgb(224, 224, 224);
+            dataGridViewCellStyle4.SelectionForeColor = Color.FromArgb(64, 64, 64);
+            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.False;
+            dgvTarixce.DefaultCellStyle = dataGridViewCellStyle4;
             dgvTarixce.EnableHeadersVisualStyles = false;
             dgvTarixce.GridColor = Color.FromArgb(224, 224, 224);
             dgvTarixce.Location = new Point(20, 30);
@@ -461,7 +617,7 @@ namespace AzAgroPOS.Teqdimat
             dgvTarixce.RowHeadersVisible = false;
             dgvTarixce.RowTemplate.Height = 30;
             dgvTarixce.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvTarixce.Size = new Size(1120, 200);
+            dgvTarixce.Size = new Size(1130, 230);
             dgvTarixce.TabIndex = 0;
 
             //
@@ -492,13 +648,13 @@ namespace AzAgroPOS.Teqdimat
             colEmeliyyatNovu.FillWeight = 12;
 
             //
-            // colKohneStok
+            // colMehsul
             //
-            colKohneStok.DataPropertyName = "KohneStok";
-            colKohneStok.HeaderText = "Köhnə Stok";
-            colKohneStok.Name = "colKohneStok";
-            colKohneStok.ReadOnly = true;
-            colKohneStok.FillWeight = 10;
+            colMehsul.DataPropertyName = "MehsulAdi";
+            colMehsul.HeaderText = "Məhsul";
+            colMehsul.Name = "colMehsul";
+            colMehsul.ReadOnly = true;
+            colMehsul.FillWeight = 25;
 
             //
             // colDeyisiklik
@@ -510,22 +666,13 @@ namespace AzAgroPOS.Teqdimat
             colDeyisiklik.FillWeight = 10;
 
             //
-            // colYeniStok
-            //
-            colYeniStok.DataPropertyName = "YeniStok";
-            colYeniStok.HeaderText = "Yeni Stok";
-            colYeniStok.Name = "colYeniStok";
-            colYeniStok.ReadOnly = true;
-            colYeniStok.FillWeight = 10;
-
-            //
             // colQeyd
             //
             colQeyd.DataPropertyName = "Qeyd";
             colQeyd.HeaderText = "Qeyd";
             colQeyd.Name = "colQeyd";
             colQeyd.ReadOnly = true;
-            colQeyd.FillWeight = 31;
+            colQeyd.FillWeight = 26;
 
             //
             // btnTarixceYenile
@@ -538,7 +685,7 @@ namespace AzAgroPOS.Teqdimat
             btnTarixceYenile.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnTarixceYenile.HighEmphasis = false;
             btnTarixceYenile.Icon = null;
-            btnTarixceYenile.Location = new Point(960, 240);
+            btnTarixceYenile.Location = new Point(970, 270);
             btnTarixceYenile.Margin = new Padding(4, 6, 4, 6);
             btnTarixceYenile.MouseState = MaterialSkin.MouseState.HOVER;
             btnTarixceYenile.Name = "btnTarixceYenile";
@@ -562,18 +709,19 @@ namespace AzAgroPOS.Teqdimat
             //
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1200, 820);
-            Controls.Add(grpTarixce);
-            Controls.Add(grpEmeliyyat);
-            Controls.Add(pnlMehsulMelumat);
-            Controls.Add(grpAxtaris);
+            ClientSize = new Size(1600, 900);
+            Controls.Add(splitContainer1);
             Name = "AnbarFormu";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Anbar İdarəetməsi";
-            Controls.SetChildIndex(grpAxtaris, 0);
-            Controls.SetChildIndex(pnlMehsulMelumat, 0);
-            Controls.SetChildIndex(grpEmeliyyat, 0);
-            Controls.SetChildIndex(grpTarixce, 0);
+            Controls.SetChildIndex(splitContainer1, 0);
+            splitContainer1.Panel1.ResumeLayout(false);
+            splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
+            splitContainer1.ResumeLayout(false);
+            grpMehsullar.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dgvMehsullar).EndInit();
+            pnlSag.ResumeLayout(false);
             grpAxtaris.ResumeLayout(false);
             pnlMehsulMelumat.ResumeLayout(false);
             pnlMehsulMelumat.PerformLayout();
@@ -585,6 +733,21 @@ namespace AzAgroPOS.Teqdimat
         }
 
         #endregion
+
+        // Main Container
+        private SplitContainer splitContainer1;
+
+        // Sol Tərəf - Məhsullar
+        private GroupBox grpMehsullar;
+        private DataGridView dgvMehsullar;
+        private DataGridViewTextBoxColumn colMehsulId;
+        private DataGridViewTextBoxColumn colMehsulAdi;
+        private DataGridViewTextBoxColumn colStokKodu;
+        private DataGridViewTextBoxColumn colBarkod;
+        private DataGridViewTextBoxColumn colMovcudSay;
+
+        // Sağ Tərəf
+        private Panel pnlSag;
 
         // Axtarış
         private GroupBox grpAxtaris;
@@ -614,9 +777,8 @@ namespace AzAgroPOS.Teqdimat
         private DataGridViewTextBoxColumn colTarix;
         private DataGridViewTextBoxColumn colIstifadeci;
         private DataGridViewTextBoxColumn colEmeliyyatNovu;
-        private DataGridViewTextBoxColumn colKohneStok;
+        private DataGridViewTextBoxColumn colMehsul;
         private DataGridViewTextBoxColumn colDeyisiklik;
-        private DataGridViewTextBoxColumn colYeniStok;
         private DataGridViewTextBoxColumn colQeyd;
         private MaterialSkin.Controls.MaterialButton btnTarixceYenile;
 
