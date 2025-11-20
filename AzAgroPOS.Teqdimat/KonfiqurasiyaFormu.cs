@@ -21,6 +21,7 @@ namespace AzAgroPOS.Teqdimat
         private readonly KonfiqurasiyaPresenter _presenter;
         private bool _isDirty = false;
         private bool _isLoading = false;
+        private bool _suppressEvents = false;
 
         #region Constructor
 
@@ -52,29 +53,29 @@ namespace AzAgroPOS.Teqdimat
             btnLogoSec.Click += (s, e) => LogoSecClick?.Invoke(this, EventArgs.Empty);
 
             // Text change events
-            txtSirketAdi.TextChanged += (s, e) => DeyerDeyisdi?.Invoke(this, EventArgs.Empty);
-            txtSirketUnvani.TextChanged += (s, e) => DeyerDeyisdi?.Invoke(this, EventArgs.Empty);
-            txtSirketVoen.TextChanged += (s, e) => DeyerDeyisdi?.Invoke(this, EventArgs.Empty);
-            txtSirketTelefon.TextChanged += (s, e) => DeyerDeyisdi?.Invoke(this, EventArgs.Empty);
-            txtSirketEmail.TextChanged += (s, e) => DeyerDeyisdi?.Invoke(this, EventArgs.Empty);
-            txtSirketVebSayt.TextChanged += (s, e) => DeyerDeyisdi?.Invoke(this, EventArgs.Empty);
-            txtYedeklemeSaati.TextChanged += (s, e) => DeyerDeyisdi?.Invoke(this, EventArgs.Empty);
-            txtTarixFormati.TextChanged += (s, e) => DeyerDeyisdi?.Invoke(this, EventArgs.Empty);
-            txtReqemFormati.TextChanged += (s, e) => DeyerDeyisdi?.Invoke(this, EventArgs.Empty);
+            txtSirketAdi.TextChanged += (s, e) => { if (!_suppressEvents) DeyerDeyisdi?.Invoke(this, EventArgs.Empty); };
+            txtSirketUnvani.TextChanged += (s, e) => { if (!_suppressEvents) DeyerDeyisdi?.Invoke(this, EventArgs.Empty); };
+            txtSirketVoen.TextChanged += (s, e) => { if (!_suppressEvents) DeyerDeyisdi?.Invoke(this, EventArgs.Empty); };
+            txtSirketTelefon.TextChanged += (s, e) => { if (!_suppressEvents) DeyerDeyisdi?.Invoke(this, EventArgs.Empty); };
+            txtSirketEmail.TextChanged += (s, e) => { if (!_suppressEvents) DeyerDeyisdi?.Invoke(this, EventArgs.Empty); };
+            txtSirketVebSayt.TextChanged += (s, e) => { if (!_suppressEvents) DeyerDeyisdi?.Invoke(this, EventArgs.Empty); };
+            txtYedeklemeSaati.TextChanged += (s, e) => { if (!_suppressEvents) DeyerDeyisdi?.Invoke(this, EventArgs.Empty); };
+            txtTarixFormati.TextChanged += (s, e) => { if (!_suppressEvents) DeyerDeyisdi?.Invoke(this, EventArgs.Empty); };
+            txtReqemFormati.TextChanged += (s, e) => { if (!_suppressEvents) DeyerDeyisdi?.Invoke(this, EventArgs.Empty); };
 
             // Numeric change events
-            nudEdvDerecesi.ValueChanged += (s, e) => DeyerDeyisdi?.Invoke(this, EventArgs.Empty);
-            nudSessiyaTimeout.ValueChanged += (s, e) => DeyerDeyisdi?.Invoke(this, EventArgs.Empty);
+            nudEdvDerecesi.ValueChanged += (s, e) => { if (!_suppressEvents) DeyerDeyisdi?.Invoke(this, EventArgs.Empty); };
+            nudSessiyaTimeout.ValueChanged += (s, e) => { if (!_suppressEvents) DeyerDeyisdi?.Invoke(this, EventArgs.Empty); };
 
             // Checkbox change events
-            chkQebzAvtoCap.CheckedChanged += (s, e) => DeyerDeyisdi?.Invoke(this, EventArgs.Empty);
-            chkAvtomatikYedekleme.CheckedChanged += (s, e) => DeyerDeyisdi?.Invoke(this, EventArgs.Empty);
+            chkQebzAvtoCap.CheckedChanged += (s, e) => { if (!_suppressEvents) DeyerDeyisdi?.Invoke(this, EventArgs.Empty); };
+            chkAvtomatikYedekleme.CheckedChanged += (s, e) => { if (!_suppressEvents) DeyerDeyisdi?.Invoke(this, EventArgs.Empty); };
 
             // ComboBox change events
-            cmbKagizOlcusu.SelectedIndexChanged += (s, e) => DeyerDeyisdi?.Invoke(this, EventArgs.Empty);
-            cmbDil.SelectedIndexChanged += (s, e) => DeyerDeyisdi?.Invoke(this, EventArgs.Empty);
-            cmbValyuta.SelectedIndexChanged += (s, e) => DeyerDeyisdi?.Invoke(this, EventArgs.Empty);
-            cmbTema.SelectedIndexChanged += (s, e) => DeyerDeyisdi?.Invoke(this, EventArgs.Empty);
+            cmbKagizOlcusu.SelectedIndexChanged += (s, e) => { if (!_suppressEvents) DeyerDeyisdi?.Invoke(this, EventArgs.Empty); };
+            cmbDil.SelectedIndexChanged += (s, e) => { if (!_suppressEvents) DeyerDeyisdi?.Invoke(this, EventArgs.Empty); };
+            cmbValyuta.SelectedIndexChanged += (s, e) => { if (!_suppressEvents) DeyerDeyisdi?.Invoke(this, EventArgs.Empty); };
+            cmbTema.SelectedIndexChanged += (s, e) => { if (!_suppressEvents) DeyerDeyisdi?.Invoke(this, EventArgs.Empty); };
         }
 
         #endregion
@@ -288,13 +289,15 @@ namespace AzAgroPOS.Teqdimat
         public void YuklemeGoster(string mesaj = "Yüklənir...")
         {
             _isLoading = true;
-            YuklemeGoster();
+            _suppressEvents = true; // Event-ləri suppress et yükləmə zamanı
+            base.YuklemeGoster();
         }
 
         public void YuklemeGizle()
         {
             _isLoading = false;
-            YuklemeGizle();
+            _suppressEvents = false; // Event-ləri yenidən aktiv et
+            base.YuklemeGizle();
         }
 
         #endregion
