@@ -114,9 +114,9 @@ namespace AzAgroPOS.Teqdimat
             sidebarImageList.TransparentColor = Color.Transparent;
             // 
             // pnlMenu
-            //
+            // 
             pnlMenu.AutoScroll = true;
-            pnlMenu.BackColor = Color.FromArgb(45, 52, 67);
+            pnlMenu.BackColor = Color.FromArgb(242, 242, 242);
             pnlMenu.Controls.Add(pnlUserInfo);
             pnlMenu.Controls.Add(separator1);
             pnlMenu.Controls.Add(separator2);
@@ -146,8 +146,8 @@ namespace AzAgroPOS.Teqdimat
             pnlMenu.Controls.Add(btnZHesabatArxivi);
             pnlMenu.Controls.Add(btnKonfiqurasiya);
             pnlMenu.Dock = DockStyle.Left;
-            pnlMenu.Font = new Font("Roboto", 11F, FontStyle.Regular, GraphicsUnit.Point);
-            pnlMenu.ForeColor = Color.FromArgb(236, 240, 241);
+            pnlMenu.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            pnlMenu.ForeColor = Color.FromArgb(222, 0, 0, 0);
             pnlMenu.Location = new Point(3, 64);
             pnlMenu.Name = "pnlMenu";
             pnlMenu.Padding = new Padding(5, 10, 5, 10);
@@ -155,38 +155,38 @@ namespace AzAgroPOS.Teqdimat
             pnlMenu.TabIndex = 0;
             // 
             // pnlUserInfo
-            //
-            pnlUserInfo.BackColor = Color.FromArgb(52, 73, 94);
+            // 
+            pnlUserInfo.BackColor = Color.FromArgb(242, 242, 242);
             pnlUserInfo.Controls.Add(lblUserName);
             pnlUserInfo.Controls.Add(picUserIcon);
             pnlUserInfo.Dock = DockStyle.Top;
-            pnlUserInfo.Font = new Font("Roboto", 11F, FontStyle.Bold, GraphicsUnit.Point);
-            pnlUserInfo.ForeColor = Color.FromArgb(236, 240, 241);
-            pnlUserInfo.Location = new Point(5, 10);
+            pnlUserInfo.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            pnlUserInfo.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            pnlUserInfo.Location = new Point(5, 1145);
             pnlUserInfo.Name = "pnlUserInfo";
             pnlUserInfo.Padding = new Padding(10);
-            pnlUserInfo.Size = new Size(250, 80);
+            pnlUserInfo.Size = new Size(233, 80);
             pnlUserInfo.TabIndex = 0;
             // 
             // lblUserName
-            //
-            lblUserName.BackColor = Color.Transparent;
+            // 
+            lblUserName.BackColor = Color.FromArgb(242, 242, 242);
             lblUserName.Dock = DockStyle.Fill;
-            lblUserName.Font = new Font("Roboto", 11F, FontStyle.Bold, GraphicsUnit.Point);
-            lblUserName.ForeColor = Color.FromArgb(236, 240, 241);
+            lblUserName.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblUserName.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblUserName.Location = new Point(70, 10);
             lblUserName.Name = "lblUserName";
-            lblUserName.Size = new Size(170, 60);
+            lblUserName.Size = new Size(153, 60);
             lblUserName.TabIndex = 1;
             lblUserName.Text = "İstifadəçi Adı";
             lblUserName.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // picUserIcon
-            //
-            picUserIcon.BackColor = Color.Transparent;
+            // 
+            picUserIcon.BackColor = Color.FromArgb(242, 242, 242);
             picUserIcon.Dock = DockStyle.Left;
-            picUserIcon.Font = new Font("Roboto", 11F, FontStyle.Regular, GraphicsUnit.Point);
-            picUserIcon.ForeColor = Color.FromArgb(236, 240, 241);
+            picUserIcon.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            picUserIcon.ForeColor = Color.FromArgb(222, 0, 0, 0);
             picUserIcon.Location = new Point(10, 10);
             picUserIcon.Name = "picUserIcon";
             picUserIcon.Size = new Size(60, 60);
@@ -200,9 +200,9 @@ namespace AzAgroPOS.Teqdimat
             separator1.Dock = DockStyle.Top;
             separator1.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             separator1.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            separator1.Location = new Point(0, 1085);
+            separator1.Location = new Point(5, 1140);
             separator1.Name = "separator1";
-            separator1.Size = new Size(223, 5);
+            separator1.Size = new Size(233, 5);
             separator1.TabIndex = 1;
             // 
             // separator2
@@ -211,9 +211,9 @@ namespace AzAgroPOS.Teqdimat
             separator2.Dock = DockStyle.Top;
             separator2.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             separator2.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            separator2.Location = new Point(0, 1080);
+            separator2.Location = new Point(5, 1135);
             separator2.Name = "separator2";
-            separator2.Size = new Size(223, 5);
+            separator2.Size = new Size(233, 5);
             separator2.TabIndex = 2;
             // 
             // btnNovbeIdareetme
@@ -230,12 +230,12 @@ namespace AzAgroPOS.Teqdimat
             btnNovbeIdareetme.ImageAlign = ContentAlignment.MiddleLeft;
             btnNovbeIdareetme.ImageKey = "shift.png";
             btnNovbeIdareetme.ImageList = sidebarImageList;
-            btnNovbeIdareetme.Location = new Point(0, 1035);
+            btnNovbeIdareetme.Location = new Point(5, 1090);
             btnNovbeIdareetme.Margin = new Padding(4, 6, 4, 6);
             btnNovbeIdareetme.MouseState = MaterialSkin.MouseState.HOVER;
             btnNovbeIdareetme.Name = "btnNovbeIdareetme";
             btnNovbeIdareetme.NoAccentTextColor = Color.Empty;
-            btnNovbeIdareetme.Size = new Size(223, 45);
+            btnNovbeIdareetme.Size = new Size(233, 45);
             btnNovbeIdareetme.TabIndex = 5;
             btnNovbeIdareetme.Text = "Növbə İdarəetmə";
             btnNovbeIdareetme.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
@@ -257,12 +257,12 @@ namespace AzAgroPOS.Teqdimat
             btnYeniSatis.ImageAlign = ContentAlignment.MiddleLeft;
             btnYeniSatis.ImageKey = "sale.png";
             btnYeniSatis.ImageList = sidebarImageList;
-            btnYeniSatis.Location = new Point(0, 990);
+            btnYeniSatis.Location = new Point(5, 1045);
             btnYeniSatis.Margin = new Padding(4, 6, 4, 6);
             btnYeniSatis.MouseState = MaterialSkin.MouseState.HOVER;
             btnYeniSatis.Name = "btnYeniSatis";
             btnYeniSatis.NoAccentTextColor = Color.Empty;
-            btnYeniSatis.Size = new Size(223, 45);
+            btnYeniSatis.Size = new Size(233, 45);
             btnYeniSatis.TabIndex = 7;
             btnYeniSatis.Text = "Yeni Satış";
             btnYeniSatis.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
@@ -283,12 +283,12 @@ namespace AzAgroPOS.Teqdimat
             btnQaytarma.Icon = null;
             btnQaytarma.ImageAlign = ContentAlignment.MiddleLeft;
             btnQaytarma.ImageList = sidebarImageList;
-            btnQaytarma.Location = new Point(0, 945);
+            btnQaytarma.Location = new Point(5, 1000);
             btnQaytarma.Margin = new Padding(4, 6, 4, 6);
             btnQaytarma.MouseState = MaterialSkin.MouseState.HOVER;
             btnQaytarma.Name = "btnQaytarma";
             btnQaytarma.NoAccentTextColor = Color.Empty;
-            btnQaytarma.Size = new Size(223, 45);
+            btnQaytarma.Size = new Size(233, 45);
             btnQaytarma.TabIndex = 19;
             btnQaytarma.Text = "Qaytarma";
             btnQaytarma.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
@@ -309,12 +309,12 @@ namespace AzAgroPOS.Teqdimat
             btnNisyeIdareetme.Icon = null;
             btnNisyeIdareetme.ImageAlign = ContentAlignment.MiddleLeft;
             btnNisyeIdareetme.ImageList = sidebarImageList;
-            btnNisyeIdareetme.Location = new Point(0, 900);
+            btnNisyeIdareetme.Location = new Point(5, 955);
             btnNisyeIdareetme.Margin = new Padding(4, 6, 4, 6);
             btnNisyeIdareetme.MouseState = MaterialSkin.MouseState.HOVER;
             btnNisyeIdareetme.Name = "btnNisyeIdareetme";
             btnNisyeIdareetme.NoAccentTextColor = Color.Empty;
-            btnNisyeIdareetme.Size = new Size(223, 45);
+            btnNisyeIdareetme.Size = new Size(233, 45);
             btnNisyeIdareetme.TabIndex = 8;
             btnNisyeIdareetme.Text = "Nisyə İdarəetmə";
             btnNisyeIdareetme.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
@@ -336,12 +336,12 @@ namespace AzAgroPOS.Teqdimat
             btnMehsulIdareetme.ImageAlign = ContentAlignment.MiddleLeft;
             btnMehsulIdareetme.ImageKey = "product.png";
             btnMehsulIdareetme.ImageList = sidebarImageList;
-            btnMehsulIdareetme.Location = new Point(0, 855);
+            btnMehsulIdareetme.Location = new Point(5, 910);
             btnMehsulIdareetme.Margin = new Padding(4, 6, 4, 6);
             btnMehsulIdareetme.MouseState = MaterialSkin.MouseState.HOVER;
             btnMehsulIdareetme.Name = "btnMehsulIdareetme";
             btnMehsulIdareetme.NoAccentTextColor = Color.Empty;
-            btnMehsulIdareetme.Size = new Size(223, 45);
+            btnMehsulIdareetme.Size = new Size(233, 45);
             btnMehsulIdareetme.TabIndex = 6;
             btnMehsulIdareetme.Text = "Məhsul İdarəetmə";
             btnMehsulIdareetme.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
@@ -362,12 +362,12 @@ namespace AzAgroPOS.Teqdimat
             btnMinimumStokMehsullari.Icon = null;
             btnMinimumStokMehsullari.ImageAlign = ContentAlignment.MiddleLeft;
             btnMinimumStokMehsullari.ImageList = sidebarImageList;
-            btnMinimumStokMehsullari.Location = new Point(0, 810);
+            btnMinimumStokMehsullari.Location = new Point(5, 865);
             btnMinimumStokMehsullari.Margin = new Padding(4, 6, 4, 6);
             btnMinimumStokMehsullari.MouseState = MaterialSkin.MouseState.HOVER;
             btnMinimumStokMehsullari.Name = "btnMinimumStokMehsullari";
             btnMinimumStokMehsullari.NoAccentTextColor = Color.Empty;
-            btnMinimumStokMehsullari.Size = new Size(223, 45);
+            btnMinimumStokMehsullari.Size = new Size(233, 45);
             btnMinimumStokMehsullari.TabIndex = 18;
             btnMinimumStokMehsullari.Text = "Minimum Stok Məhsulları";
             btnMinimumStokMehsullari.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
@@ -389,12 +389,12 @@ namespace AzAgroPOS.Teqdimat
             btnBarkodCapi.ImageAlign = ContentAlignment.MiddleLeft;
             btnBarkodCapi.ImageKey = "barcode.png";
             btnBarkodCapi.ImageList = sidebarImageList;
-            btnBarkodCapi.Location = new Point(0, 765);
+            btnBarkodCapi.Location = new Point(5, 820);
             btnBarkodCapi.Margin = new Padding(4, 6, 4, 6);
             btnBarkodCapi.MouseState = MaterialSkin.MouseState.HOVER;
             btnBarkodCapi.Name = "btnBarkodCapi";
             btnBarkodCapi.NoAccentTextColor = Color.Empty;
-            btnBarkodCapi.Size = new Size(223, 45);
+            btnBarkodCapi.Size = new Size(233, 45);
             btnBarkodCapi.TabIndex = 15;
             btnBarkodCapi.Text = "Barkod Çapı";
             btnBarkodCapi.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
@@ -415,12 +415,12 @@ namespace AzAgroPOS.Teqdimat
             btnXercIdareetme.Icon = null;
             btnXercIdareetme.ImageAlign = ContentAlignment.MiddleLeft;
             btnXercIdareetme.ImageList = sidebarImageList;
-            btnXercIdareetme.Location = new Point(0, 720);
+            btnXercIdareetme.Location = new Point(5, 775);
             btnXercIdareetme.Margin = new Padding(4, 6, 4, 6);
             btnXercIdareetme.MouseState = MaterialSkin.MouseState.HOVER;
             btnXercIdareetme.Name = "btnXercIdareetme";
             btnXercIdareetme.NoAccentTextColor = Color.Empty;
-            btnXercIdareetme.Size = new Size(223, 45);
+            btnXercIdareetme.Size = new Size(233, 45);
             btnXercIdareetme.TabIndex = 20;
             btnXercIdareetme.Text = "Xərc İdarəetmə";
             btnXercIdareetme.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
@@ -442,12 +442,12 @@ namespace AzAgroPOS.Teqdimat
             btnTemirIdareetme.ImageAlign = ContentAlignment.MiddleLeft;
             btnTemirIdareetme.ImageKey = "repair.png";
             btnTemirIdareetme.ImageList = sidebarImageList;
-            btnTemirIdareetme.Location = new Point(0, 675);
+            btnTemirIdareetme.Location = new Point(5, 730);
             btnTemirIdareetme.Margin = new Padding(4, 6, 4, 6);
             btnTemirIdareetme.MouseState = MaterialSkin.MouseState.HOVER;
             btnTemirIdareetme.Name = "btnTemirIdareetme";
             btnTemirIdareetme.NoAccentTextColor = Color.Empty;
-            btnTemirIdareetme.Size = new Size(223, 45);
+            btnTemirIdareetme.Size = new Size(233, 45);
             btnTemirIdareetme.TabIndex = 9;
             btnTemirIdareetme.Text = "Təmir İdarəetmə";
             btnTemirIdareetme.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
@@ -468,12 +468,12 @@ namespace AzAgroPOS.Teqdimat
             btnAlisSened.Icon = null;
             btnAlisSened.ImageAlign = ContentAlignment.MiddleLeft;
             btnAlisSened.ImageList = sidebarImageList;
-            btnAlisSened.Location = new Point(0, 630);
+            btnAlisSened.Location = new Point(5, 685);
             btnAlisSened.Margin = new Padding(4, 6, 4, 6);
             btnAlisSened.MouseState = MaterialSkin.MouseState.HOVER;
             btnAlisSened.Name = "btnAlisSened";
             btnAlisSened.NoAccentTextColor = Color.Empty;
-            btnAlisSened.Size = new Size(223, 45);
+            btnAlisSened.Size = new Size(233, 45);
             btnAlisSened.TabIndex = 21;
             btnAlisSened.Text = "Alış Sənəd";
             btnAlisSened.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
@@ -494,12 +494,12 @@ namespace AzAgroPOS.Teqdimat
             btnAlisSifaris.Icon = null;
             btnAlisSifaris.ImageAlign = ContentAlignment.MiddleLeft;
             btnAlisSifaris.ImageList = sidebarImageList;
-            btnAlisSifaris.Location = new Point(0, 585);
+            btnAlisSifaris.Location = new Point(5, 640);
             btnAlisSifaris.Margin = new Padding(4, 6, 4, 6);
             btnAlisSifaris.MouseState = MaterialSkin.MouseState.HOVER;
             btnAlisSifaris.Name = "btnAlisSifaris";
             btnAlisSifaris.NoAccentTextColor = Color.Empty;
-            btnAlisSifaris.Size = new Size(223, 45);
+            btnAlisSifaris.Size = new Size(233, 45);
             btnAlisSifaris.TabIndex = 22;
             btnAlisSifaris.Text = "Alış Sifariş";
             btnAlisSifaris.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
@@ -520,12 +520,12 @@ namespace AzAgroPOS.Teqdimat
             btnKassaIdareetme.Icon = null;
             btnKassaIdareetme.ImageAlign = ContentAlignment.MiddleLeft;
             btnKassaIdareetme.ImageList = sidebarImageList;
-            btnKassaIdareetme.Location = new Point(0, 540);
+            btnKassaIdareetme.Location = new Point(5, 595);
             btnKassaIdareetme.Margin = new Padding(4, 6, 4, 6);
             btnKassaIdareetme.MouseState = MaterialSkin.MouseState.HOVER;
             btnKassaIdareetme.Name = "btnKassaIdareetme";
             btnKassaIdareetme.NoAccentTextColor = Color.Empty;
-            btnKassaIdareetme.Size = new Size(223, 45);
+            btnKassaIdareetme.Size = new Size(233, 45);
             btnKassaIdareetme.TabIndex = 23;
             btnKassaIdareetme.Text = "Kassa İdarəetmə";
             btnKassaIdareetme.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
@@ -534,7 +534,7 @@ namespace AzAgroPOS.Teqdimat
             btnKassaIdareetme.Click += btnKassaIdareetme_Click;
             // 
             // btnQebz
-            //
+            // 
             btnQebz.AutoSize = false;
             btnQebz.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             btnQebz.BackColor = Color.FromArgb(242, 242, 242);
@@ -546,12 +546,12 @@ namespace AzAgroPOS.Teqdimat
             btnQebz.Icon = null;
             btnQebz.ImageAlign = ContentAlignment.MiddleLeft;
             btnQebz.ImageList = sidebarImageList;
-            btnQebz.Location = new Point(0, 495);
+            btnQebz.Location = new Point(5, 550);
             btnQebz.Margin = new Padding(4, 6, 4, 6);
             btnQebz.MouseState = MaterialSkin.MouseState.HOVER;
             btnQebz.Name = "btnQebz";
             btnQebz.NoAccentTextColor = Color.Empty;
-            btnQebz.Size = new Size(223, 45);
+            btnQebz.Size = new Size(233, 45);
             btnQebz.TabIndex = 24;
             btnQebz.Text = "Qəbz";
             btnQebz.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
@@ -572,12 +572,12 @@ namespace AzAgroPOS.Teqdimat
             btnTedarukcuOdeme.Icon = null;
             btnTedarukcuOdeme.ImageAlign = ContentAlignment.MiddleLeft;
             btnTedarukcuOdeme.ImageList = sidebarImageList;
-            btnTedarukcuOdeme.Location = new Point(0, 495);
+            btnTedarukcuOdeme.Location = new Point(5, 505);
             btnTedarukcuOdeme.Margin = new Padding(4, 6, 4, 6);
             btnTedarukcuOdeme.MouseState = MaterialSkin.MouseState.HOVER;
             btnTedarukcuOdeme.Name = "btnTedarukcuOdeme";
             btnTedarukcuOdeme.NoAccentTextColor = Color.Empty;
-            btnTedarukcuOdeme.Size = new Size(223, 45);
+            btnTedarukcuOdeme.Size = new Size(233, 45);
             btnTedarukcuOdeme.TabIndex = 28;
             btnTedarukcuOdeme.Text = "Təchizatçı Ödəmə";
             btnTedarukcuOdeme.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
@@ -598,12 +598,12 @@ namespace AzAgroPOS.Teqdimat
             btnTedarukcuIdareetme.Icon = null;
             btnTedarukcuIdareetme.ImageAlign = ContentAlignment.MiddleLeft;
             btnTedarukcuIdareetme.ImageList = sidebarImageList;
-            btnTedarukcuIdareetme.Location = new Point(0, 450);
+            btnTedarukcuIdareetme.Location = new Point(5, 460);
             btnTedarukcuIdareetme.Margin = new Padding(4, 6, 4, 6);
             btnTedarukcuIdareetme.MouseState = MaterialSkin.MouseState.HOVER;
             btnTedarukcuIdareetme.Name = "btnTedarukcuIdareetme";
             btnTedarukcuIdareetme.NoAccentTextColor = Color.Empty;
-            btnTedarukcuIdareetme.Size = new Size(223, 45);
+            btnTedarukcuIdareetme.Size = new Size(233, 45);
             btnTedarukcuIdareetme.TabIndex = 27;
             btnTedarukcuIdareetme.Text = "Təchizatçı İdarəetmə";
             btnTedarukcuIdareetme.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
@@ -624,12 +624,12 @@ namespace AzAgroPOS.Teqdimat
             btnEhtiyatHisse.Icon = null;
             btnEhtiyatHisse.ImageAlign = ContentAlignment.MiddleLeft;
             btnEhtiyatHisse.ImageList = sidebarImageList;
-            btnEhtiyatHisse.Location = new Point(0, 405);
+            btnEhtiyatHisse.Location = new Point(5, 415);
             btnEhtiyatHisse.Margin = new Padding(4, 6, 4, 6);
             btnEhtiyatHisse.MouseState = MaterialSkin.MouseState.HOVER;
             btnEhtiyatHisse.Name = "btnEhtiyatHisse";
             btnEhtiyatHisse.NoAccentTextColor = Color.Empty;
-            btnEhtiyatHisse.Size = new Size(223, 45);
+            btnEhtiyatHisse.Size = new Size(233, 45);
             btnEhtiyatHisse.TabIndex = 24;
             btnEhtiyatHisse.Text = "Ehtiyat Hissəsi";
             btnEhtiyatHisse.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
@@ -650,12 +650,12 @@ namespace AzAgroPOS.Teqdimat
             btnEmekHaqqi.Icon = null;
             btnEmekHaqqi.ImageAlign = ContentAlignment.MiddleLeft;
             btnEmekHaqqi.ImageList = sidebarImageList;
-            btnEmekHaqqi.Location = new Point(0, 360);
+            btnEmekHaqqi.Location = new Point(5, 370);
             btnEmekHaqqi.Margin = new Padding(4, 6, 4, 6);
             btnEmekHaqqi.MouseState = MaterialSkin.MouseState.HOVER;
             btnEmekHaqqi.Name = "btnEmekHaqqi";
             btnEmekHaqqi.NoAccentTextColor = Color.Empty;
-            btnEmekHaqqi.Size = new Size(223, 45);
+            btnEmekHaqqi.Size = new Size(233, 45);
             btnEmekHaqqi.TabIndex = 25;
             btnEmekHaqqi.Text = "Əmək Haqqı";
             btnEmekHaqqi.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
@@ -676,12 +676,12 @@ namespace AzAgroPOS.Teqdimat
             btnAnbar.Icon = null;
             btnAnbar.ImageAlign = ContentAlignment.MiddleLeft;
             btnAnbar.ImageList = sidebarImageList;
-            btnAnbar.Location = new Point(0, 315);
+            btnAnbar.Location = new Point(5, 325);
             btnAnbar.Margin = new Padding(4, 6, 4, 6);
             btnAnbar.MouseState = MaterialSkin.MouseState.HOVER;
             btnAnbar.Name = "btnAnbar";
             btnAnbar.NoAccentTextColor = Color.Empty;
-            btnAnbar.Size = new Size(223, 45);
+            btnAnbar.Size = new Size(233, 45);
             btnAnbar.TabIndex = 26;
             btnAnbar.Text = "Anbar";
             btnAnbar.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
@@ -703,12 +703,12 @@ namespace AzAgroPOS.Teqdimat
             btnIstifadeciIdareetme.ImageAlign = ContentAlignment.MiddleLeft;
             btnIstifadeciIdareetme.ImageKey = "user.png";
             btnIstifadeciIdareetme.ImageList = sidebarImageList;
-            btnIstifadeciIdareetme.Location = new Point(0, 270);
+            btnIstifadeciIdareetme.Location = new Point(5, 280);
             btnIstifadeciIdareetme.Margin = new Padding(4, 6, 4, 6);
             btnIstifadeciIdareetme.MouseState = MaterialSkin.MouseState.HOVER;
             btnIstifadeciIdareetme.Name = "btnIstifadeciIdareetme";
             btnIstifadeciIdareetme.NoAccentTextColor = Color.Empty;
-            btnIstifadeciIdareetme.Size = new Size(223, 45);
+            btnIstifadeciIdareetme.Size = new Size(233, 45);
             btnIstifadeciIdareetme.TabIndex = 10;
             btnIstifadeciIdareetme.Text = "İstifadəçi İdarəetmə";
             btnIstifadeciIdareetme.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
@@ -730,12 +730,12 @@ namespace AzAgroPOS.Teqdimat
             btnIsciIdareetme.ImageAlign = ContentAlignment.MiddleLeft;
             btnIsciIdareetme.ImageKey = "employee.png";
             btnIsciIdareetme.ImageList = sidebarImageList;
-            btnIsciIdareetme.Location = new Point(0, 225);
+            btnIsciIdareetme.Location = new Point(5, 235);
             btnIsciIdareetme.Margin = new Padding(4, 6, 4, 6);
             btnIsciIdareetme.MouseState = MaterialSkin.MouseState.HOVER;
             btnIsciIdareetme.Name = "btnIsciIdareetme";
             btnIsciIdareetme.NoAccentTextColor = Color.Empty;
-            btnIsciIdareetme.Size = new Size(223, 45);
+            btnIsciIdareetme.Size = new Size(233, 45);
             btnIsciIdareetme.TabIndex = 30;
             btnIsciIdareetme.Text = "İşçi İdarəetmə";
             btnIsciIdareetme.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
@@ -757,12 +757,12 @@ namespace AzAgroPOS.Teqdimat
             btnHesabatlar.ImageAlign = ContentAlignment.MiddleLeft;
             btnHesabatlar.ImageKey = "report.png";
             btnHesabatlar.ImageList = sidebarImageList;
-            btnHesabatlar.Location = new Point(0, 180);
+            btnHesabatlar.Location = new Point(5, 190);
             btnHesabatlar.Margin = new Padding(4, 6, 4, 6);
             btnHesabatlar.MouseState = MaterialSkin.MouseState.HOVER;
             btnHesabatlar.Name = "btnHesabatlar";
             btnHesabatlar.NoAccentTextColor = Color.Empty;
-            btnHesabatlar.Size = new Size(223, 45);
+            btnHesabatlar.Size = new Size(233, 45);
             btnHesabatlar.TabIndex = 11;
             btnHesabatlar.Text = "Hesabatlar";
             btnHesabatlar.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
@@ -783,12 +783,12 @@ namespace AzAgroPOS.Teqdimat
             btnMehsulSatisHesabati.Icon = null;
             btnMehsulSatisHesabati.ImageAlign = ContentAlignment.MiddleLeft;
             btnMehsulSatisHesabati.ImageList = sidebarImageList;
-            btnMehsulSatisHesabati.Location = new Point(0, 135);
+            btnMehsulSatisHesabati.Location = new Point(5, 145);
             btnMehsulSatisHesabati.Margin = new Padding(4, 6, 4, 6);
             btnMehsulSatisHesabati.MouseState = MaterialSkin.MouseState.HOVER;
             btnMehsulSatisHesabati.Name = "btnMehsulSatisHesabati";
             btnMehsulSatisHesabati.NoAccentTextColor = Color.Empty;
-            btnMehsulSatisHesabati.Size = new Size(223, 45);
+            btnMehsulSatisHesabati.Size = new Size(233, 45);
             btnMehsulSatisHesabati.TabIndex = 12;
             btnMehsulSatisHesabati.Text = "Məhsul Satış Hesabatı";
             btnMehsulSatisHesabati.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
@@ -809,12 +809,12 @@ namespace AzAgroPOS.Teqdimat
             btnAnbarQaliqHesabati.Icon = null;
             btnAnbarQaliqHesabati.ImageAlign = ContentAlignment.MiddleLeft;
             btnAnbarQaliqHesabati.ImageList = sidebarImageList;
-            btnAnbarQaliqHesabati.Location = new Point(0, 90);
+            btnAnbarQaliqHesabati.Location = new Point(5, 100);
             btnAnbarQaliqHesabati.Margin = new Padding(4, 6, 4, 6);
             btnAnbarQaliqHesabati.MouseState = MaterialSkin.MouseState.HOVER;
             btnAnbarQaliqHesabati.Name = "btnAnbarQaliqHesabati";
             btnAnbarQaliqHesabati.NoAccentTextColor = Color.Empty;
-            btnAnbarQaliqHesabati.Size = new Size(223, 45);
+            btnAnbarQaliqHesabati.Size = new Size(233, 45);
             btnAnbarQaliqHesabati.TabIndex = 13;
             btnAnbarQaliqHesabati.Text = "Anbar Qalıq Hesabatı";
             btnAnbarQaliqHesabati.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
@@ -835,12 +835,12 @@ namespace AzAgroPOS.Teqdimat
             btnZHesabatArxivi.Icon = null;
             btnZHesabatArxivi.ImageAlign = ContentAlignment.MiddleLeft;
             btnZHesabatArxivi.ImageList = sidebarImageList;
-            btnZHesabatArxivi.Location = new Point(0, 45);
+            btnZHesabatArxivi.Location = new Point(5, 55);
             btnZHesabatArxivi.Margin = new Padding(4, 6, 4, 6);
             btnZHesabatArxivi.MouseState = MaterialSkin.MouseState.HOVER;
             btnZHesabatArxivi.Name = "btnZHesabatArxivi";
             btnZHesabatArxivi.NoAccentTextColor = Color.Empty;
-            btnZHesabatArxivi.Size = new Size(223, 45);
+            btnZHesabatArxivi.Size = new Size(233, 45);
             btnZHesabatArxivi.TabIndex = 14;
             btnZHesabatArxivi.Text = "Z-Hesabat Arxivi";
             btnZHesabatArxivi.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
@@ -862,12 +862,12 @@ namespace AzAgroPOS.Teqdimat
             btnKonfiqurasiya.ImageAlign = ContentAlignment.MiddleLeft;
             btnKonfiqurasiya.ImageKey = "settings.png";
             btnKonfiqurasiya.ImageList = sidebarImageList;
-            btnKonfiqurasiya.Location = new Point(0, 0);
+            btnKonfiqurasiya.Location = new Point(5, 10);
             btnKonfiqurasiya.Margin = new Padding(4, 6, 4, 6);
             btnKonfiqurasiya.MouseState = MaterialSkin.MouseState.HOVER;
             btnKonfiqurasiya.Name = "btnKonfiqurasiya";
             btnKonfiqurasiya.NoAccentTextColor = Color.Empty;
-            btnKonfiqurasiya.Size = new Size(223, 45);
+            btnKonfiqurasiya.Size = new Size(233, 45);
             btnKonfiqurasiya.TabIndex = 17;
             btnKonfiqurasiya.Text = "Konfiqurasiya";
             btnKonfiqurasiya.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
@@ -880,12 +880,12 @@ namespace AzAgroPOS.Teqdimat
             mdiTabControl.Depth = 0;
             mdiTabControl.Dock = DockStyle.Fill;
             mdiTabControl.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            mdiTabControl.Location = new Point(243, 64);
+            mdiTabControl.Location = new Point(263, 64);
             mdiTabControl.MouseState = MaterialSkin.MouseState.HOVER;
             mdiTabControl.Multiline = true;
             mdiTabControl.Name = "mdiTabControl";
             mdiTabControl.SelectedIndex = 0;
-            mdiTabControl.Size = new Size(1257, 819);
+            mdiTabControl.Size = new Size(1237, 819);
             mdiTabControl.TabIndex = 1;
             mdiTabControl.SelectedIndexChanged += mdiTabControl_SelectedIndexChanged;
             mdiTabControl.MouseClick += mdiTabControl_MouseClick;
@@ -919,9 +919,8 @@ namespace AzAgroPOS.Teqdimat
             hamisiniBaglaToolStripMenuItem.Click += hamisiniBaglaToolStripMenuItem_Click;
             // 
             // dashboardPanel
-            //
-            dashboardPanel.AutoScroll = false;
-            dashboardPanel.BackColor = Color.FromArgb(236, 240, 241);
+            // 
+            dashboardPanel.BackColor = Color.FromArgb(242, 242, 242);
             dashboardPanel.Controls.Add(dailySalesCard);
             dashboardPanel.Controls.Add(activeShiftCard);
             dashboardPanel.Controls.Add(debtorCustomersCard);
@@ -929,24 +928,24 @@ namespace AzAgroPOS.Teqdimat
             dashboardPanel.Controls.Add(monthlySalesCard);
             dashboardPanel.Controls.Add(totalDebtCard);
             dashboardPanel.Dock = DockStyle.Top;
-            dashboardPanel.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            dashboardPanel.ForeColor = Color.FromArgb(52, 73, 94);
+            dashboardPanel.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            dashboardPanel.ForeColor = Color.FromArgb(222, 0, 0, 0);
             dashboardPanel.Location = new Point(263, 64);
             dashboardPanel.Name = "dashboardPanel";
-            dashboardPanel.Padding = new Padding(5, 5, 5, 5);
-            dashboardPanel.Size = new Size(1240, 70);
+            dashboardPanel.Padding = new Padding(5);
+            dashboardPanel.Size = new Size(1237, 70);
             dashboardPanel.TabIndex = 2;
             // 
             // dailySalesCard
-            //
-            dailySalesCard.BackColor = Color.White;
+            // 
+            dailySalesCard.BackColor = Color.FromArgb(255, 255, 255);
             dailySalesCard.Controls.Add(lblDailySalesValue);
             dailySalesCard.Controls.Add(lblDailySales);
             dailySalesCard.Cursor = Cursors.Hand;
             dailySalesCard.Depth = 0;
-            dailySalesCard.ForeColor = Color.FromArgb(52, 73, 94);
+            dailySalesCard.ForeColor = Color.FromArgb(222, 0, 0, 0);
             dailySalesCard.Location = new Point(8, 8);
-            dailySalesCard.Margin = new Padding(3);
+            dailySalesCard.Margin = new Padding(14);
             dailySalesCard.MouseState = MaterialSkin.MouseState.HOVER;
             dailySalesCard.Name = "dailySalesCard";
             dailySalesCard.Padding = new Padding(10);
@@ -978,15 +977,15 @@ namespace AzAgroPOS.Teqdimat
             lblDailySales.Text = "Günlük Satışlar";
             // 
             // activeShiftCard
-            //
-            activeShiftCard.BackColor = Color.White;
+            // 
+            activeShiftCard.BackColor = Color.FromArgb(255, 255, 255);
             activeShiftCard.Controls.Add(lblActiveShiftValue);
             activeShiftCard.Controls.Add(lblActiveShift);
             activeShiftCard.Cursor = Cursors.Hand;
             activeShiftCard.Depth = 0;
-            activeShiftCard.ForeColor = Color.FromArgb(52, 73, 94);
+            activeShiftCard.ForeColor = Color.FromArgb(222, 0, 0, 0);
             activeShiftCard.Location = new Point(166, 8);
-            activeShiftCard.Margin = new Padding(3);
+            activeShiftCard.Margin = new Padding(14);
             activeShiftCard.MouseState = MaterialSkin.MouseState.HOVER;
             activeShiftCard.Name = "activeShiftCard";
             activeShiftCard.Padding = new Padding(10);
@@ -1020,14 +1019,14 @@ namespace AzAgroPOS.Teqdimat
             // 
             // debtorCustomersCard
             // 
-            debtorCustomersCard.BackColor = Color.White;
+            debtorCustomersCard.BackColor = Color.FromArgb(255, 255, 255);
             debtorCustomersCard.Controls.Add(lblDebtorCustomersValue);
             debtorCustomersCard.Controls.Add(lblDebtorCustomers);
             debtorCustomersCard.Cursor = Cursors.Hand;
             debtorCustomersCard.Depth = 0;
-            debtorCustomersCard.ForeColor = Color.FromArgb(52, 73, 94);
+            debtorCustomersCard.ForeColor = Color.FromArgb(222, 0, 0, 0);
             debtorCustomersCard.Location = new Point(640, 8);
-            debtorCustomersCard.Margin = new Padding(3);
+            debtorCustomersCard.Margin = new Padding(14);
             debtorCustomersCard.MouseState = MaterialSkin.MouseState.HOVER;
             debtorCustomersCard.Name = "debtorCustomersCard";
             debtorCustomersCard.Padding = new Padding(10);
@@ -1060,14 +1059,14 @@ namespace AzAgroPOS.Teqdimat
             // 
             // lowStockProductsCard
             // 
-            lowStockProductsCard.BackColor = Color.White;
+            lowStockProductsCard.BackColor = Color.FromArgb(255, 255, 255);
             lowStockProductsCard.Controls.Add(lblLowStockProductsValue);
             lowStockProductsCard.Controls.Add(lblLowStockProducts);
             lowStockProductsCard.Cursor = Cursors.Hand;
             lowStockProductsCard.Depth = 0;
-            lowStockProductsCard.ForeColor = Color.FromArgb(52, 73, 94);
+            lowStockProductsCard.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lowStockProductsCard.Location = new Point(798, 8);
-            lowStockProductsCard.Margin = new Padding(3);
+            lowStockProductsCard.Margin = new Padding(14);
             lowStockProductsCard.MouseState = MaterialSkin.MouseState.HOVER;
             lowStockProductsCard.Name = "lowStockProductsCard";
             lowStockProductsCard.Padding = new Padding(10);
@@ -1099,15 +1098,15 @@ namespace AzAgroPOS.Teqdimat
             lblLowStockProducts.Text = "Aşağı Stoklu Məhsullar";
             // 
             // monthlySalesCard
-            //
-            monthlySalesCard.BackColor = Color.White;
+            // 
+            monthlySalesCard.BackColor = Color.FromArgb(255, 255, 255);
             monthlySalesCard.Controls.Add(lblMonthlySalesValue);
             monthlySalesCard.Controls.Add(lblMonthlySales);
             monthlySalesCard.Cursor = Cursors.Hand;
             monthlySalesCard.Depth = 0;
-            monthlySalesCard.ForeColor = Color.FromArgb(52, 73, 94);
+            monthlySalesCard.ForeColor = Color.FromArgb(222, 0, 0, 0);
             monthlySalesCard.Location = new Point(324, 8);
-            monthlySalesCard.Margin = new Padding(3);
+            monthlySalesCard.Margin = new Padding(14);
             monthlySalesCard.MouseState = MaterialSkin.MouseState.HOVER;
             monthlySalesCard.Name = "monthlySalesCard";
             monthlySalesCard.Padding = new Padding(10);
@@ -1139,15 +1138,15 @@ namespace AzAgroPOS.Teqdimat
             lblMonthlySales.Text = "Aylıq Satışlar";
             // 
             // totalDebtCard
-            //
-            totalDebtCard.BackColor = Color.White;
+            // 
+            totalDebtCard.BackColor = Color.FromArgb(255, 255, 255);
             totalDebtCard.Controls.Add(lblTotalDebtValue);
             totalDebtCard.Controls.Add(lblTotalDebt);
             totalDebtCard.Cursor = Cursors.Hand;
             totalDebtCard.Depth = 0;
-            totalDebtCard.ForeColor = Color.FromArgb(52, 73, 94);
+            totalDebtCard.ForeColor = Color.FromArgb(222, 0, 0, 0);
             totalDebtCard.Location = new Point(482, 8);
-            totalDebtCard.Margin = new Padding(3);
+            totalDebtCard.Margin = new Padding(14);
             totalDebtCard.MouseState = MaterialSkin.MouseState.HOVER;
             totalDebtCard.Name = "totalDebtCard";
             totalDebtCard.Padding = new Padding(10);
@@ -1281,7 +1280,6 @@ namespace AzAgroPOS.Teqdimat
             Controls.SetChildIndex(mdiTabControl, 0);
             Controls.SetChildIndex(dashboardPanel, 0);
             pnlMenu.ResumeLayout(false);
-            pnlMenu.PerformLayout();
             pnlUserInfo.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)picUserIcon).EndInit();
             tabContextMenu.ResumeLayout(false);
