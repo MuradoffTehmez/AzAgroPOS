@@ -1,68 +1,505 @@
-﻿// Fayl: AzAgroPOS.Teqdimat/Teqdimatcilar/AnbarPresenter.cs
-namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
-
+// Fayl: AzAgroPOS.Teqdimat/Teqdimatcilar/AnbarPresenter.cs
+using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
+using AzAgroPOS.Teqdimat.Sabitler;
+using AzAgroPOS.Teqdimat.Yardimcilar;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-
-/// <summary>
-/// Anbar formu ilə biznes məntiqi (AnbarManager) arasında əlaqəni qurur.
-/// </summary>
-public class AnbarPresenter
+namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 {
-    private readonly IAnbarView _view;
-    private readonly AnbarManager _anbarManager;
-
-    public AnbarPresenter(IAnbarView view, AnbarManager anbarManager)
+    /// <summary>
+    /// Anbar formu ilə biznes məntiqi (AnbarManager) arasında əlaqəni qurur.
+    /// MVP pattern-in Presenter hissəsi.
+    /// </summary>
+    public class AnbarPresenter
     {
-        _view = view;
-        _anbarManager = anbarManager;
-        //_anbarManager = new AnbarManager(unitOfWork);
+        private readonly IAnbarView _view;
+        private readonly AnbarManager _anbarManager;
+        private readonly StokHareketiManager _stokHareketiManager;
 
-        _view.AxtarIstek += async (s, e) => await MehsulAxtar();
-        _view.StokArtirIstek += async (s, e) => await StokArtir();
-    }
+        public AnbarPresenter(
+            IAnbarView view,
+            AnbarManager anbarManager,
+            StokHareketiManager stokHareketiManager)
+        {
+            _view = view ?? throw new ArgumentNullException(nameof(view));
+            _anbarManager = anbarManager ?? throw new ArgumentNullException(nameof(anbarManager));
+            _stokHareketiManager = stokHareketiManager ?? throw new ArgumentNullException(nameof(stokHareketiManager));
 
-    private async Task MehsulAxtar()
-    {
-        var netice = await _anbarManager.MehsulTapAsync(_view.AxtarisMetni);
-        if (netice.UgurluDur)
-        {
-            _view.MehsulMelumatlariniGoster(netice.Data);
-        }
-        else
-        {
-            _view.MesajGoster(netice.Mesaj, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            _view.FormuTemizle(true);
-        }
-    }
-
-    private async Task StokArtir()
-    {
-        if (!_view.SecilmisMehsulId.HasValue)
-        {
-            _view.MesajGoster("Zəhmət olmasa, əvvəlcə məhsul axtarın.", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            return;
+            SubscribeToViewEvents();
         }
 
-        if (!int.TryParse(_view.ElaveOlunanSay, out int say))
+        #region Event Subscription
+
+        private void SubscribeToViewEvents()
         {
-            _view.MesajGoster("Əlavə olunacaq say düzgün formatda deyil.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            return;
+            _view.AxtarIstek += async (s, e) => await MehsulAxtarAsync();
+            _view.StokArtirIstek += async (s, e) => await StokArtirAsync();
+            _view.StokAzaltIstek += async (s, e) => await StokAzaltAsync();
+            _view.StokDuzelisIstek += async (s, e) => await StokDuzelisAsync();
+            _view.TemizleIstek += (s, e) => FormuTemizle();
+            _view.TarixceGosterIstek += async (s, e) => await TarixceGosterAsync();
+            _view.FormYuklendi += async (s, e) => await FormYuklendiAsync();
         }
 
-        var netice = await _anbarManager.AnbardakiStokuArtirAsync(_view.SecilmisMehsulId.Value, say);
+        #endregion
 
-        if (netice.UgurluDur)
+        #region Form Yüklənmə
+
+        /// <summary>
+        /// Form yüklənərkən ilk tənzimləmələr
+        /// </summary>
+        private async Task FormYuklendiAsync()
         {
-            _view.MesajGoster($"Məhsulun yeni sayı: {netice.Data}", "Uğurlu Əməliyyat", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            _view.FormuTemizle();
+            try
+            {
+                _view.YuklemeGoster(AnbarSabitleri.UIMetinler.YukleniR);
+
+                // İlkin vəziyyət
+                _view.MehsulPaneliniGoster(false);
+                _view.EmeliyyatDuymeleriniAktivet(false);
+                _view.AxtarisFocus();
+
+                // Son əməliyyatları yüklə
+                await TarixceGridiniYenileAsync();
+
+                _view.YuklemeGizle();
+            }
+            catch (Exception ex)
+            {
+                _view.YuklemeGizle();
+                _view.XetaMesajiGoster($"{AnbarSabitleri.XetaMesajlari.MelumatYuklenmeXetasi}: {ex.Message}");
+            }
         }
-        else
+
+        #endregion
+
+        #region Məhsul Axtarma
+
+        /// <summary>
+        /// Məhsulu axtarır (barkod və ya stok kodu ilə)
+        /// </summary>
+        private async Task MehsulAxtarAsync()
         {
-            _view.MesajGoster(netice.Mesaj, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            try
+            {
+                // Validasiya
+                _view.ButunXetalariTemizle();
+                var validasiyaNetice = AnbarValidasiyasi.AxtarisMetniValidet(_view.AxtarisMetni);
+
+                if (!validasiyaNetice.UgurludurMu)
+                {
+                    _view.ValidasiyaXetalariGoster(validasiyaNetice.XetalariGoster());
+                    return;
+                }
+
+                _view.YuklemeGoster(AnbarSabitleri.UIMetinler.Axtarilir);
+                _view.AxtarDuymesiniAktivet(false);
+
+                // Məhsulu tap
+                var netice = await _anbarManager.MehsulTapAsync(_view.AxtarisMetni.Trim());
+
+                _view.YuklemeGizle();
+                _view.AxtarDuymesiniAktivet(true);
+
+                if (netice.UgurluDur && netice.Data != null)
+                {
+                    // Məhsul tapıldı
+                    _view.MehsulMelumatlariniGoster(netice.Data);
+                    _view.MehsulPaneliniGoster(true);
+                    _view.EmeliyyatDuymeleriniAktivet(true);
+                    _view.SayFocus();
+
+                    // Minimum stok xəbərdarlığı
+                    if (netice.Data.MovcudSay <= netice.Data.MinimumStok && netice.Data.MinimumStok > 0)
+                    {
+                        _view.XeberdarlikMesajiGoster(AnbarSabitleri.MelumatMesajlari.MinimumStokXeberdarligi);
+                    }
+                    else if (netice.Data.MovcudSay == 0)
+                    {
+                        _view.XeberdarlikMesajiGoster(AnbarSabitleri.MelumatMesajlari.StokBitdi);
+                    }
+                }
+                else
+                {
+                    // Məhsul tapılmadı
+                    _view.XetaMesajiGoster(AnbarSabitleri.XetaMesajlari.MehsulTapilmadi);
+                    _view.FormuTemizle(axtarisQutusuQalsin: true);
+                    _view.AxtarisFocus();
+                }
+            }
+            catch (Exception ex)
+            {
+                _view.YuklemeGizle();
+                _view.AxtarDuymesiniAktivet(true);
+                _view.XetaMesajiGoster($"{AnbarSabitleri.XetaMesajlari.EmeliyyatUgursuz}: {ex.Message}");
+            }
         }
+
+        #endregion
+
+        #region Stok Artırma
+
+        /// <summary>
+        /// Stok artırma əməliyyatı
+        /// </summary>
+        private async Task StokArtirAsync()
+        {
+            try
+            {
+                _view.ButunXetalariTemizle();
+
+                // Məhsul seçilmişmi?
+                var mehsulValidasiya = AnbarValidasiyasi.MehsulSecilmisValidet(_view.SecilmisMehsulId);
+                if (!mehsulValidasiya.UgurludurMu)
+                {
+                    _view.XetaMesajiGoster(mehsulValidasiya.XetalariGoster());
+                    return;
+                }
+
+                // Say validasiyası
+                var sayValidasiya = AnbarValidasiyasi.SayValidet(_view.ElaveOlunanSay);
+                if (!sayValidasiya.UgurludurMu)
+                {
+                    _view.ValidasiyaXetalariGoster(sayValidasiya.XetalariGoster());
+                    return;
+                }
+
+                decimal say = decimal.Parse(_view.ElaveOlunanSay.Trim());
+
+                // Təsdiq soruşu
+                var mesaj = string.Format(AnbarSabitleri.TesdiqSorulari.StokArtirmaTesdiqi, say);
+                if (!_view.TesdiqSorusu(mesaj))
+                {
+                    return;
+                }
+
+                _view.YuklemeGoster(AnbarSabitleri.UIMetinler.Saxlanir);
+                _view.EmeliyyatDuymeleriniAktivet(false);
+
+                // Stoku artır
+                var netice = await _anbarManager.AnbardakiStokuArtirAsync(
+                    _view.SecilmisMehsulId.Value,
+                    (int)Math.Round(say));
+
+                _view.YuklemeGizle();
+                _view.EmeliyyatDuymeleriniAktivet(true);
+
+                if (netice.UgurluDur)
+                {
+                    var ugurMesaj = string.Format(AnbarSabitleri.UgurMesajlari.StokArtirilib, netice.Data);
+                    _view.UgurMesajiGoster(ugurMesaj);
+
+                    // Tarixçəni yenilə
+                    await TarixceGridiniYenileAsync();
+
+                    // Formu təmizlə
+                    _view.FormuTemizle();
+                    _view.AxtarisFocus();
+                }
+                else
+                {
+                    _view.XetaMesajiGoster(netice.Mesaj);
+                }
+            }
+            catch (Exception ex)
+            {
+                _view.YuklemeGizle();
+                _view.EmeliyyatDuymeleriniAktivet(true);
+                _view.XetaMesajiGoster($"{AnbarSabitleri.XetaMesajlari.EmeliyyatUgursuz}: {ex.Message}");
+            }
+        }
+
+        #endregion
+
+        #region Stok Azaltma
+
+        /// <summary>
+        /// Stok azaltma əməliyyatı
+        /// </summary>
+        private async Task StokAzaltAsync()
+        {
+            try
+            {
+                _view.ButunXetalariTemizle();
+
+                // Məhsul seçilmişmi?
+                var mehsulValidasiya = AnbarValidasiyasi.MehsulSecilmisValidet(_view.SecilmisMehsulId);
+                if (!mehsulValidasiya.UgurludurMu)
+                {
+                    _view.XetaMesajiGoster(mehsulValidasiya.XetalariGoster());
+                    return;
+                }
+
+                // Say validasiyası
+                var sayValidasiya = AnbarValidasiyasi.SayValidet(_view.ElaveOlunanSay);
+                if (!sayValidasiya.UgurludurMu)
+                {
+                    _view.ValidasiyaXetalariGoster(sayValidasiya.XetalariGoster());
+                    return;
+                }
+
+                decimal say = decimal.Parse(_view.ElaveOlunanSay.Trim());
+
+                // Mövcud stoku yoxla
+                var mehsulNetice = await _anbarManager.MehsulTapAsync(_view.AxtarisMetni.Trim());
+                if (!mehsulNetice.UgurluDur || mehsulNetice.Data == null)
+                {
+                    _view.XetaMesajiGoster(AnbarSabitleri.XetaMesajlari.MehsulTapilmadi);
+                    return;
+                }
+
+                decimal movcudStok = mehsulNetice.Data.MovcudSay;
+
+                // Azaltma validasiyası
+                var azaltmaValidasiya = AnbarValidasiyasi.StokAzaltmaValidet(movcudStok, say);
+                if (!azaltmaValidasiya.UgurludurMu)
+                {
+                    _view.XetaMesajiGoster(azaltmaValidasiya.XetalariGoster());
+                    return;
+                }
+
+                // Xəbərdarlıqlar
+                if (AnbarValidasiyasi.StokSifirOlacaqmi(movcudStok, say))
+                {
+                    if (!_view.TesdiqSorusu(AnbarSabitleri.XeberdarlikMesajlari.StokSifirOlacaq))
+                    {
+                        return;
+                    }
+                }
+                else if (AnbarValidasiyasi.BoyukMiqdarAzaltmami(movcudStok, say))
+                {
+                    var xeberdarlik = string.Format(
+                        AnbarSabitleri.XeberdarlikMesajlari.BoyukMiqdarAzaltma,
+                        say);
+                    if (!_view.TesdiqSorusu(xeberdarlik))
+                    {
+                        return;
+                    }
+                }
+
+                // Təsdiq soruşu
+                var mesaj = string.Format(AnbarSabitleri.TesdiqSorulari.StokAzaltmaTesdiqi, say);
+                if (!_view.TesdiqSorusu(mesaj))
+                {
+                    return;
+                }
+
+                _view.YuklemeGoster(AnbarSabitleri.UIMetinler.Saxlanir);
+                _view.EmeliyyatDuymeleriniAktivet(false);
+
+                // Stoku azalt (mənfi say göndəririk)
+                var netice = await _anbarManager.AnbardakiStokuArtirAsync(
+                    _view.SecilmisMehsulId.Value,
+                    -(int)Math.Round(say));
+
+                _view.YuklemeGizle();
+                _view.EmeliyyatDuymeleriniAktivet(true);
+
+                if (netice.UgurluDur)
+                {
+                    var ugurMesaj = string.Format(AnbarSabitleri.UgurMesajlari.StokAzaldilib, netice.Data);
+                    _view.UgurMesajiGoster(ugurMesaj);
+
+                    // Tarixçəni yenilə
+                    await TarixceGridiniYenileAsync();
+
+                    // Formu təmizlə
+                    _view.FormuTemizle();
+                    _view.AxtarisFocus();
+                }
+                else
+                {
+                    _view.XetaMesajiGoster(netice.Mesaj);
+                }
+            }
+            catch (Exception ex)
+            {
+                _view.YuklemeGizle();
+                _view.EmeliyyatDuymeleriniAktivet(true);
+                _view.XetaMesajiGoster($"{AnbarSabitleri.XetaMesajlari.EmeliyyatUgursuz}: {ex.Message}");
+            }
+        }
+
+        #endregion
+
+        #region Stok Düzəliş
+
+        /// <summary>
+        /// Stok düzəliş əməliyyatı (manuel düzəltmə)
+        /// </summary>
+        private async Task StokDuzelisAsync()
+        {
+            try
+            {
+                _view.ButunXetalariTemizle();
+
+                // Məhsul seçilmişmi?
+                var mehsulValidasiya = AnbarValidasiyasi.MehsulSecilmisValidet(_view.SecilmisMehsulId);
+                if (!mehsulValidasiya.UgurludurMu)
+                {
+                    _view.XetaMesajiGoster(mehsulValidasiya.XetalariGoster());
+                    return;
+                }
+
+                // Yeni stok sayı validasiyası
+                var sayValidasiya = AnbarValidasiyasi.SayValidet(_view.ElaveOlunanSay);
+                if (!sayValidasiya.UgurludurMu)
+                {
+                    _view.ValidasiyaXetalariGoster(sayValidasiya.XetalariGoster());
+                    return;
+                }
+
+                decimal yeniStok = decimal.Parse(_view.ElaveOlunanSay.Trim());
+
+                // Qeyd mütləqdir düzəliş üçün
+                var qeydValidasiya = AnbarValidasiyasi.QeydValidet(_view.Qeyd, telebe: true);
+                if (!qeydValidasiya.UgurludurMu)
+                {
+                    _view.ValidasiyaXetalariGoster(qeydValidasiya.XetalariGoster());
+                    return;
+                }
+
+                // Düzəliş validasiyası
+                var duzelisValidasiya = AnbarValidasiyasi.StokDuzelisValidet(yeniStok, _view.Qeyd);
+                if (!duzelisValidasiya.UgurludurMu)
+                {
+                    _view.XetaMesajiGoster(duzelisValidasiya.XetalariGoster());
+                    return;
+                }
+
+                // Təsdiq soruşu
+                var mesaj = string.Format(AnbarSabitleri.TesdiqSorulari.StokDuzelisTesdiqi, yeniStok);
+                if (!_view.TesdiqSorusu(mesaj))
+                {
+                    return;
+                }
+
+                _view.YuklemeGoster(AnbarSabitleri.UIMetinler.Saxlanir);
+                _view.EmeliyyatDuymeleriniAktivet(false);
+
+                // Mövcud stoku əldə et
+                var mehsulNetice = await _anbarManager.MehsulTapAsync(_view.AxtarisMetni.Trim());
+                if (!mehsulNetice.UgurluDur || mehsulNetice.Data == null)
+                {
+                    _view.YuklemeGizle();
+                    _view.EmeliyyatDuymeleriniAktivet(true);
+                    _view.XetaMesajiGoster(AnbarSabitleri.XetaMesajlari.MehsulTapilmadi);
+                    return;
+                }
+
+                decimal movcudStok = mehsulNetice.Data.MovcudSay;
+                decimal ferq = yeniStok - movcudStok;
+
+                // Stoku düzəlt
+                var netice = await _anbarManager.AnbardakiStokuArtirAsync(
+                    _view.SecilmisMehsulId.Value,
+                    (int)Math.Round(ferq));
+
+                _view.YuklemeGizle();
+                _view.EmeliyyatDuymeleriniAktivet(true);
+
+                if (netice.UgurluDur)
+                {
+                    var ugurMesaj = string.Format(AnbarSabitleri.UgurMesajlari.StokDuzelisEdildi, netice.Data);
+                    _view.UgurMesajiGoster(ugurMesaj);
+
+                    // Tarixçəni yenilə
+                    await TarixceGridiniYenileAsync();
+
+                    // Formu təmizlə
+                    _view.FormuTemizle();
+                    _view.AxtarisFocus();
+                }
+                else
+                {
+                    _view.XetaMesajiGoster(netice.Mesaj);
+                }
+            }
+            catch (Exception ex)
+            {
+                _view.YuklemeGizle();
+                _view.EmeliyyatDuymeleriniAktivet(true);
+                _view.XetaMesajiGoster($"{AnbarSabitleri.XetaMesajlari.EmeliyyatUgursuz}: {ex.Message}");
+            }
+        }
+
+        #endregion
+
+        #region Tarixçə
+
+        /// <summary>
+        /// Son stok hərəkətlərini göstərir
+        /// </summary>
+        private async Task TarixceGosterAsync()
+        {
+            try
+            {
+                if (!_view.SecilmisMehsulId.HasValue)
+                {
+                    _view.XetaMesajiGoster(AnbarSabitleri.XetaMesajlari.MehsulSecilmeyib);
+                    return;
+                }
+
+                await TarixceGridiniYenileAsync(_view.SecilmisMehsulId.Value);
+            }
+            catch (Exception ex)
+            {
+                _view.XetaMesajiGoster($"{AnbarSabitleri.XetaMesajlari.EmeliyyatUgursuz}: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Tarixçə grid-ini yeniləyir
+        /// </summary>
+        private async Task TarixceGridiniYenileAsync(int? mehsulId = null)
+        {
+            try
+            {
+                _view.YuklemeGoster(AnbarSabitleri.UIMetinler.YukleniR);
+
+                // TODO: StokHareketiManager-də tarixçə metodları əlavə olunmalıdır
+                // Müvəqqəti olaraq boş tarixçə göstəririk
+                await Task.Delay(500); // Simulating async operation
+
+                _view.StokTarixcesiniGoster(new List<StokHareketiDto>());
+
+                _view.YuklemeGizle();
+            }
+            catch (Exception)
+            {
+                _view.YuklemeGizle();
+                // Tarixçə yüklənməsə də kritik deyil, səssiz keçək
+            }
+        }
+
+        #endregion
+
+        #region Form Təmizləmə
+
+        /// <summary>
+        /// Formu təmizləyir
+        /// </summary>
+        private void FormuTemizle()
+        {
+            try
+            {
+                _view.FormuTemizle(axtarisQutusuQalsin: false);
+                _view.MehsulPaneliniGoster(false);
+                _view.EmeliyyatDuymeleriniAktivet(false);
+                _view.ButunXetalariTemizle();
+                _view.AxtarisFocus();
+            }
+            catch (Exception ex)
+            {
+                _view.XetaMesajiGoster($"Form təmizlənərkən xəta: {ex.Message}");
+            }
+        }
+
+        #endregion
     }
 }
