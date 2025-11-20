@@ -78,6 +78,7 @@ public partial class AnbarFormu : BazaForm, IAnbarView
     public event EventHandler TemizleIstek;
     public event EventHandler TarixceGosterIstek;
     public event EventHandler FormYuklendi;
+    public event EventHandler<int> MehsulSecildi;
 
     #endregion
 
@@ -103,17 +104,18 @@ public partial class AnbarFormu : BazaForm, IAnbarView
 
     private void FormatDataGrid()
     {
-        // Tarix sütunu formatı
-        dgvTarixce.Columns["colTarix"].DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
+        // Tarixçə grid formatlaması
+        if (dgvTarixce.Columns["colTarix"] != null)
+        {
+            dgvTarixce.Columns["colTarix"].DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
+        }
 
-        // Say sütunları formatı (sağa hizala)
-        dgvTarixce.Columns["colKohneStok"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-        dgvTarixce.Columns["colDeyisiklik"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-        dgvTarixce.Columns["colYeniStok"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-
-        dgvTarixce.Columns["colKohneStok"].DefaultCellStyle.Format = "N2";
-        dgvTarixce.Columns["colDeyisiklik"].DefaultCellStyle.Format = "N2";
-        dgvTarixce.Columns["colYeniStok"].DefaultCellStyle.Format = "N2";
+        // Dəyişiklik sütunu formatı (sağa hizala)
+        if (dgvTarixce.Columns["colDeyisiklik"] != null)
+        {
+            dgvTarixce.Columns["colDeyisiklik"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            dgvTarixce.Columns["colDeyisiklik"].DefaultCellStyle.Format = "N2";
+        }
     }
 
     private void WireUpEventHandlers()
@@ -121,6 +123,9 @@ public partial class AnbarFormu : BazaForm, IAnbarView
         // Form events
         this.Load += AnbarFormu_Load;
         this.KeyDown += AnbarFormu_KeyDown;
+
+        // Products grid events
+        dgvMehsullar.SelectionChanged += DgvMehsullar_SelectionChanged;
 
         // Search events
         txtAxtaris.KeyDown += TxtAxtaris_KeyDown;
@@ -185,6 +190,20 @@ public partial class AnbarFormu : BazaForm, IAnbarView
                     e.Handled = true;
                 }
                 break;
+        }
+    }
+
+    #endregion
+
+    #region Event Handlers - Products Grid
+
+    private void DgvMehsullar_SelectionChanged(object sender, EventArgs e)
+    {
+        if (_isLoading || _suppressEvents) return;
+
+        if (dgvMehsullar.SelectedRows.Count > 0 && dgvMehsullar.SelectedRows[0].DataBoundItem is MehsulDto mehsul)
+        {
+            MehsulSecildi?.Invoke(this, mehsul.Id);
         }
     }
 
@@ -350,29 +369,76 @@ public partial class AnbarFormu : BazaForm, IAnbarView
             if (row.DataBoundItem is StokHareketiDto hareket)
             {
                 // Əməliyyat növünə görə rəng
-                switch (hareket.EmeliyyatNovu?.ToUpper())
+                if (dgvTarixce.Columns.Contains("colEmeliyyatNovu"))
                 {
-                    case "ARTIRMA":
-                        row.Cells["colEmeliyyatNovu"].Style.ForeColor = Color.FromArgb(76, 175, 80); // Yaşıl
-                        break;
-                    case "AZALTMA":
-                        row.Cells["colEmeliyyatNovu"].Style.ForeColor = Color.FromArgb(244, 67, 54); // Qırmızı
-                        break;
-                    case "DUZELIS":
-                        row.Cells["colEmeliyyatNovu"].Style.ForeColor = Color.FromArgb(33, 150, 243); // Mavi
-                        break;
+                    switch (hareket.EmeliyyatNovu?.ToUpper())
+                    {
+                        case "ARTIRMA":
+                        case "DAXILOLMA":
+                            row.Cells["colEmeliyyatNovu"].Style.ForeColor = Color.FromArgb(76, 175, 80); // Yaşıl
+                            break;
+                        case "AZALTMA":
+                        case "XARICOLMA":
+                            row.Cells["colEmeliyyatNovu"].Style.ForeColor = Color.FromArgb(244, 67, 54); // Qırmızı
+                            break;
+                        case "DUZELIS":
+                            row.Cells["colEmeliyyatNovu"].Style.ForeColor = Color.FromArgb(33, 150, 243); // Mavi
+                            break;
+                    }
                 }
 
                 // Dəyişiklik rəngi (+ yaşıl, - qırmızı)
-                if (hareket.DeyisiklikMiqdari > 0)
+                if (dgvTarixce.Columns.Contains("colDeyisiklik"))
                 {
-                    row.Cells["colDeyisiklik"].Style.ForeColor = Color.FromArgb(76, 175, 80);
-                }
-                else if (hareket.DeyisiklikMiqdari < 0)
-                {
-                    row.Cells["colDeyisiklik"].Style.ForeColor = Color.FromArgb(244, 67, 54);
+                    if (hareket.DeyisiklikMiqdari > 0)
+                    {
+                        row.Cells["colDeyisiklik"].Style.ForeColor = Color.FromArgb(76, 175, 80);
+                    }
+                    else if (hareket.DeyisiklikMiqdari < 0)
+                    {
+                        row.Cells["colDeyisiklik"].Style.ForeColor = Color.FromArgb(244, 67, 54);
+                    }
                 }
             }
+        }
+    }
+
+    public void ButunMehsullariGoster(List<MehsulDto> mehsullar)
+    {
+        _suppressEvents = true;
+        try
+        {
+            if (mehsullar == null || mehsullar.Count == 0)
+            {
+                dgvMehsullar.DataSource = null;
+                return;
+            }
+
+            dgvMehsullar.DataSource = mehsullar;
+
+            // Rəng kodlaması - minimum stok xəbərdarlığı
+            foreach (DataGridViewRow row in dgvMehsullar.Rows)
+            {
+                if (row.DataBoundItem is MehsulDto mehsul)
+                {
+                    if (mehsul.MovcudSay <= 0)
+                    {
+                        // Stok bitibsə - qırmızı
+                        row.DefaultCellStyle.BackColor = Color.FromArgb(255, 235, 238);
+                        row.DefaultCellStyle.ForeColor = Color.FromArgb(183, 28, 28);
+                    }
+                    else if (mehsul.MinimumStok > 0 && mehsul.MovcudSay <= mehsul.MinimumStok)
+                    {
+                        // Minimum stokdadırsa - narıncı
+                        row.DefaultCellStyle.BackColor = Color.FromArgb(255, 243, 224);
+                        row.DefaultCellStyle.ForeColor = Color.FromArgb(230, 81, 0);
+                    }
+                }
+            }
+        }
+        finally
+        {
+            _suppressEvents = false;
         }
     }
 

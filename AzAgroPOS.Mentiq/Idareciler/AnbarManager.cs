@@ -89,4 +89,38 @@ public class AnbarManager
         }
 
     }
+
+    /// <summary>
+    /// Bütün məhsulların siyahısını DTO formatında qaytarır.
+    /// </summary>
+    /// <returns>Məhsul siyahısı.</returns>
+    public async Task<EmeliyyatNeticesi<List<MehsulDto>>> ButunMehsullariGetirAsync()
+    {
+        Logger.MelumatYaz("ButunMehsullariGetirAsync çağırıldı");
+        try
+        {
+            var mehsullar = await _unitOfWork.Mehsullar.ButununuGetirAsync();
+
+            var mehsulDtolar = mehsullar.Select(m => new MehsulDto
+            {
+                Id = m.Id,
+                Ad = m.Ad,
+                StokKodu = m.StokKodu,
+                Barkod = m.Barkod,
+                MovcudSay = m.MovcudSay,
+                AlisQiymeti = m.AlisQiymeti,
+                MinimumStok = m.MinimumStok,
+                OlcuVahidi = m.OlcuVahidi,
+                OlcuVahidiAdi = m.OlcuVahidi.ToString()
+            }).OrderBy(m => m.Ad).ToList();
+
+            Logger.MelumatYaz($"Bütün məhsullar gətirildi. Say: {mehsulDtolar.Count}");
+            return EmeliyyatNeticesi<List<MehsulDto>>.Ugurlu(mehsulDtolar);
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Bütün məhsullar gətirilmərkən xəta baş verdi: ");
+            return EmeliyyatNeticesi<List<MehsulDto>>.Ugursuz($"Məhsullar gətirilmərkən xəta: {ex.Message}");
+        }
+    }
 }

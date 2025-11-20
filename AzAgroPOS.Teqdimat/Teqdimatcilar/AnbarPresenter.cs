@@ -44,6 +44,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             _view.TemizleIstek += (s, e) => FormuTemizle();
             _view.TarixceGosterIstek += async (s, e) => await TarixceGosterAsync();
             _view.FormYuklendi += async (s, e) => await FormYuklendiAsync();
+            _view.MehsulSecildi += async (s, mehsulId) => await MehsulSecildiAsync(mehsulId);
         }
 
         #endregion
@@ -62,17 +63,85 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                 // İlkin vəziyyət
                 _view.MehsulPaneliniGoster(false);
                 _view.EmeliyyatDuymeleriniAktivet(false);
-                _view.AxtarisFocus();
+
+                // Bütün məhsulları yüklə
+                await ButunMehsullariYukleAsync();
 
                 // Son əməliyyatları yüklə
                 await TarixceGridiniYenileAsync();
+
+                _view.YuklemeGizle();
+                _view.AxtarisFocus();
+            }
+            catch (Exception ex)
+            {
+                _view.YuklemeGizle();
+                _view.XetaMesajiGoster($"{AnbarSabitleri.XetaMesajlari.MelumatYuklenmeXetasi}: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Bütün məhsulları yükləyib göstərir
+        /// </summary>
+        private async Task ButunMehsullariYukleAsync()
+        {
+            try
+            {
+                var netice = await _anbarManager.ButunMehsullariGetirAsync();
+
+                if (netice.UgurluDur && netice.Data != null)
+                {
+                    _view.ButunMehsullariGoster(netice.Data);
+                }
+            }
+            catch (Exception ex)
+            {
+                _view.XetaMesajiGoster($"Məhsullar yüklənərkən xəta: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Məhsullar grid-indən məhsul seçildikdə işə düşür
+        /// </summary>
+        private async Task MehsulSecildiAsync(int mehsulId)
+        {
+            try
+            {
+                _view.YuklemeGoster("Məhsul məlumatları yüklənir...");
+
+                // Məhsul məlumatlarını əldə et
+                var mehsullar = await _anbarManager.ButunMehsullariGetirAsync();
+                if (mehsullar.UgurluDur && mehsullar.Data != null)
+                {
+                    var mehsul = mehsullar.Data.Find(m => m.Id == mehsulId);
+                    if (mehsul != null)
+                    {
+                        // Məhsul məlumatlarını göstər
+                        _view.MehsulMelumatlariniGoster(mehsul);
+                        _view.MehsulPaneliniGoster(true);
+                        _view.EmeliyyatDuymeleriniAktivet(true);
+
+                        // Məhsulun tarixçəsini yüklə
+                        await TarixceGridiniYenileAsync(mehsulId);
+
+                        // Minimum stok xəbərdarlığı
+                        if (mehsul.MovcudSay <= mehsul.MinimumStok && mehsul.MinimumStok > 0)
+                        {
+                            _view.XeberdarlikMesajiGoster(AnbarSabitleri.MelumatMesajlari.MinimumStokXeberdarligi);
+                        }
+                        else if (mehsul.MovcudSay == 0)
+                        {
+                            _view.XeberdarlikMesajiGoster(AnbarSabitleri.MelumatMesajlari.StokBitdi);
+                        }
+                    }
+                }
 
                 _view.YuklemeGizle();
             }
             catch (Exception ex)
             {
                 _view.YuklemeGizle();
-                _view.XetaMesajiGoster($"{AnbarSabitleri.XetaMesajlari.MelumatYuklenmeXetasi}: {ex.Message}");
+                _view.XetaMesajiGoster($"Məhsul seçilmərkən xəta: {ex.Message}");
             }
         }
 
@@ -462,11 +531,20 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             {
                 _view.YuklemeGoster(AnbarSabitleri.UIMetinler.YukleniR);
 
-                // TODO: StokHareketiManager-də tarixçə metodları əlavə olunmalıdır
-                // Müvəqqəti olaraq boş tarixçə göstəririk
-                await Task.Delay(500); // Simulating async operation
+                // Stok hərəkətlərini əldə et
+                var netice = await _stokHareketiManager.StokHereketleriniDtoFormatindaGetirAsync(
+                    mehsulId: mehsulId,
+                    limit: 50);
 
-                _view.StokTarixcesiniGoster(new List<StokHareketiDto>());
+                if (netice.UgurluDur && netice.Data != null)
+                {
+                    _view.StokTarixcesiniGoster(netice.Data);
+                }
+                else
+                {
+                    // Xəta olarsa boş siyahı göstər
+                    _view.StokTarixcesiniGoster(new List<StokHareketiDto>());
+                }
 
                 _view.YuklemeGizle();
             }
@@ -474,6 +552,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             {
                 _view.YuklemeGizle();
                 // Tarixçə yüklənməsə də kritik deyil, səssiz keçək
+                _view.StokTarixcesiniGoster(new List<StokHareketiDto>());
             }
         }
 

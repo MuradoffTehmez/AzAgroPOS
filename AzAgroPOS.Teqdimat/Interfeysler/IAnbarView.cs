@@ -91,6 +91,11 @@ namespace AzAgroPOS.Teqdimat.Interfeysler
         /// </summary>
         event EventHandler FormYuklendi;
 
+        /// <summary>
+        /// Məhsullar grid-indən məhsul seçildikdə işə düşür
+        /// </summary>
+        event EventHandler<int> MehsulSecildi;
+
         #endregion
 
         #region Methods - Display Data
@@ -104,6 +109,11 @@ namespace AzAgroPOS.Teqdimat.Interfeysler
         /// Stok tarixçəsini göstərir
         /// </summary>
         void StokTarixcesiniGoster(List<StokHareketiDto> tarixce);
+
+        /// <summary>
+        /// Bütün məhsulların siyahısını göstərir
+        /// </summary>
+        void ButunMehsullariGoster(List<MehsulDto> mehsullar);
 
         #endregion
 

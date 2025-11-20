@@ -410,4 +410,63 @@ public class StokHareketiManager
             return EmeliyyatNeticesi<SehifelenmisMelumat<StokHareketi>>.Ugursuz($"Səhifələnmiş stok hərəkətləri əldə edilərkən xəta: {ex.Message}");
         }
     }
+
+    /// <summary>
+    /// Stok hərəkətlərini DTO formatında qaytarır (UI üçün)
+    /// </summary>
+    /// <param name="mehsulId">Məhsul ID (null olarsa bütün məhsullar)</param>
+    /// <param name="limit">Maksimum qeyd sayı</param>
+    /// <returns>StokHareketiDto siyahısı</returns>
+    public async Task<EmeliyyatNeticesi<List<DTOs.StokHareketiDto>>> StokHereketleriniDtoFormatindaGetirAsync(
+        int? mehsulId = null,
+        int limit = 50)
+    {
+        Logger.MelumatYaz($"Stok hərəkətləri DTO formatında əldə edilir - MəhsulId: {mehsulId}, Limit: {limit}");
+
+        try
+        {
+            IEnumerable<StokHareketi> hereketler;
+
+            if (mehsulId.HasValue)
+            {
+                // Məhsul üzrə hərəkətlər
+                hereketler = await _stokHareketiRepo.MehsulHereketleriniGetir(mehsulId.Value);
+            }
+            else
+            {
+                // Bütün hərəkətlər
+                hereketler = await _stokHareketiRepo.ButununuGetirAsync();
+            }
+
+            // Entity-ləri DTO-ya çevir
+            var dtolar = hereketler
+                .OrderByDescending(h => h.Tarix)
+                .Take(limit)
+                .Select(h => new DTOs.StokHareketiDto
+                {
+                    Id = h.Id,
+                    Tarix = h.Tarix,
+                    IstifadeciAdi = h.Istifadeci != null ? h.Istifadeci.TamAd : "Sistem",
+                    EmeliyyatNovu = h.SenedNovu.ToString(),
+                    MehsulId = h.MehsulId,
+                    MehsulAdi = h.Mehsul != null ? h.Mehsul.Ad : "N/A",
+                    Qeyd = h.Qeyd ?? "",
+                    // Köhnə stok, dəyişiklik və yeni stoku hesablamaq üçün
+                    // Bu məlumatlar entity-də yoxdur, ona görə 0 qoyuruq
+                    // Real hesabat üçün bu məlumatları ayrıca hesablamaq lazımdır
+                    KohneStok = 0,
+                    DeyisiklikMiqdari = h.HareketTipi == StokHareketTipi.Daxilolma ? h.Miqdar : -h.Miqdar,
+                    YeniStok = 0
+                })
+                .ToList();
+
+            Logger.MelumatYaz($"Stok hərəkətləri DTO formatında əldə edildi. Say: {dtolar.Count}");
+            return EmeliyyatNeticesi<List<DTOs.StokHareketiDto>>.Ugurlu(dtolar);
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Stok hərəkətləri DTO formatında əldə edilərkən xəta baş verdi");
+            return EmeliyyatNeticesi<List<DTOs.StokHareketiDto>>.Ugursuz($"Stok hərəkətləri əldə edilərkən xəta: {ex.Message}");
+        }
+    }
 }
