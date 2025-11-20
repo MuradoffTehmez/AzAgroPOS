@@ -158,4 +158,90 @@ public class KonfiqurasiyaManager
             return EmeliyyatNeticesi<IEnumerable<KonfiqurasiyaDto>>.Ugursuz($"Konfiqurasiya parametrləri götürülərkən xəta baş verdi: {ex.Message} + {ex.StackTrace}");
         }
     }
+
+    /// <summary>
+    /// Konfiqurasiya dəyərini götürür, tapılmazsa varsayılan dəyəri qaytarır
+    /// </summary>
+    /// <param name="acar">Konfiqurasiya açarı</param>
+    /// <param name="varsayilan">Varsayılan dəyər</param>
+    /// <returns>Konfiqurasiya dəyəri və ya varsayılan dəyər</returns>
+    public async Task<string> GetirAsync(string acar, string varsayilan = "")
+    {
+        try
+        {
+            var netice = await AcarlaGetirAsync(acar);
+            return netice.UgurluDur && netice.Data != null ? netice.Data.Deyer : varsayilan;
+        }
+        catch (Exception)
+        {
+            return varsayilan;
+        }
+    }
+
+    /// <summary>
+    /// Konfiqurasiya dəyərini təyin edir
+    /// </summary>
+    /// <param name="acar">Konfiqurasiya açarı</param>
+    /// <param name="deyer">Konfiqurasiya dəyəri</param>
+    /// <param name="tesvir">Konfiqurasiya təsviri (opsional)</param>
+    /// <param name="qrup">Konfiqurasiya qrupu (opsional)</param>
+    /// <returns>Əməliyyat nəticəsi</returns>
+    public async Task<EmeliyyatNeticesi<bool>> SetAsync(string acar, string deyer, string tesvir = "", string qrup = "")
+    {
+        var dto = new KonfiqurasiyaDto
+        {
+            Acar = acar,
+            Deyer = deyer,
+            Tesvir = tesvir,
+            Qrup = qrup
+        };
+
+        return await KonfiqurasiyaElaveEtVəYaYenileAsync(dto);
+    }
+
+    /// <summary>
+    /// Çoxlu konfiqurasiya parametrlərini bir əməliyyatda saxlayır (batch operation)
+    /// </summary>
+    /// <param name="parametrler">Saxlanılacaq parametrlər (açar-dəyər cütləri)</param>
+    /// <returns>Əməliyyat nəticəsi</returns>
+    public async Task<EmeliyyatNeticesi<bool>> TopluSaxlaAsync(Dictionary<string, string> parametrler)
+    {
+        try
+        {
+            foreach (var parametr in parametrler)
+            {
+                var movcudKonfiqurasiya = await _unitOfWork.Konfiqurasiyalar.AcarlaGetirAsync(parametr.Key);
+
+                if (movcudKonfiqurasiya == null)
+                {
+                    // Yeni konfiqurasiya yaradırıq
+                    var yeniKonfiqurasiya = new Konfiqurasiya
+                    {
+                        Acar = parametr.Key,
+                        Deyer = parametr.Value,
+                        Tesvir = "",
+                        Qrup = ""
+                    };
+
+                    await _unitOfWork.Konfiqurasiyalar.ElaveEtAsync(yeniKonfiqurasiya);
+                }
+                else
+                {
+                    // Mövcud konfiqurasiyanı yeniləyirik
+                    movcudKonfiqurasiya.Deyer = parametr.Value;
+                    _unitOfWork.Konfiqurasiyalar.Yenile(movcudKonfiqurasiya);
+                }
+            }
+
+            // Bütün dəyişiklikləri bir əməliyyatda tətbiq edirik
+            await _unitOfWork.EmeliyyatiTesdiqleAsync();
+
+            return EmeliyyatNeticesi<bool>.Ugurlu(true);
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Konfiqurasiya parametrləri toplu saxlanılarkən xəta baş verdi: ");
+            return EmeliyyatNeticesi<bool>.Ugursuz($"Konfiqurasiya parametrləri saxlanılarkən xəta baş verdi: {ex.Message}");
+        }
+    }
 }

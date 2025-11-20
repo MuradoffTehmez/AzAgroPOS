@@ -93,7 +93,7 @@ namespace AzAgroPOS.Teqdimat
             {
                 IConfiguration configuration = ConnectionStringResolver.BuildConfiguration(AppContext.BaseDirectory);
 
-                string connectionString = ConnectionStringResolver.Resolve(configuration, Sabitler.DefaultConnection);
+                string connectionString = ConnectionStringResolver.Resolve(configuration, Konfiqurasiya.Sabitler.DefaultConnection);
 
                 EnsureDatabaseAccessible(connectionString);
 
