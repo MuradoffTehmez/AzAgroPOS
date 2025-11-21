@@ -27,6 +27,12 @@
             panel1 = new Panel();
             pnlSearchSection = new MaterialSkin.Controls.MaterialCard();
             dgvAxtarisNeticeleri = new DataGridView();
+            colAxtId = new DataGridViewTextBoxColumn();
+            colAxtAd = new DataGridViewTextBoxColumn();
+            colAxtStokKodu = new DataGridViewTextBoxColumn();
+            colAxtBarkod = new DataGridViewTextBoxColumn();
+            colAxtQiymet = new DataGridViewTextBoxColumn();
+            colAxtStok = new DataGridViewTextBoxColumn();
             contextMenuStripAxtarisNeticeleri = new ContextMenuStrip(components);
             tsmiAxtarisDetallar = new ToolStripMenuItem();
             tsmiAxtarisRedakteEt = new ToolStripMenuItem();
@@ -37,6 +43,11 @@
             btnSebeteElaveEt = new MaterialSkin.Controls.MaterialButton();
             pnlCartSection = new MaterialSkin.Controls.MaterialCard();
             dgvSebet = new DataGridView();
+            colSebetMehsulId = new DataGridViewTextBoxColumn();
+            colSebetMehsulAdi = new DataGridViewTextBoxColumn();
+            colSebetMiqdar = new DataGridViewTextBoxColumn();
+            colSebetQiymet = new DataGridViewTextBoxColumn();
+            colSebetUmumiMebleg = new DataGridViewTextBoxColumn();
             contextMenuStripSebet = new ContextMenuStrip(components);
             tsmiSebetDetallar = new ToolStripMenuItem();
             tsmiSebetRedakteEt = new ToolStripMenuItem();
@@ -148,42 +159,98 @@
             pnlSearchSection.Padding = new Padding(16);
             pnlSearchSection.Size = new Size(450, 558);
             pnlSearchSection.TabIndex = 0;
-            // 
+            //
             // dgvAxtarisNeticeleri
-            // 
+            //
             dgvAxtarisNeticeleri.AllowUserToAddRows = false;
             dgvAxtarisNeticeleri.AllowUserToDeleteRows = false;
             dgvAxtarisNeticeleri.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dgvAxtarisNeticeleri.AutoGenerateColumns = false;
             dgvAxtarisNeticeleri.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = SystemColors.Control;
-            dataGridViewCellStyle1.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(63, 81, 181);
+            dataGridViewCellStyle1.Font = new Font("Roboto", 9F, FontStyle.Bold);
+            dataGridViewCellStyle1.ForeColor = Color.White;
+            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(63, 81, 181);
+            dataGridViewCellStyle1.SelectionForeColor = Color.White;
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
             dgvAxtarisNeticeleri.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            dgvAxtarisNeticeleri.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvAxtarisNeticeleri.ColumnHeadersHeight = 32;
+            dgvAxtarisNeticeleri.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgvAxtarisNeticeleri.Columns.AddRange(new DataGridViewColumn[] { colAxtId, colAxtAd, colAxtStokKodu, colAxtBarkod, colAxtQiymet, colAxtStok });
             dgvAxtarisNeticeleri.ContextMenuStrip = contextMenuStripAxtarisNeticeleri;
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Window;
-            dataGridViewCellStyle2.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            dataGridViewCellStyle2.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.BackColor = Color.White;
+            dataGridViewCellStyle2.Font = new Font("Roboto", 9F);
+            dataGridViewCellStyle2.ForeColor = Color.FromArgb(64, 64, 64);
+            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(224, 224, 224);
+            dataGridViewCellStyle2.SelectionForeColor = Color.FromArgb(64, 64, 64);
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
             dgvAxtarisNeticeleri.DefaultCellStyle = dataGridViewCellStyle2;
+            dgvAxtarisNeticeleri.EnableHeadersVisualStyles = false;
             dgvAxtarisNeticeleri.Font = new Font("Roboto", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            dgvAxtarisNeticeleri.GridColor = Color.FromArgb(224, 224, 224);
             dgvAxtarisNeticeleri.Location = new Point(16, 78);
             dgvAxtarisNeticeleri.MultiSelect = false;
             dgvAxtarisNeticeleri.Name = "dgvAxtarisNeticeleri";
             dgvAxtarisNeticeleri.ReadOnly = true;
-            dgvAxtarisNeticeleri.RowHeadersWidth = 24;
-            dgvAxtarisNeticeleri.RowTemplate.Height = 36;
+            dgvAxtarisNeticeleri.RowHeadersVisible = false;
+            dgvAxtarisNeticeleri.RowTemplate.Height = 32;
             dgvAxtarisNeticeleri.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvAxtarisNeticeleri.Size = new Size(418, 398);
             dgvAxtarisNeticeleri.TabIndex = 1;
             dgvAxtarisNeticeleri.DoubleClick += dgvAxtarisNeticeleri_DoubleClick;
+            //
+            // colAxtId
+            //
+            colAxtId.DataPropertyName = "Id";
+            colAxtId.HeaderText = "ID";
+            colAxtId.Name = "colAxtId";
+            colAxtId.ReadOnly = true;
+            colAxtId.Visible = false;
+            //
+            // colAxtAd
+            //
+            colAxtAd.DataPropertyName = "Ad";
+            colAxtAd.HeaderText = "Məhsul Adı";
+            colAxtAd.Name = "colAxtAd";
+            colAxtAd.ReadOnly = true;
+            colAxtAd.FillWeight = 35;
+            //
+            // colAxtStokKodu
+            //
+            colAxtStokKodu.DataPropertyName = "StokKodu";
+            colAxtStokKodu.HeaderText = "Stok Kodu";
+            colAxtStokKodu.Name = "colAxtStokKodu";
+            colAxtStokKodu.ReadOnly = true;
+            colAxtStokKodu.FillWeight = 20;
+            //
+            // colAxtBarkod
+            //
+            colAxtBarkod.DataPropertyName = "Barkod";
+            colAxtBarkod.HeaderText = "Barkod";
+            colAxtBarkod.Name = "colAxtBarkod";
+            colAxtBarkod.ReadOnly = true;
+            colAxtBarkod.FillWeight = 20;
+            //
+            // colAxtQiymet
+            //
+            colAxtQiymet.DataPropertyName = "PerakendeSatisQiymeti";
+            colAxtQiymet.HeaderText = "Qiymət";
+            colAxtQiymet.Name = "colAxtQiymet";
+            colAxtQiymet.ReadOnly = true;
+            colAxtQiymet.FillWeight = 15;
+            colAxtQiymet.DefaultCellStyle.Format = "N2";
+            colAxtQiymet.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            //
+            // colAxtStok
+            //
+            colAxtStok.DataPropertyName = "MovcudSay";
+            colAxtStok.HeaderText = "Stok";
+            colAxtStok.Name = "colAxtStok";
+            colAxtStok.ReadOnly = true;
+            colAxtStok.FillWeight = 10;
+            colAxtStok.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             // 
             // contextMenuStripAxtarisNeticeleri
             // 
@@ -327,40 +394,90 @@
             pnlCartSection.Padding = new Padding(16);
             pnlCartSection.Size = new Size(840, 558);
             pnlCartSection.TabIndex = 1;
-            // 
+            //
             // dgvSebet
-            // 
+            //
             dgvSebet.AllowUserToAddRows = false;
             dgvSebet.AllowUserToDeleteRows = false;
             dgvSebet.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dgvSebet.AutoGenerateColumns = false;
             dgvSebet.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = SystemColors.Control;
-            dataGridViewCellStyle3.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle3.BackColor = Color.FromArgb(63, 81, 181);
+            dataGridViewCellStyle3.Font = new Font("Roboto", 9F, FontStyle.Bold);
+            dataGridViewCellStyle3.ForeColor = Color.White;
+            dataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(63, 81, 181);
+            dataGridViewCellStyle3.SelectionForeColor = Color.White;
             dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
             dgvSebet.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
-            dgvSebet.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvSebet.ColumnHeadersHeight = 32;
+            dgvSebet.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgvSebet.Columns.AddRange(new DataGridViewColumn[] { colSebetMehsulId, colSebetMehsulAdi, colSebetMiqdar, colSebetQiymet, colSebetUmumiMebleg });
             dgvSebet.ContextMenuStrip = contextMenuStripSebet;
             dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = SystemColors.Window;
-            dataGridViewCellStyle4.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            dataGridViewCellStyle4.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle4.BackColor = Color.White;
+            dataGridViewCellStyle4.Font = new Font("Roboto", 9F);
+            dataGridViewCellStyle4.ForeColor = Color.FromArgb(64, 64, 64);
+            dataGridViewCellStyle4.SelectionBackColor = Color.FromArgb(224, 224, 224);
+            dataGridViewCellStyle4.SelectionForeColor = Color.FromArgb(64, 64, 64);
             dataGridViewCellStyle4.WrapMode = DataGridViewTriState.False;
             dgvSebet.DefaultCellStyle = dataGridViewCellStyle4;
+            dgvSebet.EnableHeadersVisualStyles = false;
             dgvSebet.Font = new Font("Roboto", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            dgvSebet.GridColor = Color.FromArgb(224, 224, 224);
             dgvSebet.Location = new Point(16, 16);
             dgvSebet.Name = "dgvSebet";
-            dgvSebet.RowHeadersWidth = 24;
-            dgvSebet.RowTemplate.Height = 40;
+            dgvSebet.RowHeadersVisible = false;
+            dgvSebet.RowTemplate.Height = 36;
             dgvSebet.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvSebet.Size = new Size(808, 458);
             dgvSebet.TabIndex = 0;
             dgvSebet.CellContentClick += dgvSebet_CellContentClick;
+            //
+            // colSebetMehsulId
+            //
+            colSebetMehsulId.DataPropertyName = "MehsulId";
+            colSebetMehsulId.HeaderText = "ID";
+            colSebetMehsulId.Name = "colSebetMehsulId";
+            colSebetMehsulId.ReadOnly = true;
+            colSebetMehsulId.Visible = false;
+            //
+            // colSebetMehsulAdi
+            //
+            colSebetMehsulAdi.DataPropertyName = "MehsulAdi";
+            colSebetMehsulAdi.HeaderText = "Məhsul";
+            colSebetMehsulAdi.Name = "colSebetMehsulAdi";
+            colSebetMehsulAdi.ReadOnly = true;
+            colSebetMehsulAdi.FillWeight = 40;
+            //
+            // colSebetMiqdar
+            //
+            colSebetMiqdar.DataPropertyName = "Miqdar";
+            colSebetMiqdar.HeaderText = "Miqdar";
+            colSebetMiqdar.Name = "colSebetMiqdar";
+            colSebetMiqdar.ReadOnly = true;
+            colSebetMiqdar.FillWeight = 15;
+            colSebetMiqdar.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            //
+            // colSebetQiymet
+            //
+            colSebetQiymet.DataPropertyName = "VahidinQiymeti";
+            colSebetQiymet.HeaderText = "Qiymət";
+            colSebetQiymet.Name = "colSebetQiymet";
+            colSebetQiymet.ReadOnly = true;
+            colSebetQiymet.FillWeight = 20;
+            colSebetQiymet.DefaultCellStyle.Format = "N2";
+            colSebetQiymet.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            //
+            // colSebetUmumiMebleg
+            //
+            colSebetUmumiMebleg.DataPropertyName = "UmumiMebleg";
+            colSebetUmumiMebleg.HeaderText = "Cəm";
+            colSebetUmumiMebleg.Name = "colSebetUmumiMebleg";
+            colSebetUmumiMebleg.ReadOnly = true;
+            colSebetUmumiMebleg.FillWeight = 25;
+            colSebetUmumiMebleg.DefaultCellStyle.Format = "N2";
+            colSebetUmumiMebleg.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             // 
             // contextMenuStripSebet
             // 
@@ -958,5 +1075,20 @@
         private StatusStrip statusStrip1;
         private ToolStripStatusLabel toolStripStatusLabel1;
         private ErrorProvider errorProvider1;
+
+        // dgvAxtarisNeticeleri sütunları
+        private DataGridViewTextBoxColumn colAxtId;
+        private DataGridViewTextBoxColumn colAxtAd;
+        private DataGridViewTextBoxColumn colAxtStokKodu;
+        private DataGridViewTextBoxColumn colAxtBarkod;
+        private DataGridViewTextBoxColumn colAxtQiymet;
+        private DataGridViewTextBoxColumn colAxtStok;
+
+        // dgvSebet sütunları
+        private DataGridViewTextBoxColumn colSebetMehsulId;
+        private DataGridViewTextBoxColumn colSebetMehsulAdi;
+        private DataGridViewTextBoxColumn colSebetMiqdar;
+        private DataGridViewTextBoxColumn colSebetQiymet;
+        private DataGridViewTextBoxColumn colSebetUmumiMebleg;
     }
 }

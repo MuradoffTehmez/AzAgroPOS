@@ -345,11 +345,12 @@ partial class KassaFormu
         lblXercNovu.Size = new Size(36, 17);
         lblXercNovu.TabIndex = 0;
         lblXercNovu.Text = "Növ:";
-        // 
+        //
         // dgvXercler
-        // 
+        //
         dgvXercler.AllowUserToAddRows = false;
         dgvXercler.AllowUserToDeleteRows = false;
+        dgvXercler.AutoGenerateColumns = false;
         dgvXercler.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
         dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
         dataGridViewCellStyle1.BackColor = SystemColors.Control;
@@ -473,11 +474,12 @@ partial class KassaFormu
         lblBaslangic.Size = new Size(108, 17);
         lblBaslangic.TabIndex = 0;
         lblBaslangic.Text = "Başlanğıc Tarixi:";
-        // 
+        //
         // dgvKassaHareketleri
-        // 
+        //
         dgvKassaHareketleri.AllowUserToAddRows = false;
         dgvKassaHareketleri.AllowUserToDeleteRows = false;
+        dgvKassaHareketleri.AutoGenerateColumns = false;
         dgvKassaHareketleri.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
         dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
         dataGridViewCellStyle3.BackColor = SystemColors.Control;

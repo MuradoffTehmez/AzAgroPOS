@@ -135,38 +135,114 @@ namespace AzAgroPOS.Teqdimat
             btnIxracEt.UseAccentColor = true;
             btnIxracEt.UseVisualStyleBackColor = false;
             btnIxracEt.Click += btnIxracEt_Click;
-            // 
+            //
             // dgvMehsullar
-            // 
+            //
             dgvMehsullar.AllowUserToAddRows = false;
             dgvMehsullar.AllowUserToDeleteRows = false;
             dgvMehsullar.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dgvMehsullar.AutoGenerateColumns = false;
             dgvMehsullar.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvMehsullar.Columns.AddRange(new DataGridViewColumn[] { colMehId, colMehAd, colMehStokKodu, colMehBarkod, colMehStok, colMehAlisQiymeti, colMehSatisQiymeti });
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = SystemColors.Control;
-            dataGridViewCellStyle1.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(63, 81, 181);
+            dataGridViewCellStyle1.Font = new Font("Roboto", 9F, FontStyle.Bold);
+            dataGridViewCellStyle1.ForeColor = Color.White;
+            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(63, 81, 181);
+            dataGridViewCellStyle1.SelectionForeColor = Color.White;
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
             dgvMehsullar.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            dgvMehsullar.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvMehsullar.ColumnHeadersHeight = 32;
+            dgvMehsullar.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dgvMehsullar.ContextMenuStrip = contextMenuStripMehsullar;
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Window;
-            dataGridViewCellStyle2.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            dataGridViewCellStyle2.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.BackColor = Color.White;
+            dataGridViewCellStyle2.Font = new Font("Roboto", 9F);
+            dataGridViewCellStyle2.ForeColor = Color.FromArgb(64, 64, 64);
+            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(224, 224, 224);
+            dataGridViewCellStyle2.SelectionForeColor = Color.FromArgb(64, 64, 64);
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
             dgvMehsullar.DefaultCellStyle = dataGridViewCellStyle2;
+            dgvMehsullar.EnableHeadersVisualStyles = false;
+            dgvMehsullar.GridColor = Color.FromArgb(224, 224, 224);
             dgvMehsullar.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             dgvMehsullar.Location = new Point(15, 67);
             dgvMehsullar.Name = "dgvMehsullar";
             dgvMehsullar.ReadOnly = true;
+            dgvMehsullar.RowHeadersVisible = false;
+            dgvMehsullar.RowTemplate.Height = 30;
+            dgvMehsullar.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvMehsullar.Size = new Size(804, 827);
             dgvMehsullar.TabIndex = 1;
             dgvMehsullar.SelectionChanged += dgvMehsullar_SelectionChanged;
+            //
+            // colMehId
+            //
+            colMehId = new DataGridViewTextBoxColumn();
+            colMehId.DataPropertyName = "Id";
+            colMehId.HeaderText = "ID";
+            colMehId.Name = "colMehId";
+            colMehId.ReadOnly = true;
+            colMehId.Visible = false;
+            //
+            // colMehAd
+            //
+            colMehAd = new DataGridViewTextBoxColumn();
+            colMehAd.DataPropertyName = "Ad";
+            colMehAd.HeaderText = "Məhsul Adı";
+            colMehAd.Name = "colMehAd";
+            colMehAd.ReadOnly = true;
+            colMehAd.FillWeight = 30;
+            //
+            // colMehStokKodu
+            //
+            colMehStokKodu = new DataGridViewTextBoxColumn();
+            colMehStokKodu.DataPropertyName = "StokKodu";
+            colMehStokKodu.HeaderText = "Stok Kodu";
+            colMehStokKodu.Name = "colMehStokKodu";
+            colMehStokKodu.ReadOnly = true;
+            colMehStokKodu.FillWeight = 15;
+            //
+            // colMehBarkod
+            //
+            colMehBarkod = new DataGridViewTextBoxColumn();
+            colMehBarkod.DataPropertyName = "Barkod";
+            colMehBarkod.HeaderText = "Barkod";
+            colMehBarkod.Name = "colMehBarkod";
+            colMehBarkod.ReadOnly = true;
+            colMehBarkod.FillWeight = 15;
+            //
+            // colMehStok
+            //
+            colMehStok = new DataGridViewTextBoxColumn();
+            colMehStok.DataPropertyName = "MovcudSay";
+            colMehStok.HeaderText = "Stok";
+            colMehStok.Name = "colMehStok";
+            colMehStok.ReadOnly = true;
+            colMehStok.FillWeight = 10;
+            colMehStok.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            //
+            // colMehAlisQiymeti
+            //
+            colMehAlisQiymeti = new DataGridViewTextBoxColumn();
+            colMehAlisQiymeti.DataPropertyName = "AlisQiymeti";
+            colMehAlisQiymeti.HeaderText = "Alış";
+            colMehAlisQiymeti.Name = "colMehAlisQiymeti";
+            colMehAlisQiymeti.ReadOnly = true;
+            colMehAlisQiymeti.FillWeight = 15;
+            colMehAlisQiymeti.DefaultCellStyle.Format = "N2";
+            colMehAlisQiymeti.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            //
+            // colMehSatisQiymeti
+            //
+            colMehSatisQiymeti = new DataGridViewTextBoxColumn();
+            colMehSatisQiymeti.DataPropertyName = "PerakendeSatisQiymeti";
+            colMehSatisQiymeti.HeaderText = "Satış";
+            colMehSatisQiymeti.Name = "colMehSatisQiymeti";
+            colMehSatisQiymeti.ReadOnly = true;
+            colMehSatisQiymeti.FillWeight = 15;
+            colMehSatisQiymeti.DefaultCellStyle.Format = "N2";
+            colMehSatisQiymeti.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             // 
             // contextMenuStripMehsullar
             // 
@@ -976,5 +1052,14 @@ namespace AzAgroPOS.Teqdimat
         private ToolStripStatusLabel toolStripStatusLabel1;
         private ToolTip toolTip1;
         private MaterialSkin.Controls.MaterialButton btnIxracEt;
+
+        // dgvMehsullar sütunları
+        private DataGridViewTextBoxColumn colMehId;
+        private DataGridViewTextBoxColumn colMehAd;
+        private DataGridViewTextBoxColumn colMehStokKodu;
+        private DataGridViewTextBoxColumn colMehBarkod;
+        private DataGridViewTextBoxColumn colMehStok;
+        private DataGridViewTextBoxColumn colMehAlisQiymeti;
+        private DataGridViewTextBoxColumn colMehSatisQiymeti;
     }
 }

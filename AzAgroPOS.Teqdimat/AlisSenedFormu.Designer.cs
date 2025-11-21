@@ -86,11 +86,12 @@ namespace AzAgroPOS.Teqdimat
             splitContainer1.Size = new Size(1194, 661);
             splitContainer1.SplitterDistance = 330;
             splitContainer1.TabIndex = 0;
-            // 
+            //
             // dgvSenetler
-            // 
+            //
             dgvSenetler.AllowUserToAddRows = false;
             dgvSenetler.AllowUserToDeleteRows = false;
+            dgvSenetler.AutoGenerateColumns = false;
             dgvSenetler.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvSenetler.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
@@ -375,11 +376,12 @@ namespace AzAgroPOS.Teqdimat
             txtSenedNomresi.TextAlign = HorizontalAlignment.Left;
             txtSenedNomresi.TrailingIcon = null;
             txtSenedNomresi.UseSystemPasswordChar = false;
-            // 
+            //
             // dgvSenedSetirleri
-            // 
+            //
             dgvSenedSetirleri.AllowUserToAddRows = false;
             dgvSenedSetirleri.AllowUserToDeleteRows = false;
+            dgvSenedSetirleri.AutoGenerateColumns = false;
             dgvSenedSetirleri.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvSenedSetirleri.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;

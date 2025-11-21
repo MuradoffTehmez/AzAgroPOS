@@ -122,6 +122,7 @@ namespace AzAgroPOS.Teqdimat
             dgvMehsullar.AllowUserToAddRows = false;
             dgvMehsullar.AllowUserToDeleteRows = false;
             dgvMehsullar.AllowUserToResizeRows = false;
+            dgvMehsullar.AutoGenerateColumns = false;
             dgvMehsullar.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvMehsullar.BackgroundColor = Color.White;
             dgvMehsullar.BorderStyle = BorderStyle.None;
@@ -577,6 +578,7 @@ namespace AzAgroPOS.Teqdimat
             dgvTarixce.AllowUserToAddRows = false;
             dgvTarixce.AllowUserToDeleteRows = false;
             dgvTarixce.AllowUserToResizeRows = false;
+            dgvTarixce.AutoGenerateColumns = false;
             dgvTarixce.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvTarixce.BackgroundColor = Color.White;
             dgvTarixce.BorderStyle = BorderStyle.None;
