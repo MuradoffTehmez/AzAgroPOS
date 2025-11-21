@@ -135,17 +135,22 @@ namespace AzAgroPOS.Teqdimat
             dgvAxtarisNeticeleri.DataSource = mehsullar;
             if (dgvAxtarisNeticeleri.Columns.Count > 0)
             {
-                dgvAxtarisNeticeleri.Columns["Ad"].HeaderText = "Məhsul Adı";
-                dgvAxtarisNeticeleri.Columns["StokKodu"].HeaderText = "Stok Kodu";
+                if (dgvAxtarisNeticeleri.Columns["Ad"] != null)
+                {
+                    dgvAxtarisNeticeleri.Columns["Ad"].HeaderText = "Məhsul Adı";
+                    dgvAxtarisNeticeleri.Columns["Ad"].SortMode = DataGridViewColumnSortMode.Automatic;
+                }
+                if (dgvAxtarisNeticeleri.Columns["StokKodu"] != null)
+                {
+                    dgvAxtarisNeticeleri.Columns["StokKodu"].HeaderText = "Stok Kodu";
+                    dgvAxtarisNeticeleri.Columns["StokKodu"].SortMode = DataGridViewColumnSortMode.Automatic;
+                }
 
                 string[] gorunenler = { "Ad", "StokKodu" };
                 foreach (DataGridViewColumn col in dgvAxtarisNeticeleri.Columns)
                 {
                     if (!gorunenler.Contains(col.Name)) col.Visible = false;
                 }
-
-                dgvAxtarisNeticeleri.Columns["Ad"].SortMode = DataGridViewColumnSortMode.Automatic;
-                dgvAxtarisNeticeleri.Columns["StokKodu"].SortMode = DataGridViewColumnSortMode.Automatic;
             }
         }
 

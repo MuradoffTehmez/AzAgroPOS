@@ -178,18 +178,23 @@ namespace AzAgroPOS.Teqdimat
                     column.SortMode = DataGridViewColumnSortMode.Automatic;
                 }
 
-                dgvMehsullar.Columns["Ad"].HeaderText = "Məhsulun Adı";
-                dgvMehsullar.Columns["StokKodu"].HeaderText = "Stok Kodu";
-                dgvMehsullar.Columns["PerakendeSatisQiymetiStr"].HeaderText = "Pərakəndə Qiymət";
-                dgvMehsullar.Columns["MovcudSay"].HeaderText = "Mövcud Say";
-                dgvMehsullar.Columns["OlcuVahidiStr"].HeaderText = "Ölçü Vahidi";
-
-                // Format currency columns
-                dgvMehsullar.Columns["PerakendeSatisQiymetiStr"].DefaultCellStyle.Format = "c2";
-
-                // Align numeric columns to the right
-                dgvMehsullar.Columns["PerakendeSatisQiymetiStr"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                dgvMehsullar.Columns["MovcudSay"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                if (dgvMehsullar.Columns["Ad"] != null)
+                    dgvMehsullar.Columns["Ad"].HeaderText = "Məhsulun Adı";
+                if (dgvMehsullar.Columns["StokKodu"] != null)
+                    dgvMehsullar.Columns["StokKodu"].HeaderText = "Stok Kodu";
+                if (dgvMehsullar.Columns["PerakendeSatisQiymetiStr"] != null)
+                {
+                    dgvMehsullar.Columns["PerakendeSatisQiymetiStr"].HeaderText = "Pərakəndə Qiymət";
+                    dgvMehsullar.Columns["PerakendeSatisQiymetiStr"].DefaultCellStyle.Format = "c2";
+                    dgvMehsullar.Columns["PerakendeSatisQiymetiStr"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                }
+                if (dgvMehsullar.Columns["MovcudSay"] != null)
+                {
+                    dgvMehsullar.Columns["MovcudSay"].HeaderText = "Mövcud Say";
+                    dgvMehsullar.Columns["MovcudSay"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                }
+                if (dgvMehsullar.Columns["OlcuVahidiStr"] != null)
+                    dgvMehsullar.Columns["OlcuVahidiStr"].HeaderText = "Ölçü Vahidi";
             }
         }
 
