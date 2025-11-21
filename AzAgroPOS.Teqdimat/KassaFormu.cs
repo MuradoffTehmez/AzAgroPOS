@@ -384,17 +384,29 @@ public partial class KassaFormu : BazaForm
     {
         if (dgvKassaHareketleri.Columns.Count == 0) return;
 
-        dgvKassaHareketleri.Columns["Id"].Visible = false;
-        dgvKassaHareketleri.Columns["EmeliyyatId"].Visible = false;
-        dgvKassaHareketleri.Columns["IstifadeciId"].Visible = false;
+        if (dgvKassaHareketleri.Columns["Id"] != null)
+            dgvKassaHareketleri.Columns["Id"].Visible = false;
+        if (dgvKassaHareketleri.Columns["EmeliyyatId"] != null)
+            dgvKassaHareketleri.Columns["EmeliyyatId"].Visible = false;
+        if (dgvKassaHareketleri.Columns["IstifadeciId"] != null)
+            dgvKassaHareketleri.Columns["IstifadeciId"].Visible = false;
 
-        dgvKassaHareketleri.Columns["HareketNovu"].HeaderText = "Hərəkət Növü";
-        dgvKassaHareketleri.Columns["EmeliyyatNovu"].HeaderText = "Əməliyyat";
-        dgvKassaHareketleri.Columns["Mebleg"].HeaderText = "Məbləğ";
-        dgvKassaHareketleri.Columns["Mebleg"].DefaultCellStyle.Format = "N2";
-        dgvKassaHareketleri.Columns["Tarix"].HeaderText = "Tarix";
-        dgvKassaHareketleri.Columns["Tarix"].DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
-        dgvKassaHareketleri.Columns["Qeyd"].HeaderText = "Qeyd";
+        if (dgvKassaHareketleri.Columns["HareketNovu"] != null)
+            dgvKassaHareketleri.Columns["HareketNovu"].HeaderText = "Hərəkət Növü";
+        if (dgvKassaHareketleri.Columns["EmeliyyatNovu"] != null)
+            dgvKassaHareketleri.Columns["EmeliyyatNovu"].HeaderText = "Əməliyyat";
+        if (dgvKassaHareketleri.Columns["Mebleg"] != null)
+        {
+            dgvKassaHareketleri.Columns["Mebleg"].HeaderText = "Məbləğ";
+            dgvKassaHareketleri.Columns["Mebleg"].DefaultCellStyle.Format = "N2";
+        }
+        if (dgvKassaHareketleri.Columns["Tarix"] != null)
+        {
+            dgvKassaHareketleri.Columns["Tarix"].HeaderText = "Tarix";
+            dgvKassaHareketleri.Columns["Tarix"].DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
+        }
+        if (dgvKassaHareketleri.Columns["Qeyd"] != null)
+            dgvKassaHareketleri.Columns["Qeyd"].HeaderText = "Qeyd";
 
         // Hərəkət növünə görə rəng
         foreach (DataGridViewRow row in dgvKassaHareketleri.Rows)
