@@ -88,6 +88,7 @@ namespace AzAgroPOS.Teqdimat
             cmbTema = new MaterialComboBox();
             lblSessiyaTimeout = new MaterialLabel();
             nudSessiyaTimeout = new NumericUpDown();
+            tabSelector = new MaterialTabSelector();
             pnlButtons = new Panel();
             btnLegvEt = new MaterialButton();
             btnSaxla = new MaterialButton();
@@ -121,12 +122,12 @@ namespace AzAgroPOS.Teqdimat
             tabControl.Depth = 0;
             tabControl.Dock = DockStyle.Fill;
             tabControl.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            tabControl.Location = new Point(3, 24);
+            tabControl.Location = new Point(3, 72);
             tabControl.MouseState = MaterialSkin.MouseState.HOVER;
             tabControl.Multiline = true;
             tabControl.Name = "tabControl";
             tabControl.SelectedIndex = 0;
-            tabControl.Size = new Size(1244, 551);
+            tabControl.Size = new Size(1244, 503);
             tabControl.TabIndex = 0;
             // 
             // tabSirket
@@ -136,7 +137,7 @@ namespace AzAgroPOS.Teqdimat
             tabSirket.Location = new Point(4, 26);
             tabSirket.Name = "tabSirket";
             tabSirket.Padding = new Padding(15);
-            tabSirket.Size = new Size(1236, 521);
+            tabSirket.Size = new Size(1236, 473);
             tabSirket.TabIndex = 0;
             tabSirket.Text = "Şirkət Məlumatları";
             // 
@@ -174,7 +175,7 @@ namespace AzAgroPOS.Teqdimat
             tblSirket.RowStyles.Add(new RowStyle(SizeType.Absolute, 60F));
             tblSirket.RowStyles.Add(new RowStyle(SizeType.Absolute, 120F));
             tblSirket.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tblSirket.Size = new Size(1206, 491);
+            tblSirket.Size = new Size(1206, 443);
             tblSirket.TabIndex = 0;
             // 
             // lblSirketAdi
@@ -462,7 +463,7 @@ namespace AzAgroPOS.Teqdimat
             tabVergi.Location = new Point(4, 26);
             tabVergi.Name = "tabVergi";
             tabVergi.Padding = new Padding(15);
-            tabVergi.Size = new Size(1236, 521);
+            tabVergi.Size = new Size(1236, 473);
             tabVergi.TabIndex = 1;
             tabVergi.Text = "Vergi Parametrləri";
             // 
@@ -484,7 +485,7 @@ namespace AzAgroPOS.Teqdimat
             tblVergi.RowStyles.Add(new RowStyle(SizeType.Absolute, 60F));
             tblVergi.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
             tblVergi.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tblVergi.Size = new Size(1206, 491);
+            tblVergi.Size = new Size(1206, 443);
             tblVergi.TabIndex = 0;
             // 
             // lblEdvDerecesi
@@ -535,7 +536,7 @@ namespace AzAgroPOS.Teqdimat
             tabPrinter.Location = new Point(4, 26);
             tabPrinter.Name = "tabPrinter";
             tabPrinter.Padding = new Padding(15);
-            tabPrinter.Size = new Size(1236, 521);
+            tabPrinter.Size = new Size(1236, 473);
             tabPrinter.TabIndex = 2;
             tabPrinter.Text = "Printer Tənzimləmələri";
             // 
@@ -561,7 +562,7 @@ namespace AzAgroPOS.Teqdimat
             tblPrinter.RowStyles.Add(new RowStyle(SizeType.Absolute, 60F));
             tblPrinter.RowStyles.Add(new RowStyle(SizeType.Absolute, 60F));
             tblPrinter.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tblPrinter.Size = new Size(1206, 491);
+            tblPrinter.Size = new Size(1206, 443);
             tblPrinter.TabIndex = 0;
             // 
             // lblQebzPrinteri
@@ -755,7 +756,7 @@ namespace AzAgroPOS.Teqdimat
             tabDavranis.Location = new Point(4, 26);
             tabDavranis.Name = "tabDavranis";
             tabDavranis.Padding = new Padding(15);
-            tabDavranis.Size = new Size(1236, 521);
+            tabDavranis.Size = new Size(1236, 473);
             tabDavranis.TabIndex = 3;
             tabDavranis.Text = "Proqram Davranışı";
             // 
@@ -779,7 +780,7 @@ namespace AzAgroPOS.Teqdimat
             tblDavranis.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
             tblDavranis.RowStyles.Add(new RowStyle(SizeType.Absolute, 60F));
             tblDavranis.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tblDavranis.Size = new Size(1206, 491);
+            tblDavranis.Size = new Size(1206, 443);
             tblDavranis.TabIndex = 0;
             // 
             // chkQebzAvtoCap
@@ -860,7 +861,7 @@ namespace AzAgroPOS.Teqdimat
             tabSistem.Location = new Point(4, 26);
             tabSistem.Name = "tabSistem";
             tabSistem.Padding = new Padding(15);
-            tabSistem.Size = new Size(1236, 521);
+            tabSistem.Size = new Size(1236, 473);
             tabSistem.TabIndex = 4;
             tabSistem.Text = "Sistem Parametrləri";
             // 
@@ -895,7 +896,7 @@ namespace AzAgroPOS.Teqdimat
             tblSistem.RowStyles.Add(new RowStyle(SizeType.Absolute, 60F));
             tblSistem.RowStyles.Add(new RowStyle(SizeType.Absolute, 60F));
             tblSistem.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tblSistem.Size = new Size(1206, 491);
+            tblSistem.Size = new Size(1206, 443);
             tblSistem.TabIndex = 0;
             // 
             // lblDil
@@ -1110,6 +1111,23 @@ namespace AzAgroPOS.Teqdimat
             nudSessiyaTimeout.TabIndex = 11;
             nudSessiyaTimeout.Value = new decimal(new int[] { 30, 0, 0, 0 });
             // 
+            // tabSelector
+            // 
+            tabSelector.BackColor = Color.FromArgb(242, 242, 242);
+            tabSelector.BaseTabControl = tabControl;
+            tabSelector.CharacterCasing = MaterialTabSelector.CustomCharacterCasing.Normal;
+            tabSelector.Depth = 0;
+            tabSelector.Dock = DockStyle.Top;
+            tabSelector.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            tabSelector.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            tabSelector.Location = new Point(3, 24);
+            tabSelector.MouseState = MaterialSkin.MouseState.HOVER;
+            tabSelector.Name = "tabSelector";
+            tabSelector.Size = new Size(1244, 48);
+            tabSelector.TabIndex = 2;
+            tabSelector.Text = "materialTabSelector1";
+            tabSelector.Click += tabSelector_Click;
+            // 
             // pnlButtons
             // 
             pnlButtons.BackColor = Color.FromArgb(242, 242, 242);
@@ -1174,12 +1192,14 @@ namespace AzAgroPOS.Teqdimat
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1250, 660);
             Controls.Add(tabControl);
+            Controls.Add(tabSelector);
             Controls.Add(pnlButtons);
             FormStyle = FormStyles.ActionBar_None;
             Name = "KonfiqurasiyaFormu";
             Padding = new Padding(3, 24, 3, 3);
             Text = "Tənzimləmələr";
             Controls.SetChildIndex(pnlButtons, 0);
+            Controls.SetChildIndex(tabSelector, 0);
             Controls.SetChildIndex(tabControl, 0);
             tabControl.ResumeLayout(false);
             tabSirket.ResumeLayout(false);
@@ -1213,6 +1233,7 @@ namespace AzAgroPOS.Teqdimat
 
         // Tab Control
         private MaterialTabControl tabControl;
+        private MaterialTabSelector tabSelector;
         private TabPage tabSirket;
         private TabPage tabVergi;
         private TabPage tabPrinter;

@@ -1,4 +1,4 @@
-﻿// Fayl: AzAgroPOS.Teqdimat/Interfeysler/IHesabatView.cs
+// Fayl: AzAgroPOS.Teqdimat/Interfeysler/IHesabatView.cs
 namespace AzAgroPOS.Teqdimat.Interfeysler;
 
 using AzAgroPOS.Mentiq.DTOs;
@@ -19,4 +19,7 @@ public interface IHesabatView
     void HesabatiGoster(GunlukSatisHesabatDto hesabat);
     void XetaMesajiGoster(string mesaj);
     void PanelləriSıfırla();
+    void XulaseGoster(decimal umumiDovriyye, int satisSayi, decimal nagdSatis, decimal kartSatis, decimal nisyeSatis);
+    void YuklemeGoster();
+    void YuklemeGizle();
 }

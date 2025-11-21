@@ -45,8 +45,8 @@ namespace AzAgroPOS.Teqdimat
             cmbMusteri = new ComboBox();
             lblMusteri = new Label();
             tabButunBonuslar = new TabPage();
-            dgvButunBonuslar = new DataGridView();
             btnYenile = new MaterialSkin.Controls.MaterialButton();
+            dgvButunBonuslar = new DataGridView();
             tabControl.SuspendLayout();
             tabMusteriBonus.SuspendLayout();
             grpBonusTarixcesi.SuspendLayout();
@@ -456,6 +456,29 @@ namespace AzAgroPOS.Teqdimat
             tabButunBonuslar.TabIndex = 1;
             tabButunBonuslar.Text = "Bütün Müştəri Bonusları";
             // 
+            // btnYenile
+            // 
+            btnYenile.AutoSize = false;
+            btnYenile.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnYenile.BackColor = Color.FromArgb(242, 242, 242);
+            btnYenile.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnYenile.Depth = 0;
+            btnYenile.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            btnYenile.HighEmphasis = true;
+            btnYenile.Icon = null;
+            btnYenile.Location = new Point(1229, 9);
+            btnYenile.Margin = new Padding(4, 6, 4, 6);
+            btnYenile.MouseState = MaterialSkin.MouseState.HOVER;
+            btnYenile.Name = "btnYenile";
+            btnYenile.NoAccentTextColor = Color.Empty;
+            btnYenile.Size = new Size(150, 40);
+            btnYenile.TabIndex = 1;
+            btnYenile.Text = "YENİLƏ";
+            btnYenile.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnYenile.UseAccentColor = false;
+            btnYenile.UseVisualStyleBackColor = false;
+            btnYenile.Click += btnYenile_Click;
+            // 
             // dgvButunBonuslar
             // 
             dgvButunBonuslar.AllowUserToAddRows = false;
@@ -480,29 +503,6 @@ namespace AzAgroPOS.Teqdimat
             dgvButunBonuslar.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvButunBonuslar.Size = new Size(1219, 697);
             dgvButunBonuslar.TabIndex = 0;
-            // 
-            // btnYenile
-            // 
-            btnYenile.AutoSize = false;
-            btnYenile.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnYenile.BackColor = Color.FromArgb(242, 242, 242);
-            btnYenile.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            btnYenile.Depth = 0;
-            btnYenile.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            btnYenile.HighEmphasis = true;
-            btnYenile.Icon = null;
-            btnYenile.Location = new Point(1229, 9);
-            btnYenile.Margin = new Padding(4, 6, 4, 6);
-            btnYenile.MouseState = MaterialSkin.MouseState.HOVER;
-            btnYenile.Name = "btnYenile";
-            btnYenile.NoAccentTextColor = Color.Empty;
-            btnYenile.Size = new Size(150, 40);
-            btnYenile.TabIndex = 1;
-            btnYenile.Text = "YENİLƏ";
-            btnYenile.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            btnYenile.UseAccentColor = false;
-            btnYenile.UseVisualStyleBackColor = false;
-            btnYenile.Click += btnYenile_Click;
             // 
             // BonusIdareetmeFormu
             // 

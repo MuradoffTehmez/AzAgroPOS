@@ -70,7 +70,7 @@ namespace AzAgroPOS.Teqdimat
             splitContainer1.Panel2.Controls.Add(dgvCapSiyahisi);
             splitContainer1.Panel2.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             splitContainer1.Panel2.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            splitContainer1.Size = new Size(1278, 671);
+            splitContainer1.Size = new Size(1278, 649);
             splitContainer1.SplitterDistance = 600;
             splitContainer1.TabIndex = 0;
             // 
@@ -84,7 +84,7 @@ namespace AzAgroPOS.Teqdimat
             lblAxtarisXeta.Location = new Point(22, 128);
             lblAxtarisXeta.MouseState = MaterialSkin.MouseState.HOVER;
             lblAxtarisXeta.Name = "lblAxtarisXeta";
-            lblAxtarisXeta.Size = new Size(556, 467);
+            lblAxtarisXeta.Size = new Size(556, 445);
             lblAxtarisXeta.TabIndex = 4;
             lblAxtarisXeta.Text = "Axtarışa uyğun məhsul tapılmadı.";
             lblAxtarisXeta.TextAlign = ContentAlignment.MiddleCenter;
@@ -101,7 +101,7 @@ namespace AzAgroPOS.Teqdimat
             btnSiyahiyaElaveEt.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnSiyahiyaElaveEt.HighEmphasis = true;
             btnSiyahiyaElaveEt.Icon = null;
-            btnSiyahiyaElaveEt.Location = new Point(410, 616);
+            btnSiyahiyaElaveEt.Location = new Point(410, 594);
             btnSiyahiyaElaveEt.Margin = new Padding(4, 6, 4, 6);
             btnSiyahiyaElaveEt.MouseState = MaterialSkin.MouseState.HOVER;
             btnSiyahiyaElaveEt.Name = "btnSiyahiyaElaveEt";
@@ -143,7 +143,7 @@ namespace AzAgroPOS.Teqdimat
             dgvAxtarisNeticeleri.Name = "dgvAxtarisNeticeleri";
             dgvAxtarisNeticeleri.ReadOnly = true;
             dgvAxtarisNeticeleri.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvAxtarisNeticeleri.Size = new Size(556, 522);
+            dgvAxtarisNeticeleri.Size = new Size(556, 500);
             dgvAxtarisNeticeleri.TabIndex = 2;
             // 
             // btnAxtar
@@ -211,7 +211,7 @@ namespace AzAgroPOS.Teqdimat
             btnCapiBaslat.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnCapiBaslat.HighEmphasis = true;
             btnCapiBaslat.Icon = null;
-            btnCapiBaslat.Location = new Point(483, 616);
+            btnCapiBaslat.Location = new Point(483, 594);
             btnCapiBaslat.Margin = new Padding(4, 6, 4, 6);
             btnCapiBaslat.MouseState = MaterialSkin.MouseState.HOVER;
             btnCapiBaslat.Name = "btnCapiBaslat";
@@ -235,7 +235,7 @@ namespace AzAgroPOS.Teqdimat
             btnSiyahidanSil.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnSiyahidanSil.HighEmphasis = false;
             btnSiyahidanSil.Icon = null;
-            btnSiyahidanSil.Location = new Point(22, 616);
+            btnSiyahidanSil.Location = new Point(22, 594);
             btnSiyahidanSil.Margin = new Padding(4, 6, 4, 6);
             btnSiyahidanSil.MouseState = MaterialSkin.MouseState.HOVER;
             btnSiyahidanSil.Name = "btnSiyahidanSil";
@@ -276,7 +276,7 @@ namespace AzAgroPOS.Teqdimat
             dgvCapSiyahisi.MultiSelect = false;
             dgvCapSiyahisi.Name = "dgvCapSiyahisi";
             dgvCapSiyahisi.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvCapSiyahisi.Size = new Size(629, 578);
+            dgvCapSiyahisi.Size = new Size(629, 556);
             dgvCapSiyahisi.TabIndex = 3;
             // 
             // errorProvider1
@@ -292,6 +292,7 @@ namespace AzAgroPOS.Teqdimat
             Name = "BarkodCapiFormu";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Barkod Etiketi Çapı";
+            Controls.SetChildIndex(splitContainer1, 0);
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel1.PerformLayout();
             splitContainer1.Panel2.ResumeLayout(false);
@@ -301,6 +302,7 @@ namespace AzAgroPOS.Teqdimat
             ((System.ComponentModel.ISupportInitialize)dgvCapSiyahisi).EndInit();
             ((System.ComponentModel.ISupportInitialize)errorProvider1).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion

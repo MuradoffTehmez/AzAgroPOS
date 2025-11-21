@@ -567,6 +567,11 @@ namespace AzAgroPOS.Teqdimat
             }
         }
 
+        private void tabSelector_Click(object sender, EventArgs e)
+        {
+
+        }
+
         #endregion
 
         #region IKonfiqurasiyaView Events
