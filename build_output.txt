@@ -1,0 +1,13 @@
+  Geri yüklenecek projeler belirleniyor...
+  Geri yükleme için tüm projeler güncel.
+  AzAgroPOS.Varliglar -> C:\Users\murad\Tam\AzAgroPOS\AzAgroPOS.Varliglar\bin\Debug\net8.0\AzAgroPOS.Varliglar.dll
+  AzAgroPOS.Verilenler -> C:\Users\murad\Tam\AzAgroPOS\AzAgroPOS.Verilenler\bin\Debug\net8.0\AzAgroPOS.Verilenler.dll
+  AzAgroPOS.Mentiq -> C:\Users\murad\Tam\AzAgroPOS\AzAgroPOS.Mentiq\bin\Debug\net8.0\AzAgroPOS.Mentiq.dll
+  AzAgroPOS.Tests -> C:\Users\murad\Tam\AzAgroPOS\AzAgroPOS.Tests\bin\Debug\net8.0\AzAgroPOS.Tests.dll
+  AzAgroPOS.Teqdimat -> C:\Users\murad\Tam\AzAgroPOS\AzAgroPOS.Teqdimat\bin\Debug\net8.0-windows\AzAgroPOS.Teqdimat.dll
+
+Oluşturma başarılı oldu.
+    0 Uyarı
+    0 Hata
+
+Geçen Süre 00:00:01.85
