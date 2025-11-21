@@ -18,6 +18,8 @@ public partial class EmekHaqqiFormu : BazaForm
 {
     private readonly EmekHaqqiManager _emekHaqqiManager;
     private readonly IsciManager _isciManager;
+    private bool _yuklenmeDevamEdir = false; // Eyni vaxtda əməliyyatların qarşısını al
+    private bool _formaYuklenir = false; // Form yüklənmə prosesini izlə
 
     public EmekHaqqiFormu(EmekHaqqiManager emekHaqqiManager, IsciManager isciManager)
     {
@@ -27,6 +29,18 @@ public partial class EmekHaqqiFormu : BazaForm
 
         // Form yüklənəndə işçi siyahısını və tarixçəni yüklə
         this.Load += EmekHaqqiFormu_Load;
+
+        // DataGridView xətalarını idarə et
+        dgvEmekHaqqlari.DataError += DgvEmekHaqqlari_DataError;
+    }
+
+    /// <summary>
+    /// DataGridView xətalarını idarə edir (enum conversion xətaları və s.)
+    /// </summary>
+    private void DgvEmekHaqqlari_DataError(object? sender, DataGridViewDataErrorEventArgs e)
+    {
+        // Xətanı səssizcə keç - enum dəyərləri üçün "Naməlum" göstəriləcək
+        e.ThrowException = false;
     }
 
     private void EmekHaqqiFormu_Load(object sender, EventArgs e)
@@ -36,6 +50,10 @@ public partial class EmekHaqqiFormu : BazaForm
 
     private async Task YukleAsync()
     {
+        if (_yuklenmeDevamEdir) return;
+        _yuklenmeDevamEdir = true;
+        _formaYuklenir = true;
+
         try
         {
             await IscileriYukle();
@@ -47,6 +65,11 @@ public partial class EmekHaqqiFormu : BazaForm
         catch (Exception ex)
         {
             MessageBox.Show($"Forma yüklənərkən xəta: {ex.Message}", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+        finally
+        {
+            _formaYuklenir = false;
+            _yuklenmeDevamEdir = false;
         }
     }
 
@@ -178,6 +201,7 @@ public partial class EmekHaqqiFormu : BazaForm
     /// </summary>
     private void btnHesabla_Click(object sender, EventArgs e)
     {
+        if (_yuklenmeDevamEdir) return;
         if (cmbIsci.SelectedValue == null)
         {
             MessageBox.Show("Zəhmət olmasa işçi seçin!", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -189,6 +213,9 @@ public partial class EmekHaqqiFormu : BazaForm
 
     private async Task HesablaAsync()
     {
+        if (_yuklenmeDevamEdir) return;
+        _yuklenmeDevamEdir = true;
+
         try
         {
             var isciId = (int)cmbIsci.SelectedValue;
@@ -220,6 +247,10 @@ public partial class EmekHaqqiFormu : BazaForm
         {
             XetaGostergeci.UmumiXetaGoster(ex, "Əmək Haqqı Hesablama");
         }
+        finally
+        {
+            _yuklenmeDevamEdir = false;
+        }
     }
 
     /// <summary>
@@ -227,6 +258,7 @@ public partial class EmekHaqqiFormu : BazaForm
     /// </summary>
     private void btnOde_Click(object sender, EventArgs e)
     {
+        if (_yuklenmeDevamEdir) return;
         if (dgvEmekHaqqlari.SelectedRows.Count == 0)
         {
             MessageBox.Show("Zəhmət olmasa ödəniləcək əmək haqqını seçin!", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -255,6 +287,9 @@ public partial class EmekHaqqiFormu : BazaForm
 
     private async Task OdeAsync(int emekHaqqiId)
     {
+        if (_yuklenmeDevamEdir) return;
+        _yuklenmeDevamEdir = true;
+
         try
         {
             var netice = await _emekHaqqiManager.EmekHaqqiOdeAsync(emekHaqqiId, AktivSessiya.AktivIstifadeci?.Id);
@@ -273,6 +308,10 @@ public partial class EmekHaqqiFormu : BazaForm
         {
             XetaGostergeci.UmumiXetaGoster(ex, "Əmək Haqqı Ödənişi");
         }
+        finally
+        {
+            _yuklenmeDevamEdir = false;
+        }
     }
 
     /// <summary>
@@ -280,6 +319,7 @@ public partial class EmekHaqqiFormu : BazaForm
     /// </summary>
     private void btnLegvEt_Click(object sender, EventArgs e)
     {
+        if (_yuklenmeDevamEdir) return;
         if (dgvEmekHaqqlari.SelectedRows.Count == 0)
         {
             MessageBox.Show("Zəhmət olmasa ləğv ediləcək əmək haqqını seçin!", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -308,6 +348,9 @@ public partial class EmekHaqqiFormu : BazaForm
 
     private async Task LegvEtAsync(int emekHaqqiId)
     {
+        if (_yuklenmeDevamEdir) return;
+        _yuklenmeDevamEdir = true;
+
         try
         {
             var netice = await _emekHaqqiManager.EmekHaqqiLegvEtAsync(emekHaqqiId);
@@ -325,6 +368,10 @@ public partial class EmekHaqqiFormu : BazaForm
         catch (Exception ex)
         {
             XetaGostergeci.UmumiXetaGoster(ex, "Əmək Haqqı Ləğvi");
+        }
+        finally
+        {
+            _yuklenmeDevamEdir = false;
         }
     }
 
@@ -344,7 +391,23 @@ public partial class EmekHaqqiFormu : BazaForm
     /// </summary>
     private void btnYenile_Click(object sender, EventArgs e)
     {
-        _ = EmekHaqqiTarixcesiniYukle();
+        if (_yuklenmeDevamEdir) return;
+        _ = YenileAsync();
+    }
+
+    private async Task YenileAsync()
+    {
+        if (_yuklenmeDevamEdir) return;
+        _yuklenmeDevamEdir = true;
+
+        try
+        {
+            await EmekHaqqiTarixcesiniYukle();
+        }
+        finally
+        {
+            _yuklenmeDevamEdir = false;
+        }
     }
 
     /// <summary>
@@ -352,6 +415,8 @@ public partial class EmekHaqqiFormu : BazaForm
     /// </summary>
     private void cmbIsci_SelectedIndexChanged(object sender, EventArgs e)
     {
+        // Forma yüklənərkən və ya başqa əməliyyat davam edərkən işləmə
+        if (_formaYuklenir || _yuklenmeDevamEdir) return;
         if (cmbIsci.SelectedValue == null) return;
 
         _ = IsciSecildiAsync();
@@ -359,6 +424,9 @@ public partial class EmekHaqqiFormu : BazaForm
 
     private async Task IsciSecildiAsync()
     {
+        if (_yuklenmeDevamEdir) return;
+        _yuklenmeDevamEdir = true;
+
         try
         {
             var isciId = (int)cmbIsci.SelectedValue;
@@ -385,6 +453,10 @@ public partial class EmekHaqqiFormu : BazaForm
         catch
         {
             lblSonMaas.Text = "Son Maaş: ---";
+        }
+        finally
+        {
+            _yuklenmeDevamEdir = false;
         }
     }
 }

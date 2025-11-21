@@ -7,6 +7,11 @@ namespace AzAgroPOS.Varliglar;
 public enum EmekHaqqiStatusu
 {
     /// <summary>
+    /// Status təyin edilməyib (default dəyər).
+    /// </summary>
+    Namalum = 0,
+
+    /// <summary>
     /// Əmək haqqı hesablanmışdır, amma hələ ödənilməmişdir.
     /// </summary>
     Hesablanmis = 1,

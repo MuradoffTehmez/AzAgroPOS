@@ -928,6 +928,7 @@ namespace AzAgroPOS.Teqdimat
             dashboardPanel.Controls.Add(monthlySalesCard);
             dashboardPanel.Controls.Add(totalDebtCard);
             dashboardPanel.Dock = DockStyle.Top;
+            dashboardPanel.Enabled = false;
             dashboardPanel.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             dashboardPanel.ForeColor = Color.FromArgb(222, 0, 0, 0);
             dashboardPanel.Location = new Point(263, 64);
@@ -935,6 +936,7 @@ namespace AzAgroPOS.Teqdimat
             dashboardPanel.Padding = new Padding(5);
             dashboardPanel.Size = new Size(1237, 70);
             dashboardPanel.TabIndex = 2;
+            dashboardPanel.Visible = false;
             // 
             // dailySalesCard
             // 
