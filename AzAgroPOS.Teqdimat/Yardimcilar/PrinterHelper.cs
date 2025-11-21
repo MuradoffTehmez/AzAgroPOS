@@ -145,6 +145,55 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
                 return false;
             }
         }
+
+        /// <summary>
+        /// Thermal printerdə mətn çap edir
+        /// </summary>
+        public static bool TermalCapEt(string printerAdi, string metn)
+        {
+            if (string.IsNullOrWhiteSpace(printerAdi) || string.IsNullOrWhiteSpace(metn))
+                return false;
+
+            try
+            {
+                var printDoc = new PrintDocument();
+                printDoc.PrinterSettings.PrinterName = printerAdi;
+
+                if (!printDoc.PrinterSettings.IsValid)
+                    return false;
+
+                // 80mm thermal printer üçün ölçülər
+                printDoc.DefaultPageSettings.PaperSize = new PaperSize("Receipt", 290, 1000);
+                printDoc.DefaultPageSettings.Margins = new Margins(5, 5, 5, 5);
+
+                var lines = metn.Split(new[] { Environment.NewLine, "\n" }, StringSplitOptions.None);
+                var lineIndex = 0;
+
+                printDoc.PrintPage += (s, e) =>
+                {
+                    var font = new Font("Courier New", 9);
+                    var brush = Brushes.Black;
+                    var yPos = 10f;
+                    var lineHeight = font.GetHeight(e.Graphics);
+
+                    while (lineIndex < lines.Length && yPos < e.PageBounds.Height - 30)
+                    {
+                        e.Graphics.DrawString(lines[lineIndex], font, brush, 5, yPos);
+                        yPos += lineHeight;
+                        lineIndex++;
+                    }
+
+                    e.HasMorePages = lineIndex < lines.Length;
+                };
+
+                printDoc.Print();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 
     /// <summary>

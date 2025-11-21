@@ -1,340 +1,343 @@
-﻿// Fayl: AzAgroPOS.Teqdimat/HesabatFormu.Designer.cs
+// Fayl: AzAgroPOS.Teqdimat/HesabatFormu.Designer.cs
 namespace AzAgroPOS.Teqdimat
 {
     partial class HesabatFormu
     {
         private System.ComponentModel.IContainer components = null;
-        protected override void Dispose(bool disposing) { if (disposing && (components != null)) { components.Dispose(); } base.Dispose(disposing); }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
         #region Windows Form Designer generated code
+
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            // Filter Panel
+            pnlFilter = new Panel();
+            lblTarixBasliq = new Label();
             dtpTarix = new DateTimePicker();
             btnGoster = new MaterialSkin.Controls.MaterialButton();
-            pnlNetice = new Panel();
+            btnExcelIxrac = new MaterialSkin.Controls.MaterialButton();
+
+            // Summary Cards
+            pnlXulase = new Panel();
+            pnlUmumiDovriyye = new Panel();
+            lblUmumiDovriyyeBasliq = new Label();
+            lblUmumiDovriyyeDeyer = new Label();
+
+            pnlSatisSayi = new Panel();
+            lblSatisSayiBasliq = new Label();
+            lblSatisSayiDeyer = new Label();
+
+            pnlNagdSatis = new Panel();
+            lblNagdSatisBasliq = new Label();
+            lblNagdSatisDeyer = new Label();
+
+            pnlKartSatis = new Panel();
+            lblKartSatisBasliq = new Label();
+            lblKartSatisDeyer = new Label();
+
+            pnlNisyeSatis = new Panel();
+            lblNisyeSatisBasliq = new Label();
+            lblNisyeSatisDeyer = new Label();
+
+            // Data Grid
             dgvSatislar = new DataGridView();
-            materialCard1 = new MaterialSkin.Controls.MaterialCard();
-            lblNisye = new MaterialSkin.Controls.MaterialLabel();
-            materialLabel8 = new MaterialSkin.Controls.MaterialLabel();
-            lblKart = new MaterialSkin.Controls.MaterialLabel();
-            materialLabel6 = new MaterialSkin.Controls.MaterialLabel();
-            lblNagd = new MaterialSkin.Controls.MaterialLabel();
-            materialLabel4 = new MaterialSkin.Controls.MaterialLabel();
-            lblSatisSayi = new MaterialSkin.Controls.MaterialLabel();
-            materialLabel2 = new MaterialSkin.Controls.MaterialLabel();
-            lblUmumiDovriyye = new MaterialSkin.Controls.MaterialLabel();
-            materialLabel1 = new MaterialSkin.Controls.MaterialLabel();
-            lblMesaj = new MaterialSkin.Controls.MaterialLabel();
-            pnlNetice.SuspendLayout();
+            lblMesaj = new Label();
+
+            pnlFilter.SuspendLayout();
+            pnlXulase.SuspendLayout();
+            pnlUmumiDovriyye.SuspendLayout();
+            pnlSatisSayi.SuspendLayout();
+            pnlNagdSatis.SuspendLayout();
+            pnlKartSatis.SuspendLayout();
+            pnlNisyeSatis.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvSatislar).BeginInit();
-            materialCard1.SuspendLayout();
             SuspendLayout();
-            // 
+
+            // ========================================
+            // Filter Panel
+            // ========================================
+            pnlFilter.BackColor = Color.White;
+            pnlFilter.Dock = DockStyle.Top;
+            pnlFilter.Location = new Point(3, 64);
+            pnlFilter.Size = new Size(1178, 70);
+            pnlFilter.Padding = new Padding(20, 15, 20, 15);
+            pnlFilter.Controls.Add(lblTarixBasliq);
+            pnlFilter.Controls.Add(dtpTarix);
+            pnlFilter.Controls.Add(btnGoster);
+            pnlFilter.Controls.Add(btnExcelIxrac);
+
+            // lblTarixBasliq
+            lblTarixBasliq.AutoSize = true;
+            lblTarixBasliq.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            lblTarixBasliq.ForeColor = Color.FromArgb(66, 66, 66);
+            lblTarixBasliq.Location = new Point(25, 25);
+            lblTarixBasliq.Text = "Tarix:";
+
             // dtpTarix
-            // 
-            dtpTarix.BackColor = Color.FromArgb(242, 242, 242);
-            dtpTarix.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            dtpTarix.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            dtpTarix.Location = new Point(32, 85);
-            dtpTarix.Name = "dtpTarix";
-            dtpTarix.Size = new Size(300, 24);
-            dtpTarix.TabIndex = 0;
-            // 
+            dtpTarix.Font = new Font("Segoe UI", 11F);
+            dtpTarix.Format = DateTimePickerFormat.Short;
+            dtpTarix.Location = new Point(75, 20);
+            dtpTarix.Size = new Size(200, 27);
+
             // btnGoster
-            // 
             btnGoster.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnGoster.BackColor = Color.FromArgb(242, 242, 242);
             btnGoster.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             btnGoster.Depth = 0;
-            btnGoster.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnGoster.HighEmphasis = true;
             btnGoster.Icon = null;
-            btnGoster.Location = new Point(352, 81);
-            btnGoster.Margin = new Padding(4, 6, 4, 6);
+            btnGoster.Location = new Point(300, 15);
             btnGoster.MouseState = MaterialSkin.MouseState.HOVER;
             btnGoster.Name = "btnGoster";
-            btnGoster.NoAccentTextColor = Color.Empty;
-            btnGoster.Size = new Size(79, 36);
+            btnGoster.Size = new Size(100, 36);
             btnGoster.TabIndex = 1;
-            btnGoster.Text = "Göstər";
+            btnGoster.Text = "Gostər";
             btnGoster.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnGoster.UseAccentColor = false;
-            btnGoster.UseVisualStyleBackColor = false;
             btnGoster.Click += btnGoster_Click;
-            // 
-            // pnlNetice
-            // 
-            pnlNetice.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            pnlNetice.BackColor = Color.FromArgb(242, 242, 242);
-            pnlNetice.Controls.Add(dgvSatislar);
-            pnlNetice.Controls.Add(materialCard1);
-            pnlNetice.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            pnlNetice.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            pnlNetice.Location = new Point(32, 140);
-            pnlNetice.Name = "pnlNetice";
-            pnlNetice.Size = new Size(1120, 580);
-            pnlNetice.TabIndex = 2;
-            // 
-            // dgvSatislar
-            // 
+
+            // btnExcelIxrac
+            btnExcelIxrac.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnExcelIxrac.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnExcelIxrac.Depth = 0;
+            btnExcelIxrac.HighEmphasis = false;
+            btnExcelIxrac.Icon = null;
+            btnExcelIxrac.Location = new Point(420, 15);
+            btnExcelIxrac.MouseState = MaterialSkin.MouseState.HOVER;
+            btnExcelIxrac.Name = "btnExcelIxrac";
+            btnExcelIxrac.Size = new Size(130, 36);
+            btnExcelIxrac.TabIndex = 2;
+            btnExcelIxrac.Text = "Excel Ixrac";
+            btnExcelIxrac.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
+            btnExcelIxrac.UseAccentColor = false;
+            btnExcelIxrac.Enabled = false;
+            btnExcelIxrac.Click += btnExcelIxrac_Click;
+
+            // ========================================
+            // Summary Cards Panel
+            // ========================================
+            pnlXulase.BackColor = Color.FromArgb(245, 245, 245);
+            pnlXulase.Dock = DockStyle.Top;
+            pnlXulase.Location = new Point(3, 134);
+            pnlXulase.Size = new Size(1178, 130);
+            pnlXulase.Padding = new Padding(15, 15, 15, 15);
+            pnlXulase.Visible = false;
+            pnlXulase.Controls.Add(pnlUmumiDovriyye);
+            pnlXulase.Controls.Add(pnlSatisSayi);
+            pnlXulase.Controls.Add(pnlNagdSatis);
+            pnlXulase.Controls.Add(pnlKartSatis);
+            pnlXulase.Controls.Add(pnlNisyeSatis);
+
+            // ========================================
+            // Card 1 - Umumi Dovriyye (Blue)
+            // ========================================
+            pnlUmumiDovriyye.BackColor = Color.FromArgb(33, 150, 243);
+            pnlUmumiDovriyye.Location = new Point(20, 15);
+            pnlUmumiDovriyye.Size = new Size(210, 100);
+            pnlUmumiDovriyye.Controls.Add(lblUmumiDovriyyeBasliq);
+            pnlUmumiDovriyye.Controls.Add(lblUmumiDovriyyeDeyer);
+
+            lblUmumiDovriyyeBasliq.AutoSize = true;
+            lblUmumiDovriyyeBasliq.Font = new Font("Segoe UI", 10F);
+            lblUmumiDovriyyeBasliq.ForeColor = Color.White;
+            lblUmumiDovriyyeBasliq.Location = new Point(15, 15);
+            lblUmumiDovriyyeBasliq.Text = "Umumi Dovriyye";
+
+            lblUmumiDovriyyeDeyer.AutoSize = true;
+            lblUmumiDovriyyeDeyer.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
+            lblUmumiDovriyyeDeyer.ForeColor = Color.White;
+            lblUmumiDovriyyeDeyer.Location = new Point(15, 45);
+            lblUmumiDovriyyeDeyer.Text = "0.00 ₼";
+
+            // ========================================
+            // Card 2 - Satis Sayi (Green)
+            // ========================================
+            pnlSatisSayi.BackColor = Color.FromArgb(76, 175, 80);
+            pnlSatisSayi.Location = new Point(250, 15);
+            pnlSatisSayi.Size = new Size(210, 100);
+            pnlSatisSayi.Controls.Add(lblSatisSayiBasliq);
+            pnlSatisSayi.Controls.Add(lblSatisSayiDeyer);
+
+            lblSatisSayiBasliq.AutoSize = true;
+            lblSatisSayiBasliq.Font = new Font("Segoe UI", 10F);
+            lblSatisSayiBasliq.ForeColor = Color.White;
+            lblSatisSayiBasliq.Location = new Point(15, 15);
+            lblSatisSayiBasliq.Text = "Satis Sayi";
+
+            lblSatisSayiDeyer.AutoSize = true;
+            lblSatisSayiDeyer.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
+            lblSatisSayiDeyer.ForeColor = Color.White;
+            lblSatisSayiDeyer.Location = new Point(15, 45);
+            lblSatisSayiDeyer.Text = "0";
+
+            // ========================================
+            // Card 3 - Nagd Satis (Teal)
+            // ========================================
+            pnlNagdSatis.BackColor = Color.FromArgb(0, 150, 136);
+            pnlNagdSatis.Location = new Point(480, 15);
+            pnlNagdSatis.Size = new Size(210, 100);
+            pnlNagdSatis.Controls.Add(lblNagdSatisBasliq);
+            pnlNagdSatis.Controls.Add(lblNagdSatisDeyer);
+
+            lblNagdSatisBasliq.AutoSize = true;
+            lblNagdSatisBasliq.Font = new Font("Segoe UI", 10F);
+            lblNagdSatisBasliq.ForeColor = Color.White;
+            lblNagdSatisBasliq.Location = new Point(15, 15);
+            lblNagdSatisBasliq.Text = "Nagd Satis";
+
+            lblNagdSatisDeyer.AutoSize = true;
+            lblNagdSatisDeyer.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
+            lblNagdSatisDeyer.ForeColor = Color.White;
+            lblNagdSatisDeyer.Location = new Point(15, 45);
+            lblNagdSatisDeyer.Text = "0.00 ₼";
+
+            // ========================================
+            // Card 4 - Kart Satis (Purple)
+            // ========================================
+            pnlKartSatis.BackColor = Color.FromArgb(156, 39, 176);
+            pnlKartSatis.Location = new Point(710, 15);
+            pnlKartSatis.Size = new Size(210, 100);
+            pnlKartSatis.Controls.Add(lblKartSatisBasliq);
+            pnlKartSatis.Controls.Add(lblKartSatisDeyer);
+
+            lblKartSatisBasliq.AutoSize = true;
+            lblKartSatisBasliq.Font = new Font("Segoe UI", 10F);
+            lblKartSatisBasliq.ForeColor = Color.White;
+            lblKartSatisBasliq.Location = new Point(15, 15);
+            lblKartSatisBasliq.Text = "Kart Satis";
+
+            lblKartSatisDeyer.AutoSize = true;
+            lblKartSatisDeyer.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
+            lblKartSatisDeyer.ForeColor = Color.White;
+            lblKartSatisDeyer.Location = new Point(15, 45);
+            lblKartSatisDeyer.Text = "0.00 ₼";
+
+            // ========================================
+            // Card 5 - Nisye Satis (Orange)
+            // ========================================
+            pnlNisyeSatis.BackColor = Color.FromArgb(255, 152, 0);
+            pnlNisyeSatis.Location = new Point(940, 15);
+            pnlNisyeSatis.Size = new Size(210, 100);
+            pnlNisyeSatis.Controls.Add(lblNisyeSatisBasliq);
+            pnlNisyeSatis.Controls.Add(lblNisyeSatisDeyer);
+
+            lblNisyeSatisBasliq.AutoSize = true;
+            lblNisyeSatisBasliq.Font = new Font("Segoe UI", 10F);
+            lblNisyeSatisBasliq.ForeColor = Color.White;
+            lblNisyeSatisBasliq.Location = new Point(15, 15);
+            lblNisyeSatisBasliq.Text = "Nisye Satis";
+
+            lblNisyeSatisDeyer.AutoSize = true;
+            lblNisyeSatisDeyer.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
+            lblNisyeSatisDeyer.ForeColor = Color.White;
+            lblNisyeSatisDeyer.Location = new Point(15, 45);
+            lblNisyeSatisDeyer.Text = "0.00 ₼";
+
+            // ========================================
+            // DataGridView
+            // ========================================
             dgvSatislar.AllowUserToAddRows = false;
             dgvSatislar.AllowUserToDeleteRows = false;
-            dgvSatislar.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvSatislar.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = SystemColors.Control;
-            dataGridViewCellStyle1.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            dgvSatislar.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dgvSatislar.BackgroundColor = Color.White;
+            dgvSatislar.BorderStyle = BorderStyle.None;
+            dgvSatislar.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
             dgvSatislar.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Window;
-            dataGridViewCellStyle2.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            dataGridViewCellStyle2.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
-            dgvSatislar.DefaultCellStyle = dataGridViewCellStyle2;
-            dgvSatislar.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            dgvSatislar.Location = new Point(0, 150);
+            dgvSatislar.Dock = DockStyle.Fill;
+            dgvSatislar.EnableHeadersVisualStyles = false;
+            dgvSatislar.GridColor = Color.FromArgb(224, 224, 224);
+            dgvSatislar.Location = new Point(3, 264);
             dgvSatislar.Name = "dgvSatislar";
             dgvSatislar.ReadOnly = true;
-            dgvSatislar.Size = new Size(1120, 430);
-            dgvSatislar.TabIndex = 1;
-            // 
-            // materialCard1
-            // 
-            materialCard1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            materialCard1.BackColor = Color.FromArgb(255, 255, 255);
-            materialCard1.Controls.Add(lblNisye);
-            materialCard1.Controls.Add(materialLabel8);
-            materialCard1.Controls.Add(lblKart);
-            materialCard1.Controls.Add(materialLabel6);
-            materialCard1.Controls.Add(lblNagd);
-            materialCard1.Controls.Add(materialLabel4);
-            materialCard1.Controls.Add(lblSatisSayi);
-            materialCard1.Controls.Add(materialLabel2);
-            materialCard1.Controls.Add(lblUmumiDovriyye);
-            materialCard1.Controls.Add(materialLabel1);
-            materialCard1.Depth = 0;
-            materialCard1.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            materialCard1.Location = new Point(0, 3);
-            materialCard1.Margin = new Padding(14);
-            materialCard1.MouseState = MaterialSkin.MouseState.HOVER;
-            materialCard1.Name = "materialCard1";
-            materialCard1.Padding = new Padding(14);
-            materialCard1.Size = new Size(1120, 129);
-            materialCard1.TabIndex = 0;
-            // 
-            // lblNisye
-            // 
-            lblNisye.AutoSize = true;
-            lblNisye.BackColor = Color.FromArgb(242, 242, 242);
-            lblNisye.Depth = 0;
-            lblNisye.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
-            lblNisye.FontType = MaterialSkin.MaterialSkinManager.fontType.Subtitle1;
-            lblNisye.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblNisye.Location = new Point(950, 60);
-            lblNisye.MouseState = MaterialSkin.MouseState.HOVER;
-            lblNisye.Name = "lblNisye";
-            lblNisye.Size = new Size(67, 19);
-            lblNisye.TabIndex = 9;
-            lblNisye.Text = "0.00 AZN";
-            // 
-            // materialLabel8
-            // 
-            materialLabel8.AutoSize = true;
-            materialLabel8.BackColor = Color.FromArgb(242, 242, 242);
-            materialLabel8.Depth = 0;
-            materialLabel8.Font = new Font("Roboto Medium", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
-            materialLabel8.FontType = MaterialSkin.MaterialSkinManager.fontType.Subtitle2;
-            materialLabel8.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            materialLabel8.Location = new Point(830, 62);
-            materialLabel8.MouseState = MaterialSkin.MouseState.HOVER;
-            materialLabel8.Name = "materialLabel8";
-            materialLabel8.Size = new Size(75, 17);
-            materialLabel8.TabIndex = 8;
-            materialLabel8.Text = "Nisyə Satış:";
-            // 
-            // lblKart
-            // 
-            lblKart.AutoSize = true;
-            lblKart.BackColor = Color.FromArgb(242, 242, 242);
-            lblKart.Depth = 0;
-            lblKart.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
-            lblKart.FontType = MaterialSkin.MaterialSkinManager.fontType.Subtitle1;
-            lblKart.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblKart.Location = new Point(950, 24);
-            lblKart.MouseState = MaterialSkin.MouseState.HOVER;
-            lblKart.Name = "lblKart";
-            lblKart.Size = new Size(67, 19);
-            lblKart.TabIndex = 7;
-            lblKart.Text = "0.00 AZN";
-            // 
-            // materialLabel6
-            // 
-            materialLabel6.AutoSize = true;
-            materialLabel6.BackColor = Color.FromArgb(242, 242, 242);
-            materialLabel6.Depth = 0;
-            materialLabel6.Font = new Font("Roboto Medium", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
-            materialLabel6.FontType = MaterialSkin.MaterialSkinManager.fontType.Subtitle2;
-            materialLabel6.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            materialLabel6.Location = new Point(830, 26);
-            materialLabel6.MouseState = MaterialSkin.MouseState.HOVER;
-            materialLabel6.Name = "materialLabel6";
-            materialLabel6.Size = new Size(67, 17);
-            materialLabel6.TabIndex = 6;
-            materialLabel6.Text = "Kart Satış:";
-            // 
-            // lblNagd
-            // 
-            lblNagd.AutoSize = true;
-            lblNagd.BackColor = Color.FromArgb(242, 242, 242);
-            lblNagd.Depth = 0;
-            lblNagd.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
-            lblNagd.FontType = MaterialSkin.MaterialSkinManager.fontType.Subtitle1;
-            lblNagd.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblNagd.Location = new Point(620, 24);
-            lblNagd.MouseState = MaterialSkin.MouseState.HOVER;
-            lblNagd.Name = "lblNagd";
-            lblNagd.Size = new Size(67, 19);
-            lblNagd.TabIndex = 5;
-            lblNagd.Text = "0.00 AZN";
-            // 
-            // materialLabel4
-            // 
-            materialLabel4.AutoSize = true;
-            materialLabel4.BackColor = Color.FromArgb(242, 242, 242);
-            materialLabel4.Depth = 0;
-            materialLabel4.Font = new Font("Roboto Medium", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
-            materialLabel4.FontType = MaterialSkin.MaterialSkinManager.fontType.Subtitle2;
-            materialLabel4.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            materialLabel4.Location = new Point(500, 26);
-            materialLabel4.MouseState = MaterialSkin.MouseState.HOVER;
-            materialLabel4.Name = "materialLabel4";
-            materialLabel4.Size = new Size(74, 17);
-            materialLabel4.TabIndex = 4;
-            materialLabel4.Text = "Nağd Satış:";
-            // 
-            // lblSatisSayi
-            // 
-            lblSatisSayi.AutoSize = true;
-            lblSatisSayi.BackColor = Color.FromArgb(242, 242, 242);
-            lblSatisSayi.Depth = 0;
-            lblSatisSayi.Font = new Font("Roboto", 24F, FontStyle.Bold, GraphicsUnit.Pixel);
-            lblSatisSayi.FontType = MaterialSkin.MaterialSkinManager.fontType.H5;
-            lblSatisSayi.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblSatisSayi.Location = new Point(220, 70);
-            lblSatisSayi.MouseState = MaterialSkin.MouseState.HOVER;
-            lblSatisSayi.Name = "lblSatisSayi";
-            lblSatisSayi.Size = new Size(14, 29);
-            lblSatisSayi.TabIndex = 3;
-            lblSatisSayi.Text = "0";
-            // 
-            // materialLabel2
-            // 
-            materialLabel2.AutoSize = true;
-            materialLabel2.BackColor = Color.FromArgb(242, 242, 242);
-            materialLabel2.Depth = 0;
-            materialLabel2.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
-            materialLabel2.FontType = MaterialSkin.MaterialSkinManager.fontType.Body2;
-            materialLabel2.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            materialLabel2.Location = new Point(20, 80);
-            materialLabel2.MouseState = MaterialSkin.MouseState.HOVER;
-            materialLabel2.Name = "materialLabel2";
-            materialLabel2.Size = new Size(125, 17);
-            materialLabel2.TabIndex = 2;
-            materialLabel2.Text = "Cəmi Satışların Sayı:";
-            // 
-            // lblUmumiDovriyye
-            // 
-            lblUmumiDovriyye.AutoSize = true;
-            lblUmumiDovriyye.BackColor = Color.FromArgb(242, 242, 242);
-            lblUmumiDovriyye.Depth = 0;
-            lblUmumiDovriyye.Font = new Font("Roboto", 34F, FontStyle.Bold, GraphicsUnit.Pixel);
-            lblUmumiDovriyye.FontType = MaterialSkin.MaterialSkinManager.fontType.H4;
-            lblUmumiDovriyye.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblUmumiDovriyye.Location = new Point(220, 14);
-            lblUmumiDovriyye.MouseState = MaterialSkin.MouseState.HOVER;
-            lblUmumiDovriyye.Name = "lblUmumiDovriyye";
-            lblUmumiDovriyye.Size = new Size(141, 41);
-            lblUmumiDovriyye.TabIndex = 1;
-            lblUmumiDovriyye.Text = "0.00 AZN";
-            // 
-            // materialLabel1
-            // 
-            materialLabel1.AutoSize = true;
-            materialLabel1.BackColor = Color.FromArgb(242, 242, 242);
-            materialLabel1.Depth = 0;
-            materialLabel1.Font = new Font("Roboto", 24F, FontStyle.Bold, GraphicsUnit.Pixel);
-            materialLabel1.FontType = MaterialSkin.MaterialSkinManager.fontType.H5;
-            materialLabel1.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            materialLabel1.Location = new Point(17, 24);
-            materialLabel1.MouseState = MaterialSkin.MouseState.HOVER;
-            materialLabel1.Name = "materialLabel1";
-            materialLabel1.Size = new Size(181, 29);
-            materialLabel1.TabIndex = 0;
-            materialLabel1.Text = "Ümumi Dövriyyə:";
-            // 
-            // lblMesaj
-            // 
-            lblMesaj.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            lblMesaj.BackColor = Color.FromArgb(242, 242, 242);
-            lblMesaj.Depth = 0;
-            lblMesaj.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
-            lblMesaj.FontType = MaterialSkin.MaterialSkinManager.fontType.Subtitle1;
-            lblMesaj.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblMesaj.Location = new Point(32, 140);
-            lblMesaj.MouseState = MaterialSkin.MouseState.HOVER;
+            dgvSatislar.RowHeadersVisible = false;
+            dgvSatislar.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvSatislar.Size = new Size(1178, 482);
+            dgvSatislar.Visible = false;
+
+            // ========================================
+            // Mesaj Label
+            // ========================================
+            lblMesaj.Dock = DockStyle.Fill;
+            lblMesaj.Font = new Font("Segoe UI", 14F);
+            lblMesaj.ForeColor = Color.FromArgb(158, 158, 158);
+            lblMesaj.Location = new Point(3, 264);
             lblMesaj.Name = "lblMesaj";
-            lblMesaj.Size = new Size(1120, 580);
-            lblMesaj.TabIndex = 3;
-            lblMesaj.Text = "Mesaj Mətni";
+            lblMesaj.Size = new Size(1178, 482);
             lblMesaj.TextAlign = ContentAlignment.MiddleCenter;
-            // 
+            lblMesaj.Visible = false;
+
+            // ========================================
             // HesabatFormu
-            // 
+            // ========================================
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1184, 749);
+            Controls.Add(dgvSatislar);
             Controls.Add(lblMesaj);
-            Controls.Add(pnlNetice);
-            Controls.Add(btnGoster);
-            Controls.Add(dtpTarix);
+            Controls.Add(pnlXulase);
+            Controls.Add(pnlFilter);
             Name = "HesabatFormu";
+            Padding = new Padding(3, 64, 3, 3);
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Günlük Satış Hesabatı";
-            Controls.SetChildIndex(dtpTarix, 0);
-            Controls.SetChildIndex(btnGoster, 0);
-            Controls.SetChildIndex(pnlNetice, 0);
-            Controls.SetChildIndex(lblMesaj, 0);
-            pnlNetice.ResumeLayout(false);
+            Text = "Gunluk Satis Hesabati";
+
+            pnlFilter.ResumeLayout(false);
+            pnlFilter.PerformLayout();
+            pnlXulase.ResumeLayout(false);
+            pnlUmumiDovriyye.ResumeLayout(false);
+            pnlUmumiDovriyye.PerformLayout();
+            pnlSatisSayi.ResumeLayout(false);
+            pnlSatisSayi.PerformLayout();
+            pnlNagdSatis.ResumeLayout(false);
+            pnlNagdSatis.PerformLayout();
+            pnlKartSatis.ResumeLayout(false);
+            pnlKartSatis.PerformLayout();
+            pnlNisyeSatis.ResumeLayout(false);
+            pnlNisyeSatis.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvSatislar).EndInit();
-            materialCard1.ResumeLayout(false);
-            materialCard1.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
+
         #endregion
+
+        // Filter Panel
+        private Panel pnlFilter;
+        private Label lblTarixBasliq;
         private DateTimePicker dtpTarix;
         private MaterialSkin.Controls.MaterialButton btnGoster;
-        private Panel pnlNetice;
-        private MaterialSkin.Controls.MaterialCard materialCard1;
+        private MaterialSkin.Controls.MaterialButton btnExcelIxrac;
+
+        // Summary Cards Panel
+        private Panel pnlXulase;
+        private Panel pnlUmumiDovriyye;
+        private Label lblUmumiDovriyyeBasliq;
+        private Label lblUmumiDovriyyeDeyer;
+
+        private Panel pnlSatisSayi;
+        private Label lblSatisSayiBasliq;
+        private Label lblSatisSayiDeyer;
+
+        private Panel pnlNagdSatis;
+        private Label lblNagdSatisBasliq;
+        private Label lblNagdSatisDeyer;
+
+        private Panel pnlKartSatis;
+        private Label lblKartSatisBasliq;
+        private Label lblKartSatisDeyer;
+
+        private Panel pnlNisyeSatis;
+        private Label lblNisyeSatisBasliq;
+        private Label lblNisyeSatisDeyer;
+
+        // Data Grid
         private DataGridView dgvSatislar;
-        private MaterialSkin.Controls.MaterialLabel lblUmumiDovriyye;
-        private MaterialSkin.Controls.MaterialLabel materialLabel1;
-        private MaterialSkin.Controls.MaterialLabel lblNisye;
-        private MaterialSkin.Controls.MaterialLabel materialLabel8;
-        private MaterialSkin.Controls.MaterialLabel lblKart;
-        private MaterialSkin.Controls.MaterialLabel materialLabel6;
-        private MaterialSkin.Controls.MaterialLabel lblNagd;
-        private MaterialSkin.Controls.MaterialLabel materialLabel4;
-        private MaterialSkin.Controls.MaterialLabel lblSatisSayi;
-        private MaterialSkin.Controls.MaterialLabel materialLabel2;
-        private MaterialSkin.Controls.MaterialLabel lblMesaj;
+        private Label lblMesaj;
     }
 }
