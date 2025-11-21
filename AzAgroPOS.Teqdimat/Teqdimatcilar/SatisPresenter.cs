@@ -1,6 +1,7 @@
 ﻿using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
+using AzAgroPOS.Teqdimat.Servisler;
 using AzAgroPOS.Teqdimat.Yardimcilar;
 using AzAgroPOS.Varliglar;
 using System.ComponentModel;
@@ -13,6 +14,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
         private readonly SatisManager _satisManager;
         private readonly MehsulManager _mehsulManager;
         private readonly MusteriManager _musteriManager;
+        private readonly CapServisi _capServisi;
 
         private BindingList<SatisSebetiElementiDto> _aktivSebet;
         private readonly List<GozleyenSatis> _gozleyenSebetler;
@@ -26,6 +28,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             _satisManager = satisManager;
             _mehsulManager = mehsulManager;
             _musteriManager = musteriManager;
+            _capServisi = new CapServisi();
             _aktivSebet = new BindingList<SatisSebetiElementiDto>();
             _gozleyenSebetler = new List<GozleyenSatis>();
 
@@ -294,6 +297,33 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 
                 if (netice.UgurluDur)
                 {
+                    // Qebz cap et
+                    try
+                    {
+                        var qebz = new SatisQebzDto
+                        {
+                            SatisId = netice.Data!.Id,
+                            Tarix = netice.Data.Tarix,
+                            KassirAdi = AktivSessiya.AktivIstifadeci?.TamAd ?? "Kassir",
+                            SatilanMehsullar = _aktivSebet.Select(e => new SatisSebetiElementiDto
+                            {
+                                MehsulId = e.MehsulId,
+                                MehsulAdi = e.MehsulAdi,
+                                Miqdar = e.Miqdar,
+                                VahidinQiymeti = e.VahidinQiymeti,
+                                EndirimMeblegi = e.EndirimMeblegi
+                            }).ToList()
+                        };
+
+                        _capServisi.EndirimTeyinEt(_cartLevelEndirimMeblegi);
+                        _capServisi.CekiCapEt(qebz);
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"[SatisPresenter] Çek cap xətası: {ex.Message}");
+                        // Cap xetasi satisi dayandirmamali
+                    }
+
                     _view.StatusMesajiGoster("Satış uğurla tamamlandı!", StatusMesajiNovu.Ugurlu);
                     FormuTamSifirla();
                 }
