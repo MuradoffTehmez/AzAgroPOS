@@ -136,46 +136,6 @@ namespace AzAgroPOS.Teqdimat
             btnIxracEt.UseVisualStyleBackColor = false;
             btnIxracEt.Click += btnIxracEt_Click;
             //
-            // dgvMehsullar
-            //
-            dgvMehsullar.AllowUserToAddRows = false;
-            dgvMehsullar.AllowUserToDeleteRows = false;
-            dgvMehsullar.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            dgvMehsullar.AutoGenerateColumns = false;
-            dgvMehsullar.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvMehsullar.Columns.AddRange(new DataGridViewColumn[] { colMehId, colMehAd, colMehStokKodu, colMehBarkod, colMehStok, colMehAlisQiymeti, colMehSatisQiymeti });
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = Color.FromArgb(63, 81, 181);
-            dataGridViewCellStyle1.Font = new Font("Roboto", 9F, FontStyle.Bold);
-            dataGridViewCellStyle1.ForeColor = Color.White;
-            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(63, 81, 181);
-            dataGridViewCellStyle1.SelectionForeColor = Color.White;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            dgvMehsullar.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            dgvMehsullar.ColumnHeadersHeight = 32;
-            dgvMehsullar.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dgvMehsullar.ContextMenuStrip = contextMenuStripMehsullar;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = Color.White;
-            dataGridViewCellStyle2.Font = new Font("Roboto", 9F);
-            dataGridViewCellStyle2.ForeColor = Color.FromArgb(64, 64, 64);
-            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(224, 224, 224);
-            dataGridViewCellStyle2.SelectionForeColor = Color.FromArgb(64, 64, 64);
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
-            dgvMehsullar.DefaultCellStyle = dataGridViewCellStyle2;
-            dgvMehsullar.EnableHeadersVisualStyles = false;
-            dgvMehsullar.GridColor = Color.FromArgb(224, 224, 224);
-            dgvMehsullar.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            dgvMehsullar.Location = new Point(15, 67);
-            dgvMehsullar.Name = "dgvMehsullar";
-            dgvMehsullar.ReadOnly = true;
-            dgvMehsullar.RowHeadersVisible = false;
-            dgvMehsullar.RowTemplate.Height = 30;
-            dgvMehsullar.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvMehsullar.Size = new Size(804, 827);
-            dgvMehsullar.TabIndex = 1;
-            dgvMehsullar.SelectionChanged += dgvMehsullar_SelectionChanged;
-            //
             // colMehId
             //
             colMehId = new DataGridViewTextBoxColumn();
@@ -243,6 +203,46 @@ namespace AzAgroPOS.Teqdimat
             colMehSatisQiymeti.FillWeight = 15;
             colMehSatisQiymeti.DefaultCellStyle.Format = "N2";
             colMehSatisQiymeti.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            //
+            // dgvMehsullar
+            //
+            dgvMehsullar.AllowUserToAddRows = false;
+            dgvMehsullar.AllowUserToDeleteRows = false;
+            dgvMehsullar.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dgvMehsullar.AutoGenerateColumns = false;
+            dgvMehsullar.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvMehsullar.Columns.AddRange(new DataGridViewColumn[] { colMehId, colMehAd, colMehStokKodu, colMehBarkod, colMehStok, colMehAlisQiymeti, colMehSatisQiymeti });
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(63, 81, 181);
+            dataGridViewCellStyle1.Font = new Font("Roboto", 9F, FontStyle.Bold);
+            dataGridViewCellStyle1.ForeColor = Color.White;
+            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(63, 81, 181);
+            dataGridViewCellStyle1.SelectionForeColor = Color.White;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dgvMehsullar.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dgvMehsullar.ColumnHeadersHeight = 32;
+            dgvMehsullar.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgvMehsullar.ContextMenuStrip = contextMenuStripMehsullar;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = Color.White;
+            dataGridViewCellStyle2.Font = new Font("Roboto", 9F);
+            dataGridViewCellStyle2.ForeColor = Color.FromArgb(64, 64, 64);
+            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(224, 224, 224);
+            dataGridViewCellStyle2.SelectionForeColor = Color.FromArgb(64, 64, 64);
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            dgvMehsullar.DefaultCellStyle = dataGridViewCellStyle2;
+            dgvMehsullar.EnableHeadersVisualStyles = false;
+            dgvMehsullar.GridColor = Color.FromArgb(224, 224, 224);
+            dgvMehsullar.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            dgvMehsullar.Location = new Point(15, 67);
+            dgvMehsullar.Name = "dgvMehsullar";
+            dgvMehsullar.ReadOnly = true;
+            dgvMehsullar.RowHeadersVisible = false;
+            dgvMehsullar.RowTemplate.Height = 30;
+            dgvMehsullar.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvMehsullar.Size = new Size(804, 827);
+            dgvMehsullar.TabIndex = 1;
+            dgvMehsullar.SelectionChanged += dgvMehsullar_SelectionChanged;
             // 
             // contextMenuStripMehsullar
             // 
