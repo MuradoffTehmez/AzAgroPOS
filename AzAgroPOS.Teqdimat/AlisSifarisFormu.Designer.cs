@@ -138,11 +138,12 @@ namespace AzAgroPOS.Teqdimat
             tabSifarisler.Size = new Size(1617, 667);
             tabSifarisler.TabIndex = 0;
             tabSifarisler.Text = "Sifarişlər";
-            // 
+            //
             // dgvSifarisler
-            // 
+            //
             dgvSifarisler.AllowUserToAddRows = false;
             dgvSifarisler.AllowUserToDeleteRows = false;
+            dgvSifarisler.AutoGenerateColumns = false;
             dgvSifarisler.BackgroundColor = Color.White;
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = SystemColors.Control;
@@ -356,11 +357,12 @@ namespace AzAgroPOS.Teqdimat
             lblMehsul.Size = new Size(57, 19);
             lblMehsul.TabIndex = 1;
             lblMehsul.Text = "Məhsul:";
-            // 
+            //
             // dgvSetirler
-            // 
+            //
             dgvSetirler.AllowUserToAddRows = false;
             dgvSetirler.AllowUserToDeleteRows = false;
+            dgvSetirler.AutoGenerateColumns = false;
             dgvSetirler.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvSetirler.BackgroundColor = Color.White;
             dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;

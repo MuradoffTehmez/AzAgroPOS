@@ -446,11 +446,12 @@ namespace AzAgroPOS.Teqdimat
             panelGrid.Padding = new Padding(12, 12, 12, 12);
             panelGrid.Size = new Size(1392, 327);
             panelGrid.TabIndex = 2;
-            // 
+            //
             // dgvOdemeler
-            // 
+            //
             dgvOdemeler.AllowUserToAddRows = false;
             dgvOdemeler.AllowUserToDeleteRows = false;
+            dgvOdemeler.AutoGenerateColumns = false;
             dgvOdemeler.BackgroundColor = Color.White;
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = SystemColors.Control;
