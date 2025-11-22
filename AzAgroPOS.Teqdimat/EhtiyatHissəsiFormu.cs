@@ -148,7 +148,7 @@ namespace AzAgroPOS.Teqdimat
         }
 
         /// <summary>
-        /// Recursively clears errors from all controls
+        /// Recursively clears errors from all controls    
         /// </summary>
         /// <param name="control">Control to clear errors from</param>
         private void ClearErrorsRecursive(Control control)
