@@ -395,12 +395,12 @@
             pnlCartSection.Size = new Size(840, 558);
             pnlCartSection.TabIndex = 1;
             //
-            // dgvSebet
+            // dgvSebet - Professional Səbət DataGridView
             //
             dgvSebet.AllowUserToAddRows = false;
             dgvSebet.AllowUserToDeleteRows = false;
             dgvSebet.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            dgvSebet.AutoGenerateColumns = false;
+            dgvSebet.AutoGenerateColumns = true;
             dgvSebet.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = Color.FromArgb(63, 81, 181);

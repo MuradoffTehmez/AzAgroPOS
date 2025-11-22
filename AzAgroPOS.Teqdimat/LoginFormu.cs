@@ -1,6 +1,7 @@
 // Fayl: AzAgroPOS.Teqdimat/LoginFormu.cs
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
+using System.Drawing.Drawing2D;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -11,6 +12,8 @@ namespace AzAgroPOS.Teqdimat
         private LoginPresenter _presenter = null!;
         private bool _parolGorunur = false;
         private bool _girişEdilir = false;
+        private System.Windows.Forms.Timer? _loadingTimer;
+        private int _loadingDots = 0;
 
         // CAPS LOCK detection
         [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
@@ -40,8 +43,19 @@ namespace AzAgroPOS.Teqdimat
             this.KeyPreview = true;
             this.KeyUp += LoginFormu_KeyUp;
 
+            // Gradient background və dairəvi elementləri konfiqurasiya et
+            pnlMain.Paint += PnlMain_Paint;
+            pnlLogoContainer.Paint += PnlLogoContainer_Paint;
+            pnlCardShadow.Paint += PnlCardShadow_Paint;
+            pnlLoginCard.Paint += PnlLoginCard_Paint;
+
             // Logo üçün placeholder rəng
             picLogo.Paint += PicLogo_Paint;
+
+            // Loading animasiya timer
+            _loadingTimer = new System.Windows.Forms.Timer();
+            _loadingTimer.Interval = 400;
+            _loadingTimer.Tick += LoadingTimer_Tick;
         }
 
         private void LoginFormu_Load(object? sender, EventArgs e)
@@ -62,7 +76,13 @@ namespace AzAgroPOS.Teqdimat
             {
                 int x = (pnlMain.ClientSize.Width - pnlLoginCard.Width) / 2;
                 int y = (pnlMain.ClientSize.Height - pnlLoginCard.Height) / 2 - 20;
-                pnlLoginCard.Location = new Point(x, Math.Max(20, y));
+                pnlLoginCard.Location = new Point(x, Math.Max(30, y));
+
+                // Shadow paneli də hərəkət etdir
+                if (pnlCardShadow != null)
+                {
+                    pnlCardShadow.Location = new Point(x + 5, y + 8);
+                }
             }
         }
 
@@ -72,12 +92,54 @@ namespace AzAgroPOS.Teqdimat
             CenterLoginCard();
         }
 
+        private void PnlMain_Paint(object? sender, PaintEventArgs e)
+        {
+            // Gradient background çək
+            using var brush = new LinearGradientBrush(
+                pnlMain.ClientRectangle,
+                Color.FromArgb(25, 118, 210),  // Mavi
+                Color.FromArgb(21, 101, 192),  // Daha tünd mavi
+                LinearGradientMode.ForwardDiagonal);
+            e.Graphics.FillRectangle(brush, pnlMain.ClientRectangle);
+        }
+
+        private void PnlLoginCard_Paint(object? sender, PaintEventArgs e)
+        {
+            // Kartın kənarlarını yuvarlaqlaşdır
+            var path = GetRoundedRectPath(new Rectangle(0, 0, pnlLoginCard.Width, pnlLoginCard.Height), 12);
+            pnlLoginCard.Region = new Region(path);
+        }
+
+        private void PnlCardShadow_Paint(object? sender, PaintEventArgs e)
+        {
+            // Kölgəni yarı-şəffaf çək
+            using var brush = new SolidBrush(Color.FromArgb(30, 0, 0, 0));
+            var path = GetRoundedRectPath(new Rectangle(0, 0, pnlCardShadow.Width, pnlCardShadow.Height), 12);
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+            e.Graphics.FillPath(brush, path);
+        }
+
+        private void PnlLogoContainer_Paint(object? sender, PaintEventArgs e)
+        {
+            // Dairəvi logo konteyneri
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+            using var brush = new SolidBrush(Color.FromArgb(25, 118, 210));
+            e.Graphics.FillEllipse(brush, 0, 0, pnlLogoContainer.Width - 1, pnlLogoContainer.Height - 1);
+
+            // Dairəvi region
+            var path = new GraphicsPath();
+            path.AddEllipse(0, 0, pnlLogoContainer.Width, pnlLogoContainer.Height);
+            pnlLogoContainer.Region = new Region(path);
+        }
+
         private void PicLogo_Paint(object? sender, PaintEventArgs e)
         {
             // Logo olmadıqda "AZ" yazısı göstər
             if (picLogo.Image == null)
             {
-                using var font = new Font("Segoe UI", 24F, FontStyle.Bold);
+                e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+                using var font = new Font("Segoe UI", 22F, FontStyle.Bold);
                 using var brush = new SolidBrush(Color.White);
                 var text = "AZ";
                 var size = e.Graphics.MeasureString(text, font);
@@ -85,6 +147,24 @@ namespace AzAgroPOS.Teqdimat
                 var y = (picLogo.Height - size.Height) / 2;
                 e.Graphics.DrawString(text, font, brush, x, y);
             }
+        }
+
+        private void LoadingTimer_Tick(object? sender, EventArgs e)
+        {
+            _loadingDots = (_loadingDots + 1) % 4;
+            var dots = new string('.', _loadingDots);
+            lblLoading.Text = $"Giriş edilir{dots}";
+        }
+
+        private static GraphicsPath GetRoundedRectPath(Rectangle rect, int radius)
+        {
+            var path = new GraphicsPath();
+            path.AddArc(rect.X, rect.Y, radius * 2, radius * 2, 180, 90);
+            path.AddArc(rect.Right - radius * 2, rect.Y, radius * 2, radius * 2, 270, 90);
+            path.AddArc(rect.Right - radius * 2, rect.Bottom - radius * 2, radius * 2, radius * 2, 0, 90);
+            path.AddArc(rect.X, rect.Bottom - radius * 2, radius * 2, radius * 2, 90, 90);
+            path.CloseFigure();
+            return path;
         }
 
         public void InitializePresenter(LoginPresenter presenter)
@@ -145,6 +225,12 @@ namespace AzAgroPOS.Teqdimat
             txtIstifadeciAdi.Enabled = false;
             txtParol.Enabled = false;
             chkMeniXatirla.Enabled = false;
+            btnParolGoster.Enabled = false;
+
+            // Loading animasiyasını başlat
+            _loadingDots = 0;
+            lblLoading.Text = "Giriş edilir";
+            _loadingTimer?.Start();
         }
 
         public void YuklemeGizle()
@@ -155,6 +241,10 @@ namespace AzAgroPOS.Teqdimat
             txtIstifadeciAdi.Enabled = true;
             txtParol.Enabled = true;
             chkMeniXatirla.Enabled = true;
+            btnParolGoster.Enabled = true;
+
+            // Loading animasiyasını dayandır
+            _loadingTimer?.Stop();
         }
 
         public void MesajGoster(string mesaj)
