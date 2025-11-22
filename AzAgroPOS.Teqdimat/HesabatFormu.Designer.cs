@@ -241,6 +241,62 @@ namespace AzAgroPOS.Teqdimat
             lblNisyeSatisDeyer.Text = "0.00 ₼";
 
             // ========================================
+            // Filter Panel (Axtarış və Filtrasiya)
+            // ========================================
+            pnlFiltrPanel = new Panel();
+            lblAxtaris = new Label();
+            txtAxtaris = new TextBox();
+            lblOdenisTipiFiltr = new Label();
+            cmbOdenisTipiFiltr = new ComboBox();
+            lblFiltreliSay = new Label();
+
+            pnlFiltrPanel.BackColor = Color.FromArgb(250, 250, 250);
+            pnlFiltrPanel.Dock = DockStyle.Top;
+            pnlFiltrPanel.Location = new Point(3, 264);
+            pnlFiltrPanel.Size = new Size(1178, 50);
+            pnlFiltrPanel.Visible = false;
+            pnlFiltrPanel.Controls.Add(lblAxtaris);
+            pnlFiltrPanel.Controls.Add(txtAxtaris);
+            pnlFiltrPanel.Controls.Add(lblOdenisTipiFiltr);
+            pnlFiltrPanel.Controls.Add(cmbOdenisTipiFiltr);
+            pnlFiltrPanel.Controls.Add(lblFiltreliSay);
+
+            // lblAxtaris
+            lblAxtaris.AutoSize = true;
+            lblAxtaris.Font = new Font("Segoe UI", 10F);
+            lblAxtaris.ForeColor = Color.FromArgb(66, 66, 66);
+            lblAxtaris.Location = new Point(20, 15);
+            lblAxtaris.Text = "Axtaris:";
+
+            // txtAxtaris
+            txtAxtaris.Font = new Font("Segoe UI", 10F);
+            txtAxtaris.Location = new Point(85, 12);
+            txtAxtaris.Size = new Size(200, 26);
+            txtAxtaris.PlaceholderText = "Satis no ve ya kassir...";
+
+            // lblOdenisTipiFiltr
+            lblOdenisTipiFiltr.AutoSize = true;
+            lblOdenisTipiFiltr.Font = new Font("Segoe UI", 10F);
+            lblOdenisTipiFiltr.ForeColor = Color.FromArgb(66, 66, 66);
+            lblOdenisTipiFiltr.Location = new Point(310, 15);
+            lblOdenisTipiFiltr.Text = "Odenis tipi:";
+
+            // cmbOdenisTipiFiltr
+            cmbOdenisTipiFiltr.Font = new Font("Segoe UI", 10F);
+            cmbOdenisTipiFiltr.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbOdenisTipiFiltr.Location = new Point(400, 11);
+            cmbOdenisTipiFiltr.Size = new Size(150, 26);
+            cmbOdenisTipiFiltr.Items.AddRange(new object[] { "Hamisi", "Nagd", "Kart", "Nisye" });
+            cmbOdenisTipiFiltr.SelectedIndex = 0;
+
+            // lblFiltreliSay
+            lblFiltreliSay.AutoSize = true;
+            lblFiltreliSay.Font = new Font("Segoe UI", 9F, FontStyle.Italic);
+            lblFiltreliSay.ForeColor = Color.FromArgb(117, 117, 117);
+            lblFiltreliSay.Location = new Point(580, 16);
+            lblFiltreliSay.Text = "Gosterilen: 0 / 0";
+
+            // ========================================
             // DataGridView
             // ========================================
             dgvSatislar.AllowUserToAddRows = false;
@@ -281,6 +337,7 @@ namespace AzAgroPOS.Teqdimat
             ClientSize = new Size(1184, 749);
             Controls.Add(dgvSatislar);
             Controls.Add(lblMesaj);
+            Controls.Add(pnlFiltrPanel);
             Controls.Add(pnlXulase);
             Controls.Add(pnlFilter);
             Name = "HesabatFormu";
@@ -335,6 +392,14 @@ namespace AzAgroPOS.Teqdimat
         private Panel pnlNisyeSatis;
         private Label lblNisyeSatisBasliq;
         private Label lblNisyeSatisDeyer;
+
+        // Filtr Panel
+        private Panel pnlFiltrPanel;
+        private Label lblAxtaris;
+        private TextBox txtAxtaris;
+        private Label lblOdenisTipiFiltr;
+        private ComboBox cmbOdenisTipiFiltr;
+        private Label lblFiltreliSay;
 
         // Data Grid
         private DataGridView dgvSatislar;

@@ -45,6 +45,9 @@ namespace AzAgroPOS.Teqdimat
             // Form events
             this.Load += (s, e) => FormYuklendi?.Invoke(this, EventArgs.Empty);
 
+            // TabControl düzgün göstərilməsi üçün
+            this.Shown += KonfiqurasiyaFormu_Shown;
+
             // Button events
             btnSaxla.Click += (s, e) => YaddaSaxlaClick?.Invoke(this, EventArgs.Empty);
             btnLegvEt.Click += (s, e) => LegvEtClick?.Invoke(this, EventArgs.Empty);
@@ -570,6 +573,34 @@ namespace AzAgroPOS.Teqdimat
         private void tabSelector_Click(object sender, EventArgs e)
         {
 
+        }
+
+        /// <summary>
+        /// Form göstərildikdən sonra TabControl-u yenidən konfiqurasiya edir
+        /// MaterialTabControl ilə uyğunsuzluq problemini həll edir
+        /// </summary>
+        private void KonfiqurasiyaFormu_Shown(object? sender, EventArgs e)
+        {
+            // TabControl-un bütün tab-larını görünən et
+            foreach (TabPage tab in tabControl.TabPages)
+            {
+                tab.Visible = true;
+            }
+
+            // TabSelector-u yenidən əlaqələndir
+            tabSelector.BaseTabControl = tabControl;
+
+            // İlk tab-ı seç
+            if (tabControl.TabPages.Count > 0)
+            {
+                tabControl.SelectedIndex = 0;
+            }
+
+            // TabControl-u yenilə
+            tabControl.Invalidate();
+            tabControl.Update();
+            tabSelector.Invalidate();
+            tabSelector.Update();
         }
 
         #endregion

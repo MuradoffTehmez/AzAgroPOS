@@ -37,50 +37,76 @@ public partial class MehsulSatisHesabatFormu : BazaForm, IMehsulSatisHesabatView
     {
         if (InvokeRequired)
         {
-            Invoke(() => HesabatiGoster(hesabat));
+            BeginInvoke(() => HesabatiGoster(hesabat));
             return;
         }
 
-        _cariHesabat = hesabat;
-
-        if (hesabat == null || hesabat.Count == 0)
+        try
         {
-            BosNeticeMesajiGoster();
-            return;
+            _cariHesabat = hesabat;
+
+            if (hesabat == null || hesabat.Count == 0)
+            {
+                BosNeticeMesajiGoster();
+                return;
+            }
+
+            // DataGridView-e melumatlari yukle
+            dgvHesabat.DataSource = null; // Evvelceki datasource-u temizle
+            dgvHesabat.DataSource = hesabat;
+
+            // Sutun basliqlari
+            SutunlarıDuzelt();
+
+            // Xulase statistikalarini hesabla ve goster
+            XulaseniYenile(hesabat);
+
+            // UI veziyyetini yenile
+            pnlXulase.Visible = true;
+            dgvHesabat.Visible = true;
+            lblMesaj.Visible = false;
+            btnExcelIxrac.Enabled = true;
         }
+        finally
+        {
+            // Yukleme gostericisini gizle
+            YuklemeGizle();
+        }
+    }
 
-        // DataGridView-e melumatlari yukle
-        dgvHesabat.DataSource = hesabat;
-
-        // Xulase statistikalarini hesabla ve goster
-        XulaseniYenile(hesabat);
-
-        // UI veziyyetini yenile
-        pnlXulase.Visible = true;
-        dgvHesabat.Visible = true;
-        lblMesaj.Visible = false;
-        btnExcelIxrac.Enabled = true;
-
-        // Yukleme gostericisini gizle
-        YuklemeGizle();
+    private void SutunlarıDuzelt()
+    {
+        if (dgvHesabat.Columns.Contains("MehsulAdi"))
+            dgvHesabat.Columns["MehsulAdi"].HeaderText = "Mehsul Adi";
+        if (dgvHesabat.Columns.Contains("CemiSatilanMiqdar"))
+            dgvHesabat.Columns["CemiSatilanMiqdar"].HeaderText = "Satilan Miqdar";
+        if (dgvHesabat.Columns.Contains("CemiMebleg"))
+            dgvHesabat.Columns["CemiMebleg"].HeaderText = "Cemi Mebleg";
+        if (dgvHesabat.Columns.Contains("OrtalamaQiymet"))
+            dgvHesabat.Columns["OrtalamaQiymet"].HeaderText = "Ortalama Qiymet";
     }
 
     public void MesajGoster(string mesaj)
     {
         if (InvokeRequired)
         {
-            Invoke(() => MesajGoster(mesaj));
+            BeginInvoke(() => MesajGoster(mesaj));
             return;
         }
 
-        lblMesaj.Text = mesaj;
-        lblMesaj.ForeColor = Color.FromArgb(244, 67, 54); // Qirmizi - xeta mesaji ucun
-        lblMesaj.Visible = true;
-        dgvHesabat.Visible = false;
-        pnlXulase.Visible = false;
-        btnExcelIxrac.Enabled = false;
-
-        YuklemeGizle();
+        try
+        {
+            lblMesaj.Text = mesaj;
+            lblMesaj.ForeColor = Color.FromArgb(244, 67, 54); // Qirmizi - xeta mesaji ucun
+            lblMesaj.Visible = true;
+            dgvHesabat.Visible = false;
+            pnlXulase.Visible = false;
+            btnExcelIxrac.Enabled = false;
+        }
+        finally
+        {
+            YuklemeGizle();
+        }
     }
 
     #endregion

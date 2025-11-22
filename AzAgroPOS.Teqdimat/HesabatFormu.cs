@@ -11,6 +11,7 @@ public partial class HesabatFormu : BazaForm, IHesabatView
 {
     private readonly HesabatPresenter _presenter;
     private GunlukSatisHesabatDto? _cariHesabat;
+    private List<GunlukSatisDetayDto>? _filtreliSatislar;
 
     public HesabatFormu(HesabatManager hesabatManager)
     {
@@ -18,6 +19,46 @@ public partial class HesabatFormu : BazaForm, IHesabatView
         _presenter = new HesabatPresenter(this, hesabatManager);
         StilVerDataGridView(dgvSatislar);
         PanelləriSıfırla();
+
+        // Axtarış event handler
+        txtAxtaris.TextChanged += TxtAxtaris_TextChanged;
+        cmbOdenisTipiFiltr.SelectedIndexChanged += CmbOdenisTipiFiltr_SelectedIndexChanged;
+    }
+
+    private void TxtAxtaris_TextChanged(object? sender, EventArgs e)
+    {
+        FiltriTetbiqEt();
+    }
+
+    private void CmbOdenisTipiFiltr_SelectedIndexChanged(object? sender, EventArgs e)
+    {
+        FiltriTetbiqEt();
+    }
+
+    private void FiltriTetbiqEt()
+    {
+        if (_cariHesabat?.SatislarinSiyahisi == null) return;
+
+        var axtarisMeni = txtAxtaris.Text?.ToLower() ?? string.Empty;
+        var odenisTipi = cmbOdenisTipiFiltr.SelectedItem?.ToString();
+
+        _filtreliSatislar = _cariHesabat.SatislarinSiyahisi
+            .Where(s =>
+                (string.IsNullOrEmpty(axtarisMeni) ||
+                 s.SatisId.ToString().Contains(axtarisMeni) ||
+                 (s.MusteriAdi?.ToLower().Contains(axtarisMeni) ?? false)) &&
+                (string.IsNullOrEmpty(odenisTipi) || odenisTipi == "Hamisi" ||
+                 s.OdenisMetodu == odenisTipi))
+            .ToList();
+
+        dgvSatislar.DataSource = null;
+        dgvSatislar.DataSource = _filtreliSatislar;
+
+        // Sutun basliqlari yenile
+        SutunBasliqlariniDuzelt();
+
+        // Filtrelenmis statistikalar
+        lblFiltreliSay.Text = $"Gosterilen: {_filtreliSatislar.Count} / {_cariHesabat.SatislarinSiyahisi.Count}";
     }
 
     #region IHesabatView Properties
@@ -38,25 +79,52 @@ public partial class HesabatFormu : BazaForm, IHesabatView
     {
         if (InvokeRequired)
         {
-            Invoke(() => HesabatiGoster(hesabat));
+            BeginInvoke(() => HesabatiGoster(hesabat));
             return;
         }
 
-        _cariHesabat = hesabat;
+        try
+        {
+            _cariHesabat = hesabat;
+            _filtreliSatislar = hesabat.SatislarinSiyahisi;
 
-        // Xulase kartlarini yenile
-        XulaseGoster(
-            hesabat.UmumiDovriyye,
-            hesabat.CemiSatisSayi,
-            hesabat.NagdSatisCemi,
-            hesabat.KartSatisCemi,
-            hesabat.NisyeSatisCemi
-        );
+            // Xulase kartlarini yenile
+            XulaseGoster(
+                hesabat.UmumiDovriyye,
+                hesabat.CemiSatisSayi,
+                hesabat.NagdSatisCemi,
+                hesabat.KartSatisCemi,
+                hesabat.NisyeSatisCemi
+            );
 
-        // DataGridView-a melumatlari yukle
-        dgvSatislar.DataSource = hesabat.SatislarinSiyahisi;
+            // Filtrleri sifirla
+            txtAxtaris.Text = string.Empty;
+            cmbOdenisTipiFiltr.SelectedIndex = 0;
 
-        // Sutun basliqlari
+            // DataGridView-a melumatlari yukle
+            dgvSatislar.DataSource = null;
+            dgvSatislar.DataSource = hesabat.SatislarinSiyahisi;
+
+            // Sutun basliqlari
+            SutunBasliqlariniDuzelt();
+
+            // Filtrelenmis statistikalar
+            lblFiltreliSay.Text = $"Gosterilen: {hesabat.SatislarinSiyahisi?.Count ?? 0} / {hesabat.SatislarinSiyahisi?.Count ?? 0}";
+
+            pnlXulase.Visible = true;
+            pnlFiltrPanel.Visible = true;
+            dgvSatislar.Visible = true;
+            lblMesaj.Visible = false;
+            btnExcelIxrac.Enabled = true;
+        }
+        finally
+        {
+            YuklemeGizle();
+        }
+    }
+
+    private void SutunBasliqlariniDuzelt()
+    {
         if (dgvSatislar.Columns.Contains("SatisId"))
             dgvSatislar.Columns["SatisId"].HeaderText = "Satis No";
         if (dgvSatislar.Columns.Contains("SatisVaxti"))
@@ -67,13 +135,6 @@ public partial class HesabatFormu : BazaForm, IHesabatView
             dgvSatislar.Columns["OdenisTipi"].HeaderText = "Odenis Tipi";
         if (dgvSatislar.Columns.Contains("KassirAdi"))
             dgvSatislar.Columns["KassirAdi"].HeaderText = "Kassir";
-
-        pnlXulase.Visible = true;
-        dgvSatislar.Visible = true;
-        lblMesaj.Visible = false;
-        btnExcelIxrac.Enabled = true;
-
-        YuklemeGizle();
     }
 
     public void XetaMesajiGoster(string mesaj)
