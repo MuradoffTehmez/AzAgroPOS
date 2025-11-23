@@ -1,7 +1,7 @@
 # 📋 AzAgroPOS Layihəsi - Ətraflı Düzəlmə Planı
 
 **Tarix:** 2025-11-11
-**Versiya:** 1.0
+**Versiya:** 1.1
 **Status:** 🟡 Başlanğıc
 
 ---
