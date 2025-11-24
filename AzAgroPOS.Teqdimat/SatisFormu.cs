@@ -80,15 +80,33 @@ namespace AzAgroPOS.Teqdimat
         public void SuretliSatisMehsullariniGoster(List<MehsulDto> mehsullar)
         {
             flpSuretliSatis.Controls.Clear();
+
+            // Sürətli satış başlığı
+            var lblBasliq = new Label
+            {
+                Text = "SÜRƏTLİ SATIŞ",
+                Font = new Font("Segoe UI", 12F, FontStyle.Bold),
+                ForeColor = Color.FromArgb(97, 97, 97),
+                AutoSize = false,
+                Width = 380,
+                Height = 32,
+                TextAlign = ContentAlignment.MiddleLeft,
+                Margin = new Padding(4, 8, 4, 8)
+            };
+            flpSuretliSatis.Controls.Add(lblBasliq);
+
             foreach (var mehsul in mehsullar)
             {
                 var button = new MaterialButton
                 {
                     Text = mehsul.Ad,
                     Tag = mehsul,
-                    Width = 125,
-                    Height = 70,
-                    Margin = new Padding(5)
+                    Width = 120,
+                    Height = 60,
+                    Margin = new Padding(4),
+                    AutoSize = false,
+                    Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined,
+                    HighEmphasis = false
                 };
                 button.Click += SuretliSatisButton_Click;
                 flpSuretliSatis.Controls.Add(button);
@@ -103,7 +121,20 @@ namespace AzAgroPOS.Teqdimat
         public void UmumiMebligiGoster(decimal umumiMebleg, decimal endirim, decimal yekunMebleg)
         {
             lblUmumiMebleg.Text = $"{yekunMebleg:N2} AZN";
-            toolTip1.SetToolTip(lblUmumiMebleg, $"Cəm: {umumiMebleg:N2} AZN\nEndirim: {endirim:N2} AZN");
+
+            // Endirim varsa, fərqli rəng və tooltip göstər
+            if (endirim > 0)
+            {
+                lblUmumiMebleg.ForeColor = Color.FromArgb(230, 81, 0); // Orange - endirimli
+                lblTotalTitle.Text = $"CƏMİ ÖDƏNİLƏCƏK (Endirim: {endirim:N2} AZN)";
+            }
+            else
+            {
+                lblUmumiMebleg.ForeColor = Color.FromArgb(46, 125, 50); // Green - normal
+                lblTotalTitle.Text = "CƏMİ ÖDƏNİLƏCƏK";
+            }
+
+            toolTip1.SetToolTip(lblUmumiMebleg, $"Cəm: {umumiMebleg:N2} AZN\nEndirim: {endirim:N2} AZN\nYekun: {yekunMebleg:N2} AZN");
         }
 
         public void MusteriSiyahisiniGoster(List<MusteriDto> musteriler)
@@ -638,19 +669,25 @@ namespace AzAgroPOS.Teqdimat
         #region UI Konfiqurasiyası
         private void ConfigureDataGridViewStyles()
         {
+            // Axtarış nəticələri üçün mavi tema
             Yardimcilar.DataGridViewHelper.StilVerDataGridView(
                 dgvAxtarisNeticeleri,
-                Color.FromArgb(33, 150, 243),
-                Color.FromArgb(187, 222, 251),
-                Color.FromArgb(245, 245, 245)
+                Color.FromArgb(25, 118, 210),    // Primary Blue
+                Color.FromArgb(227, 242, 253),   // Light Blue Selection
+                Color.FromArgb(255, 255, 255)    // White Background
             );
 
+            // Səbət üçün yaşıl tema
             Yardimcilar.DataGridViewHelper.StilVerDataGridView(
                 dgvSebet,
-                Color.FromArgb(76, 175, 80),
-                Color.FromArgb(200, 230, 201),
-                Color.FromArgb(245, 245, 245)
+                Color.FromArgb(46, 125, 50),     // Primary Green
+                Color.FromArgb(232, 245, 233),   // Light Green Selection
+                Color.FromArgb(255, 255, 255)    // White Background
             );
+
+            // Zebra striping effekti üçün alternating row style
+            dgvAxtarisNeticeleri.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(250, 250, 250);
+            dgvSebet.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(250, 250, 250);
 
             // Add conditional formatting event handlers
             dgvAxtarisNeticeleri.CellFormatting += DgvAxtarisNeticeleri_CellFormatting;
