@@ -18,8 +18,8 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 
         private BindingList<SatisSebetiElementiDto> _aktivSebet;
         private readonly List<GozleyenSatis> _gozleyenSebetler;
-        // Store individual item discounts and calculate cart discount dynamically
-        // For simplicity, we'll keep a simple cart-level discount for now, but prepare for item-level.
+        //Store individual item discounts and calculate cart discount dynamically
+        //For simplicity, we'll keep a simple cart-level discount for now, but prepare for item-level.
         private decimal _cartLevelEndirimMeblegi = 0;
 
         public SatisPresenter(ISatisView view, SatisManager satisManager, MehsulManager mehsulManager, MusteriManager musteriManager)
@@ -94,8 +94,17 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 
         private void SebeteElaveEt(MehsulDto? mehsul = null)
         {
+            System.Diagnostics.Debug.WriteLine($"[DEBUG] SebeteElaveEt çağırıldı. mehsul parametri: {mehsul?.Ad ?? "null"}");
+            System.Windows.Forms.MessageBox.Show($"SebeteElaveEt çağırıldı!\nMəhsul: {mehsul?.Ad ?? "null"}", "DEBUG Presenter");
+
             var secilmisMehsul = mehsul ?? _view.SecilmisAxtarisMehsulu;
-            if (secilmisMehsul == null) return;
+            if (secilmisMehsul == null)
+            {
+                System.Windows.Forms.MessageBox.Show("secilmisMehsul NULL-dur!", "DEBUG Presenter");
+                return;
+            }
+
+            System.Windows.Forms.MessageBox.Show($"Seçilmiş məhsul: {secilmisMehsul.Ad}\nStok: {secilmisMehsul.MovcudSay}", "DEBUG Presenter");
 
             if (!decimal.TryParse(_view.SecilmisMehsulMiqdari, out decimal miqdar) || miqdar <= 0)
             {
@@ -109,6 +118,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 
             if (istenilenToplamMiqdar > secilmisMehsul.MovcudSay)
             {
+                System.Windows.Forms.MessageBox.Show($"Stok kifayət deyil!\nMövcud: {secilmisMehsul.MovcudSay}\nTələb: {istenilenToplamMiqdar}", "DEBUG Presenter");
                 _view.StatusMesajiGoster(
                     $"Stokda kifayət qədər məhsul yoxdur! Mövcud: {secilmisMehsul.MovcudSay}, Tələb olunan: {istenilenToplamMiqdar}",
                     StatusMesajiNovu.Xeta);

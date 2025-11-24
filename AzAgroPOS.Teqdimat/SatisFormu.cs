@@ -460,13 +460,48 @@ namespace AzAgroPOS.Teqdimat
             });
         }
 
-        private void btnSebeteElaveEt_Click(object sender, EventArgs e) => SebeteElaveEtIstek?.Invoke(this, EventArgs.Empty);
+        private void btnSebeteElaveEt_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("[DEBUG] btnSebeteElaveEt_Click çağırıldı");
+            MessageBox.Show("btnSebeteElaveEt click edildi!", "DEBUG");
+            SebeteElaveEtIstek?.Invoke(this, EventArgs.Empty);
+        }
+        private void dgvAxtarisNeticeleri_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine($"[DEBUG] dgvAxtarisNeticeleri_CellClick - RowIndex: {e.RowIndex}");
+
+            // Başlıq sətirinə click etmə
+            if (e.RowIndex < 0) return;
+
+            var dataItem = dgvAxtarisNeticeleri.Rows[e.RowIndex].DataBoundItem;
+            System.Diagnostics.Debug.WriteLine($"[DEBUG] DataBoundItem tipi: {dataItem?.GetType().Name ?? "null"}");
+
+            // Click edilən sətirdən məhsulu al
+            if (dataItem is MehsulDto mehsul)
+            {
+                System.Diagnostics.Debug.WriteLine($"[DEBUG] Məhsul tapıldı: {mehsul.Ad}");
+                MessageBox.Show($"Məhsul seçildi: {mehsul.Ad}", "DEBUG");
+                SuretliSatisIstek?.Invoke(this, mehsul);
+            }
+            else
+            {
+                MessageBox.Show($"DataBoundItem MehsulDto deyil! Tip: {dataItem?.GetType().Name ?? "null"}", "DEBUG");
+            }
+        }
         private void dgvAxtarisNeticeleri_DoubleClick(object sender, EventArgs e) => btnSebeteElaveEt.PerformClick();
         private void SuretliSatisButton_Click(object sender, EventArgs e)
         {
-            if (sender is Button { Tag: MehsulDto mehsul })
+            System.Diagnostics.Debug.WriteLine("[DEBUG] SuretliSatisButton_Click çağırıldı");
+
+            // MaterialButton və ya adi Button ola bilər
+            if (sender is Control control && control.Tag is MehsulDto mehsul)
             {
+                MessageBox.Show($"Sürətli satış: {mehsul.Ad}", "DEBUG");
                 SuretliSatisIstek?.Invoke(this, mehsul);
+            }
+            else
+            {
+                MessageBox.Show($"Tag MehsulDto deyil! Sender: {sender?.GetType().Name}", "DEBUG");
             }
         }
         private void btnSebetdenSil_Click(object sender, EventArgs e) => SebetdenSilIstek?.Invoke(this, EventArgs.Empty);
