@@ -1,6 +1,7 @@
 // Fayl: AzAgroPOS.Teqdimat/LoginFormu.cs
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
+using MaterialSkin;
 using System.Drawing.Drawing2D;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -60,28 +61,104 @@ namespace AzAgroPOS.Teqdimat
 
         private void LoginFormu_Load(object? sender, EventArgs e)
         {
+            // Kontrolların rənglərini MaterialSkin-dən sonra yenidən təyin et
+            RengleriBerpaEt();
+
             // CAPS LOCK vəziyyətini yoxla
             CapsLockYoxla();
 
             // "Məni xatırla" seçimi saxlanılıbsa yüklə
             YaddaSaxlananMelumatlarıYukle();
 
-            // Login card-ı mərkəzləşdir
-            CenterLoginCard();
+            // Login card-ı mərkəzləşdir - forma tam render olunduqdan sonra
+            BeginInvoke(new Action(() => CenterLoginCard()));
+        }
+
+        private void RengleriBerpaEt()
+        {
+            // Ana panel - mavi gradient background
+            pnlMain.BackColor = Color.FromArgb(25, 118, 210);
+
+            // Login kartı - ağ
+            pnlLoginCard.BackColor = Color.White;
+
+            // Shadow panel - yarı şəffaf
+            pnlCardShadow.BackColor = Color.FromArgb(40, 0, 0, 0);
+
+            // Logo konteyneri - mavi
+            pnlLogoContainer.BackColor = Color.FromArgb(25, 118, 210);
+            picLogo.BackColor = Color.Transparent;
+
+            // Başlıqlar
+            lblXosGeldin.BackColor = Color.White;
+            lblXosGeldin.ForeColor = Color.FromArgb(25, 118, 210);
+            lblXosGeldin.Font = new Font("Segoe UI", 13F, FontStyle.Regular);
+
+            lblBasliq.BackColor = Color.White;
+            lblBasliq.ForeColor = Color.FromArgb(33, 33, 33);
+            lblBasliq.Font = new Font("Segoe UI", 24F, FontStyle.Bold);
+
+            lblAltBasliq.BackColor = Color.White;
+            lblAltBasliq.ForeColor = Color.FromArgb(117, 117, 117);
+            lblAltBasliq.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+
+            // Divider
+            pnlDivider.BackColor = Color.FromArgb(224, 224, 224);
+
+            // TextBox-lar
+            txtIstifadeciAdi.BackColor = Color.White;
+            txtParol.BackColor = Color.White;
+
+            // Parol göstər düyməsi
+            btnParolGoster.BackColor = Color.Transparent;
+            btnParolGoster.Font = new Font("Segoe UI", 14F);
+
+            // CAPS LOCK xəbərdarlığı
+            lblCapsLock.BackColor = Color.FromArgb(255, 235, 238);
+            lblCapsLock.ForeColor = Color.FromArgb(244, 67, 54);
+            lblCapsLock.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+
+            // Checkbox
+            chkMeniXatirla.BackColor = Color.White;
+
+            // Loading panel
+            pnlLoading.BackColor = Color.FromArgb(25, 118, 210);
+            lblLoading.BackColor = Color.FromArgb(25, 118, 210);
+            lblLoading.ForeColor = Color.White;
+            lblLoading.Font = new Font("Segoe UI Semibold", 11F, FontStyle.Bold);
+            picLoading.BackColor = Color.Transparent;
+
+            // Version və Copyright
+            lblVersion.BackColor = Color.Transparent;
+            lblVersion.ForeColor = Color.FromArgb(200, 255, 255, 255);
+            lblVersion.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
+
+            lblCopyright.BackColor = Color.Transparent;
+            lblCopyright.ForeColor = Color.FromArgb(200, 255, 255, 255);
+            lblCopyright.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
+
+            // Panelləri yenidən çək
+            pnlMain.Invalidate();
+            pnlLoginCard.Invalidate();
+            pnlLogoContainer.Invalidate();
         }
 
         private void CenterLoginCard()
         {
             if (pnlLoginCard != null && pnlMain != null)
             {
+                // Form tam yüklənməyibsə çıx
+                if (pnlMain.ClientSize.Width <= 0 || pnlMain.ClientSize.Height <= 0)
+                    return;
+
                 int x = (pnlMain.ClientSize.Width - pnlLoginCard.Width) / 2;
                 int y = (pnlMain.ClientSize.Height - pnlLoginCard.Height) / 2 - 20;
-                pnlLoginCard.Location = new Point(x, Math.Max(30, y));
+                pnlLoginCard.Location = new Point(Math.Max(0, x), Math.Max(30, y));
 
                 // Shadow paneli də hərəkət etdir
                 if (pnlCardShadow != null)
                 {
-                    pnlCardShadow.Location = new Point(x + 5, y + 8);
+                    pnlCardShadow.Location = new Point(Math.Max(5, x + 5), Math.Max(38, y + 8));
                 }
             }
         }
@@ -105,9 +182,11 @@ namespace AzAgroPOS.Teqdimat
 
         private void PnlLoginCard_Paint(object? sender, PaintEventArgs e)
         {
-            // Kartın kənarlarını yuvarlaqlaşdır
+            // Kartın kənarlarını yuvarlaqlaşdır (vizual olaraq, Region olmadan)
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             var path = GetRoundedRectPath(new Rectangle(0, 0, pnlLoginCard.Width, pnlLoginCard.Height), 12);
-            pnlLoginCard.Region = new Region(path);
+            using var brush = new SolidBrush(pnlLoginCard.BackColor);
+            e.Graphics.FillPath(brush, path);
         }
 
         private void PnlCardShadow_Paint(object? sender, PaintEventArgs e)
@@ -121,15 +200,10 @@ namespace AzAgroPOS.Teqdimat
 
         private void PnlLogoContainer_Paint(object? sender, PaintEventArgs e)
         {
-            // Dairəvi logo konteyneri
+            // Dairəvi logo konteyneri (Region olmadan, yalnız vizual)
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             using var brush = new SolidBrush(Color.FromArgb(25, 118, 210));
             e.Graphics.FillEllipse(brush, 0, 0, pnlLogoContainer.Width - 1, pnlLogoContainer.Height - 1);
-
-            // Dairəvi region
-            var path = new GraphicsPath();
-            path.AddEllipse(0, 0, pnlLogoContainer.Width, pnlLogoContainer.Height);
-            pnlLogoContainer.Region = new Region(path);
         }
 
         private void PicLogo_Paint(object? sender, PaintEventArgs e)
