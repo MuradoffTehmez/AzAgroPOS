@@ -198,6 +198,7 @@
             dgvAxtarisNeticeleri.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvAxtarisNeticeleri.Size = new Size(380, 370);
             dgvAxtarisNeticeleri.TabIndex = 1;
+            dgvAxtarisNeticeleri.CellClick += dgvAxtarisNeticeleri_CellClick;
             dgvAxtarisNeticeleri.DoubleClick += dgvAxtarisNeticeleri_DoubleClick;
             // 
             // contextMenuStripAxtarisNeticeleri
