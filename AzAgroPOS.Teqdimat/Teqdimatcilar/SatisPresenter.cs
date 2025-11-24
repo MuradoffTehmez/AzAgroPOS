@@ -102,7 +102,27 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                 miqdar = 1;
             }
 
+            // Stok yoxlaması
             var movcudElement = _aktivSebet.FirstOrDefault(e => e.MehsulId == secilmisMehsul.Id);
+            decimal sebetdekiMiqdar = movcudElement?.Miqdar ?? 0;
+            decimal istenilenToplamMiqdar = sebetdekiMiqdar + miqdar;
+
+            if (istenilenToplamMiqdar > secilmisMehsul.MovcudSay)
+            {
+                _view.StatusMesajiGoster(
+                    $"Stokda kifayət qədər məhsul yoxdur! Mövcud: {secilmisMehsul.MovcudSay}, Tələb olunan: {istenilenToplamMiqdar}",
+                    StatusMesajiNovu.Xeta);
+                return;
+            }
+
+            // Minimum stok xəbərdarlığı
+            if (secilmisMehsul.MovcudSay <= secilmisMehsul.MinimumStok)
+            {
+                _view.StatusMesajiGoster(
+                    $"Diqqət: {secilmisMehsul.Ad} minimum stok səviyyəsinə çatıb! (Mövcud: {secilmisMehsul.MovcudSay})",
+                    StatusMesajiNovu.Melumat);
+            }
+
             if (movcudElement != null)
             {
                 movcudElement.Miqdar += miqdar;
@@ -162,6 +182,9 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             }
         }
 
+        // Maksimum endirim faizi (konfiqurasiya edilə bilər)
+        private const decimal MAX_ENDIRIM_FAIZI = 50m; // Maksimum 50% endirim
+
         private void IndirimEt(EndirimParametrləriDto endirimParam)
         {
             if (!_aktivSebet.Any())
@@ -170,26 +193,30 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                 return;
             }
 
-            decimal umumiMebleg = _aktivSebet.Sum(e => e.VahidinQiymeti * e.Miqdar); // Calculate total before any discount
+            decimal umumiMebleg = _aktivSebet.Sum(e => e.VahidinQiymeti * e.Miqdar);
             decimal appliedDiscount = 0;
+
+            // Faiz limitini yoxla
+            if (endirimParam.Type == EndirimType.Percentage && endirimParam.Value > MAX_ENDIRIM_FAIZI)
+            {
+                _view.StatusMesajiGoster($"Maksimum endirim faizi {MAX_ENDIRIM_FAIZI}%-dir.", StatusMesajiNovu.Xeta);
+                return;
+            }
 
             if (endirimParam.Scope == EndirimScope.Cart)
             {
+                // Cart level endirim - mövcud item endirimlərinə əlavə olunur
                 if (endirimParam.Type == EndirimType.Percentage)
                 {
                     appliedDiscount = umumiMebleg * (endirimParam.Value / 100);
-                    _cartLevelEndirimMeblegi = appliedDiscount;
                 }
                 else if (endirimParam.Type == EndirimType.FixedAmount)
                 {
-                    appliedDiscount = Math.Min(endirimParam.Value, umumiMebleg); // Cannot discount more than total
-                    _cartLevelEndirimMeblegi = appliedDiscount;
+                    appliedDiscount = Math.Min(endirimParam.Value, umumiMebleg);
                 }
-                // Reset item-level discounts when applying cart-level discount
-                foreach (var item in _aktivSebet)
-                {
-                    item.EndirimMeblegi = 0;
-                }
+
+                // Mövcud item endirimləri saxlanılır, cart level endirim əlavə olunur
+                _cartLevelEndirimMeblegi = appliedDiscount;
             }
             else if (endirimParam.Scope == EndirimScope.SelectedItem)
             {
@@ -200,9 +227,6 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                     return;
                 }
 
-                // Reset cart-level discount when applying item-level discount
-                _cartLevelEndirimMeblegi = 0;
-
                 decimal itemTotalBeforeDiscount = secilmisSebetElementi.VahidinQiymeti * secilmisSebetElementi.Miqdar;
 
                 if (endirimParam.Type == EndirimType.Percentage)
@@ -211,12 +235,25 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                 }
                 else if (endirimParam.Type == EndirimType.FixedAmount)
                 {
-                    appliedDiscount = Math.Min(endirimParam.Value, itemTotalBeforeDiscount); // Cannot discount more than item total
+                    appliedDiscount = Math.Min(endirimParam.Value, itemTotalBeforeDiscount);
                 }
 
+                // Item level endirim - cart level endirimlə birləşir
                 secilmisSebetElementi.EndirimMeblegi = appliedDiscount;
             }
 
+            // Yekun məbləğin mənfi olmamasını təmin et
+            decimal totalDiscount = _aktivSebet.Sum(e => e.EndirimMeblegi) + _cartLevelEndirimMeblegi;
+            if (totalDiscount > umumiMebleg)
+            {
+                _view.StatusMesajiGoster("Endirim məbləği ümumi məbləği keçə bilməz.", StatusMesajiNovu.Xeta);
+                // Endirimi geri al
+                if (endirimParam.Scope == EndirimScope.Cart)
+                    _cartLevelEndirimMeblegi = 0;
+                return;
+            }
+
+            _aktivSebet.ResetBindings();
             GosterisleriYenile();
             _view.StatusMesajiGoster($"{appliedDiscount:N2} AZN endirim tətbiq edildi.", StatusMesajiNovu.Ugurlu);
         }
@@ -249,6 +286,9 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             GosterisleriYenile();
         }
 
+        // Müştəri borc limiti (konfiqurasiya edilə bilər)
+        private const decimal MUSTERI_BORC_LIMITI = 10000m; // Maksimum 10000 AZN borc
+
         private async Task SatisiTesdiqle(OdenisMetodu odenisMetodu)
         {
             System.Diagnostics.Debug.WriteLine($"[SatisPresenter] Satış təsdiqi başladı. AktivNovbeId: {AktivSessiya.AktivNovbeId}");
@@ -273,6 +313,39 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             {
                 _view.StatusMesajiGoster("Nisyə satış üçün müştəri seçin.", StatusMesajiNovu.Xeta);
                 return;
+            }
+
+            // Nisyə satış üçün müştəri borc limitini yoxla
+            if (odenisMetodu == OdenisMetodu.Nisyə && musteriId.HasValue)
+            {
+                var musteriSiyahisi = await _musteriManager.ButunMusterileriGetirAsync();
+                if (musteriSiyahisi.UgurluDur && musteriSiyahisi.Data != null)
+                {
+                    var musteri = musteriSiyahisi.Data.FirstOrDefault(m => m.Id == musteriId.Value);
+                    if (musteri != null)
+                    {
+                        decimal yekunMebleg = _aktivSebet.Sum(e => e.VahidinQiymeti * e.Miqdar)
+                                             - _aktivSebet.Sum(e => e.EndirimMeblegi) - _cartLevelEndirimMeblegi;
+                        decimal yeniBorc = musteri.UmumiBorc + yekunMebleg;
+
+                        if (yeniBorc > MUSTERI_BORC_LIMITI)
+                        {
+                            var cavab = _view.MesajGoster(
+                                $"Müştərinin cari borcu: {musteri.UmumiBorc:N2} AZN\n" +
+                                $"Bu satış ilə yeni borc: {yeniBorc:N2} AZN\n" +
+                                $"Borc limiti: {MUSTERI_BORC_LIMITI:N2} AZN\n\n" +
+                                "Limit aşılır. Davam etmək istəyirsiniz?",
+                                "Borc Limiti Xəbərdarlığı",
+                                MessageBoxButtons.YesNo,
+                                MessageBoxIcon.Warning);
+
+                            if (cavab == DialogResult.No)
+                            {
+                                return;
+                            }
+                        }
+                    }
+                }
             }
 
             await _view.EmeliyyatIcraEtAsync(async () =>
