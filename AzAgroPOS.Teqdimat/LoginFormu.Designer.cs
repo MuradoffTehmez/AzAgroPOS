@@ -20,63 +20,91 @@ namespace AzAgroPOS.Teqdimat
         {
             components = new System.ComponentModel.Container();
             pnlMain = new Panel();
-            pnlLoginCard = new Panel();
-            pnlCardShadow = new Panel();
             lblVersion = new Label();
             lblCopyright = new Label();
-            chkMeniXatirla = new MaterialSkin.Controls.MaterialCheckbox();
-            lblCapsLock = new Label();
-            btnParolGoster = new Button();
-            txtIstifadeciAdi = new MaterialSkin.Controls.MaterialTextBox2();
-            txtParol = new MaterialSkin.Controls.MaterialTextBox2();
-            btnDaxilOl = new MaterialSkin.Controls.MaterialButton();
-            pnlLoading = new Panel();
-            lblLoading = new Label();
-            picLoading = new PictureBox();
-            picLogo = new PictureBox();
+            pnlCardShadow = new Panel();
+            pnlLoginCard = new Panel();
             pnlLogoContainer = new Panel();
+            picLogo = new PictureBox();
+            lblXosGeldin = new Label();
             lblBasliq = new Label();
             lblAltBasliq = new Label();
             pnlDivider = new Panel();
-            lblXosGeldin = new Label();
+            txtIstifadeciAdi = new MaterialSkin.Controls.MaterialTextBox2();
+            txtParol = new MaterialSkin.Controls.MaterialTextBox2();
+            btnParolGoster = new Button();
+            lblCapsLock = new Label();
+            chkMeniXatirla = new MaterialSkin.Controls.MaterialCheckbox();
+            btnDaxilOl = new MaterialSkin.Controls.MaterialButton();
+            pnlLoading = new Panel();
+            picLoading = new PictureBox();
+            lblLoading = new Label();
             errorProvider1 = new ErrorProvider(components);
-
-            ((System.ComponentModel.ISupportInitialize)errorProvider1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)picLogo).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)picLoading).BeginInit();
             pnlMain.SuspendLayout();
             pnlLoginCard.SuspendLayout();
-            pnlLoading.SuspendLayout();
             pnlLogoContainer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)picLogo).BeginInit();
+            pnlLoading.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)picLoading).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)errorProvider1).BeginInit();
             SuspendLayout();
-
-            //
-            // pnlMain - Gradient background panel
-            //
-            pnlMain.BackColor = Color.FromArgb(25, 118, 210);
-            pnlMain.Dock = DockStyle.Fill;
-            pnlMain.Controls.Add(pnlCardShadow);
+            // 
+            // pnlMain
+            // 
+            pnlMain.BackColor = Color.FromArgb(242, 242, 242);
             pnlMain.Controls.Add(pnlLoginCard);
             pnlMain.Controls.Add(lblVersion);
             pnlMain.Controls.Add(lblCopyright);
+            pnlMain.Controls.Add(pnlCardShadow);
+            pnlMain.Dock = DockStyle.Fill;
+            pnlMain.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            pnlMain.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            pnlMain.Location = new Point(3, 64);
             pnlMain.Name = "pnlMain";
-
-            //
-            // pnlCardShadow - Shadow effect
-            //
-            pnlCardShadow.BackColor = Color.FromArgb(40, 0, 0, 0);
-            pnlCardShadow.Size = new Size(430, 560);
-            pnlCardShadow.Location = new Point(104, 48);
+            pnlMain.Size = new Size(660, 632);
+            pnlMain.TabIndex = 1;
+            // 
+            // lblVersion
+            // 
+            lblVersion.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            lblVersion.AutoSize = true;
+            lblVersion.BackColor = Color.FromArgb(242, 242, 242);
+            lblVersion.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblVersion.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lblVersion.Location = new Point(12, 1152);
+            lblVersion.Name = "lblVersion";
+            lblVersion.Size = new Size(47, 17);
+            lblVersion.TabIndex = 0;
+            lblVersion.Text = "v1.0.0";
+            // 
+            // lblCopyright
+            // 
+            lblCopyright.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            lblCopyright.AutoSize = true;
+            lblCopyright.BackColor = Color.FromArgb(242, 242, 242);
+            lblCopyright.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblCopyright.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lblCopyright.Location = new Point(910, 1152);
+            lblCopyright.Name = "lblCopyright";
+            lblCopyright.Size = new Size(130, 17);
+            lblCopyright.TabIndex = 1;
+            lblCopyright.Text = "© 2024 AzAgroPOS";
+            // 
+            // pnlCardShadow
+            // 
             pnlCardShadow.Anchor = AnchorStyles.None;
+            pnlCardShadow.BackColor = Color.FromArgb(242, 242, 242);
+            pnlCardShadow.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            pnlCardShadow.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            pnlCardShadow.Location = new Point(334, 314);
             pnlCardShadow.Name = "pnlCardShadow";
-
-            //
-            // pnlLoginCard - White card in center
-            //
-            pnlLoginCard.BackColor = Color.White;
-            pnlLoginCard.Size = new Size(430, 560);
-            pnlLoginCard.Location = new Point(99, 40);
+            pnlCardShadow.Size = new Size(430, 560);
+            pnlCardShadow.TabIndex = 2;
+            // 
+            // pnlLoginCard
+            // 
             pnlLoginCard.Anchor = AnchorStyles.None;
+            pnlLoginCard.BackColor = Color.FromArgb(242, 242, 242);
             pnlLoginCard.Controls.Add(pnlLogoContainer);
             pnlLoginCard.Controls.Add(lblXosGeldin);
             pnlLoginCard.Controls.Add(lblBasliq);
@@ -89,76 +117,87 @@ namespace AzAgroPOS.Teqdimat
             pnlLoginCard.Controls.Add(chkMeniXatirla);
             pnlLoginCard.Controls.Add(btnDaxilOl);
             pnlLoginCard.Controls.Add(pnlLoading);
+            pnlLoginCard.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            pnlLoginCard.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            pnlLoginCard.Location = new Point(329, 306);
             pnlLoginCard.Name = "pnlLoginCard";
             pnlLoginCard.Padding = new Padding(35);
-
-            //
-            // pnlLogoContainer - Logo background circle
-            //
-            pnlLogoContainer.Size = new Size(100, 100);
-            pnlLogoContainer.Location = new Point(165, 25);
-            pnlLogoContainer.BackColor = Color.FromArgb(25, 118, 210);
-            pnlLogoContainer.Name = "pnlLogoContainer";
+            pnlLoginCard.Size = new Size(430, 560);
+            pnlLoginCard.TabIndex = 3;
+            // 
+            // pnlLogoContainer
+            // 
+            pnlLogoContainer.BackColor = Color.FromArgb(242, 242, 242);
             pnlLogoContainer.Controls.Add(picLogo);
-
-            //
+            pnlLogoContainer.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            pnlLogoContainer.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            pnlLogoContainer.Location = new Point(165, 25);
+            pnlLogoContainer.Name = "pnlLogoContainer";
+            pnlLogoContainer.Size = new Size(100, 100);
+            pnlLogoContainer.TabIndex = 0;
+            // 
             // picLogo
-            //
-            picLogo.Size = new Size(60, 60);
+            // 
+            picLogo.BackColor = Color.FromArgb(242, 242, 242);
+            picLogo.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            picLogo.ForeColor = Color.FromArgb(222, 0, 0, 0);
             picLogo.Location = new Point(20, 20);
-            picLogo.SizeMode = PictureBoxSizeMode.Zoom;
-            picLogo.BackColor = Color.Transparent;
             picLogo.Name = "picLogo";
-
-            //
+            picLogo.Size = new Size(60, 60);
+            picLogo.SizeMode = PictureBoxSizeMode.Zoom;
+            picLogo.TabIndex = 0;
+            picLogo.TabStop = false;
+            // 
             // lblXosGeldin
-            //
-            lblXosGeldin.AutoSize = false;
-            lblXosGeldin.Size = new Size(360, 28);
+            // 
+            lblXosGeldin.BackColor = Color.FromArgb(242, 242, 242);
+            lblXosGeldin.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblXosGeldin.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblXosGeldin.Location = new Point(35, 135);
-            lblXosGeldin.Text = "Xoş gəlmisiniz!";
-            lblXosGeldin.Font = new Font("Segoe UI", 13F, FontStyle.Regular);
-            lblXosGeldin.ForeColor = Color.FromArgb(25, 118, 210);
-            lblXosGeldin.TextAlign = ContentAlignment.MiddleCenter;
             lblXosGeldin.Name = "lblXosGeldin";
-
-            //
+            lblXosGeldin.Size = new Size(360, 28);
+            lblXosGeldin.TabIndex = 1;
+            lblXosGeldin.Text = "Xoş gəlmisiniz!";
+            lblXosGeldin.TextAlign = ContentAlignment.MiddleCenter;
+            // 
             // lblBasliq
-            //
-            lblBasliq.AutoSize = false;
-            lblBasliq.Size = new Size(360, 40);
+            // 
+            lblBasliq.BackColor = Color.FromArgb(242, 242, 242);
+            lblBasliq.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblBasliq.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblBasliq.Location = new Point(35, 165);
-            lblBasliq.Text = "AzAgroPOS";
-            lblBasliq.Font = new Font("Segoe UI", 24F, FontStyle.Bold);
-            lblBasliq.ForeColor = Color.FromArgb(33, 33, 33);
-            lblBasliq.TextAlign = ContentAlignment.MiddleCenter;
             lblBasliq.Name = "lblBasliq";
-
-            //
+            lblBasliq.Size = new Size(360, 40);
+            lblBasliq.TabIndex = 2;
+            lblBasliq.Text = "AzAgroPOS";
+            lblBasliq.TextAlign = ContentAlignment.MiddleCenter;
+            // 
             // lblAltBasliq
-            //
-            lblAltBasliq.AutoSize = false;
-            lblAltBasliq.Size = new Size(360, 25);
+            // 
+            lblAltBasliq.BackColor = Color.FromArgb(242, 242, 242);
+            lblAltBasliq.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblAltBasliq.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblAltBasliq.Location = new Point(35, 205);
-            lblAltBasliq.Text = "Satış və İdarəetmə Sistemi";
-            lblAltBasliq.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
-            lblAltBasliq.ForeColor = Color.FromArgb(117, 117, 117);
-            lblAltBasliq.TextAlign = ContentAlignment.MiddleCenter;
             lblAltBasliq.Name = "lblAltBasliq";
-
-            //
+            lblAltBasliq.Size = new Size(360, 25);
+            lblAltBasliq.TabIndex = 3;
+            lblAltBasliq.Text = "Satış və İdarəetmə Sistemi";
+            lblAltBasliq.TextAlign = ContentAlignment.MiddleCenter;
+            // 
             // pnlDivider
-            //
-            pnlDivider.Size = new Size(360, 1);
+            // 
+            pnlDivider.BackColor = Color.FromArgb(242, 242, 242);
+            pnlDivider.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            pnlDivider.ForeColor = Color.FromArgb(222, 0, 0, 0);
             pnlDivider.Location = new Point(35, 245);
-            pnlDivider.BackColor = Color.FromArgb(224, 224, 224);
             pnlDivider.Name = "pnlDivider";
-
-            //
+            pnlDivider.Size = new Size(360, 1);
+            pnlDivider.TabIndex = 4;
+            // 
             // txtIstifadeciAdi
-            //
+            // 
             txtIstifadeciAdi.AnimateReadOnly = false;
-            txtIstifadeciAdi.BackColor = Color.White;
+            txtIstifadeciAdi.BackColor = Color.FromArgb(242, 242, 242);
             txtIstifadeciAdi.BackgroundImageLayout = ImageLayout.None;
             txtIstifadeciAdi.CharacterCasing = CharacterCasing.Normal;
             txtIstifadeciAdi.Depth = 0;
@@ -178,17 +217,17 @@ namespace AzAgroPOS.Teqdimat
             txtIstifadeciAdi.SelectionLength = 0;
             txtIstifadeciAdi.SelectionStart = 0;
             txtIstifadeciAdi.ShortcutsEnabled = true;
-            txtIstifadeciAdi.Size = new Size(360, 50);
+            txtIstifadeciAdi.Size = new Size(360, 48);
             txtIstifadeciAdi.TabIndex = 0;
+            txtIstifadeciAdi.TabStop = false;
             txtIstifadeciAdi.TextAlign = HorizontalAlignment.Left;
             txtIstifadeciAdi.TrailingIcon = null;
             txtIstifadeciAdi.UseSystemPasswordChar = false;
-
-            //
+            // 
             // txtParol
-            //
+            // 
             txtParol.AnimateReadOnly = false;
-            txtParol.BackColor = Color.White;
+            txtParol.BackColor = Color.FromArgb(242, 242, 242);
             txtParol.BackgroundImageLayout = ImageLayout.None;
             txtParol.CharacterCasing = CharacterCasing.Normal;
             txtParol.Depth = 0;
@@ -208,63 +247,69 @@ namespace AzAgroPOS.Teqdimat
             txtParol.SelectionLength = 0;
             txtParol.SelectionStart = 0;
             txtParol.ShortcutsEnabled = true;
-            txtParol.Size = new Size(360, 50);
+            txtParol.Size = new Size(360, 48);
             txtParol.TabIndex = 1;
+            txtParol.TabStop = false;
             txtParol.TextAlign = HorizontalAlignment.Left;
             txtParol.TrailingIcon = null;
             txtParol.UseSystemPasswordChar = false;
-
-            //
-            // btnParolGoster - Toggle password visibility
-            //
-            btnParolGoster.Size = new Size(36, 36);
-            btnParolGoster.Location = new Point(355, 342);
-            btnParolGoster.FlatStyle = FlatStyle.Flat;
+            // 
+            // btnParolGoster
+            // 
+            btnParolGoster.BackColor = Color.FromArgb(242, 242, 242);
+            btnParolGoster.Cursor = Cursors.Hand;
             btnParolGoster.FlatAppearance.BorderSize = 0;
             btnParolGoster.FlatAppearance.MouseOverBackColor = Color.FromArgb(240, 240, 240);
-            btnParolGoster.BackColor = Color.Transparent;
-            btnParolGoster.Cursor = Cursors.Hand;
-            btnParolGoster.Text = "👁";
-            btnParolGoster.Font = new Font("Segoe UI", 14F);
+            btnParolGoster.FlatStyle = FlatStyle.Flat;
+            btnParolGoster.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            btnParolGoster.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            btnParolGoster.Location = new Point(355, 342);
             btnParolGoster.Name = "btnParolGoster";
+            btnParolGoster.Size = new Size(36, 36);
+            btnParolGoster.TabIndex = 5;
             btnParolGoster.TabStop = false;
-
-            //
-            // lblCapsLock - CAPS LOCK warning
-            //
-            lblCapsLock.AutoSize = false;
-            lblCapsLock.Size = new Size(360, 24);
+            btnParolGoster.Text = "👁";
+            btnParolGoster.UseVisualStyleBackColor = false;
+            // 
+            // lblCapsLock
+            // 
+            lblCapsLock.BackColor = Color.FromArgb(242, 242, 242);
+            lblCapsLock.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblCapsLock.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblCapsLock.Location = new Point(35, 390);
+            lblCapsLock.Name = "lblCapsLock";
+            lblCapsLock.Size = new Size(360, 24);
+            lblCapsLock.TabIndex = 6;
             lblCapsLock.Text = "CAPS LOCK aktivdir";
-            lblCapsLock.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lblCapsLock.ForeColor = Color.FromArgb(244, 67, 54);
-            lblCapsLock.BackColor = Color.FromArgb(255, 235, 238);
             lblCapsLock.TextAlign = ContentAlignment.MiddleCenter;
             lblCapsLock.Visible = false;
-            lblCapsLock.Name = "lblCapsLock";
-
-            //
+            // 
             // chkMeniXatirla
-            //
+            // 
             chkMeniXatirla.AutoSize = true;
-            chkMeniXatirla.Location = new Point(35, 420);
+            chkMeniXatirla.BackColor = Color.FromArgb(242, 242, 242);
             chkMeniXatirla.Depth = 0;
+            chkMeniXatirla.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            chkMeniXatirla.Location = new Point(35, 420);
+            chkMeniXatirla.Margin = new Padding(0);
             chkMeniXatirla.MouseLocation = new Point(-1, -1);
             chkMeniXatirla.MouseState = MaterialSkin.MouseState.HOVER;
             chkMeniXatirla.Name = "chkMeniXatirla";
             chkMeniXatirla.ReadOnly = false;
             chkMeniXatirla.Ripple = true;
+            chkMeniXatirla.Size = new Size(118, 37);
             chkMeniXatirla.TabIndex = 2;
             chkMeniXatirla.Text = "Məni xatırla";
-            chkMeniXatirla.UseVisualStyleBackColor = true;
-
-            //
+            chkMeniXatirla.UseVisualStyleBackColor = false;
+            // 
             // btnDaxilOl
-            //
+            // 
             btnDaxilOl.AutoSize = false;
             btnDaxilOl.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnDaxilOl.BackColor = Color.FromArgb(242, 242, 242);
             btnDaxilOl.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             btnDaxilOl.Depth = 0;
+            btnDaxilOl.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnDaxilOl.HighEmphasis = true;
             btnDaxilOl.Icon = null;
             btnDaxilOl.Location = new Point(35, 470);
@@ -277,74 +322,55 @@ namespace AzAgroPOS.Teqdimat
             btnDaxilOl.Text = "DAXİL OL";
             btnDaxilOl.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnDaxilOl.UseAccentColor = false;
-            btnDaxilOl.UseVisualStyleBackColor = true;
+            btnDaxilOl.UseVisualStyleBackColor = false;
             btnDaxilOl.Click += btnDaxilOl_Click;
-
-            //
-            // pnlLoading - Loading overlay with spinner
-            //
-            pnlLoading.Size = new Size(360, 50);
-            pnlLoading.Location = new Point(35, 470);
-            pnlLoading.BackColor = Color.FromArgb(25, 118, 210);
-            pnlLoading.Visible = false;
+            // 
+            // pnlLoading
+            // 
+            pnlLoading.BackColor = Color.FromArgb(242, 242, 242);
             pnlLoading.Controls.Add(picLoading);
             pnlLoading.Controls.Add(lblLoading);
+            pnlLoading.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            pnlLoading.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            pnlLoading.Location = new Point(35, 470);
             pnlLoading.Name = "pnlLoading";
-
-            //
-            // picLoading - Loading spinner placeholder
-            //
-            picLoading.Size = new Size(24, 24);
+            pnlLoading.Size = new Size(360, 50);
+            pnlLoading.TabIndex = 7;
+            pnlLoading.Visible = false;
+            // 
+            // picLoading
+            // 
+            picLoading.BackColor = Color.FromArgb(242, 242, 242);
+            picLoading.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            picLoading.ForeColor = Color.FromArgb(222, 0, 0, 0);
             picLoading.Location = new Point(120, 13);
-            picLoading.BackColor = Color.Transparent;
             picLoading.Name = "picLoading";
-
-            //
+            picLoading.Size = new Size(24, 24);
+            picLoading.TabIndex = 0;
+            picLoading.TabStop = false;
+            // 
             // lblLoading
-            //
-            lblLoading.AutoSize = false;
-            lblLoading.Size = new Size(150, 24);
+            // 
+            lblLoading.BackColor = Color.FromArgb(242, 242, 242);
+            lblLoading.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblLoading.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblLoading.Location = new Point(150, 13);
-            lblLoading.Text = "Giriş edilir...";
-            lblLoading.Font = new Font("Segoe UI Semibold", 11F, FontStyle.Bold);
-            lblLoading.ForeColor = Color.White;
-            lblLoading.TextAlign = ContentAlignment.MiddleLeft;
             lblLoading.Name = "lblLoading";
-
-            //
-            // lblVersion
-            //
-            lblVersion.AutoSize = true;
-            lblVersion.Location = new Point(12, 620);
-            lblVersion.Text = "v1.0.0";
-            lblVersion.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
-            lblVersion.ForeColor = Color.FromArgb(200, 255, 255, 255);
-            lblVersion.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            lblVersion.Name = "lblVersion";
-
-            //
-            // lblCopyright
-            //
-            lblCopyright.AutoSize = true;
-            lblCopyright.Location = new Point(450, 620);
-            lblCopyright.Text = "© 2024 AzAgroPOS";
-            lblCopyright.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
-            lblCopyright.ForeColor = Color.FromArgb(200, 255, 255, 255);
-            lblCopyright.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            lblCopyright.Name = "lblCopyright";
-
-            //
+            lblLoading.Size = new Size(150, 24);
+            lblLoading.TabIndex = 1;
+            lblLoading.Text = "Giriş edilir...";
+            lblLoading.TextAlign = ContentAlignment.MiddleLeft;
+            // 
             // errorProvider1
-            //
+            // 
             errorProvider1.ContainerControl = this;
-
-            //
+            // 
             // LoginFormu
-            //
+            // 
             AcceptButton = btnDaxilOl;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(650, 660);
+            ClientSize = new Size(666, 699);
             Controls.Add(pnlMain);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
@@ -352,17 +378,18 @@ namespace AzAgroPOS.Teqdimat
             Name = "LoginFormu";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "AzAgroPOS - Sistemə Giriş";
-
-            ((System.ComponentModel.ISupportInitialize)errorProvider1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)picLogo).EndInit();
-            ((System.ComponentModel.ISupportInitialize)picLoading).EndInit();
+            Controls.SetChildIndex(pnlMain, 0);
             pnlMain.ResumeLayout(false);
             pnlMain.PerformLayout();
             pnlLoginCard.ResumeLayout(false);
             pnlLoginCard.PerformLayout();
-            pnlLoading.ResumeLayout(false);
             pnlLogoContainer.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)picLogo).EndInit();
+            pnlLoading.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)picLoading).EndInit();
+            ((System.ComponentModel.ISupportInitialize)errorProvider1).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
