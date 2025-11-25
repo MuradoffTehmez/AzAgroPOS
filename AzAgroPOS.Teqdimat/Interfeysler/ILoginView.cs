@@ -7,7 +7,7 @@ namespace AzAgroPOS.Teqdimat.Interfeysler;
 public interface ILoginView
 {
     /// <summary>
-    /// İstifadeciAdi xüsusiyyəti, istifadəçinin giriş üçün daxil etdiyi istifadəçi adını saxlayır.
+    /// İstifadeciAdi xüsusiyyəti, istifadəçinin giriş üçün daxil etdiyi istifadəçi adını saxlayır.   
     /// </summary>
     string IstifadeciAdi { get; }
     /// <summary>
@@ -15,7 +15,7 @@ public interface ILoginView
     /// </summary>
     string Parol { get; }
     /// <summary>
-    /// UgurluDaxilOlundu xüsusiyyəti, istifadəçi uğurla daxil olduqda true, əks halda false dəyərini alır.
+    /// UgurluDaxilOlundu xüsusiyyəti, istifadəçi uğurla daxil olduqda true, əks halda false dəyərini alır.   
     /// </summary>
     bool UgurluDaxilOlundu { get; set; }
     /// <summary>
