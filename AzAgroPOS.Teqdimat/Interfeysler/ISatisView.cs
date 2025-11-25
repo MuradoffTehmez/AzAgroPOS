@@ -7,7 +7,7 @@ namespace AzAgroPOS.Teqdimat.Interfeysler
 {
     public interface ISatisView
     {
-        // View-dan məlumat oxumaq
+        // View-dan məlumat oxumaq    
         string AxtarisMetni { get; }
         string SecilmisMehsulMiqdari { get; }
         MehsulDto? SecilmisAxtarisMehsulu { get; }
