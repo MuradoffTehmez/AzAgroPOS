@@ -2,7 +2,7 @@
 namespace AzAgroPOS.Teqdimat.Interfeysler;
 /// <summary>
 ///  interfeys, istifadəçi giriş əməliyyatlarını idarə etmək üçün istifadə olunur.
-///  Daha dəqiq, istifadəçi adı və parol daxil edildikdə, giriş yoxlanılması və nəticənin göstərilməsi üçün metodlar və hadisələr təyin edir.
+///  Daha dəqiq, istifadəçi adı və parol daxil edildikdə, giriş yoxlanılması və nəticənin göstərilməsi üçün metodlar və hadisələr təyin edir.   
 /// </summary>
 public interface ILoginView
 {
