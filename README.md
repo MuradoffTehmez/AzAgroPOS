@@ -914,6 +914,7 @@ Status: Active Development
 
 <div align="center">
 **TAHMAZ MURADOV**
+
 **AzAgroPOS Development Team tarafından ❤️ ilə hazırlanmışdır**
 
 [⬆ Başa Qayıt](#azagropos--POS-satış-nöqtəsi-sistemi)
