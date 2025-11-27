@@ -102,7 +102,7 @@ AzAgroPOS/
 │   │   ├── TehlukesizlikManager.cs
 │   │   └── ...
 │   ├── DTOs/                            # Data Transfer Objects (35+)
-│   ├── Istisnalar/                      # Custom Exceptions
+│   ├── Istisnalar/                       # Custom Exceptions
 │   └── Yardimcilar/                     # Helpers & Utilities
 │
 ├── 📁 AzAgroPOS.Teqdimat/                # Presentation Layer
@@ -913,9 +913,10 @@ Status: Active Development
 ---
 
 <div align="center">
+**TAHMAZ MURADOV**
 
 **AzAgroPOS Development Team tarafından ❤️ ilə hazırlanmışdır**
 
-[⬆ Başa Qayıt](#azagropos---kənd-təsərrüfatı-satış-nöqtəsi-sistemi)
+[⬆ Başa Qayıt](#azagropos--POS-satış-nöqtəsi-sistemi)
 
 </div>
