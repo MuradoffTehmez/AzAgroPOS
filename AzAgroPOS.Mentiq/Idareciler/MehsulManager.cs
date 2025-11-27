@@ -289,6 +289,7 @@ public class MehsulManager
                 Barkod = m.Barkod,
                 StokKodu = m.StokKodu,
                 PerakendeSatisQiymeti = m.PerakendeSatisQiymeti,
+                MovcudSay = m.MovcudSay,
                 AnbarMiqdari = m.MovcudSay,
                 Aktivdir = m.Aktivdir,
                 OlcuVahidi = m.OlcuVahidi,

@@ -94,101 +94,181 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 
         private void SebeteElaveEt(MehsulDto? mehsul = null)
         {
-            System.Diagnostics.Debug.WriteLine($"[DEBUG] SebeteElaveEt çağırıldı. mehsul parametri: {mehsul?.Ad ?? "null"}");
-            System.Windows.Forms.MessageBox.Show($"SebeteElaveEt çağırıldı!\nMəhsul: {mehsul?.Ad ?? "null"}", "DEBUG Presenter");
-
-            var secilmisMehsul = mehsul ?? _view.SecilmisAxtarisMehsulu;
-            if (secilmisMehsul == null)
+            try
             {
-                System.Windows.Forms.MessageBox.Show("secilmisMehsul NULL-dur!", "DEBUG Presenter");
-                return;
-            }
+                System.Diagnostics.Debug.WriteLine($"Səbətə əlavə et: {mehsul?.Ad ?? "seçilmiş məhsul"}");
 
-            System.Windows.Forms.MessageBox.Show($"Seçilmiş məhsul: {secilmisMehsul.Ad}\nStok: {secilmisMehsul.MovcudSay}", "DEBUG Presenter");
-
-            if (!decimal.TryParse(_view.SecilmisMehsulMiqdari, out decimal miqdar) || miqdar <= 0)
-            {
-                miqdar = 1;
-            }
-
-            // Stok yoxlaması
-            var movcudElement = _aktivSebet.FirstOrDefault(e => e.MehsulId == secilmisMehsul.Id);
-            decimal sebetdekiMiqdar = movcudElement?.Miqdar ?? 0;
-            decimal istenilenToplamMiqdar = sebetdekiMiqdar + miqdar;
-
-            if (istenilenToplamMiqdar > secilmisMehsul.MovcudSay)
-            {
-                System.Windows.Forms.MessageBox.Show($"Stok kifayət deyil!\nMövcud: {secilmisMehsul.MovcudSay}\nTələb: {istenilenToplamMiqdar}", "DEBUG Presenter");
-                _view.StatusMesajiGoster(
-                    $"Stokda kifayət qədər məhsul yoxdur! Mövcud: {secilmisMehsul.MovcudSay}, Tələb olunan: {istenilenToplamMiqdar}",
-                    StatusMesajiNovu.Xeta);
-                return;
-            }
-
-            // Minimum stok xəbərdarlığı
-            if (secilmisMehsul.MovcudSay <= secilmisMehsul.MinimumStok)
-            {
-                _view.StatusMesajiGoster(
-                    $"Diqqət: {secilmisMehsul.Ad} minimum stok səviyyəsinə çatıb! (Mövcud: {secilmisMehsul.MovcudSay})",
-                    StatusMesajiNovu.Melumat);
-            }
-
-            if (movcudElement != null)
-            {
-                movcudElement.Miqdar += miqdar;
-            }
-            else
-            {
-                _aktivSebet.Add(new SatisSebetiElementiDto
+                // Məhsul seçimi yoxlaması
+                var secilmisMehsul = mehsul ?? _view.SecilmisAxtarisMehsulu;
+                if (secilmisMehsul == null)
                 {
-                    MehsulId = secilmisMehsul.Id,
-                    MehsulAdi = secilmisMehsul.Ad,
-                    Miqdar = miqdar,
-                    VahidinQiymeti = secilmisMehsul.PerakendeSatisQiymeti
-                });
-            }
-            _aktivSebet.ResetBindings();
-            GosterisleriYenile();
-            if (mehsul == null) _view.AxtarisPaneliniSifirla();
+                    System.Diagnostics.Debug.WriteLine("Məhsul seçilməyib");
+                    _view.StatusMesajiGoster("Zəhmət olmasa əvvəlcə məhsul seçin", StatusMesajiNovu.Melumat);
+                    return;
+                }
 
-            // Müştəri ekranına məhsul əlavə edildiyini bildir
-            _view.MusteriEkraniYenile(secilmisMehsul.Ad, secilmisMehsul.PerakendeSatisQiymeti, miqdar);
+                // Məhsul məlumatlarının tamlığını yoxla
+                if (string.IsNullOrWhiteSpace(secilmisMehsul.Ad))
+                {
+                    System.Diagnostics.Debug.WriteLine("Məhsul adı yoxdur");
+                    _view.StatusMesajiGoster("Məhsul məlumatları natamamdır", StatusMesajiNovu.Xeta);
+                    return;
+                }
+
+                // Miqdar yoxlaması və təyin edilməsi
+                if (!decimal.TryParse(_view.SecilmisMehsulMiqdari, out decimal miqdar) || miqdar <= 0)
+                {
+                    miqdar = 1;
+                    System.Diagnostics.Debug.WriteLine($"Miqdar təyin edilməyib, default: {miqdar}");
+                }
+
+                // Miqdar məntiq yoxlaması
+                if (miqdar > 10000)
+                {
+                    _view.StatusMesajiGoster("Miqdar çox böyükdür. Zəhmət olmasa düzgün miqdar daxil edin", StatusMesajiNovu.Xeta);
+                    return;
+                }
+
+                // Stok mövcudluğu yoxlaması
+                var movcudElement = _aktivSebet.FirstOrDefault(e => e.MehsulId == secilmisMehsul.Id);
+                decimal sebetdekiMiqdar = movcudElement?.Miqdar ?? 0;
+                decimal istenilenToplamMiqdar = sebetdekiMiqdar + miqdar;
+
+                if (istenilenToplamMiqdar > secilmisMehsul.MovcudSay)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Stok kifayət deyil! Mövcud: {secilmisMehsul.MovcudSay}, Tələb: {istenilenToplamMiqdar}");
+                    _view.StatusMesajiGoster(
+                        $"Stokda kifayət qədər məhsul yoxdur! Mövcud: {secilmisMehsul.MovcudSay}, Tələb: {istenilenToplamMiqdar}",
+                        StatusMesajiNovu.Xeta);
+                    return;
+                }
+
+                // Səbətə əlavə et və ya mövcud miqdarı artır
+                if (movcudElement != null)
+                {
+                    movcudElement.Miqdar += miqdar;
+                    System.Diagnostics.Debug.WriteLine($"Mövcud məhsulun miqdarı artırıldı: {secilmisMehsul.Ad}, Yeni miqdar: {movcudElement.Miqdar}");
+                }
+                else
+                {
+                    _aktivSebet.Add(new SatisSebetiElementiDto
+                    {
+                        MehsulId = secilmisMehsul.Id,
+                        MehsulAdi = secilmisMehsul.Ad,
+                        Miqdar = miqdar,
+                        VahidinQiymeti = secilmisMehsul.PerakendeSatisQiymeti
+                    });
+                    System.Diagnostics.Debug.WriteLine($"Yeni məhsul səbətə əlavə edildi: {secilmisMehsul.Ad}, Miqdar: {miqdar}");
+                }
+
+                // UI-ni yenilə
+                _aktivSebet.ResetBindings();
+                GosterisleriYenile();
+                if (mehsul == null) _view.AxtarisPaneliniSifirla();
+
+                // Müştəri ekranını yenilə
+                _view.MusteriEkraniYenile(secilmisMehsul.Ad, secilmisMehsul.PerakendeSatisQiymeti, miqdar);
+
+                // Uğurlu əməliyyat mesajı
+                _view.StatusMesajiGoster(
+                    $"✓ {secilmisMehsul.Ad} səbətə əlavə edildi ({miqdar} ədəd)",
+                    StatusMesajiNovu.Ugurlu);
+
+                // Minimum stok xəbərdarlığı
+                if (secilmisMehsul.MovcudSay - istenilenToplamMiqdar <= secilmisMehsul.MinimumStok)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Minimum stok xəbərdarlığı: {secilmisMehsul.Ad}");
+                    _view.StatusMesajiGoster(
+                        $"⚠ Diqqət: {secilmisMehsul.Ad} minimum stok səviyyəsinə yaxınlaşır! (Qalıq: {secilmisMehsul.MovcudSay - istenilenToplamMiqdar})",
+                        StatusMesajiNovu.Melumat);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Səbətə əlavə etmə xətası: {ex.Message}\n{ex.StackTrace}");
+                _view.StatusMesajiGoster(
+                    $"Məhsul səbətə əlavə edilərkən xəta baş verdi: {ex.Message}",
+                    StatusMesajiNovu.Xeta);
+            }
         }
 
         private void SebetMiqdarDeyisdir(int mehsulId, decimal deyisiklik)
         {
-            var element = _aktivSebet.FirstOrDefault(e => e.MehsulId == mehsulId);
-            if (element != null)
+            try
             {
+                var element = _aktivSebet.FirstOrDefault(e => e.MehsulId == mehsulId);
+                if (element == null)
+                {
+                    _view.StatusMesajiGoster("Məhsul səbətdə tapılmadı", StatusMesajiNovu.Xeta);
+                    return;
+                }
+
                 element.Miqdar += deyisiklik;
+
                 if (element.Miqdar <= 0)
                 {
                     _aktivSebet.Remove(element);
+                    _view.StatusMesajiGoster($"{element.MehsulAdi} səbətdən silindi", StatusMesajiNovu.Melumat);
                 }
+                else
+                {
+                    _view.StatusMesajiGoster($"{element.MehsulAdi} miqdarı dəyişdirildi: {element.Miqdar}", StatusMesajiNovu.Melumat);
+                }
+
                 _aktivSebet.ResetBindings();
                 GosterisleriYenile();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Səbət miqdar dəyişikliyi xətası: {ex.Message}");
+                _view.StatusMesajiGoster($"Miqdar dəyişdirilərkən xəta: {ex.Message}", StatusMesajiNovu.Xeta);
             }
         }
 
         private void SebetdenSil()
         {
-            var secilmisSebetElementi = _view.SecilmisSebetElementi;
-            if (secilmisSebetElementi != null)
+            try
             {
+                var secilmisSebetElementi = _view.SecilmisSebetElementi;
+                if (secilmisSebetElementi == null)
+                {
+                    _view.StatusMesajiGoster("Zəhmət olmasa silinəcək məhsulu seçin", StatusMesajiNovu.Melumat);
+                    return;
+                }
+
+                string mehsulAdi = secilmisSebetElementi.MehsulAdi;
                 _aktivSebet.Remove(secilmisSebetElementi);
                 GosterisleriYenile();
+                _view.StatusMesajiGoster($"{mehsulAdi} səbətdən silindi", StatusMesajiNovu.Ugurlu);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Səbətdən silmə xətası: {ex.Message}");
+                _view.StatusMesajiGoster($"Məhsul silinərkən xəta: {ex.Message}", StatusMesajiNovu.Xeta);
             }
         }
 
         private void SebetiTemizle()
         {
-            if (_aktivSebet.Any())
+            try
             {
+                if (!_aktivSebet.Any())
+                {
+                    _view.StatusMesajiGoster("Səbət artıq boşdur", StatusMesajiNovu.Melumat);
+                    return;
+                }
+
                 var cavab = _view.MesajGoster("Səbəti tamamilə təmizləmək istədiyinizə əminsinizmi?", "Təsdiq", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (cavab == DialogResult.Yes)
                 {
                     FormuTamSifirla();
+                    _view.StatusMesajiGoster("Səbət təmizləndi", StatusMesajiNovu.Ugurlu);
                 }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Səbəti təmizləmə xətası: {ex.Message}");
+                _view.StatusMesajiGoster($"Səbət təmizlənərkən xəta: {ex.Message}", StatusMesajiNovu.Xeta);
             }
         }
 

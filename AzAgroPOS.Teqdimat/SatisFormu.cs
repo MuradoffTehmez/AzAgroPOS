@@ -51,7 +51,25 @@ namespace AzAgroPOS.Teqdimat
 
         public string AxtarisMetni => txtAxtaris.Text;
         public string SecilmisMehsulMiqdari => txtMiqdar.Text;
-        public MehsulDto? SecilmisAxtarisMehsulu => dgvAxtarisNeticeleri.CurrentRow?.DataBoundItem as MehsulDto;
+
+        // Təkmilləşdirilmiş məhsul seçimi - null check və validasiya əlavə edilib
+        public MehsulDto? SecilmisAxtarisMehsulu
+        {
+            get
+            {
+                try
+                {
+                    if (dgvAxtarisNeticeleri.CurrentRow == null) return null;
+                    return dgvAxtarisNeticeleri.CurrentRow.DataBoundItem as MehsulDto;
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"SecilmisAxtarisMehsulu xətası: {ex.Message}");
+                    return null;
+                }
+            }
+        }
+
         public SatisSebetiElementiDto? SecilmisSebetElementi => dgvSebet.CurrentRow?.DataBoundItem as SatisSebetiElementiDto;
         public int? SecilmisMusteriId => (int?)cmbMusteriler.SelectedValue > 0 ? (int?)cmbMusteriler.SelectedValue : null;
 
@@ -462,46 +480,81 @@ namespace AzAgroPOS.Teqdimat
 
         private void btnSebeteElaveEt_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("[DEBUG] btnSebeteElaveEt_Click çağırıldı");
-            MessageBox.Show("btnSebeteElaveEt click edildi!", "DEBUG");
-            SebeteElaveEtIstek?.Invoke(this, EventArgs.Empty);
+            try
+            {
+                System.Diagnostics.Debug.WriteLine("Səbətə əlavə et düyməsi basıldı");
+                SebeteElaveEtIstek?.Invoke(this, EventArgs.Empty);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Səbətə əlavə et düyməsi xətası: {ex.Message}");
+                StatusMesajiGoster($"Əməliyyat zamanı xəta: {ex.Message}", StatusMesajiNovu.Xeta);
+            }
         }
         private void dgvAxtarisNeticeleri_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine($"[DEBUG] dgvAxtarisNeticeleri_CellClick - RowIndex: {e.RowIndex}");
-
             // Başlıq sətirinə click etmə
             if (e.RowIndex < 0) return;
 
-            var dataItem = dgvAxtarisNeticeleri.Rows[e.RowIndex].DataBoundItem;
-            System.Diagnostics.Debug.WriteLine($"[DEBUG] DataBoundItem tipi: {dataItem?.GetType().Name ?? "null"}");
+            try
+            {
+                var dataItem = dgvAxtarisNeticeleri.Rows[e.RowIndex].DataBoundItem;
 
-            // Click edilən sətirdən məhsulu al
-            if (dataItem is MehsulDto mehsul)
-            {
-                System.Diagnostics.Debug.WriteLine($"[DEBUG] Məhsul tapıldı: {mehsul.Ad}");
-                MessageBox.Show($"Məhsul seçildi: {mehsul.Ad}", "DEBUG");
-                SuretliSatisIstek?.Invoke(this, mehsul);
+                // Click edilən sətirdən məhsulu al - məhsulu parametr kimi ötür
+                if (dataItem is MehsulDto mehsul)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Axtarış nəticəsindən məhsul seçildi: {mehsul.Ad}");
+                    // Məhsulu birbaşa parametr kimi ötürürük (timing problemini həll edir)
+                    SuretliSatisIstek?.Invoke(this, mehsul);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show($"DataBoundItem MehsulDto deyil! Tip: {dataItem?.GetType().Name ?? "null"}", "DEBUG");
+                System.Diagnostics.Debug.WriteLine($"Məhsul seçimi xətası: {ex.Message}");
+                StatusMesajiGoster($"Məhsul seçimi zamanı xəta: {ex.Message}", StatusMesajiNovu.Xeta);
             }
         }
-        private void dgvAxtarisNeticeleri_DoubleClick(object sender, EventArgs e) => btnSebeteElaveEt.PerformClick();
+        private void dgvAxtarisNeticeleri_DoubleClick(object sender, EventArgs e)
+        {
+            try
+            {
+                // Double-click ilə məhsulu birbaşa səbətə əlavə et
+                if (dgvAxtarisNeticeleri.CurrentRow?.DataBoundItem is MehsulDto mehsul)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Double-click: {mehsul.Ad} səbətə əlavə edilir");
+                    SuretliSatisIstek?.Invoke(this, mehsul);
+                }
+                else
+                {
+                    StatusMesajiGoster("Zəhmət olmasa əvvəlcə məhsul seçin", StatusMesajiNovu.Melumat);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Double-click xətası: {ex.Message}");
+                StatusMesajiGoster($"Əməliyyat zamanı xəta: {ex.Message}", StatusMesajiNovu.Xeta);
+            }
+        }
         private void SuretliSatisButton_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("[DEBUG] SuretliSatisButton_Click çağırıldı");
-
-            // MaterialButton və ya adi Button ola bilər
-            if (sender is Control control && control.Tag is MehsulDto mehsul)
+            try
             {
-                MessageBox.Show($"Sürətli satış: {mehsul.Ad}", "DEBUG");
-                SuretliSatisIstek?.Invoke(this, mehsul);
+                // MaterialButton və ya adi Button ola bilər
+                if (sender is Control control && control.Tag is MehsulDto mehsul)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Sürətli satış düyməsi: {mehsul.Ad}");
+                    SuretliSatisIstek?.Invoke(this, mehsul);
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine("Sürətli satış düyməsi məhsul məlumatı olmadan çağırıldı");
+                    StatusMesajiGoster("Məhsul məlumatı tapılmadı", StatusMesajiNovu.Xeta);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show($"Tag MehsulDto deyil! Sender: {sender?.GetType().Name}", "DEBUG");
+                System.Diagnostics.Debug.WriteLine($"Sürətli satış xətası: {ex.Message}");
+                StatusMesajiGoster($"Sürətli satış zamanı xəta: {ex.Message}", StatusMesajiNovu.Xeta);
             }
         }
         private void btnSebetdenSil_Click(object sender, EventArgs e) => SebetdenSilIstek?.Invoke(this, EventArgs.Empty);
