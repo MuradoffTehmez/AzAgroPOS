@@ -27,16 +27,29 @@ public interface INisyeView
     int? SecilmisMusteriId { get; }
     decimal OdenisMeblegi { get; }
 
+    /// <summary>
+    /// Ödəniş düyməsinin aktiv/deaktiv olma vəziyyəti
+    /// </summary>
+    bool OdenisButtonAktivdir { get; set; }
+
     // Hadisələr
     event EventHandler FormYuklendi;
     event EventHandler MusteriSecildi;
     event EventHandler OdenisEdildi;
+
     /// <summary>
     /// mesajgoster metodu, istifadəçiyə mesaj göstərmək üçün istifadə olunur.
     /// </summary>
     /// <param name="mesaj"></param>
     /// <param name="basliq"></param>
     void MesajGoster(string mesaj, string basliq);
+
+    /// <summary>
+    /// MessageBox göstərir və istifadəçi cavabını qaytarır
+    /// </summary>
+    System.Windows.Forms.DialogResult MesajGoster(string mesaj, string basliq,
+        System.Windows.Forms.MessageBoxButtons buttons, System.Windows.Forms.MessageBoxIcon icon);
+
     /// <summary>
     ///  formuTemizle metodu, formu sıfırlamaq üçün istifadə olunur.
     ///  daha dəqiq, formdakı bütün məlumatları təmizləmək və istifadəçiyə yeni bir əməliyyat üçün boş bir forma təqdim etmək üçün istifadə olunur.

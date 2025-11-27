@@ -51,26 +51,105 @@ public class NisyePresenter
     /// <returns></returns>
     private async Task OdenisEt()
     {
-        if (!_view.SecilmisMusteriId.HasValue)
+        try
         {
-            _view.MesajGoster("Zəhmət olmasa, əvvəlcə müştəri seçin.", "Xəbərdarlıq");
-            return;
-        }
+            // Validation: Müştəri seçimi
+            if (!_view.SecilmisMusteriId.HasValue)
+            {
+                _view.MesajGoster("Zəhmət olmasa əvvəlcə müştəri seçin", "Xəbərdarlıq",
+                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+                return;
+            }
 
-        var mebleg = _view.OdenisMeblegi;
-        var netice = await _nisyeManager.BorcOdenisiEtAsync(_view.SecilmisMusteriId.Value, mebleg);
+            // Validation: Məbləğ
+            var mebleg = _view.OdenisMeblegi;
+            if (mebleg <= 0)
+            {
+                _view.MesajGoster("Ödəniş məbləği müsbət olmalıdır", "Validation Xətası",
+                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+                return;
+            }
 
-        if (netice.UgurluDur)
-        {
-            _view.MesajGoster("Ödəniş uğurla qeydə alındı.", "Uğurlu Əməliyyat");
-            // Formları yeniləmə
-            await FormuYukle();
-            await MusteriHereketleriniYukle();
-            _view.FormuTemizle();
+            // Müştəri məlumatlarını al (confirmation üçün)
+            var musteriNetice = await _musteriManager.GetirAsync(_view.SecilmisMusteriId.Value);
+            if (!musteriNetice.UgurluDur || musteriNetice.Data == null)
+            {
+                _view.MesajGoster("Müştəri məlumatları alınarkən xəta baş verdi", "Xəta",
+                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                return;
+            }
+
+            var musteri = musteriNetice.Data;
+
+            // Məbləğ borcdan çox ola bilməz
+            if (mebleg > musteri.UmumiBorc)
+            {
+                _view.MesajGoster(
+                    $"Ödəniş məbləği ({mebleg:N2} AZN) müştərinin borcundan ({musteri.UmumiBorc:N2} AZN) çox ola bilməz",
+                    "Validation Xətası",
+                    System.Windows.Forms.MessageBoxButtons.OK,
+                    System.Windows.Forms.MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Confirmation dialog
+            decimal qaliqBorc = musteri.UmumiBorc - mebleg;
+            var confirmResult = _view.MesajGoster(
+                $"Ödəniş məlumatları:\n\n" +
+                $"Müştəri: {musteri.Ad} {musteri.Soyad}\n" +
+                $"Cari borc: {musteri.UmumiBorc:N2} AZN\n" +
+                $"Ödəniləcək məbləğ: {mebleg:N2} AZN\n" +
+                $"Qalıq borc: {qaliqBorc:N2} AZN\n\n" +
+                $"Ödənişi təsdiq edirsiniz?",
+                "Ödəniş Təsdiqi",
+                System.Windows.Forms.MessageBoxButtons.YesNo,
+                System.Windows.Forms.MessageBoxIcon.Question);
+
+            if (confirmResult != System.Windows.Forms.DialogResult.Yes)
+            {
+                return;
+            }
+
+            // Düyməni disable et (multiple click-in qarşısını al)
+            _view.OdenisButtonAktivdir = false;
+
+            // Ödəniş əməliyyatını icra et
+            var netice = await _nisyeManager.BorcOdenisiEtAsync(_view.SecilmisMusteriId.Value, mebleg);
+
+            // Düyməni enable et
+            _view.OdenisButtonAktivdir = true;
+
+            if (netice.UgurluDur)
+            {
+                _view.MesajGoster(
+                    netice.Mesaj + $"\n\nMüştəri: {musteri.Ad} {musteri.Soyad}",
+                    "Uğurlu Əməliyyat",
+                    System.Windows.Forms.MessageBoxButtons.OK,
+                    System.Windows.Forms.MessageBoxIcon.Information);
+
+                // Formları yenilə
+                await FormuYukle();
+                await MusteriHereketleriniYukle();
+                _view.FormuTemizle();
+            }
+            else
+            {
+                _view.MesajGoster(netice.Mesaj, "Xəta",
+                    System.Windows.Forms.MessageBoxButtons.OK,
+                    System.Windows.Forms.MessageBoxIcon.Error);
+            }
         }
-        else
+        catch (Exception ex)
         {
-            _view.MesajGoster(netice.Mesaj, "Xəta");
+            // Düyməni enable et (xəta halında)
+            _view.OdenisButtonAktivdir = true;
+
+            System.Diagnostics.Debug.WriteLine($"Ödəniş zamanı xəta: {ex.Message}\n{ex.StackTrace}");
+            _view.MesajGoster(
+                $"Ödəniş zamanı gözlənilməz xəta baş verdi:\n{ex.Message}",
+                "Sistem Xətası",
+                System.Windows.Forms.MessageBoxButtons.OK,
+                System.Windows.Forms.MessageBoxIcon.Error);
         }
     }
 }
