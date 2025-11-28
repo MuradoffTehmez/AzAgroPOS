@@ -70,36 +70,10 @@ public class NisyePresenter
                 return;
             }
 
-            // Müştəri məlumatlarını al (confirmation üçün)
-            var musteriNetice = await _musteriManager.GetirAsync(_view.SecilmisMusteriId.Value);
-            if (!musteriNetice.UgurluDur || musteriNetice.Data == null)
-            {
-                _view.MesajGoster("Müştəri məlumatları alınarkən xəta baş verdi", "Xəta",
-                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-                return;
-            }
-
-            var musteri = musteriNetice.Data;
-
-            // Məbləğ borcdan çox ola bilməz
-            if (mebleg > musteri.UmumiBorc)
-            {
-                _view.MesajGoster(
-                    $"Ödəniş məbləği ({mebleg:N2} AZN) müştərinin borcundan ({musteri.UmumiBorc:N2} AZN) çox ola bilməz",
-                    "Validation Xətası",
-                    System.Windows.Forms.MessageBoxButtons.OK,
-                    System.Windows.Forms.MessageBoxIcon.Warning);
-                return;
-            }
-
             // Confirmation dialog
-            decimal qaliqBorc = musteri.UmumiBorc - mebleg;
             var confirmResult = _view.MesajGoster(
                 $"Ödəniş məlumatları:\n\n" +
-                $"Müştəri: {musteri.Ad} {musteri.Soyad}\n" +
-                $"Cari borc: {musteri.UmumiBorc:N2} AZN\n" +
-                $"Ödəniləcək məbləğ: {mebleg:N2} AZN\n" +
-                $"Qalıq borc: {qaliqBorc:N2} AZN\n\n" +
+                $"Ödəniləcək məbləğ: {mebleg:N2} AZN\n\n" +
                 $"Ödənişi təsdiq edirsiniz?",
                 "Ödəniş Təsdiqi",
                 System.Windows.Forms.MessageBoxButtons.YesNo,
@@ -122,7 +96,7 @@ public class NisyePresenter
             if (netice.UgurluDur)
             {
                 _view.MesajGoster(
-                    netice.Mesaj + $"\n\nMüştəri: {musteri.Ad} {musteri.Soyad}",
+                    $"Ödəniş uğurla qeydə alındı!\n\nÖdənilən məbləğ: {mebleg:N2} AZN",
                     "Uğurlu Əməliyyat",
                     System.Windows.Forms.MessageBoxButtons.OK,
                     System.Windows.Forms.MessageBoxIcon.Information);
