@@ -19,7 +19,7 @@ public class NovbePresenter
     private AzAgroPOS.Varliglar.Novbe? _aktivNovbe;
 
     /// <summary>
-    /// NovbePresenter, INovbeView interfeysini alır və NovbeManager ilə əlaqələndirir. 
+    /// NovbePresenter, INovbeView interfeysini alır və NovbeManager ilə əlaqələndirir.
     /// Novbemanager, növbə əməliyyatlarını idarə etmək üçün istifadə olunur.
     /// </summary>
     /// <param name="view"></param>
@@ -30,7 +30,27 @@ public class NovbePresenter
         _istifadeciManager = istifadeciManager;
         _view.NovbeAc_Istek += async (s, e) => await NovbeAc();
         _view.NovbeBagla_Istek += async (s, e) => await NovbeBagla();
-        Task.Run(async () => await FormuYukle());
+
+        // FormuYukle metodunu başlat - fire-and-forget pattern yerinə düzgün async pattern
+        // Exception handling əlavə edilib ki, unhandled exception yaranmasın
+        _ = YuklemeBaslatAsync();
+    }
+
+    /// <summary>
+    /// Form yükləməsini async şəkildə başladır və exception-ları idarə edir.
+    /// </summary>
+    private async Task YuklemeBaslatAsync()
+    {
+        try
+        {
+            await FormuYukle();
+        }
+        catch (System.Exception ex)
+        {
+            // Log exception - UI thread-də exception göstərilməməsi üçün
+            System.Diagnostics.Debug.WriteLine($"FormuYukle xətası: {ex.Message}");
+            // Əgər logger varsa, burda istifadə edilə bilər
+        }
     }
 
 

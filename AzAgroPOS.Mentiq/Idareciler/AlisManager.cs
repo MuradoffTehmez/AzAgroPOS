@@ -6,6 +6,7 @@ using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Mentiq.Yardimcilar;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,11 +21,24 @@ public class AlisManager
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly StokHareketiManager _stokHareketiManager;
+    private readonly IServiceProvider _serviceProvider;
 
-    public AlisManager(IUnitOfWork unitOfWork, StokHareketiManager stokHareketiManager)
+    public AlisManager(IUnitOfWork unitOfWork, StokHareketiManager stokHareketiManager, IServiceProvider serviceProvider)
     {
         _unitOfWork = unitOfWork;
         _stokHareketiManager = stokHareketiManager;
+        _serviceProvider = serviceProvider;
+    }
+
+    /// <summary>
+    /// Ayrı DbContext scope-unda əməliyyat icra edir.
+    /// Bu, paralel sorğuların eyni DbContext instance-ını istifadə etməməsini təmin edir.
+    /// </summary>
+    private async Task<T> ExecuteInSeparateScope<T>(Func<IUnitOfWork, Task<T>> operation)
+    {
+        using var scope = _serviceProvider.CreateScope();
+        var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+        return await operation(unitOfWork);
     }
 
     #region Tədarükçü Əməliyyatları
@@ -201,13 +215,14 @@ public class AlisManager
         Logger.MelumatYaz("ButunAlisSifarisleriniGetirAsync metodu çağırıldı.");
         try
         {
-            // Parallel execution - performance optimization
-            var sifarislerTask = _unitOfWork.AlisSifarisleri.ButununuGetirAsync();
-            var tedarukculerTask = _unitOfWork.Tedarukculer.ButununuGetirAsync();
+            // Parallel execution with separate DbContext instances - performance optimization
+            // Hər sorğu ayrı scope-da icra olunur ki, DbContext concurrency xətası yaranmasın
+            var sifarislerTask = ExecuteInSeparateScope(uow => uow.AlisSifarisleri.ButununuGetirAsync());
+            var tedarukculerTask = ExecuteInSeparateScope(uow => uow.Tedarukculer.ButununuGetirAsync());
             await Task.WhenAll(sifarislerTask, tedarukculerTask);
 
-            var sifarisler = sifarislerTask.Result;
-            var tedarukculer = tedarukculerTask.Result;
+            var sifarisler = await sifarislerTask;
+            var tedarukculer = await tedarukculerTask;
 
             var dtolar = sifarisler.Select(s => new AlisSifarisDto
             {
@@ -245,15 +260,16 @@ public class AlisManager
             if (sifaris == null)
                 return EmeliyyatNeticesi<AlisSifarisDto>.Ugursuz("Alış sifarişi tapılmadı.");
 
-            // Parallel execution - performance optimization
-            var tedarukcuTask = _unitOfWork.Tedarukculer.GetirAsync(sifaris.TedarukcuId);
-            var sifarisSetirTask = _unitOfWork.AlisSifarisSetirleri.AxtarAsync(s => s.AlisSifarisId == sifaris.Id);
-            var mehsullarTask = _unitOfWork.Mehsullar.ButununuGetirAsync();
+            // Parallel execution with separate DbContext instances - performance optimization
+            // Hər sorğu ayrı scope-da icra olunur ki, DbContext concurrency xətası yaranmasın
+            var tedarukcuTask = ExecuteInSeparateScope(uow => uow.Tedarukculer.GetirAsync(sifaris.TedarukcuId));
+            var sifarisSetirTask = ExecuteInSeparateScope(uow => uow.AlisSifarisSetirleri.AxtarAsync(s => s.AlisSifarisId == sifaris.Id));
+            var mehsullarTask = ExecuteInSeparateScope(uow => uow.Mehsullar.ButununuGetirAsync());
             await Task.WhenAll(tedarukcuTask, sifarisSetirTask, mehsullarTask);
 
-            var tedarukcu = tedarukcuTask.Result;
-            var sifarisSetirleri = sifarisSetirTask.Result;
-            var mehsullar = mehsullarTask.Result;
+            var tedarukcu = await tedarukcuTask;
+            var sifarisSetirleri = await sifarisSetirTask;
+            var mehsullar = await mehsullarTask;
 
             var dto = new AlisSifarisDto
             {
