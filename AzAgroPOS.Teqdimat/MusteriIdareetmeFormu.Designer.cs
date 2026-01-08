@@ -28,32 +28,33 @@
             components = new System.ComponentModel.Container();
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MusteriIdareetmeFormu));
             splitContainer1 = new SplitContainer();
-            toolTip1 = new ToolTip(components);
             dgvMusteriler = new DataGridView();
-            txtAxtaris = new MaterialSkin.Controls.MaterialTextBox2();
-            materialCard1 = new MaterialSkin.Controls.MaterialCard();
-            txtKreditLimiti = new MaterialSkin.Controls.MaterialTextBox2();
-            btnYeni = new MaterialSkin.Controls.MaterialButton();
-            btnSil = new MaterialSkin.Controls.MaterialButton();
-            btnYaddaSaxla = new MaterialSkin.Controls.MaterialButton();
-            txtUnvan = new MaterialSkin.Controls.MaterialTextBox2();
-            txtTelefon = new MaterialSkin.Controls.MaterialTextBox2();
-            txtTamAd = new MaterialSkin.Controls.MaterialTextBox2();
-            btnIxracEt = new MaterialSkin.Controls.MaterialButton();
             contextMenuStripMusteriler = new ContextMenuStrip(components);
             tsmiMusteriDetallar = new ToolStripMenuItem();
             tsmiMusteriRedakteEt = new ToolStripMenuItem();
             tsmiMusteriSil = new ToolStripMenuItem();
             tsmiMusteriBarkodCapEt = new ToolStripMenuItem();
+            txtAxtaris = new MaterialSkin.Controls.MaterialTextBox2();
+            materialCard1 = new MaterialSkin.Controls.MaterialCard();
+            txtKreditLimiti = new MaterialSkin.Controls.MaterialTextBox2();
+            btnYeni = new MaterialSkin.Controls.MaterialButton();
+            btnSil = new MaterialSkin.Controls.MaterialButton();
+            btnIxracEt = new MaterialSkin.Controls.MaterialButton();
+            btnYaddaSaxla = new MaterialSkin.Controls.MaterialButton();
+            txtUnvan = new MaterialSkin.Controls.MaterialTextBox2();
+            txtTelefon = new MaterialSkin.Controls.MaterialTextBox2();
+            txtTamAd = new MaterialSkin.Controls.MaterialTextBox2();
+            toolTip1 = new ToolTip(components);
             errorProvider1 = new ErrorProvider(components);
-                ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
             splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvMusteriler).BeginInit();
+            contextMenuStripMusteriler.SuspendLayout();
             materialCard1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)errorProvider1).BeginInit();
             SuspendLayout();
             // 
             // splitContainer1
@@ -98,6 +99,7 @@
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
             dgvMusteriler.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgvMusteriler.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvMusteriler.ContextMenuStrip = contextMenuStripMusteriler;
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = SystemColors.Window;
             dataGridViewCellStyle2.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
@@ -114,10 +116,42 @@
             dgvMusteriler.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvMusteriler.Size = new Size(638, 486);
             dgvMusteriler.TabIndex = 1;
+            dgvMusteriler.CellDoubleClick += dgvMusteriler_CellDoubleClick;
             dgvMusteriler.SelectionChanged += dgvMusteriler_SelectionChanged;
-            dgvMusteriler.CellDoubleClick += dgvMusteriler_CellDoubleClick;
-            dgvMusteriler.CellDoubleClick += dgvMusteriler_CellDoubleClick;
-            dgvMusteriler.ContextMenuStrip = contextMenuStripMusteriler;
+            // 
+            // contextMenuStripMusteriler
+            // 
+            contextMenuStripMusteriler.Items.AddRange(new ToolStripItem[] { tsmiMusteriDetallar, tsmiMusteriRedakteEt, tsmiMusteriSil, tsmiMusteriBarkodCapEt });
+            contextMenuStripMusteriler.Name = "contextMenuStripMusteriler";
+            contextMenuStripMusteriler.Size = new Size(149, 92);
+            // 
+            // tsmiMusteriDetallar
+            // 
+            tsmiMusteriDetallar.Name = "tsmiMusteriDetallar";
+            tsmiMusteriDetallar.Size = new Size(148, 22);
+            tsmiMusteriDetallar.Text = "Detallar";
+            tsmiMusteriDetallar.Click += tsmiMusteriDetallar_Click;
+            // 
+            // tsmiMusteriRedakteEt
+            // 
+            tsmiMusteriRedakteEt.Name = "tsmiMusteriRedakteEt";
+            tsmiMusteriRedakteEt.Size = new Size(148, 22);
+            tsmiMusteriRedakteEt.Text = "Redaktə Et";
+            tsmiMusteriRedakteEt.Click += tsmiMusteriRedakteEt_Click;
+            // 
+            // tsmiMusteriSil
+            // 
+            tsmiMusteriSil.Name = "tsmiMusteriSil";
+            tsmiMusteriSil.Size = new Size(148, 22);
+            tsmiMusteriSil.Text = "Sil";
+            tsmiMusteriSil.Click += tsmiMusteriSil_Click;
+            // 
+            // tsmiMusteriBarkodCapEt
+            // 
+            tsmiMusteriBarkodCapEt.Name = "tsmiMusteriBarkodCapEt";
+            tsmiMusteriBarkodCapEt.Size = new Size(148, 22);
+            tsmiMusteriBarkodCapEt.Text = "Barkod Çap Et";
+            tsmiMusteriBarkodCapEt.Click += tsmiMusteriBarkodCapEt_Click;
             // 
             // txtAxtaris
             // 
@@ -394,47 +428,6 @@
             // 
             errorProvider1.ContainerControl = this;
             // 
-            // contextMenuStripMusteriler
-            // 
-            contextMenuStripMusteriler.Name = "contextMenuStripMusteriler";
-            contextMenuStripMusteriler.Size = new Size(61, 4);
-            // 
-            // tsmiMusteriDetallar
-            // 
-            tsmiMusteriDetallar.Name = "tsmiMusteriDetallar";
-            tsmiMusteriDetallar.Size = new Size(180, 22);
-            tsmiMusteriDetallar.Text = "Detallar";
-            tsmiMusteriDetallar.Click += tsmiMusteriDetallar_Click;
-            // 
-            // tsmiMusteriRedakteEt
-            // 
-            tsmiMusteriRedakteEt.Name = "tsmiMusteriRedakteEt";
-            tsmiMusteriRedakteEt.Size = new Size(180, 22);
-            tsmiMusteriRedakteEt.Text = "Redaktə Et";
-            tsmiMusteriRedakteEt.Click += tsmiMusteriRedakteEt_Click;
-            // 
-            // tsmiMusteriSil
-            // 
-            tsmiMusteriSil.Name = "tsmiMusteriSil";
-            tsmiMusteriSil.Size = new Size(180, 22);
-            tsmiMusteriSil.Text = "Sil";
-            tsmiMusteriSil.Click += tsmiMusteriSil_Click;
-            // 
-            // tsmiMusteriBarkodCapEt
-            // 
-            tsmiMusteriBarkodCapEt.Name = "tsmiMusteriBarkodCapEt";
-            tsmiMusteriBarkodCapEt.Size = new Size(180, 22);
-            tsmiMusteriBarkodCapEt.Text = "Barkod Çap Et";
-            tsmiMusteriBarkodCapEt.Click += tsmiMusteriBarkodCapEt_Click;
-            // 
-            // contextMenuStripMusteriler
-            // 
-            contextMenuStripMusteriler.Items.AddRange(new ToolStripItem[] {
-            tsmiMusteriDetallar,
-            tsmiMusteriRedakteEt,
-            tsmiMusteriSil,
-            tsmiMusteriBarkodCapEt});
-            // 
             // MusteriIdareetmeFormu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -443,13 +436,17 @@
             Controls.Add(splitContainer1);
             Name = "MusteriIdareetmeFormu";
             Text = "Müştəri İdarəetməsi";
+            Controls.SetChildIndex(splitContainer1, 0);
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
             splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvMusteriler).EndInit();
+            contextMenuStripMusteriler.ResumeLayout(false);
             materialCard1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)errorProvider1).EndInit();
             ResumeLayout(false);
+            PerformLayout();
 
         }
 

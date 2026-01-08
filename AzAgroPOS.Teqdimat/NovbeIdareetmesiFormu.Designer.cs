@@ -205,12 +205,15 @@ namespace AzAgroPOS.Teqdimat
             Name = "NovbeIdareetmesiFormu";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Növbə İdarəetməsi";
+            Controls.SetChildIndex(cardNovbeAc, 0);
+            Controls.SetChildIndex(cardNovbeBagla, 0);
             cardNovbeAc.ResumeLayout(false);
             cardNovbeAc.PerformLayout();
             cardNovbeBagla.ResumeLayout(false);
             cardNovbeBagla.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)errorProvider1).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
         #endregion
         private MaterialSkin.Controls.MaterialCard cardNovbeAc;

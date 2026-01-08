@@ -28,8 +28,8 @@ namespace AzAgroPOS.Teqdimat
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
             pnlTop = new Panel();
             lblBaslik = new Label();
             pnlMain = new Panel();
@@ -467,23 +467,23 @@ namespace AzAgroPOS.Teqdimat
             // 
             dgvTedarukculer.AllowUserToAddRows = false;
             dgvTedarukculer.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = SystemColors.Control;
-            dataGridViewCellStyle1.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            dgvTedarukculer.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = SystemColors.Control;
+            dataGridViewCellStyle5.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            dataGridViewCellStyle5.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle5.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
+            dgvTedarukculer.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             dgvTedarukculer.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Window;
-            dataGridViewCellStyle2.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            dataGridViewCellStyle2.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
-            dgvTedarukculer.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = SystemColors.Window;
+            dataGridViewCellStyle6.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            dataGridViewCellStyle6.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            dataGridViewCellStyle6.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.False;
+            dgvTedarukculer.DefaultCellStyle = dataGridViewCellStyle6;
             dgvTedarukculer.Dock = DockStyle.Fill;
             dgvTedarukculer.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             dgvTedarukculer.Location = new Point(3, 20);
@@ -505,6 +505,8 @@ namespace AzAgroPOS.Teqdimat
             Name = "TedarukcuIdareetmeFormu";
             Text = "Tədarükçü İdarəetmə";
             Load += TedarukcuIdareetmeFormu_Load;
+            Controls.SetChildIndex(pnlTop, 0);
+            Controls.SetChildIndex(pnlMain, 0);
             pnlTop.ResumeLayout(false);
             pnlMain.ResumeLayout(false);
             splitContainer1.Panel1.ResumeLayout(false);
@@ -518,6 +520,7 @@ namespace AzAgroPOS.Teqdimat
             grpTedarukculer.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvTedarukculer).EndInit();
             ResumeLayout(false);
+            PerformLayout();
 
         }
 

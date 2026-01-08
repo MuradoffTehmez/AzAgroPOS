@@ -17,8 +17,8 @@ namespace AzAgroPOS.Teqdimat
 
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             tabControl = new TabControl();
             tabMusteriBonus = new TabPage();
             grpBonusTarixcesi = new GroupBox();
@@ -105,14 +105,14 @@ namespace AzAgroPOS.Teqdimat
             dgvBonusTarixcesi.AllowUserToDeleteRows = false;
             dgvBonusTarixcesi.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvBonusTarixcesi.BackgroundColor = Color.White;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = SystemColors.Control;
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            dgvBonusTarixcesi.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = SystemColors.Control;
+            dataGridViewCellStyle4.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            dataGridViewCellStyle4.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
+            dgvBonusTarixcesi.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             dgvBonusTarixcesi.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvBonusTarixcesi.Dock = DockStyle.Fill;
             dgvBonusTarixcesi.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
@@ -485,14 +485,14 @@ namespace AzAgroPOS.Teqdimat
             dgvButunBonuslar.AllowUserToDeleteRows = false;
             dgvButunBonuslar.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvButunBonuslar.BackgroundColor = Color.White;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Control;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            dataGridViewCellStyle2.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-            dgvButunBonuslar.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = SystemColors.Control;
+            dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            dgvButunBonuslar.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             dgvButunBonuslar.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvButunBonuslar.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             dgvButunBonuslar.Location = new Point(3, 3);

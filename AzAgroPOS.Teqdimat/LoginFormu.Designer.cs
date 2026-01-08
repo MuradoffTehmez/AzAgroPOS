@@ -20,9 +20,6 @@ namespace AzAgroPOS.Teqdimat
         {
             components = new System.ComponentModel.Container();
             pnlMain = new Panel();
-            lblVersion = new Label();
-            lblCopyright = new Label();
-            pnlCardShadow = new Panel();
             pnlLoginCard = new Panel();
             pnlLogoContainer = new Panel();
             picLogo = new PictureBox();
@@ -39,6 +36,9 @@ namespace AzAgroPOS.Teqdimat
             pnlLoading = new Panel();
             picLoading = new PictureBox();
             lblLoading = new Label();
+            lblVersion = new Label();
+            lblCopyright = new Label();
+            pnlCardShadow = new Panel();
             errorProvider1 = new ErrorProvider(components);
             pnlMain.SuspendLayout();
             pnlLoginCard.SuspendLayout();
@@ -61,45 +61,8 @@ namespace AzAgroPOS.Teqdimat
             pnlMain.ForeColor = Color.FromArgb(222, 0, 0, 0);
             pnlMain.Location = new Point(3, 64);
             pnlMain.Name = "pnlMain";
-            pnlMain.Size = new Size(660, 632);
+            pnlMain.Size = new Size(676, 649);
             pnlMain.TabIndex = 1;
-            // 
-            // lblVersion
-            // 
-            lblVersion.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            lblVersion.AutoSize = true;
-            lblVersion.BackColor = Color.FromArgb(242, 242, 242);
-            lblVersion.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            lblVersion.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblVersion.Location = new Point(12, 1152);
-            lblVersion.Name = "lblVersion";
-            lblVersion.Size = new Size(47, 17);
-            lblVersion.TabIndex = 0;
-            lblVersion.Text = "v1.0.0";
-            // 
-            // lblCopyright
-            // 
-            lblCopyright.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            lblCopyright.AutoSize = true;
-            lblCopyright.BackColor = Color.FromArgb(242, 242, 242);
-            lblCopyright.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            lblCopyright.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblCopyright.Location = new Point(910, 1152);
-            lblCopyright.Name = "lblCopyright";
-            lblCopyright.Size = new Size(130, 17);
-            lblCopyright.TabIndex = 1;
-            lblCopyright.Text = "© 2024 AzAgroPOS";
-            // 
-            // pnlCardShadow
-            // 
-            pnlCardShadow.Anchor = AnchorStyles.None;
-            pnlCardShadow.BackColor = Color.FromArgb(242, 242, 242);
-            pnlCardShadow.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            pnlCardShadow.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            pnlCardShadow.Location = new Point(334, 314);
-            pnlCardShadow.Name = "pnlCardShadow";
-            pnlCardShadow.Size = new Size(430, 560);
-            pnlCardShadow.TabIndex = 2;
             // 
             // pnlLoginCard
             // 
@@ -119,7 +82,7 @@ namespace AzAgroPOS.Teqdimat
             pnlLoginCard.Controls.Add(pnlLoading);
             pnlLoginCard.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             pnlLoginCard.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            pnlLoginCard.Location = new Point(329, 306);
+            pnlLoginCard.Location = new Point(337, 314);
             pnlLoginCard.Name = "pnlLoginCard";
             pnlLoginCard.Padding = new Padding(35);
             pnlLoginCard.Size = new Size(430, 560);
@@ -361,6 +324,43 @@ namespace AzAgroPOS.Teqdimat
             lblLoading.Text = "Giriş edilir...";
             lblLoading.TextAlign = ContentAlignment.MiddleLeft;
             // 
+            // lblVersion
+            // 
+            lblVersion.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            lblVersion.AutoSize = true;
+            lblVersion.BackColor = Color.FromArgb(242, 242, 242);
+            lblVersion.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblVersion.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lblVersion.Location = new Point(12, 1169);
+            lblVersion.Name = "lblVersion";
+            lblVersion.Size = new Size(47, 17);
+            lblVersion.TabIndex = 0;
+            lblVersion.Text = "v1.0.0";
+            // 
+            // lblCopyright
+            // 
+            lblCopyright.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            lblCopyright.AutoSize = true;
+            lblCopyright.BackColor = Color.FromArgb(242, 242, 242);
+            lblCopyright.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblCopyright.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lblCopyright.Location = new Point(926, 1169);
+            lblCopyright.Name = "lblCopyright";
+            lblCopyright.Size = new Size(130, 17);
+            lblCopyright.TabIndex = 1;
+            lblCopyright.Text = "© 2024 AzAgroPOS";
+            // 
+            // pnlCardShadow
+            // 
+            pnlCardShadow.Anchor = AnchorStyles.None;
+            pnlCardShadow.BackColor = Color.FromArgb(242, 242, 242);
+            pnlCardShadow.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            pnlCardShadow.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            pnlCardShadow.Location = new Point(342, 322);
+            pnlCardShadow.Name = "pnlCardShadow";
+            pnlCardShadow.Size = new Size(430, 560);
+            pnlCardShadow.TabIndex = 2;
+            // 
             // errorProvider1
             // 
             errorProvider1.ContainerControl = this;
@@ -370,7 +370,7 @@ namespace AzAgroPOS.Teqdimat
             AcceptButton = btnDaxilOl;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(666, 699);
+            ClientSize = new Size(682, 738);
             Controls.Add(pnlMain);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
