@@ -247,11 +247,13 @@ namespace AzAgroPOS.Teqdimat
             Name = "QaytarmaFormu";
             Padding = new Padding(4, 74, 4, 3);
             Text = "Qaytarma";
+            Controls.SetChildIndex(pnlMain, 0);
             pnlMain.ResumeLayout(false);
             pnlMain.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvSatisMehsullari).EndInit();
             ((System.ComponentModel.ISupportInitialize)errorProvider1).EndInit();
             ResumeLayout(false);
+            PerformLayout();
 
         }
 

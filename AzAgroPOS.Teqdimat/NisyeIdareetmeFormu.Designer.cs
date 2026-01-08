@@ -18,10 +18,10 @@ namespace AzAgroPOS.Teqdimat
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
             splitContainer1 = new SplitContainer();
             panelMusteriler = new Panel();
             dgvMusteriler = new DataGridView();
@@ -45,9 +45,9 @@ namespace AzAgroPOS.Teqdimat
             materialCard1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)errorProvider1).BeginInit();
             SuspendLayout();
-            //
+            // 
             // splitContainer1
-            //
+            // 
             splitContainer1.BackColor = Color.FromArgb(242, 242, 242);
             splitContainer1.Dock = DockStyle.Fill;
             splitContainer1.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
@@ -55,62 +55,69 @@ namespace AzAgroPOS.Teqdimat
             splitContainer1.Location = new Point(3, 64);
             splitContainer1.Name = "splitContainer1";
             splitContainer1.Orientation = Orientation.Horizontal;
-            //
+            // 
             // splitContainer1.Panel1
-            //
-            splitContainer1.Panel1.BackColor = Color.FromArgb(250, 250, 250);
+            // 
+            splitContainer1.Panel1.BackColor = Color.FromArgb(242, 242, 242);
             splitContainer1.Panel1.Controls.Add(panelMusteriler);
+            splitContainer1.Panel1.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            splitContainer1.Panel1.ForeColor = Color.FromArgb(222, 0, 0, 0);
             splitContainer1.Panel1.Padding = new Padding(10);
-            //
+            // 
             // splitContainer1.Panel2
-            //
-            splitContainer1.Panel2.BackColor = Color.FromArgb(250, 250, 250);
+            // 
+            splitContainer1.Panel2.BackColor = Color.FromArgb(242, 242, 242);
             splitContainer1.Panel2.Controls.Add(panelSag);
+            splitContainer1.Panel2.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            splitContainer1.Panel2.ForeColor = Color.FromArgb(222, 0, 0, 0);
             splitContainer1.Panel2.Padding = new Padding(10);
             splitContainer1.Size = new Size(1178, 573);
             splitContainer1.SplitterDistance = 250;
             splitContainer1.TabIndex = 0;
-            //
+            // 
             // panelMusteriler
-            //
-            panelMusteriler.BackColor = Color.White;
+            // 
+            panelMusteriler.BackColor = Color.FromArgb(242, 242, 242);
             panelMusteriler.Controls.Add(dgvMusteriler);
             panelMusteriler.Controls.Add(lblMusterilerBasliq);
             panelMusteriler.Dock = DockStyle.Fill;
+            panelMusteriler.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            panelMusteriler.ForeColor = Color.FromArgb(222, 0, 0, 0);
             panelMusteriler.Location = new Point(10, 10);
             panelMusteriler.Name = "panelMusteriler";
             panelMusteriler.Padding = new Padding(5);
             panelMusteriler.Size = new Size(1158, 230);
             panelMusteriler.TabIndex = 0;
-            //
+            // 
             // dgvMusteriler
-            //
+            // 
             dgvMusteriler.AllowUserToAddRows = false;
             dgvMusteriler.AllowUserToDeleteRows = false;
             dgvMusteriler.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvMusteriler.BackgroundColor = Color.White;
             dgvMusteriler.BorderStyle = BorderStyle.None;
             dgvMusteriler.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = Color.FromArgb(0, 105, 92);
-            dataGridViewCellStyle1.Font = new Font("Segoe UI Semibold", 11F, FontStyle.Bold);
-            dataGridViewCellStyle1.ForeColor = Color.White;
-            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(0, 105, 92);
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            dgvMusteriler.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = Color.FromArgb(0, 105, 92);
+            dataGridViewCellStyle7.Font = new Font("Segoe UI Semibold", 11F, FontStyle.Bold);
+            dataGridViewCellStyle7.ForeColor = Color.White;
+            dataGridViewCellStyle7.SelectionBackColor = Color.FromArgb(0, 105, 92);
+            dataGridViewCellStyle7.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = DataGridViewTriState.True;
+            dgvMusteriler.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
             dgvMusteriler.ColumnHeadersHeight = 45;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = Color.White;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 10F);
-            dataGridViewCellStyle2.ForeColor = Color.FromArgb(64, 64, 64);
-            dataGridViewCellStyle2.Padding = new Padding(5, 3, 5, 3);
-            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(225, 245, 254);
-            dataGridViewCellStyle2.SelectionForeColor = Color.FromArgb(0, 77, 64);
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
-            dgvMusteriler.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = Color.White;
+            dataGridViewCellStyle8.Font = new Font("Segoe UI", 10F);
+            dataGridViewCellStyle8.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            dataGridViewCellStyle8.Padding = new Padding(5, 3, 5, 3);
+            dataGridViewCellStyle8.SelectionBackColor = Color.FromArgb(225, 245, 254);
+            dataGridViewCellStyle8.SelectionForeColor = Color.FromArgb(0, 77, 64);
+            dataGridViewCellStyle8.WrapMode = DataGridViewTriState.False;
+            dgvMusteriler.DefaultCellStyle = dataGridViewCellStyle8;
             dgvMusteriler.Dock = DockStyle.Fill;
             dgvMusteriler.EnableHeadersVisualStyles = false;
+            dgvMusteriler.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             dgvMusteriler.GridColor = Color.FromArgb(245, 245, 245);
             dgvMusteriler.Location = new Point(5, 45);
             dgvMusteriler.MultiSelect = false;
@@ -122,15 +129,15 @@ namespace AzAgroPOS.Teqdimat
             dgvMusteriler.Size = new Size(1148, 180);
             dgvMusteriler.TabIndex = 0;
             dgvMusteriler.SelectionChanged += dgvMusteriler_SelectionChanged;
-            //
+            // 
             // lblMusterilerBasliq
-            //
-            lblMusterilerBasliq.BackColor = Color.White;
+            // 
+            lblMusterilerBasliq.BackColor = Color.FromArgb(242, 242, 242);
             lblMusterilerBasliq.Depth = 0;
             lblMusterilerBasliq.Dock = DockStyle.Top;
             lblMusterilerBasliq.Font = new Font("Roboto", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
             lblMusterilerBasliq.FontType = MaterialSkin.MaterialSkinManager.fontType.Button;
-            lblMusterilerBasliq.ForeColor = Color.FromArgb(0, 77, 64);
+            lblMusterilerBasliq.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblMusterilerBasliq.Location = new Point(5, 5);
             lblMusterilerBasliq.MouseState = MaterialSkin.MouseState.HOVER;
             lblMusterilerBasliq.Name = "lblMusterilerBasliq";
@@ -139,48 +146,51 @@ namespace AzAgroPOS.Teqdimat
             lblMusterilerBasliq.TabIndex = 1;
             lblMusterilerBasliq.Text = "MÜŞTƏRİLƏR VƏ BORCLARI";
             lblMusterilerBasliq.TextAlign = ContentAlignment.MiddleLeft;
-            //
+            // 
             // panelSag
-            //
-            panelSag.BackColor = Color.White;
+            // 
+            panelSag.BackColor = Color.FromArgb(242, 242, 242);
             panelSag.Controls.Add(dgvNisyeHereketleri);
             panelSag.Controls.Add(lblHereketlerBasliq);
             panelSag.Controls.Add(materialCard1);
             panelSag.Dock = DockStyle.Fill;
+            panelSag.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            panelSag.ForeColor = Color.FromArgb(222, 0, 0, 0);
             panelSag.Location = new Point(10, 10);
             panelSag.Name = "panelSag";
             panelSag.Padding = new Padding(5);
             panelSag.Size = new Size(1158, 299);
             panelSag.TabIndex = 0;
-            //
+            // 
             // dgvNisyeHereketleri
-            //
+            // 
             dgvNisyeHereketleri.AllowUserToAddRows = false;
             dgvNisyeHereketleri.AllowUserToDeleteRows = false;
             dgvNisyeHereketleri.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvNisyeHereketleri.BackgroundColor = Color.White;
             dgvNisyeHereketleri.BorderStyle = BorderStyle.None;
             dgvNisyeHereketleri.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = Color.FromArgb(0, 105, 92);
-            dataGridViewCellStyle3.Font = new Font("Segoe UI Semibold", 11F, FontStyle.Bold);
-            dataGridViewCellStyle3.ForeColor = Color.White;
-            dataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(0, 105, 92);
-            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
-            dgvNisyeHereketleri.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = Color.FromArgb(0, 105, 92);
+            dataGridViewCellStyle5.Font = new Font("Segoe UI Semibold", 11F, FontStyle.Bold);
+            dataGridViewCellStyle5.ForeColor = Color.White;
+            dataGridViewCellStyle5.SelectionBackColor = Color.FromArgb(0, 105, 92);
+            dataGridViewCellStyle5.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
+            dgvNisyeHereketleri.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             dgvNisyeHereketleri.ColumnHeadersHeight = 45;
-            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = Color.White;
-            dataGridViewCellStyle4.Font = new Font("Segoe UI", 10F);
-            dataGridViewCellStyle4.ForeColor = Color.FromArgb(64, 64, 64);
-            dataGridViewCellStyle4.Padding = new Padding(5, 3, 5, 3);
-            dataGridViewCellStyle4.SelectionBackColor = Color.FromArgb(225, 245, 254);
-            dataGridViewCellStyle4.SelectionForeColor = Color.FromArgb(0, 77, 64);
-            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.False;
-            dgvNisyeHereketleri.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = Color.White;
+            dataGridViewCellStyle6.Font = new Font("Segoe UI", 10F);
+            dataGridViewCellStyle6.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            dataGridViewCellStyle6.Padding = new Padding(5, 3, 5, 3);
+            dataGridViewCellStyle6.SelectionBackColor = Color.FromArgb(225, 245, 254);
+            dataGridViewCellStyle6.SelectionForeColor = Color.FromArgb(0, 77, 64);
+            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.False;
+            dgvNisyeHereketleri.DefaultCellStyle = dataGridViewCellStyle6;
             dgvNisyeHereketleri.Dock = DockStyle.Fill;
             dgvNisyeHereketleri.EnableHeadersVisualStyles = false;
+            dgvNisyeHereketleri.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             dgvNisyeHereketleri.GridColor = Color.FromArgb(245, 245, 245);
             dgvNisyeHereketleri.Location = new Point(5, 45);
             dgvNisyeHereketleri.Name = "dgvNisyeHereketleri";
@@ -190,15 +200,15 @@ namespace AzAgroPOS.Teqdimat
             dgvNisyeHereketleri.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvNisyeHereketleri.Size = new Size(1148, 139);
             dgvNisyeHereketleri.TabIndex = 0;
-            //
+            // 
             // lblHereketlerBasliq
-            //
-            lblHereketlerBasliq.BackColor = Color.White;
+            // 
+            lblHereketlerBasliq.BackColor = Color.FromArgb(242, 242, 242);
             lblHereketlerBasliq.Depth = 0;
             lblHereketlerBasliq.Dock = DockStyle.Top;
             lblHereketlerBasliq.Font = new Font("Roboto", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
             lblHereketlerBasliq.FontType = MaterialSkin.MaterialSkinManager.fontType.Button;
-            lblHereketlerBasliq.ForeColor = Color.FromArgb(0, 77, 64);
+            lblHereketlerBasliq.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblHereketlerBasliq.Location = new Point(5, 5);
             lblHereketlerBasliq.MouseState = MaterialSkin.MouseState.HOVER;
             lblHereketlerBasliq.Name = "lblHereketlerBasliq";
@@ -207,9 +217,9 @@ namespace AzAgroPOS.Teqdimat
             lblHereketlerBasliq.TabIndex = 2;
             lblHereketlerBasliq.Text = "BORC HƏRƏKƏTLƏRI";
             lblHereketlerBasliq.TextAlign = ContentAlignment.MiddleLeft;
-            //
+            // 
             // materialCard1
-            //
+            // 
             materialCard1.BackColor = Color.FromArgb(255, 255, 255);
             materialCard1.Controls.Add(lblOdenisMeblegBasliq);
             materialCard1.Controls.Add(btnOdenisEt);
@@ -224,24 +234,24 @@ namespace AzAgroPOS.Teqdimat
             materialCard1.Padding = new Padding(20, 15, 20, 15);
             materialCard1.Size = new Size(1148, 110);
             materialCard1.TabIndex = 1;
-            //
+            // 
             // lblOdenisMeblegBasliq
-            //
+            // 
             lblOdenisMeblegBasliq.AutoSize = true;
-            lblOdenisMeblegBasliq.BackColor = Color.White;
+            lblOdenisMeblegBasliq.BackColor = Color.FromArgb(242, 242, 242);
             lblOdenisMeblegBasliq.Depth = 0;
             lblOdenisMeblegBasliq.Font = new Font("Roboto", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
             lblOdenisMeblegBasliq.FontType = MaterialSkin.MaterialSkinManager.fontType.Button;
-            lblOdenisMeblegBasliq.ForeColor = Color.FromArgb(0, 77, 64);
+            lblOdenisMeblegBasliq.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblOdenisMeblegBasliq.Location = new Point(23, 18);
             lblOdenisMeblegBasliq.MouseState = MaterialSkin.MouseState.HOVER;
             lblOdenisMeblegBasliq.Name = "lblOdenisMeblegBasliq";
-            lblOdenisMeblegBasliq.Size = new Size(127, 19);
+            lblOdenisMeblegBasliq.Size = new Size(96, 17);
             lblOdenisMeblegBasliq.TabIndex = 2;
             lblOdenisMeblegBasliq.Text = "BORC ÖDƏNİŞİ";
-            //
+            // 
             // btnOdenisEt
-            //
+            // 
             btnOdenisEt.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnOdenisEt.AutoSize = false;
             btnOdenisEt.AutoSizeMode = AutoSizeMode.GrowAndShrink;
@@ -263,9 +273,9 @@ namespace AzAgroPOS.Teqdimat
             btnOdenisEt.UseAccentColor = true;
             btnOdenisEt.UseVisualStyleBackColor = false;
             btnOdenisEt.Click += btnOdenisEt_Click;
-            //
+            // 
             // txtOdenisMeblegi
-            //
+            // 
             txtOdenisMeblegi.AnimateReadOnly = false;
             txtOdenisMeblegi.BackColor = Color.FromArgb(255, 255, 255);
             txtOdenisMeblegi.BackgroundImageLayout = ImageLayout.None;
@@ -293,13 +303,13 @@ namespace AzAgroPOS.Teqdimat
             txtOdenisMeblegi.TextAlign = HorizontalAlignment.Left;
             txtOdenisMeblegi.TrailingIcon = null;
             txtOdenisMeblegi.UseSystemPasswordChar = false;
-            //
+            // 
             // errorProvider1
-            //
+            // 
             errorProvider1.ContainerControl = this;
-            //
+            // 
             // NisyeIdareetmeFormu
-            //
+            // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             ClientSize = new Size(1184, 640);
             Controls.Add(splitContainer1);
@@ -307,20 +317,20 @@ namespace AzAgroPOS.Teqdimat
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Nisyə və Borc İdarəetməsi";
             Load += NisyeIdareetmeFormu_Load;
+            Controls.SetChildIndex(splitContainer1, 0);
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
             splitContainer1.ResumeLayout(false);
             panelMusteriler.ResumeLayout(false);
-            panelMusteriler.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvMusteriler).EndInit();
             panelSag.ResumeLayout(false);
-            panelSag.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvNisyeHereketleri).EndInit();
             materialCard1.ResumeLayout(false);
             materialCard1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)errorProvider1).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
         #endregion
 

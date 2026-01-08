@@ -29,8 +29,8 @@ namespace AzAgroPOS.Teqdimat
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
             panelTop = new Panel();
             lblBasliq = new MaterialSkin.Controls.MaterialLabel();
             panelForm = new Panel();
@@ -127,7 +127,7 @@ namespace AzAgroPOS.Teqdimat
             panelForm.Location = new Point(4, 143);
             panelForm.Margin = new Padding(4, 3, 4, 3);
             panelForm.Name = "panelForm";
-            panelForm.Padding = new Padding(12, 12, 12, 12);
+            panelForm.Padding = new Padding(12);
             panelForm.Size = new Size(1392, 323);
             panelForm.TabIndex = 1;
             // 
@@ -443,33 +443,32 @@ namespace AzAgroPOS.Teqdimat
             panelGrid.Location = new Point(4, 466);
             panelGrid.Margin = new Padding(4, 3, 4, 3);
             panelGrid.Name = "panelGrid";
-            panelGrid.Padding = new Padding(12, 12, 12, 12);
-            panelGrid.Size = new Size(1392, 327);
+            panelGrid.Padding = new Padding(12);
+            panelGrid.Size = new Size(1392, 305);
             panelGrid.TabIndex = 2;
-            //
+            // 
             // dgvOdemeler
-            //
+            // 
             dgvOdemeler.AllowUserToAddRows = false;
             dgvOdemeler.AllowUserToDeleteRows = false;
-            dgvOdemeler.AutoGenerateColumns = false;
             dgvOdemeler.BackgroundColor = Color.White;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = SystemColors.Control;
-            dataGridViewCellStyle1.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            dgvOdemeler.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = SystemColors.Control;
+            dataGridViewCellStyle3.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            dgvOdemeler.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             dgvOdemeler.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Window;
-            dataGridViewCellStyle2.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            dataGridViewCellStyle2.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
-            dgvOdemeler.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = SystemColors.Window;
+            dataGridViewCellStyle4.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            dataGridViewCellStyle4.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.False;
+            dgvOdemeler.DefaultCellStyle = dataGridViewCellStyle4;
             dgvOdemeler.Dock = DockStyle.Fill;
             dgvOdemeler.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             dgvOdemeler.Location = new Point(12, 12);
@@ -478,7 +477,7 @@ namespace AzAgroPOS.Teqdimat
             dgvOdemeler.Name = "dgvOdemeler";
             dgvOdemeler.ReadOnly = true;
             dgvOdemeler.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvOdemeler.Size = new Size(1368, 303);
+            dgvOdemeler.Size = new Size(1368, 281);
             dgvOdemeler.TabIndex = 0;
             dgvOdemeler.SelectionChanged += dgvOdemeler_SelectionChanged;
             // 
@@ -492,10 +491,10 @@ namespace AzAgroPOS.Teqdimat
             panelButtons.Dock = DockStyle.Bottom;
             panelButtons.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             panelButtons.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            panelButtons.Location = new Point(4, 793);
+            panelButtons.Location = new Point(4, 771);
             panelButtons.Margin = new Padding(4, 3, 4, 3);
             panelButtons.Name = "panelButtons";
-            panelButtons.Padding = new Padding(12, 12, 12, 12);
+            panelButtons.Padding = new Padding(12);
             panelButtons.Size = new Size(1392, 69);
             panelButtons.TabIndex = 3;
             // 

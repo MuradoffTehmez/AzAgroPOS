@@ -232,6 +232,8 @@ namespace AzAgroPOS.Teqdimat
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Minimum Stok Məhsulları";
             Load += MinimumStokMehsullariFormu_Load;
+            Controls.SetChildIndex(pnlTop, 0);
+            Controls.SetChildIndex(pnlMain, 0);
             pnlTop.ResumeLayout(false);
             pnlMain.ResumeLayout(false);
             splitContainer1.Panel1.ResumeLayout(false);
@@ -244,6 +246,7 @@ namespace AzAgroPOS.Teqdimat
             pnlDugmeler.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)errorProvider1).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion

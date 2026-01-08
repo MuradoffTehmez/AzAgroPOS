@@ -17,7 +17,7 @@ namespace AzAgroPOS.Teqdimat
 
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             pnlFiltr = new Panel();
             lblBaslangicTarixi = new MaterialSkin.Controls.MaterialLabel();
             dtpBaslangic = new DateTimePicker();
@@ -180,141 +180,137 @@ namespace AzAgroPOS.Teqdimat
             pnlXulase.Padding = new Padding(15, 10, 15, 10);
             pnlXulase.Size = new Size(1194, 100);
             pnlXulase.TabIndex = 2;
-            //
-            // pnlNovbeSayi - Modern statistik kart
-            //
-            pnlNovbeSayi.BackColor = Color.White;
+            // 
+            // pnlNovbeSayi
+            // 
+            pnlNovbeSayi.BackColor = Color.FromArgb(242, 242, 242);
             pnlNovbeSayi.Controls.Add(lblNovbeSayiBasliq);
             pnlNovbeSayi.Controls.Add(lblNovbeSayiDeyer);
-            pnlNovbeSayi.Font = new Font("Segoe UI", 10F);
-            pnlNovbeSayi.ForeColor = Color.FromArgb(33, 33, 33);
+            pnlNovbeSayi.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            pnlNovbeSayi.ForeColor = Color.FromArgb(222, 0, 0, 0);
             pnlNovbeSayi.Location = new Point(18, 15);
             pnlNovbeSayi.Name = "pnlNovbeSayi";
             pnlNovbeSayi.Size = new Size(270, 70);
             pnlNovbeSayi.TabIndex = 0;
-            pnlNovbeSayi.BorderStyle = BorderStyle.None;
-            //
+            // 
             // lblNovbeSayiBasliq
-            //
-            lblNovbeSayiBasliq.BackColor = Color.White;
-            lblNovbeSayiBasliq.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
-            lblNovbeSayiBasliq.ForeColor = Color.FromArgb(117, 117, 117);
+            // 
+            lblNovbeSayiBasliq.BackColor = Color.FromArgb(242, 242, 242);
+            lblNovbeSayiBasliq.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblNovbeSayiBasliq.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblNovbeSayiBasliq.Location = new Point(15, 10);
             lblNovbeSayiBasliq.Name = "lblNovbeSayiBasliq";
             lblNovbeSayiBasliq.Size = new Size(240, 20);
             lblNovbeSayiBasliq.TabIndex = 0;
             lblNovbeSayiBasliq.Text = "NOVBE SAYI";
-            //
+            // 
             // lblNovbeSayiDeyer
-            //
-            lblNovbeSayiDeyer.BackColor = Color.White;
-            lblNovbeSayiDeyer.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
-            lblNovbeSayiDeyer.ForeColor = Color.FromArgb(33, 150, 243);
+            // 
+            lblNovbeSayiDeyer.BackColor = Color.FromArgb(242, 242, 242);
+            lblNovbeSayiDeyer.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblNovbeSayiDeyer.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblNovbeSayiDeyer.Location = new Point(15, 30);
             lblNovbeSayiDeyer.Name = "lblNovbeSayiDeyer";
             lblNovbeSayiDeyer.Size = new Size(240, 35);
             lblNovbeSayiDeyer.TabIndex = 1;
             lblNovbeSayiDeyer.Text = "0";
-            //
-            // pnlCemiSatis - Modern statistik kart
-            //
-            pnlCemiSatis.BackColor = Color.White;
+            // 
+            // pnlCemiSatis
+            // 
+            pnlCemiSatis.BackColor = Color.FromArgb(242, 242, 242);
             pnlCemiSatis.Controls.Add(lblCemiSatisBasliq);
             pnlCemiSatis.Controls.Add(lblCemiSatisDeyer);
-            pnlCemiSatis.Font = new Font("Segoe UI", 10F);
-            pnlCemiSatis.ForeColor = Color.FromArgb(33, 33, 33);
+            pnlCemiSatis.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            pnlCemiSatis.ForeColor = Color.FromArgb(222, 0, 0, 0);
             pnlCemiSatis.Location = new Point(308, 15);
             pnlCemiSatis.Name = "pnlCemiSatis";
             pnlCemiSatis.Size = new Size(270, 70);
             pnlCemiSatis.TabIndex = 1;
-            pnlCemiSatis.BorderStyle = BorderStyle.None;
-            //
+            // 
             // lblCemiSatisBasliq
-            //
-            lblCemiSatisBasliq.BackColor = Color.White;
-            lblCemiSatisBasliq.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
-            lblCemiSatisBasliq.ForeColor = Color.FromArgb(117, 117, 117);
+            // 
+            lblCemiSatisBasliq.BackColor = Color.FromArgb(242, 242, 242);
+            lblCemiSatisBasliq.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblCemiSatisBasliq.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblCemiSatisBasliq.Location = new Point(15, 10);
             lblCemiSatisBasliq.Name = "lblCemiSatisBasliq";
             lblCemiSatisBasliq.Size = new Size(240, 20);
             lblCemiSatisBasliq.TabIndex = 0;
             lblCemiSatisBasliq.Text = "CEMI SATIS";
-            //
+            // 
             // lblCemiSatisDeyer
-            //
-            lblCemiSatisDeyer.BackColor = Color.White;
-            lblCemiSatisDeyer.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
-            lblCemiSatisDeyer.ForeColor = Color.FromArgb(76, 175, 80);
+            // 
+            lblCemiSatisDeyer.BackColor = Color.FromArgb(242, 242, 242);
+            lblCemiSatisDeyer.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblCemiSatisDeyer.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblCemiSatisDeyer.Location = new Point(15, 30);
             lblCemiSatisDeyer.Name = "lblCemiSatisDeyer";
             lblCemiSatisDeyer.Size = new Size(240, 35);
             lblCemiSatisDeyer.TabIndex = 1;
             lblCemiSatisDeyer.Text = "0.00 M";
-            //
-            // pnlNagdSatis - Modern statistik kart
-            //
-            pnlNagdSatis.BackColor = Color.White;
+            // 
+            // pnlNagdSatis
+            // 
+            pnlNagdSatis.BackColor = Color.FromArgb(242, 242, 242);
             pnlNagdSatis.Controls.Add(lblNagdSatisBasliq);
             pnlNagdSatis.Controls.Add(lblNagdSatisDeyer);
-            pnlNagdSatis.Font = new Font("Segoe UI", 10F);
-            pnlNagdSatis.ForeColor = Color.FromArgb(33, 33, 33);
+            pnlNagdSatis.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            pnlNagdSatis.ForeColor = Color.FromArgb(222, 0, 0, 0);
             pnlNagdSatis.Location = new Point(598, 15);
             pnlNagdSatis.Name = "pnlNagdSatis";
             pnlNagdSatis.Size = new Size(270, 70);
             pnlNagdSatis.TabIndex = 2;
-            pnlNagdSatis.BorderStyle = BorderStyle.None;
-            //
+            // 
             // lblNagdSatisBasliq
-            //
-            lblNagdSatisBasliq.BackColor = Color.White;
-            lblNagdSatisBasliq.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
-            lblNagdSatisBasliq.ForeColor = Color.FromArgb(117, 117, 117);
+            // 
+            lblNagdSatisBasliq.BackColor = Color.FromArgb(242, 242, 242);
+            lblNagdSatisBasliq.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblNagdSatisBasliq.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblNagdSatisBasliq.Location = new Point(15, 10);
             lblNagdSatisBasliq.Name = "lblNagdSatisBasliq";
             lblNagdSatisBasliq.Size = new Size(240, 20);
             lblNagdSatisBasliq.TabIndex = 0;
             lblNagdSatisBasliq.Text = "NAGD SATIS";
-            //
+            // 
             // lblNagdSatisDeyer
-            //
-            lblNagdSatisDeyer.BackColor = Color.White;
-            lblNagdSatisDeyer.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
-            lblNagdSatisDeyer.ForeColor = Color.FromArgb(255, 152, 0);
+            // 
+            lblNagdSatisDeyer.BackColor = Color.FromArgb(242, 242, 242);
+            lblNagdSatisDeyer.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblNagdSatisDeyer.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblNagdSatisDeyer.Location = new Point(15, 30);
             lblNagdSatisDeyer.Name = "lblNagdSatisDeyer";
             lblNagdSatisDeyer.Size = new Size(240, 35);
             lblNagdSatisDeyer.TabIndex = 1;
             lblNagdSatisDeyer.Text = "0.00 M";
-            //
-            // pnlKartSatis - Modern statistik kart
-            //
-            pnlKartSatis.BackColor = Color.White;
+            // 
+            // pnlKartSatis
+            // 
+            pnlKartSatis.BackColor = Color.FromArgb(242, 242, 242);
             pnlKartSatis.Controls.Add(lblKartSatisBasliq);
             pnlKartSatis.Controls.Add(lblKartSatisDeyer);
-            pnlKartSatis.Font = new Font("Segoe UI", 10F);
-            pnlKartSatis.ForeColor = Color.FromArgb(33, 33, 33);
+            pnlKartSatis.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            pnlKartSatis.ForeColor = Color.FromArgb(222, 0, 0, 0);
             pnlKartSatis.Location = new Point(888, 15);
             pnlKartSatis.Name = "pnlKartSatis";
             pnlKartSatis.Size = new Size(270, 70);
             pnlKartSatis.TabIndex = 3;
-            pnlKartSatis.BorderStyle = BorderStyle.None;
-            //
+            // 
             // lblKartSatisBasliq
-            //
-            lblKartSatisBasliq.BackColor = Color.White;
-            lblKartSatisBasliq.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
-            lblKartSatisBasliq.ForeColor = Color.FromArgb(117, 117, 117);
+            // 
+            lblKartSatisBasliq.BackColor = Color.FromArgb(242, 242, 242);
+            lblKartSatisBasliq.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblKartSatisBasliq.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblKartSatisBasliq.Location = new Point(15, 10);
             lblKartSatisBasliq.Name = "lblKartSatisBasliq";
             lblKartSatisBasliq.Size = new Size(240, 20);
             lblKartSatisBasliq.TabIndex = 0;
             lblKartSatisBasliq.Text = "KARTLA SATIS";
-            //
+            // 
             // lblKartSatisDeyer
-            //
-            lblKartSatisDeyer.BackColor = Color.White;
-            lblKartSatisDeyer.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
-            lblKartSatisDeyer.ForeColor = Color.FromArgb(156, 39, 176);
+            // 
+            lblKartSatisDeyer.BackColor = Color.FromArgb(242, 242, 242);
+            lblKartSatisDeyer.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblKartSatisDeyer.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblKartSatisDeyer.Location = new Point(15, 30);
             lblKartSatisDeyer.Name = "lblKartSatisDeyer";
             lblKartSatisDeyer.Size = new Size(240, 35);
@@ -344,7 +340,7 @@ namespace AzAgroPOS.Teqdimat
             dgvNovbeler.BorderStyle = BorderStyle.None;
             dgvNovbeler.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
             dgvNovbeler.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dgvNovbeler.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dgvNovbeler.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dgvNovbeler.ColumnHeadersHeight = 40;
             dgvNovbeler.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dgvNovbeler.Dock = DockStyle.Fill;
@@ -418,192 +414,192 @@ namespace AzAgroPOS.Teqdimat
             pnlDetalContent.Padding = new Padding(10);
             pnlDetalContent.Size = new Size(348, 359);
             pnlDetalContent.TabIndex = 1;
-            //
+            // 
             // lblAcilisTarixi
-            //
+            // 
             lblAcilisTarixi.BackColor = Color.FromArgb(242, 242, 242);
-            lblAcilisTarixi.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
-            lblAcilisTarixi.ForeColor = Color.FromArgb(117, 117, 117);
+            lblAcilisTarixi.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblAcilisTarixi.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblAcilisTarixi.Location = new Point(10, 45);
             lblAcilisTarixi.Name = "lblAcilisTarixi";
             lblAcilisTarixi.Size = new Size(140, 25);
             lblAcilisTarixi.TabIndex = 0;
             lblAcilisTarixi.Text = "Acilis Tarixi:";
             lblAcilisTarixi.TextAlign = ContentAlignment.MiddleLeft;
-            //
+            // 
             // lblAcilisTarixiDeyer
-            //
+            // 
             lblAcilisTarixiDeyer.BackColor = Color.FromArgb(242, 242, 242);
-            lblAcilisTarixiDeyer.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
-            lblAcilisTarixiDeyer.ForeColor = Color.FromArgb(33, 33, 33);
+            lblAcilisTarixiDeyer.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblAcilisTarixiDeyer.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblAcilisTarixiDeyer.Location = new Point(155, 45);
             lblAcilisTarixiDeyer.Name = "lblAcilisTarixiDeyer";
             lblAcilisTarixiDeyer.Size = new Size(180, 25);
             lblAcilisTarixiDeyer.TabIndex = 1;
             lblAcilisTarixiDeyer.Text = "-";
             lblAcilisTarixiDeyer.TextAlign = ContentAlignment.MiddleRight;
-            //
+            // 
             // lblBaglanmaTarixi
-            //
+            // 
             lblBaglanmaTarixi.BackColor = Color.FromArgb(242, 242, 242);
-            lblBaglanmaTarixi.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
-            lblBaglanmaTarixi.ForeColor = Color.FromArgb(117, 117, 117);
+            lblBaglanmaTarixi.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblBaglanmaTarixi.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblBaglanmaTarixi.Location = new Point(10, 75);
             lblBaglanmaTarixi.Name = "lblBaglanmaTarixi";
             lblBaglanmaTarixi.Size = new Size(140, 25);
             lblBaglanmaTarixi.TabIndex = 2;
             lblBaglanmaTarixi.Text = "Baglanma Tarixi:";
             lblBaglanmaTarixi.TextAlign = ContentAlignment.MiddleLeft;
-            //
+            // 
             // lblBaglanmaTarixiDeyer
-            //
+            // 
             lblBaglanmaTarixiDeyer.BackColor = Color.FromArgb(242, 242, 242);
-            lblBaglanmaTarixiDeyer.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
-            lblBaglanmaTarixiDeyer.ForeColor = Color.FromArgb(33, 33, 33);
+            lblBaglanmaTarixiDeyer.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblBaglanmaTarixiDeyer.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblBaglanmaTarixiDeyer.Location = new Point(155, 75);
             lblBaglanmaTarixiDeyer.Name = "lblBaglanmaTarixiDeyer";
             lblBaglanmaTarixiDeyer.Size = new Size(180, 25);
             lblBaglanmaTarixiDeyer.TabIndex = 3;
             lblBaglanmaTarixiDeyer.Text = "-";
             lblBaglanmaTarixiDeyer.TextAlign = ContentAlignment.MiddleRight;
-            //
+            // 
             // lblKassir
-            //
+            // 
             lblKassir.BackColor = Color.FromArgb(242, 242, 242);
-            lblKassir.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
-            lblKassir.ForeColor = Color.FromArgb(117, 117, 117);
+            lblKassir.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblKassir.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblKassir.Location = new Point(10, 105);
             lblKassir.Name = "lblKassir";
             lblKassir.Size = new Size(140, 25);
             lblKassir.TabIndex = 4;
             lblKassir.Text = "Kassir:";
             lblKassir.TextAlign = ContentAlignment.MiddleLeft;
-            //
+            // 
             // lblKassirDeyer
-            //
+            // 
             lblKassirDeyer.BackColor = Color.FromArgb(242, 242, 242);
-            lblKassirDeyer.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
-            lblKassirDeyer.ForeColor = Color.FromArgb(33, 33, 33);
+            lblKassirDeyer.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblKassirDeyer.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblKassirDeyer.Location = new Point(155, 105);
             lblKassirDeyer.Name = "lblKassirDeyer";
             lblKassirDeyer.Size = new Size(180, 25);
             lblKassirDeyer.TabIndex = 5;
             lblKassirDeyer.Text = "-";
             lblKassirDeyer.TextAlign = ContentAlignment.MiddleRight;
-            //
+            // 
             // lblBaslangicMebleg
-            //
+            // 
             lblBaslangicMebleg.BackColor = Color.FromArgb(242, 242, 242);
-            lblBaslangicMebleg.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
-            lblBaslangicMebleg.ForeColor = Color.FromArgb(117, 117, 117);
+            lblBaslangicMebleg.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblBaslangicMebleg.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblBaslangicMebleg.Location = new Point(10, 145);
             lblBaslangicMebleg.Name = "lblBaslangicMebleg";
             lblBaslangicMebleg.Size = new Size(140, 25);
             lblBaslangicMebleg.TabIndex = 6;
             lblBaslangicMebleg.Text = "Baslangic Mebleg:";
             lblBaslangicMebleg.TextAlign = ContentAlignment.MiddleLeft;
-            //
+            // 
             // lblBaslangicMeblegDeyer
-            //
+            // 
             lblBaslangicMeblegDeyer.BackColor = Color.FromArgb(242, 242, 242);
-            lblBaslangicMeblegDeyer.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
-            lblBaslangicMeblegDeyer.ForeColor = Color.FromArgb(33, 33, 33);
+            lblBaslangicMeblegDeyer.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblBaslangicMeblegDeyer.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblBaslangicMeblegDeyer.Location = new Point(155, 145);
             lblBaslangicMeblegDeyer.Name = "lblBaslangicMeblegDeyer";
             lblBaslangicMeblegDeyer.Size = new Size(180, 25);
             lblBaslangicMeblegDeyer.TabIndex = 7;
             lblBaslangicMeblegDeyer.Text = "0.00 M";
             lblBaslangicMeblegDeyer.TextAlign = ContentAlignment.MiddleRight;
-            //
+            // 
             // lblSatisSayi
-            //
+            // 
             lblSatisSayi.BackColor = Color.FromArgb(242, 242, 242);
-            lblSatisSayi.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
-            lblSatisSayi.ForeColor = Color.FromArgb(117, 117, 117);
+            lblSatisSayi.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblSatisSayi.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblSatisSayi.Location = new Point(10, 175);
             lblSatisSayi.Name = "lblSatisSayi";
             lblSatisSayi.Size = new Size(140, 25);
             lblSatisSayi.TabIndex = 8;
             lblSatisSayi.Text = "Satis Sayi:";
             lblSatisSayi.TextAlign = ContentAlignment.MiddleLeft;
-            //
+            // 
             // lblSatisSayiDeyer
-            //
+            // 
             lblSatisSayiDeyer.BackColor = Color.FromArgb(242, 242, 242);
-            lblSatisSayiDeyer.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
-            lblSatisSayiDeyer.ForeColor = Color.FromArgb(33, 33, 33);
+            lblSatisSayiDeyer.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblSatisSayiDeyer.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblSatisSayiDeyer.Location = new Point(155, 175);
             lblSatisSayiDeyer.Name = "lblSatisSayiDeyer";
             lblSatisSayiDeyer.Size = new Size(180, 25);
             lblSatisSayiDeyer.TabIndex = 9;
             lblSatisSayiDeyer.Text = "0";
             lblSatisSayiDeyer.TextAlign = ContentAlignment.MiddleRight;
-            //
+            // 
             // lblGozlenilenMebleg
-            //
+            // 
             lblGozlenilenMebleg.BackColor = Color.FromArgb(242, 242, 242);
-            lblGozlenilenMebleg.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
-            lblGozlenilenMebleg.ForeColor = Color.FromArgb(117, 117, 117);
+            lblGozlenilenMebleg.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblGozlenilenMebleg.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblGozlenilenMebleg.Location = new Point(10, 215);
             lblGozlenilenMebleg.Name = "lblGozlenilenMebleg";
             lblGozlenilenMebleg.Size = new Size(140, 25);
             lblGozlenilenMebleg.TabIndex = 10;
             lblGozlenilenMebleg.Text = "Gozlenilen Mebleg:";
             lblGozlenilenMebleg.TextAlign = ContentAlignment.MiddleLeft;
-            //
+            // 
             // lblGozlenilenMeblegDeyer
-            //
+            // 
             lblGozlenilenMeblegDeyer.BackColor = Color.FromArgb(242, 242, 242);
-            lblGozlenilenMeblegDeyer.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
-            lblGozlenilenMeblegDeyer.ForeColor = Color.FromArgb(33, 33, 33);
+            lblGozlenilenMeblegDeyer.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblGozlenilenMeblegDeyer.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblGozlenilenMeblegDeyer.Location = new Point(155, 215);
             lblGozlenilenMeblegDeyer.Name = "lblGozlenilenMeblegDeyer";
             lblGozlenilenMeblegDeyer.Size = new Size(180, 25);
             lblGozlenilenMeblegDeyer.TabIndex = 11;
             lblGozlenilenMeblegDeyer.Text = "0.00 M";
             lblGozlenilenMeblegDeyer.TextAlign = ContentAlignment.MiddleRight;
-            //
+            // 
             // lblFaktikiMebleg
-            //
+            // 
             lblFaktikiMebleg.BackColor = Color.FromArgb(242, 242, 242);
-            lblFaktikiMebleg.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
-            lblFaktikiMebleg.ForeColor = Color.FromArgb(117, 117, 117);
+            lblFaktikiMebleg.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblFaktikiMebleg.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblFaktikiMebleg.Location = new Point(10, 245);
             lblFaktikiMebleg.Name = "lblFaktikiMebleg";
             lblFaktikiMebleg.Size = new Size(140, 25);
             lblFaktikiMebleg.TabIndex = 12;
             lblFaktikiMebleg.Text = "Faktiki Mebleg:";
             lblFaktikiMebleg.TextAlign = ContentAlignment.MiddleLeft;
-            //
+            // 
             // lblFaktikiMeblegDeyer
-            //
+            // 
             lblFaktikiMeblegDeyer.BackColor = Color.FromArgb(242, 242, 242);
-            lblFaktikiMeblegDeyer.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
-            lblFaktikiMeblegDeyer.ForeColor = Color.FromArgb(33, 33, 33);
+            lblFaktikiMeblegDeyer.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblFaktikiMeblegDeyer.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblFaktikiMeblegDeyer.Location = new Point(155, 245);
             lblFaktikiMeblegDeyer.Name = "lblFaktikiMeblegDeyer";
             lblFaktikiMeblegDeyer.Size = new Size(180, 25);
             lblFaktikiMeblegDeyer.TabIndex = 13;
             lblFaktikiMeblegDeyer.Text = "0.00 M";
             lblFaktikiMeblegDeyer.TextAlign = ContentAlignment.MiddleRight;
-            //
+            // 
             // lblFerq
-            //
-            lblFerq.BackColor = Color.FromArgb(232, 245, 233);
-            lblFerq.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            lblFerq.ForeColor = Color.FromArgb(33, 33, 33);
+            // 
+            lblFerq.BackColor = Color.FromArgb(242, 242, 242);
+            lblFerq.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblFerq.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblFerq.Location = new Point(10, 285);
             lblFerq.Name = "lblFerq";
             lblFerq.Size = new Size(140, 30);
             lblFerq.TabIndex = 14;
             lblFerq.Text = "FERQ:";
             lblFerq.TextAlign = ContentAlignment.MiddleLeft;
-            //
+            // 
             // lblFerqDeyer
-            //
-            lblFerqDeyer.BackColor = Color.FromArgb(232, 245, 233);
-            lblFerqDeyer.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            lblFerqDeyer.ForeColor = Color.FromArgb(76, 175, 80);
+            // 
+            lblFerqDeyer.BackColor = Color.FromArgb(242, 242, 242);
+            lblFerqDeyer.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblFerqDeyer.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblFerqDeyer.Location = new Point(155, 285);
             lblFerqDeyer.Name = "lblFerqDeyer";
             lblFerqDeyer.Size = new Size(180, 30);

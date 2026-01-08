@@ -18,13 +18,13 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle9 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle12 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle10 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle11 = new DataGridViewCellStyle();
             pnlMainContainer = new Panel();
             tableLayoutPanel1 = new TableLayoutPanel();
             panel1 = new Panel();
@@ -165,27 +165,27 @@
             dgvAxtarisNeticeleri.BackgroundColor = Color.White;
             dgvAxtarisNeticeleri.BorderStyle = BorderStyle.None;
             dgvAxtarisNeticeleri.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = Color.FromArgb(25, 118, 210);
-            dataGridViewCellStyle1.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            dataGridViewCellStyle1.ForeColor = Color.White;
-            dataGridViewCellStyle1.Padding = new Padding(8, 4, 8, 4);
-            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(25, 118, 210);
-            dataGridViewCellStyle1.SelectionForeColor = Color.White;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.False;
-            dgvAxtarisNeticeleri.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = Color.FromArgb(25, 118, 210);
+            dataGridViewCellStyle8.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            dataGridViewCellStyle8.ForeColor = Color.White;
+            dataGridViewCellStyle8.Padding = new Padding(8, 4, 8, 4);
+            dataGridViewCellStyle8.SelectionBackColor = Color.FromArgb(25, 118, 210);
+            dataGridViewCellStyle8.SelectionForeColor = Color.White;
+            dataGridViewCellStyle8.WrapMode = DataGridViewTriState.False;
+            dgvAxtarisNeticeleri.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle8;
             dgvAxtarisNeticeleri.ColumnHeadersHeight = 40;
             dgvAxtarisNeticeleri.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dgvAxtarisNeticeleri.ContextMenuStrip = contextMenuStripAxtarisNeticeleri;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = Color.White;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 10F);
-            dataGridViewCellStyle2.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            dataGridViewCellStyle2.Padding = new Padding(8, 4, 8, 4);
-            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(227, 242, 253);
-            dataGridViewCellStyle2.SelectionForeColor = Color.FromArgb(25, 118, 210);
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
-            dgvAxtarisNeticeleri.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle9.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = Color.White;
+            dataGridViewCellStyle9.Font = new Font("Segoe UI", 10F);
+            dataGridViewCellStyle9.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            dataGridViewCellStyle9.Padding = new Padding(8, 4, 8, 4);
+            dataGridViewCellStyle9.SelectionBackColor = Color.FromArgb(227, 242, 253);
+            dataGridViewCellStyle9.SelectionForeColor = Color.FromArgb(25, 118, 210);
+            dataGridViewCellStyle9.WrapMode = DataGridViewTriState.False;
+            dgvAxtarisNeticeleri.DefaultCellStyle = dataGridViewCellStyle9;
             dgvAxtarisNeticeleri.EnableHeadersVisualStyles = false;
             dgvAxtarisNeticeleri.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             dgvAxtarisNeticeleri.GridColor = Color.FromArgb(238, 238, 238);
@@ -353,28 +353,28 @@
             dgvSebet.BackgroundColor = Color.White;
             dgvSebet.BorderStyle = BorderStyle.None;
             dgvSebet.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = Color.FromArgb(46, 125, 50);
-            dataGridViewCellStyle3.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            dataGridViewCellStyle3.ForeColor = Color.White;
-            dataGridViewCellStyle3.Padding = new Padding(10, 6, 10, 6);
-            dataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(46, 125, 50);
-            dataGridViewCellStyle3.SelectionForeColor = Color.White;
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
-            dgvSebet.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(46, 125, 50);
+            dataGridViewCellStyle1.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            dataGridViewCellStyle1.ForeColor = Color.White;
+            dataGridViewCellStyle1.Padding = new Padding(10, 6, 10, 6);
+            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(46, 125, 50);
+            dataGridViewCellStyle1.SelectionForeColor = Color.White;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.False;
+            dgvSebet.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgvSebet.ColumnHeadersHeight = 44;
             dgvSebet.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dgvSebet.Columns.AddRange(new DataGridViewColumn[] { colSebetMehsulId, colSebetMehsulAdi, colSebetMiqdar, colSebetQiymet, colSebetUmumiMebleg });
             dgvSebet.ContextMenuStrip = contextMenuStripSebet;
-            dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle7.BackColor = Color.White;
-            dataGridViewCellStyle7.Font = new Font("Segoe UI", 11F);
-            dataGridViewCellStyle7.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            dataGridViewCellStyle7.Padding = new Padding(10, 4, 10, 4);
-            dataGridViewCellStyle7.SelectionBackColor = Color.FromArgb(232, 245, 233);
-            dataGridViewCellStyle7.SelectionForeColor = Color.FromArgb(46, 125, 50);
-            dataGridViewCellStyle7.WrapMode = DataGridViewTriState.False;
-            dgvSebet.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle12.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle12.BackColor = Color.White;
+            dataGridViewCellStyle12.Font = new Font("Segoe UI", 11F);
+            dataGridViewCellStyle12.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            dataGridViewCellStyle12.Padding = new Padding(10, 4, 10, 4);
+            dataGridViewCellStyle12.SelectionBackColor = Color.FromArgb(232, 245, 233);
+            dataGridViewCellStyle12.SelectionForeColor = Color.FromArgb(46, 125, 50);
+            dataGridViewCellStyle12.WrapMode = DataGridViewTriState.False;
+            dgvSebet.DefaultCellStyle = dataGridViewCellStyle12;
             dgvSebet.EnableHeadersVisualStyles = false;
             dgvSebet.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             dgvSebet.GridColor = Color.FromArgb(238, 238, 238);
@@ -406,8 +406,8 @@
             // colSebetMiqdar
             // 
             colSebetMiqdar.DataPropertyName = "Miqdar";
-            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            colSebetMiqdar.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            colSebetMiqdar.DefaultCellStyle = dataGridViewCellStyle2;
             colSebetMiqdar.FillWeight = 15F;
             colSebetMiqdar.HeaderText = "Miqdar";
             colSebetMiqdar.Name = "colSebetMiqdar";
@@ -416,9 +416,9 @@
             // colSebetQiymet
             // 
             colSebetQiymet.DataPropertyName = "VahidinQiymeti";
-            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle5.Format = "N2";
-            colSebetQiymet.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle10.Alignment = DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle10.Format = "N2";
+            colSebetQiymet.DefaultCellStyle = dataGridViewCellStyle10;
             colSebetQiymet.FillWeight = 20F;
             colSebetQiymet.HeaderText = "Qiymət";
             colSebetQiymet.Name = "colSebetQiymet";
@@ -427,9 +427,9 @@
             // colSebetUmumiMebleg
             // 
             colSebetUmumiMebleg.DataPropertyName = "UmumiMebleg";
-            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle6.Format = "N2";
-            colSebetUmumiMebleg.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle11.Alignment = DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle11.Format = "N2";
+            colSebetUmumiMebleg.DefaultCellStyle = dataGridViewCellStyle11;
             colSebetUmumiMebleg.FillWeight = 25F;
             colSebetUmumiMebleg.HeaderText = "Cəm";
             colSebetUmumiMebleg.Name = "colSebetUmumiMebleg";

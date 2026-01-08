@@ -50,7 +50,7 @@ namespace AzAgroPOS.Teqdimat
             // 
             // pnlFiltr
             // 
-            pnlFiltr.BackColor = Color.FromArgb(250, 250, 250);
+            pnlFiltr.BackColor = Color.FromArgb(242, 242, 242);
             pnlFiltr.Controls.Add(lblBaslangicTarix);
             pnlFiltr.Controls.Add(dtpBaslangic);
             pnlFiltr.Controls.Add(lblBitisTarix);
@@ -83,7 +83,7 @@ namespace AzAgroPOS.Teqdimat
             // 
             // dtpBaslangic
             // 
-            dtpBaslangic.BackColor = Color.FromArgb(250, 250, 250);
+            dtpBaslangic.BackColor = Color.FromArgb(242, 242, 242);
             dtpBaslangic.CalendarFont = new Font("Segoe UI", 10F);
             dtpBaslangic.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             dtpBaslangic.ForeColor = Color.FromArgb(222, 0, 0, 0);
@@ -110,7 +110,7 @@ namespace AzAgroPOS.Teqdimat
             // 
             // dtpBitis
             // 
-            dtpBitis.BackColor = Color.FromArgb(250, 250, 250);
+            dtpBitis.BackColor = Color.FromArgb(242, 242, 242);
             dtpBitis.CalendarFont = new Font("Segoe UI", 10F);
             dtpBitis.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             dtpBitis.ForeColor = Color.FromArgb(222, 0, 0, 0);
@@ -166,7 +166,7 @@ namespace AzAgroPOS.Teqdimat
             // 
             // pnlXulase
             // 
-            pnlXulase.BackColor = Color.FromArgb(250, 250, 250);
+            pnlXulase.BackColor = Color.FromArgb(242, 242, 242);
             pnlXulase.Controls.Add(cardUmumiSatis);
             pnlXulase.Controls.Add(cardMehsulSayi);
             pnlXulase.Controls.Add(cardEnCoxSatilan);
@@ -378,7 +378,7 @@ namespace AzAgroPOS.Teqdimat
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.FromArgb(250, 250, 250);
+            BackColor = Color.FromArgb(242, 242, 242);
             ClientSize = new Size(1184, 749);
             Controls.Add(lblMesaj);
             Controls.Add(dgvHesabat);
