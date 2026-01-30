@@ -7,7 +7,7 @@
 ![SQL Server](https://img.shields.io/badge/SQL%20Server-2019+-CC2927?style=for-the-badge&logo=microsoft-sql-server)
 ![Windows](https://img.shields.io/badge/Windows-10%2F11-0078D6?style=for-the-badge&logo=windows)
 ![License](https://img.shields.io/badge/License-Proprietary-red?style=for-the-badge)
-
+                 
 **Modern, Təhlükəsiz və Tam Funksional POS Sistemi**
 
 [Xüsusiyyətlər](#-xüsusiyyətlər) • [Quraşdırma](#-quraşdirma) • [İstifadə](#-istifadə) • [Arxitektura](#-arxitektura) • [Sənədləşdirmə](#-sənədləşdirmə)
