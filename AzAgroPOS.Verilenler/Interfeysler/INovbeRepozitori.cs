@@ -1,5 +1,6 @@
 ﻿// Fayl: AzAgroPOS.Verilenler/Interfeysler/INovbeRepozitori.cs
 namespace AzAgroPOS.Verilenler.Interfeysler;
+
 using AzAgroPOS.Varliglar;
 /// <summary>
 /// Bütün növbə verilənlər bazası əməliyyatları üçün interfeys.

@@ -1,5 +1,6 @@
 ﻿// Fayl: AzAgroPOS.Verilenler/Interfeysler/INisyeHereketiRepozitori.cs
 namespace AzAgroPOS.Verilenler.Interfeysler;
+
 using AzAgroPOS.Varliglar;
 /// <summary>
 /// Bütün nisyə hərəkəti verilənlər bazası əməliyyatları üçün interfeys.

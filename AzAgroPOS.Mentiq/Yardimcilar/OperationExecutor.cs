@@ -1,6 +1,6 @@
 // Fayl: AzAgroPOS.Mentiq/Yardimcilar/OperationExecutor.cs
-using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Mentiq.Istisnalar;
+using AzAgroPOS.Mentiq.Uslublar;
 
 namespace AzAgroPOS.Mentiq.Yardimcilar;
 

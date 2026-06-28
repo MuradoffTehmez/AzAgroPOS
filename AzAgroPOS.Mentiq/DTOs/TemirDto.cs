@@ -1,5 +1,6 @@
 ﻿// Fayl: AzAgroPOS.Mentiq/DTOs/TemirDto.cs
 namespace AzAgroPOS.Mentiq.DTOs;
+
 using AzAgroPOS.Varliglar;
 
 /// <summary>

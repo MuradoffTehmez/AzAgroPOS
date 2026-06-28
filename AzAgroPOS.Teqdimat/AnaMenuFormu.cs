@@ -1,5 +1,6 @@
 // Fayl: AzAgroPOS.Teqdimat/AnaMenuFormu.cs
 namespace AzAgroPOS.Teqdimat;
+
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Yardimcilar;
@@ -538,12 +539,12 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
 
     private void btnQaytarma_Click(object sender, EventArgs e) => UsaqFormuAc<QaytarmaFormu>();
     private void btnNisyeIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<NisyeIdareetmeFormu>();
-    
+
     // Product Management
     private void btnMehsulIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<MehsulIdareetmeFormu>();
     private void btnMinimumStokMehsullari_Click(object sender, EventArgs e) => UsaqFormuAc<MinimumStokMehsullariFormu>();
     private void btnBarkodCapi_Click(object sender, EventArgs e) => UsaqFormuAc<BarkodCapiFormu>();
-    
+
     // Financial Management
     private void btnXercIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<XercIdareetmeFormu>();
     private void btnTemirIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<TemirIdareetmeFormu>();
@@ -555,20 +556,20 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
     private void btnTedarukcuIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<TedarukcuIdareetmeFormu>();
     private void btnEhtiyatHisse_Click(object sender, EventArgs e) => UsaqFormuAc<EhtiyatHissəsiFormu>();
     private void btnEmekHaqqi_Click(object sender, EventArgs e) => UsaqFormuAc<EmekHaqqiFormu>();
-    
+
     // Inventory & Storage
     private void btnAnbar_Click(object sender, EventArgs e) => UsaqFormuAc<AnbarFormu>();
-    
+
     // Staff & User Management
     private void btnIstifadeciIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<IstifadeciIdareetmeFormu>();
     private void btnIsciIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<IsciIdareetmeFormu>();
-    
+
     // Reports
     private void btnHesabatlar_Click(object sender, EventArgs e) => UsaqFormuAc<HesabatFormu>();
     private void btnMehsulSatisHesabati_Click(object sender, EventArgs e) => UsaqFormuAc<MehsulSatisHesabatFormu>();
     private void btnAnbarQaliqHesabati_Click(object sender, EventArgs e) => UsaqFormuAc<AnbarQaliqHesabatFormu>();
     private void btnZHesabatArxivi_Click(object sender, EventArgs e) => UsaqFormuAc<ZHesabatArxivFormu>();
-    
+
     // System Configuration
     private void btnKonfiqurasiya_Click(object sender, EventArgs e) => UsaqFormuAc<KonfiqurasiyaFormu>();
 
@@ -589,5 +590,5 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
 
     #endregion
 
-   
+
 }

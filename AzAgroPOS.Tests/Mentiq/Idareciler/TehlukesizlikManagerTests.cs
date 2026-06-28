@@ -1,10 +1,8 @@
 // Fayl: AzAgroPOS.Tests/Mentiq/Idareciler/TehlukesizlikManagerTests.cs
 
 using AzAgroPOS.Mentiq.Idareciler;
-using AzAgroPOS.Mentiq.Istisnalar;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
-using Microsoft.EntityFrameworkCore;
 
 namespace AzAgroPOS.Tests.Mentiq.Idareciler;
 

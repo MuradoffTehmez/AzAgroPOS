@@ -28,8 +28,8 @@ namespace AzAgroPOS.Teqdimat
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             pnlTop = new Panel();
             lblBaslik = new Label();
             pnlMain = new Panel();
@@ -78,9 +78,10 @@ namespace AzAgroPOS.Teqdimat
             pnlTop.Dock = DockStyle.Top;
             pnlTop.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             pnlTop.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            pnlTop.Location = new Point(3, 64);
+            pnlTop.Location = new Point(3, 85);
+            pnlTop.Margin = new Padding(3, 4, 3, 4);
             pnlTop.Name = "pnlTop";
-            pnlTop.Size = new Size(994, 60);
+            pnlTop.Size = new Size(1137, 80);
             pnlTop.TabIndex = 0;
             // 
             // lblBaslik
@@ -91,7 +92,7 @@ namespace AzAgroPOS.Teqdimat
             lblBaslik.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblBaslik.Location = new Point(0, 0);
             lblBaslik.Name = "lblBaslik";
-            lblBaslik.Size = new Size(994, 60);
+            lblBaslik.Size = new Size(1137, 80);
             lblBaslik.TabIndex = 0;
             lblBaslik.Text = "Tədarükçü İdarəetmə";
             lblBaslik.TextAlign = ContentAlignment.MiddleCenter;
@@ -103,10 +104,11 @@ namespace AzAgroPOS.Teqdimat
             pnlMain.Dock = DockStyle.Fill;
             pnlMain.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             pnlMain.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            pnlMain.Location = new Point(3, 124);
+            pnlMain.Location = new Point(3, 165);
+            pnlMain.Margin = new Padding(3, 4, 3, 4);
             pnlMain.Name = "pnlMain";
-            pnlMain.Padding = new Padding(10);
-            pnlMain.Size = new Size(994, 533);
+            pnlMain.Padding = new Padding(11, 13, 11, 13);
+            pnlMain.Size = new Size(1137, 687);
             pnlMain.TabIndex = 1;
             // 
             // splitContainer1
@@ -115,7 +117,8 @@ namespace AzAgroPOS.Teqdimat
             splitContainer1.Dock = DockStyle.Fill;
             splitContainer1.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             splitContainer1.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            splitContainer1.Location = new Point(10, 10);
+            splitContainer1.Location = new Point(11, 13);
+            splitContainer1.Margin = new Padding(3, 4, 3, 4);
             splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -132,8 +135,9 @@ namespace AzAgroPOS.Teqdimat
             splitContainer1.Panel2.Controls.Add(grpTedarukculer);
             splitContainer1.Panel2.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             splitContainer1.Panel2.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            splitContainer1.Size = new Size(974, 513);
-            splitContainer1.SplitterDistance = 347;
+            splitContainer1.Size = new Size(1115, 661);
+            splitContainer1.SplitterDistance = 397;
+            splitContainer1.SplitterWidth = 5;
             splitContainer1.TabIndex = 0;
             // 
             // grpTedarukcuMelumatlari
@@ -145,8 +149,10 @@ namespace AzAgroPOS.Teqdimat
             grpTedarukcuMelumatlari.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             grpTedarukcuMelumatlari.ForeColor = Color.FromArgb(222, 0, 0, 0);
             grpTedarukcuMelumatlari.Location = new Point(0, 0);
+            grpTedarukcuMelumatlari.Margin = new Padding(3, 4, 3, 4);
             grpTedarukcuMelumatlari.Name = "grpTedarukcuMelumatlari";
-            grpTedarukcuMelumatlari.Size = new Size(347, 513);
+            grpTedarukcuMelumatlari.Padding = new Padding(3, 4, 3, 4);
+            grpTedarukcuMelumatlari.Size = new Size(397, 661);
             grpTedarukcuMelumatlari.TabIndex = 0;
             grpTedarukcuMelumatlari.TabStop = false;
             grpTedarukcuMelumatlari.Text = "Tədarükçü Məlumatları";
@@ -175,19 +181,20 @@ namespace AzAgroPOS.Teqdimat
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             tableLayoutPanel1.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            tableLayoutPanel1.Location = new Point(3, 20);
+            tableLayoutPanel1.Location = new Point(3, 21);
+            tableLayoutPanel1.Margin = new Padding(3, 4, 3, 4);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 9;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 47F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 47F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 47F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 47F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 47F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 47F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 47F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 47F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel1.Size = new Size(341, 419);
+            tableLayoutPanel1.Size = new Size(391, 541);
             tableLayoutPanel1.TabIndex = 0;
             // 
             // lblId
@@ -199,7 +206,7 @@ namespace AzAgroPOS.Teqdimat
             lblId.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblId.Location = new Point(3, 0);
             lblId.Name = "lblId";
-            lblId.Size = new Size(96, 35);
+            lblId.Size = new Size(111, 47);
             lblId.TabIndex = 0;
             lblId.Text = "ID:";
             lblId.TextAlign = ContentAlignment.MiddleLeft;
@@ -210,10 +217,11 @@ namespace AzAgroPOS.Teqdimat
             txtId.Dock = DockStyle.Fill;
             txtId.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             txtId.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            txtId.Location = new Point(105, 3);
+            txtId.Location = new Point(120, 5);
+            txtId.Margin = new Padding(3, 5, 3, 5);
             txtId.Name = "txtId";
             txtId.ReadOnly = true;
-            txtId.Size = new Size(233, 24);
+            txtId.Size = new Size(268, 24);
             txtId.TabIndex = 11;
             // 
             // lblAd
@@ -223,9 +231,9 @@ namespace AzAgroPOS.Teqdimat
             lblAd.Dock = DockStyle.Fill;
             lblAd.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             lblAd.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblAd.Location = new Point(3, 35);
+            lblAd.Location = new Point(3, 47);
             lblAd.Name = "lblAd";
-            lblAd.Size = new Size(96, 35);
+            lblAd.Size = new Size(111, 47);
             lblAd.TabIndex = 2;
             lblAd.Text = "Ad:";
             lblAd.TextAlign = ContentAlignment.MiddleLeft;
@@ -236,9 +244,10 @@ namespace AzAgroPOS.Teqdimat
             txtAd.Dock = DockStyle.Fill;
             txtAd.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             txtAd.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            txtAd.Location = new Point(105, 38);
+            txtAd.Location = new Point(120, 52);
+            txtAd.Margin = new Padding(3, 5, 3, 5);
             txtAd.Name = "txtAd";
-            txtAd.Size = new Size(233, 24);
+            txtAd.Size = new Size(268, 24);
             txtAd.TabIndex = 0;
             // 
             // lblVoen
@@ -248,9 +257,9 @@ namespace AzAgroPOS.Teqdimat
             lblVoen.Dock = DockStyle.Fill;
             lblVoen.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             lblVoen.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblVoen.Location = new Point(3, 70);
+            lblVoen.Location = new Point(3, 94);
             lblVoen.Name = "lblVoen";
-            lblVoen.Size = new Size(96, 35);
+            lblVoen.Size = new Size(111, 47);
             lblVoen.TabIndex = 4;
             lblVoen.Text = "VÖEN:";
             lblVoen.TextAlign = ContentAlignment.MiddleLeft;
@@ -261,9 +270,10 @@ namespace AzAgroPOS.Teqdimat
             txtVoen.Dock = DockStyle.Fill;
             txtVoen.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             txtVoen.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            txtVoen.Location = new Point(105, 73);
+            txtVoen.Location = new Point(120, 99);
+            txtVoen.Margin = new Padding(3, 5, 3, 5);
             txtVoen.Name = "txtVoen";
-            txtVoen.Size = new Size(233, 24);
+            txtVoen.Size = new Size(268, 24);
             txtVoen.TabIndex = 1;
             // 
             // lblUnvan
@@ -273,9 +283,9 @@ namespace AzAgroPOS.Teqdimat
             lblUnvan.Dock = DockStyle.Fill;
             lblUnvan.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             lblUnvan.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblUnvan.Location = new Point(3, 105);
+            lblUnvan.Location = new Point(3, 141);
             lblUnvan.Name = "lblUnvan";
-            lblUnvan.Size = new Size(96, 35);
+            lblUnvan.Size = new Size(111, 47);
             lblUnvan.TabIndex = 6;
             lblUnvan.Text = "Ünvan:";
             lblUnvan.TextAlign = ContentAlignment.MiddleLeft;
@@ -286,9 +296,10 @@ namespace AzAgroPOS.Teqdimat
             txtUnvan.Dock = DockStyle.Fill;
             txtUnvan.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             txtUnvan.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            txtUnvan.Location = new Point(105, 108);
+            txtUnvan.Location = new Point(120, 146);
+            txtUnvan.Margin = new Padding(3, 5, 3, 5);
             txtUnvan.Name = "txtUnvan";
-            txtUnvan.Size = new Size(233, 24);
+            txtUnvan.Size = new Size(268, 24);
             txtUnvan.TabIndex = 2;
             // 
             // lblTelefon
@@ -298,9 +309,9 @@ namespace AzAgroPOS.Teqdimat
             lblTelefon.Dock = DockStyle.Fill;
             lblTelefon.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             lblTelefon.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblTelefon.Location = new Point(3, 140);
+            lblTelefon.Location = new Point(3, 188);
             lblTelefon.Name = "lblTelefon";
-            lblTelefon.Size = new Size(96, 35);
+            lblTelefon.Size = new Size(111, 47);
             lblTelefon.TabIndex = 8;
             lblTelefon.Text = "Telefon:";
             lblTelefon.TextAlign = ContentAlignment.MiddleLeft;
@@ -311,9 +322,10 @@ namespace AzAgroPOS.Teqdimat
             txtTelefon.Dock = DockStyle.Fill;
             txtTelefon.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             txtTelefon.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            txtTelefon.Location = new Point(105, 143);
+            txtTelefon.Location = new Point(120, 193);
+            txtTelefon.Margin = new Padding(3, 5, 3, 5);
             txtTelefon.Name = "txtTelefon";
-            txtTelefon.Size = new Size(233, 24);
+            txtTelefon.Size = new Size(268, 24);
             txtTelefon.TabIndex = 3;
             // 
             // lblEmail
@@ -323,9 +335,9 @@ namespace AzAgroPOS.Teqdimat
             lblEmail.Dock = DockStyle.Fill;
             lblEmail.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             lblEmail.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblEmail.Location = new Point(3, 175);
+            lblEmail.Location = new Point(3, 235);
             lblEmail.Name = "lblEmail";
-            lblEmail.Size = new Size(96, 35);
+            lblEmail.Size = new Size(111, 47);
             lblEmail.TabIndex = 10;
             lblEmail.Text = "Email:";
             lblEmail.TextAlign = ContentAlignment.MiddleLeft;
@@ -336,9 +348,10 @@ namespace AzAgroPOS.Teqdimat
             txtEmail.Dock = DockStyle.Fill;
             txtEmail.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             txtEmail.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            txtEmail.Location = new Point(105, 178);
+            txtEmail.Location = new Point(120, 240);
+            txtEmail.Margin = new Padding(3, 5, 3, 5);
             txtEmail.Name = "txtEmail";
-            txtEmail.Size = new Size(233, 24);
+            txtEmail.Size = new Size(268, 24);
             txtEmail.TabIndex = 4;
             // 
             // lblBankHesabi
@@ -348,9 +361,9 @@ namespace AzAgroPOS.Teqdimat
             lblBankHesabi.Dock = DockStyle.Fill;
             lblBankHesabi.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             lblBankHesabi.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblBankHesabi.Location = new Point(3, 210);
+            lblBankHesabi.Location = new Point(3, 282);
             lblBankHesabi.Name = "lblBankHesabi";
-            lblBankHesabi.Size = new Size(96, 35);
+            lblBankHesabi.Size = new Size(111, 47);
             lblBankHesabi.TabIndex = 12;
             lblBankHesabi.Text = "Bank Hesabı:";
             lblBankHesabi.TextAlign = ContentAlignment.MiddleLeft;
@@ -361,9 +374,10 @@ namespace AzAgroPOS.Teqdimat
             txtBankHesabi.Dock = DockStyle.Fill;
             txtBankHesabi.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             txtBankHesabi.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            txtBankHesabi.Location = new Point(105, 213);
+            txtBankHesabi.Location = new Point(120, 287);
+            txtBankHesabi.Margin = new Padding(3, 5, 3, 5);
             txtBankHesabi.Name = "txtBankHesabi";
-            txtBankHesabi.Size = new Size(233, 24);
+            txtBankHesabi.Size = new Size(268, 24);
             txtBankHesabi.TabIndex = 5;
             // 
             // chkAktivdir
@@ -375,9 +389,10 @@ namespace AzAgroPOS.Teqdimat
             chkAktivdir.Dock = DockStyle.Fill;
             chkAktivdir.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             chkAktivdir.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            chkAktivdir.Location = new Point(105, 248);
+            chkAktivdir.Location = new Point(120, 333);
+            chkAktivdir.Margin = new Padding(3, 4, 3, 4);
             chkAktivdir.Name = "chkAktivdir";
-            chkAktivdir.Size = new Size(233, 29);
+            chkAktivdir.Size = new Size(268, 39);
             chkAktivdir.TabIndex = 6;
             chkAktivdir.Text = "Aktivdir";
             chkAktivdir.UseVisualStyleBackColor = false;
@@ -392,9 +407,10 @@ namespace AzAgroPOS.Teqdimat
             pnlDugmeler.Dock = DockStyle.Bottom;
             pnlDugmeler.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             pnlDugmeler.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            pnlDugmeler.Location = new Point(3, 439);
+            pnlDugmeler.Location = new Point(3, 562);
+            pnlDugmeler.Margin = new Padding(3, 4, 3, 4);
             pnlDugmeler.Name = "pnlDugmeler";
-            pnlDugmeler.Size = new Size(341, 71);
+            pnlDugmeler.Size = new Size(391, 95);
             pnlDugmeler.TabIndex = 1;
             // 
             // btnTemizle
@@ -402,9 +418,10 @@ namespace AzAgroPOS.Teqdimat
             btnTemizle.BackColor = Color.FromArgb(242, 242, 242);
             btnTemizle.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             btnTemizle.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            btnTemizle.Location = new Point(240, 20);
+            btnTemizle.Location = new Point(274, 27);
+            btnTemizle.Margin = new Padding(3, 4, 3, 4);
             btnTemizle.Name = "btnTemizle";
-            btnTemizle.Size = new Size(100, 35);
+            btnTemizle.Size = new Size(114, 47);
             btnTemizle.TabIndex = 10;
             btnTemizle.Text = "Təmizlə";
             btnTemizle.UseVisualStyleBackColor = false;
@@ -415,9 +432,10 @@ namespace AzAgroPOS.Teqdimat
             btnSil.BackColor = Color.FromArgb(242, 242, 242);
             btnSil.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             btnSil.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            btnSil.Location = new Point(160, 20);
+            btnSil.Location = new Point(183, 27);
+            btnSil.Margin = new Padding(3, 4, 3, 4);
             btnSil.Name = "btnSil";
-            btnSil.Size = new Size(75, 35);
+            btnSil.Size = new Size(86, 47);
             btnSil.TabIndex = 9;
             btnSil.Text = "Sil";
             btnSil.UseVisualStyleBackColor = false;
@@ -428,9 +446,10 @@ namespace AzAgroPOS.Teqdimat
             btnYenile.BackColor = Color.FromArgb(242, 242, 242);
             btnYenile.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             btnYenile.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            btnYenile.Location = new Point(80, 20);
+            btnYenile.Location = new Point(91, 27);
+            btnYenile.Margin = new Padding(3, 4, 3, 4);
             btnYenile.Name = "btnYenile";
-            btnYenile.Size = new Size(75, 35);
+            btnYenile.Size = new Size(86, 47);
             btnYenile.TabIndex = 8;
             btnYenile.Text = "Yenilə";
             btnYenile.UseVisualStyleBackColor = false;
@@ -441,9 +460,10 @@ namespace AzAgroPOS.Teqdimat
             btnYarat.BackColor = Color.FromArgb(242, 242, 242);
             btnYarat.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             btnYarat.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            btnYarat.Location = new Point(5, 20);
+            btnYarat.Location = new Point(6, 27);
+            btnYarat.Margin = new Padding(3, 4, 3, 4);
             btnYarat.Name = "btnYarat";
-            btnYarat.Size = new Size(70, 35);
+            btnYarat.Size = new Size(80, 47);
             btnYarat.TabIndex = 7;
             btnYarat.Text = "Yarat";
             btnYarat.UseVisualStyleBackColor = false;
@@ -457,8 +477,10 @@ namespace AzAgroPOS.Teqdimat
             grpTedarukculer.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             grpTedarukculer.ForeColor = Color.FromArgb(222, 0, 0, 0);
             grpTedarukculer.Location = new Point(0, 0);
+            grpTedarukculer.Margin = new Padding(3, 4, 3, 4);
             grpTedarukculer.Name = "grpTedarukculer";
-            grpTedarukculer.Size = new Size(623, 513);
+            grpTedarukculer.Padding = new Padding(3, 4, 3, 4);
+            grpTedarukculer.Size = new Size(713, 661);
             grpTedarukculer.TabIndex = 0;
             grpTedarukculer.TabStop = false;
             grpTedarukculer.Text = "Tədarükçülər";
@@ -467,42 +489,46 @@ namespace AzAgroPOS.Teqdimat
             // 
             dgvTedarukculer.AllowUserToAddRows = false;
             dgvTedarukculer.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = SystemColors.Control;
-            dataGridViewCellStyle5.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            dataGridViewCellStyle5.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle5.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
-            dgvTedarukculer.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Control;
+            dataGridViewCellStyle1.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dgvTedarukculer.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgvTedarukculer.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = SystemColors.Window;
-            dataGridViewCellStyle6.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            dataGridViewCellStyle6.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            dataGridViewCellStyle6.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.False;
-            dgvTedarukculer.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            dataGridViewCellStyle2.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            dgvTedarukculer.DefaultCellStyle = dataGridViewCellStyle2;
             dgvTedarukculer.Dock = DockStyle.Fill;
             dgvTedarukculer.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            dgvTedarukculer.Location = new Point(3, 20);
+            dgvTedarukculer.Location = new Point(3, 21);
+            dgvTedarukculer.Margin = new Padding(3, 4, 3, 4);
             dgvTedarukculer.MultiSelect = false;
             dgvTedarukculer.Name = "dgvTedarukculer";
             dgvTedarukculer.ReadOnly = true;
+            dgvTedarukculer.RowHeadersWidth = 51;
             dgvTedarukculer.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvTedarukculer.Size = new Size(617, 490);
+            dgvTedarukculer.Size = new Size(707, 636);
             dgvTedarukculer.TabIndex = 0;
             dgvTedarukculer.SelectionChanged += dgvTedarukculer_SelectionChanged;
             // 
             // TedarukcuIdareetmeFormu
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1000, 660);
+            ClientSize = new Size(1143, 880);
             Controls.Add(pnlMain);
             Controls.Add(pnlTop);
+            Margin = new Padding(3, 4, 3, 4);
             Name = "TedarukcuIdareetmeFormu";
+            Padding = new Padding(3, 85, 3, 4);
             Text = "Tədarükçü İdarəetmə";
             Load += TedarukcuIdareetmeFormu_Load;
             Controls.SetChildIndex(pnlTop, 0);

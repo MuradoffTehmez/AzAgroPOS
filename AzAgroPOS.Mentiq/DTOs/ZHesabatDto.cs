@@ -1,5 +1,6 @@
 ﻿// Fayl: AzAgroPOS.Mentiq/DTOs/ZHesabatDto.cs
 namespace AzAgroPOS.Mentiq.DTOs;
+
 using System;
 
 /// <summary>

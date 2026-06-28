@@ -1,5 +1,6 @@
 ﻿// Fayl: AzAgroPOS.Teqdimat/Yardimcilar/AktivSessiya.cs
 namespace AzAgroPOS.Teqdimat.Yardimcilar;
+
 using AzAgroPOS.Mentiq.DTOs;
 
 /// <summary>

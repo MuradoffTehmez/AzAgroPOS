@@ -1,7 +1,6 @@
 // Fayl: AzAgroPOS.Teqdimat/LoginFormu.cs
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
-using MaterialSkin;
 using System.Drawing.Drawing2D;
 using System.Reflection;
 using System.Runtime.InteropServices;

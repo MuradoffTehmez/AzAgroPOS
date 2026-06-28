@@ -1,7 +1,6 @@
 // Fayl: AzAgroPOS.Teqdimat/EmekHaqqiFormu.cs
 namespace AzAgroPOS.Teqdimat;
 
-using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Yardimcilar;
 using AzAgroPOS.Varliglar;

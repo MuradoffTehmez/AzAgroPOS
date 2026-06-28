@@ -1,5 +1,6 @@
 ﻿// Fayl: AzAgroPOS.Verilenler/Interfeysler/IMusteriRepozitori.cs
 namespace AzAgroPOS.Verilenler.Interfeysler;
+
 using AzAgroPOS.Varliglar;
 /// <summary>
 /// Bütün müştəri verilənlər bazası əməliyyatları üçün interfeys.

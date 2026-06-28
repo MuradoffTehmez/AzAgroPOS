@@ -135,48 +135,48 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                 // Clear previous validation errors
                 _view.ButunXetalariTemizle();
 
-            // Validate required fields
-            bool valid = true;
+                // Validate required fields
+                bool valid = true;
 
-            if (string.IsNullOrWhiteSpace(_view.TamAd))
-            {
-                _view.XetaGoster(GetControlByName("txtTamAd"),
-                    "Tam ad mütləq daxil edilməlidir.");
-                valid = false;
-            }
+                if (string.IsNullOrWhiteSpace(_view.TamAd))
+                {
+                    _view.XetaGoster(GetControlByName("txtTamAd"),
+                        "Tam ad mütləq daxil edilməlidir.");
+                    valid = false;
+                }
 
-            if (string.IsNullOrWhiteSpace(_view.Telefon))
-            {
-                _view.XetaGoster(GetControlByName("txtTelefon"),
-                    "Telefon nömrəsi mütləq daxil edilməlidir.");
-                valid = false;
-            }
+                if (string.IsNullOrWhiteSpace(_view.Telefon))
+                {
+                    _view.XetaGoster(GetControlByName("txtTelefon"),
+                        "Telefon nömrəsi mütləq daxil edilməlidir.");
+                    valid = false;
+                }
 
-            if (!valid)
-            {
-                _view.MesajGoster("Zəhmət olmasa, qırmızı ilə işarələnmiş sahələri düzgün doldurun.",
-                    "Xəbərdarlıq", MessageBoxIcon.Warning);
-                return;
-            }
+                if (!valid)
+                {
+                    _view.MesajGoster("Zəhmət olmasa, qırmızı ilə işarələnmiş sahələri düzgün doldurun.",
+                        "Xəbərdarlıq", MessageBoxIcon.Warning);
+                    return;
+                }
 
-            var musteriDto = new MusteriDto
-            {
-                Id = _view.SecilmisMusteriId,
-                TamAd = _view.TamAd,
-                TelefonNomresi = _view.Telefon,
-                Unvan = _view.Unvan,
-                KreditLimiti = decimal.TryParse(_view.KreditLimiti, out var limit) ? limit : 0
-            };
+                var musteriDto = new MusteriDto
+                {
+                    Id = _view.SecilmisMusteriId,
+                    TamAd = _view.TamAd,
+                    TelefonNomresi = _view.Telefon,
+                    Unvan = _view.Unvan,
+                    KreditLimiti = decimal.TryParse(_view.KreditLimiti, out var limit) ? limit : 0
+                };
 
-            EmeliyyatNeticesi netice;
-            if (musteriDto.Id > 0)
-            {
-                netice = await _musteriManager.MusteriYenileAsync(musteriDto);
-            }
-            else
-            {
-                netice = await _musteriManager.MusteriYaratAsync(musteriDto);
-            }
+                EmeliyyatNeticesi netice;
+                if (musteriDto.Id > 0)
+                {
+                    netice = await _musteriManager.MusteriYenileAsync(musteriDto);
+                }
+                else
+                {
+                    netice = await _musteriManager.MusteriYaratAsync(musteriDto);
+                }
 
                 if (netice.UgurluDur)
                 {

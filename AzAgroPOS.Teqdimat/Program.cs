@@ -1,6 +1,5 @@
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
-using AzAgroPOS.Teqdimat.Konfiqurasiya;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using AzAgroPOS.Verilenler.Kontekst;
