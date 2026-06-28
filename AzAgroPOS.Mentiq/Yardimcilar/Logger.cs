@@ -54,7 +54,7 @@ namespace AzAgroPOS.Mentiq.Yardimcilar
                             shared: true,
                             rollOnFileSizeLimit: true,
                             fileSizeLimitBytes: 10_485_760) // 10 MB
-                        // Separate error log
+                                                            // Separate error log
                         .WriteTo.File(
                             formatter: new CompactJsonFormatter(),
                             path: Path.Combine(logDirectory, "error-.json"),

@@ -4,10 +4,6 @@ using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Sabitler;
 using AzAgroPOS.Teqdimat.Yardimcilar;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 {

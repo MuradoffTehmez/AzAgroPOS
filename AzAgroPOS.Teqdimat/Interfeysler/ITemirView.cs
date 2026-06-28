@@ -1,5 +1,6 @@
 // Fayl: AzAgroPOS.Teqdimat/Interfeysler/ITemirView.cs
 namespace AzAgroPOS.Teqdimat.Interfeysler;
+
 using AzAgroPOS.Mentiq.DTOs;
 
 /// <summary>

@@ -1,5 +1,6 @@
 ﻿// Fayl: AzAgroPOS.Teqdimat/Interfeysler/INovbeView.cs
 namespace AzAgroPOS.Teqdimat.Interfeysler;
+
 using System;
 
 /// <summary>

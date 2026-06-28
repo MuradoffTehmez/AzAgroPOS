@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Drawing.Printing;
-using System.Linq;
-using System.Windows.Forms;
 
 namespace AzAgroPOS.Teqdimat.Yardimcilar
 {

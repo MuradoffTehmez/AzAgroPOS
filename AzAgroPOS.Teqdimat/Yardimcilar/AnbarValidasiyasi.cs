@@ -1,7 +1,4 @@
 using AzAgroPOS.Teqdimat.Sabitler;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace AzAgroPOS.Teqdimat.Yardimcilar
 {

@@ -1,13 +1,9 @@
 // Fayl: AzAgroPOS.Tests/Unit/Managers/MehsulManagerTests.cs
 
-using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
-using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Tests.TestHelpers;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
-using FluentAssertions;
-using Moq;
 
 namespace AzAgroPOS.Tests.Unit.Managers;
 

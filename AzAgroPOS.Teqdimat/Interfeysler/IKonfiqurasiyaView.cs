@@ -1,6 +1,4 @@
 // Fayl: AzAgroPOS.Teqdimat/Interfeysler/IKonfiqurasiyaView.cs
-using System;
-
 namespace AzAgroPOS.Teqdimat.Interfeysler
 {
     /// <summary>
