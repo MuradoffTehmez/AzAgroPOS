@@ -245,6 +245,11 @@ namespace AzAgroPOS.Mentiq.Yardimcilar
                    ?? "Production";
         }
 
+        public static void XeberdarliqYaz(string v)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Performance tracking helper class
         /// </summary>
