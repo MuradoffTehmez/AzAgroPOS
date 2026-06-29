@@ -18,7 +18,7 @@ namespace AzAgroPOS.Teqdimat
             _presenter = new AlisSenedPresenter(this, alisManager, mehsulManager);
 
             // Form yüklənəndə Presenter-ə xəbər veririk
-            this.Load += (s, e) =>
+            Load += (s, e) =>
             {
                 FormYuklendi?.Invoke(this, EventArgs.Empty);
                 SetupTooltips();

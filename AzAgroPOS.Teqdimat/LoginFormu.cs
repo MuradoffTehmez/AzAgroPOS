@@ -39,9 +39,9 @@ namespace AzAgroPOS.Teqdimat
             txtParol.KeyUp += TxtParol_KeyUp;
             txtParol.Enter += TxtParol_Enter;
             btnParolGoster.Click += BtnParolGoster_Click;
-            this.Load += LoginFormu_Load;
-            this.KeyPreview = true;
-            this.KeyUp += LoginFormu_KeyUp;
+            Load += LoginFormu_Load;
+            KeyPreview = true;
+            KeyUp += LoginFormu_KeyUp;
 
             // Gradient background və dairəvi elementləri konfiqurasiya et
             pnlMain.Paint += PnlMain_Paint;
@@ -151,7 +151,7 @@ namespace AzAgroPOS.Teqdimat
                     return;
 
                 int x = (pnlMain.ClientSize.Width - pnlLoginCard.Width) / 2;
-                int y = (pnlMain.ClientSize.Height - pnlLoginCard.Height) / 2 - 20;
+                int y = ((pnlMain.ClientSize.Height - pnlLoginCard.Height) / 2) - 20;
                 pnlLoginCard.Location = new Point(Math.Max(0, x), Math.Max(30, y));
 
                 // Shadow paneli də hərəkət etdir
@@ -233,9 +233,9 @@ namespace AzAgroPOS.Teqdimat
         {
             var path = new GraphicsPath();
             path.AddArc(rect.X, rect.Y, radius * 2, radius * 2, 180, 90);
-            path.AddArc(rect.Right - radius * 2, rect.Y, radius * 2, radius * 2, 270, 90);
-            path.AddArc(rect.Right - radius * 2, rect.Bottom - radius * 2, radius * 2, radius * 2, 0, 90);
-            path.AddArc(rect.X, rect.Bottom - radius * 2, radius * 2, radius * 2, 90, 90);
+            path.AddArc(rect.Right - (radius * 2), rect.Y, radius * 2, radius * 2, 270, 90);
+            path.AddArc(rect.Right - (radius * 2), rect.Bottom - (radius * 2), radius * 2, radius * 2, 0, 90);
+            path.AddArc(rect.X, rect.Bottom - (radius * 2), radius * 2, radius * 2, 90, 90);
             path.CloseFigure();
             return path;
         }
@@ -338,8 +338,8 @@ namespace AzAgroPOS.Teqdimat
                 YaddaSaxlananMelumatlariSil();
             }
 
-            this.DialogResult = DialogResult.OK;
-            this.Close();
+            DialogResult = DialogResult.OK;
+            Close();
         }
 
         private static readonly string _settingsPath = Path.Combine(
@@ -411,7 +411,7 @@ namespace AzAgroPOS.Teqdimat
 
         public void ButunXetalariTemizle()
         {
-            foreach (Control control in this.Controls)
+            foreach (Control control in Controls)
             {
                 ClearErrorsRecursive(control);
             }

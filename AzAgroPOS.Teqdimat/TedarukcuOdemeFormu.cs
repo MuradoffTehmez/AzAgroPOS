@@ -29,7 +29,7 @@ public partial class TedarukcuOdemeFormu : BazaForm, ITedarukcuOdemeView
         _presenter = new TedarukcuOdemePresenter(this, alisManager);
 
         // Form yüklənəndə hadisəni tetikləyirik
-        this.Load += (s, e) => FormYuklendi?.Invoke(s, e);
+        Load += (s, e) => FormYuklendi?.Invoke(s, e);
     }
 
     private void InicializeEnums()

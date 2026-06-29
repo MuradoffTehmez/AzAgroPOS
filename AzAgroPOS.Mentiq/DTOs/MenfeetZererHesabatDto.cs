@@ -57,7 +57,7 @@ public class MenfeetZererHesabatDto
     /// Mənfəət marjası (%) = (Yekun Mənfəət / Satış Gəliri) * 100
     /// </summary>
     public decimal MenfeetMarjasi => UmumiSatisGeliri > 0
-        ? Math.Round((YekunMenfeetZerer / UmumiSatisGeliri) * 100, 2)
+        ? Math.Round(YekunMenfeetZerer / UmumiSatisGeliri * 100, 2)
         : 0;
 
     /// <summary>

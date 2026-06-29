@@ -141,7 +141,7 @@ namespace AzAgroPOS.Teqdimat
         public void ButunXetalariTemizle()
         {
             // Clear errors from all controls
-            foreach (Control control in this.Controls)
+            foreach (Control control in Controls)
             {
                 ClearErrorsRecursive(control);
             }
@@ -186,14 +186,14 @@ namespace AzAgroPOS.Teqdimat
 
         private void btnTamam_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.OK;
-            this.Close();
+            DialogResult = DialogResult.OK;
+            Close();
         }
 
         private void btnİmtina_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.Cancel;
-            this.Close();
+            DialogResult = DialogResult.Cancel;
+            Close();
         }
 
         // IEhtiyatHissəsiView interface implementasiyası

@@ -32,9 +32,9 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
         InitializeComponent();
         _serviceProvider = serviceProvider;
 
-        this.Load += (sender, e) => FormYuklendi?.Invoke(this, EventArgs.Empty);
-        this.Shown += AnaMenuFormu_Shown;
-        this.FormClosing += (sender, e) => FormBaglaniyor?.Invoke(this, e);
+        Load += (sender, e) => FormYuklendi?.Invoke(this, EventArgs.Empty);
+        Shown += AnaMenuFormu_Shown;
+        FormClosing += (sender, e) => FormBaglaniyor?.Invoke(this, e);
 
         // Modern dizayn tətbiq edirik
         AnaMenuFormModernStyle.ApplyModernStyle(pnlMenu);
@@ -458,7 +458,7 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
             return;
         }
 
-        this.Text = $"AzAgroPOS - (İstifadəçi: {istifadeci.TamAd})";
+        Text = $"AzAgroPOS - (İstifadəçi: {istifadeci.TamAd})";
         lblUserName.Text = istifadeci.TamAd;
 
         Color panelColor;

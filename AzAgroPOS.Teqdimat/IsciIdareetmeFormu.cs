@@ -69,7 +69,7 @@ public partial class IsciIdareetmeFormu : BazaForm, IIsciView
         };
 
         _paginationPanel.Controls.AddRange(new Control[] { _btnEvvelki, _btnNovbeti, _lblSehifeMelumati });
-        this.Controls.Add(_paginationPanel);
+        Controls.Add(_paginationPanel);
     }
 
     #region IIsciView Implementasiyası
@@ -397,7 +397,7 @@ public partial class IsciIdareetmeFormu : BazaForm, IIsciView
     public void ButunXetalariTemizle()
     {
         // Clear errors from all controls
-        foreach (Control control in this.Controls)
+        foreach (Control control in Controls)
         {
             ClearErrorsRecursive(control);
         }

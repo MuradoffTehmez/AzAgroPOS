@@ -26,7 +26,7 @@ namespace AzAgroPOS.Teqdimat
             _serviceProvider = serviceProvider;
             _dialogXidmeti = new DialogXidmeti();
             // Form yüklənəndə Presenter-ə xəbər veririk
-            this.Load += (s, e) =>
+            Load += (s, e) =>
             {
                 SetupPaginationUI();
                 FormYuklendi?.Invoke(this, EventArgs.Empty);
@@ -166,7 +166,7 @@ namespace AzAgroPOS.Teqdimat
         public void ButunXetalariTemizle()
         {
             // Clear errors from all controls
-            foreach (Control control in this.Controls)
+            foreach (Control control in Controls)
             {
                 ClearErrorsRecursive(control);
             }
@@ -232,7 +232,7 @@ namespace AzAgroPOS.Teqdimat
             _paginationPanel.Controls.Add(_btnNovbeti);
             _paginationPanel.Controls.Add(_lblSehifeMelumati);
 
-            this.Controls.Add(_paginationPanel);
+            Controls.Add(_paginationPanel);
             _paginationPanel.BringToFront();
         }
 
@@ -300,8 +300,8 @@ namespace AzAgroPOS.Teqdimat
             if (e.RowIndex >= 0 && dgvMusteriler.CurrentRow?.DataBoundItem is MusteriDto musteri)
             {
                 SecilenMusteriId = musteri.Id;
-                this.DialogResult = DialogResult.OK;
-                this.Close();
+                DialogResult = DialogResult.OK;
+                Close();
             }
         }
 

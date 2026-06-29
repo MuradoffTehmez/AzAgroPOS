@@ -27,7 +27,7 @@ public partial class EmekHaqqiFormu : BazaForm
         _isciManager = isciManager ?? throw new ArgumentNullException(nameof(isciManager));
 
         // Form yüklənəndə işçi siyahısını və tarixçəni yüklə
-        this.Load += EmekHaqqiFormu_Load;
+        Load += EmekHaqqiFormu_Load;
 
         // DataGridView xətalarını idarə et
         dgvEmekHaqqlari.DataError += DgvEmekHaqqlari_DataError;

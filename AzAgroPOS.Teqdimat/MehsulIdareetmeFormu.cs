@@ -258,7 +258,7 @@ namespace AzAgroPOS.Teqdimat
         public void ButunXetalariTemizle()
         {
             // Clear errors from all controls
-            foreach (Control control in this.Controls)
+            foreach (Control control in Controls)
             {
                 ClearErrorsRecursive(control);
             }
@@ -369,7 +369,7 @@ namespace AzAgroPOS.Teqdimat
             _paginationPanel.Controls.Add(_lblSehifeMelumati);
 
             // Panel-i formaya əlavə et
-            this.Controls.Add(_paginationPanel);
+            Controls.Add(_paginationPanel);
             _paginationPanel.BringToFront();
         }
 

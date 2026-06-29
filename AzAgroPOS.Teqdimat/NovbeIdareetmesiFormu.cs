@@ -65,7 +65,7 @@ public partial class NovbeIdareetmesiFormu : BazaForm, INovbeView
     /// <param name="acilisTarixi"></param>
     public void NovbeAciqdirGoster(string isci, DateTime acilisTarixi)
     {
-        if (this.InvokeRequired) { this.Invoke(() => NovbeAciqdirGoster(isci, acilisTarixi)); return; }
+        if (InvokeRequired) { Invoke(() => NovbeAciqdirGoster(isci, acilisTarixi)); return; }
         cardNovbeAc.Visible = false;
         cardNovbeBagla.Visible = true;
         lblNovbeMelumat.Text = $"{isci} tərəfindən {acilisTarixi:dd.MM.yyyy HH:mm}-də açılmış növbə aktivdir.";
@@ -77,7 +77,7 @@ public partial class NovbeIdareetmesiFormu : BazaForm, INovbeView
     /// </summary>
     public void NovbeBaxlidirGoster()
     {
-        if (this.InvokeRequired) { this.Invoke(() => NovbeBaxlidirGoster()); return; }
+        if (InvokeRequired) { Invoke(() => NovbeBaxlidirGoster()); return; }
         cardNovbeAc.Visible = true;
         cardNovbeBagla.Visible = false;
         txtFaktikiMebleg.Text = "0";
@@ -91,7 +91,7 @@ public partial class NovbeIdareetmesiFormu : BazaForm, INovbeView
     /// <param name="hesabatMetni"></param>
     public void HesabatGoster(string hesabatMetni)
     {
-        if (this.InvokeRequired) { this.Invoke(() => HesabatGoster(hesabatMetni)); return; }
+        if (InvokeRequired) { Invoke(() => HesabatGoster(hesabatMetni)); return; }
         MessageBox.Show(hesabatMetni, "Z-Hesabatı", MessageBoxButtons.OK, MessageBoxIcon.Information);
     }
 
@@ -122,7 +122,7 @@ public partial class NovbeIdareetmesiFormu : BazaForm, INovbeView
     public void ButunXetalariTemizle()
     {
         // Clear errors from all controls
-        foreach (Control control in this.Controls)
+        foreach (Control control in Controls)
         {
             ClearErrorsRecursive(control);
         }

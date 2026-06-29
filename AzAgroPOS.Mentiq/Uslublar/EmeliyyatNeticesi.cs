@@ -57,5 +57,5 @@ public class EmeliyyatNeticesi<T> : EmeliyyatNeticesi
     /// </summary>
     /// <param name="mesaj"></param>
     /// <returns></returns>
-    public new static EmeliyyatNeticesi<T> Ugursuz(string mesaj) => new() { UgurluDur = false, Mesaj = mesaj };
+    public static new EmeliyyatNeticesi<T> Ugursuz(string mesaj) => new() { UgurluDur = false, Mesaj = mesaj };
 }

@@ -87,8 +87,8 @@ public partial class AnbarFormu : BazaForm, IAnbarView
     private void ConfigureForm()
     {
         // Form ayarları
-        this.Text = AnbarSabitleri.UIMetinler.FormBasligi;
-        this.KeyPreview = true; // Klaviatura qısayolları üçün
+        Text = AnbarSabitleri.UIMetinler.FormBasligi;
+        KeyPreview = true; // Klaviatura qısayolları üçün
 
         // ErrorProvider ayarları
         errorProvider1.BlinkStyle = ErrorBlinkStyle.NeverBlink;
@@ -121,8 +121,8 @@ public partial class AnbarFormu : BazaForm, IAnbarView
     private void WireUpEventHandlers()
     {
         // Form events
-        this.Load += AnbarFormu_Load;
-        this.KeyDown += AnbarFormu_KeyDown;
+        Load += AnbarFormu_Load;
+        KeyDown += AnbarFormu_KeyDown;
 
         // Products grid events
         dgvMehsullar.SelectionChanged += DgvMehsullar_SelectionChanged;

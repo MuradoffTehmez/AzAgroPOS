@@ -31,7 +31,7 @@ public partial class AlisSifarisFormu : BazaForm, IAlisSifarisView
         _presenter = new AlisSifarisPresenter(this, alisManager, mehsulManager);
 
         // Form yüklənəndə hadisəni tetikləyirik
-        this.Load += (s, e) => FormYuklendi?.Invoke(s, e);
+        Load += (s, e) => FormYuklendi?.Invoke(s, e);
     }
 
     private void InitializeEnums()

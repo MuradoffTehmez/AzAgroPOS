@@ -37,10 +37,10 @@ namespace AzAgroPOS.Teqdimat
         private void WireUpEventHandlers()
         {
             // Form events
-            this.Load += (s, e) => FormYuklendi?.Invoke(this, EventArgs.Empty);
+            Load += (s, e) => FormYuklendi?.Invoke(this, EventArgs.Empty);
 
             // TabControl düzgün göstərilməsi üçün
-            this.Shown += KonfiqurasiyaFormu_Shown;
+            Shown += KonfiqurasiyaFormu_Shown;
 
             // Button events
             btnSaxla.Click += (s, e) => YaddaSaxlaClick?.Invoke(this, EventArgs.Empty);

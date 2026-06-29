@@ -47,7 +47,7 @@ namespace AzAgroPOS.Teqdimat
 
         private void btnBagla_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace AzAgroPOS.Teqdimat
         public void ButunXetalariTemizle()
         {
             // Clear errors from all controls
-            foreach (Control control in this.Controls)
+            foreach (Control control in Controls)
             {
                 ClearErrorsRecursive(control);
             }
