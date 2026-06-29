@@ -156,8 +156,8 @@ public class SatisManager
                 return EmeliyyatNeticesi<SatisQebzDto>.Ugursuz("Yanlış satış nömrəsi formatı.");
             }
 
-            // Eager Loading: Satışı SatisDetallari və onların Mehsul məlumatları ilə yüklə
-            Satis satis = await _unitOfWork.Satislar.GetirAsync(satisId, s => s.SatisDetallari.Select(d => d.Mehsul));
+            // Eager Loading: Include/ThenInclude zənciri ilə düzgün yüklənir
+            Satis satis = await _unitOfWork.Satislar.SatisDetallariIleBirlikdeGetirAsync(satisId);
             if (satis == null)
             {
                 Logger.XəbərdarlıqYaz("Satış tapılmadı");
