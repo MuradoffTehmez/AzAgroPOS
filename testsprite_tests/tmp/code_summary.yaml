@@ -1,0 +1,153 @@
+```yaml
+version: "2"
+
+name: AzAgroPOS
+
+type: desktop
+
+description: >
+  AzAgroPOS is a Windows Point of Sale (POS) application developed with
+  C# WinForms, .NET 8, Entity Framework Core, and Microsoft SQL Server.
+  The application manages sales, inventory, customers, suppliers,
+  barcode operations, receipt printing, and user authentication.
+
+tech_stack:
+  - C#
+  - .NET 8
+  - WinForms
+  - Entity Framework Core
+  - SQL Server
+
+architecture:
+  pattern: Layered Architecture
+  layers:
+    - Presentation (WinForms)
+    - Business Logic
+    - Data Access
+    - Database
+
+database:
+  provider: SQL Server
+  orm: Entity Framework Core
+
+modules:
+
+  - name: User Authentication
+    description: Authenticate users and manage permissions.
+    files:
+      - AzAgroPOS.Mentiq/Idareciler/TehlukesizlikManager.cs
+      - AzAgroPOS.Mentiq/Idareciler/IstifadeciManager.cs
+    test_scenarios:
+      - Login with valid credentials
+      - Login with invalid password
+      - Login with disabled account
+      - Empty username/password
+      - SQL Injection attempt
+      - Password hashing validation
+
+  - name: Product Management
+    description: Manage products and inventory.
+    files:
+      - AzAgroPOS.Mentiq/Idareciler/MehsulManager.cs
+    test_scenarios:
+      - Create product
+      - Update product
+      - Delete product
+      - Duplicate barcode validation
+      - Duplicate product code validation
+      - Search product
+      - Filter by category
+      - Stock quantity validation
+
+  - name: Category Management
+    description: Manage product categories.
+    files:
+      - AzAgroPOS.Mentiq/Idareciler/KateqoriyaManager.cs
+    test_scenarios:
+      - Add category
+      - Edit category
+      - Delete category
+      - Duplicate category name
+
+  - name: Sales Management
+    description: Create and manage sales transactions.
+    files:
+      - AzAgroPOS.Mentiq/Idareciler/SatisManager.cs
+    test_scenarios:
+      - Create sale
+      - Cancel sale
+      - Stock deduction
+      - Multiple payment items
+      - Discount calculation
+      - VAT calculation
+      - Cash payment
+      - Card payment
+      - Invalid barcode
+      - Receipt generation
+
+  - name: Customer Management
+    description: Manage customer information.
+    files:
+      - AzAgroPOS.Mentiq/Idareciler/MusteriManager.cs
+    test_scenarios:
+      - Create customer
+      - Update customer
+      - Delete customer
+      - Search customer
+
+  - name: Supplier Management
+    description: Manage supplier information.
+    files:
+      - AzAgroPOS.Mentiq/Idareciler/TedarukcuManager.cs
+    test_scenarios:
+      - Create supplier
+      - Update supplier
+      - Delete supplier
+      - Search supplier
+
+  - name: Inventory Management
+    description: Monitor warehouse stock.
+    test_scenarios:
+      - Stock increase
+      - Stock decrease
+      - Negative stock prevention
+      - Inventory consistency
+
+  - name: Receipt Printing
+    description: Print customer receipts.
+    devices:
+      - XPrinter XP-Q200
+    test_scenarios:
+      - Print receipt
+      - Printer offline
+      - Paper out
+      - Multiple copies
+
+  - name: Barcode Label Printing
+    description: Print barcode labels.
+    devices:
+      - XPrinter XP-350B
+    test_scenarios:
+      - Print label
+      - Invalid barcode
+      - Multiple labels
+
+quality:
+  unit_tests: true
+  integration_tests: true
+  ui_tests: true
+
+security:
+  authentication: true
+  authorization: true
+  password_hashing: true
+  sql_injection_protection: true
+
+expected_outputs:
+  - Stable desktop application
+  - Accurate inventory calculations
+  - Secure authentication
+  - Reliable sales transactions
+  - Correct receipt printing
+  - Correct barcode label printing
+```
