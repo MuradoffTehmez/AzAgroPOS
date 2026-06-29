@@ -1,4 +1,4 @@
-﻿// Fayl: AzAgroPOS.Teqdimat/BarkodCapiFormu.cs
+// Fayl: AzAgroPOS.Teqdimat/BarkodCapiFormu.cs
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
@@ -20,6 +20,16 @@ public partial class BarkodCapiFormu : BazaForm, IBarkodCapiView
         StilVerDataGridView(dgvAxtarisNeticeleri);
         StilVerDataGridView(dgvCapSiyahisi);
         _capSiyahisiBindingList = new BindingList<BarkodEtiketDto>();
+        
+        dgvCapSiyahisi.AutoGenerateColumns = false;
+        dgvCapSiyahisi.Columns.Add(new DataGridViewTextBoxColumn { Name = "MehsulId", DataPropertyName = "MehsulId", Visible = false });
+        dgvCapSiyahisi.Columns.Add(new DataGridViewTextBoxColumn { Name = "MehsulAdi", DataPropertyName = "MehsulAdi", HeaderText = "Məhsul Adı" });
+        dgvCapSiyahisi.Columns.Add(new DataGridViewTextBoxColumn { Name = "Barkod", DataPropertyName = "Barkod", HeaderText = "Barkod" });
+        var qiymetCol = new DataGridViewTextBoxColumn { Name = "Qiymet", DataPropertyName = "Qiymet", HeaderText = "Qiymət" };
+        qiymetCol.DefaultCellStyle.Format = "N2";
+        dgvCapSiyahisi.Columns.Add(qiymetCol);
+        dgvCapSiyahisi.Columns.Add(new DataGridViewTextBoxColumn { Name = "CapEdilecekSay", DataPropertyName = "CapEdilecekSay", HeaderText = "Çap Sayı" });
+        
         dgvCapSiyahisi.DataSource = _capSiyahisiBindingList;
     }
 
@@ -31,7 +41,16 @@ public partial class BarkodCapiFormu : BazaForm, IBarkodCapiView
 
     public void AxtarisNeticeleriniGoster(List<MehsulDto> mehsullar)
     {
-        dgvAxtarisNeticeleri.DataSource = mehsullar;
+        if (dgvAxtarisNeticeleri.Columns.Count == 0)
+        {
+            dgvAxtarisNeticeleri.AutoGenerateColumns = false;
+            dgvAxtarisNeticeleri.Columns.Add(new DataGridViewTextBoxColumn { Name = "Id", DataPropertyName = "Id", Visible = false });
+            dgvAxtarisNeticeleri.Columns.Add(new DataGridViewTextBoxColumn { Name = "Ad", DataPropertyName = "Ad", HeaderText = "Ad" });
+            dgvAxtarisNeticeleri.Columns.Add(new DataGridViewTextBoxColumn { Name = "StokKodu", DataPropertyName = "StokKodu", HeaderText = "Stok Kodu" });
+            dgvAxtarisNeticeleri.Columns.Add(new DataGridViewTextBoxColumn { Name = "Barkod", DataPropertyName = "Barkod", HeaderText = "Barkod" });
+        }
+        
+        dgvAxtarisNeticeleri.DataSource = new System.ComponentModel.BindingList<MehsulDto>(mehsullar);
         dgvAxtarisNeticeleri.Visible = true;
         lblAxtarisXeta.Visible = false;
     }

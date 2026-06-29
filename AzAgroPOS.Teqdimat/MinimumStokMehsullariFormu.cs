@@ -26,22 +26,25 @@ public partial class MinimumStokMehsullariFormu : BazaForm, IMinimumStokMehsulla
     public void MinimumStokMehsullariniGoster(List<MehsulDto> mehsullar)
     {
         dgvMinimumStokMehsullari.SelectionChanged -= dgvMinimumStokMehsullari_SelectionChanged;
-        dgvMinimumStokMehsullari.DataSource = mehsullar;
-        dgvMinimumStokMehsullari.SelectionChanged += dgvMinimumStokMehsullari_SelectionChanged;
-
-        if (dgvMinimumStokMehsullari.Columns.Count > 0)
+        
+        if (dgvMinimumStokMehsullari.Columns.Count == 0)
         {
-            dgvMinimumStokMehsullari.Columns["Id"].Visible = false;
-            dgvMinimumStokMehsullari.Columns["Ad"].HeaderText = "Məhsulun Adı";
-            dgvMinimumStokMehsullari.Columns["StokKodu"].HeaderText = "Stok Kodu";
-            dgvMinimumStokMehsullari.Columns["Barkod"].HeaderText = "Barkod";
-            dgvMinimumStokMehsullari.Columns["MovcudSay"].HeaderText = "Mövcud Say";
-            dgvMinimumStokMehsullari.Columns["MinimumStok"].HeaderText = "Minimum Stok";
-            dgvMinimumStokMehsullari.Columns["OlcuVahidiStr"].HeaderText = "Ölçü Vahidi";
-            dgvMinimumStokMehsullari.Columns["KateqoriyaAdi"].HeaderText = "Kateqoriya";
-            dgvMinimumStokMehsullari.Columns["BrendAdi"].HeaderText = "Brend";
-            dgvMinimumStokMehsullari.Columns["TedarukcuAdi"].HeaderText = "Tədarükçü";
+            dgvMinimumStokMehsullari.AutoGenerateColumns = false;
+            
+            dgvMinimumStokMehsullari.Columns.Add(new DataGridViewTextBoxColumn { Name = "Id", DataPropertyName = "Id", Visible = false });
+            dgvMinimumStokMehsullari.Columns.Add(new DataGridViewTextBoxColumn { Name = "Ad", DataPropertyName = "Ad", HeaderText = "Məhsulun Adı" });
+            dgvMinimumStokMehsullari.Columns.Add(new DataGridViewTextBoxColumn { Name = "StokKodu", DataPropertyName = "StokKodu", HeaderText = "Stok Kodu" });
+            dgvMinimumStokMehsullari.Columns.Add(new DataGridViewTextBoxColumn { Name = "Barkod", DataPropertyName = "Barkod", HeaderText = "Barkod" });
+            dgvMinimumStokMehsullari.Columns.Add(new DataGridViewTextBoxColumn { Name = "MovcudSay", DataPropertyName = "MovcudSay", HeaderText = "Mövcud Say" });
+            dgvMinimumStokMehsullari.Columns.Add(new DataGridViewTextBoxColumn { Name = "MinimumStok", DataPropertyName = "MinimumStok", HeaderText = "Minimum Stok" });
+            dgvMinimumStokMehsullari.Columns.Add(new DataGridViewTextBoxColumn { Name = "OlcuVahidiStr", DataPropertyName = "OlcuVahidiStr", HeaderText = "Ölçü Vahidi" });
+            dgvMinimumStokMehsullari.Columns.Add(new DataGridViewTextBoxColumn { Name = "KateqoriyaAdi", DataPropertyName = "KateqoriyaAdi", HeaderText = "Kateqoriya" });
+            dgvMinimumStokMehsullari.Columns.Add(new DataGridViewTextBoxColumn { Name = "BrendAdi", DataPropertyName = "BrendAdi", HeaderText = "Brend" });
+            dgvMinimumStokMehsullari.Columns.Add(new DataGridViewTextBoxColumn { Name = "TedarukcuAdi", DataPropertyName = "TedarukcuAdi", HeaderText = "Tədarükçü" });
         }
+
+        dgvMinimumStokMehsullari.DataSource = new System.ComponentModel.BindingList<MehsulDto>(mehsullar);
+        dgvMinimumStokMehsullari.SelectionChanged += dgvMinimumStokMehsullari_SelectionChanged;
     }
 
     public void MesajGoster(string mesaj, bool xetadir = false)

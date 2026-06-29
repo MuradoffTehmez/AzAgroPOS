@@ -66,38 +66,31 @@ public partial class AnbarQaliqHesabatFormu : BazaForm, IAnbarQaliqHesabatView
             return;
         }
 
-        dgvHesabat.DataSource = hesabat;
-
-        // Sütun başlıqlarını tərcümə et
-        if (dgvHesabat.Columns.Contains("StokKodu"))
+        if (dgvHesabat.Columns.Count == 0)
         {
-            dgvHesabat.Columns["StokKodu"].HeaderText = "Stok Kodu";
+            dgvHesabat.AutoGenerateColumns = false;
+            
+            dgvHesabat.Columns.Add(new DataGridViewTextBoxColumn { Name = "StokKodu", DataPropertyName = "StokKodu", HeaderText = "Stok Kodu" });
+            dgvHesabat.Columns.Add(new DataGridViewTextBoxColumn { Name = "MehsulAdi", DataPropertyName = "MehsulAdi", HeaderText = "Məhsul Adı" });
+            
+            var qtyCol = new DataGridViewTextBoxColumn { Name = "MovcudMiqdar", DataPropertyName = "MovcudMiqdar", HeaderText = "Mövcud Miqdar" };
+            qtyCol.DefaultCellStyle.Format = "N2";
+            dgvHesabat.Columns.Add(qtyCol);
+            
+            var minCol = new DataGridViewTextBoxColumn { Name = "MinimumSay", DataPropertyName = "MinimumSay", HeaderText = "Min. Say" };
+            minCol.DefaultCellStyle.Format = "N2";
+            dgvHesabat.Columns.Add(minCol);
+            
+            var buyCol = new DataGridViewTextBoxColumn { Name = "AlisQiymeti", DataPropertyName = "AlisQiymeti", HeaderText = "Alış Qiyməti" };
+            buyCol.DefaultCellStyle.Format = "N2";
+            dgvHesabat.Columns.Add(buyCol);
+            
+            var sellCol = new DataGridViewTextBoxColumn { Name = "SatisQiymeti", DataPropertyName = "SatisQiymeti", HeaderText = "Satış Qiyməti" };
+            sellCol.DefaultCellStyle.Format = "N2";
+            dgvHesabat.Columns.Add(sellCol);
         }
 
-        if (dgvHesabat.Columns.Contains("MehsulAdi"))
-        {
-            dgvHesabat.Columns["MehsulAdi"].HeaderText = "Məhsul Adı";
-        }
-
-        if (dgvHesabat.Columns.Contains("MovcudMiqdar"))
-        {
-            dgvHesabat.Columns["MovcudMiqdar"].HeaderText = "Mövcud Miqdar";
-        }
-
-        if (dgvHesabat.Columns.Contains("MinimumSay"))
-        {
-            dgvHesabat.Columns["MinimumSay"].HeaderText = "Min. Say";
-        }
-
-        if (dgvHesabat.Columns.Contains("AlisQiymeti"))
-        {
-            dgvHesabat.Columns["AlisQiymeti"].HeaderText = "Alış Qiyməti";
-        }
-
-        if (dgvHesabat.Columns.Contains("SatisQiymeti"))
-        {
-            dgvHesabat.Columns["SatisQiymeti"].HeaderText = "Satış Qiyməti";
-        }
+        dgvHesabat.DataSource = new System.ComponentModel.BindingList<AnbarQaliqDetayDto>(hesabat);
 
         lblMesaj.Visible = false;
         dgvHesabat.Visible = true;

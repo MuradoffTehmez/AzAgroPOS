@@ -178,7 +178,7 @@ public class TemirPresenter
         using EhtiyatHissəsiFormu form = new(_mehsulManager);
         if (form.ShowDialog() == DialogResult.OK)
         {
-            List<EhtiyatHissəsiDto> ehtiyatHissələri = form.EhtiyatHissələri;
+            List<EhtiyatHissəsiDto> ehtiyatHissələri = form.EhtiyatHissələri.ToList();
             decimal ümumiMəbləğ = ehtiyatHissələri.Sum(e => e.ÜmumiMəbləğ);
 
             // Təmir xərcini yeniləyirik

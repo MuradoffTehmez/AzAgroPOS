@@ -55,8 +55,7 @@ public partial class HesabatFormu : BazaForm, IHesabatView
                  s.OdenisMetodu == odenisTipi))
             .ToList();
 
-        dgvSatislar.DataSource = null;
-        dgvSatislar.DataSource = _filtreliSatislar;
+        dgvSatislar.DataSource = new System.ComponentModel.BindingList<GunlukSatisDetayDto>(_filtreliSatislar);
 
         // Sutun basliqlari yenile
         SutunBasliqlariniDuzelt();
@@ -105,12 +104,11 @@ public partial class HesabatFormu : BazaForm, IHesabatView
             txtAxtaris.Text = string.Empty;
             cmbOdenisTipiFiltr.SelectedIndex = 0;
 
-            // DataGridView-a melumatlari yukle
-            dgvSatislar.DataSource = null;
-            dgvSatislar.DataSource = hesabat.SatislarinSiyahisi;
-
             // Sutun basliqlari
             SutunBasliqlariniDuzelt();
+
+            // DataGridView-a melumatlari yukle
+            dgvSatislar.DataSource = new System.ComponentModel.BindingList<GunlukSatisDetayDto>(hesabat.SatislarinSiyahisi);
 
             // Filtrelenmis statistikalar
             lblFiltreliSay.Text = $"Gosterilen: {hesabat.SatislarinSiyahisi?.Count ?? 0} / {hesabat.SatislarinSiyahisi?.Count ?? 0}";
@@ -129,32 +127,26 @@ public partial class HesabatFormu : BazaForm, IHesabatView
 
     private void SutunBasliqlariniDuzelt()
     {
-        if (dgvSatislar.Columns.Contains("SatisId"))
-        {
-            dgvSatislar.Columns["SatisId"].HeaderText = "Satis No";
-        }
+        if (dgvSatislar.Columns.Count > 0) return;
 
-        if (dgvSatislar.Columns.Contains("SatisVaxti"))
-        {
-            dgvSatislar.Columns["SatisVaxti"].HeaderText = "Satis Vaxti";
-        }
-
-        if (dgvSatislar.Columns.Contains("CemiMebleg"))
-        {
-            dgvSatislar.Columns["CemiMebleg"].HeaderText = "Cemi Mebleg";
-        }
-
-        if (dgvSatislar.Columns.Contains("OdenisTipi"))
-        {
-            dgvSatislar.Columns["OdenisTipi"].HeaderText = "Odenis Tipi";
-        }
-
-        if (dgvSatislar.Columns.Contains("KassirAdi"))
-        {
-            dgvSatislar.Columns["KassirAdi"].HeaderText = "Kassir";
-        }
+        dgvSatislar.AutoGenerateColumns = false;
+        
+        dgvSatislar.Columns.Add(new DataGridViewTextBoxColumn { Name = "SatisId", DataPropertyName = "SatisId", HeaderText = "Satis No" });
+        
+        var dateCol = new DataGridViewTextBoxColumn { Name = "SatisVaxti", DataPropertyName = "SatisVaxti", HeaderText = "Satis Vaxti" };
+        dateCol.DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
+        dgvSatislar.Columns.Add(dateCol);
+        
+        var sumCol = new DataGridViewTextBoxColumn { Name = "CemiMebleg", DataPropertyName = "CemiMebleg", HeaderText = "Cemi Mebleg" };
+        sumCol.DefaultCellStyle.Format = "N2";
+        dgvSatislar.Columns.Add(sumCol);
+        
+        dgvSatislar.Columns.Add(new DataGridViewTextBoxColumn { Name = "OdenisTipi", DataPropertyName = "OdenisMetodu", HeaderText = "Odenis Tipi" });
+        dgvSatislar.Columns.Add(new DataGridViewTextBoxColumn { Name = "MusteriAdi", DataPropertyName = "MusteriAdi", HeaderText = "Musteri Adi" });
+        dgvSatislar.Columns.Add(new DataGridViewTextBoxColumn { Name = "IstifadeciAdi", DataPropertyName = "IstifadeciAdi", HeaderText = "Istifadeci Adi" });
     }
 
+    
     public void XetaMesajiGoster(string mesaj)
     {
         if (InvokeRequired)
@@ -176,7 +168,12 @@ public partial class HesabatFormu : BazaForm, IHesabatView
         pnlXulase.Visible = false;
         dgvSatislar.Visible = false;
         lblMesaj.Visible = false;
-        dgvSatislar.DataSource = null;
+        
+        if (dgvSatislar.DataSource is System.ComponentModel.BindingList<GunlukSatisDetayDto> currentList)
+        {
+            currentList.Clear();
+        }
+        
         btnExcelIxrac.Enabled = false;
         _cariHesabat = null;
     }

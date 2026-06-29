@@ -1,4 +1,4 @@
-﻿// Fayl: AzAgroPOS.Teqdimat/NisyeIdareetmeFormu.cs
+// Fayl: AzAgroPOS.Teqdimat/NisyeIdareetmeFormu.cs
 
 // using-lər
 using AzAgroPOS.Mentiq.DTOs;
@@ -49,35 +49,50 @@ public partial class NisyeIdareetmeFormu : BazaForm, INisyeView
 
     public void MusterileriGoster(List<MusteriDto> musteriler)
     {
-        dgvMusteriler.DataSource = musteriler;
-        // Sütunları konfiqurasiya et
-        if (dgvMusteriler.Columns.Count > 0)
+        if (dgvMusteriler.Columns.Count == 0)
         {
-            // İstənilən sütunları gizlət
-            if (dgvMusteriler.Columns.Contains("Id"))
-            {
-                dgvMusteriler.Columns["Id"].Visible = false;
-            }
+            dgvMusteriler.AutoGenerateColumns = false;
+            
+            dgvMusteriler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Id", DataPropertyName = "Id", Visible = false });
+            dgvMusteriler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Unvan", DataPropertyName = "Unvan", Visible = false });
+            dgvMusteriler.Columns.Add(new DataGridViewTextBoxColumn { Name = "TamAd", DataPropertyName = "TamAd", HeaderText = "Tam Ad" });
+            dgvMusteriler.Columns.Add(new DataGridViewTextBoxColumn { Name = "TelefonNomresi", DataPropertyName = "TelefonNomresi", HeaderText = "Telefon" });
+            
+            var debtCol = new DataGridViewTextBoxColumn { Name = "UmumiBorc", DataPropertyName = "UmumiBorc", HeaderText = "Ümumi Borc" };
+            debtCol.DefaultCellStyle.Format = "N2";
+            dgvMusteriler.Columns.Add(debtCol);
+            
+            var limitCol = new DataGridViewTextBoxColumn { Name = "KreditLimiti", DataPropertyName = "KreditLimiti", HeaderText = "Kredit Limiti" };
+            limitCol.DefaultCellStyle.Format = "N2";
+            dgvMusteriler.Columns.Add(limitCol);
         }
+
+        dgvMusteriler.DataSource = new System.ComponentModel.BindingList<MusteriDto>(musteriler);
     }
 
     public void MusteriHereketleriniGoster(List<NisyeHereketiDto> hereketler)
     {
-        dgvNisyeHereketleri.DataSource = hereketler;
-        // Sütunları konfiqurasiya et
-        if (dgvNisyeHereketleri.Columns.Count > 0)
+        if (dgvNisyeHereketleri.Columns.Count == 0)
         {
-            // İstənilən sütunları gizlət
-            if (dgvNisyeHereketleri.Columns.Contains("Id"))
-            {
-                dgvNisyeHereketleri.Columns["Id"].Visible = false;
-            }
-
-            if (dgvNisyeHereketleri.Columns.Contains("MusteriId"))
-            {
-                dgvNisyeHereketleri.Columns["MusteriId"].Visible = false;
-            }
+            dgvNisyeHereketleri.AutoGenerateColumns = false;
+            
+            dgvNisyeHereketleri.Columns.Add(new DataGridViewTextBoxColumn { Name = "Id", DataPropertyName = "Id", Visible = false });
+            dgvNisyeHereketleri.Columns.Add(new DataGridViewTextBoxColumn { Name = "MusteriId", DataPropertyName = "MusteriId", Visible = false });
+            
+            var dateCol = new DataGridViewTextBoxColumn { Name = "Tarix", DataPropertyName = "Tarix", HeaderText = "Tarix" };
+            dateCol.DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
+            dgvNisyeHereketleri.Columns.Add(dateCol);
+            
+            var sumCol = new DataGridViewTextBoxColumn { Name = "Mebleg", DataPropertyName = "Mebleg", HeaderText = "Məbləğ" };
+            sumCol.DefaultCellStyle.Format = "N2";
+            dgvNisyeHereketleri.Columns.Add(sumCol);
+            
+            dgvNisyeHereketleri.Columns.Add(new DataGridViewTextBoxColumn { Name = "HereketNovuStr", DataPropertyName = "HereketNovuStr", HeaderText = "Növü" });
+            dgvNisyeHereketleri.Columns.Add(new DataGridViewTextBoxColumn { Name = "Qeyd", DataPropertyName = "Qeyd", HeaderText = "Qeyd" });
+            dgvNisyeHereketleri.Columns.Add(new DataGridViewTextBoxColumn { Name = "IstifadeciAdi", DataPropertyName = "IstifadeciAdi", HeaderText = "İstifadəçi" });
         }
+
+        dgvNisyeHereketleri.DataSource = new System.ComponentModel.BindingList<NisyeHereketiDto>(hereketler);
     }
 
     public void MesajGoster(string mesaj, string basliq)

@@ -47,9 +47,11 @@ public partial class MehsulSatisHesabatFormu : BazaForm, IMehsulSatisHesabatView
                 return;
             }
 
+            // Sutun basliqlari
+            SutunlarıDuzelt();
+            
             // DataGridView-e melumatlari yukle
-            dgvHesabat.DataSource = null; // Evvelceki datasource-u temizle
-            dgvHesabat.DataSource = hesabat;
+            dgvHesabat.DataSource = new System.ComponentModel.BindingList<MehsulUzreSatisDetayDto>(hesabat);
 
             // Sutun basliqlari
             SutunlarıDuzelt();
@@ -72,25 +74,24 @@ public partial class MehsulSatisHesabatFormu : BazaForm, IMehsulSatisHesabatView
 
     private void SutunlarıDuzelt()
     {
-        if (dgvHesabat.Columns.Contains("MehsulAdi"))
-        {
-            dgvHesabat.Columns["MehsulAdi"].HeaderText = "Mehsul Adi";
-        }
+        if (dgvHesabat.Columns.Count > 0) return;
 
-        if (dgvHesabat.Columns.Contains("CemiSatilanMiqdar"))
-        {
-            dgvHesabat.Columns["CemiSatilanMiqdar"].HeaderText = "Satilan Miqdar";
-        }
-
-        if (dgvHesabat.Columns.Contains("CemiMebleg"))
-        {
-            dgvHesabat.Columns["CemiMebleg"].HeaderText = "Cemi Mebleg";
-        }
-
-        if (dgvHesabat.Columns.Contains("OrtalamaQiymet"))
-        {
-            dgvHesabat.Columns["OrtalamaQiymet"].HeaderText = "Ortalama Qiymet";
-        }
+        dgvHesabat.AutoGenerateColumns = false;
+        
+        dgvHesabat.Columns.Add(new DataGridViewTextBoxColumn { Name = "MehsulId", DataPropertyName = "MehsulId", Visible = false });
+        dgvHesabat.Columns.Add(new DataGridViewTextBoxColumn { Name = "MehsulAdi", DataPropertyName = "MehsulAdi", HeaderText = "Mehsul Adi" });
+        
+        var qtyCol = new DataGridViewTextBoxColumn { Name = "CemiSatilanMiqdar", DataPropertyName = "CemiSatilanMiqdar", HeaderText = "Satilan Miqdar" };
+        qtyCol.DefaultCellStyle.Format = "N2";
+        dgvHesabat.Columns.Add(qtyCol);
+        
+        var sumCol = new DataGridViewTextBoxColumn { Name = "CemiMebleg", DataPropertyName = "CemiMebleg", HeaderText = "Cemi Mebleg" };
+        sumCol.DefaultCellStyle.Format = "N2";
+        dgvHesabat.Columns.Add(sumCol);
+        
+        var avgCol = new DataGridViewTextBoxColumn { Name = "OrtalamaQiymet", DataPropertyName = "OrtalamaQiymet", HeaderText = "Ortalama Qiymet" };
+        avgCol.DefaultCellStyle.Format = "N2";
+        dgvHesabat.Columns.Add(avgCol);
     }
 
     public void MesajGoster(string mesaj)

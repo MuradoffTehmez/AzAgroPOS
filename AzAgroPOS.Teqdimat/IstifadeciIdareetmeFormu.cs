@@ -1,4 +1,4 @@
-﻿// Fayl: AzAgroPOS.Teqdimat/IstifadeciIdareetmeFormu.cs
+// Fayl: AzAgroPOS.Teqdimat/IstifadeciIdareetmeFormu.cs
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
@@ -38,7 +38,18 @@ public partial class IstifadeciIdareetmeFormu : BazaForm, IIstifadeciView
         // Cədvəli yeniləmədən əvvəl seçimi qorumaq üçün
         int secilmisId = string.IsNullOrEmpty(txtId.Text) ? -1 : int.Parse(txtId.Text);
 
-        dgvIstifadeciler.DataSource = istifadeciler;
+        if (dgvIstifadeciler.Columns.Count == 0)
+        {
+            dgvIstifadeciler.AutoGenerateColumns = false;
+            
+            dgvIstifadeciler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Id", DataPropertyName = "Id", Visible = false });
+            dgvIstifadeciler.Columns.Add(new DataGridViewTextBoxColumn { Name = "RolId", DataPropertyName = "RolId", Visible = false });
+            dgvIstifadeciler.Columns.Add(new DataGridViewTextBoxColumn { Name = "IstifadeciAdi", DataPropertyName = "IstifadeciAdi", HeaderText = "İstifadəçi Adı" });
+            dgvIstifadeciler.Columns.Add(new DataGridViewTextBoxColumn { Name = "TamAd", DataPropertyName = "TamAd", HeaderText = "Tam Ad" });
+            dgvIstifadeciler.Columns.Add(new DataGridViewTextBoxColumn { Name = "RolAdi", DataPropertyName = "RolAdi", HeaderText = "Rol" });
+        }
+
+        dgvIstifadeciler.DataSource = new System.ComponentModel.BindingList<IstifadeciDto>(istifadeciler);
 
         // Seçimi bərpa etməyə çalışırıq
         if (secilmisId != -1)
@@ -54,15 +65,6 @@ public partial class IstifadeciIdareetmeFormu : BazaForm, IIstifadeciView
         }
 
         dgvIstifadeciler.SelectionChanged += dgvIstifadeciler_SelectionChanged;
-
-        if (dgvIstifadeciler.Columns.Count > 0)
-        {
-            dgvIstifadeciler.Columns["Id"].Visible = false;
-            dgvIstifadeciler.Columns["RolId"].Visible = false;
-            dgvIstifadeciler.Columns["IstifadeciAdi"].HeaderText = "İstifadəçi Adı";
-            dgvIstifadeciler.Columns["TamAd"].HeaderText = "Tam Ad";
-            dgvIstifadeciler.Columns["RolAdi"].HeaderText = "Rol";
-        }
     }
 
     public void RollariGoster(List<Rol> rollar)
