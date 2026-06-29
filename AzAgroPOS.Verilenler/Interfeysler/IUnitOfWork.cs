@@ -238,4 +238,11 @@ public interface IUnitOfWork : IAsyncDisposable
     /// Aktiv olan verilənlər bazası tranzaksiyasını ləğv edir (rollback).
     /// </summary>
     Task RollbackTransactionAsync();
+
+    /// <summary>
+    /// SqlServerRetryingExecutionStrategy ilə uyğun tranzaksiya blokunu icra edir.
+    /// Diqqət: Manual BeginTransactionAsync() çağırışları SqlServer retry strategy ilə uyğun deyil.
+    /// Bütün tranzaksiyalı əməliyyatlar bu metod vasitəsilə icra olunmalıdır.
+    /// </summary>
+    Task<T> ExecuteInTransactionAsync<T>(Func<Task<T>> operation);
 }

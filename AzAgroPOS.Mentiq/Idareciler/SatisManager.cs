@@ -58,77 +58,72 @@ public class SatisManager
                 }
             }
 
-            // Tranzaksiyanı başladırıq
-            await _unitOfWork.BeginTransactionAsync();
-
-            Satis satis = new()
+            // ExecuteInTransactionAsync — SqlServerRetryingExecutionStrategy ilə uyğun tranzaksiya
+            return await _unitOfWork.ExecuteInTransactionAsync(async () =>
             {
-                Tarix = System.DateTime.Now,
-                OdenisMetodu = satisDto.OdenisMetodu,
-                UmumiMebleg = satisDto.SebetElementleri.Sum(e => e.UmumiMebleg),
-                NovbeId = satisDto.NovbeId,
-                MusteriId = satisDto.MusteriId
-            };
-
-            await _unitOfWork.Satislar.ElaveEtAsync(satis);
-            await _unitOfWork.EmeliyyatiTesdiqleAsync(); // Satış ID-sini əldə etmək üçün
-
-            // Satış detallarını əlavə et və stok hərəkətlərini qeydə al
-            foreach (SatisSebetiElementiDto element in satisDto.SebetElementleri)
-            {
-                satis.SatisDetallari.Add(new SatisDetali
+                Satis satis = new()
                 {
-                    MehsulId = element.MehsulId,
-                    Miqdar = element.Miqdar,
-                    Qiymet = element.VahidinQiymeti,
-                    UmumiMebleg = element.Miqdar * element.VahidinQiymeti
-                });
+                    Tarix = System.DateTime.Now,
+                    OdenisMetodu = satisDto.OdenisMetodu,
+                    UmumiMebleg = satisDto.SebetElementleri.Sum(e => e.UmumiMebleg),
+                    NovbeId = satisDto.NovbeId,
+                    MusteriId = satisDto.MusteriId
+                };
 
-                // Stok hərəkətini qeydə al (Çıxış)
-                EmeliyyatNeticesi<int> stokNeticesi = await _stokHareketiManager.StokHareketiQeydeAlAsync(
-                    StokHareketTipi.Cixis,
-                    SenedNovu.Satis,
-                    satis.Id,
-                    element.MehsulId,
-                    (int)element.Miqdar,
-                    element.VahidinQiymeti, // Alış qiyməti (satışda bu satış qiymətidir, amma metod parametr olaraq istəyir)
-                    element.VahidinQiymeti, // Satış qiyməti
-                    $"Satış: ID={satis.Id}",
-                    null // İstifadəçi ID-si
-                );
+                await _unitOfWork.Satislar.ElaveEtAsync(satis);
+                await _unitOfWork.EmeliyyatiTesdiqleAsync(); // Satış ID-sini əldə etmək üçün
 
-                if (!stokNeticesi.UgurluDur)
+                // Satış detallarını əlavə et və stok hərəkətlərini qeydə al
+                foreach (SatisSebetiElementiDto element in satisDto.SebetElementleri)
                 {
-                    Logger.XəbərdarlıqYaz($"Stok hərəkəti qeydə alınarkən xəta: {stokNeticesi.Mesaj}");
-                    await _unitOfWork.RollbackTransactionAsync();
-                    return EmeliyyatNeticesi<Satis>.Ugursuz($"Stok hərəkəti qeydə alınarkən xəta: {stokNeticesi.Mesaj}");
+                    satis.SatisDetallari.Add(new SatisDetali
+                    {
+                        MehsulId = element.MehsulId,
+                        Miqdar = element.Miqdar,
+                        Qiymet = element.VahidinQiymeti,
+                        UmumiMebleg = element.Miqdar * element.VahidinQiymeti
+                    });
+
+                    // Stok hərəkətini qeydə al (Çıxış)
+                    EmeliyyatNeticesi<int> stokNeticesi = await _stokHareketiManager.StokHareketiQeydeAlAsync(
+                        StokHareketTipi.Cixis,
+                        SenedNovu.Satis,
+                        satis.Id,
+                        element.MehsulId,
+                        (int)element.Miqdar,
+                        element.VahidinQiymeti,
+                        element.VahidinQiymeti,
+                        $"Satış: ID={satis.Id}",
+                        null
+                    );
+
+                    if (!stokNeticesi.UgurluDur)
+                    {
+                        Logger.XəbərdarlıqYaz($"Stok hərəkəti qeydə alınarkən xəta: {stokNeticesi.Mesaj}");
+                        throw new InvalidOperationException($"Stok hərəkəti qeydə alınarkən xəta: {stokNeticesi.Mesaj}");
+                    }
                 }
-            }
 
-            // Əgər nisyədirsə, borcu qeydə al
-            if (satis.OdenisMetodu == OdenisMetodu.Nisyə)
-            {
-                EmeliyyatNeticesi nisyeNetice = await _nisyeManager.NisyeyeSatisElaveEtAsync(satis);
-                if (!nisyeNetice.UgurluDur)
+                // Əgər nisyədirsə, borcu qeydə al
+                if (satis.OdenisMetodu == OdenisMetodu.Nisyə)
                 {
-                    Logger.XetaYaz(new Exception(nisyeNetice.Mesaj), "Nisyə qeydiyatı zamanı xəta");
-                    await _unitOfWork.RollbackTransactionAsync();
-                    return EmeliyyatNeticesi<Satis>.Ugursuz($"Nisyə qeydiyatı zamanı xəta: {nisyeNetice.Mesaj}");
+                    EmeliyyatNeticesi nisyeNetice = await _nisyeManager.NisyeyeSatisElaveEtAsync(satis);
+                    if (!nisyeNetice.UgurluDur)
+                    {
+                        Logger.XetaYaz(new Exception(nisyeNetice.Mesaj), "Nisyə qeydiyatı zamanı xəta");
+                        throw new InvalidOperationException($"Nisyə qeydiyatı zamanı xəta: {nisyeNetice.Mesaj}");
+                    }
                 }
-            }
 
-            // Vacib: Bütün dəyişiklikləri təsdiqlə
-            await _unitOfWork.EmeliyyatiTesdiqleAsync();
+                // Vacib: Bütün dəyişiklikləri təsdiqlə
+                await _unitOfWork.EmeliyyatiTesdiqleAsync();
 
-            // Tranzaksiyanı tamamlayırıq
-            await _unitOfWork.CommitTransactionAsync();
-
-            Logger.MelumatYaz("Satış uğurla yaradıldı");
-            return EmeliyyatNeticesi<Satis>.Ugurlu(satis);
+                Logger.MelumatYaz("Satış uğurla yaradıldı");
+                return EmeliyyatNeticesi<Satis>.Ugurlu(satis);
+            });
         }
         catch (Exception ex)
         {
-            await _unitOfWork.RollbackTransactionAsync();
             Logger.XetaYaz(ex, "Satış yaratma əməliyyatı zamanı istisna baş verdi");
             return EmeliyyatNeticesi<Satis>.Ugursuz("Satış yaratma əməliyyatı zamanı istisna baş verdi: " + ex.Message);
         }
@@ -214,109 +209,100 @@ public class SatisManager
                 return EmeliyyatNeticesi<bool>.Ugursuz("Satış tapılmadı.");
             }
 
-            // Tranzaksiyanı başladırıq
-            await _unitOfWork.BeginTransactionAsync();
-
-            // Qaytarma obyektini yarat
-            Qaytarma qaytarma = new()
+            // ExecuteInTransactionAsync — SqlServerRetryingExecutionStrategy ilə uyğun tranzaksiya
+            return await _unitOfWork.ExecuteInTransactionAsync(async () =>
             {
-                Tarix = DateTime.Now,
-                SatisId = satisId,
-                Sebeb = sebeb,
-                KassirId = kassirId,
-                UmumiMebleg = qaytarilanMehsullar.Sum(e => e.UmumiMebleg)
-            };
-
-            // Qaytarma qeydini əlavə et
-            await _unitOfWork.Qaytarmalar.ElaveEtAsync(qaytarma);
-            await _unitOfWork.EmeliyyatiTesdiqleAsync(); // Qaytarma ID-sini əldə etmək üçün
-
-            // Qaytarma detallarını əlavə et və stok hərəkətlərini qeydə al
-            foreach (SatisSebetiElementiDto element in qaytarilanMehsullar)
-            {
-                // Qaytarma detallarını əlavə et
-                qaytarma.QaytarmaDetallari.Add(new QaytarmaDetali
+                // Qaytarma obyektini yarat
+                Qaytarma qaytarma = new()
                 {
-                    MehsulId = element.MehsulId,
-                    Miqdar = element.Miqdar,
-                    Qiymet = element.VahidinQiymeti,
-                    UmumiMebleg = element.UmumiMebleg
-                });
+                    Tarix = DateTime.Now,
+                    SatisId = satisId,
+                    Sebeb = sebeb,
+                    KassirId = kassirId,
+                    UmumiMebleg = qaytarilanMehsullar.Sum(e => e.UmumiMebleg)
+                };
 
-                // Stok hərəkətini qeydə al (Daxilolma - qaytarma)
-                EmeliyyatNeticesi<int> stokNeticesi = await _stokHareketiManager.StokHareketiQeydeAlAsync(
-                    StokHareketTipi.Daxilolma,
-                    SenedNovu.Qaytarma,
-                    qaytarma.Id,
-                    element.MehsulId,
-                    (int)element.Miqdar,
-                    element.VahidinQiymeti, // alisQiymeti
-                    element.VahidinQiymeti, // satisQiymeti
-                    $"Qaytarma: ID={qaytarma.Id}, Səbəb: {sebeb}",
-                    kassirId
-                );
+                // Qaytarma qeydini əlavə et
+                await _unitOfWork.Qaytarmalar.ElaveEtAsync(qaytarma);
+                await _unitOfWork.EmeliyyatiTesdiqleAsync(); // Qaytarma ID-sini əldə etmək üçün
 
-                if (!stokNeticesi.UgurluDur)
+                // Qaytarma detallarını əlavə et və stok hərəkətlərini qeydə al
+                foreach (SatisSebetiElementiDto element in qaytarilanMehsullar)
                 {
-                    Logger.XəbərdarlıqYaz($"Stok hərəkəti qeydə alınarkən xəta: {stokNeticesi.Mesaj}");
-                    await _unitOfWork.RollbackTransactionAsync();
-                    return EmeliyyatNeticesi<bool>.Ugursuz($"Stok hərəkəti qeydə alınarkən xəta: {stokNeticesi.Mesaj}");
-                }
-            }
-
-            // Müştərinin borcunu azalt (əgər satış nisyə idisə)
-            if (satis.OdenisMetodu == OdenisMetodu.Nisyə && satis.MusteriId.HasValue)
-            {
-                Musteri musteri = await _unitOfWork.Musteriler.GetirAsync(satis.MusteriId.Value);
-                if (musteri != null)
-                {
-                    musteri.UmumiBorc -= qaytarma.UmumiMebleg;
-                    _unitOfWork.Musteriler.Yenile(musteri);
-
-                    // Nisyə hərəkəti yarat
-                    NisyeHereketi nisyeHereketi = new()
+                    // Qaytarma detallarını əlavə et
+                    qaytarma.QaytarmaDetallari.Add(new QaytarmaDetali
                     {
-                        MusteriId = satis.MusteriId.Value,
-                        Mebleg = qaytarma.UmumiMebleg,
-                        Tarix = DateTime.Now,
-                        EmeliyyatNovu = EmeliyyatNovu.Qaytarma,
-                        SatisId = 0 // Qaytarma ID-si əlavə edildikdən sonra təyin ediləcək
-                    };
-                    await _unitOfWork.NisyeHereketleri.ElaveEtAsync(nisyeHereketi);
-                }
-            }
+                        MehsulId = element.MehsulId,
+                        Miqdar = element.Miqdar,
+                        Qiymet = element.VahidinQiymeti,
+                        UmumiMebleg = element.UmumiMebleg
+                    });
 
-            // Kassirin aktiv növbəsindəki nağd və ya kart məbləğini azalt
-            if (aktivNovbeId.HasValue)
-            {
-                Novbe novbe = await _unitOfWork.Novbeler.GetirAsync(aktivNovbeId.Value);
-                if (novbe != null)
-                {
-                    if (satis.OdenisMetodu == OdenisMetodu.Nağd)
+                    // Stok hərəkətini qeydə al (Daxilolma - qaytarma)
+                    EmeliyyatNeticesi<int> stokNeticesi = await _stokHareketiManager.StokHareketiQeydeAlAsync(
+                        StokHareketTipi.Daxilolma,
+                        SenedNovu.Qaytarma,
+                        qaytarma.Id,
+                        element.MehsulId,
+                        (int)element.Miqdar,
+                        element.VahidinQiymeti,
+                        element.VahidinQiymeti,
+                        $"Qaytarma: ID={qaytarma.Id}, Səbəb: {sebeb}",
+                        kassirId
+                    );
+
+                    if (!stokNeticesi.UgurluDur)
                     {
-                        novbe.FaktikiMebleg -= qaytarma.UmumiMebleg;
+                        Logger.XəbərdarlıqYaz($"Stok hərəkəti qeydə alınarkən xəta: {stokNeticesi.Mesaj}");
+                        throw new InvalidOperationException($"Stok hərəkəti qeydə alınarkən xəta: {stokNeticesi.Mesaj}");
                     }
-                    else if (satis.OdenisMetodu == OdenisMetodu.Kart)
-                    {
-                        // Kart ödənişləri üçün lazımi dəyişikliklər
-                        // Bu implementasiya şirkətin daxili qaydalarına görə dəyişə bilər
-                    }
-                    _unitOfWork.Novbeler.Yenile(novbe);
                 }
-            }
 
-            // Bütün əməliyyatları təsdiqlə
-            await _unitOfWork.EmeliyyatiTesdiqleAsync();
+                // Müştərinin borcunu azalt (əgər satış nisyə idisə)
+                if (satis.OdenisMetodu == OdenisMetodu.Nisyə && satis.MusteriId.HasValue)
+                {
+                    Musteri musteri = await _unitOfWork.Musteriler.GetirAsync(satis.MusteriId.Value);
+                    if (musteri != null)
+                    {
+                        musteri.UmumiBorc -= qaytarma.UmumiMebleg;
+                        _unitOfWork.Musteriler.Yenile(musteri);
 
-            // Tranzaksiyanı tamamlayırıq
-            await _unitOfWork.CommitTransactionAsync();
+                        // Nisyə hərəkəti yarat
+                        NisyeHereketi nisyeHereketi = new()
+                        {
+                            MusteriId = satis.MusteriId.Value,
+                            Mebleg = qaytarma.UmumiMebleg,
+                            Tarix = DateTime.Now,
+                            EmeliyyatNovu = EmeliyyatNovu.Qaytarma,
+                            SatisId = 0
+                        };
+                        await _unitOfWork.NisyeHereketleri.ElaveEtAsync(nisyeHereketi);
+                    }
+                }
 
-            Logger.MelumatYaz("Qaytarma əməliyyatı uğurla tamamlandı");
-            return EmeliyyatNeticesi<bool>.Ugurlu(true);
+                // Kassirin aktiv növbəsindəki nağd və ya kart məbləğini azalt
+                if (aktivNovbeId.HasValue)
+                {
+                    Novbe novbe = await _unitOfWork.Novbeler.GetirAsync(aktivNovbeId.Value);
+                    if (novbe != null)
+                    {
+                        if (satis.OdenisMetodu == OdenisMetodu.Nağd)
+                        {
+                            novbe.FaktikiMebleg -= qaytarma.UmumiMebleg;
+                        }
+                        _unitOfWork.Novbeler.Yenile(novbe);
+                    }
+                }
+
+                // Bütün əməliyyatları təsdiqlə
+                await _unitOfWork.EmeliyyatiTesdiqleAsync();
+
+                Logger.MelumatYaz("Qaytarma əməliyyatı uğurla tamamlandı");
+                return EmeliyyatNeticesi<bool>.Ugurlu(true);
+            });
         }
         catch (Exception ex)
         {
-            await _unitOfWork.RollbackTransactionAsync();
             Logger.XetaYaz(ex, "Qaytarma əməliyyatı zamanı istisna baş verdi");
             return EmeliyyatNeticesi<bool>.Ugursuz("Qaytarma əməliyyatı zamanı istisna baş verdi: " + ex.Message);
         }

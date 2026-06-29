@@ -441,6 +441,31 @@ public class UnitOfWork : IUnitOfWork
     }
 
     /// <summary>
+    /// SqlServerRetryingExecutionStrategy ilə uyğun tranzaksiya blokunu icra edir.
+    /// Diqqət: Manual BeginTransactionAsync() SqlServer retry strategy ilə uyğun deyil;
+    /// bütün transaksiyalı əməliyyatlar bu metod vasitəsilə icra olunmalıdır.
+    /// </summary>
+    public async Task<T> ExecuteInTransactionAsync<T>(Func<Task<T>> operation)
+    {
+        var executionStrategy = _kontekst.Database.CreateExecutionStrategy();
+        return await executionStrategy.ExecuteAsync(async () =>
+        {
+            await using IDbContextTransaction tranzaksiya = await _kontekst.Database.BeginTransactionAsync();
+            try
+            {
+                T result = await operation();
+                await tranzaksiya.CommitAsync();
+                return result;
+            }
+            catch
+            {
+                await tranzaksiya.RollbackAsync();
+                throw;
+            }
+        });
+    }
+
+    /// <summary>
     /// DisposeAsync metodu, verilənlər bazası kontekstini asinxron şəkildə sərbəst buraxır.
     /// Diqqət: Bu metod, IDisposable interfeysinin implementasiyasıdır.
     /// Qeyd: Bu metod, verilənlər bazası kontekstinin düzgün şəkildə bağlanmasını təmin edir.
