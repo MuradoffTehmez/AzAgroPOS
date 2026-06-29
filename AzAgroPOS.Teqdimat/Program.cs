@@ -138,44 +138,44 @@ namespace AzAgroPOS.Teqdimat
         // ══════════════════════════════════════════════════════════════════
 
         /// <summary>
-/// Xətanı log edir, istifadəçiyə göstərir və lazım olsa tətbiqi bağlayır.
-/// </summary>
-private static void LogAndShow(
-    Exception ex,
-    string başlıq,
-    string əlavəMəlumat,
-    int exitCode,
-    bool terminate)
-{
-    var sb = new System.Text.StringBuilder();
-    sb.AppendLine($"Xəta növü : {ex.GetType().FullName}");
-    sb.AppendLine($"Mesaj     : {ex.Message}");
+        /// Xətanı log edir, istifadəçiyə göstərir və lazım olsa tətbiqi bağlayır.
+        /// </summary>
+        private static void LogAndShow(
+            Exception ex,
+            string başlıq,
+            string əlavəMəlumat,
+            int exitCode,
+            bool terminate)
+        {
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine($"Xəta növü : {ex.GetType().FullName}");
+            sb.AppendLine($"Mesaj     : {ex.Message}");
 
-    if (!string.IsNullOrWhiteSpace(əlavəMəlumat))
-    {
-        sb.AppendLine();
-        sb.AppendLine(əlavəMəlumat);
-    }
+            if (!string.IsNullOrWhiteSpace(əlavəMəlumat))
+            {
+                sb.AppendLine();
+                sb.AppendLine(əlavəMəlumat);
+            }
 
-    if (terminate)
-    {
-        sb.AppendLine();
-        sb.AppendLine("Tətbiq bağlanacaq.");
-    }
+            if (terminate)
+            {
+                sb.AppendLine();
+                sb.AppendLine("Tətbiq bağlanacaq.");
+            }
 
-    string tam = sb.ToString();
+            string tam = sb.ToString();
 
-    TrySafeLog($"[{başlıq}] {ex.GetType().Name}: {ex.Message}\n{ex.StackTrace}");
+            TrySafeLog($"[{başlıq}] {ex.GetType().Name}: {ex.Message}\n{ex.StackTrace}");
 
-    MessageBox.Show(
-        tam,
-        başlıq,
-        MessageBoxButtons.OK,
-        terminate ? MessageBoxIcon.Error : MessageBoxIcon.Warning);
+            MessageBox.Show(
+                tam,
+                başlıq,
+                MessageBoxButtons.OK,
+                terminate ? MessageBoxIcon.Error : MessageBoxIcon.Warning);
 
-    if (terminate)
-        Environment.Exit(exitCode);
-}
+            if (terminate)
+                Environment.Exit(exitCode);
+        }
 
         private static bool InitializeLogger()
         {
