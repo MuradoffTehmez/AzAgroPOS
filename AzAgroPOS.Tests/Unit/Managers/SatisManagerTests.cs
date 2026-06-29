@@ -144,7 +144,7 @@ public class SatisManagerTests
     public async Task SatisGetirAsync_FormattedSatisNomresi_ReturnsSuccess()
     {
         // Arrange
-        var satis = new Satis { Id = 5, Tarix = DateTime.Now };
+        Satis satis = new() { Id = 5, Tarix = DateTime.Now };
         _mockSatisRepo.Setup(x => x.GetirAsync(5, It.IsAny<Expression<Func<Satis, object>>[]>()))
             .ReturnsAsync(satis);
 
@@ -160,11 +160,11 @@ public class SatisManagerTests
     public async Task StokHareketiQeydeAlAsync_Cixis_DecrementsStock()
     {
         // Arrange
-        var mehsul = new Mehsul { Id = 1, MovcudSay = 10 };
+        Mehsul mehsul = new() { Id = 1, MovcudSay = 10 };
         _mockMehsulRepo.Setup(x => x.GetirAsync(1)).ReturnsAsync(mehsul);
 
         // Act
-        var result = await _stokManager.StokHareketiQeydeAlAsync(
+        EmeliyyatNeticesi<int> result = await _stokManager.StokHareketiQeydeAlAsync(
             StokHareketTipi.Cixis,
             SenedNovu.Satis,
             1, // SenedId
@@ -184,11 +184,11 @@ public class SatisManagerTests
     public async Task StokHareketiQeydeAlAsync_Daxilolma_IncrementsStock()
     {
         // Arrange
-        var mehsul = new Mehsul { Id = 1, MovcudSay = 10 };
+        Mehsul mehsul = new() { Id = 1, MovcudSay = 10 };
         _mockMehsulRepo.Setup(x => x.GetirAsync(1)).ReturnsAsync(mehsul);
 
         // Act
-        var result = await _stokManager.StokHareketiQeydeAlAsync(
+        EmeliyyatNeticesi<int> result = await _stokManager.StokHareketiQeydeAlAsync(
             StokHareketTipi.Daxilolma,
             SenedNovu.Alis,
             1, // SenedId

@@ -18,7 +18,7 @@ public class IsciIzniPresenter
     private readonly IIsciIzniView _view;
     private readonly IsciIzniManager _izniManager;
     private readonly IsciManager _isciManager;
-    private readonly SemaphoreSlim _kilit = new SemaphoreSlim(1, 1);
+    private readonly SemaphoreSlim _kilit = new(1, 1);
 
     public IsciIzniPresenter(IIsciIzniView view, IsciIzniManager izniManager, IsciManager isciManager)
     {
@@ -111,7 +111,11 @@ public class IsciIzniPresenter
     /// </summary>
     private async Task IsciSecildi()
     {
-        if (!await _kilit.WaitAsync(0)) return;
+        if (!await _kilit.WaitAsync(0))
+        {
+            return;
+        }
+
         try
         {
             if (!_view.SecilenIsciId.HasValue)

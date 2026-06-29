@@ -1,5 +1,4 @@
 using AzAgroPOS.Varliglar;
-using Microsoft.EntityFrameworkCore;
 
 namespace AzAgroPOS.Verilenler.Interfeysler;
 /// <summary>

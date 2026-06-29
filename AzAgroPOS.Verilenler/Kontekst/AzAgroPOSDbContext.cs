@@ -4,6 +4,7 @@ using AzAgroPOS.Varliglar;
 using AzAgroPOS.Varliglar.Interfeysler;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Metadata;
 using System.Linq.Expressions;
 
 namespace AzAgroPOS.Verilenler.Kontekst;
@@ -100,14 +101,14 @@ public class AzAgroPOSDbContext : DbContext
         base.OnModelCreating(modelBuilder);
 
         // Apply global query filter for all entities derived from BazaVarligi
-        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        foreach (IMutableEntityType entityType in modelBuilder.Model.GetEntityTypes())
         {
             if (typeof(BazaVarligi).IsAssignableFrom(entityType.ClrType))
             {
-                var parameter = Expression.Parameter(entityType.ClrType, "e");
-                var property = Expression.Property(parameter, nameof(BazaVarligi.Silinib));
-                var notExpression = Expression.Not(property);
-                var lambda = Expression.Lambda(notExpression, parameter);
+                ParameterExpression parameter = Expression.Parameter(entityType.ClrType, "e");
+                MemberExpression property = Expression.Property(parameter, nameof(BazaVarligi.Silinib));
+                UnaryExpression notExpression = Expression.Not(property);
+                LambdaExpression lambda = Expression.Lambda(notExpression, parameter);
                 modelBuilder.Entity(entityType.ClrType).HasQueryFilter(lambda);
             }
         }

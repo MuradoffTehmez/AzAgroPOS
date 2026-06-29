@@ -18,7 +18,7 @@ public class EmekHaqqiPresenter
     private readonly IEmekHaqqiView _view;
     private readonly EmekHaqqiManager _emekHaqqiManager;
     private readonly IsciManager _isciManager;
-    private readonly SemaphoreSlim _kilit = new SemaphoreSlim(1, 1);
+    private readonly SemaphoreSlim _kilit = new(1, 1);
 
     public EmekHaqqiPresenter(IEmekHaqqiView view, EmekHaqqiManager emekHaqqiManager, IsciManager isciManager)
     {
@@ -106,7 +106,11 @@ public class EmekHaqqiPresenter
     /// </summary>
     private async Task IsciSecildi()
     {
-        if (!await _kilit.WaitAsync(0)) return;
+        if (!await _kilit.WaitAsync(0))
+        {
+            return;
+        }
+
         try
         {
             if (!_view.SecilenIsciId.HasValue)
