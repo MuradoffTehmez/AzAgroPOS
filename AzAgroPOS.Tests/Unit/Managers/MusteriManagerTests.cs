@@ -6,6 +6,7 @@ using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Tests.TestHelpers;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
+using System.Linq.Expressions;
 
 namespace AzAgroPOS.Tests.Unit.Managers;
 
@@ -32,7 +33,7 @@ public class MusteriManagerTests
         // Arrange
         MusteriDto dto = MusteriMockFactory.CreateValidDto();
         Musteri existingMusteri = MusteriMockFactory.CreateValid();
-        _mockMusteriRepo.Setup(x => x.AxtarAsync(It.IsAny<System.Linq.Expressions.Expression<Func<Musteri, bool>>>(), null))
+        _mockMusteriRepo.Setup(x => x.AxtarAsync(It.IsAny<Expression<Func<Musteri, bool>>>(), It.IsAny<Expression<Func<Musteri, object>>[]>()))
             .ReturnsAsync(new List<Musteri> { existingMusteri });
 
         // Act
@@ -49,7 +50,7 @@ public class MusteriManagerTests
     {
         // Arrange
         MusteriDto dto = MusteriMockFactory.CreateValidDto();
-        _mockMusteriRepo.Setup(x => x.AxtarAsync(It.IsAny<System.Linq.Expressions.Expression<Func<Musteri, bool>>>(), null))
+        _mockMusteriRepo.Setup(x => x.AxtarAsync(It.IsAny<Expression<Func<Musteri, bool>>>(), It.IsAny<Expression<Func<Musteri, object>>[]>()))
             .ReturnsAsync(new List<Musteri>());
         _mockMusteriRepo.Setup(x => x.ElaveEtAsync(It.IsAny<Musteri>()))
             .Returns(Task.CompletedTask);

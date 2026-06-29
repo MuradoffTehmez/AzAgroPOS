@@ -6,6 +6,7 @@ using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Tests.TestHelpers;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
+using System.Linq.Expressions;
 
 namespace AzAgroPOS.Tests.Unit.Managers;
 
@@ -31,7 +32,7 @@ public class MehsulManagerTests
     {
         // Arrange
         MehsulDto dto = MehsulMockFactory.CreateValidDto();
-        _mockMehsulRepo.Setup(x => x.AxtarAsync(It.IsAny<System.Linq.Expressions.Expression<Func<Mehsul, bool>>>(), null))
+        _mockMehsulRepo.Setup(x => x.AxtarAsync(It.IsAny<Expression<Func<Mehsul, bool>>>(), It.IsAny<Expression<Func<Mehsul, object>>[]>()))
             .ReturnsAsync(new List<Mehsul>());
         _mockMehsulRepo.Setup(x => x.ElaveEtAsync(It.IsAny<Mehsul>()))
             .Callback<Mehsul>(m => m.Id = 1)  // EF would set the ID after insert
@@ -71,7 +72,7 @@ public class MehsulManagerTests
         // Arrange
         MehsulDto dto = MehsulMockFactory.CreateValidDto();
         Mehsul existingMehsul = MehsulMockFactory.CreateValid();
-        _mockMehsulRepo.Setup(x => x.AxtarAsync(It.IsAny<System.Linq.Expressions.Expression<Func<Mehsul, bool>>>(), null))
+        _mockMehsulRepo.Setup(x => x.AxtarAsync(It.IsAny<Expression<Func<Mehsul, bool>>>(), It.IsAny<Expression<Func<Mehsul, object>>[]>()))
             .ReturnsAsync(new List<Mehsul> { existingMehsul });
 
         // Act

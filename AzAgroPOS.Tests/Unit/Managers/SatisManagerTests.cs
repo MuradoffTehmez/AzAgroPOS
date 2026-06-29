@@ -6,6 +6,7 @@ using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Tests.TestHelpers;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
+using System.Linq.Expressions;
 
 namespace AzAgroPOS.Tests.Unit.Managers;
 
@@ -128,7 +129,7 @@ public class SatisManagerTests
     public async Task SatisGetirAsync_NonExistingSatis_ReturnsFailure()
     {
         // Arrange
-        _mockSatisRepo.Setup(x => x.GetirAsync(999, It.IsAny<string[]>()))
+        _mockSatisRepo.Setup(x => x.GetirAsync(999, It.IsAny<Expression<Func<Satis, object>>[]>()))
             .ReturnsAsync((Satis?)null);
 
         // Act
