@@ -20,11 +20,11 @@ namespace AzAgroPOS.Teqdimat
         public SatisFormu(IServiceProvider serviceProvider)
         {
             InitializeComponent();
-            this.KeyPreview = true; // Klaviatura hadisələrini forma səviyyəsində qəbul etmək üçün istifade olunur
+            KeyPreview = true; // Klaviatura hadisələrini forma səviyyəsində qəbul etmək üçün istifade olunur
             _serviceProvider = serviceProvider;
             _dialogXidmeti = new DialogXidmeti();
-            this.Load += (s, e) => FormYuklendiIstek?.Invoke(this, EventArgs.Empty);
-            this.KeyUp += SatisFormu_KeyUp; // Klaviatura hadisələrini idarə etmək üçün
+            Load += (s, e) => FormYuklendiIstek?.Invoke(this, EventArgs.Empty);
+            KeyUp += SatisFormu_KeyUp; // Klaviatura hadisələrini idarə etmək üçün
             ConfigureDataGridViewStyles();
             AddCartActionButtons();
             ConfigureKeyboardShortcutHints();
@@ -409,7 +409,7 @@ namespace AzAgroPOS.Teqdimat
         /// </summary>
         public void ButunXetalariTemizle()
         {
-            foreach (Control control in this.Controls)
+            foreach (Control control in Controls)
             {
                 ClearErrorsRecursive(control);
             }

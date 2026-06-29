@@ -296,7 +296,7 @@ public class CapServisi
 
     private void DrawTotals(Graphics g, ref float y, float x, float width)
     {
-        float labelX = x + width * 0.45f;
+        float labelX = x + (width * 0.45f);
         float valueX = x + width;
         float valueWidth = width * 0.35f;
 

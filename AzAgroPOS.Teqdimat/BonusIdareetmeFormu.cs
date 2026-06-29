@@ -16,7 +16,7 @@ namespace AzAgroPOS.Teqdimat
             InitializeComponent();
             _musteriManager = musteriManager ?? throw new ArgumentNullException(nameof(musteriManager));
             _dialogXidmeti = new DialogXidmeti();
-            this.Load += BonusIdareetmeFormu_Load;
+            Load += BonusIdareetmeFormu_Load;
         }
 
         private void BonusIdareetmeFormu_Load(object? sender, EventArgs e)

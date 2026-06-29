@@ -122,7 +122,7 @@ public partial class NisyeIdareetmeFormu : BazaForm, INisyeView
     public void ButunXetalariTemizle()
     {
         // Clear errors from all controls
-        foreach (Control control in this.Controls)
+        foreach (Control control in Controls)
         {
             ClearErrorsRecursive(control);
         }

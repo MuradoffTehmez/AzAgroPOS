@@ -14,7 +14,7 @@ namespace AzAgroPOS.Teqdimat
         public BazaForm()
         {
             InitializeComponent();
-            this.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+            Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, (byte)0);
             InitializeMaterialSkin();
             InitializeStatusMesaji();
         }
@@ -133,8 +133,8 @@ namespace AzAgroPOS.Teqdimat
         /// </summary>
         public void YuklemeBasladi()
         {
-            _originalCursor = this.Cursor;
-            this.Cursor = Cursors.WaitCursor;
+            _originalCursor = Cursor;
+            Cursor = Cursors.WaitCursor;
             DisableControls(this);
         }
 
@@ -143,7 +143,7 @@ namespace AzAgroPOS.Teqdimat
         /// </summary>
         public void YuklemeBitdi()
         {
-            this.Cursor = _originalCursor ?? Cursors.Default;
+            Cursor = _originalCursor ?? Cursors.Default;
             EnableControls(this);
         }
 

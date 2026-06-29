@@ -24,7 +24,7 @@ public partial class KassaFormu : BazaForm
         _maliyyeManager = maliyyeManager ?? throw new ArgumentNullException(nameof(maliyyeManager));
 
         // Form yüklənəndə məlumatları yüklə
-        this.Load += KassaFormu_Load;
+        Load += KassaFormu_Load;
     }
 
     private void KassaFormu_Load(object sender, EventArgs e)

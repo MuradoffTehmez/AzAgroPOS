@@ -221,12 +221,12 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
 
         private void InitializeComponent()
         {
-            this.Text = "Printer Seçin";
-            this.Size = new Size(500, 400);
-            this.StartPosition = FormStartPosition.CenterParent;
-            this.FormBorderStyle = FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
+            Text = "Printer Seçin";
+            Size = new Size(500, 400);
+            StartPosition = FormStartPosition.CenterParent;
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
+            MinimizeBox = false;
 
             // Başlıq
             lblBasliq = new Label
@@ -236,7 +236,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
                 Size = new Size(450, 20),
                 Font = new Font("Segoe UI", 10, FontStyle.Bold)
             };
-            this.Controls.Add(lblBasliq);
+            Controls.Add(lblBasliq);
 
             // Printer siyahısı
             lstPrinters = new ListBox
@@ -246,7 +246,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
                 Font = new Font("Segoe UI", 10)
             };
             lstPrinters.DoubleClick += (s, e) => SecVeQapat();
-            this.Controls.Add(lstPrinters);
+            Controls.Add(lstPrinters);
 
             // Düymələr
             btnTest = new Button
@@ -257,7 +257,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
                 Font = new Font("Segoe UI", 9)
             };
             btnTest.Click += BtnTest_Click;
-            this.Controls.Add(btnTest);
+            Controls.Add(btnTest);
 
             btnSec = new Button
             {
@@ -267,7 +267,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
                 Font = new Font("Segoe UI", 9)
             };
             btnSec.Click += (s, e) => SecVeQapat();
-            this.Controls.Add(btnSec);
+            Controls.Add(btnSec);
 
             btnLegvEt = new Button
             {
@@ -276,11 +276,11 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
                 Size = new Size(90, 35),
                 Font = new Font("Segoe UI", 9)
             };
-            btnLegvEt.Click += (s, e) => this.DialogResult = DialogResult.Cancel;
-            this.Controls.Add(btnLegvEt);
+            btnLegvEt.Click += (s, e) => DialogResult = DialogResult.Cancel;
+            Controls.Add(btnLegvEt);
 
-            this.AcceptButton = btnSec;
-            this.CancelButton = btnLegvEt;
+            AcceptButton = btnSec;
+            CancelButton = btnLegvEt;
         }
 
         private void PrinterleriYukle()
@@ -358,7 +358,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
             if (lstPrinters.SelectedItem != null)
             {
                 SecilmisPrinter = lstPrinters.SelectedItem.ToString();
-                this.DialogResult = DialogResult.OK;
+                DialogResult = DialogResult.OK;
             }
         }
     }

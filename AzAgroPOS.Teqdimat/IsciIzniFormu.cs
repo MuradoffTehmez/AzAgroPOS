@@ -26,7 +26,7 @@ public partial class IsciIzniFormu : BazaForm
         _isciManager = isciManager ?? throw new ArgumentNullException(nameof(isciManager));
 
         // Form yüklənəndə məlumatları yüklə
-        this.Load += IsciIzniFormu_Load;
+        Load += IsciIzniFormu_Load;
     }
 
     private void IsciIzniFormu_Load(object sender, EventArgs e)
