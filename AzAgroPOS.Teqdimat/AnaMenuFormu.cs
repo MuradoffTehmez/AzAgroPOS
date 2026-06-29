@@ -277,7 +277,7 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
         // Timeri konfiqurasiya edirik
         if (dashboardTimer == null)
         {
-            dashboardTimer = new Timer();
+            dashboardTimer = new System.Windows.Forms.Timer();
         }
         else
         {
