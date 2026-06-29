@@ -17,11 +17,11 @@ public static class ConnectionStringResolver
     /// </summary>
     public static IConfiguration BuildConfiguration(string basePath)
     {
-        var environment = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT")
+        string environment = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT")
                           ?? Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
                           ?? "Production";
 
-        var builder = new ConfigurationBuilder()
+        IConfigurationBuilder builder = new ConfigurationBuilder()
             .SetBasePath(basePath)
             .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
             .AddJsonFile($"appsettings.{environment}.json", optional: true, reloadOnChange: true)
@@ -35,7 +35,7 @@ public static class ConnectionStringResolver
     /// </summary>
     public static string Resolve(IConfiguration configuration, string? connectionName = null)
     {
-        var envConnection = Environment.GetEnvironmentVariable(EnvironmentVariableKey);
+        string? envConnection = Environment.GetEnvironmentVariable(EnvironmentVariableKey);
         if (!string.IsNullOrWhiteSpace(envConnection))
         {
             return envConnection;
@@ -43,18 +43,13 @@ public static class ConnectionStringResolver
 
         connectionName ??= DefaultConnectionName;
 
-        var configConnection = configuration.GetConnectionString(connectionName);
+        string? configConnection = configuration.GetConnectionString(connectionName);
         if (!string.IsNullOrWhiteSpace(configConnection))
         {
             return configConnection;
         }
 
-        var flatConnection = configuration[connectionName] ?? configuration["ConnectionString"];
-        if (!string.IsNullOrWhiteSpace(flatConnection))
-        {
-            return flatConnection!;
-        }
-
-        return DefaultFallback;
+        string? flatConnection = configuration[connectionName] ?? configuration["ConnectionString"];
+        return !string.IsNullOrWhiteSpace(flatConnection) ? flatConnection! : DefaultFallback;
     }
 }

@@ -1,13 +1,6 @@
 // Fayl: AzAgroPOS.Teqdimat/Yardimcilar/LazyLoadComboBoxHelper.cs
+
 namespace AzAgroPOS.Teqdimat.Yardimcilar;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
 /// <summary>
 /// ComboBox-lar üçün lazy loading və search-before-load funksionallığını təmin edir.
 /// Bu helper performans optimallaşdırması üçün tam dataseti yükləmək əvəzinə
@@ -79,7 +72,7 @@ public class LazyLoadComboBoxHelper<T>
     {
         try
         {
-            var data = await _loadDataFunc(initialSearchTerm, _pageSize);
+            List<T> data = await _loadDataFunc(initialSearchTerm, _pageSize);
             UpdateComboBoxDataSource(data);
         }
         catch (Exception ex)
@@ -144,7 +137,7 @@ public class LazyLoadComboBoxHelper<T>
             _searchCancellationTokenSource?.Cancel();
             _searchCancellationTokenSource = new CancellationTokenSource();
 
-            var searchTerm = _searchTextBox?.Text ?? _comboBox.Text;
+            string searchTerm = _searchTextBox?.Text ?? _comboBox.Text;
 
             // Minimum 2 simvol tələb edirik (performans üçün)
             if (string.IsNullOrWhiteSpace(searchTerm))
@@ -158,7 +151,7 @@ public class LazyLoadComboBoxHelper<T>
                 return; // Çox qısa axtarış termini
             }
 
-            var data = await _loadDataFunc(searchTerm, _pageSize);
+            List<T> data = await _loadDataFunc(searchTerm, _pageSize);
             UpdateComboBoxDataSource(data);
         }
         catch (OperationCanceledException)
@@ -183,7 +176,7 @@ public class LazyLoadComboBoxHelper<T>
             return;
         }
 
-        var selectedValue = _comboBox.SelectedValue;
+        object? selectedValue = _comboBox.SelectedValue;
 
         _comboBox.DataSource = null;
         _comboBox.DataSource = data;
@@ -217,9 +210,7 @@ public class LazyLoadComboBoxHelper<T>
     /// </summary>
     public int? GetSelectedId()
     {
-        if (_comboBox.SelectedValue is int id)
-            return id;
-        return null;
+        return _comboBox.SelectedValue is int id ? id : null;
     }
 
     /// <summary>

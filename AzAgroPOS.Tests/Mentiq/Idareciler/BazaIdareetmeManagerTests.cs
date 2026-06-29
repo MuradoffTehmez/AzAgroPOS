@@ -10,10 +10,10 @@ public class BazaIdareetmeManagerTests
     public void StandartBackupAdiYarat_DuzgunFormatQaytar()
     {
         // Arrange
-        var backupDirectory = @"C:\Backups";
+        string backupDirectory = @"C:\Backups";
 
         // Act
-        var backupPath = BazaIdareetmeManager.StandartBackupAdiYarat(backupDirectory);
+        string backupPath = BazaIdareetmeManager.StandartBackupAdiYarat(backupDirectory);
 
         // Assert
         backupPath.Should().StartWith(backupDirectory);
@@ -26,11 +26,11 @@ public class BazaIdareetmeManagerTests
     public void StandartBackupAdiYarat_TarixFormatDuzgun()
     {
         // Arrange
-        var backupDirectory = @"C:\Backups";
+        string backupDirectory = @"C:\Backups";
 
         // Act
-        var backupPath = BazaIdareetmeManager.StandartBackupAdiYarat(backupDirectory);
-        var fileName = Path.GetFileNameWithoutExtension(backupPath);
+        string backupPath = BazaIdareetmeManager.StandartBackupAdiYarat(backupDirectory);
+        string fileName = Path.GetFileNameWithoutExtension(backupPath);
 
         // Assert
         // Format: AzAgroPOS_Backup_YYYY-MM-DD_HHMMSS
@@ -48,7 +48,7 @@ public class BazaIdareetmeManagerTests
         // This is a conceptual test - actual implementation would use reflection or make method internal
 
         // For now, we verify the logic is correct
-        var result = "[" + input.Replace("]", "]]") + "]";
+        string result = "[" + input.Replace("]", "]]") + "]";
         result.Should().Be(expected);
     }
 
@@ -67,10 +67,10 @@ public class BazaIdareetmeManagerTests
     public void Constructor_ValidConnectionString_ObjektYaradilir()
     {
         // Arrange
-        var connectionString = "Server=test;Database=test;";
+        string connectionString = "Server=test;Database=test;";
 
         // Act
-        var manager = new BazaIdareetmeManager(connectionString);
+        BazaIdareetmeManager manager = new(connectionString);
 
         // Assert
         manager.Should().NotBeNull();

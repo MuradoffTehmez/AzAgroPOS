@@ -10,11 +10,11 @@ public class CustomExceptionTests
     public void TesdiqIstisnasi_DuzgunYaradilir()
     {
         // Arrange
-        var mesaj = "Ad sahəsi boş ola bilməz";
-        var saheAdi = "Ad";
+        string mesaj = "Ad sahəsi boş ola bilməz";
+        string saheAdi = "Ad";
 
         // Act
-        var exception = new TesdiqIstisnasi(mesaj, saheAdi);
+        TesdiqIstisnasi exception = new(mesaj, saheAdi);
 
         // Assert
         exception.IstifadeciMesaji.Should().Be(mesaj);
@@ -26,11 +26,11 @@ public class CustomExceptionTests
     public void BiznesQaydasiIstisnasi_DuzgunYaradilir()
     {
         // Arrange
-        var mesaj = "Stokda kifayət qədər məhsul yoxdur";
-        var qaydaKodu = "STOK_KIFAYETSIZ";
+        string mesaj = "Stokda kifayət qədər məhsul yoxdur";
+        string qaydaKodu = "STOK_KIFAYETSIZ";
 
         // Act
-        var exception = new BiznesQaydasiIstisnasi(mesaj, qaydaKodu);
+        BiznesQaydasiIstisnasi exception = new(mesaj, qaydaKodu);
 
         // Assert
         exception.IstifadeciMesaji.Should().Be(mesaj);
@@ -41,12 +41,12 @@ public class CustomExceptionTests
     public void MelumatTapilmadiIstisnasi_DuzgunYaradilir()
     {
         // Arrange
-        var mesaj = "Məhsul tapılmadı";
-        var entityNovu = "Məhsul";
-        var identifikator = 123;
+        string mesaj = "Məhsul tapılmadı";
+        string entityNovu = "Məhsul";
+        int identifikator = 123;
 
         // Act
-        var exception = new MelumatTapilmadiIstisnasi(mesaj, entityNovu, identifikator);
+        MelumatTapilmadiIstisnasi exception = new(mesaj, entityNovu, identifikator);
 
         // Assert
         exception.IstifadeciMesaji.Should().Be(mesaj);
@@ -58,12 +58,12 @@ public class CustomExceptionTests
     public void VerilenlerBazasiIstisnasi_SqlKoduIle_DuzgunYaradilir()
     {
         // Arrange
-        var mesaj = "Foreign key constraint pozuldu";
-        var sqlKod = 547;
-        var innerException = new Exception("Inner error");
+        string mesaj = "Foreign key constraint pozuldu";
+        int sqlKod = 547;
+        Exception innerException = new("Inner error");
 
         // Act
-        var exception = new VerilenlerBazasiIstisnasi(mesaj, sqlKod, null, innerException);
+        VerilenlerBazasiIstisnasi exception = new(mesaj, sqlKod, null, innerException);
 
         // Assert
         exception.IstifadeciMesaji.Should().Be(mesaj);
@@ -75,11 +75,11 @@ public class CustomExceptionTests
     public void TehlukesizlikIstisnasi_DuzgunYaradilir()
     {
         // Arrange
-        var mesaj = "İstifadəçi adı və ya parol yanlışdır";
-        var xetaNovu = TehlukesizlikXetasiNovu.YanlisIstifadeciVeyaParol;
+        string mesaj = "İstifadəçi adı və ya parol yanlışdır";
+        TehlukesizlikXetasiNovu xetaNovu = TehlukesizlikXetasiNovu.YanlisIstifadeciVeyaParol;
 
         // Act
-        var exception = new TehlukesizlikIstisnasi(mesaj, xetaNovu);
+        TehlukesizlikIstisnasi exception = new(mesaj, xetaNovu);
 
         // Assert
         exception.IstifadeciMesaji.Should().Be(mesaj);
@@ -95,10 +95,10 @@ public class CustomExceptionTests
     public void TehlukesizlikIstisnasi_ButunXetaNovleri_DuzgunYaradilir(TehlukesizlikXetasiNovu xetaNovu)
     {
         // Arrange
-        var mesaj = "Test mesajı";
+        string mesaj = "Test mesajı";
 
         // Act
-        var exception = new TehlukesizlikIstisnasi(mesaj, xetaNovu);
+        TehlukesizlikIstisnasi exception = new(mesaj, xetaNovu);
 
         // Assert
         exception.XetaNovu.Should().Be(xetaNovu);
@@ -108,11 +108,11 @@ public class CustomExceptionTests
     public void AzAgroPOSIstisnasi_TexnikiDetallari_DuzgunSaxlanir()
     {
         // Arrange
-        var istifadeciMesaji = "İstifadəçi mesajı";
-        var texnikiDetallar = "Texniki detallar: Stack trace, inner details";
+        string istifadeciMesaji = "İstifadəçi mesajı";
+        string texnikiDetallar = "Texniki detallar: Stack trace, inner details";
 
         // Act
-        var exception = new TesdiqIstisnasi(istifadeciMesaji, null, texnikiDetallar);
+        TesdiqIstisnasi exception = new(istifadeciMesaji, null, texnikiDetallar);
 
         // Assert
         exception.IstifadeciMesaji.Should().Be(istifadeciMesaji);

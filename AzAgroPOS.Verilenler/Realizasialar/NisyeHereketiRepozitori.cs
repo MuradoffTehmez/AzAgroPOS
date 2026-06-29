@@ -1,10 +1,10 @@
 ﻿// Fayl: AzAgroPOS.Verilenler/Realizasialar/NisyeHereketiRepozitori.cs
-namespace AzAgroPOS.Verilenler.Realizasialar;
 
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using AzAgroPOS.Verilenler.Kontekst;
 
+namespace AzAgroPOS.Verilenler.Realizasialar;
 /// <summary>
 /// NisyeHereketi üçün CRUD əməliyyatlarını həyata keçirən repozitoriya.
 /// diqqət: Bu sinif, CRUD əməliyyatlarını (Yarat, Oxu, Yenilə, Sil) ümumi şəkildə həyata keçirir.

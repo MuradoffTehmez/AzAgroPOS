@@ -1,16 +1,13 @@
 // Fayl: AzAgroPOS.Verilenler/Realizasialar/UnitOfWork.cs
-namespace AzAgroPOS.Verilenler.Realizasialar;
 
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using AzAgroPOS.Verilenler.Kontekst;
 using AzAgroPOS.Verilenler.Realisasialar;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
+namespace AzAgroPOS.Verilenler.Realizasialar;
 /// <summary>
 /// UnitOfWork sinifi, verilənlər bazası əməliyyatlarını idarə etmək üçün istifadə olunur.
 /// İUnitOfWork nümunəsi yaradıldıqda, bütün repozitoriyalar üçün instansiyalar yaradılır və verilənlər bazası əməliyyatları üçün vahid nöqtə təmin edilir.
@@ -289,10 +286,10 @@ public class UnitOfWork : IUnitOfWork
     public async Task<int> EmeliyyatiTesdiqleAsync()
     {
         // Əməliyyat jurnalı qeydlərini yaradırıq
-        var auditEntries = OnBeforeSaveChanges();
+        List<EmeliyyatJurnali> auditEntries = OnBeforeSaveChanges();
 
         // İlk SaveChangesAsync - əsas dəyişiklikləri saxlayır
-        var result = await _kontekst.SaveChangesAsync();
+        int result = await _kontekst.SaveChangesAsync();
 
         // Əgər audit qeydləri varsa, onları verilənlər bazasına əlavə edirik
         // ChangeTracker.Clear() ilə DbContext-i təmizləyirik ki, concurrency problemi yaranmasın
@@ -301,7 +298,7 @@ public class UnitOfWork : IUnitOfWork
             // ChangeTracker-i təmizləyirik - bu, DbContext-in tracking state-ni sıfırlayır
             _kontekst.ChangeTracker.Clear();
 
-            foreach (var auditEntry in auditEntries)
+            foreach (EmeliyyatJurnali auditEntry in auditEntries)
             {
                 // Audit qeydini birbaşa DbSet-ə əlavə edirik
                 _kontekst.Set<EmeliyyatJurnali>().Add(auditEntry);
@@ -320,26 +317,26 @@ public class UnitOfWork : IUnitOfWork
     /// <returns>Audit jurnalı qeydlərinin siyahısı</returns>
     private List<EmeliyyatJurnali> OnBeforeSaveChanges()
     {
-        var auditEntries = new List<EmeliyyatJurnali>();
+        List<EmeliyyatJurnali> auditEntries = new();
 
         // ChangeTracker.Entries()-i bir dəfə çağırıb, ToList() ilə materiallı edirik
         // Bu, concurrent DbContext access-i önləyir
-        var entries = _kontekst.ChangeTracker.Entries()
+        List<EntityEntry> entries = _kontekst.ChangeTracker.Entries()
             .Where(e => e.Entity is BazaVarligi &&
                         (e.State == EntityState.Added ||
                          e.State == EntityState.Modified ||
                          e.State == EntityState.Deleted))
             .ToList(); // Materialize the query to avoid lazy evaluation during async operations
 
-        foreach (var entry in entries)
+        foreach (EntityEntry? entry in entries)
         {
-            var entityType = entry.Entity.GetType().Name;
+            string entityType = entry.Entity.GetType().Name;
 
             // Bütün BazaVarligi törəmələri üçün audit qeydi yaradırıq
             // Əvvəlki versiyada yalnız Mehsul, Musteri və Satis audit olunurdu
 
             // Müvəqqəti audit jurnalı obyekti
-            var auditEntry = new EmeliyyatJurnali
+            EmeliyyatJurnali auditEntry = new()
             {
                 EmeliyyatTarixi = DateTime.UtcNow,
                 CədvəlAdi = entityType,
@@ -365,14 +362,14 @@ public class UnitOfWork : IUnitOfWork
                     auditEntry.EmeliyyatNovu = AuditEmeliyyatNovu.Yenileme;
 
                     // Dəyişən sahələri müəyyən edirik
-                    var changes = new List<string>();
-                    foreach (var property in entry.Properties)
+                    List<string> changes = new();
+                    foreach (PropertyEntry property in entry.Properties)
                     {
                         if (property.IsModified)
                         {
-                            var propertyName = property.Metadata.Name;
-                            var originalValue = property.OriginalValue?.ToString() ?? "null";
-                            var currentValue = property.CurrentValue?.ToString() ?? "null";
+                            string propertyName = property.Metadata.Name;
+                            string originalValue = property.OriginalValue?.ToString() ?? "null";
+                            string currentValue = property.CurrentValue?.ToString() ?? "null";
                             changes.Add($"{propertyName}: {originalValue} -> {currentValue}");
                         }
                     }

@@ -1,9 +1,6 @@
 // Fayl: AzAgroPOS.Varliglar/AlisSened.cs
+
 namespace AzAgroPOS.Varliglar;
-
-using System;
-using System.Collections.Generic;
-
 /// <summary>
 /// Alış sənədlərini saxlayan varlıq sinifi.
 /// </summary>

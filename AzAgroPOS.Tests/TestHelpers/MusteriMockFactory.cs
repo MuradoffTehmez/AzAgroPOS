@@ -60,7 +60,7 @@ public static class MusteriMockFactory
     /// </summary>
     public static Musteri CreateWithDebt(int id = 1, decimal debt = 500m)
     {
-        var musteri = CreateValid(id);
+        Musteri musteri = CreateValid(id);
         musteri.UmumiBorc = debt;
         return musteri;
     }
@@ -70,7 +70,7 @@ public static class MusteriMockFactory
     /// </summary>
     public static Musteri CreateAtCreditLimit(int id = 1)
     {
-        var musteri = CreateValid(id);
+        Musteri musteri = CreateValid(id);
         musteri.KreditLimiti = 1000m;
         musteri.UmumiBorc = 1000m;
         return musteri;
@@ -81,7 +81,7 @@ public static class MusteriMockFactory
     /// </summary>
     public static Musteri CreateOverCreditLimit(int id = 1)
     {
-        var musteri = CreateValid(id);
+        Musteri musteri = CreateValid(id);
         musteri.KreditLimiti = 1000m;
         musteri.UmumiBorc = 1200m; // Over limit
         return musteri;
@@ -92,7 +92,7 @@ public static class MusteriMockFactory
     /// </summary>
     public static Musteri CreateDeleted(int id = 1)
     {
-        var musteri = CreateValid(id);
+        Musteri musteri = CreateValid(id);
         musteri.Silinib = true;
         return musteri;
     }

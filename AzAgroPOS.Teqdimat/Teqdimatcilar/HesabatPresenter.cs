@@ -1,10 +1,11 @@
 ﻿// Fayl: AzAgroPOS.Teqdimat/Teqdimatcilar/HesabatPresenter.cs
-namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 
+using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Teqdimat.Interfeysler;
-using System.Threading.Tasks;
 
+namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 /// <summary>
 /// Hesabat formu ilə biznes məntiqi (HesabatManager) arasında əlaqəni qurur.
 /// </summary>
@@ -31,7 +32,7 @@ public class HesabatPresenter
     private async Task GunlukHesabatiGoster()
     {
         _view.PanelləriSıfırla();
-        var netice = await _hesabatManager.GunlukSatisHesabatiGetirAsync(_view.SecilmisTarix);
+        EmeliyyatNeticesi<GunlukSatisHesabatDto> netice = await _hesabatManager.GunlukSatisHesabatiGetirAsync(_view.SecilmisTarix);
 
         if (netice.UgurluDur)
         {

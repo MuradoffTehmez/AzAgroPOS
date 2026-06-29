@@ -18,17 +18,17 @@ class Program
             return;
         }
 
-        var optionsBuilder = new DbContextOptionsBuilder<AzAgroPOSDbContext>()
+        DbContextOptionsBuilder<AzAgroPOSDbContext> optionsBuilder = new DbContextOptionsBuilder<AzAgroPOSDbContext>()
             .UseSqlServer(connectionString);
 
-        await using var context = new AzAgroPOSDbContext(optionsBuilder.Options);
+        await using AzAgroPOSDbContext context = new(optionsBuilder.Options);
 
         try
         {
-            var migrations = await context.Database.GetPendingMigrationsAsync();
+            IEnumerable<string> migrations = await context.Database.GetPendingMigrationsAsync();
             Console.WriteLine($"Found {migrations.Count()} pending migrations:");
 
-            foreach (var migration in migrations)
+            foreach (string migration in migrations)
             {
                 Console.WriteLine($"  - {migration}");
             }
@@ -53,7 +53,7 @@ class Program
 
     private static async Task<bool> CanOpenConnectionAsync(string connectionString)
     {
-        await using var connection = new SqlConnection(connectionString);
+        await using SqlConnection connection = new(connectionString);
         try
         {
             await connection.OpenAsync();

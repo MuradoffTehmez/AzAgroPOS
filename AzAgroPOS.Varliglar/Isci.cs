@@ -1,9 +1,6 @@
 // Fayl: AzAgroPOS.Varliglar/Isci.cs
+
 namespace AzAgroPOS.Varliglar;
-
-using System;
-using System.Collections.Generic;
-
 /// <summary>
 /// İşçilərin əsas məlumatlarını saxlayan varlıq sinifi.
 /// Bu sinif, işçinin şəxsi məlumatları, iş yeri məlumatları və digər əlaqəli məlumatları ehtiva edir.

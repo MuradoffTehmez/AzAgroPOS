@@ -1,11 +1,12 @@
 ﻿// Fayl: AzAgroPOS.Teqdimat/Teqdimatcilar/IstifadeciPresenter.cs
-namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Teqdimat.Interfeysler;
-using System.Linq;
-using System.Threading.Tasks;
+using AzAgroPOS.Varliglar;
+
+namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 
 public class IstifadeciPresenter
 {
@@ -30,10 +31,10 @@ public class IstifadeciPresenter
     private async Task FormuYukle()
     {
         // Load roles first
-        var rollar = await _istifadeciManager.ButunRollarGetirAsync();
+        List<Rol> rollar = await _istifadeciManager.ButunRollarGetirAsync();
         _view.RollariGoster(rollar);
 
-        var netice = await _istifadeciManager.IstifadecileriGetirAsync();
+        EmeliyyatNeticesi<List<IstifadeciDto>> netice = await _istifadeciManager.IstifadecileriGetirAsync();
         if (netice.UgurluDur)
         {
             _view.IstifadecileriGoster(netice.Data.OrderBy(i => i.IstifadeciAdi).ToList());
@@ -47,7 +48,7 @@ public class IstifadeciPresenter
 
     private async Task IstifadecileriYenile()
     {
-        var netice = await _istifadeciManager.IstifadecileriGetirAsync();
+        EmeliyyatNeticesi<List<IstifadeciDto>> netice = await _istifadeciManager.IstifadecileriGetirAsync();
         if (netice.UgurluDur)
         {
             _view.IstifadecileriGoster(netice.Data);
@@ -62,14 +63,14 @@ public class IstifadeciPresenter
 
     private async Task IstifadeciYarat()
     {
-        var dto = new IstifadeciDto
+        IstifadeciDto dto = new()
         {
             IstifadeciAdi = _view.IstifadeciAdi,
             TamAd = _view.TamAd,
             RolId = _view.SecilmisRolId
         };
 
-        var netice = await _istifadeciManager.IstifadeciYaratAsync(dto, _view.Parol);
+        EmeliyyatNeticesi netice = await _istifadeciManager.IstifadeciYaratAsync(dto, _view.Parol);
 
         if (netice.UgurluDur)
         {
@@ -91,7 +92,7 @@ public class IstifadeciPresenter
             return;
         }
 
-        var dto = new IstifadeciDto
+        IstifadeciDto dto = new()
         {
             Id = id,
             IstifadeciAdi = _view.IstifadeciAdi, // İstifadəçi adı dəyişdirilmir
@@ -99,7 +100,7 @@ public class IstifadeciPresenter
             RolId = _view.SecilmisRolId
         };
 
-        var netice = await _istifadeciManager.IstifadeciYenileAsync(dto, _view.Parol);
+        EmeliyyatNeticesi netice = await _istifadeciManager.IstifadeciYenileAsync(dto, _view.Parol);
 
         if (netice.UgurluDur)
         {
@@ -117,7 +118,7 @@ public class IstifadeciPresenter
     {
         if (int.TryParse(_view.IstifadeciId, out int id))
         {
-            var netice = await _istifadeciManager.IstifadeciSilAsync(id);
+            EmeliyyatNeticesi netice = await _istifadeciManager.IstifadeciSilAsync(id);
             if (netice.UgurluDur)
             {
                 _view.MesajGoster("İstifadəçi silindi.");

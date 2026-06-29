@@ -12,7 +12,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         /// </summary>
         public static List<string> QurasdirilanPrinterleriGetir()
         {
-            var printerler = new List<string>();
+            List<string> printerler = new();
 
             try
             {
@@ -35,14 +35,18 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         public static bool PrinterMovcuddurMu(string printerAdi)
         {
             if (string.IsNullOrWhiteSpace(printerAdi))
+            {
                 return false;
+            }
 
             try
             {
                 foreach (string printer in PrinterSettings.InstalledPrinters)
                 {
                     if (printer.Equals(printerAdi, StringComparison.OrdinalIgnoreCase))
+                    {
                         return true;
+                    }
                 }
             }
             catch (Exception)
@@ -60,7 +64,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         {
             try
             {
-                var printDoc = new PrintDocument();
+                PrintDocument printDoc = new();
                 return printDoc.PrinterSettings.PrinterName;
             }
             catch (Exception)
@@ -74,13 +78,8 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         /// </summary>
         public static string PrinterSecDialoquGoster(string hazirkiPrinter = null)
         {
-            using var dialog = new PrinterSecDialog(hazirkiPrinter);
-            if (dialog.ShowDialog() == DialogResult.OK)
-            {
-                return dialog.SecilmisPrinter;
-            }
-
-            return null;
+            using PrinterSecDialog dialog = new(hazirkiPrinter);
+            return dialog.ShowDialog() == DialogResult.OK ? dialog.SecilmisPrinter : null;
         }
 
         /// <summary>
@@ -89,19 +88,21 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         public static bool TestSehifesiCap(string printerAdi)
         {
             if (!PrinterMovcuddurMu(printerAdi))
+            {
                 return false;
+            }
 
             try
             {
-                var printDoc = new PrintDocument();
+                PrintDocument printDoc = new();
                 printDoc.PrinterSettings.PrinterName = printerAdi;
                 printDoc.DocumentName = "Test Səhifəsi";
 
                 printDoc.PrintPage += (sender, e) =>
                 {
-                    var font = new Font("Arial", 12);
-                    var brush = Brushes.Black;
-                    var yPos = 50;
+                    Font font = new("Arial", 12);
+                    Brush brush = Brushes.Black;
+                    int yPos = 50;
 
                     e.Graphics.DrawString("=== AzAgroPOS Test Səhifəsi ===",
                         new Font("Arial", 16, FontStyle.Bold), brush, 50, yPos);
@@ -145,29 +146,33 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         public static bool TermalCapEt(string printerAdi, string metn)
         {
             if (string.IsNullOrWhiteSpace(printerAdi) || string.IsNullOrWhiteSpace(metn))
+            {
                 return false;
+            }
 
             try
             {
-                var printDoc = new PrintDocument();
+                PrintDocument printDoc = new();
                 printDoc.PrinterSettings.PrinterName = printerAdi;
 
                 if (!printDoc.PrinterSettings.IsValid)
+                {
                     return false;
+                }
 
                 // 80mm thermal printer üçün ölçülər
                 printDoc.DefaultPageSettings.PaperSize = new PaperSize("Receipt", 290, 1000);
                 printDoc.DefaultPageSettings.Margins = new Margins(5, 5, 5, 5);
 
-                var lines = metn.Split(new[] { Environment.NewLine, "\n" }, StringSplitOptions.None);
-                var lineIndex = 0;
+                string[] lines = metn.Split(new[] { Environment.NewLine, "\n" }, StringSplitOptions.None);
+                int lineIndex = 0;
 
                 printDoc.PrintPage += (s, e) =>
                 {
-                    var font = new Font("Courier New", 9);
-                    var brush = Brushes.Black;
-                    var yPos = 10f;
-                    var lineHeight = font.GetHeight(e.Graphics);
+                    Font font = new("Courier New", 9);
+                    Brush brush = Brushes.Black;
+                    float yPos = 10f;
+                    float lineHeight = font.GetHeight(e.Graphics);
 
                     while (lineIndex < lines.Length && yPos < e.PageBounds.Height - 30)
                     {
@@ -284,7 +289,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         private void PrinterleriYukle()
         {
             lstPrinters.Items.Clear();
-            var printerler = PrinterHelper.QurasdirilanPrinterleriGetir();
+            List<string> printerler = PrinterHelper.QurasdirilanPrinterleriGetir();
 
             if (printerler.Count == 0)
             {
@@ -294,13 +299,13 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
             }
             else
             {
-                foreach (var printer in printerler)
+                foreach (string printer in printerler)
                 {
                     lstPrinters.Items.Add(printer);
                 }
 
                 // Varsayılan printer-i seç
-                var varsayilan = PrinterHelper.VarsayilanPrinteriGetir();
+                string varsayilan = PrinterHelper.VarsayilanPrinteriGetir();
                 if (!string.IsNullOrEmpty(varsayilan))
                 {
                     int index = lstPrinters.Items.IndexOf(varsayilan);
@@ -325,13 +330,13 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
                 return;
             }
 
-            var printerAdi = lstPrinters.SelectedItem.ToString();
+            string? printerAdi = lstPrinters.SelectedItem.ToString();
             btnTest.Enabled = false;
             btnTest.Text = "Çap edilir...";
 
             try
             {
-                var netice = PrinterHelper.TestSehifesiCap(printerAdi);
+                bool netice = PrinterHelper.TestSehifesiCap(printerAdi);
 
                 if (netice)
                 {

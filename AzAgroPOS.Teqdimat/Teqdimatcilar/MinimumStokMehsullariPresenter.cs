@@ -1,13 +1,11 @@
 // Fayl: AzAgroPOS.Teqdimat/Teqdimatcilar/MinimumStokMehsullariPresenter.cs
-namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Teqdimat.Interfeysler;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
+namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 /// <summary>
 /// Minimum stok məhsulları idarəetmə forması üçün presenter.
 /// </summary>
@@ -28,7 +26,7 @@ public class MinimumStokMehsullariPresenter
 
     private async Task FormuYukle()
     {
-        var netice = await _mehsulMeneceri.MinimumStokMehsullariniGetirAsync();
+        EmeliyyatNeticesi<List<MehsulDto>> netice = await _mehsulMeneceri.MinimumStokMehsullariniGetirAsync();
         if (netice.UgurluDur)
         {
             _view.MinimumStokMehsullariniGoster(netice.Data.OrderBy(m => m.Ad).ToList());

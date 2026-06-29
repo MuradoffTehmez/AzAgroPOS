@@ -30,7 +30,10 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 
         public void AttachView(IMehsulIdareetmeView view)
         {
-            if (view == null) throw new ArgumentNullException(nameof(view));
+            if (view == null)
+            {
+                throw new ArgumentNullException(nameof(view));
+            }
 
             if (_isViewAttached)
             {
@@ -70,19 +73,25 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                 _view.OlcuVahidleriniGoster(Enum.GetValues(typeof(OlcuVahidi)));
 
                 // Kateqoriyaları yükləyirik
-                var kateqoriyaNetice = await _kateqoriyaMeneceri.ButunKateqoriyalariGetirAsync();
+                EmeliyyatNeticesi<List<KateqoriyaDto>> kateqoriyaNetice = await _kateqoriyaMeneceri.ButunKateqoriyalariGetirAsync();
                 if (kateqoriyaNetice.UgurluDur)
+                {
                     _view.KateqoriyalariGoster(kateqoriyaNetice.Data);
+                }
 
                 // Brendləri yükləyirik
-                var brendNetice = await _brendMeneceri.ButunBrendleriGetirAsync();
+                EmeliyyatNeticesi<List<BrendDto>> brendNetice = await _brendMeneceri.ButunBrendleriGetirAsync();
                 if (brendNetice.UgurluDur)
+                {
                     _view.BrendleriGoster(brendNetice.Data);
+                }
 
                 // Tedarukçuları yükləyirik
-                var tedarukcuNetice = await _tedarukcuMeneceri.ButunTedarukculeriGetirAsync();
+                EmeliyyatNeticesi<List<TedarukcuDto>> tedarukcuNetice = await _tedarukcuMeneceri.ButunTedarukculeriGetirAsync();
                 if (tedarukcuNetice.UgurluDur)
+                {
                     _view.TedarukculeriGoster(tedarukcuNetice.Data);
+                }
 
                 // Səhifə 1-dən başlayırıq
                 _sehifeParametrleri.SehifeNomresi = 1;
@@ -101,8 +110,8 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 
             await _view.EmeliyyatIcraEtAsync(async () =>
             {
-                var yeniMehsul = ViewDanMehsulYarat();
-                var netice = await _mehsulManager.MehsulYaratAsync(yeniMehsul);
+                MehsulDto yeniMehsul = ViewDanMehsulYarat();
+                EmeliyyatNeticesi<int> netice = await _mehsulManager.MehsulYaratAsync(yeniMehsul);
 
                 if (netice.UgurluDur)
                 {
@@ -127,8 +136,8 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 
             await _view.EmeliyyatIcraEtAsync(async () =>
             {
-                var movcudMehsul = ViewDanMehsulYarat();
-                var netice = await _mehsulManager.MehsulYenileAsync(movcudMehsul);
+                MehsulDto movcudMehsul = ViewDanMehsulYarat();
+                EmeliyyatNeticesi netice = await _mehsulManager.MehsulYenileAsync(movcudMehsul);
 
                 if (netice.UgurluDur)
                 {
@@ -151,10 +160,10 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                 return;
             }
 
-            var cavab = _view.MesajGoster("Seçilmiş məhsulu silmək istədiyinizə əminsiniz?", "Təsdiq", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult cavab = _view.MesajGoster("Seçilmiş məhsulu silmək istədiyinizə əminsiniz?", "Təsdiq", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (cavab == DialogResult.Yes)
             {
-                var netice = await _mehsulManager.MehsulSilAsync(ParseInt(_view.MehsulId));
+                EmeliyyatNeticesi netice = await _mehsulManager.MehsulSilAsync(ParseInt(_view.MehsulId));
                 if (netice.UgurluDur)
                 {
                     await FormuYukle();
@@ -196,20 +205,28 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 
         private async Task StokKoduGeneralasiyaEt()
         {
-            var netice = await _mehsulManager.StokKoduGeneralasiyaEtAsync(_view.MehsulAdi);
+            EmeliyyatNeticesi<string> netice = await _mehsulManager.StokKoduGeneralasiyaEtAsync(_view.MehsulAdi);
             if (netice.UgurluDur)
+            {
                 _view.StokKodu = netice.Data;
+            }
             else
+            {
                 _view.MesajGoster(netice.Mesaj, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
         private async Task BarkodGeneralasiyaEt()
         {
-            var netice = await _mehsulManager.BarkodGeneralasiyaEtAsync();
+            EmeliyyatNeticesi<string> netice = await _mehsulManager.BarkodGeneralasiyaEtAsync();
             if (netice.UgurluDur)
+            {
                 _view.Barkod = netice.Data;
+            }
             else
+            {
                 _view.MesajGoster(netice.Mesaj, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private async Task AxtarisEt()
@@ -224,18 +241,18 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             if (_paginationEnabled)
             {
                 // Səhifələnmiş yükləmə
-                var axtarisMetni = string.IsNullOrWhiteSpace(_view.AxtarisMetni) ? null : _view.AxtarisMetni;
-                var netice = await _mehsulManager.MehsullariSehifelenmisGetirAsync(_sehifeParametrleri);
+                string? axtarisMetni = string.IsNullOrWhiteSpace(_view.AxtarisMetni) ? null : _view.AxtarisMetni;
+                EmeliyyatNeticesi<SehifelenmisMelumat<MehsulDto>> netice = await _mehsulManager.MehsullariSehifelenmisGetirAsync(_sehifeParametrleri);
 
                 if (netice.UgurluDur && netice.Data != null)
                 {
-                    var sehifelenmis = netice.Data;
+                    SehifelenmisMelumat<MehsulDto> sehifelenmis = netice.Data;
 
                     // Əgər axtarış varsa, client-side filtering tətbiq et
                     IEnumerable<MehsulDto> mehsullar = sehifelenmis.Melumatlar;
                     if (!string.IsNullOrWhiteSpace(axtarisMetni))
                     {
-                        var axtarisLower = axtarisMetni.ToLower();
+                        string axtarisLower = axtarisMetni.ToLower();
                         mehsullar = mehsullar.Where(m =>
                             m.Ad.ToLower().Contains(axtarisLower) ||
                             m.StokKodu.ToLower().Contains(axtarisLower) ||
@@ -255,12 +272,12 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             else
             {
                 // Köhnə yanaşma - hamısını yüklə və cache-lə
-                var netice = await _mehsulManager.ButunMehsullariGetirAsync();
+                EmeliyyatNeticesi<IEnumerable<MehsulDto>> netice = await _mehsulManager.ButunMehsullariGetirAsync();
                 if (netice.UgurluDur)
                 {
                     _butunMehsullarCache = netice.Data;
-                    var axtarisMetni = _view.AxtarisMetni.ToLower();
-                    var filterlenmis = string.IsNullOrWhiteSpace(axtarisMetni)
+                    string axtarisMetni = _view.AxtarisMetni.ToLower();
+                    IEnumerable<MehsulDto>? filterlenmis = string.IsNullOrWhiteSpace(axtarisMetni)
                         ? _butunMehsullarCache
                         : _butunMehsullarCache.Where(m =>
                             m.Ad.ToLower().Contains(axtarisMetni) ||
@@ -296,7 +313,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
         {
             if (!string.IsNullOrEmpty(_view.MehsulId) && _butunMehsullarCache != null)
             {
-                var secilmisMehsul = _butunMehsullarCache.FirstOrDefault(m => m.Id == int.Parse(_view.MehsulId));
+                MehsulDto? secilmisMehsul = _butunMehsullarCache.FirstOrDefault(m => m.Id == int.Parse(_view.MehsulId));
                 if (secilmisMehsul != null)
                 {
                     _view.MehsulAdi = secilmisMehsul.Ad;
@@ -314,12 +331,12 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 
         private decimal ParseDecimal(string value)
         {
-            return decimal.TryParse(value, out var result) ? result : 0;
+            return decimal.TryParse(value, out decimal result) ? result : 0;
         }
 
         private int ParseInt(string value)
         {
-            return int.TryParse(value, out var result) ? result : 0;
+            return int.TryParse(value, out int result) ? result : 0;
         }
 
         private MehsulDto ViewDanMehsulYarat()

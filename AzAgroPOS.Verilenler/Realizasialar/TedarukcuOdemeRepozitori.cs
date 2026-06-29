@@ -1,10 +1,10 @@
 // Fayl: AzAgroPOS.Verilenler/Realizasialar/TedarukcuOdemeRepozitori.cs
-namespace AzAgroPOS.Verilenler.Realizasialar;
 
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using AzAgroPOS.Verilenler.Kontekst;
 
+namespace AzAgroPOS.Verilenler.Realizasialar;
 /// <summary>
 /// TedarukcuOdeme varlığı üçün repozitoriya realizasiyası.
 /// </summary>

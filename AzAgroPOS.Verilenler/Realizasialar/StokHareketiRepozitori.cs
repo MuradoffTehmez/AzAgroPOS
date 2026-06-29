@@ -24,13 +24,13 @@ namespace AzAgroPOS.Verilenler.Realizasialar
         /// </summary>
         public async Task<int> MehsulQaliginHesabla(int mehsulId)
         {
-            var daxilolmalar = await _dbSet
+            int daxilolmalar = await _dbSet
                 .Where(sh => sh.MehsulId == mehsulId &&
                             sh.HareketTipi == StokHareketTipi.Daxilolma &&
                             !sh.Silinib)
                 .SumAsync(sh => sh.Miqdar);
 
-            var cixislar = await _dbSet
+            int cixislar = await _dbSet
                 .Where(sh => sh.MehsulId == mehsulId &&
                             sh.HareketTipi == StokHareketTipi.Cixis &&
                             !sh.Silinib)
@@ -49,7 +49,7 @@ namespace AzAgroPOS.Verilenler.Realizasialar
             DateTime? baslangicTarixi = null,
             DateTime? bitisTarixi = null)
         {
-            var query = _dbSet
+            IQueryable<StokHareketi> query = _dbSet
                 .Where(sh => sh.MehsulId == mehsulId && !sh.Silinib)
                 .Include(sh => sh.Mehsul)
                 .Include(sh => sh.Istifadeci)
@@ -106,7 +106,7 @@ namespace AzAgroPOS.Verilenler.Realizasialar
                 .Select(g => new { MehsulId = g.Key, Miqdar = g.Sum(sh => sh.Miqdar) })
                 .ToListAsync();
 
-            var qaliqlar = new Dictionary<int, int>();
+            Dictionary<int, int> qaliqlar = new();
 
             // Daxilolmaları əlavə et
             foreach (var item in daxilolmalar)

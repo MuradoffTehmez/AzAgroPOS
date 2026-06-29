@@ -1,8 +1,8 @@
 ﻿// Fayl: AzAgroPOS.Verilenler/Interfeysler/ITemirRepozitori.cs
-namespace AzAgroPOS.Verilenler.Interfeysler;
 
 using AzAgroPOS.Varliglar;
 
+namespace AzAgroPOS.Verilenler.Interfeysler;
 /// <summary>
 /// bütün təmir verilənlər bazası əməliyyatları üçün interfeys.
 /// diqət: Hal-hazırda xüsusi əməliyyatlar əlavə edilməyib, amma gələcəkdə əlavə edilə bilər.

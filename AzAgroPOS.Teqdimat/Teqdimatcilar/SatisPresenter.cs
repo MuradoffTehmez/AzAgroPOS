@@ -1,5 +1,6 @@
 ﻿using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Servisler;
 using AzAgroPOS.Teqdimat.Yardimcilar;
@@ -67,7 +68,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
         {
             // Lazy loading: Yalnız ilk 50 müştərini yükləyirik
             // İstifadəçi ComboBox-da axtarış etdikdə daha çox məlumat yüklənəcək
-            var musteriNetice = await _musteriManager.MusterileriAxtarisIleGetirAsync("", 50);
+            EmeliyyatNeticesi<List<MusteriDto>> musteriNetice = await _musteriManager.MusterileriAxtarisIleGetirAsync("", 50);
             if (musteriNetice.UgurluDur)
             {
                 _view.MusteriSiyahisiniGoster(musteriNetice.Data);
@@ -76,7 +77,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 
         private async Task SuretliSatisMehsullariniGetir()
         {
-            var netice = await _mehsulManager.AxtarAsync("", 30);
+            EmeliyyatNeticesi<List<MehsulDto>> netice = await _mehsulManager.AxtarAsync("", 30);
             if (netice.UgurluDur)
             {
                 _view.SuretliSatisMehsullariniGoster(netice.Data);
@@ -85,7 +86,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 
         private async Task MehsulAxtar()
         {
-            var netice = await _mehsulManager.AxtarAsync(_view.AxtarisMetni, 100);
+            EmeliyyatNeticesi<List<MehsulDto>> netice = await _mehsulManager.AxtarAsync(_view.AxtarisMetni, 100);
             if (netice.UgurluDur)
             {
                 _view.AxtarisNeticeleriniGoster(netice.Data);
@@ -99,7 +100,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                 System.Diagnostics.Debug.WriteLine($"Səbətə əlavə et: {mehsul?.Ad ?? "seçilmiş məhsul"}");
 
                 // Məhsul seçimi yoxlaması
-                var secilmisMehsul = mehsul ?? _view.SecilmisAxtarisMehsulu;
+                MehsulDto? secilmisMehsul = mehsul ?? _view.SecilmisAxtarisMehsulu;
                 if (secilmisMehsul == null)
                 {
                     System.Diagnostics.Debug.WriteLine("Məhsul seçilməyib");
@@ -130,7 +131,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                 }
 
                 // Stok mövcudluğu yoxlaması
-                var movcudElement = _aktivSebet.FirstOrDefault(e => e.MehsulId == secilmisMehsul.Id);
+                SatisSebetiElementiDto? movcudElement = _aktivSebet.FirstOrDefault(e => e.MehsulId == secilmisMehsul.Id);
                 decimal sebetdekiMiqdar = movcudElement?.Miqdar ?? 0;
                 decimal istenilenToplamMiqdar = sebetdekiMiqdar + miqdar;
 
@@ -164,7 +165,10 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                 // UI-ni yenilə
                 _aktivSebet.ResetBindings();
                 GosterisleriYenile();
-                if (mehsul == null) _view.AxtarisPaneliniSifirla();
+                if (mehsul == null)
+                {
+                    _view.AxtarisPaneliniSifirla();
+                }
 
                 // Müştəri ekranını yenilə
                 _view.MusteriEkraniYenile(secilmisMehsul.Ad, secilmisMehsul.PerakendeSatisQiymeti, miqdar);
@@ -196,7 +200,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
         {
             try
             {
-                var element = _aktivSebet.FirstOrDefault(e => e.MehsulId == mehsulId);
+                SatisSebetiElementiDto? element = _aktivSebet.FirstOrDefault(e => e.MehsulId == mehsulId);
                 if (element == null)
                 {
                     _view.StatusMesajiGoster("Məhsul səbətdə tapılmadı", StatusMesajiNovu.Xeta);
@@ -229,7 +233,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
         {
             try
             {
-                var secilmisSebetElementi = _view.SecilmisSebetElementi;
+                SatisSebetiElementiDto? secilmisSebetElementi = _view.SecilmisSebetElementi;
                 if (secilmisSebetElementi == null)
                 {
                     _view.StatusMesajiGoster("Zəhmət olmasa silinəcək məhsulu seçin", StatusMesajiNovu.Melumat);
@@ -258,7 +262,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                     return;
                 }
 
-                var cavab = _view.MesajGoster("Səbəti tamamilə təmizləmək istədiyinizə əminsinizmi?", "Təsdiq", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                DialogResult cavab = _view.MesajGoster("Səbəti tamamilə təmizləmək istədiyinizə əminsinizmi?", "Təsdiq", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (cavab == DialogResult.Yes)
                 {
                     FormuTamSifirla();
@@ -310,7 +314,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             }
             else if (endirimParam.Scope == EndirimScope.SelectedItem)
             {
-                var secilmisSebetElementi = _view.SecilmisSebetElementi;
+                SatisSebetiElementiDto? secilmisSebetElementi = _view.SecilmisSebetElementi;
                 if (secilmisSebetElementi == null)
                 {
                     _view.StatusMesajiGoster("Zəhmət olmasa, endirim tətbiq etmək üçün bir məhsul seçin.", StatusMesajiNovu.Xeta);
@@ -339,7 +343,10 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                 _view.StatusMesajiGoster("Endirim məbləği ümumi məbləği keçə bilməz.", StatusMesajiNovu.Xeta);
                 // Endirimi geri al
                 if (endirimParam.Scope == EndirimScope.Cart)
+                {
                     _cartLevelEndirimMeblegi = 0;
+                }
+
                 return;
             }
 
@@ -366,8 +373,11 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
         {
             if (_aktivSebet.Any())
             {
-                var cavab = _view.MesajGoster("Aktiv səbət mövcuddur. Dəyişikliklər itəcək. Davam etmək istəyirsiniz?", "Xəbərdarlıq", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                if (cavab == DialogResult.No) return;
+                DialogResult cavab = _view.MesajGoster("Aktiv səbət mövcuddur. Dəyişikliklər itəcək. Davam etmək istəyirsiniz?", "Xəbərdarlıq", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (cavab == DialogResult.No)
+                {
+                    return;
+                }
             }
             _aktivSebet = new BindingList<SatisSebetiElementiDto>(satis.Sebet);
             _gozleyenSebetler.Remove(satis);
@@ -398,7 +408,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                 return;
             }
 
-            var musteriId = _view.SecilmisMusteriId;
+            int? musteriId = _view.SecilmisMusteriId;
             if (odenisMetodu == OdenisMetodu.Nisyə && !musteriId.HasValue)
             {
                 _view.StatusMesajiGoster("Nisyə satış üçün müştəri seçin.", StatusMesajiNovu.Xeta);
@@ -408,10 +418,10 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             // Nisyə satış üçün müştəri borc limitini yoxla
             if (odenisMetodu == OdenisMetodu.Nisyə && musteriId.HasValue)
             {
-                var musteriSiyahisi = await _musteriManager.ButunMusterileriGetirAsync();
+                EmeliyyatNeticesi<List<MusteriDto>> musteriSiyahisi = await _musteriManager.ButunMusterileriGetirAsync();
                 if (musteriSiyahisi.UgurluDur && musteriSiyahisi.Data != null)
                 {
-                    var musteri = musteriSiyahisi.Data.FirstOrDefault(m => m.Id == musteriId.Value);
+                    MusteriDto? musteri = musteriSiyahisi.Data.FirstOrDefault(m => m.Id == musteriId.Value);
                     if (musteri != null)
                     {
                         decimal yekunMebleg = _aktivSebet.Sum(e => e.VahidinQiymeti * e.Miqdar)
@@ -420,7 +430,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 
                         if (yeniBorc > MUSTERI_BORC_LIMITI)
                         {
-                            var cavab = _view.MesajGoster(
+                            DialogResult cavab = _view.MesajGoster(
                                 $"Müştərinin cari borcu: {musteri.UmumiBorc:N2} AZN\n" +
                                 $"Bu satış ilə yeni borc: {yeniBorc:N2} AZN\n" +
                                 $"Borc limiti: {MUSTERI_BORC_LIMITI:N2} AZN\n\n" +
@@ -445,7 +455,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                 decimal totalDiscount = totalItemDiscount + _cartLevelEndirimMeblegi;
                 decimal yekunMebleg = umumiMebleg - totalDiscount;
 
-                var satisDto = new SatisYaratDto
+                SatisYaratDto satisDto = new()
                 {
                     SebetElementleri = _aktivSebet.ToList(),
                     OdenisMetodu = odenisMetodu,
@@ -456,14 +466,14 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                     YekunMebleg = yekunMebleg
                 };
 
-                var netice = await _satisManager.SatisYaratAsync(satisDto);
+                EmeliyyatNeticesi<Satis> netice = await _satisManager.SatisYaratAsync(satisDto);
 
                 if (netice.UgurluDur)
                 {
                     // Qebz cap et
                     try
                     {
-                        var qebz = new SatisQebzDto
+                        SatisQebzDto qebz = new()
                         {
                             SatisId = netice.Data!.Id,
                             Tarix = netice.Data.Tarix,
@@ -517,7 +527,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
         {
             try
             {
-                var netice = await _mehsulManager.MehsulSilAsync(mehsulId);
+                EmeliyyatNeticesi netice = await _mehsulManager.MehsulSilAsync(mehsulId);
                 return netice.UgurluDur;
             }
             catch (Exception)
@@ -533,12 +543,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
         /// <returns>Rəng adı ("Red", "Orange" və ya "Black")</returns>
         public string GetMusteriBorcRengi(decimal borc)
         {
-            if (borc > 5000)
-                return "Red";
-            else if (borc > 1000)
-                return "Orange";
-            else
-                return "Black";
+            return borc > 5000 ? "Red" : borc > 1000 ? "Orange" : "Black";
         }
     }
 }

@@ -1,8 +1,6 @@
 // Fayl: AzAgroPOS.Varliglar/TedarukcuOdeme.cs
+
 namespace AzAgroPOS.Varliglar;
-
-using System;
-
 /// <summary>
 /// Tədarükçü ödənişlərini saxlayan varlıq sinifi.
 /// </summary>

@@ -1,9 +1,6 @@
 // Fayl: AzAgroPOS.Varliglar/AlisSifaris.cs
+
 namespace AzAgroPOS.Varliglar;
-
-using System;
-using System.Collections.Generic;
-
 /// <summary>
 /// Alış sifarişlərini saxlayan varlıq sinifi.
 /// </summary>

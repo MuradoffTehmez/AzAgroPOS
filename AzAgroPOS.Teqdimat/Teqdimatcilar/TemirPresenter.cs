@@ -1,12 +1,13 @@
 // Fayl: AzAgroPOS.Teqdimat/Teqdimatcilar/TemirPresenter.cs
-namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 // using-lər
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Xidmetler;
 using AzAgroPOS.Varliglar;
 
+namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 /// <summary>
 ///  temir presenter class. 
 ///  bu presenter, temir sifarişlərinin idarə olunması üçün istifadə olunur.
@@ -50,14 +51,18 @@ public class TemirPresenter
     private async Task FormuYukle()
     {
         // Sifarişləri yükləyirik
-        var netice = await _temirManager.ButunSifarisleriGetirAsync();
+        EmeliyyatNeticesi<List<TemirDto>> netice = await _temirManager.ButunSifarisleriGetirAsync();
         if (netice.UgurluDur)
+        {
             _view.SifarisleriGoster(netice.Data);
+        }
 
         // Usta siyahısını yükləyirik
-        var ustalarNetice = await _istifadeciManager.ButunTexnikleriGetirAsync();
+        EmeliyyatNeticesi<List<IstifadeciDto>> ustalarNetice = await _istifadeciManager.ButunTexnikleriGetirAsync();
         if (ustalarNetice.UgurluDur)
+        {
             _view.UstaSiyahisiniGoster(ustalarNetice.Data);
+        }
     }
 
     /// <summary>
@@ -66,7 +71,7 @@ public class TemirPresenter
     /// <returns></returns>
     private async Task YeniSifarisYarat()
     {
-        var yeniSifarisDto = new TemirDto
+        TemirDto yeniSifarisDto = new()
         {
             MusteriAdi = _view.MusteriAdi,
             MusteriTelefonu = _view.MusteriTelefonu,
@@ -79,7 +84,7 @@ public class TemirPresenter
             IsciId = _view.UstaId
         };
 
-        var netice = await _temirManager.YeniSifarisYaratAsync(yeniSifarisDto);
+        EmeliyyatNeticesi<int> netice = await _temirManager.YeniSifarisYaratAsync(yeniSifarisDto);
         if (netice.UgurluDur)
         {
             _view.MesajGoster("Yeni təmir sifarişi uğurla yaradıldı.", "Uğurlu Əməliyyat");
@@ -98,14 +103,14 @@ public class TemirPresenter
     /// <returns></returns>
     private async Task SifarisYenile()
     {
-        var secilmisSifarisId = _view.SecilmisSifarisId;
+        int secilmisSifarisId = _view.SecilmisSifarisId;
         if (secilmisSifarisId <= 0)
         {
             _view.MesajGoster("Zəhmət olmasa, yeniləmək üçün bir sifariş seçin.", "Xəbərdarlıq");
             return;
         }
 
-        var sifarisDto = new TemirDto
+        TemirDto sifarisDto = new()
         {
             Id = secilmisSifarisId,
             MusteriAdi = _view.MusteriAdi,
@@ -119,7 +124,7 @@ public class TemirPresenter
             IsciId = _view.UstaId
         };
 
-        var netice = await _temirManager.SifarisYenileAsync(sifarisDto);
+        EmeliyyatNeticesi netice = await _temirManager.SifarisYenileAsync(sifarisDto);
         if (netice.UgurluDur)
         {
             _view.MesajGoster("Təmir sifarişi uğurla yeniləndi.", "Uğurlu Əməliyyat");
@@ -137,20 +142,20 @@ public class TemirPresenter
     /// <returns></returns>
     private async Task SifarisSil()
     {
-        var secilmisSifarisId = _view.SecilmisSifarisId;
+        int secilmisSifarisId = _view.SecilmisSifarisId;
         if (secilmisSifarisId <= 0)
         {
             _view.MesajGoster("Zəhmət olmasa, silmək üçün bir sifariş seçin.", "Xəbərdarlıq");
             return;
         }
 
-        var tesdiq = _dialogXidmeti.TesdiqSorus(
+        bool tesdiq = _dialogXidmeti.TesdiqSorus(
             "Bu sifarişi silmək istədiyinizə əminsiniz?",
             "Təsdiq");
 
         if (tesdiq)
         {
-            var netice = await _temirManager.SifarisSilAsync(secilmisSifarisId);
+            EmeliyyatNeticesi netice = await _temirManager.SifarisSilAsync(secilmisSifarisId);
             if (netice.UgurluDur)
             {
                 _view.MesajGoster("Təmir sifarişi uğurla silindi.", "Uğurlu Əməliyyat");
@@ -170,18 +175,18 @@ public class TemirPresenter
     private void EhtiyatHissəsiElaveEt()
     {
         // Create a new instance of the form for each use
-        using var form = new EhtiyatHissəsiFormu(_mehsulManager);
+        using EhtiyatHissəsiFormu form = new(_mehsulManager);
         if (form.ShowDialog() == DialogResult.OK)
         {
-            var ehtiyatHissələri = form.EhtiyatHissələri;
+            List<EhtiyatHissəsiDto> ehtiyatHissələri = form.EhtiyatHissələri;
             decimal ümumiMəbləğ = ehtiyatHissələri.Sum(e => e.ÜmumiMəbləğ);
 
             // Təmir xərcini yeniləyirik
-            var cariXerc = _view.TemirXerci;
+            decimal cariXerc = _view.TemirXerci;
             _view.TemirXerci = cariXerc + ümumiMəbləğ;
 
             // Yekun məbləği yeniləyirik
-            var servisHaqqi = _view.ServisHaqqi;
+            decimal servisHaqqi = _view.ServisHaqqi;
             _view.YekunMebleg = _view.TemirXerci + servisHaqqi;
 
             _view.MesajGoster($"Ehtiyat hissələri əlavə edildi. Ümumi məbləğ: {ümumiMəbləğ:N2} AZN", "Məlumat");
@@ -193,20 +198,20 @@ public class TemirPresenter
     /// </summary>
     private async void ÖdənişiTamamla()
     {
-        var secilmisSifarisId = _view.SecilmisSifarisId;
+        int secilmisSifarisId = _view.SecilmisSifarisId;
         if (secilmisSifarisId <= 0)
         {
             _view.MesajGoster("Zəhmət olmasa, ödənişi tamamlamaq üçün bir sifariş seçin.", "Xəbərdarlıq");
             return;
         }
 
-        var tesdiq = _dialogXidmeti.TesdiqSorus(
+        bool tesdiq = _dialogXidmeti.TesdiqSorus(
             "Bu sifarişin ödənişini tamamlamaq istədiyinizə əminsiniz?",
             "Təsdiq");
 
         if (tesdiq)
         {
-            var netice = await _temirManager.StatusDeyisAsync(secilmisSifarisId, TemirStatusu.Hazırdır);
+            EmeliyyatNeticesi netice = await _temirManager.StatusDeyisAsync(secilmisSifarisId, TemirStatusu.Hazırdır);
             if (netice.UgurluDur)
             {
                 _view.MesajGoster("Təmir sifarişinin ödənişi uğurla tamamlandı.", "Uğurlu Əməliyyat");

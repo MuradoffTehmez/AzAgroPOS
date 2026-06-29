@@ -1,13 +1,13 @@
 // Fayl: AzAgroPOS.Teqdimat/Teqdimatcilar/BonusIdareetmePresenter.cs
-namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 
+using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Mentiq.Yardimcilar;
 using AzAgroPOS.Teqdimat.Interfeysler;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
+using AzAgroPOS.Varliglar;
 
+namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 /// <summary>
 /// Bonus idarəetmə forması üçün presenter.
 /// Müştəri bonus sistemini idarə edir - bal əlavə etmə, istifadə və ləğv.
@@ -58,10 +58,10 @@ public class BonusIdareetmePresenter
     {
         try
         {
-            var netice = await _musteriManager.ButunMusterileriGetirAsync();
+            EmeliyyatNeticesi<List<MusteriDto>> netice = await _musteriManager.ButunMusterileriGetirAsync();
             if (netice.UgurluDur && netice.Data != null)
             {
-                var musteriler = netice.Data.OrderBy(m => m.TamAd).ToList();
+                List<MusteriDto> musteriler = netice.Data.OrderBy(m => m.TamAd).ToList();
                 _view.MusterileriGoster(musteriler);
             }
             else
@@ -85,7 +85,7 @@ public class BonusIdareetmePresenter
     {
         try
         {
-            var netice = await _musteriManager.ButunBonuslariGetirAsync();
+            EmeliyyatNeticesi<List<MusteriBonus>> netice = await _musteriManager.ButunBonuslariGetirAsync();
             if (netice.UgurluDur && netice.Data != null)
             {
                 _view.ButunBonuslariGoster(netice.Data.ToList());
@@ -137,7 +137,7 @@ public class BonusIdareetmePresenter
     {
         try
         {
-            var netice = await _musteriManager.MusteriBonusunuGetirAsync(_view.SecilenMusteriId);
+            EmeliyyatNeticesi<MusteriBonus?> netice = await _musteriManager.MusteriBonusunuGetirAsync(_view.SecilenMusteriId);
             if (netice.UgurluDur)
             {
                 _view.MusteriBonusMelumatlariniGoster(netice.Data);
@@ -163,10 +163,10 @@ public class BonusIdareetmePresenter
     {
         try
         {
-            var netice = await _musteriManager.BonusQeydleriniGetirAsync(_view.SecilenMusteriId);
+            EmeliyyatNeticesi<List<BonusQeydi>> netice = await _musteriManager.BonusQeydleriniGetirAsync(_view.SecilenMusteriId);
             if (netice.UgurluDur && netice.Data != null)
             {
-                var qeydler = netice.Data.OrderByDescending(bq => bq.EmeliyyatTarixi).ToList();
+                List<BonusQeydi> qeydler = netice.Data.OrderByDescending(bq => bq.EmeliyyatTarixi).ToList();
                 _view.BonusTarixcesiniGoster(qeydler);
             }
         }
@@ -204,7 +204,7 @@ public class BonusIdareetmePresenter
                 return;
             }
 
-            var netice = await _musteriManager.BalElaveEtAsync(
+            EmeliyyatNeticesi netice = await _musteriManager.BalElaveEtAsync(
                 _view.SecilenMusteriId,
                 _view.BalMiqdari,
                 _view.Aciklama);
@@ -267,7 +267,7 @@ public class BonusIdareetmePresenter
                 return;
             }
 
-            var netice = await _musteriManager.BalIstifadeEtAsync(
+            EmeliyyatNeticesi netice = await _musteriManager.BalIstifadeEtAsync(
                 _view.SecilenMusteriId,
                 _view.BalMiqdari,
                 _view.Aciklama);
@@ -323,7 +323,7 @@ public class BonusIdareetmePresenter
                 return;
             }
 
-            var netice = await _musteriManager.BalLegvEtAsync(
+            EmeliyyatNeticesi netice = await _musteriManager.BalLegvEtAsync(
                 _view.SecilenMusteriId,
                 _view.BalMiqdari,
                 _view.Aciklama);
@@ -379,7 +379,7 @@ public class BonusIdareetmePresenter
                 return;
             }
 
-            var netice = await _musteriManager.ManualBalElaveEtAsync(
+            EmeliyyatNeticesi netice = await _musteriManager.ManualBalElaveEtAsync(
                 _view.SecilenMusteriId,
                 _view.BalMiqdari,
                 _view.Aciklama);

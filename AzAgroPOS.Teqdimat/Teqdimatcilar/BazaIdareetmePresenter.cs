@@ -1,14 +1,11 @@
 // Fayl: AzAgroPOS.Teqdimat/Teqdimatcilar/BazaIdareetmePresenter.cs
-namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Mentiq.Yardimcilar;
 using AzAgroPOS.Teqdimat.Interfeysler;
-using System;
-using System.IO;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
+namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 /// <summary>
 /// Baza idarəetmə forması üçün presenter.
 /// Verilənlər bazası backup və restore əməliyyatlarını idarə edir.
@@ -58,14 +55,14 @@ public class BazaIdareetmePresenter
         try
         {
             // Verilənlər bazası ölçüsünü göstəririk
-            var ölçüNetice = await _bazaManager.BazaOlcusunuGetirAsync();
+            EmeliyyatNeticesi<decimal> ölçüNetice = await _bazaManager.BazaOlcusunuGetirAsync();
             if (ölçüNetice.UgurluDur)
             {
                 _view.BazaOlcusunuGoster((double)ölçüNetice.Data);
             }
 
             // Son backup tarixini göstəririk
-            var sonBackupNetice = await _bazaManager.SonBackupTarixiniGetirAsync();
+            EmeliyyatNeticesi<DateTime?> sonBackupNetice = await _bazaManager.SonBackupTarixiniGetirAsync();
             if (sonBackupNetice.UgurluDur)
             {
                 _view.SonBackupTarixiniGoster(sonBackupNetice.Data);
@@ -89,13 +86,15 @@ public class BazaIdareetmePresenter
         try
         {
             // İstifadəçidən təsdiq alırıq
-            var tesdiq = _view.TesdiqMesajiGoster(
+            DialogResult tesdiq = _view.TesdiqMesajiGoster(
                 "Verilənlər bazasının ehtiyat nüsxəsini yaratmaq istəyirsiniz?\n\n" +
                 "Bu əməliyyat bir neçə dəqiqə çəkə bilər.",
                 "Backup Yaratma");
 
             if (tesdiq != DialogResult.Yes)
+            {
                 return;
+            }
 
             // Backup yolu view-dan alınır (SaveFileDialog vasitəsilə)
             // Bu hissə view-da implementasiya edilir
@@ -116,7 +115,7 @@ public class BazaIdareetmePresenter
     {
         try
         {
-            var restoreYolu = _view.SecilenBackupYolu;
+            string restoreYolu = _view.SecilenBackupYolu;
 
             if (string.IsNullOrEmpty(restoreYolu) || !File.Exists(restoreYolu))
             {
@@ -126,7 +125,7 @@ public class BazaIdareetmePresenter
             }
 
             // Çox ciddi xəbərdarlıq!
-            var xeberdarlik = _view.TesdiqMesajiGoster(
+            DialogResult xeberdarlik = _view.TesdiqMesajiGoster(
                 "⚠️ DİQQƏT! ⚠️\n\n" +
                 "Bu əməliyyat mövcud verilənlər bazasını SİLƏCƏK və seçilmiş " +
                 "backup ilə ƏVƏZ EDƏCƏK!\n\n" +
@@ -135,19 +134,23 @@ public class BazaIdareetmePresenter
                 "Çox Təhlükəli Əməliyyat");
 
             if (xeberdarlik != DialogResult.Yes)
+            {
                 return;
+            }
 
             // İkinci təsdiq
-            var ikinciTesdiq = _view.TesdiqMesajiGoster(
+            DialogResult ikinciTesdiq = _view.TesdiqMesajiGoster(
                 "Son dəfə soruşuruq:\n\n" +
                 "Həqiqətən restore etmək istəyirsiniz?\n\n" +
                 "Proqram bağlanacaq və yenidən açmalısınız!",
                 "Son Təsdiq");
 
             if (ikinciTesdiq != DialogResult.Yes)
+            {
                 return;
+            }
 
-            var netice = await _bazaManager.RestoreEtAsync(restoreYolu);
+            EmeliyyatNeticesi netice = await _bazaManager.RestoreEtAsync(restoreYolu);
             if (netice.UgurluDur)
             {
                 _view.MesajGoster(
@@ -180,7 +183,7 @@ public class BazaIdareetmePresenter
     {
         try
         {
-            var secilenFayl = _view.SecilenBackupYolu;
+            string secilenFayl = _view.SecilenBackupYolu;
 
             if (string.IsNullOrEmpty(secilenFayl))
             {
@@ -196,7 +199,7 @@ public class BazaIdareetmePresenter
                 return;
             }
 
-            var tesdiq = _view.TesdiqMesajiGoster(
+            DialogResult tesdiq = _view.TesdiqMesajiGoster(
                 $"Bu backup faylını silmək istəyirsiniz?\n\n{Path.GetFileName(secilenFayl)}",
                 "Backup Silmə");
 
@@ -221,8 +224,8 @@ public class BazaIdareetmePresenter
     {
         try
         {
-            var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            var backupQovlugu = Path.Combine(appDirectory, "Backups");
+            string appDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string backupQovlugu = Path.Combine(appDirectory, "Backups");
 
             if (Directory.Exists(backupQovlugu))
             {

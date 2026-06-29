@@ -1,12 +1,11 @@
 // Fayl: AzAgroPOS.Teqdimat/Teqdimatcilar/AlisSifarisPresenter.cs
-namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Teqdimat.Interfeysler;
-using System.Linq;
-using System.Threading.Tasks;
 
+namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 /// <summary>
 /// Alış sifarişi idarəetmə forması üçün presenter.
 /// </summary>
@@ -34,7 +33,7 @@ public class AlisSifarisPresenter
     private async Task FormuYukle()
     {
         // Tədarükçüləri yükləyirik
-        var tedarukcuNetice = await _alisManager.ButunTedarukculeriGetirAsync();
+        EmeliyyatNeticesi<List<TedarukcuDto>> tedarukcuNetice = await _alisManager.ButunTedarukculeriGetirAsync();
         if (tedarukcuNetice.UgurluDur)
         {
             _view.TedarukculeriGoster(tedarukcuNetice.Data.OrderBy(t => t.Ad).ToList());
@@ -45,7 +44,7 @@ public class AlisSifarisPresenter
         }
 
         // Məhsulları yükləyirik
-        var mehsulNetice = await _mehsulManager.ButunMehsullariGetirAsync(); // Əlavə edildi
+        EmeliyyatNeticesi<IEnumerable<MehsulDto>> mehsulNetice = await _mehsulManager.ButunMehsullariGetirAsync(); // Əlavə edildi
         if (mehsulNetice.UgurluDur)
         {
             _view.MehsullariGoster(mehsulNetice.Data.OrderBy(m => m.Ad).ToList()); // Əlavə edildi
@@ -56,7 +55,7 @@ public class AlisSifarisPresenter
         }
 
         // Sifarişləri yükləyirik
-        var sifarisNetice = await _alisManager.ButunAlisSifarisleriniGetirAsync();
+        EmeliyyatNeticesi<List<AlisSifarisDto>> sifarisNetice = await _alisManager.ButunAlisSifarisleriniGetirAsync();
         if (sifarisNetice.UgurluDur)
         {
             _view.SifarisleriGoster(sifarisNetice.Data.OrderBy(s => s.YaradilmaTarixi).ToList());
@@ -70,7 +69,7 @@ public class AlisSifarisPresenter
 
     private async Task SifarisYarat()
     {
-        var dto = new AlisSifarisDto
+        AlisSifarisDto dto = new()
         {
             SifarisNomresi = _view.SifarisNomresi,
             YaradilmaTarixi = _view.YaradilmaTarixi,
@@ -81,7 +80,7 @@ public class AlisSifarisPresenter
             Qeydler = _view.Qeydler
         };
 
-        var netice = await _alisManager.AlisSifarisYaratAsync(dto);
+        EmeliyyatNeticesi<int> netice = await _alisManager.AlisSifarisYaratAsync(dto);
 
         if (netice.UgurluDur)
         {
@@ -104,7 +103,7 @@ public class AlisSifarisPresenter
         }
 
         // Sifarişi yeniləmək üçün tətbiqat
-        var dto = new AlisSifarisDto
+        AlisSifarisDto dto = new()
         {
             Id = _view.SifarisId,
             SifarisNomresi = _view.SifarisNomresi,
@@ -116,7 +115,7 @@ public class AlisSifarisPresenter
             Qeydler = _view.Qeydler
         };
 
-        var netice = await _alisManager.AlisSifarisYenileAsync(dto);
+        EmeliyyatNeticesi netice = await _alisManager.AlisSifarisYenileAsync(dto);
 
         if (netice.UgurluDur)
         {
@@ -139,7 +138,7 @@ public class AlisSifarisPresenter
         }
 
         // Sifarişi silmək üçün tətbiqat
-        var netice = await _alisManager.AlisSifarisSilAsync(_view.SifarisId);
+        EmeliyyatNeticesi netice = await _alisManager.AlisSifarisSilAsync(_view.SifarisId);
 
         if (netice.UgurluDur)
         {
@@ -161,7 +160,7 @@ public class AlisSifarisPresenter
             return;
         }
 
-        var netice = await _alisManager.AlisSifarisiniTesdiqleAsync(_view.SifarisId);
+        EmeliyyatNeticesi netice = await _alisManager.AlisSifarisiniTesdiqleAsync(_view.SifarisId);
         if (netice.UgurluDur)
         {
             _view.MesajGoster("Alış sifarişi uğurla təsdiqləndi.");

@@ -1,6 +1,8 @@
 // Fayl: AzAgroPOS.Tests/Unit/Managers/MehsulManagerTests.cs
 
+using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Tests.TestHelpers;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
@@ -28,7 +30,7 @@ public class MehsulManagerTests
     public async Task MehsulYaratAsync_ValidMehsul_ReturnsSuccess()
     {
         // Arrange
-        var dto = MehsulMockFactory.CreateValidDto();
+        MehsulDto dto = MehsulMockFactory.CreateValidDto();
         _mockMehsulRepo.Setup(x => x.AxtarAsync(It.IsAny<System.Linq.Expressions.Expression<Func<Mehsul, bool>>>(), null))
             .ReturnsAsync(new List<Mehsul>());
         _mockMehsulRepo.Setup(x => x.ElaveEtAsync(It.IsAny<Mehsul>()))
@@ -38,7 +40,7 @@ public class MehsulManagerTests
             .ReturnsAsync(1);
 
         // Act
-        var result = await _mehsulManager.MehsulYaratAsync(dto);
+        EmeliyyatNeticesi<int> result = await _mehsulManager.MehsulYaratAsync(dto);
 
         // Assert
         result.UgurluDur.Should().BeTrue();
@@ -51,11 +53,11 @@ public class MehsulManagerTests
     public async Task MehsulYaratAsync_EmptyAd_ReturnsFailure()
     {
         // Arrange
-        var dto = MehsulMockFactory.CreateValidDto();
+        MehsulDto dto = MehsulMockFactory.CreateValidDto();
         dto.Ad = "";
 
         // Act
-        var result = await _mehsulManager.MehsulYaratAsync(dto);
+        EmeliyyatNeticesi<int> result = await _mehsulManager.MehsulYaratAsync(dto);
 
         // Assert
         result.UgurluDur.Should().BeFalse();
@@ -67,13 +69,13 @@ public class MehsulManagerTests
     public async Task MehsulYaratAsync_DuplicateStokKodu_ReturnsFailure()
     {
         // Arrange
-        var dto = MehsulMockFactory.CreateValidDto();
-        var existingMehsul = MehsulMockFactory.CreateValid();
+        MehsulDto dto = MehsulMockFactory.CreateValidDto();
+        Mehsul existingMehsul = MehsulMockFactory.CreateValid();
         _mockMehsulRepo.Setup(x => x.AxtarAsync(It.IsAny<System.Linq.Expressions.Expression<Func<Mehsul, bool>>>(), null))
             .ReturnsAsync(new List<Mehsul> { existingMehsul });
 
         // Act
-        var result = await _mehsulManager.MehsulYaratAsync(dto);
+        EmeliyyatNeticesi<int> result = await _mehsulManager.MehsulYaratAsync(dto);
 
         // Assert
         result.UgurluDur.Should().BeFalse();
@@ -85,12 +87,12 @@ public class MehsulManagerTests
     public async Task ButunMehsullariGetirAsync_ReturnsAllMehsullar()
     {
         // Arrange
-        var mehsullar = MehsulMockFactory.CreateList(5);
+        List<Mehsul> mehsullar = MehsulMockFactory.CreateList(5);
         _mockMehsulRepo.Setup(x => x.ButununuGetirAsync())
             .ReturnsAsync(mehsullar);
 
         // Act
-        var result = await _mehsulManager.ButunMehsullariGetirAsync();
+        EmeliyyatNeticesi<IEnumerable<MehsulDto>> result = await _mehsulManager.ButunMehsullariGetirAsync();
 
         // Assert
         result.UgurluDur.Should().BeTrue();
@@ -102,7 +104,7 @@ public class MehsulManagerTests
     public async Task MehsulSilAsync_ValidId_SoftDeletesSuccessfully()
     {
         // Arrange
-        var mehsul = MehsulMockFactory.CreateValid(1);
+        Mehsul mehsul = MehsulMockFactory.CreateValid(1);
         _mockMehsulRepo.Setup(x => x.GetirAsync(1))
             .ReturnsAsync(mehsul);
         _mockMehsulRepo.Setup(x => x.Sil(It.IsAny<Mehsul>()))
@@ -111,7 +113,7 @@ public class MehsulManagerTests
             .ReturnsAsync(1);
 
         // Act
-        var result = await _mehsulManager.MehsulSilAsync(1);
+        EmeliyyatNeticesi result = await _mehsulManager.MehsulSilAsync(1);
 
         // Assert
         result.UgurluDur.Should().BeTrue();

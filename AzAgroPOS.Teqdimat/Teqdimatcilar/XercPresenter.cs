@@ -2,9 +2,11 @@
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Mentiq.Yardimcilar;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Yardimcilar;
+using AzAgroPOS.Varliglar;
 using IcazeYoxlayici = AzAgroPOS.Mentiq.Yardimcilar.IcazeYoxlayici;
 
 namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
@@ -48,10 +50,10 @@ public class XercPresenter
         try
         {
             // Bütün xərcləri əldə edin
-            var netice = await _maliyyeManager.ButunXercleriGetirAsync();
+            EmeliyyatNeticesi<List<Xerc>> netice = await _maliyyeManager.ButunXercleriGetirAsync();
             if (netice.UgurluDur)
             {
-                var dtolar = netice.Data.Select(x => new XercDto
+                List<XercDto> dtolar = netice.Data.Select(x => new XercDto
                 {
                     Id = x.Id,
                     Novu = x.Novu,
@@ -108,7 +110,7 @@ public class XercPresenter
             }
 
             // Xərc yaradın
-            var netice = await _maliyyeManager.XercYaratAsync(
+            EmeliyyatNeticesi<int> netice = await _maliyyeManager.XercYaratAsync(
                 _view.SecilmisXercNovu,
                 _view.XercAdi,
                 _view.XercMeblegi,
@@ -150,7 +152,7 @@ public class XercPresenter
 
         try
         {
-            var xercId = _view.SecilmisXercId;
+            int? xercId = _view.SecilmisXercId;
             if (!xercId.HasValue)
             {
                 _view.MesajGoster("Yeniləmək üçün xərc seçilməlidir.",
@@ -174,7 +176,7 @@ public class XercPresenter
             }
 
             // Xərci yeniləyin
-            var netice = await _maliyyeManager.XercYenileAsync(
+            EmeliyyatNeticesi netice = await _maliyyeManager.XercYenileAsync(
                 xercId.Value,
                 _view.SecilmisXercNovu,
                 _view.XercAdi,
@@ -217,7 +219,7 @@ public class XercPresenter
 
         try
         {
-            var xercId = _view.SecilmisXercId;
+            int? xercId = _view.SecilmisXercId;
             if (!xercId.HasValue)
             {
                 _view.MesajGoster("Silmək üçün xərc seçilməlidir.",
@@ -226,14 +228,16 @@ public class XercPresenter
             }
 
             // Təsdiqləmə
-            var cavab = _view.MesajGoster("Bu xərc qeydiyyatını silmək istədiyinizə əminsiniz?",
+            DialogResult cavab = _view.MesajGoster("Bu xərc qeydiyyatını silmək istədiyinizə əminsiniz?",
                 "Təsdiqləmə", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (cavab != DialogResult.Yes)
+            {
                 return;
+            }
 
             // Xərci silin
-            var netice = await _maliyyeManager.XercSilAsync(xercId.Value);
+            EmeliyyatNeticesi netice = await _maliyyeManager.XercSilAsync(xercId.Value);
 
             if (netice.UgurluDur)
             {

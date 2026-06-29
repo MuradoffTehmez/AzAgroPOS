@@ -1,8 +1,6 @@
 // Fayl: AzAgroPOS.Varliglar/Tedarukcu.cs
+
 namespace AzAgroPOS.Varliglar;
-
-using System.Collections.Generic;
-
 /// <summary>
 /// Tədarükçülərin məlumatlarını saxlayan varlıq sinifi.
 /// </summary>

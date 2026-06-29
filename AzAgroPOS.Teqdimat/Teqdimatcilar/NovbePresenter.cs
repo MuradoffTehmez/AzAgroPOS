@@ -1,13 +1,14 @@
 ﻿// Fayl: AzAgroPOS.Teqdimat/Teqdimatcilar/NovbePresenter.cs
-namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 // Gərəkli using-lər
+using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Yardimcilar;
+using AzAgroPOS.Varliglar;
 using System.Text;
-using System.Threading.Tasks;
 
-
+namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 /// <summary>
 /// Class NovbePresenter, INovbeView interfeysini alır və növbə əməliyyatlarını idarə etmək üçün NovbeManager ilə əlaqələndirir.
 /// </summary>
@@ -60,7 +61,10 @@ public class NovbePresenter
     /// <returns></returns>
     private async Task FormuYukle()
     {
-        if (AktivSessiya.AktivIstifadeci == null) return;
+        if (AktivSessiya.AktivIstifadeci == null)
+        {
+            return;
+        }
 
         _aktivNovbe = await _novbeManager.AktivNovbeniGetirAsync(AktivSessiya.AktivIstifadeci.Id);
         if (_aktivNovbe != null)
@@ -81,9 +85,12 @@ public class NovbePresenter
     /// <returns></returns>
     private async Task NovbeAc()
     {
-        if (AktivSessiya.AktivIstifadeci == null) return;
+        if (AktivSessiya.AktivIstifadeci == null)
+        {
+            return;
+        }
 
-        var netice = await _novbeManager.NovbeAcAsync(AktivSessiya.AktivIstifadeci.Id, _view.BaslangicMebleg);
+        EmeliyyatNeticesi<Novbe> netice = await _novbeManager.NovbeAcAsync(AktivSessiya.AktivIstifadeci.Id, _view.BaslangicMebleg);
         if (netice.UgurluDur)
         {
             _aktivNovbe = netice.Data;
@@ -98,14 +105,17 @@ public class NovbePresenter
     /// <returns>j</returns>
     private async Task NovbeBagla()
     {
-        if (_aktivNovbe == null) return;
+        if (_aktivNovbe == null)
+        {
+            return;
+        }
 
-        var netice = await _novbeManager.NovbeBaglaAsync(_aktivNovbe.Id, _view.FaktikiMebleg);
+        EmeliyyatNeticesi<ZHesabatDto> netice = await _novbeManager.NovbeBaglaAsync(_aktivNovbe.Id, _view.FaktikiMebleg);
         if (netice.UgurluDur)
         {
             AktivSessiya.AktivNovbeId = null;
             _view.NovbeBaxlidirGoster();
-            var h = netice.Data;
+            ZHesabatDto? h = netice.Data;
             StringBuilder sb = new();
             sb.AppendLine("         Z-HESABATI");
             sb.AppendLine("---------------------------------");

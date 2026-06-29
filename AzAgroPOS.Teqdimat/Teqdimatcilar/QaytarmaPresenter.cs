@@ -2,6 +2,7 @@
 // using-lər
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Teqdimat.Interfeysler;
 
 namespace AzAgroPOS.Teqdimat.Teqdimatcilar
@@ -33,7 +34,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 
         private async Task SatisAxtar()
         {
-            var satisNomresi = _view.SatisNomresi;
+            string satisNomresi = _view.SatisNomresi;
             if (string.IsNullOrWhiteSpace(satisNomresi))
             {
                 _view.MesajGoster("Zəhmət olmasa, satış nömrəsini daxil edin.", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -41,7 +42,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             }
 
             // Satış nömrəsinə görə satış məlumatlarını axtarırıq
-            var satisNetice = await _satisManager.SatisGetirAsync(satisNomresi);
+            EmeliyyatNeticesi<SatisQebzDto> satisNetice = await _satisManager.SatisGetirAsync(satisNomresi);
             if (satisNetice.UgurluDur)
             {
                 _view.SatisMehsullariniGoster(satisNetice.Data.SatilanMehsullar);
@@ -55,21 +56,21 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 
         private async Task QaytarmaEmeliyyati()
         {
-            var secilmisMehsullar = _view.SecilmisMehsullar;
+            List<SatisSebetiElementiDto> secilmisMehsullar = _view.SecilmisMehsullar;
             if (secilmisMehsullar == null || secilmisMehsullar.Count == 0)
             {
                 _view.MesajGoster("Zəhmət olmasa, qaytarmaq üçün ən azı bir məhsul seçin.", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            var satisNomresi = _view.SatisNomresi;
+            string satisNomresi = _view.SatisNomresi;
             if (string.IsNullOrWhiteSpace(satisNomresi) || !int.TryParse(satisNomresi, out int satisId))
             {
                 _view.MesajGoster("Zəhmət olmasa, düzgün satış nömrəsi daxil edin.", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            var sebeb = _view.QaytarmaSebebi;
+            string sebeb = _view.QaytarmaSebebi;
             if (string.IsNullOrWhiteSpace(sebeb))
             {
                 _view.MesajGoster("Zəhmət olmasa, qaytarma səbəbini daxil edin.", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -81,10 +82,10 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             int? aktivNovbeId = Yardimcilar.AktivSessiya.AktivNovbeId;
 
             // Qaytarma məhsullarını formatlayaq (SatisSebetiElementiDto-dan uyğun formata)
-            var qaytarilanMehsullar = secilmisMehsullar.Select(m => (m.MehsulId, (int)m.Miqdar, m.VahidinQiymeti)).ToList();
+            List<(int MehsulId, int, decimal VahidinQiymeti)> qaytarilanMehsullar = secilmisMehsullar.Select(m => (m.MehsulId, (int)m.Miqdar, m.VahidinQiymeti)).ToList();
 
             // Seçilmiş məhsulları qaytarmaq
-            var netice = await _qaytarmaManager.QaytarmaYaratAsync(satisId, qaytarilanMehsullar, sebeb, kassirId, aktivNovbeId);
+            EmeliyyatNeticesi<int> netice = await _qaytarmaManager.QaytarmaYaratAsync(satisId, qaytarilanMehsullar, sebeb, kassirId, aktivNovbeId);
 
             if (netice.UgurluDur)
             {

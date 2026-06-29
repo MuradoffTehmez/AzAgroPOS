@@ -4,9 +4,20 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
     {
         public static void StilVerDataGridView(DataGridView grid, Color? headerBack = null, Color? selectionBack = null, Color? altRow = null)
         {
-            if (!headerBack.HasValue) headerBack = Color.FromArgb(33, 150, 243);
-            if (!selectionBack.HasValue) selectionBack = Color.FromArgb(187, 222, 251);
-            if (!altRow.HasValue) altRow = Color.FromArgb(245, 245, 245);
+            if (!headerBack.HasValue)
+            {
+                headerBack = Color.FromArgb(33, 150, 243);
+            }
+
+            if (!selectionBack.HasValue)
+            {
+                selectionBack = Color.FromArgb(187, 222, 251);
+            }
+
+            if (!altRow.HasValue)
+            {
+                altRow = Color.FromArgb(245, 245, 245);
+            }
 
             grid.BackgroundColor = Color.White;
             grid.BorderStyle = BorderStyle.None;

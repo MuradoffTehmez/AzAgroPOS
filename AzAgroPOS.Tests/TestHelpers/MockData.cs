@@ -29,7 +29,7 @@ public static class MockData
 
     public static List<Mehsul> CreateMehsulList(int count = 5)
     {
-        var list = new List<Mehsul>();
+        List<Mehsul> list = new();
         for (int i = 1; i <= count; i++)
         {
             list.Add(CreateMehsul(i, $"Məhsul {i}", $"TEST{i:D3}"));

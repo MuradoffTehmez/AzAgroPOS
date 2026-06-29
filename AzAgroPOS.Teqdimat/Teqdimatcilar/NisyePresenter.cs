@@ -1,10 +1,12 @@
 ﻿// Fayl: AzAgroPOS.Teqdimat/Teqdimatcilar/NisyePresenter.cs
-namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 
 // using-lər
+using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Teqdimat.Interfeysler;
 
+namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 /// <summary>
 ///  bu presenter, müştəri nisye əməliyyatlarını idarə etmək üçün istifadə olunur.
 /// </summary>
@@ -27,9 +29,11 @@ public class NisyePresenter
 
     private async Task FormuYukle()
     {
-        var netice = await _nisyeManager.MusterileriGetirAsync();
+        EmeliyyatNeticesi<List<MusteriDto>> netice = await _nisyeManager.MusterileriGetirAsync();
         if (netice.UgurluDur)
+        {
             _view.MusterileriGoster(netice.Data);
+        }
     }
 
     /// <summary>
@@ -40,9 +44,11 @@ public class NisyePresenter
     {
         if (_view.SecilmisMusteriId.HasValue)
         {
-            var netice = await _nisyeManager.MusteriHereketleriniGetirAsync(_view.SecilmisMusteriId.Value);
+            EmeliyyatNeticesi<List<NisyeHereketiDto>> netice = await _nisyeManager.MusteriHereketleriniGetirAsync(_view.SecilmisMusteriId.Value);
             if (netice.UgurluDur)
+            {
                 _view.MusteriHereketleriniGoster(netice.Data);
+            }
         }
     }
     /// <summary>
@@ -62,7 +68,7 @@ public class NisyePresenter
             }
 
             // Validation: Məbləğ
-            var mebleg = _view.OdenisMeblegi;
+            decimal mebleg = _view.OdenisMeblegi;
             if (mebleg <= 0)
             {
                 _view.MesajGoster("Ödəniş məbləği müsbət olmalıdır", "Validation Xətası",
@@ -71,7 +77,7 @@ public class NisyePresenter
             }
 
             // Confirmation dialog
-            var confirmResult = _view.MesajGoster(
+            DialogResult confirmResult = _view.MesajGoster(
                 $"Ödəniş məlumatları:\n\n" +
                 $"Ödəniləcək məbləğ: {mebleg:N2} AZN\n\n" +
                 $"Ödənişi təsdiq edirsiniz?",
@@ -88,7 +94,7 @@ public class NisyePresenter
             _view.OdenisButtonAktivdir = false;
 
             // Ödəniş əməliyyatını icra et
-            var netice = await _nisyeManager.BorcOdenisiEtAsync(_view.SecilmisMusteriId.Value, mebleg);
+            EmeliyyatNeticesi netice = await _nisyeManager.BorcOdenisiEtAsync(_view.SecilmisMusteriId.Value, mebleg);
 
             // Düyməni enable et
             _view.OdenisButtonAktivdir = true;

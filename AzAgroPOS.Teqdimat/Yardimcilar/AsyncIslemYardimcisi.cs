@@ -1,3 +1,9 @@
+
+
+
+
+
+
 namespace AzAgroPOS.Teqdimat.Yardimcilar
 {
     /// <summary>
@@ -60,7 +66,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
             lock (_lock)
             {
                 // Cancel previous search with same key
-                if (_activeTasks.TryGetValue(key, out var existingCts))
+                if (_activeTasks.TryGetValue(key, out CancellationTokenSource? existingCts))
                 {
                     existingCts.Cancel();
                     existingCts.Dispose();
@@ -68,7 +74,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
                 }
 
                 // Stop existing debounce timer
-                if (_debounceTimers.TryGetValue(key, out var existingTimer))
+                if (_debounceTimers.TryGetValue(key, out System.Timers.Timer? existingTimer))
                 {
                     existingTimer.Stop();
                     existingTimer.Dispose();
@@ -76,7 +82,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
                 }
 
                 // Create new debounce timer
-                var timer = new System.Timers.Timer(debounceMilliseconds);
+                System.Timers.Timer timer = new(debounceMilliseconds);
                 timer.AutoReset = false;
                 timer.Elapsed += async (s, e) =>
                 {
@@ -86,7 +92,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
                     }
 
                     // Create new cancellation token for this search
-                    var cts = new CancellationTokenSource();
+                    CancellationTokenSource cts = new();
                     lock (_lock)
                     {
                         _activeTasks[key] = cts;
@@ -109,7 +115,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
                     {
                         lock (_lock)
                         {
-                            if (_activeTasks.TryGetValue(key, out var currentCts) && currentCts == cts)
+                            if (_activeTasks.TryGetValue(key, out CancellationTokenSource? currentCts) && currentCts == cts)
                             {
                                 _activeTasks.Remove(key);
                             }
@@ -131,14 +137,14 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         {
             lock (_lock)
             {
-                if (_activeTasks.TryGetValue(key, out var cts))
+                if (_activeTasks.TryGetValue(key, out CancellationTokenSource? cts))
                 {
                     cts.Cancel();
                     cts.Dispose();
                     _activeTasks.Remove(key);
                 }
 
-                if (_debounceTimers.TryGetValue(key, out var timer))
+                if (_debounceTimers.TryGetValue(key, out System.Timers.Timer? timer))
                 {
                     timer.Stop();
                     timer.Dispose();

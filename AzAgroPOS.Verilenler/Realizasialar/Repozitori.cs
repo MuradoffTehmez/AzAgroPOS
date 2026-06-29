@@ -2,6 +2,7 @@
 using AzAgroPOS.Verilenler.Interfeysler;
 using AzAgroPOS.Verilenler.Kontekst;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Linq.Expressions;
 
 namespace AzAgroPOS.Verilenler.Realizasialar
@@ -54,7 +55,7 @@ namespace AzAgroPOS.Verilenler.Realizasialar
 
             if (includeProperties != null)
             {
-                foreach (var includeProperty in includeProperties)
+                foreach (string includeProperty in includeProperties)
                 {
                     query = query.Include(includeProperty);
                 }
@@ -74,7 +75,7 @@ namespace AzAgroPOS.Verilenler.Realizasialar
             IQueryable<T> query = _dbSet.AsNoTracking();
 
             // Include related entities
-            foreach (var includeProperty in includeProperties)
+            foreach (string includeProperty in includeProperties)
             {
                 query = query.Include(includeProperty);
             }
@@ -95,7 +96,7 @@ namespace AzAgroPOS.Verilenler.Realizasialar
         public void Yenile(T varliq)
         {
             // Əvvəlcə yoxla ki, entity artıq tracking olunur ya yox
-            var trackedEntity = _kontekst.ChangeTracker.Entries<T>()
+            EntityEntry<T>? trackedEntity = _kontekst.ChangeTracker.Entries<T>()
                 .FirstOrDefault(e => e.Entity.Id == varliq.Id);
 
             if (trackedEntity != null)
@@ -118,7 +119,7 @@ namespace AzAgroPOS.Verilenler.Realizasialar
             varliq.Silinib = true;
 
             // Əvvəlcə yoxla ki, entity artıq tracking olunur ya yox
-            var trackedEntity = _kontekst.ChangeTracker.Entries<T>()
+            EntityEntry<T>? trackedEntity = _kontekst.ChangeTracker.Entries<T>()
                 .FirstOrDefault(e => e.Entity.Id == varliq.Id);
 
             if (trackedEntity != null)
@@ -143,7 +144,7 @@ namespace AzAgroPOS.Verilenler.Realizasialar
         {
             // Hard delete - physically remove from database
             // Əvvəlcə yoxla ki, entity artıq tracking olunur ya yox
-            var trackedEntity = _kontekst.ChangeTracker.Entries<T>()
+            EntityEntry<T>? trackedEntity = _kontekst.ChangeTracker.Entries<T>()
                 .FirstOrDefault(e => e.Entity.Id == varliq.Id);
 
             if (trackedEntity != null)
@@ -179,7 +180,7 @@ namespace AzAgroPOS.Verilenler.Realizasialar
 
             if (includeProperties != null)
             {
-                foreach (var includeProperty in includeProperties)
+                foreach (string includeProperty in includeProperties)
                 {
                     query = query.Include(includeProperty);
                 }
@@ -205,7 +206,7 @@ namespace AzAgroPOS.Verilenler.Realizasialar
 
             if (includeProperties != null)
             {
-                foreach (var includeProperty in includeProperties)
+                foreach (string includeProperty in includeProperties)
                 {
                     query = query.Include(includeProperty);
                 }
@@ -240,20 +241,20 @@ namespace AzAgroPOS.Verilenler.Realizasialar
             }
 
             // Ümumi say
-            var umumiSay = await query.CountAsync();
+            int umumiSay = await query.CountAsync();
 
             // Include properties
             if (includeProperties != null)
             {
-                foreach (var includeProperty in includeProperties)
+                foreach (string includeProperty in includeProperties)
                 {
                     query = query.Include(includeProperty);
                 }
             }
 
             // Səhifələmə - SKIP və TAKE
-            var kec = (sehifeNomresi - 1) * sehifeOlcusu;
-            var melumatlar = await query
+            int kec = (sehifeNomresi - 1) * sehifeOlcusu;
+            List<T> melumatlar = await query
                 .Skip(kec)
                 .Take(sehifeOlcusu)
                 .AsNoTracking()

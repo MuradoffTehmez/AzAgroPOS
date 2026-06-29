@@ -1,15 +1,14 @@
 // Fayl: AzAgroPOS.Teqdimat/Teqdimatcilar/KassaPresenter.cs
-namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 
+using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Mentiq.Yardimcilar;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Yardimcilar;
 using AzAgroPOS.Varliglar;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
+namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 /// <summary>
 /// Kassa və maliyyə idarəetmə forması üçün presenter.
 /// Xərcləri, kassa hərəkətlərini və maliyyə hesabatlarını idarə edir.
@@ -60,7 +59,7 @@ public class KassaPresenter
     {
         try
         {
-            var netice = await _maliyyeManager.ButunXercleriDtoFormatindaGetirAsync();
+            EmeliyyatNeticesi<List<XercDto>> netice = await _maliyyeManager.ButunXercleriDtoFormatindaGetirAsync();
             if (netice.UgurluDur && netice.Data != null)
             {
                 _view.XercleriGoster(netice.Data.ToList());
@@ -84,7 +83,7 @@ public class KassaPresenter
     {
         try
         {
-            var netice = await _maliyyeManager.KassaHareketleriniGetirAsync(
+            EmeliyyatNeticesi<List<KassaHareketi>> netice = await _maliyyeManager.KassaHareketleriniGetirAsync(
                 _view.BaslangicTarixi.Date,
                 _view.BitisTarixi.Date);
 
@@ -111,11 +110,11 @@ public class KassaPresenter
     {
         try
         {
-            var baslangic = _view.XesabatBaslangicTarixi.Date;
-            var bitis = _view.XesabatBitisTarixi.Date;
+            DateTime baslangic = _view.XesabatBaslangicTarixi.Date;
+            DateTime bitis = _view.XesabatBitisTarixi.Date;
 
             // Gəlirləri hesabla
-            var kassaHareketleriNetice = await _maliyyeManager.KassaHareketleriniGetirAsync(baslangic, bitis);
+            EmeliyyatNeticesi<List<KassaHareketi>> kassaHareketleriNetice = await _maliyyeManager.KassaHareketleriniGetirAsync(baslangic, bitis);
             decimal gelirler = 0;
             if (kassaHareketleriNetice.UgurluDur && kassaHareketleriNetice.Data != null)
             {
@@ -125,23 +124,23 @@ public class KassaPresenter
             }
 
             // Xərcləri hesabla
-            var xercCemiNetice = await _maliyyeManager.XercCeminiHesablaAsync(baslangic, bitis);
+            EmeliyyatNeticesi<decimal> xercCemiNetice = await _maliyyeManager.XercCeminiHesablaAsync(baslangic, bitis);
             decimal xercler = xercCemiNetice.UgurluDur ? xercCemiNetice.Data : 0;
 
             // Mənfəət/Zərəri hesabla
-            var menfeetNetice = await _maliyyeManager.MenfeetZerereHesablaAsync(baslangic, bitis);
+            EmeliyyatNeticesi<decimal> menfeetNetice = await _maliyyeManager.MenfeetZerereHesablaAsync(baslangic, bitis);
             decimal menfeetZerere = menfeetNetice.UgurluDur ? menfeetNetice.Data : 0;
 
             // Cari kassa balansını hesabla (bütün tarixlər üçün)
-            var butunHareketlerNetice = await _maliyyeManager.KassaHareketleriniGetirAsync();
+            EmeliyyatNeticesi<List<KassaHareketi>> butunHareketlerNetice = await _maliyyeManager.KassaHareketleriniGetirAsync();
             decimal balans = 0;
             if (butunHareketlerNetice.UgurluDur && butunHareketlerNetice.Data != null)
             {
-                var gelirlerCem = butunHareketlerNetice.Data
+                decimal gelirlerCem = butunHareketlerNetice.Data
                     .Where(k => k.HareketNovu == KassaHareketiNovu.Daxilolma)
                     .Sum(k => k.Mebleg);
 
-                var xerclerCem = butunHareketlerNetice.Data
+                decimal xerclerCem = butunHareketlerNetice.Data
                     .Where(k => k.HareketNovu == KassaHareketiNovu.Cixis)
                     .Sum(k => k.Mebleg);
 
@@ -176,7 +175,7 @@ public class KassaPresenter
                 return;
             }
 
-            var netice = await _maliyyeManager.XercYaratAsync(
+            EmeliyyatNeticesi<int> netice = await _maliyyeManager.XercYaratAsync(
                 _view.XercNovu,
                 _view.XercAd,
                 _view.XercMebleg,
@@ -230,7 +229,7 @@ public class KassaPresenter
                 return;
             }
 
-            var netice = await _maliyyeManager.XercYenileAsync(
+            EmeliyyatNeticesi netice = await _maliyyeManager.XercYenileAsync(
                 _view.SecilenXercId.Value,
                 _view.XercNovu,
                 _view.XercAd,
@@ -273,7 +272,7 @@ public class KassaPresenter
                 return;
             }
 
-            var netice = await _maliyyeManager.XercSilAsync(_view.SecilenXercId.Value);
+            EmeliyyatNeticesi netice = await _maliyyeManager.XercSilAsync(_view.SecilenXercId.Value);
 
             if (netice.UgurluDur)
             {

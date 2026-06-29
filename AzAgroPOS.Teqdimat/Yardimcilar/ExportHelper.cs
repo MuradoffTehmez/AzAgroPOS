@@ -36,8 +36,8 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
                 }
 
                 // Yeni Excel paketi yarat
-                using var package = new ExcelPackage();
-                var worksheet = package.Workbook.Worksheets.Add("Data");
+                using ExcelPackage package = new();
+                ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Data");
 
                 // Başlıqları yaz
                 for (int i = 0; i < dataGridView.Columns.Count; i++)
@@ -57,7 +57,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
                     {
                         if (dataGridView.Columns[j].Visible)
                         {
-                            var cellValue = dataGridView.Rows[i].Cells[j].Value;
+                            object cellValue = dataGridView.Rows[i].Cells[j].Value;
                             worksheet.Cells[i + 2, excelColumn].Value = cellValue?.ToString() ?? string.Empty;
                             excelColumn++;
                         }
@@ -68,7 +68,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
                 worksheet.Cells.AutoFitColumns();
 
                 // Faylı saxla
-                var fileBytes = package.GetAsByteArray();
+                byte[] fileBytes = package.GetAsByteArray();
                 File.WriteAllBytes(fileName, fileBytes);
 
                 MessageBox.Show($"Məlumatlar uğurla {fileName} faylına ixrac edildi.",
@@ -92,11 +92,11 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         {
             try
             {
-                using var package = new ExcelPackage();
-                var worksheet = package.Workbook.Worksheets.Add(sheetName);
+                using ExcelPackage package = new();
+                ExcelWorksheet worksheet = package.Workbook.Worksheets.Add(sheetName);
 
                 // T tipinin xüsusiyyətlərini əldə et
-                var properties = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                List<PropertyInfo> properties = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance)
                     .Where(p => p.CanRead)
                     .ToList();
 
@@ -108,12 +108,12 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
                 }
 
                 // Məlumatları yaz
-                var dataList = data.ToList();
+                List<T> dataList = data.ToList();
                 for (int i = 0; i < dataList.Count; i++)
                 {
                     for (int j = 0; j < properties.Count; j++)
                     {
-                        var value = properties[j].GetValue(dataList[i]);
+                        object? value = properties[j].GetValue(dataList[i]);
                         worksheet.Cells[i + 2, j + 1].Value = value?.ToString() ?? string.Empty;
                     }
                 }
@@ -122,7 +122,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
                 worksheet.Cells.AutoFitColumns();
 
                 // Faylı saxla
-                var fileBytes = package.GetAsByteArray();
+                byte[] fileBytes = package.GetAsByteArray();
                 File.WriteAllBytes(fileName, fileBytes);
 
                 MessageBox.Show($"Məlumatlar uğurla {fileName} faylına ixrac edildi.",
@@ -142,7 +142,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         /// <param name="defaultFileName">Defolt fayl adı</param>
         public static void ShowExportDialog(DataGridView dataGridView, string defaultFileName = "export")
         {
-            using var saveFileDialog = new SaveFileDialog();
+            using SaveFileDialog saveFileDialog = new();
             saveFileDialog.Filter = "Excel Kitabları|*.xlsx|Bütün Fayllar|*.*";
             saveFileDialog.DefaultExt = "xlsx";
             saveFileDialog.FileName = $"{defaultFileName}_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";

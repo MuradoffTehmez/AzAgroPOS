@@ -1,10 +1,10 @@
 ﻿// Fayl: AzAgroPOS.Verilenler/Realizasialar/RolRepozitori.cs
-namespace AzAgroPOS.Verilenler.Realizasialar;
 
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using AzAgroPOS.Verilenler.Kontekst;
 
+namespace AzAgroPOS.Verilenler.Realizasialar;
 /// <summary>
 /// bu sinif, Rol üçün CRUD əməliyyatlarını həyata keçirən repozitoriyadır.
 /// bu siniflə CRUD əməliyyatlarını (Yarat, Oxu, Yenilə, Sil) ümumi şəkildə həyata keçirir.

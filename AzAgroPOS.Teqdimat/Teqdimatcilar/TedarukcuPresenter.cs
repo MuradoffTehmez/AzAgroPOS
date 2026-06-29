@@ -1,12 +1,11 @@
 // Fayl: AzAgroPOS.Teqdimat/Teqdimatcilar/TedarukcuPresenter.cs
-namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Teqdimat.Interfeysler;
-using System.Linq;
-using System.Threading.Tasks;
 
+namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 /// <summary>
 /// Tədarükçü idarəetmə forması üçün presenter.
 /// </summary>
@@ -30,7 +29,7 @@ public class TedarukcuPresenter
 
     private async Task FormuYukle()
     {
-        var netice = await _alisManager.ButunTedarukculeriGetirAsync();
+        EmeliyyatNeticesi<List<TedarukcuDto>> netice = await _alisManager.ButunTedarukculeriGetirAsync();
         if (netice.UgurluDur)
         {
             _view.TedarukculeriGoster(netice.Data.OrderBy(t => t.Ad).ToList());
@@ -44,7 +43,7 @@ public class TedarukcuPresenter
 
     private async Task TedarukcuYarat()
     {
-        var dto = new TedarukcuDto
+        TedarukcuDto dto = new()
         {
             Ad = _view.Ad,
             Voen = _view.Voen,
@@ -55,7 +54,7 @@ public class TedarukcuPresenter
             Aktivdir = _view.Aktivdir
         };
 
-        var netice = await _alisManager.TedarukcuYaratAsync(dto);
+        EmeliyyatNeticesi<int> netice = await _alisManager.TedarukcuYaratAsync(dto);
 
         if (netice.UgurluDur)
         {
@@ -77,7 +76,7 @@ public class TedarukcuPresenter
             return;
         }
 
-        var dto = new TedarukcuDto
+        TedarukcuDto dto = new()
         {
             Id = _view.TedarukcuId,
             Ad = _view.Ad,
@@ -89,7 +88,7 @@ public class TedarukcuPresenter
             Aktivdir = _view.Aktivdir
         };
 
-        var netice = await _alisManager.TedarukcuYenileAsync(dto);
+        EmeliyyatNeticesi netice = await _alisManager.TedarukcuYenileAsync(dto);
 
         if (netice.UgurluDur)
         {
@@ -111,7 +110,7 @@ public class TedarukcuPresenter
             return;
         }
 
-        var netice = await _alisManager.TedarukcuSilAsync(_view.TedarukcuId);
+        EmeliyyatNeticesi netice = await _alisManager.TedarukcuSilAsync(_view.TedarukcuId);
         if (netice.UgurluDur)
         {
             _view.MesajGoster("Tədarükçü silindi.");

@@ -1,8 +1,8 @@
 // Fayl: AzAgroPOS.Varliglar/EmekHaqqi.cs
-namespace AzAgroPOS.Varliglar;
 
 using System.ComponentModel.DataAnnotations.Schema;
 
+namespace AzAgroPOS.Varliglar;
 /// <summary>
 /// Əmək haqqı qeydini təmsil edən entity.
 /// diqqət: Bu sinif, işçilərin əmək haqqı hesablanması və ödənilməsi qeydlərini saxlayır.

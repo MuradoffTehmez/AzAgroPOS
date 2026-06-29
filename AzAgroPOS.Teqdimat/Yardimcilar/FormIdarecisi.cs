@@ -14,16 +14,18 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         /// <returns>Form instance</returns>
         public static T FormuGetir<T>() where T : Form, new()
         {
-            var formTipi = typeof(T);
+            Type formTipi = typeof(T);
 
             if (_aciqFormlar.ContainsKey(formTipi))
             {
-                var movcudForm = _aciqFormlar[formTipi];
+                Form movcudForm = _aciqFormlar[formTipi];
                 if (!movcudForm.IsDisposed)
                 {
                     // Bring to front if already open
                     if (movcudForm.WindowState == FormWindowState.Minimized)
+                    {
                         movcudForm.WindowState = FormWindowState.Normal;
+                    }
 
                     movcudForm.BringToFront();
                     movcudForm.Activate();
@@ -37,14 +39,16 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
             }
 
             // Create new instance
-            var yeniForm = new T();
+            T yeniForm = new();
             _aciqFormlar[formTipi] = yeniForm;
 
             // Track when form is closed to remove from tracking
             yeniForm.FormClosed += (s, e) =>
             {
                 if (_aciqFormlar.ContainsKey(formTipi))
+                {
                     _aciqFormlar.Remove(formTipi);
+                }
             };
 
             return yeniForm;
@@ -57,7 +61,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         /// <returns>True if form is open, false otherwise</returns>
         public static bool FormAcikmi<T>() where T : Form
         {
-            var formTipi = typeof(T);
+            Type formTipi = typeof(T);
             return _aciqFormlar.ContainsKey(formTipi) && !_aciqFormlar[formTipi].IsDisposed;
         }
 
@@ -67,10 +71,10 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         /// <typeparam name="T">Type of form</typeparam>
         public static void FormuBagla<T>() where T : Form
         {
-            var formTipi = typeof(T);
+            Type formTipi = typeof(T);
             if (_aciqFormlar.ContainsKey(formTipi))
             {
-                var form = _aciqFormlar[formTipi];
+                Form form = _aciqFormlar[formTipi];
                 if (!form.IsDisposed)
                 {
                     form.Close();
@@ -87,7 +91,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         /// <typeparam name="T">Type of form</typeparam>
         public static void AcVeGoster<T>() where T : Form, new()
         {
-            var form = FormuGetir<T>();
+            T form = FormuGetir<T>();
             form.Show();
         }
 
@@ -100,7 +104,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         /// <returns>Dialog result</returns>
         public static DialogResult AcVeDialogGoster<T>() where T : Form, new()
         {
-            var form = FormuGetir<T>();
+            T form = FormuGetir<T>();
             return form.ShowDialog();
         }
 
@@ -111,8 +115,8 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         /// </summary>
         public static void ButunFormlaBagla()
         {
-            var formlar = _aciqFormlar.Values.ToList();
-            foreach (var form in formlar)
+            List<Form> formlar = _aciqFormlar.Values.ToList();
+            foreach (Form? form in formlar)
             {
                 if (!form.IsDisposed)
                 {
@@ -129,8 +133,8 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         public static int AciqFormSayini()
         {
             // Remove disposed forms from tracking
-            var disposedKeys = _aciqFormlar.Where(kvp => kvp.Value.IsDisposed).Select(kvp => kvp.Key).ToList();
-            foreach (var key in disposedKeys)
+            List<Type> disposedKeys = _aciqFormlar.Where(kvp => kvp.Value.IsDisposed).Select(kvp => kvp.Key).ToList();
+            foreach (Type? key in disposedKeys)
             {
                 _aciqFormlar.Remove(key);
             }

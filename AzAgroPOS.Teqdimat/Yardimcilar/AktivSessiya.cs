@@ -1,8 +1,8 @@
 ﻿// Fayl: AzAgroPOS.Teqdimat/Yardimcilar/AktivSessiya.cs
-namespace AzAgroPOS.Teqdimat.Yardimcilar;
 
 using AzAgroPOS.Mentiq.DTOs;
 
+namespace AzAgroPOS.Teqdimat.Yardimcilar;
 /// <summary>
 /// Proqram boyunca aktiv olan istifadəçi və növbə məlumatlarını saxlayan statik sinif.
 /// </summary>

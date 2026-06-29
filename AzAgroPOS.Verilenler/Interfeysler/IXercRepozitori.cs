@@ -1,8 +1,8 @@
 // Fayl: AzAgroPOS.Verilenler/Interfeysler/IXercRepozitori.cs
-namespace AzAgroPOS.Verilenler.Interfeysler;
 
 using AzAgroPOS.Varliglar;
 
+namespace AzAgroPOS.Verilenler.Interfeysler;
 /// <summary>
 /// Xərc əməliyyatlarını idarə edən repozitorinin interfeysi
 /// diqqət: Bu interfeys xərc qeydiyyatları ilə bağlı əməliyyatlar üçün nəzərdə tutulub.

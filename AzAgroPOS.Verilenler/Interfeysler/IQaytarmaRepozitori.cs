@@ -1,8 +1,8 @@
 ﻿// Fayl: AzAgroPOS.Verilenler/Interfeysler/IQaytarmaRepozitori.cs
-namespace AzAgroPOS.Verilenler.Interfeysler;
 
 using AzAgroPOS.Varliglar;
 
+namespace AzAgroPOS.Verilenler.Interfeysler;
 /// <summary>
 /// Qaytarma verilənlər bazası əməliyyatları üçün interfeys.
 /// </summary>

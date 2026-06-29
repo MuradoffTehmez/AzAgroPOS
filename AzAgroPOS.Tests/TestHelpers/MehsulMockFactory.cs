@@ -70,7 +70,7 @@ public static class MehsulMockFactory
     /// </summary>
     public static Mehsul CreateOutOfStock(int id = 1)
     {
-        var mehsul = CreateValid(id);
+        Mehsul mehsul = CreateValid(id);
         mehsul.MovcudSay = 0;
         return mehsul;
     }
@@ -80,7 +80,7 @@ public static class MehsulMockFactory
     /// </summary>
     public static Mehsul CreateLowStock(int id = 1)
     {
-        var mehsul = CreateValid(id);
+        Mehsul mehsul = CreateValid(id);
         mehsul.MovcudSay = 5;
         mehsul.MinimumStok = 10;
         return mehsul;
@@ -91,7 +91,7 @@ public static class MehsulMockFactory
     /// </summary>
     public static Mehsul CreateDeleted(int id = 1)
     {
-        var mehsul = CreateValid(id);
+        Mehsul mehsul = CreateValid(id);
         mehsul.Silinib = true;
         return mehsul;
     }

@@ -1,12 +1,11 @@
 // Fayl: AzAgroPOS.Teqdimat/Teqdimatcilar/TedarukcuOdemePresenter.cs
-namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Teqdimat.Interfeysler;
-using System.Linq;
-using System.Threading.Tasks;
 
+namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 /// <summary>
 /// Tədarükçü ödənişi idarəetmə forması üçün presenter.
 /// </summary>
@@ -31,7 +30,7 @@ public class TedarukcuOdemePresenter
     private async Task FormuYukle()
     {
         // Tədarükçüləri yükləyirik
-        var tedarukcuNetice = await _alisManager.ButunTedarukculeriGetirAsync();
+        EmeliyyatNeticesi<List<TedarukcuDto>> tedarukcuNetice = await _alisManager.ButunTedarukculeriGetirAsync();
         if (tedarukcuNetice.UgurluDur)
         {
             _view.TedarukculeriGoster(tedarukcuNetice.Data.OrderBy(t => t.Ad).ToList());
@@ -42,7 +41,7 @@ public class TedarukcuOdemePresenter
         }
 
         // Alış sənədlərini yükləyirik
-        var senedNetice = await _alisManager.ButunAlisSenetleriniGetirAsync();
+        EmeliyyatNeticesi<List<AlisSenedDto>> senedNetice = await _alisManager.ButunAlisSenetleriniGetirAsync();
         if (senedNetice.UgurluDur)
         {
             _view.SenetleriGoster(senedNetice.Data.OrderBy(s => s.YaradilmaTarixi).ToList());
@@ -53,7 +52,7 @@ public class TedarukcuOdemePresenter
         }
 
         // Ödənişləri yükləyirik
-        var odemeNetice = await _alisManager.ButunTedarukcuOdemeleriniGetirAsync();
+        EmeliyyatNeticesi<List<TedarukcuOdemeDto>> odemeNetice = await _alisManager.ButunTedarukcuOdemeleriniGetirAsync();
         if (odemeNetice.UgurluDur)
         {
             _view.OdemeleriGoster(odemeNetice.Data.OrderBy(o => o.YaradilmaTarixi).ToList());
@@ -67,7 +66,7 @@ public class TedarukcuOdemePresenter
 
     private async Task OdemeYarat()
     {
-        var dto = new TedarukcuOdemeDto
+        TedarukcuOdemeDto dto = new()
         {
             OdemeNomresi = _view.OdemeNomresi,
             YaradilmaTarixi = _view.YaradilmaTarixi,
@@ -79,7 +78,7 @@ public class TedarukcuOdemePresenter
             BankMelumatlari = _view.BankMelumatlari
         };
 
-        var netice = await _alisManager.TedarukcuOdemeYaratAsync(dto);
+        EmeliyyatNeticesi<int> netice = await _alisManager.TedarukcuOdemeYaratAsync(dto);
 
         if (netice.UgurluDur)
         {
@@ -102,7 +101,7 @@ public class TedarukcuOdemePresenter
         }
 
         // Ödənişi yeniləmək üçün tətbiqat
-        var dto = new TedarukcuOdemeDto
+        TedarukcuOdemeDto dto = new()
         {
             Id = _view.OdemeId,
             OdemeNomresi = _view.OdemeNomresi,
@@ -115,7 +114,7 @@ public class TedarukcuOdemePresenter
             BankMelumatlari = _view.BankMelumatlari
         };
 
-        var netice = await _alisManager.TedarukcuOdemeYenileAsync(dto);
+        EmeliyyatNeticesi netice = await _alisManager.TedarukcuOdemeYenileAsync(dto);
 
         if (netice.UgurluDur)
         {
@@ -138,7 +137,7 @@ public class TedarukcuOdemePresenter
         }
 
         // Ödənişi silmək üçün tətbiqat
-        var netice = await _alisManager.TedarukcuOdemeSilAsync(_view.OdemeId);
+        EmeliyyatNeticesi netice = await _alisManager.TedarukcuOdemeSilAsync(_view.OdemeId);
 
         if (netice.UgurluDur)
         {

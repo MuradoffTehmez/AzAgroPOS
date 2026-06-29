@@ -1,8 +1,8 @@
 ﻿// Fayl: AzAgroPOS.Verilenler/Interfeysler/IRolRepozitori.cs
-namespace AzAgroPOS.Verilenler.Interfeysler;
 
 using AzAgroPOS.Varliglar;
 
+namespace AzAgroPOS.Verilenler.Interfeysler;
 /// <summary>
 /// bütün rol verilənlər bazası əməliyyatları üçün interfeys.
 /// diqqət: Hal-hazırda xüsusi əməliyyatlar əlavə edilməyib, amma gələcəkdə əlavə edilə bilər.
