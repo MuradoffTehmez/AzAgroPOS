@@ -39,27 +39,30 @@ namespace AzAgroPOS.Teqdimat
 
         public void SatisMehsullariniGoster(List<SatisSebetiElementiDto> mehsullar)
         {
-            dgvSatisMehsullari.DataSource = mehsullar;
-            // Configure columns if needed
-            if (dgvSatisMehsullari.Columns.Count > 0)
+            if (dgvSatisMehsullari.Columns.Count == 0)
             {
-                // Assuming the Dto has these properties
-                dgvSatisMehsullari.Columns[nameof(SatisSebetiElementiDto.MehsulAdi)].HeaderText = "Məhsul Adı";
-                dgvSatisMehsullari.Columns[nameof(SatisSebetiElementiDto.Miqdar)].HeaderText = "Miqdar";
-                dgvSatisMehsullari.Columns[nameof(SatisSebetiElementiDto.VahidinQiymeti)].HeaderText = "Qiymət";
-                dgvSatisMehsullari.Columns[nameof(SatisSebetiElementiDto.UmumiMebleg)].HeaderText = "Cəmi Məbləğ";
-
-                // Hide unnecessary columns
-                dgvSatisMehsullari.Columns[nameof(SatisSebetiElementiDto.MehsulId)].Visible = false;
-                // Add a checkbox column for selection if it doesn't exist
-                if (dgvSatisMehsullari.Columns["Secim"] == null)
-                {
-                    DataGridViewCheckBoxColumn secimCol = new();
-                    secimCol.Name = "Secim";
-                    secimCol.HeaderText = "Seç";
-                    dgvSatisMehsullari.Columns.Insert(0, secimCol);
-                }
+                dgvSatisMehsullari.AutoGenerateColumns = false;
+                
+                DataGridViewCheckBoxColumn secimCol = new();
+                secimCol.Name = "Secim";
+                secimCol.HeaderText = "Seç";
+                dgvSatisMehsullari.Columns.Add(secimCol);
+                
+                dgvSatisMehsullari.Columns.Add(new DataGridViewTextBoxColumn { Name = "MehsulId", DataPropertyName = "MehsulId", Visible = false });
+                
+                dgvSatisMehsullari.Columns.Add(new DataGridViewTextBoxColumn { Name = "MehsulAdi", DataPropertyName = "MehsulAdi", HeaderText = "Məhsul Adı" });
+                dgvSatisMehsullari.Columns.Add(new DataGridViewTextBoxColumn { Name = "Miqdar", DataPropertyName = "Miqdar", HeaderText = "Miqdar" });
+                
+                var priceCol = new DataGridViewTextBoxColumn { Name = "VahidinQiymeti", DataPropertyName = "VahidinQiymeti", HeaderText = "Qiymət" };
+                priceCol.DefaultCellStyle.Format = "N2";
+                dgvSatisMehsullari.Columns.Add(priceCol);
+                
+                var sumCol = new DataGridViewTextBoxColumn { Name = "UmumiMebleg", DataPropertyName = "UmumiMebleg", HeaderText = "Cəmi Məbləğ" };
+                sumCol.DefaultCellStyle.Format = "N2";
+                dgvSatisMehsullari.Columns.Add(sumCol);
             }
+
+            dgvSatisMehsullari.DataSource = new System.ComponentModel.BindingList<SatisSebetiElementiDto>(mehsullar);
         }
 
         public DialogResult MesajGoster(string mesaj, string basliq, MessageBoxButtons buttons, MessageBoxIcon icon)

@@ -12,7 +12,7 @@ public interface IEhtiyatHissəsiView
     string AxtarisMetni { get; }
     string Miqdar { get; }
     MehsulDto SecilmisMehsul { get; }
-    List<EhtiyatHissəsiDto> EhtiyatHissələri { get; }
+    System.ComponentModel.BindingList<EhtiyatHissəsiDto> EhtiyatHissələri { get; }
 
     // Hadisələr
     event EventHandler AxtarIstek;

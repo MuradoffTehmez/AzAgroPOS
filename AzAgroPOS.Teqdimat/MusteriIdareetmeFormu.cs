@@ -83,30 +83,36 @@ namespace AzAgroPOS.Teqdimat
         {
             // SelectionChanged hadisəsini müvəqqəti dayandırırıq ki, datanı yükləyəndə təkrar-təkrar işə düşməsin
             dgvMusteriler.SelectionChanged -= dgvMusteriler_SelectionChanged;
-            dgvMusteriler.DataSource = musteriler;
-            if (dgvMusteriler.Columns.Count > 0)
+
+            if (dgvMusteriler.Columns.Count == 0)
             {
-                dgvMusteriler.Columns["Id"].Visible = false;
-                dgvMusteriler.Columns["Unvan"].Visible = false;
-                dgvMusteriler.Columns["TamAd"].HeaderText = "Tam Ad";
-                dgvMusteriler.Columns["TelefonNomresi"].HeaderText = "Telefon";
-                dgvMusteriler.Columns["UmumiBorc"].HeaderText = "Cari Borc";
-                dgvMusteriler.Columns["KreditLimiti"].HeaderText = "Kredit Limiti";
+                dgvMusteriler.AutoGenerateColumns = false;
 
-                // Format currency columns
-                dgvMusteriler.Columns["UmumiBorc"].DefaultCellStyle.Format = "N2";
-                dgvMusteriler.Columns["KreditLimiti"].DefaultCellStyle.Format = "N2";
-
-                // Align numeric columns to the right
-                dgvMusteriler.Columns["UmumiBorc"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                dgvMusteriler.Columns["KreditLimiti"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-
-                // Allow sorting
-                dgvMusteriler.Columns["TamAd"].SortMode = DataGridViewColumnSortMode.Automatic;
-                dgvMusteriler.Columns["TelefonNomresi"].SortMode = DataGridViewColumnSortMode.Automatic;
-                dgvMusteriler.Columns["UmumiBorc"].SortMode = DataGridViewColumnSortMode.Automatic;
-                dgvMusteriler.Columns["KreditLimiti"].SortMode = DataGridViewColumnSortMode.Automatic;
+                dgvMusteriler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Id", DataPropertyName = "Id", Visible = false });
+                dgvMusteriler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Unvan", DataPropertyName = "Unvan", Visible = false });
+                
+                var nameCol = new DataGridViewTextBoxColumn { Name = "TamAd", DataPropertyName = "TamAd", HeaderText = "Tam Ad" };
+                nameCol.SortMode = DataGridViewColumnSortMode.Automatic;
+                dgvMusteriler.Columns.Add(nameCol);
+                
+                var telCol = new DataGridViewTextBoxColumn { Name = "TelefonNomresi", DataPropertyName = "TelefonNomresi", HeaderText = "Telefon" };
+                telCol.SortMode = DataGridViewColumnSortMode.Automatic;
+                dgvMusteriler.Columns.Add(telCol);
+                
+                var debtCol = new DataGridViewTextBoxColumn { Name = "UmumiBorc", DataPropertyName = "UmumiBorc", HeaderText = "Cari Borc" };
+                debtCol.DefaultCellStyle.Format = "N2";
+                debtCol.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                debtCol.SortMode = DataGridViewColumnSortMode.Automatic;
+                dgvMusteriler.Columns.Add(debtCol);
+                
+                var limitCol = new DataGridViewTextBoxColumn { Name = "KreditLimiti", DataPropertyName = "KreditLimiti", HeaderText = "Kredit Limiti" };
+                limitCol.DefaultCellStyle.Format = "N2";
+                limitCol.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                limitCol.SortMode = DataGridViewColumnSortMode.Automatic;
+                dgvMusteriler.Columns.Add(limitCol);
             }
+
+            dgvMusteriler.DataSource = new System.ComponentModel.BindingList<MusteriDto>(musteriler);
             dgvMusteriler.SelectionChanged += dgvMusteriler_SelectionChanged;
         }
 

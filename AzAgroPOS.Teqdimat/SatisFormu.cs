@@ -1,4 +1,4 @@
-﻿using AzAgroPOS.Mentiq.DTOs;
+using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
@@ -183,29 +183,20 @@ namespace AzAgroPOS.Teqdimat
 
         public void AxtarisNeticeleriniGoster(List<MehsulDto> mehsullar)
         {
-            dgvAxtarisNeticeleri.DataSource = mehsullar;
-            if (dgvAxtarisNeticeleri.Columns.Count > 0)
+            if (dgvAxtarisNeticeleri.Columns.Count == 0)
             {
-                if (dgvAxtarisNeticeleri.Columns["Ad"] != null)
-                {
-                    dgvAxtarisNeticeleri.Columns["Ad"].HeaderText = "Məhsul Adı";
-                    dgvAxtarisNeticeleri.Columns["Ad"].SortMode = DataGridViewColumnSortMode.Automatic;
-                }
-                if (dgvAxtarisNeticeleri.Columns["StokKodu"] != null)
-                {
-                    dgvAxtarisNeticeleri.Columns["StokKodu"].HeaderText = "Stok Kodu";
-                    dgvAxtarisNeticeleri.Columns["StokKodu"].SortMode = DataGridViewColumnSortMode.Automatic;
-                }
-
-                string[] gorunenler = { "Ad", "StokKodu" };
-                foreach (DataGridViewColumn col in dgvAxtarisNeticeleri.Columns)
-                {
-                    if (!gorunenler.Contains(col.Name))
-                    {
-                        col.Visible = false;
-                    }
-                }
+                dgvAxtarisNeticeleri.AutoGenerateColumns = false;
+                
+                var adCol = new DataGridViewTextBoxColumn { Name = "Ad", DataPropertyName = "Ad", HeaderText = "Məhsul Adı" };
+                adCol.SortMode = DataGridViewColumnSortMode.Automatic;
+                dgvAxtarisNeticeleri.Columns.Add(adCol);
+                
+                var stokCol = new DataGridViewTextBoxColumn { Name = "StokKodu", DataPropertyName = "StokKodu", HeaderText = "Stok Kodu" };
+                stokCol.SortMode = DataGridViewColumnSortMode.Automatic;
+                dgvAxtarisNeticeleri.Columns.Add(stokCol);
             }
+            
+            dgvAxtarisNeticeleri.DataSource = new System.ComponentModel.BindingList<MehsulDto>(mehsullar);
         }
 
         public void AxtarisPaneliniSifirla()
@@ -217,15 +208,12 @@ namespace AzAgroPOS.Teqdimat
 
         public void SebeteMehsullariGoster(BindingList<SatisSebetiElementiDto> sebet)
         {
-            // DataSource-u yenilə
-            dgvSebet.DataSource = null;
-            dgvSebet.DataSource = sebet;
-
-            // Sütunlar avtomatik yaradıldıqdan sonra konfiqurasiya et
-            if (dgvSebet.Columns.Count > 0)
+            if (dgvSebet.Columns.Count == 0)
             {
                 ConfigureSebetColumns();
             }
+
+            dgvSebet.DataSource = sebet;
         }
 
         /// <summary>
@@ -233,74 +221,57 @@ namespace AzAgroPOS.Teqdimat
         /// </summary>
         private void ConfigureSebetColumns()
         {
-            // Sütun adlarını Azərbaycan dilinə çevir
-            if (dgvSebet.Columns.Contains("MehsulAdi"))
-            {
-                dgvSebet.Columns["MehsulAdi"].HeaderText = "Məhsul Adı";
-                dgvSebet.Columns["MehsulAdi"].ReadOnly = true;
-                dgvSebet.Columns["MehsulAdi"].SortMode = DataGridViewColumnSortMode.Automatic;
-                dgvSebet.Columns["MehsulAdi"].FillWeight = 35;
-                dgvSebet.Columns["MehsulAdi"].DisplayIndex = 0;
-            }
+            dgvSebet.AutoGenerateColumns = false;
 
-            if (dgvSebet.Columns.Contains("Miqdar"))
-            {
-                dgvSebet.Columns["Miqdar"].HeaderText = "Miqdar";
-                dgvSebet.Columns["Miqdar"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                dgvSebet.Columns["Miqdar"].SortMode = DataGridViewColumnSortMode.Automatic;
-                dgvSebet.Columns["Miqdar"].FillWeight = 12;
-                dgvSebet.Columns["Miqdar"].DisplayIndex = 1;
-            }
+            dgvSebet.Columns.Add(new DataGridViewTextBoxColumn { Name = "MehsulId", DataPropertyName = "MehsulId", Visible = false });
+            dgvSebet.Columns.Add(new DataGridViewTextBoxColumn { Name = "EndirimliQiymet", DataPropertyName = "EndirimliQiymet", Visible = false });
+            dgvSebet.Columns.Add(new DataGridViewTextBoxColumn { Name = "EndirimFaizi", DataPropertyName = "EndirimFaizi", Visible = false });
 
-            if (dgvSebet.Columns.Contains("VahidinQiymeti"))
-            {
-                dgvSebet.Columns["VahidinQiymeti"].HeaderText = "Qiymət";
-                dgvSebet.Columns["VahidinQiymeti"].ReadOnly = true;
-                dgvSebet.Columns["VahidinQiymeti"].DefaultCellStyle.Format = "N2";
-                dgvSebet.Columns["VahidinQiymeti"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                dgvSebet.Columns["VahidinQiymeti"].SortMode = DataGridViewColumnSortMode.Automatic;
-                dgvSebet.Columns["VahidinQiymeti"].FillWeight = 15;
-                dgvSebet.Columns["VahidinQiymeti"].DisplayIndex = 2;
-            }
+            var adCol = new DataGridViewTextBoxColumn { Name = "MehsulAdi", DataPropertyName = "MehsulAdi", HeaderText = "Məhsul Adı" };
+            adCol.ReadOnly = true;
+            adCol.SortMode = DataGridViewColumnSortMode.Automatic;
+            adCol.FillWeight = 35;
+            adCol.DisplayIndex = 0;
+            dgvSebet.Columns.Add(adCol);
 
-            if (dgvSebet.Columns.Contains("EndirimMeblegi"))
-            {
-                dgvSebet.Columns["EndirimMeblegi"].HeaderText = "Endirim";
-                dgvSebet.Columns["EndirimMeblegi"].DefaultCellStyle.Format = "N2";
-                dgvSebet.Columns["EndirimMeblegi"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                dgvSebet.Columns["EndirimMeblegi"].FillWeight = 12;
-                dgvSebet.Columns["EndirimMeblegi"].DisplayIndex = 3;
-            }
+            var qtyCol = new DataGridViewTextBoxColumn { Name = "Miqdar", DataPropertyName = "Miqdar", HeaderText = "Miqdar" };
+            qtyCol.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            qtyCol.SortMode = DataGridViewColumnSortMode.Automatic;
+            qtyCol.FillWeight = 12;
+            qtyCol.DisplayIndex = 1;
+            dgvSebet.Columns.Add(qtyCol);
 
-            if (dgvSebet.Columns.Contains("UmumiMebleg"))
-            {
-                dgvSebet.Columns["UmumiMebleg"].HeaderText = "Cəm";
-                dgvSebet.Columns["UmumiMebleg"].ReadOnly = true;
-                dgvSebet.Columns["UmumiMebleg"].DefaultCellStyle.Format = "N2";
-                dgvSebet.Columns["UmumiMebleg"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                dgvSebet.Columns["UmumiMebleg"].DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-                dgvSebet.Columns["UmumiMebleg"].SortMode = DataGridViewColumnSortMode.Automatic;
-                dgvSebet.Columns["UmumiMebleg"].FillWeight = 15;
-                dgvSebet.Columns["UmumiMebleg"].DisplayIndex = 4;
-            }
+            var priceCol = new DataGridViewTextBoxColumn { Name = "VahidinQiymeti", DataPropertyName = "VahidinQiymeti", HeaderText = "Qiymət" };
+            priceCol.ReadOnly = true;
+            priceCol.DefaultCellStyle.Format = "N2";
+            priceCol.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            priceCol.SortMode = DataGridViewColumnSortMode.Automatic;
+            priceCol.FillWeight = 15;
+            priceCol.DisplayIndex = 2;
+            dgvSebet.Columns.Add(priceCol);
 
-            if (dgvSebet.Columns.Contains("QiymetNövü"))
-            {
-                dgvSebet.Columns["QiymetNövü"].HeaderText = "Tip";
-                dgvSebet.Columns["QiymetNövü"].ReadOnly = true;
-                dgvSebet.Columns["QiymetNövü"].FillWeight = 10;
-                dgvSebet.Columns["QiymetNövü"].DisplayIndex = 5;
-            }
+            var discountCol = new DataGridViewTextBoxColumn { Name = "EndirimMeblegi", DataPropertyName = "EndirimMeblegi", HeaderText = "Endirim" };
+            discountCol.DefaultCellStyle.Format = "N2";
+            discountCol.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            discountCol.FillWeight = 12;
+            discountCol.DisplayIndex = 3;
+            dgvSebet.Columns.Add(discountCol);
 
-            // Gizli sütunlar
-            string[] gizliSutunlar = { "MehsulId", "EndirimliQiymet", "EndirimFaizi" };
-            foreach (string sutunAdi in gizliSutunlar)
-            {
-                if (dgvSebet.Columns.Contains(sutunAdi))
-                {
-                    dgvSebet.Columns[sutunAdi].Visible = false;
-                }
-            }
+            var totalCol = new DataGridViewTextBoxColumn { Name = "UmumiMebleg", DataPropertyName = "UmumiMebleg", HeaderText = "Cəm" };
+            totalCol.ReadOnly = true;
+            totalCol.DefaultCellStyle.Format = "N2";
+            totalCol.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            totalCol.DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            totalCol.SortMode = DataGridViewColumnSortMode.Automatic;
+            totalCol.FillWeight = 15;
+            totalCol.DisplayIndex = 4;
+            dgvSebet.Columns.Add(totalCol);
+
+            var typeCol = new DataGridViewTextBoxColumn { Name = "QiymetNövü", DataPropertyName = "QiymetNövü", HeaderText = "Tip" };
+            typeCol.ReadOnly = true;
+            typeCol.FillWeight = 10;
+            typeCol.DisplayIndex = 5;
+            dgvSebet.Columns.Add(typeCol);
 
             // Artır/Azalt düymələrinin sırasını düzəlt
             if (dgvSebet.Columns.Contains("artir_col"))

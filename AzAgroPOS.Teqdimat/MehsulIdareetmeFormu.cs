@@ -179,47 +179,37 @@ namespace AzAgroPOS.Teqdimat
         {
             List<MehsulDto> mehsulSiyahisi = mehsullar?.ToList() ?? new List<MehsulDto>();
             dgvMehsullar.SelectionChanged -= dgvMehsullar_SelectionChanged;
-            dgvMehsullar.DataSource = mehsulSiyahisi;
-            dgvMehsullar.SelectionChanged += dgvMehsullar_SelectionChanged;
 
-            if (dgvMehsullar.Columns.Count > 0)
+            if (dgvMehsullar.Columns.Count == 0)
             {
-                string[] gorunenSutunlar = { "Ad", "StokKodu", "PerakendeSatisQiymetiStr", "MovcudSay", "OlcuVahidiStr" };
-                foreach (DataGridViewColumn column in dgvMehsullar.Columns)
-                {
-                    if (!gorunenSutunlar.Contains(column.Name))
-                    {
-                        column.Visible = false;
-                    }
-                    column.SortMode = DataGridViewColumnSortMode.Automatic;
-                }
-
-                if (dgvMehsullar.Columns["Ad"] != null)
-                {
-                    dgvMehsullar.Columns["Ad"].HeaderText = "Məhsulun Adı";
-                }
-
-                if (dgvMehsullar.Columns["StokKodu"] != null)
-                {
-                    dgvMehsullar.Columns["StokKodu"].HeaderText = "Stok Kodu";
-                }
-
-                if (dgvMehsullar.Columns["PerakendeSatisQiymetiStr"] != null)
-                {
-                    dgvMehsullar.Columns["PerakendeSatisQiymetiStr"].HeaderText = "Pərakəndə Qiymət";
-                    dgvMehsullar.Columns["PerakendeSatisQiymetiStr"].DefaultCellStyle.Format = "c2";
-                    dgvMehsullar.Columns["PerakendeSatisQiymetiStr"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                }
-                if (dgvMehsullar.Columns["MovcudSay"] != null)
-                {
-                    dgvMehsullar.Columns["MovcudSay"].HeaderText = "Mövcud Say";
-                    dgvMehsullar.Columns["MovcudSay"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                }
-                if (dgvMehsullar.Columns["OlcuVahidiStr"] != null)
-                {
-                    dgvMehsullar.Columns["OlcuVahidiStr"].HeaderText = "Ölçü Vahidi";
-                }
+                dgvMehsullar.AutoGenerateColumns = false;
+                
+                var adCol = new DataGridViewTextBoxColumn { Name = "Ad", DataPropertyName = "Ad", HeaderText = "Məhsulun Adı" };
+                adCol.SortMode = DataGridViewColumnSortMode.Automatic;
+                dgvMehsullar.Columns.Add(adCol);
+                
+                var stokCol = new DataGridViewTextBoxColumn { Name = "StokKodu", DataPropertyName = "StokKodu", HeaderText = "Stok Kodu" };
+                stokCol.SortMode = DataGridViewColumnSortMode.Automatic;
+                dgvMehsullar.Columns.Add(stokCol);
+                
+                var priceCol = new DataGridViewTextBoxColumn { Name = "PerakendeSatisQiymetiStr", DataPropertyName = "PerakendeSatisQiymetiStr", HeaderText = "Pərakəndə Qiymət" };
+                priceCol.DefaultCellStyle.Format = "c2";
+                priceCol.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                priceCol.SortMode = DataGridViewColumnSortMode.Automatic;
+                dgvMehsullar.Columns.Add(priceCol);
+                
+                var qtyCol = new DataGridViewTextBoxColumn { Name = "MovcudSay", DataPropertyName = "MovcudSay", HeaderText = "Mövcud Say" };
+                qtyCol.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                qtyCol.SortMode = DataGridViewColumnSortMode.Automatic;
+                dgvMehsullar.Columns.Add(qtyCol);
+                
+                var unitCol = new DataGridViewTextBoxColumn { Name = "OlcuVahidiStr", DataPropertyName = "OlcuVahidiStr", HeaderText = "Ölçü Vahidi" };
+                unitCol.SortMode = DataGridViewColumnSortMode.Automatic;
+                dgvMehsullar.Columns.Add(unitCol);
             }
+
+            dgvMehsullar.DataSource = new System.ComponentModel.BindingList<MehsulDto>(mehsulSiyahisi);
+            dgvMehsullar.SelectionChanged += dgvMehsullar_SelectionChanged;
         }
 
         public DialogResult MesajGoster(string mesaj, string basliq, MessageBoxButtons düymələr, MessageBoxIcon ikon)

@@ -10,13 +10,13 @@ namespace AzAgroPOS.Teqdimat
     {
         private readonly MehsulManager _mehsulManager;
 
-        public List<EhtiyatHissəsiDto> EhtiyatHissələri { get; }
+        public System.ComponentModel.BindingList<EhtiyatHissəsiDto> EhtiyatHissələri { get; }
 
         public EhtiyatHissəsiFormu(MehsulManager mehsulManager)
         {
             InitializeComponent();
             _mehsulManager = mehsulManager;
-            EhtiyatHissələri = new List<EhtiyatHissəsiDto>();
+            EhtiyatHissələri = new System.ComponentModel.BindingList<EhtiyatHissəsiDto>();
             StilVerDataGridView(dgvMehsullar);
             StilVerDataGridView(dgvSeçilmişMehsullar);
         }
@@ -163,17 +163,25 @@ namespace AzAgroPOS.Teqdimat
 
         private void SeçilmişMehsullariGoster()
         {
-            dgvSeçilmişMehsullar.DataSource = null;
-            dgvSeçilmişMehsullar.DataSource = EhtiyatHissələri;
-
-            if (dgvSeçilmişMehsullar.Columns.Count > 0)
+            if (dgvSeçilmişMehsullar.Columns.Count == 0)
             {
-                dgvSeçilmişMehsullar.Columns["MehsulId"].Visible = false;
-                dgvSeçilmişMehsullar.Columns["MehsulAdi"].HeaderText = "Məhsul Adı";
-                dgvSeçilmişMehsullar.Columns["Miqdar"].HeaderText = "Miqdar";
-                dgvSeçilmişMehsullar.Columns["Qiymet"].HeaderText = "Qiymət";
-                dgvSeçilmişMehsullar.Columns["ÜmumiMəbləğ"].HeaderText = "Ümumi Məbləğ";
+                dgvSeçilmişMehsullar.AutoGenerateColumns = false;
+                dgvSeçilmişMehsullar.Columns.Add(new DataGridViewTextBoxColumn { Name = "MehsulId", DataPropertyName = "MehsulId", Visible = false });
+                dgvSeçilmişMehsullar.Columns.Add(new DataGridViewTextBoxColumn { Name = "MehsulAdi", DataPropertyName = "MehsulAdi", HeaderText = "Məhsul Adı" });
+                
+                var qtyCol = new DataGridViewTextBoxColumn { Name = "Miqdar", DataPropertyName = "Miqdar", HeaderText = "Miqdar" };
+                qtyCol.DefaultCellStyle.Format = "N2";
+                dgvSeçilmişMehsullar.Columns.Add(qtyCol);
+                
+                var priceCol = new DataGridViewTextBoxColumn { Name = "Qiymet", DataPropertyName = "Qiymet", HeaderText = "Qiymət" };
+                priceCol.DefaultCellStyle.Format = "N2";
+                dgvSeçilmişMehsullar.Columns.Add(priceCol);
+                
+                var sumCol = new DataGridViewTextBoxColumn { Name = "UmumiMebleg", DataPropertyName = "UmumiMebleg", HeaderText = "Ümumi Məbləğ" };
+                sumCol.DefaultCellStyle.Format = "N2";
+                dgvSeçilmişMehsullar.Columns.Add(sumCol);
             }
+            dgvSeçilmişMehsullar.DataSource = EhtiyatHissələri;
         }
 
         private void btnSil_Click(object sender, EventArgs e)
@@ -181,7 +189,6 @@ namespace AzAgroPOS.Teqdimat
             if (dgvSeçilmişMehsullar.CurrentRow?.DataBoundItem is EhtiyatHissəsiDto ehtiyatHissəsi)
             {
                 EhtiyatHissələri.Remove(ehtiyatHissəsi);
-                SeçilmişMehsullariGoster();
             }
         }
 
@@ -200,41 +207,56 @@ namespace AzAgroPOS.Teqdimat
         // IEhtiyatHissəsiView interface implementasiyası
         public void MehsullariGoster(List<MehsulDto> mehsullar)
         {
-            dgvMehsullar.DataSource = mehsullar;
-            if (dgvMehsullar.Columns.Count > 0)
+            if (dgvMehsullar.Columns.Count == 0)
             {
-                dgvMehsullar.Columns["Id"].Visible = false;
-                dgvMehsullar.Columns["Ad"].HeaderText = "Məhsul Adı";
-                dgvMehsullar.Columns["StokKodu"].HeaderText = "Stok Kodu";
-                dgvMehsullar.Columns["AlisQiymeti"].HeaderText = "Alış Qiyməti";
-                dgvMehsullar.Columns["PerakendeSatisQiymeti"].HeaderText = "Pərakəndə Qiyməti";
-                dgvMehsullar.Columns["TopluSatisQiymeti"].HeaderText = "Toplu Qiymət";
-                dgvMehsullar.Columns["MovcudSay"].HeaderText = "Mövcud Say";
-                dgvMehsullar.Columns["MinimumStokSayi"].HeaderText = "Min. Stok";
+                dgvMehsullar.AutoGenerateColumns = false;
+                dgvMehsullar.Columns.Add(new DataGridViewTextBoxColumn { Name = "Id", DataPropertyName = "Id", Visible = false });
+                dgvMehsullar.Columns.Add(new DataGridViewTextBoxColumn { Name = "Ad", DataPropertyName = "Ad", HeaderText = "Ad" });
+                dgvMehsullar.Columns.Add(new DataGridViewTextBoxColumn { Name = "StokKodu", DataPropertyName = "StokKodu", HeaderText = "Stok Kodu" });
+                dgvMehsullar.Columns.Add(new DataGridViewTextBoxColumn { Name = "Barkod", DataPropertyName = "Barkod", HeaderText = "Barkod" });
+                
+                var qtyCol = new DataGridViewTextBoxColumn { Name = "MovcudSay", DataPropertyName = "MovcudSay", HeaderText = "Say" };
+                qtyCol.DefaultCellStyle.Format = "N2";
+                dgvMehsullar.Columns.Add(qtyCol);
+                
+                var priceCol = new DataGridViewTextBoxColumn { Name = "PerakendeSatisQiymeti", DataPropertyName = "PerakendeSatisQiymeti", HeaderText = "Qiymət" };
+                priceCol.DefaultCellStyle.Format = "N2";
+                dgvMehsullar.Columns.Add(priceCol);
             }
+            dgvMehsullar.DataSource = new System.ComponentModel.BindingList<MehsulDto>(mehsullar);
         }
 
         public void SeçilmişMehsullariGoster(List<EhtiyatHissəsiDto> ehtiyatHissələri)
         {
-            dgvSeçilmişMehsullar.DataSource = null;
-            dgvSeçilmişMehsullar.DataSource = ehtiyatHissələri;
-
-            if (dgvSeçilmişMehsullar.Columns.Count > 0)
+            if (dgvSeçilmişMehsullar.Columns.Count == 0)
             {
-                dgvSeçilmişMehsullar.Columns["MehsulId"].Visible = false;
-                dgvSeçilmişMehsullar.Columns["MehsulAdi"].HeaderText = "Məhsul Adı";
-                dgvSeçilmişMehsullar.Columns["Miqdar"].HeaderText = "Miqdar";
-                dgvSeçilmişMehsullar.Columns["Qiymet"].HeaderText = "Qiymət";
-                dgvSeçilmişMehsullar.Columns["ÜmumiMəbləğ"].HeaderText = "Ümumi Məbləğ";
+                dgvSeçilmişMehsullar.AutoGenerateColumns = false;
+                dgvSeçilmişMehsullar.Columns.Add(new DataGridViewTextBoxColumn { Name = "MehsulId", DataPropertyName = "MehsulId", Visible = false });
+                dgvSeçilmişMehsullar.Columns.Add(new DataGridViewTextBoxColumn { Name = "MehsulAdi", DataPropertyName = "MehsulAdi", HeaderText = "Məhsul Adı" });
+                
+                var qtyCol = new DataGridViewTextBoxColumn { Name = "Miqdar", DataPropertyName = "Miqdar", HeaderText = "Miqdar" };
+                qtyCol.DefaultCellStyle.Format = "N2";
+                dgvSeçilmişMehsullar.Columns.Add(qtyCol);
+                
+                var priceCol = new DataGridViewTextBoxColumn { Name = "Qiymet", DataPropertyName = "Qiymet", HeaderText = "Qiymət" };
+                priceCol.DefaultCellStyle.Format = "N2";
+                dgvSeçilmişMehsullar.Columns.Add(priceCol);
+                
+                var sumCol = new DataGridViewTextBoxColumn { Name = "UmumiMebleg", DataPropertyName = "UmumiMebleg", HeaderText = "Ümumi Məbləğ" };
+                sumCol.DefaultCellStyle.Format = "N2";
+                dgvSeçilmişMehsullar.Columns.Add(sumCol);
             }
+            
+            dgvSeçilmişMehsullar.DataSource = new System.ComponentModel.BindingList<EhtiyatHissəsiDto>(ehtiyatHissələri);
         }
 
         public void FormuTemizle()
         {
             txtAxtar.Text = string.Empty;
             txtMiqdar.Text = "1";
-            dgvMehsullar.DataSource = null;
-            dgvSeçilmişMehsullar.DataSource = null;
+            if (dgvMehsullar.DataSource is System.ComponentModel.BindingList<MehsulDto> mList) mList.Clear();
+            if (dgvSeçilmişMehsullar.DataSource is System.ComponentModel.BindingList<EhtiyatHissəsiDto> ehList) ehList.Clear();
+            EhtiyatHissələri.Clear();
             ButunXetalariTemizle();
         }
 

@@ -73,8 +73,8 @@ public partial class KassaFormu : BazaForm
             EmeliyyatNeticesi<List<XercDto>> netice = await _maliyyeManager.ButunXercleriDtoFormatindaGetirAsync();
             if (netice.UgurluDur && netice.Data != null)
             {
-                dgvXercler.DataSource = netice.Data.ToList();
                 FormatXerclerGrid();
+                dgvXercler.DataSource = new System.ComponentModel.BindingList<XercDto>(netice.Data.ToList());
             }
             else
             {
@@ -92,58 +92,27 @@ public partial class KassaFormu : BazaForm
     /// </summary>
     private void FormatXerclerGrid()
     {
-        if (dgvXercler.Columns.Count == 0)
-        {
-            return;
-        }
+        if (dgvXercler.Columns.Count > 0) return;
 
-        // Sütunların mövcudluğunu yoxlayaraq formatla
-        if (dgvXercler.Columns["Id"] != null)
-        {
-            dgvXercler.Columns["Id"].Visible = false;
-        }
+        dgvXercler.AutoGenerateColumns = false;
 
-        if (dgvXercler.Columns["IstifadeciId"] != null)
-        {
-            dgvXercler.Columns["IstifadeciId"].Visible = false;
-        }
-
-        if (dgvXercler.Columns["Novu"] != null)
-        {
-            dgvXercler.Columns["Novu"].HeaderText = "Növ";
-        }
-
-        if (dgvXercler.Columns["Ad"] != null)
-        {
-            dgvXercler.Columns["Ad"].HeaderText = "Ad";
-        }
-
-        if (dgvXercler.Columns["Mebleg"] != null)
-        {
-            dgvXercler.Columns["Mebleg"].HeaderText = "Məbləğ";
-            dgvXercler.Columns["Mebleg"].DefaultCellStyle.Format = "N2";
-        }
-
-        if (dgvXercler.Columns["Tarix"] != null)
-        {
-            dgvXercler.Columns["Tarix"].HeaderText = "Tarix";
-            dgvXercler.Columns["Tarix"].DefaultCellStyle.Format = "dd.MM.yyyy";
-        }
-
-        if (dgvXercler.Columns["SenedNomresi"] != null)
-        {
-            dgvXercler.Columns["SenedNomresi"].HeaderText = "Sənəd №";
-        }
-
-        if (dgvXercler.Columns["Qeyd"] != null)
-        {
-            dgvXercler.Columns["Qeyd"].HeaderText = "Qeyd";
-        }
-
-        if (dgvXercler.Columns["IstifadeciAdi"] != null)
-        {
-            dgvXercler.Columns["IstifadeciAdi"].HeaderText = "İstifadəçi";
-        }
+        dgvXercler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Id", DataPropertyName = "Id", Visible = false });
+        dgvXercler.Columns.Add(new DataGridViewTextBoxColumn { Name = "IstifadeciId", DataPropertyName = "IstifadeciId", Visible = false });
+        
+        dgvXercler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Novu", DataPropertyName = "Novu", HeaderText = "Növ" });
+        dgvXercler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Ad", DataPropertyName = "Ad", HeaderText = "Ad" });
+        
+        var sumCol = new DataGridViewTextBoxColumn { Name = "Mebleg", DataPropertyName = "Mebleg", HeaderText = "Məbləğ" };
+        sumCol.DefaultCellStyle.Format = "N2";
+        dgvXercler.Columns.Add(sumCol);
+        
+        var dateCol = new DataGridViewTextBoxColumn { Name = "Tarix", DataPropertyName = "Tarix", HeaderText = "Tarix" };
+        dateCol.DefaultCellStyle.Format = "dd.MM.yyyy";
+        dgvXercler.Columns.Add(dateCol);
+        
+        dgvXercler.Columns.Add(new DataGridViewTextBoxColumn { Name = "SenedNomresi", DataPropertyName = "SenedNomresi", HeaderText = "Sənəd №" });
+        dgvXercler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Qeyd", DataPropertyName = "Qeyd", HeaderText = "Qeyd" });
+        dgvXercler.Columns.Add(new DataGridViewTextBoxColumn { Name = "IstifadeciAdi", DataPropertyName = "IstifadeciAdi", HeaderText = "İstifadəçi" });
 
         dgvXercler.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
     }
@@ -385,8 +354,8 @@ public partial class KassaFormu : BazaForm
 
             if (netice.UgurluDur && netice.Data != null)
             {
-                dgvKassaHareketleri.DataSource = netice.Data.ToList();
                 FormatKassaHareketleriGrid();
+                dgvKassaHareketleri.DataSource = new System.ComponentModel.BindingList<KassaHareketi>(netice.Data.ToList());
             }
             else
             {
@@ -404,50 +373,26 @@ public partial class KassaFormu : BazaForm
     /// </summary>
     private void FormatKassaHareketleriGrid()
     {
-        if (dgvKassaHareketleri.Columns.Count == 0)
-        {
-            return;
-        }
+        if (dgvKassaHareketleri.Columns.Count > 0) return;
 
-        if (dgvKassaHareketleri.Columns["Id"] != null)
-        {
-            dgvKassaHareketleri.Columns["Id"].Visible = false;
-        }
-
-        if (dgvKassaHareketleri.Columns["EmeliyyatId"] != null)
-        {
-            dgvKassaHareketleri.Columns["EmeliyyatId"].Visible = false;
-        }
-
-        if (dgvKassaHareketleri.Columns["IstifadeciId"] != null)
-        {
-            dgvKassaHareketleri.Columns["IstifadeciId"].Visible = false;
-        }
-
-        if (dgvKassaHareketleri.Columns["HareketNovu"] != null)
-        {
-            dgvKassaHareketleri.Columns["HareketNovu"].HeaderText = "Hərəkət Növü";
-        }
-
-        if (dgvKassaHareketleri.Columns["EmeliyyatNovu"] != null)
-        {
-            dgvKassaHareketleri.Columns["EmeliyyatNovu"].HeaderText = "Əməliyyat";
-        }
-
-        if (dgvKassaHareketleri.Columns["Mebleg"] != null)
-        {
-            dgvKassaHareketleri.Columns["Mebleg"].HeaderText = "Məbləğ";
-            dgvKassaHareketleri.Columns["Mebleg"].DefaultCellStyle.Format = "N2";
-        }
-        if (dgvKassaHareketleri.Columns["Tarix"] != null)
-        {
-            dgvKassaHareketleri.Columns["Tarix"].HeaderText = "Tarix";
-            dgvKassaHareketleri.Columns["Tarix"].DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
-        }
-        if (dgvKassaHareketleri.Columns["Qeyd"] != null)
-        {
-            dgvKassaHareketleri.Columns["Qeyd"].HeaderText = "Qeyd";
-        }
+        dgvKassaHareketleri.AutoGenerateColumns = false;
+        
+        dgvKassaHareketleri.Columns.Add(new DataGridViewTextBoxColumn { Name = "Id", DataPropertyName = "Id", Visible = false });
+        dgvKassaHareketleri.Columns.Add(new DataGridViewTextBoxColumn { Name = "EmeliyyatId", DataPropertyName = "EmeliyyatId", Visible = false });
+        dgvKassaHareketleri.Columns.Add(new DataGridViewTextBoxColumn { Name = "IstifadeciId", DataPropertyName = "IstifadeciId", Visible = false });
+        
+        dgvKassaHareketleri.Columns.Add(new DataGridViewTextBoxColumn { Name = "HareketNovu", DataPropertyName = "HareketNovu", HeaderText = "Hərəkət Növü" });
+        dgvKassaHareketleri.Columns.Add(new DataGridViewTextBoxColumn { Name = "EmeliyyatNovu", DataPropertyName = "EmeliyyatNovu", HeaderText = "Əməliyyat" });
+        
+        var sumCol = new DataGridViewTextBoxColumn { Name = "Mebleg", DataPropertyName = "Mebleg", HeaderText = "Məbləğ" };
+        sumCol.DefaultCellStyle.Format = "N2";
+        dgvKassaHareketleri.Columns.Add(sumCol);
+        
+        var dateCol = new DataGridViewTextBoxColumn { Name = "Tarix", DataPropertyName = "Tarix", HeaderText = "Tarix" };
+        dateCol.DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
+        dgvKassaHareketleri.Columns.Add(dateCol);
+        
+        dgvKassaHareketleri.Columns.Add(new DataGridViewTextBoxColumn { Name = "Qeyd", DataPropertyName = "Qeyd", HeaderText = "Qeyd" });
 
         // Hərəkət növünə görə rəng
         foreach (DataGridViewRow row in dgvKassaHareketleri.Rows)

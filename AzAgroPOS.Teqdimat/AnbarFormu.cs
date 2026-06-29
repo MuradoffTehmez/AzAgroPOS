@@ -348,11 +348,14 @@ public partial class AnbarFormu : BazaForm, IAnbarView
     {
         if (tarixce == null)
         {
-            dgvTarixce.DataSource = null;
+            if (dgvTarixce.DataSource is System.ComponentModel.BindingList<StokHareketiDto> currentList)
+            {
+                currentList.Clear();
+            }
             return;
         }
 
-        dgvTarixce.DataSource = tarixce;
+        dgvTarixce.DataSource = new System.ComponentModel.BindingList<StokHareketiDto>(tarixce);
 
         // Rəng kodlaması
         foreach (DataGridViewRow row in dgvTarixce.Rows)
@@ -401,11 +404,14 @@ public partial class AnbarFormu : BazaForm, IAnbarView
         {
             if (mehsullar == null || mehsullar.Count == 0)
             {
-                dgvMehsullar.DataSource = null;
+                if (dgvMehsullar.DataSource is System.ComponentModel.BindingList<MehsulDto> currentList)
+                {
+                    currentList.Clear();
+                }
                 return;
             }
 
-            dgvMehsullar.DataSource = mehsullar;
+            dgvMehsullar.DataSource = new System.ComponentModel.BindingList<MehsulDto>(mehsullar);
 
             // Rəng kodlaması - minimum stok xəbərdarlığı
             foreach (DataGridViewRow row in dgvMehsullar.Rows)
@@ -462,7 +468,10 @@ public partial class AnbarFormu : BazaForm, IAnbarView
             MehsulPaneliniGoster(false);
             EmeliyyatDuymeleriniAktivet(false);
 
-            dgvTarixce.DataSource = null;
+            if (dgvTarixce.DataSource is System.ComponentModel.BindingList<StokHareketiDto> currentListTarixce)
+            {
+                currentListTarixce.Clear();
+            }
 
             if (axtarisQutusuQalsin)
             {

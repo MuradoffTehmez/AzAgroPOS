@@ -77,20 +77,25 @@ public partial class TedarukcuIdareetmeFormu : BazaForm, ITedarukcuView
     public void TedarukculeriGoster(List<TedarukcuDto> tedarukculer)
     {
         dgvTedarukculer.SelectionChanged -= dgvTedarukculer_SelectionChanged;
-        dgvTedarukculer.DataSource = tedarukculer;
-        dgvTedarukculer.SelectionChanged += dgvTedarukculer_SelectionChanged;
-
-        if (dgvTedarukculer.Columns.Count > 0)
+        
+        if (dgvTedarukculer.Columns.Count == 0)
         {
-            dgvTedarukculer.Columns["Id"].Visible = false;
-            dgvTedarukculer.Columns["Ad"].HeaderText = "Ad";
-            dgvTedarukculer.Columns["Voen"].HeaderText = "VÖEN";
-            dgvTedarukculer.Columns["Unvan"].HeaderText = "Ünvan";
-            dgvTedarukculer.Columns["Telefon"].HeaderText = "Telefon";
-            dgvTedarukculer.Columns["Email"].HeaderText = "Email";
-            dgvTedarukculer.Columns["BankHesabi"].HeaderText = "Bank Hesabı";
-            dgvTedarukculer.Columns["Aktivdir"].HeaderText = "Aktiv";
+            dgvTedarukculer.AutoGenerateColumns = false;
+            
+            dgvTedarukculer.Columns.Add(new DataGridViewTextBoxColumn { Name = "Id", DataPropertyName = "Id", Visible = false });
+            dgvTedarukculer.Columns.Add(new DataGridViewTextBoxColumn { Name = "Ad", DataPropertyName = "Ad", HeaderText = "Ad" });
+            dgvTedarukculer.Columns.Add(new DataGridViewTextBoxColumn { Name = "Voen", DataPropertyName = "Voen", HeaderText = "VÖEN" });
+            dgvTedarukculer.Columns.Add(new DataGridViewTextBoxColumn { Name = "Unvan", DataPropertyName = "Unvan", HeaderText = "Ünvan" });
+            dgvTedarukculer.Columns.Add(new DataGridViewTextBoxColumn { Name = "Telefon", DataPropertyName = "Telefon", HeaderText = "Telefon" });
+            dgvTedarukculer.Columns.Add(new DataGridViewTextBoxColumn { Name = "Email", DataPropertyName = "Email", HeaderText = "Email" });
+            dgvTedarukculer.Columns.Add(new DataGridViewTextBoxColumn { Name = "BankHesabi", DataPropertyName = "BankHesabi", HeaderText = "Bank Hesabı" });
+            
+            var aktivCol = new DataGridViewCheckBoxColumn { Name = "Aktivdir", DataPropertyName = "Aktivdir", HeaderText = "Aktiv" };
+            dgvTedarukculer.Columns.Add(aktivCol);
         }
+
+        dgvTedarukculer.DataSource = new System.ComponentModel.BindingList<TedarukcuDto>(tedarukculer);
+        dgvTedarukculer.SelectionChanged += dgvTedarukculer_SelectionChanged;
     }
 
     public void MesajGoster(string mesaj, bool xetadir = false)

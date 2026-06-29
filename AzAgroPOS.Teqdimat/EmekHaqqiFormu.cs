@@ -111,8 +111,8 @@ public partial class EmekHaqqiFormu : BazaForm
             EmeliyyatNeticesi<List<EmekHaqqiDto>> netice = await _emekHaqqiManager.EmekHaqqilariGetirAsync();
             if (netice.UgurluDur && netice.Data != null)
             {
-                dgvEmekHaqqlari.DataSource = netice.Data.ToList();
                 FormatGrid();
+                dgvEmekHaqqlari.DataSource = new System.ComponentModel.BindingList<EmekHaqqiDto>(netice.Data.ToList());
             }
         }
         catch (Exception ex)
@@ -126,90 +126,47 @@ public partial class EmekHaqqiFormu : BazaForm
     /// </summary>
     private void FormatGrid()
     {
-        if (dgvEmekHaqqlari.Columns.Count == 0)
-        {
-            return;
-        }
+        if (dgvEmekHaqqlari.Columns.Count > 0) return;
 
-        // Sütunların mövcudluğunu yoxlayaraq formatla
-        if (dgvEmekHaqqlari.Columns["Id"] != null)
-        {
-            dgvEmekHaqqlari.Columns["Id"].Visible = false;
-        }
-
-        if (dgvEmekHaqqlari.Columns["IsciId"] != null)
-        {
-            dgvEmekHaqqlari.Columns["IsciId"].Visible = false;
-        }
-
-        if (dgvEmekHaqqlari.Columns["IsciAdi"] != null)
-        {
-            dgvEmekHaqqlari.Columns["IsciAdi"].HeaderText = "İşçi";
-        }
-
-        if (dgvEmekHaqqlari.Columns["Dovr"] != null)
-        {
-            dgvEmekHaqqlari.Columns["Dovr"].HeaderText = "Dövr";
-        }
-
-        if (dgvEmekHaqqlari.Columns["EsasMaas"] != null)
-        {
-            dgvEmekHaqqlari.Columns["EsasMaas"].HeaderText = "Əsas Maaş";
-            dgvEmekHaqqlari.Columns["EsasMaas"].DefaultCellStyle.Format = "N2";
-        }
-
-        if (dgvEmekHaqqlari.Columns["Bonuslar"] != null)
-        {
-            dgvEmekHaqqlari.Columns["Bonuslar"].HeaderText = "Bonuslar";
-            dgvEmekHaqqlari.Columns["Bonuslar"].DefaultCellStyle.Format = "N2";
-        }
-
-        if (dgvEmekHaqqlari.Columns["ElaveOdenisler"] != null)
-        {
-            dgvEmekHaqqlari.Columns["ElaveOdenisler"].HeaderText = "Əlavə Ödənişlər";
-            dgvEmekHaqqlari.Columns["ElaveOdenisler"].DefaultCellStyle.Format = "N2";
-        }
-
-        if (dgvEmekHaqqlari.Columns["IcazeTutulmasi"] != null)
-        {
-            dgvEmekHaqqlari.Columns["IcazeTutulmasi"].HeaderText = "İcazə Tutulması";
-            dgvEmekHaqqlari.Columns["IcazeTutulmasi"].DefaultCellStyle.Format = "N2";
-        }
-
-        if (dgvEmekHaqqlari.Columns["DigerTutulmalar"] != null)
-        {
-            dgvEmekHaqqlari.Columns["DigerTutulmalar"].HeaderText = "Digər Tutulmalar";
-            dgvEmekHaqqlari.Columns["DigerTutulmalar"].DefaultCellStyle.Format = "N2";
-        }
-
-        if (dgvEmekHaqqlari.Columns["YekunEmekHaqqi"] != null)
-        {
-            dgvEmekHaqqlari.Columns["YekunEmekHaqqi"].HeaderText = "Yekun";
-            dgvEmekHaqqlari.Columns["YekunEmekHaqqi"].DefaultCellStyle.Format = "N2";
-        }
-
-        if (dgvEmekHaqqlari.Columns["Status"] != null)
-        {
-            dgvEmekHaqqlari.Columns["Status"].HeaderText = "Status";
-        }
-
-        if (dgvEmekHaqqlari.Columns["HesablanmaTarixi"] != null)
-        {
-            dgvEmekHaqqlari.Columns["HesablanmaTarixi"].HeaderText = "Hesablama Tarixi";
-            dgvEmekHaqqlari.Columns["HesablanmaTarixi"].DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
-        }
-
-        // Düzgün ad: OdenisTarixi (OdenmeTarixi deyil)
-        if (dgvEmekHaqqlari.Columns["OdenisTarixi"] != null)
-        {
-            dgvEmekHaqqlari.Columns["OdenisTarixi"].HeaderText = "Ödəniş Tarixi";
-            dgvEmekHaqqlari.Columns["OdenisTarixi"].DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
-        }
-
-        if (dgvEmekHaqqlari.Columns["Qeyd"] != null)
-        {
-            dgvEmekHaqqlari.Columns["Qeyd"].HeaderText = "Qeyd";
-        }
+        dgvEmekHaqqlari.AutoGenerateColumns = false;
+        
+        dgvEmekHaqqlari.Columns.Add(new DataGridViewTextBoxColumn { Name = "Id", DataPropertyName = "Id", Visible = false });
+        dgvEmekHaqqlari.Columns.Add(new DataGridViewTextBoxColumn { Name = "IsciId", DataPropertyName = "IsciId", Visible = false });
+        dgvEmekHaqqlari.Columns.Add(new DataGridViewTextBoxColumn { Name = "IsciAdi", DataPropertyName = "IsciAdi", HeaderText = "İşçi" });
+        dgvEmekHaqqlari.Columns.Add(new DataGridViewTextBoxColumn { Name = "Dovr", DataPropertyName = "Dovr", HeaderText = "Dövr" });
+        
+        var baseSalaryCol = new DataGridViewTextBoxColumn { Name = "EsasMaas", DataPropertyName = "EsasMaas", HeaderText = "Əsas Maaş" };
+        baseSalaryCol.DefaultCellStyle.Format = "N2";
+        dgvEmekHaqqlari.Columns.Add(baseSalaryCol);
+        
+        var bonusCol = new DataGridViewTextBoxColumn { Name = "Bonuslar", DataPropertyName = "Bonuslar", HeaderText = "Bonuslar" };
+        bonusCol.DefaultCellStyle.Format = "N2";
+        dgvEmekHaqqlari.Columns.Add(bonusCol);
+        
+        var extraPayCol = new DataGridViewTextBoxColumn { Name = "ElaveOdenisler", DataPropertyName = "ElaveOdenisler", HeaderText = "Əlavə Ödənişlər" };
+        extraPayCol.DefaultCellStyle.Format = "N2";
+        dgvEmekHaqqlari.Columns.Add(extraPayCol);
+        
+        var leaveDedCol = new DataGridViewTextBoxColumn { Name = "IcazeTutulmasi", DataPropertyName = "IcazeTutulmasi", HeaderText = "İcazə Tutulması" };
+        leaveDedCol.DefaultCellStyle.Format = "N2";
+        dgvEmekHaqqlari.Columns.Add(leaveDedCol);
+        
+        var otherDedCol = new DataGridViewTextBoxColumn { Name = "DigerTutulmalar", DataPropertyName = "DigerTutulmalar", HeaderText = "Digər Tutulmalar" };
+        otherDedCol.DefaultCellStyle.Format = "N2";
+        dgvEmekHaqqlari.Columns.Add(otherDedCol);
+        
+        var finalCol = new DataGridViewTextBoxColumn { Name = "YekunEmekHaqqi", DataPropertyName = "YekunEmekHaqqi", HeaderText = "Yekun" };
+        finalCol.DefaultCellStyle.Format = "N2";
+        dgvEmekHaqqlari.Columns.Add(finalCol);
+        
+        dgvEmekHaqqlari.Columns.Add(new DataGridViewTextBoxColumn { Name = "Status", DataPropertyName = "StatusStr", HeaderText = "Status" });
+        
+        var dateCol = new DataGridViewTextBoxColumn { Name = "HesablanmaTarixi", DataPropertyName = "HesablanmaTarixi", HeaderText = "Hesablama Tarixi" };
+        dateCol.DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
+        dgvEmekHaqqlari.Columns.Add(dateCol);
+        
+        dgvEmekHaqqlari.Columns.Add(new DataGridViewTextBoxColumn { Name = "OdenisTarixi", DataPropertyName = "OdenisTarixi", HeaderText = "Ödəniş Tarixi" });
+        dgvEmekHaqqlari.Columns.Add(new DataGridViewTextBoxColumn { Name = "Qeyd", DataPropertyName = "Qeyd", HeaderText = "Qeyd" });
 
         dgvEmekHaqqlari.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
     }

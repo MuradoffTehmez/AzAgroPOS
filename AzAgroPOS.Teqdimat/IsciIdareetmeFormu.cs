@@ -176,27 +176,41 @@ public partial class IsciIdareetmeFormu : BazaForm, IIsciView
     public void IscileriGoster(List<IsciDto> isciler)
     {
         dgvIsciler.SelectionChanged -= dgvIsciler_SelectionChanged;
-        dgvIsciler.DataSource = isciler;
-        dgvIsciler.SelectionChanged += dgvIsciler_SelectionChanged;
 
-        if (dgvIsciler.Columns.Count > 0)
+        if (dgvIsciler.Columns.Count == 0)
         {
-            dgvIsciler.Columns["Id"].Visible = false;
-            dgvIsciler.Columns["TamAd"].HeaderText = "Tam Ad";
-            dgvIsciler.Columns["DogumTarixi"].HeaderText = "Doğum Tarixi";
-            dgvIsciler.Columns["TelefonNomresi"].HeaderText = "Telefon";
-            dgvIsciler.Columns["Unvan"].HeaderText = "Ünvan";
-            dgvIsciler.Columns["Email"].HeaderText = "Email";
-            dgvIsciler.Columns["IseBaslamaTarixi"].HeaderText = "İşə Başlama Tarixi";
-            dgvIsciler.Columns["Maas"].HeaderText = "Maaş";
-            dgvIsciler.Columns["Vezife"].HeaderText = "Vəzifə";
-            dgvIsciler.Columns["Departament"].HeaderText = "Departament";
-            dgvIsciler.Columns["Status"].HeaderText = "Status";
-            dgvIsciler.Columns["SvsNo"].HeaderText = "SVS No";
-            dgvIsciler.Columns["QeydiyyatUnvani"].HeaderText = "Qeydiyyat Ünvanı";
-            dgvIsciler.Columns["BankMəlumatları"].HeaderText = "Bank Məlumatları";
-            dgvIsciler.Columns["SistemIstifadeciAdi"].HeaderText = "Sistem İstifadəçisi";
+            dgvIsciler.AutoGenerateColumns = false;
+            
+            dgvIsciler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Id", DataPropertyName = "Id", Visible = false });
+            dgvIsciler.Columns.Add(new DataGridViewTextBoxColumn { Name = "TamAd", DataPropertyName = "TamAd", HeaderText = "Tam Ad" });
+            
+            var dateCol = new DataGridViewTextBoxColumn { Name = "DogumTarixi", DataPropertyName = "DogumTarixi", HeaderText = "Doğum Tarixi" };
+            dateCol.DefaultCellStyle.Format = "dd.MM.yyyy";
+            dgvIsciler.Columns.Add(dateCol);
+            
+            dgvIsciler.Columns.Add(new DataGridViewTextBoxColumn { Name = "TelefonNomresi", DataPropertyName = "TelefonNomresi", HeaderText = "Telefon" });
+            dgvIsciler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Unvan", DataPropertyName = "Unvan", HeaderText = "Ünvan" });
+            dgvIsciler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Email", DataPropertyName = "Email", HeaderText = "Email" });
+            
+            var startDateCol = new DataGridViewTextBoxColumn { Name = "IseBaslamaTarixi", DataPropertyName = "IseBaslamaTarixi", HeaderText = "İşə Başlama Tarixi" };
+            startDateCol.DefaultCellStyle.Format = "dd.MM.yyyy";
+            dgvIsciler.Columns.Add(startDateCol);
+            
+            var salaryCol = new DataGridViewTextBoxColumn { Name = "Maas", DataPropertyName = "Maas", HeaderText = "Maaş" };
+            salaryCol.DefaultCellStyle.Format = "N2";
+            dgvIsciler.Columns.Add(salaryCol);
+            
+            dgvIsciler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Vezife", DataPropertyName = "Vezife", HeaderText = "Vəzifə" });
+            dgvIsciler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Departament", DataPropertyName = "Departament", HeaderText = "Departament" });
+            dgvIsciler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Status", DataPropertyName = "StatusStr", HeaderText = "Status" });
+            dgvIsciler.Columns.Add(new DataGridViewTextBoxColumn { Name = "SvsNo", DataPropertyName = "SvsNo", HeaderText = "SVS No" });
+            dgvIsciler.Columns.Add(new DataGridViewTextBoxColumn { Name = "QeydiyyatUnvani", DataPropertyName = "QeydiyyatUnvani", HeaderText = "Qeydiyyat Ünvanı" });
+            dgvIsciler.Columns.Add(new DataGridViewTextBoxColumn { Name = "BankMəlumatları", DataPropertyName = "BankMəlumatları", HeaderText = "Bank Məlumatları" });
+            dgvIsciler.Columns.Add(new DataGridViewTextBoxColumn { Name = "SistemIstifadeciAdi", DataPropertyName = "SistemIstifadeciAdi", HeaderText = "Sistem İstifadəçisi" });
         }
+
+        dgvIsciler.DataSource = new System.ComponentModel.BindingList<IsciDto>(isciler);
+        dgvIsciler.SelectionChanged += dgvIsciler_SelectionChanged;
     }
 
     public void MesajGoster(string mesaj, bool xetadir = false)

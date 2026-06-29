@@ -81,90 +81,62 @@ namespace AzAgroPOS.Teqdimat
                 return;
             }
 
-            dgvButunBonuslar.DataSource = null;
-            dgvButunBonuslar.DataSource = netice.Data;
+            dgvButunBonuslar.DataSource = new System.ComponentModel.BindingList<MusteriBonus>(netice.Data);
         }
 
         private void TablolariDuzenle()
         {
             // Bütün bonuslar grid
-            if (dgvButunBonuslar.Columns.Count > 0)
+            if (dgvButunBonuslar.Columns.Count == 0)
             {
-                dgvButunBonuslar.Columns["Id"]!.Visible = false;
-                dgvButunBonuslar.Columns["MusteriId"]!.HeaderText = "Müştəri ID";
-                dgvButunBonuslar.Columns["MusteriId"]!.Width = 100;
-
-                if (dgvButunBonuslar.Columns["Musteri"] != null)
-                {
-                    dgvButunBonuslar.Columns["Musteri"]!.HeaderText = "Müştəri";
-                    dgvButunBonuslar.Columns["Musteri"]!.Width = 200;
-                }
-
-                dgvButunBonuslar.Columns["ToplamBal"]!.HeaderText = "Toplam Bal";
-                dgvButunBonuslar.Columns["ToplamBal"]!.DefaultCellStyle.Format = "N2";
-                dgvButunBonuslar.Columns["ToplamBal"]!.Width = 120;
-
-                dgvButunBonuslar.Columns["IstifadeEdilmisBal"]!.HeaderText = "İstifadə Edilmiş";
-                dgvButunBonuslar.Columns["IstifadeEdilmisBal"]!.DefaultCellStyle.Format = "N2";
-                dgvButunBonuslar.Columns["IstifadeEdilmisBal"]!.Width = 140;
-
-                dgvButunBonuslar.Columns["MovcudBal"]!.HeaderText = "Mövcud Bal";
-                dgvButunBonuslar.Columns["MovcudBal"]!.DefaultCellStyle.Format = "N2";
-                dgvButunBonuslar.Columns["MovcudBal"]!.DefaultCellStyle.Font = new Font(dgvButunBonuslar.Font, FontStyle.Bold);
-                dgvButunBonuslar.Columns["MovcudBal"]!.Width = 130;
-
-                dgvButunBonuslar.Columns["Seviyye"]!.HeaderText = "Səviyyə";
-                dgvButunBonuslar.Columns["Seviyye"]!.Width = 100;
-
-                if (dgvButunBonuslar.Columns["SonBalQazanmaTarixi"] != null)
-                {
-                    dgvButunBonuslar.Columns["SonBalQazanmaTarixi"]!.HeaderText = "Son Qazanma";
-                    dgvButunBonuslar.Columns["SonBalQazanmaTarixi"]!.DefaultCellStyle.Format = "dd.MM.yyyy";
-                    dgvButunBonuslar.Columns["SonBalQazanmaTarixi"]!.Width = 120;
-                }
-
-                if (dgvButunBonuslar.Columns["BonusQeydleri"] != null)
-                {
-                    dgvButunBonuslar.Columns["BonusQeydleri"]!.Visible = false;
-                }
+                dgvButunBonuslar.AutoGenerateColumns = false;
+                dgvButunBonuslar.Columns.Add(new DataGridViewTextBoxColumn { Name = "Id", DataPropertyName = "Id", Visible = false });
+                dgvButunBonuslar.Columns.Add(new DataGridViewTextBoxColumn { Name = "MusteriId", DataPropertyName = "MusteriId", HeaderText = "Müştəri ID", Width = 100 });
+                
+                // Musteri.TamAd göstərmək üçün əlavə xassəyə ehtiyac var, lakin hələlik Musteri.TamAd binding-i cədvəldə çətindir
+                // Əgər Musteri.TamAd yoxdursa, id-ni göstərir. (AutoGenerate-də naviqasiya xassəsi işləmir)
+                dgvButunBonuslar.Columns.Add(new DataGridViewTextBoxColumn { Name = "MusteriAdi", DataPropertyName = "MusteriAdi", HeaderText = "Müştəri", Width = 200 });
+                
+                var totalCol = new DataGridViewTextBoxColumn { Name = "ToplamBal", DataPropertyName = "ToplamBal", HeaderText = "Toplam Bal", Width = 120 };
+                totalCol.DefaultCellStyle.Format = "N2";
+                dgvButunBonuslar.Columns.Add(totalCol);
+                
+                var usedCol = new DataGridViewTextBoxColumn { Name = "IstifadeEdilmisBal", DataPropertyName = "IstifadeEdilmisBal", HeaderText = "İstifadə Edilmiş", Width = 140 };
+                usedCol.DefaultCellStyle.Format = "N2";
+                dgvButunBonuslar.Columns.Add(usedCol);
+                
+                var currentCol = new DataGridViewTextBoxColumn { Name = "MovcudBal", DataPropertyName = "MovcudBal", HeaderText = "Mövcud Bal", Width = 130 };
+                currentCol.DefaultCellStyle.Format = "N2";
+                currentCol.DefaultCellStyle.Font = new Font(dgvButunBonuslar.Font, FontStyle.Bold);
+                dgvButunBonuslar.Columns.Add(currentCol);
+                
+                dgvButunBonuslar.Columns.Add(new DataGridViewTextBoxColumn { Name = "Seviyye", DataPropertyName = "Seviyye", HeaderText = "Səviyyə", Width = 100 });
+                
+                var dateCol = new DataGridViewTextBoxColumn { Name = "SonBalQazanmaTarixi", DataPropertyName = "SonBalQazanmaTarixi", HeaderText = "Son Qazanma", Width = 120 };
+                dateCol.DefaultCellStyle.Format = "dd.MM.yyyy";
+                dgvButunBonuslar.Columns.Add(dateCol);
             }
 
             // Bonus tarixçəsi grid
-            if (dgvBonusTarixcesi.Columns.Count > 0)
+            if (dgvBonusTarixcesi.Columns.Count == 0)
             {
-                dgvBonusTarixcesi.Columns["Id"]!.Visible = false;
-                dgvBonusTarixcesi.Columns["MusteriBonusId"]!.Visible = false;
-
-                dgvBonusTarixcesi.Columns["EmeliyyatNovu"]!.HeaderText = "Əməliyyat Növü";
-                dgvBonusTarixcesi.Columns["EmeliyyatNovu"]!.Width = 130;
-
-                dgvBonusTarixcesi.Columns["BalMiqdari"]!.HeaderText = "Bal Miqdarı";
-                dgvBonusTarixcesi.Columns["BalMiqdari"]!.DefaultCellStyle.Format = "N2";
-                dgvBonusTarixcesi.Columns["BalMiqdari"]!.DefaultCellStyle.Font = new Font(dgvBonusTarixcesi.Font, FontStyle.Bold);
-                dgvBonusTarixcesi.Columns["BalMiqdari"]!.Width = 120;
-
-                dgvBonusTarixcesi.Columns["EmeliyyatTarixi"]!.HeaderText = "Tarix";
-                dgvBonusTarixcesi.Columns["EmeliyyatTarixi"]!.DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
-                dgvBonusTarixcesi.Columns["EmeliyyatTarixi"]!.Width = 140;
-
-                dgvBonusTarixcesi.Columns["Aciklama"]!.HeaderText = "Açıqlama";
-                dgvBonusTarixcesi.Columns["Aciklama"]!.Width = 250;
-
-                if (dgvBonusTarixcesi.Columns["SatisId"] != null)
-                {
-                    dgvBonusTarixcesi.Columns["SatisId"]!.HeaderText = "Satış ID";
-                    dgvBonusTarixcesi.Columns["SatisId"]!.Width = 100;
-                }
-
-                if (dgvBonusTarixcesi.Columns["MusteriBonus"] != null)
-                {
-                    dgvBonusTarixcesi.Columns["MusteriBonus"]!.Visible = false;
-                }
-
-                if (dgvBonusTarixcesi.Columns["Satis"] != null)
-                {
-                    dgvBonusTarixcesi.Columns["Satis"]!.Visible = false;
-                }
+                dgvBonusTarixcesi.AutoGenerateColumns = false;
+                dgvBonusTarixcesi.Columns.Add(new DataGridViewTextBoxColumn { Name = "Id", DataPropertyName = "Id", Visible = false });
+                dgvBonusTarixcesi.Columns.Add(new DataGridViewTextBoxColumn { Name = "MusteriBonusId", DataPropertyName = "MusteriBonusId", Visible = false });
+                
+                dgvBonusTarixcesi.Columns.Add(new DataGridViewTextBoxColumn { Name = "EmeliyyatNovu", DataPropertyName = "EmeliyyatNovu", HeaderText = "Əməliyyat Növü", Width = 130 });
+                
+                var amountCol = new DataGridViewTextBoxColumn { Name = "BalMiqdari", DataPropertyName = "BalMiqdari", HeaderText = "Bal Miqdarı", Width = 120 };
+                amountCol.DefaultCellStyle.Format = "N2";
+                amountCol.DefaultCellStyle.Font = new Font(dgvBonusTarixcesi.Font, FontStyle.Bold);
+                dgvBonusTarixcesi.Columns.Add(amountCol);
+                
+                var opDateCol = new DataGridViewTextBoxColumn { Name = "EmeliyyatTarixi", DataPropertyName = "EmeliyyatTarixi", HeaderText = "Tarix", Width = 140 };
+                opDateCol.DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
+                dgvBonusTarixcesi.Columns.Add(opDateCol);
+                
+                dgvBonusTarixcesi.Columns.Add(new DataGridViewTextBoxColumn { Name = "Aciklama", DataPropertyName = "Aciklama", HeaderText = "Açıqlama", Width = 250 });
+                dgvBonusTarixcesi.Columns.Add(new DataGridViewTextBoxColumn { Name = "SatisId", DataPropertyName = "SatisId", HeaderText = "Satış ID", Width = 100 });
             }
         }
 
@@ -255,7 +227,10 @@ namespace AzAgroPOS.Teqdimat
             lblMovcudBalDeyer.Text = "0.00";
             lblSeviyye.Text = "-";
             lblSeviyye.ForeColor = Color.Black;
-            dgvBonusTarixcesi.DataSource = null;
+            if (dgvBonusTarixcesi.DataSource is System.ComponentModel.BindingList<BonusQeydi> currentList)
+            {
+                currentList.Clear();
+            }
         }
 
         private async Task BonusTarixcesiniYukle()
@@ -263,11 +238,15 @@ namespace AzAgroPOS.Teqdimat
             EmeliyyatNeticesi<List<BonusQeydi>> netice = await _musteriManager.BonusQeydleriniGetirAsync(_seciliMusteriId);
             if (!netice.UgurluDur || netice.Data == null)
             {
-                dgvBonusTarixcesi.DataSource = null;
+                if (dgvBonusTarixcesi.DataSource is System.ComponentModel.BindingList<BonusQeydi> currentList2)
+                {
+                    currentList2.Clear();
+                }
                 return;
             }
 
-            dgvBonusTarixcesi.DataSource = netice.Data.OrderByDescending(bq => bq.EmeliyyatTarixi).ToList();
+            var orderedData = netice.Data.OrderByDescending(bq => bq.EmeliyyatTarixi).ToList();
+            dgvBonusTarixcesi.DataSource = new System.ComponentModel.BindingList<BonusQeydi>(orderedData);
 
             // Rəngli görüntü
             foreach (DataGridViewRow row in dgvBonusTarixcesi.Rows)

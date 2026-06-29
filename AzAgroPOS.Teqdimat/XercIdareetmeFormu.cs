@@ -51,39 +51,26 @@ public partial class XercIdareetmeFormu : BazaForm, IXercView
 
         ConfigureDataGridViewStyles();
 
-        if (dgvXercler.Columns.Contains("Novu"))
+        if (dgvXercler.Columns.Count == 0)
         {
-            dgvXercler.Columns["Novu"].HeaderText = "Növ";
-        }
+            dgvXercler.AutoGenerateColumns = false;
 
-        if (dgvXercler.Columns.Contains("Ad"))
-        {
-            dgvXercler.Columns["Ad"].HeaderText = "Ad";
-        }
-
-        if (dgvXercler.Columns.Contains("Mebleg"))
-        {
-            dgvXercler.Columns["Mebleg"].HeaderText = "Məbləğ";
-        }
-
-        if (dgvXercler.Columns.Contains("Tarix"))
-        {
-            dgvXercler.Columns["Tarix"].HeaderText = "Tarix";
-        }
-
-        if (dgvXercler.Columns.Contains("SenedNomresi"))
-        {
-            dgvXercler.Columns["SenedNomresi"].HeaderText = "Sənəd №";
-        }
-
-        if (dgvXercler.Columns.Contains("Qeyd"))
-        {
-            dgvXercler.Columns["Qeyd"].HeaderText = "Qeyd";
-        }
-
-        if (dgvXercler.Columns.Contains("IstifadeciAdi"))
-        {
-            dgvXercler.Columns["IstifadeciAdi"].HeaderText = "İstifadəçi";
+            dgvXercler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Id", DataPropertyName = "Id", Visible = false });
+            dgvXercler.Columns.Add(new DataGridViewTextBoxColumn { Name = "IstifadeciId", DataPropertyName = "IstifadeciId", Visible = false });
+            dgvXercler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Novu", DataPropertyName = "Novu", HeaderText = "Növ" });
+            dgvXercler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Ad", DataPropertyName = "Ad", HeaderText = "Ad" });
+            
+            var sumCol = new DataGridViewTextBoxColumn { Name = "Mebleg", DataPropertyName = "Mebleg", HeaderText = "Məbləğ" };
+            sumCol.DefaultCellStyle.Format = "N2";
+            dgvXercler.Columns.Add(sumCol);
+            
+            var dateCol = new DataGridViewTextBoxColumn { Name = "Tarix", DataPropertyName = "Tarix", HeaderText = "Tarix" };
+            dateCol.DefaultCellStyle.Format = "dd.MM.yyyy";
+            dgvXercler.Columns.Add(dateCol);
+            
+            dgvXercler.Columns.Add(new DataGridViewTextBoxColumn { Name = "SenedNomresi", DataPropertyName = "SenedNomresi", HeaderText = "Sənəd №" });
+            dgvXercler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Qeyd", DataPropertyName = "Qeyd", HeaderText = "Qeyd" });
+            dgvXercler.Columns.Add(new DataGridViewTextBoxColumn { Name = "IstifadeciAdi", DataPropertyName = "IstifadeciAdi", HeaderText = "İstifadəçi" });
         }
     }
 

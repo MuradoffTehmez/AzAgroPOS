@@ -58,36 +58,28 @@ public partial class ZHesabatArxivFormu : BazaForm, IZHesabatArxivView
             Invoke(() => NovbeleriGoster(novbeler));
             return;
         }
-        dgvNovbeler.DataSource = novbeler;
-
-        // Sütun başlıqlarını Azərbaycan dilinə tərcümə et
-        if (dgvNovbeler.Columns.Count > 0)
+        if (dgvNovbeler.Columns.Count == 0)
         {
-            if (dgvNovbeler.Columns.Contains("NovbeId"))
-            {
-                dgvNovbeler.Columns["NovbeId"].HeaderText = "Növbə №";
-            }
-
-            if (dgvNovbeler.Columns.Contains("AcilmaTarixi"))
-            {
-                dgvNovbeler.Columns["AcilmaTarixi"].HeaderText = "Açılma Tarixi";
-            }
-
-            if (dgvNovbeler.Columns.Contains("BaglanmaTarixi"))
-            {
-                dgvNovbeler.Columns["BaglanmaTarixi"].HeaderText = "Bağlanma Tarixi";
-            }
-
-            if (dgvNovbeler.Columns.Contains("KassirAdi"))
-            {
-                dgvNovbeler.Columns["KassirAdi"].HeaderText = "Kassir";
-            }
-
-            if (dgvNovbeler.Columns.Contains("CemiSatis"))
-            {
-                dgvNovbeler.Columns["CemiSatis"].HeaderText = "Cəmi Satış";
-            }
+            dgvNovbeler.AutoGenerateColumns = false;
+            
+            dgvNovbeler.Columns.Add(new DataGridViewTextBoxColumn { Name = "NovbeId", DataPropertyName = "NovbeId", HeaderText = "Növbə №" });
+            
+            var openDateCol = new DataGridViewTextBoxColumn { Name = "AcilmaTarixi", DataPropertyName = "AcilmaTarixi", HeaderText = "Açılma Tarixi" };
+            openDateCol.DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
+            dgvNovbeler.Columns.Add(openDateCol);
+            
+            var closeDateCol = new DataGridViewTextBoxColumn { Name = "BaglanmaTarixi", DataPropertyName = "BaglanmaTarixi", HeaderText = "Bağlanma Tarixi" };
+            closeDateCol.DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
+            dgvNovbeler.Columns.Add(closeDateCol);
+            
+            dgvNovbeler.Columns.Add(new DataGridViewTextBoxColumn { Name = "KassirAdi", DataPropertyName = "KassirAdi", HeaderText = "Kassir" });
+            
+            var sumCol = new DataGridViewTextBoxColumn { Name = "CemiSatis", DataPropertyName = "CemiSatis", HeaderText = "Cəmi Satış" };
+            sumCol.DefaultCellStyle.Format = "N2";
+            dgvNovbeler.Columns.Add(sumCol);
         }
+
+        dgvNovbeler.DataSource = new System.ComponentModel.BindingList<BaglanmisNovbeDto>(novbeler);
     }
 
     public void HesabatiGoster(string hesabatMetni)

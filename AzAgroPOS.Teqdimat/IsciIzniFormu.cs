@@ -103,8 +103,8 @@ public partial class IsciIzniFormu : BazaForm
             EmeliyyatNeticesi<List<IsciIzniDto>> netice = await _izniManager.ButunIzinleriDtoFormatindaGetirAsync();
             if (netice.UgurluDur && netice.Data != null)
             {
-                dgvIzinler.DataSource = netice.Data.ToList();
                 FormatGrid();
+                dgvIzinler.DataSource = new System.ComponentModel.BindingList<IsciIzniDto>(netice.Data.ToList());
             }
             else
             {
@@ -117,84 +117,37 @@ public partial class IsciIzniFormu : BazaForm
         }
     }
 
-    /// <summary>
-    /// DataGridView sütunlarını formatla
-    /// </summary>
     private void FormatGrid()
     {
-        if (dgvIzinler.Columns.Count == 0)
-        {
-            return;
-        }
+        if (dgvIzinler.Columns.Count > 0) return;
 
-        // Sütunların mövcudluğunu yoxlayaraq formatla
-        if (dgvIzinler.Columns["Id"] != null)
-        {
-            dgvIzinler.Columns["Id"].Visible = false;
-        }
-
-        if (dgvIzinler.Columns["IsciId"] != null)
-        {
-            dgvIzinler.Columns["IsciId"].Visible = false;
-        }
-
-        if (dgvIzinler.Columns["TesdiqEdenIsciId"] != null)
-        {
-            dgvIzinler.Columns["TesdiqEdenIsciId"].Visible = false;
-        }
-
-        if (dgvIzinler.Columns["IsciAdi"] != null)
-        {
-            dgvIzinler.Columns["IsciAdi"].HeaderText = "İşçi";
-        }
-
-        if (dgvIzinler.Columns["IzinNovu"] != null)
-        {
-            dgvIzinler.Columns["IzinNovu"].HeaderText = "İzin Növü";
-        }
-
-        if (dgvIzinler.Columns["BaslamaTarixi"] != null)
-        {
-            dgvIzinler.Columns["BaslamaTarixi"].HeaderText = "Başlama";
-            dgvIzinler.Columns["BaslamaTarixi"].DefaultCellStyle.Format = "dd.MM.yyyy";
-        }
-
-        if (dgvIzinler.Columns["BitmeTarixi"] != null)
-        {
-            dgvIzinler.Columns["BitmeTarixi"].HeaderText = "Bitmə";
-            dgvIzinler.Columns["BitmeTarixi"].DefaultCellStyle.Format = "dd.MM.yyyy";
-        }
-
-        if (dgvIzinler.Columns["IzinGunu"] != null)
-        {
-            dgvIzinler.Columns["IzinGunu"].HeaderText = "Gün";
-        }
-
-        if (dgvIzinler.Columns["Sebeb"] != null)
-        {
-            dgvIzinler.Columns["Sebeb"].HeaderText = "Səbəb";
-        }
-
-        if (dgvIzinler.Columns["Status"] != null)
-        {
-            dgvIzinler.Columns["Status"].HeaderText = "Status";
-        }
-
-        if (dgvIzinler.Columns["TesdiqEdenIsciAdi"] != null)
-        {
-            dgvIzinler.Columns["TesdiqEdenIsciAdi"].HeaderText = "Təsdiqləyən";
-        }
-
-        if (dgvIzinler.Columns["TesdiqTarixi"] != null)
-        {
-            dgvIzinler.Columns["TesdiqTarixi"].HeaderText = "Təsdiq Tarixi";
-            dgvIzinler.Columns["TesdiqTarixi"].DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
-        }
-
-        if (dgvIzinler.Columns["Qeydler"] != null)
-        {
-            dgvIzinler.Columns["Qeydler"].HeaderText = "Qeydlər";
-        }
+        dgvIzinler.AutoGenerateColumns = false;
+        
+        dgvIzinler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Id", DataPropertyName = "Id", Visible = false });
+        dgvIzinler.Columns.Add(new DataGridViewTextBoxColumn { Name = "IsciId", DataPropertyName = "IsciId", Visible = false });
+        dgvIzinler.Columns.Add(new DataGridViewTextBoxColumn { Name = "TesdiqEdenIsciId", DataPropertyName = "TesdiqEdenIsciId", Visible = false });
+        
+        dgvIzinler.Columns.Add(new DataGridViewTextBoxColumn { Name = "IsciAdi", DataPropertyName = "IsciAdi", HeaderText = "İşçi" });
+        dgvIzinler.Columns.Add(new DataGridViewTextBoxColumn { Name = "IzniNovuAdi", DataPropertyName = "IzniNovuAdi", HeaderText = "İzin Növü" });
+        
+        var baslamaCol = new DataGridViewTextBoxColumn { Name = "BaslamaTarixi", DataPropertyName = "BaslamaTarixi", HeaderText = "Başlama Tarixi" };
+        baslamaCol.DefaultCellStyle.Format = "dd.MM.yyyy";
+        dgvIzinler.Columns.Add(baslamaCol);
+        
+        var bitisCol = new DataGridViewTextBoxColumn { Name = "BitisTarixi", DataPropertyName = "BitisTarixi", HeaderText = "Bitiş Tarixi" };
+        bitisCol.DefaultCellStyle.Format = "dd.MM.yyyy";
+        dgvIzinler.Columns.Add(bitisCol);
+        
+        dgvIzinler.Columns.Add(new DataGridViewTextBoxColumn { Name = "IzinGunSayi", DataPropertyName = "IzinGunSayi", HeaderText = "Gün" });
+        dgvIzinler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Sebeb", DataPropertyName = "Sebeb", HeaderText = "Səbəb" });
+        dgvIzinler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Status", DataPropertyName = "Status", HeaderText = "Status" });
+        dgvIzinler.Columns.Add(new DataGridViewTextBoxColumn { Name = "TesdiqEdenIsciAdi", DataPropertyName = "TesdiqEdenIsciAdi", HeaderText = "Təsdiqləyən" });
+        
+        var tesdiqCol = new DataGridViewTextBoxColumn { Name = "TesdiqTarixi", DataPropertyName = "TesdiqTarixi", HeaderText = "Təsdiq Tarixi" };
+        tesdiqCol.DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
+        dgvIzinler.Columns.Add(tesdiqCol);
+        
+        dgvIzinler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Qeydler", DataPropertyName = "Qeydler", HeaderText = "Qeydlər" });
 
         dgvIzinler.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
     }
