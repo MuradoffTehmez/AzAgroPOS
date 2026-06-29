@@ -5,7 +5,6 @@ using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Mentiq.Yardimcilar;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
-using System.Linq;
 
 namespace AzAgroPOS.Mentiq.Idareciler;
 /// <summary>
@@ -144,7 +143,7 @@ public class SatisManager
 
             string cleaned = satisNomresi.Trim();
             string[] toRemove = { "ÇEK-", "ÇEK", "Çək-", "Çək", "QƏBZ-", "QƏBZ", "Qebz-", "Qebz", "№", "No.", "No", "Nə", "-", " " };
-            foreach (var item in toRemove)
+            foreach (string item in toRemove)
             {
                 cleaned = cleaned.Replace(item, "", StringComparison.OrdinalIgnoreCase);
             }

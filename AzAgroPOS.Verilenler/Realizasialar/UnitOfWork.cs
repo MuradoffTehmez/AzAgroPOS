@@ -447,7 +447,7 @@ public class UnitOfWork : IUnitOfWork
     /// </summary>
     public async Task<T> ExecuteInTransactionAsync<T>(Func<Task<T>> operation)
     {
-        var executionStrategy = _kontekst.Database.CreateExecutionStrategy();
+        IExecutionStrategy executionStrategy = _kontekst.Database.CreateExecutionStrategy();
         return await executionStrategy.ExecuteAsync(async () =>
         {
             await using IDbContextTransaction tranzaksiya = await _kontekst.Database.BeginTransactionAsync();

@@ -52,7 +52,7 @@ namespace AzAgroPOS.Verilenler.Realizasialar
 
             if (includes != null)
             {
-                foreach (var include in includes)
+                foreach (Expression<Func<T, object>> include in includes)
                 {
                     query = query.Include(include);
                 }
@@ -74,7 +74,7 @@ namespace AzAgroPOS.Verilenler.Realizasialar
             // Include related entities
             if (includes != null)
             {
-                foreach (var include in includes)
+                foreach (Expression<Func<T, object>> include in includes)
                 {
                     query = query.Include(include);
                 }
@@ -180,7 +180,7 @@ namespace AzAgroPOS.Verilenler.Realizasialar
 
             if (includes != null)
             {
-                foreach (var include in includes)
+                foreach (Expression<Func<T, object>> include in includes)
                 {
                     query = query.Include(include);
                 }
@@ -206,7 +206,7 @@ namespace AzAgroPOS.Verilenler.Realizasialar
 
             if (includes != null)
             {
-                foreach (var include in includes)
+                foreach (Expression<Func<T, object>> include in includes)
                 {
                     query = query.Include(include);
                 }
@@ -243,7 +243,7 @@ namespace AzAgroPOS.Verilenler.Realizasialar
             // Include properties
             if (includes != null)
             {
-                foreach (var include in includes)
+                foreach (Expression<Func<T, object>> include in includes)
                 {
                     query = query.Include(include);
                 }
