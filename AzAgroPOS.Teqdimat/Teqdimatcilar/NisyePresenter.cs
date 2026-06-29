@@ -1,4 +1,4 @@
-﻿// Fayl: AzAgroPOS.Teqdimat/Teqdimatcilar/NisyePresenter.cs
+// Fayl: AzAgroPOS.Teqdimat/Teqdimatcilar/NisyePresenter.cs
 
 // using-lər
 using AzAgroPOS.Mentiq.DTOs;
@@ -15,6 +15,8 @@ public class NisyePresenter
     private readonly INisyeView _view;
     private readonly NisyeManager _nisyeManager;
     private readonly MusteriManager _musteriManager;
+    // DbContext-in eyni anda iki paralel əməliyyat icra etməsini önləyir
+    private readonly SemaphoreSlim _kilit = new SemaphoreSlim(1, 1);
 
     public NisyePresenter(INisyeView view, NisyeManager nisyeManager, MusteriManager musteriManager)
     {
@@ -38,17 +40,25 @@ public class NisyePresenter
 
     /// <summary>
     /// bu metod, seçilmiş müştərinin hərəkətlərini yükləyir və göstərir.
+    /// SemaphoreSlim ilə ardıcıl icra edilir - paralel DbContext əməliyyatlarını önləyir.
     /// </summary>
-    /// <returns></returns>
     private async Task MusteriHereketleriniYukle()
     {
-        if (_view.SecilmisMusteriId.HasValue)
+        if (!_view.SecilmisMusteriId.HasValue) return;
+
+        // Əvvəlki sorğu hələ bitməyibsə, bu çağırışı skip edirik
+        if (!await _kilit.WaitAsync(0)) return;
+        try
         {
             EmeliyyatNeticesi<List<NisyeHereketiDto>> netice = await _nisyeManager.MusteriHereketleriniGetirAsync(_view.SecilmisMusteriId.Value);
             if (netice.UgurluDur)
             {
                 _view.MusteriHereketleriniGoster(netice.Data);
             }
+        }
+        finally
+        {
+            _kilit.Release();
         }
     }
     /// <summary>

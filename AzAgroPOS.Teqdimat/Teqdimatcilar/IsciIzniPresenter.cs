@@ -18,6 +18,7 @@ public class IsciIzniPresenter
     private readonly IIsciIzniView _view;
     private readonly IsciIzniManager _izniManager;
     private readonly IsciManager _isciManager;
+    private readonly SemaphoreSlim _kilit = new SemaphoreSlim(1, 1);
 
     public IsciIzniPresenter(IIsciIzniView view, IsciIzniManager izniManager, IsciManager isciManager)
     {
@@ -110,6 +111,7 @@ public class IsciIzniPresenter
     /// </summary>
     private async Task IsciSecildi()
     {
+        if (!await _kilit.WaitAsync(0)) return;
         try
         {
             if (!_view.SecilenIsciId.HasValue)
@@ -134,6 +136,10 @@ public class IsciIzniPresenter
         {
             Logger.XetaYaz(ex, "İşçi məlumatları göstərilərkən xəta");
             _view.IsciIzinMelumatGoster("İzin məlumatı: ---");
+        }
+        finally
+        {
+            _kilit.Release();
         }
     }
 
