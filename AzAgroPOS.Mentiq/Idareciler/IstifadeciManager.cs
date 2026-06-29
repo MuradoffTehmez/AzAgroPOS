@@ -1,15 +1,12 @@
 ﻿// Fayl: AzAgroPOS.Mentiq/Idareciler/IstifadeciManager.cs
-namespace AzAgroPOS.Mentiq.Idareciler;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Mentiq.Yardimcilar;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
+namespace AzAgroPOS.Mentiq.Idareciler;
 /// <summary>
 /// İstifadəçilərlə bağlı əməliyyatları idarə edən menecer.
 /// </summary>
@@ -33,10 +30,10 @@ public class IstifadeciManager
         Logger.MelumatYaz("Əsas admini (id = 1) istisna edirik.");
         try
         {
-            var istifadeciler = await _unitOfWork.Istifadeciler.ButununuGetirAsync();
-            var rollar = await _unitOfWork.Rollar.ButununuGetirAsync();
+            IEnumerable<Istifadeci> istifadeciler = await _unitOfWork.Istifadeciler.ButununuGetirAsync();
+            IEnumerable<Rol> rollar = await _unitOfWork.Rollar.ButununuGetirAsync();
 
-            var dtolar = istifadeciler.Select(i => new IstifadeciDto
+            List<IstifadeciDto> dtolar = istifadeciler.Select(i => new IstifadeciDto
             {
                 Id = i.Id,
                 IstifadeciAdi = i.IstifadeciAdi,
@@ -89,18 +86,24 @@ public class IstifadeciManager
         try
         {
             if (string.IsNullOrWhiteSpace(yeniIstifadeci.IstifadeciAdi) || string.IsNullOrWhiteSpace(parol))
+            {
                 return EmeliyyatNeticesi.Ugursuz("İstifadəçi adı və parol boş ola bilməz.");
+            }
 
             // Şifrə mürəkkəblik yoxlaması
-            var (kecerlidir, mesaj) = SifreValidator.Yoxla(parol);
+            (bool kecerlidir, string? mesaj) = SifreValidator.Yoxla(parol);
             if (!kecerlidir)
+            {
                 return EmeliyyatNeticesi.Ugursuz(mesaj);
+            }
 
-            var movcudIstifadeci = (await _unitOfWork.Istifadeciler.AxtarAsync(i => i.IstifadeciAdi == yeniIstifadeci.IstifadeciAdi)).FirstOrDefault();
+            Istifadeci? movcudIstifadeci = (await _unitOfWork.Istifadeciler.AxtarAsync(i => i.IstifadeciAdi == yeniIstifadeci.IstifadeciAdi)).FirstOrDefault();
             if (movcudIstifadeci != null)
+            {
                 return EmeliyyatNeticesi.Ugursuz("Bu istifadəçi adı artıq mövcuddur.");
+            }
 
-            var istifadeci = new Istifadeci
+            Istifadeci istifadeci = new()
             {
                 IstifadeciAdi = yeniIstifadeci.IstifadeciAdi,
                 TamAd = yeniIstifadeci.TamAd,
@@ -137,11 +140,15 @@ public class IstifadeciManager
         try
         {
             if (id == 1) // Əsas admini silməyin qarşısını alırıq
+            {
                 return EmeliyyatNeticesi.Ugursuz("Əsas Administratoru silmək olmaz.");
+            }
 
-            var istifadeci = await _unitOfWork.Istifadeciler.GetirAsync(id);
+            Istifadeci istifadeci = await _unitOfWork.Istifadeciler.GetirAsync(id);
             if (istifadeci == null)
+            {
                 return EmeliyyatNeticesi.Ugursuz("İstifadəçi tapılmadı.");
+            }
 
             _unitOfWork.Istifadeciler.Sil(istifadeci);
             await _unitOfWork.EmeliyyatiTesdiqleAsync();
@@ -168,15 +175,21 @@ public class IstifadeciManager
         try
         {
             if (string.IsNullOrWhiteSpace(istifadeciDto.TamAd))
+            {
                 return EmeliyyatNeticesi.Ugursuz("Tam ad boş ola bilməz.");
+            }
 
-            var movcudIstifadeci = await _unitOfWork.Istifadeciler.GetirAsync(istifadeciDto.Id);
+            Istifadeci movcudIstifadeci = await _unitOfWork.Istifadeciler.GetirAsync(istifadeciDto.Id);
             if (movcudIstifadeci == null)
+            {
                 return EmeliyyatNeticesi.Ugursuz("Yenilənmək üçün istifadəçi tapılmadı.");
+            }
 
             // Əsas adminin məlumatlarının dəyişdirilməsinin qarşısını alırıq
             if (movcudIstifadeci.Id == 1 && istifadeciDto.RolId != 1)
+            {
                 return EmeliyyatNeticesi.Ugursuz("Əsas Administratorun rolu dəyişdirilə bilməz.");
+            }
 
             movcudIstifadeci.TamAd = istifadeciDto.TamAd;
             movcudIstifadeci.RolId = istifadeciDto.RolId;
@@ -185,9 +198,11 @@ public class IstifadeciManager
             if (!string.IsNullOrWhiteSpace(yeniParol))
             {
                 // Şifrə mürəkkəblik yoxlaması
-                var (kecerlidir, mesaj) = SifreValidator.Yoxla(yeniParol);
+                (bool kecerlidir, string? mesaj) = SifreValidator.Yoxla(yeniParol);
                 if (!kecerlidir)
+                {
                     return EmeliyyatNeticesi.Ugursuz(mesaj);
+                }
 
                 movcudIstifadeci.ParolHash = BCrypt.Net.BCrypt.HashPassword(yeniParol);
                 movcudIstifadeci.SonSifreDeyismeTarixi = DateTime.Now;
@@ -214,15 +229,15 @@ public class IstifadeciManager
         Logger.MelumatYaz("ButunTexnikleriGetirAsync metodu çağırıldı.");
         try
         {
-            var istifadeciler = await _unitOfWork.Istifadeciler.ButununuGetirAsync();
-            var rollar = await _unitOfWork.Rollar.ButununuGetirAsync();
+            IEnumerable<Istifadeci> istifadeciler = await _unitOfWork.Istifadeciler.ButununuGetirAsync();
+            IEnumerable<Rol> rollar = await _unitOfWork.Rollar.ButununuGetirAsync();
 
             // "Texnik" və ya "Usta" rolu olan istifadəçiləri gətiririk
-            var texnikler = istifadeciler.Where(i =>
-                rollar.FirstOrDefault(r => r.Id == i.RolId)?.Ad == "Texnik" ||
-                rollar.FirstOrDefault(r => r.Id == i.RolId)?.Ad == "Usta").ToList();
+            List<Istifadeci> texnikler = istifadeciler.Where(i =>
+                rollar.FirstOrDefault(r => r.Id == i.RolId)?.Ad is "Texnik" or
+                "Usta").ToList();
 
-            var dtolar = texnikler.Select(i => new IstifadeciDto
+            List<IstifadeciDto> dtolar = texnikler.Select(i => new IstifadeciDto
             {
                 Id = i.Id,
                 IstifadeciAdi = i.IstifadeciAdi,
@@ -250,14 +265,14 @@ public class IstifadeciManager
         Logger.MelumatYaz($"Səhifələnmiş istifadəçilər əldə edilir - Səhifə: {parametrler.SehifeNomresi}, Ölçü: {parametrler.SehifeOlcusu}");
         try
         {
-            var (istifadeciler, umumiSay) = await _unitOfWork.Istifadeciler.SehifelenmisGetirAsync(
+            (IEnumerable<Istifadeci>? istifadeciler, int umumiSay) = await _unitOfWork.Istifadeciler.SehifelenmisGetirAsync(
                 parametrler.SehifeNomresi,
                 parametrler.SehifeOlcusu,
                 i => true);
 
-            var rollar = await _unitOfWork.Rollar.ButununuGetirAsync();
+            IEnumerable<Rol> rollar = await _unitOfWork.Rollar.ButununuGetirAsync();
 
-            var dtolar = istifadeciler.Select(i => new IstifadeciDto
+            List<IstifadeciDto> dtolar = istifadeciler.Select(i => new IstifadeciDto
             {
                 Id = i.Id,
                 IstifadeciAdi = i.IstifadeciAdi,
@@ -265,7 +280,7 @@ public class IstifadeciManager
                 RolAdi = rollar.FirstOrDefault(r => r.Id == i.RolId)?.Ad ?? "Təyinatsız"
             }).ToList();
 
-            var sehifelenmis = new SehifelenmisMelumat<IstifadeciDto>(
+            SehifelenmisMelumat<IstifadeciDto> sehifelenmis = new(
                 dtolar, umumiSay, parametrler.SehifeNomresi, parametrler.SehifeOlcusu);
 
             Logger.MelumatYaz($"Səhifələnmiş istifadəçilər uğurla əldə edildi - {dtolar.Count}/{umumiSay}");

@@ -1,8 +1,8 @@
 ﻿// Fayl: AzAgroPOS.Mentiq/DTOs/TemirDto.cs
-namespace AzAgroPOS.Mentiq.DTOs;
 
 using AzAgroPOS.Varliglar;
 
+namespace AzAgroPOS.Mentiq.DTOs;
 /// <summary>
 /// Tamir əməliyyatlarını təmsil edən DTO (Data Transfer Object) sinifi.
 /// </summary>

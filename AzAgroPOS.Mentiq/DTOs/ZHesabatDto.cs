@@ -1,8 +1,6 @@
 ﻿// Fayl: AzAgroPOS.Mentiq/DTOs/ZHesabatDto.cs
+
 namespace AzAgroPOS.Mentiq.DTOs;
-
-using System;
-
 /// <summary>
 /// ZHesabatDto, satış hesabatını saxlamaq üçün istifadə olunan məlumatları ehtiva edir.
 /// Bu cür hesabatlar, kassir tərəfindən açılan və bağlanan satış hesablarını göstərmək üçün istifadə olunur.

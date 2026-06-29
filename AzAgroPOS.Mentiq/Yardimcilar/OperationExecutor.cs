@@ -22,7 +22,7 @@ public static class OperationExecutor
 
         try
         {
-            var result = operation();
+            T? result = operation();
 
             if (successMessage != null)
             {
@@ -128,7 +128,7 @@ public static class OperationExecutor
 
         try
         {
-            var result = await operation();
+            T? result = await operation();
 
             if (successMessage != null)
             {

@@ -1,8 +1,7 @@
-namespace AzAgroPOS.Mentiq.DTOs;
 
 using AzAgroPOS.Varliglar;
-using System;
 
+namespace AzAgroPOS.Mentiq.DTOs;
 /// <summary>
 /// Satışların listələnməsi və təqdimat üçün istifadə olunan DTO.
 /// SatisManager içində səhifələnmiş satış nəticələri üçün tələb olunur.

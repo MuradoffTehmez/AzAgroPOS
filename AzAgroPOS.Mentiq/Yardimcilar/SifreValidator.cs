@@ -67,7 +67,9 @@ public static class SifreValidator
     public static int GucSeviyyesiHesabla(string sifre)
     {
         if (string.IsNullOrWhiteSpace(sifre))
+        {
             return 0;
+        }
 
         int guc = 0;
 
@@ -76,30 +78,54 @@ public static class SifreValidator
 
         // Böyük hərflər (10 xal)
         if (Regex.IsMatch(sifre, @"[A-Z]"))
+        {
             guc += 10;
+        }
 
         // Kiçik hərflər (10 xal)
         if (Regex.IsMatch(sifre, @"[a-z]"))
+        {
             guc += 10;
+        }
 
         // Rəqəmlər (10 xal)
         if (Regex.IsMatch(sifre, @"[0-9]"))
+        {
             guc += 10;
+        }
 
         // Xüsusi simvollar (10 xal)
         if (Regex.IsMatch(sifre, @"[@$!%*?&]"))
+        {
             guc += 10;
+        }
 
         // Müxtəlif simvol növləri (10 xal)
         int simvolNovleri = 0;
-        if (Regex.IsMatch(sifre, @"[A-Z]")) simvolNovleri++;
-        if (Regex.IsMatch(sifre, @"[a-z]")) simvolNovleri++;
-        if (Regex.IsMatch(sifre, @"[0-9]")) simvolNovleri++;
-        if (Regex.IsMatch(sifre, @"[@$!%*?&]")) simvolNovleri++;
+        if (Regex.IsMatch(sifre, @"[A-Z]"))
+        {
+            simvolNovleri++;
+        }
+
+        if (Regex.IsMatch(sifre, @"[a-z]"))
+        {
+            simvolNovleri++;
+        }
+
+        if (Regex.IsMatch(sifre, @"[0-9]"))
+        {
+            simvolNovleri++;
+        }
+
+        if (Regex.IsMatch(sifre, @"[@$!%*?&]"))
+        {
+            simvolNovleri++;
+        }
+
         guc += simvolNovleri * 5;
 
         // Tekrar olunan simvolları cəzalandır
-        var tekrarSay = sifre.Length - sifre.Distinct().Count();
+        int tekrarSay = sifre.Length - sifre.Distinct().Count();
         guc -= tekrarSay * 2;
 
         return Math.Clamp(guc, 0, 100);

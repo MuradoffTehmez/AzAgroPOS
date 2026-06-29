@@ -1,5 +1,4 @@
 ﻿// Fayl: AzAgroPOS.Mentiq/Idareciler/MehsulManager.cs
-namespace AzAgroPOS.Mentiq.Idareciler;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Uslublar;
@@ -8,6 +7,7 @@ using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using System.Text.RegularExpressions;
 
+namespace AzAgroPOS.Mentiq.Idareciler;
 /// <summary>
 /// Məhsullarla bağlı biznes məntiqini, validasiyaları və əməliyyatları idarə edir.
 /// </summary>
@@ -30,9 +30,9 @@ public class MehsulManager
         Logger.MelumatYaz("Bütün məhsullar əldə edilir");
         try
         {
-            var mehsullar = await _unitOfWork.Mehsullar.ButununuGetirAsync();
+            IEnumerable<Mehsul> mehsullar = await _unitOfWork.Mehsullar.ButununuGetirAsync();
 
-            var mehsulDtolar = mehsullar.Select(m => new MehsulDto
+            IEnumerable<MehsulDto> mehsulDtolar = mehsullar.Select(m => new MehsulDto
             {
                 Id = m.Id,
                 Ad = m.Ad,
@@ -81,7 +81,7 @@ public class MehsulManager
             }
 
             // Stok kodunun unikal olmasını yoxlayaq
-            var movcudMehsul = (await _unitOfWork.Mehsullar.AxtarAsync(m => m.StokKodu == yeniMehsulDto.StokKodu)).FirstOrDefault();
+            Mehsul? movcudMehsul = (await _unitOfWork.Mehsullar.AxtarAsync(m => m.StokKodu == yeniMehsulDto.StokKodu)).FirstOrDefault();
             if (movcudMehsul != null)
             {
                 Logger.XəbərdarlıqYaz($"'{yeniMehsulDto.StokKodu}' stok kodlu məhsul artıq mövcuddur");
@@ -89,7 +89,7 @@ public class MehsulManager
             }
 
             // --- Əməliyyat Hissəsi ---
-            var yeniMehsul = new Mehsul
+            Mehsul yeniMehsul = new()
             {
                 Ad = yeniMehsulDto.Ad,
                 StokKodu = yeniMehsulDto.StokKodu,
@@ -126,7 +126,7 @@ public class MehsulManager
         Logger.MelumatYaz($"Məhsul yeniləmə əməliyyatı başlayır. ID: {mehsulDto.Id}");
         try
         {
-            var movcudMehsul = await _unitOfWork.Mehsullar.GetirAsync(mehsulDto.Id);
+            Mehsul movcudMehsul = await _unitOfWork.Mehsullar.GetirAsync(mehsulDto.Id);
             if (movcudMehsul == null)
             {
                 Logger.XəbərdarlıqYaz("Məhsul tapılmadı");
@@ -134,7 +134,7 @@ public class MehsulManager
             }
 
             // Stok kodunun başqa məhsulda istifadə olunmadığını yoxlayaq
-            var eyniKodluBasqaMehsul = (await _unitOfWork.Mehsullar.AxtarAsync(m => m.StokKodu == mehsulDto.StokKodu && m.Id != mehsulDto.Id)).FirstOrDefault();
+            Mehsul? eyniKodluBasqaMehsul = (await _unitOfWork.Mehsullar.AxtarAsync(m => m.StokKodu == mehsulDto.StokKodu && m.Id != mehsulDto.Id)).FirstOrDefault();
             if (eyniKodluBasqaMehsul != null)
             {
                 Logger.XəbərdarlıqYaz($"'{mehsulDto.StokKodu}' stok kodu başqa məhsulda istifadə olunur");
@@ -176,7 +176,7 @@ public class MehsulManager
         Logger.MelumatYaz($"Məhsul silmə əməliyyatı başlayır. ID: {id}");
         try
         {
-            var mehsul = await _unitOfWork.Mehsullar.GetirAsync(id);
+            Mehsul mehsul = await _unitOfWork.Mehsullar.GetirAsync(id);
             if (mehsul == null)
             {
                 Logger.XəbərdarlıqYaz("Silinəcək məhsul tapılmadı");
@@ -217,12 +217,15 @@ public class MehsulManager
             Random random = new();
 
             // Məhsul adından prefiks yarat (ilk sözün ilk 3 hərfi)
-            var hisseler = mehsulAdi.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            string[] hisseler = mehsulAdi.Split(' ', StringSplitOptions.RemoveEmptyEntries);
             string prefix = hisseler.Length > 0 ? new string(hisseler[0].Take(3).ToArray()).ToUpper() : "SKU";
 
             // Yalnız hərflərdən ibarət olduğundan əmin ol
             prefix = Regex.Replace(prefix, @"[^A-Z]", "");
-            if (prefix.Length == 0) prefix = "SKU";
+            if (prefix.Length == 0)
+            {
+                prefix = "SKU";
+            }
 
             do
             {
@@ -270,7 +273,7 @@ public class MehsulManager
         Logger.MelumatYaz($"Məhsul axtarışı başlayır. Axtarış mətni: {axtarisMetni}");
         try
         {
-            var butunMehsullar = await _unitOfWork.Mehsullar.AxtarAsync(m => m.Aktivdir);
+            IEnumerable<Mehsul> butunMehsullar = await _unitOfWork.Mehsullar.AxtarAsync(m => m.Aktivdir);
 
             if (!string.IsNullOrWhiteSpace(axtarisMetni))
             {
@@ -282,7 +285,7 @@ public class MehsulManager
                 );
             }
 
-            var dtolar = butunMehsullar.Take(sayLimit).Select(m => new MehsulDto
+            List<MehsulDto> dtolar = butunMehsullar.Take(sayLimit).Select(m => new MehsulDto
             {
                 Id = m.Id,
                 Ad = m.Ad,
@@ -317,12 +320,12 @@ public class MehsulManager
         Logger.MelumatYaz($"Səhifələnmiş məhsullar əldə edilir - Səhifə: {parametrler.SehifeNomresi}, Ölçü: {parametrler.SehifeOlcusu}");
         try
         {
-            var (mehsullar, umumiSay) = await _unitOfWork.Mehsullar.SehifelenmisGetirAsync(
+            (IEnumerable<Mehsul>? mehsullar, int umumiSay) = await _unitOfWork.Mehsullar.SehifelenmisGetirAsync(
                 parametrler.SehifeNomresi,
                 parametrler.SehifeOlcusu,
                 m => m.Aktivdir);
 
-            var mehsulDtolar = mehsullar.Select(m => new MehsulDto
+            List<MehsulDto> mehsulDtolar = mehsullar.Select(m => new MehsulDto
             {
                 Id = m.Id,
                 Ad = m.Ad,
@@ -336,7 +339,7 @@ public class MehsulManager
                 OlcuVahidi = m.OlcuVahidi
             }).ToList();
 
-            var sehifelenmis = new SehifelenmisMelumat<MehsulDto>(
+            SehifelenmisMelumat<MehsulDto> sehifelenmis = new(
                 mehsulDtolar,
                 umumiSay,
                 parametrler.SehifeNomresi,

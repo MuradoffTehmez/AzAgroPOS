@@ -1,14 +1,12 @@
 ﻿// Fayl: AzAgroPOS.Mentiq/Idareciler/BarkodCapiManager.cs
-namespace AzAgroPOS.Mentiq.Idareciler;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Mentiq.Yardimcilar;
+using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
+namespace AzAgroPOS.Mentiq.Idareciler;
 /// <summary>
 /// Barkod çapı ilə bağlı axtarış və məlumat hazırlama əməliyyatlarını idarə edir.
 /// </summary>
@@ -36,9 +34,9 @@ public class BarkodCapiManager
                 return EmeliyyatNeticesi<List<MehsulDto>>.Ugursuz("Axtarış üçün mətn daxil edin.");
             }
 
-            var axtarisKicikHerfle = axtarisMetni.ToLower();
+            string axtarisKicikHerfle = axtarisMetni.ToLower();
 
-            var mehsullar = await _unitOfWork.Mehsullar.AxtarAsync(m =>
+            IEnumerable<Mehsul> mehsullar = await _unitOfWork.Mehsullar.AxtarAsync(m =>
                 m.Ad.ToLower().Contains(axtarisKicikHerfle) ||
                 m.StokKodu.ToLower().Contains(axtarisKicikHerfle) ||
                 m.Barkod.Contains(axtarisKicikHerfle)
@@ -49,7 +47,7 @@ public class BarkodCapiManager
                 return EmeliyyatNeticesi<List<MehsulDto>>.Ugursuz("Axtarışa uyğun məhsul tapılmadı.");
             }
 
-            var dtolar = mehsullar.Select(m => new MehsulDto
+            List<MehsulDto> dtolar = mehsullar.Select(m => new MehsulDto
             {
                 Id = m.Id,
                 Ad = m.Ad,

@@ -1,8 +1,6 @@
 // Fayl: AzAgroPOS.Mentiq/Istisnalar/BusinessException.cs
+
 namespace AzAgroPOS.Mentiq.Istisnalar;
-
-using System;
-
 /// <summary>
 /// Biznes məntiqi xətaları üçün istisna sinifi.
 /// diqqət: Bu xəta istifadəçiyə göstərilə bilən, oxunaqlı mesajlar daşıyır.

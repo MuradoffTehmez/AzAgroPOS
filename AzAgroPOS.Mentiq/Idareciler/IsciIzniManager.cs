@@ -1,16 +1,12 @@
 // Fayl: AzAgroPOS.Mentiq/Idareciler/IsciIzniManager.cs
-namespace AzAgroPOS.Mentiq.Idareciler;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Mentiq.Yardimcilar;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
+namespace AzAgroPOS.Mentiq.Idareciler;
 /// <summary>
 /// İşçi izni idarəetmə meneceri
 /// diqqət: Bu sinif işçilərin məzuniyyət, xəstəlik icazəsi və digər izinlərini idarə edir.
@@ -56,7 +52,7 @@ public class IsciIzniManager
             }
 
             // İşçinin mövcudluğunu yoxla
-            var isci = await _unitOfWork.Isciler.GetirAsync(isciId);
+            Isci isci = await _unitOfWork.Isciler.GetirAsync(isciId);
             if (isci == null)
             {
                 Logger.XəbərdarlıqYaz("İşçi tapılmadı");
@@ -64,10 +60,10 @@ public class IsciIzniManager
             }
 
             // İzin günlərini hesabla
-            var izinGunu = (bitmeTarixi.Date - baslamaTarixi.Date).Days + 1;
+            int izinGunu = (bitmeTarixi.Date - baslamaTarixi.Date).Days + 1;
 
             // Yeni izin yarat
-            var izin = new IsciIzni
+            IsciIzni izin = new()
             {
                 IsciId = isciId,
                 IzinNovu = izinNovu,
@@ -122,7 +118,7 @@ public class IsciIzniManager
             }
 
             // Mövcud izni tap
-            var movcudIzin = await _unitOfWork.IsciIznleri.GetirAsync(izinId);
+            IsciIzni movcudIzin = await _unitOfWork.IsciIznleri.GetirAsync(izinId);
             if (movcudIzin == null)
             {
                 Logger.XəbərdarlıqYaz("İzin tapılmadı");
@@ -137,7 +133,7 @@ public class IsciIzniManager
             }
 
             // İzin günlərini yenidən hesabla
-            var izinGunu = (bitmeTarixi.Date - baslamaTarixi.Date).Days + 1;
+            int izinGunu = (bitmeTarixi.Date - baslamaTarixi.Date).Days + 1;
 
             // İzni yenilə
             movcudIzin.IzinNovu = izinNovu;
@@ -171,7 +167,7 @@ public class IsciIzniManager
         try
         {
             // Mövcud izni tap
-            var izin = await _unitOfWork.IsciIznleri.GetirAsync(izinId);
+            IsciIzni izin = await _unitOfWork.IsciIznleri.GetirAsync(izinId);
             if (izin == null)
             {
                 Logger.XəbərdarlıqYaz("İzin tapılmadı");
@@ -209,7 +205,7 @@ public class IsciIzniManager
         try
         {
             // Mövcud izni tap
-            var izin = await _unitOfWork.IsciIznleri.GetirAsync(izinId);
+            IsciIzni izin = await _unitOfWork.IsciIznleri.GetirAsync(izinId);
             if (izin == null)
             {
                 Logger.XəbərdarlıqYaz("İzin tapılmadı");
@@ -257,7 +253,7 @@ public class IsciIzniManager
             }
 
             // Mövcud izni tap
-            var izin = await _unitOfWork.IsciIznleri.GetirAsync(izinId);
+            IsciIzni izin = await _unitOfWork.IsciIznleri.GetirAsync(izinId);
             if (izin == null)
             {
                 Logger.XəbərdarlıqYaz("İzin tapılmadı");
@@ -301,7 +297,7 @@ public class IsciIzniManager
         try
         {
             // Mövcud izni tap
-            var izin = await _unitOfWork.IsciIznleri.GetirAsync(izinId);
+            IsciIzni izin = await _unitOfWork.IsciIznleri.GetirAsync(izinId);
             if (izin == null)
             {
                 Logger.XəbərdarlıqYaz("İzin tapılmadı");
@@ -333,7 +329,7 @@ public class IsciIzniManager
 
         try
         {
-            var izinler = (await _unitOfWork.IsciIznleri.ButununuGetirAsync())
+            List<IsciIzni> izinler = (await _unitOfWork.IsciIznleri.ButununuGetirAsync())
                 .OrderByDescending(i => i.BaslamaTarixi)
                 .ToList();
 
@@ -356,20 +352,20 @@ public class IsciIzniManager
 
         try
         {
-            var izinler = (await _unitOfWork.IsciIznleri.ButununuGetirAsync())
+            List<IsciIzni> izinler = (await _unitOfWork.IsciIznleri.ButununuGetirAsync())
                 .OrderByDescending(i => i.BaslamaTarixi)
                 .ToList();
 
-            var dtolar = new List<IsciIzniDto>();
-            foreach (var izin in izinler)
+            List<IsciIzniDto> dtolar = new();
+            foreach (IsciIzni? izin in izinler)
             {
                 // İşçi məlumatlarını yüklə
-                var isci = await _unitOfWork.Isciler.GetirAsync(izin.IsciId);
-                var tesdiqEdenIsci = izin.TesdiqEdenIsciId.HasValue
+                Isci isci = await _unitOfWork.Isciler.GetirAsync(izin.IsciId);
+                Isci? tesdiqEdenIsci = izin.TesdiqEdenIsciId.HasValue
                     ? await _unitOfWork.Isciler.GetirAsync(izin.TesdiqEdenIsciId.Value)
                     : null;
 
-                var dto = new IsciIzniDto
+                IsciIzniDto dto = new()
                 {
                     Id = izin.Id,
                     IsciId = izin.IsciId,
@@ -407,20 +403,20 @@ public class IsciIzniManager
 
         try
         {
-            var izinler = (await _unitOfWork.IsciIznleri.ButununuGetirAsync())
+            List<IsciIzni> izinler = (await _unitOfWork.IsciIznleri.ButununuGetirAsync())
                 .Where(i => i.IsciId == isciId)
                 .OrderByDescending(i => i.BaslamaTarixi)
                 .ToList();
 
-            var dtolar = new List<IsciIzniDto>();
-            foreach (var izin in izinler)
+            List<IsciIzniDto> dtolar = new();
+            foreach (IsciIzni? izin in izinler)
             {
-                var isci = await _unitOfWork.Isciler.GetirAsync(izin.IsciId);
-                var tesdiqEdenIsci = izin.TesdiqEdenIsciId.HasValue
+                Isci isci = await _unitOfWork.Isciler.GetirAsync(izin.IsciId);
+                Isci? tesdiqEdenIsci = izin.TesdiqEdenIsciId.HasValue
                     ? await _unitOfWork.Isciler.GetirAsync(izin.TesdiqEdenIsciId.Value)
                     : null;
 
-                var dto = new IsciIzniDto
+                IsciIzniDto dto = new()
                 {
                     Id = izin.Id,
                     IsciId = izin.IsciId,
@@ -458,20 +454,20 @@ public class IsciIzniManager
 
         try
         {
-            var izinler = (await _unitOfWork.IsciIznleri.ButununuGetirAsync())
+            List<IsciIzni> izinler = (await _unitOfWork.IsciIznleri.ButununuGetirAsync())
                 .Where(i => i.Status == status)
                 .OrderByDescending(i => i.BaslamaTarixi)
                 .ToList();
 
-            var dtolar = new List<IsciIzniDto>();
-            foreach (var izin in izinler)
+            List<IsciIzniDto> dtolar = new();
+            foreach (IsciIzni? izin in izinler)
             {
-                var isci = await _unitOfWork.Isciler.GetirAsync(izin.IsciId);
-                var tesdiqEdenIsci = izin.TesdiqEdenIsciId.HasValue
+                Isci isci = await _unitOfWork.Isciler.GetirAsync(izin.IsciId);
+                Isci? tesdiqEdenIsci = izin.TesdiqEdenIsciId.HasValue
                     ? await _unitOfWork.Isciler.GetirAsync(izin.TesdiqEdenIsciId.Value)
                     : null;
 
-                var dto = new IsciIzniDto
+                IsciIzniDto dto = new()
                 {
                     Id = izin.Id,
                     IsciId = izin.IsciId,
@@ -511,16 +507,16 @@ public class IsciIzniManager
         Logger.MelumatYaz($"Səhifələnmiş işçi izinləri əldə edilir - Səhifə: {parametrler.SehifeNomresi}, Ölçü: {parametrler.SehifeOlcusu}");
         try
         {
-            var (izinler, umumiSay) = await _unitOfWork.IsciIznleri.SehifelenmisGetirAsync(
+            (IEnumerable<IsciIzni>? izinler, int umumiSay) = await _unitOfWork.IsciIznleri.SehifelenmisGetirAsync(
                 parametrler.SehifeNomresi,
                 parametrler.SehifeOlcusu,
                 i => !i.Silinib);
 
-            var dtolar = new List<IsciIzniDto>();
-            foreach (var izin in izinler)
+            List<IsciIzniDto> dtolar = new();
+            foreach (IsciIzni izin in izinler)
             {
-                var isci = await _unitOfWork.Isciler.GetirAsync(izin.IsciId);
-                var tesdiqEdenIsci = izin.TesdiqEdenIsciId.HasValue
+                Isci isci = await _unitOfWork.Isciler.GetirAsync(izin.IsciId);
+                Isci? tesdiqEdenIsci = izin.TesdiqEdenIsciId.HasValue
                     ? await _unitOfWork.Isciler.GetirAsync(izin.TesdiqEdenIsciId.Value)
                     : null;
 
@@ -542,7 +538,7 @@ public class IsciIzniManager
                 });
             }
 
-            var sehifelenmis = new SehifelenmisMelumat<IsciIzniDto>(
+            SehifelenmisMelumat<IsciIzniDto> sehifelenmis = new(
                 dtolar,
                 umumiSay,
                 parametrler.SehifeNomresi,

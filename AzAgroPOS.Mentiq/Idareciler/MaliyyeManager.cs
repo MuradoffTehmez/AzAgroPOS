@@ -1,16 +1,12 @@
 // Fayl: AzAgroPOS.Mentiq/Idareciler/MaliyyeManager.cs
-namespace AzAgroPOS.Mentiq.Idareciler;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Mentiq.Yardimcilar;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
+namespace AzAgroPOS.Mentiq.Idareciler;
 /// <summary>
 /// Maliyyə və xərc uçotu əməliyyatlarını idarə edən menecer
 /// diqqət: Bu sinif, şirkətin xərc və gəlirlərinin uçotunu, kassa hərəkətlərini idarə edir.
@@ -58,7 +54,7 @@ public class MaliyyeManager
             }
 
             // Yeni xərc qeydiyyatı yarat
-            var xerc = new Xerc
+            Xerc xerc = new()
             {
                 Novu = novu,
                 Ad = ad,
@@ -73,7 +69,7 @@ public class MaliyyeManager
             await _unitOfWork.EmeliyyatiTesdiqleAsync(); // Xərc ID-sini əldə etmək üçün
 
             // Kassa hərəkəti yarat (xərc - çıxış)
-            var kassaHareketi = new KassaHareketi
+            KassaHareketi kassaHareketi = new()
             {
                 HareketNovu = KassaHareketiNovu.Cixis,
                 EmeliyyatNovu = EmeliyyatNovu.Xerc,
@@ -130,7 +126,7 @@ public class MaliyyeManager
             }
 
             // Mövcud xərci tap
-            var movcudXerc = await _unitOfWork.Xercler.GetirAsync(xercId);
+            Xerc movcudXerc = await _unitOfWork.Xercler.GetirAsync(xercId);
             if (movcudXerc == null)
             {
                 Logger.XəbərdarlıqYaz("Xərc tapılmadı");
@@ -138,8 +134,8 @@ public class MaliyyeManager
             }
 
             // Kassa hərəkətlərini tap və sil (xərcə aid olanı)
-            var kassaHareketleri = await _unitOfWork.KassaHareketleri.AxtarAsync(k => k.EmeliyyatId == xercId && k.EmeliyyatNovu == EmeliyyatNovu.Xerc);
-            foreach (var hareket in kassaHareketleri)
+            IEnumerable<KassaHareketi> kassaHareketleri = await _unitOfWork.KassaHareketleri.AxtarAsync(k => k.EmeliyyatId == xercId && k.EmeliyyatNovu == EmeliyyatNovu.Xerc);
+            foreach (KassaHareketi hareket in kassaHareketleri)
             {
                 _unitOfWork.KassaHareketleri.Sil(hareket);
             }
@@ -156,7 +152,7 @@ public class MaliyyeManager
             _unitOfWork.Xercler.Yenile(movcudXerc);
 
             // Yeni kassa hərəkəti yarat
-            var yeniKassaHareketi = new KassaHareketi
+            KassaHareketi yeniKassaHareketi = new()
             {
                 HareketNovu = KassaHareketiNovu.Cixis,
                 EmeliyyatNovu = EmeliyyatNovu.Xerc,
@@ -192,7 +188,7 @@ public class MaliyyeManager
         try
         {
             // Mövcud xərci tap
-            var xerc = await _unitOfWork.Xercler.GetirAsync(xercId);
+            Xerc xerc = await _unitOfWork.Xercler.GetirAsync(xercId);
             if (xerc == null)
             {
                 Logger.XəbərdarlıqYaz("Xərc tapılmadı");
@@ -200,8 +196,8 @@ public class MaliyyeManager
             }
 
             // Əlaqəli kassa hərəkətlərini tap və sil
-            var kassaHareketleri = await _unitOfWork.KassaHareketleri.AxtarAsync(k => k.EmeliyyatId == xercId && k.EmeliyyatNovu == EmeliyyatNovu.Xerc);
-            foreach (var hareket in kassaHareketleri)
+            IEnumerable<KassaHareketi> kassaHareketleri = await _unitOfWork.KassaHareketleri.AxtarAsync(k => k.EmeliyyatId == xercId && k.EmeliyyatNovu == EmeliyyatNovu.Xerc);
+            foreach (KassaHareketi hareket in kassaHareketleri)
             {
                 _unitOfWork.KassaHareketleri.Sil(hareket);
             }
@@ -233,15 +229,15 @@ public class MaliyyeManager
 
         try
         {
-            var filter = baslangicTarixi.HasValue && bitisTarixi.HasValue
-                ? (Func<Xerc, bool>)(x => x.Tarix.Date >= baslangicTarixi.Value.Date && x.Tarix.Date <= bitisTarixi.Value.Date)
+            Func<Xerc, bool> filter = baslangicTarixi.HasValue && bitisTarixi.HasValue
+                ? (x => x.Tarix.Date >= baslangicTarixi.Value.Date && x.Tarix.Date <= bitisTarixi.Value.Date)
                 : baslangicTarixi.HasValue
-                    ? (Func<Xerc, bool>)(x => x.Tarix.Date >= baslangicTarixi.Value.Date)
+                    ? (x => x.Tarix.Date >= baslangicTarixi.Value.Date)
                     : bitisTarixi.HasValue
-                        ? (Func<Xerc, bool>)(x => x.Tarix.Date <= bitisTarixi.Value.Date)
-                        : (Func<Xerc, bool>)(x => true);
+                        ? (x => x.Tarix.Date <= bitisTarixi.Value.Date)
+                        : (x => true);
 
-            var xercler = (await _unitOfWork.Xercler.ButununuGetirAsync()).Where(filter).OrderByDescending(x => x.Tarix).ToList();
+            List<Xerc> xercler = (await _unitOfWork.Xercler.ButununuGetirAsync()).Where(filter).OrderByDescending(x => x.Tarix).ToList();
 
             Logger.MelumatYaz($"Xərc qeydiyyatları əldə edildi: Say={xercler.Count}");
             return EmeliyyatNeticesi<List<Xerc>>.Ugurlu(xercler);
@@ -266,20 +262,20 @@ public class MaliyyeManager
 
         try
         {
-            var filter = baslangicTarixi.HasValue && bitisTarixi.HasValue
-                ? (Func<Xerc, bool>)(x => x.Tarix.Date >= baslangicTarixi.Value.Date && x.Tarix.Date <= bitisTarixi.Value.Date)
+            Func<Xerc, bool> filter = baslangicTarixi.HasValue && bitisTarixi.HasValue
+                ? (x => x.Tarix.Date >= baslangicTarixi.Value.Date && x.Tarix.Date <= bitisTarixi.Value.Date)
                 : baslangicTarixi.HasValue
-                    ? (Func<Xerc, bool>)(x => x.Tarix.Date >= baslangicTarixi.Value.Date)
+                    ? (x => x.Tarix.Date >= baslangicTarixi.Value.Date)
                     : bitisTarixi.HasValue
-                        ? (Func<Xerc, bool>)(x => x.Tarix.Date <= bitisTarixi.Value.Date)
-                        : (Func<Xerc, bool>)(x => true);
+                        ? (x => x.Tarix.Date <= bitisTarixi.Value.Date)
+                        : (x => true);
 
-            var xercler = (await _unitOfWork.Xercler.ButununuGetirAsync()).Where(filter).OrderByDescending(x => x.Tarix).ToList();
+            List<Xerc> xercler = (await _unitOfWork.Xercler.ButununuGetirAsync()).Where(filter).OrderByDescending(x => x.Tarix).ToList();
 
-            var dtolar = new List<XercDto>();
-            foreach (var xerc in xercler)
+            List<XercDto> dtolar = new();
+            foreach (Xerc xerc in xercler)
             {
-                var dto = new XercDto
+                XercDto dto = new()
                 {
                     Id = xerc.Id,
                     Novu = xerc.Novu,
@@ -314,7 +310,7 @@ public class MaliyyeManager
 
         try
         {
-            var xercler = (await _unitOfWork.Xercler.ButununuGetirAsync())
+            List<Xerc> xercler = (await _unitOfWork.Xercler.ButununuGetirAsync())
                 .Where(x => x.Novu == novu)
                 .OrderByDescending(x => x.Tarix)
                 .ToList();
@@ -342,16 +338,16 @@ public class MaliyyeManager
 
         try
         {
-            var filter = baslangicTarixi.HasValue && bitisTarixi.HasValue
-                ? (Func<Xerc, bool>)(x => x.Tarix.Date >= baslangicTarixi.Value.Date && x.Tarix.Date <= bitisTarixi.Value.Date)
+            Func<Xerc, bool> filter = baslangicTarixi.HasValue && bitisTarixi.HasValue
+                ? (x => x.Tarix.Date >= baslangicTarixi.Value.Date && x.Tarix.Date <= bitisTarixi.Value.Date)
                 : baslangicTarixi.HasValue
-                    ? (Func<Xerc, bool>)(x => x.Tarix.Date >= baslangicTarixi.Value.Date)
+                    ? (x => x.Tarix.Date >= baslangicTarixi.Value.Date)
                     : bitisTarixi.HasValue
-                        ? (Func<Xerc, bool>)(x => x.Tarix.Date <= bitisTarixi.Value.Date)
-                        : (Func<Xerc, bool>)(x => true);
+                        ? (x => x.Tarix.Date <= bitisTarixi.Value.Date)
+                        : (x => true);
 
-            var xercler = (await _unitOfWork.Xercler.ButununuGetirAsync()).Where(filter);
-            var cem = xercler.Sum(x => x.Mebleg);
+            IEnumerable<Xerc> xercler = (await _unitOfWork.Xercler.ButununuGetirAsync()).Where(filter);
+            decimal cem = xercler.Sum(x => x.Mebleg);
 
             Logger.MelumatYaz($"Xərc cəmi hesablandı: Cəm={cem}");
             return EmeliyyatNeticesi<decimal>.Ugurlu(cem);
@@ -376,15 +372,15 @@ public class MaliyyeManager
 
         try
         {
-            var filter = baslangicTarixi.HasValue && bitisTarixi.HasValue
-                ? (Func<KassaHareketi, bool>)(k => k.Tarix.Date >= baslangicTarixi.Value.Date && k.Tarix.Date <= bitisTarixi.Value.Date)
+            Func<KassaHareketi, bool> filter = baslangicTarixi.HasValue && bitisTarixi.HasValue
+                ? (k => k.Tarix.Date >= baslangicTarixi.Value.Date && k.Tarix.Date <= bitisTarixi.Value.Date)
                 : baslangicTarixi.HasValue
-                    ? (Func<KassaHareketi, bool>)(k => k.Tarix.Date >= baslangicTarixi.Value.Date)
+                    ? (k => k.Tarix.Date >= baslangicTarixi.Value.Date)
                     : bitisTarixi.HasValue
-                        ? (Func<KassaHareketi, bool>)(k => k.Tarix.Date <= bitisTarixi.Value.Date)
-                        : (Func<KassaHareketi, bool>)(k => true);
+                        ? (k => k.Tarix.Date <= bitisTarixi.Value.Date)
+                        : (k => true);
 
-            var hareketler = (await _unitOfWork.KassaHareketleri.ButununuGetirAsync()).Where(filter).OrderByDescending(k => k.Tarix).ToList();
+            List<KassaHareketi> hareketler = (await _unitOfWork.KassaHareketleri.ButununuGetirAsync()).Where(filter).OrderByDescending(k => k.Tarix).ToList();
 
             Logger.MelumatYaz($"Kassa hərəkətləri əldə edildi: Say={hareketler.Count}");
             return EmeliyyatNeticesi<List<KassaHareketi>>.Ugurlu(hareketler);
@@ -417,7 +413,7 @@ public class MaliyyeManager
                 return EmeliyyatNeticesi<int>.Ugursuz("Gəlir məbləği sıfır və ya mənfi ola bilməz.");
             }
 
-            var kassaHareketi = new KassaHareketi
+            KassaHareketi kassaHareketi = new()
             {
                 HareketNovu = KassaHareketiNovu.Daxilolma,
                 EmeliyyatNovu = EmeliyyatNovu.Gelir,
@@ -465,7 +461,7 @@ public class MaliyyeManager
                 return EmeliyyatNeticesi<int>.Ugursuz("Hərəkət məbləği sıfır ola bilməz.");
             }
 
-            var kassaHareketi = new KassaHareketi
+            KassaHareketi kassaHareketi = new()
             {
                 HareketNovu = hareketNovu,
                 EmeliyyatNovu = emeliyyatNovu,
@@ -503,38 +499,38 @@ public class MaliyyeManager
         try
         {
             // Gəlirləri hesabla
-            var gelirFilter = baslangicTarixi.HasValue && bitisTarixi.HasValue
-                ? (Func<KassaHareketi, bool>)(k => k.HareketNovu == KassaHareketiNovu.Daxilolma &&
+            Func<KassaHareketi, bool> gelirFilter = baslangicTarixi.HasValue && bitisTarixi.HasValue
+                ? (k => k.HareketNovu == KassaHareketiNovu.Daxilolma &&
                                                 k.Tarix.Date >= baslangicTarixi.Value.Date &&
                                                 k.Tarix.Date <= bitisTarixi.Value.Date)
                 : baslangicTarixi.HasValue
-                    ? (Func<KassaHareketi, bool>)(k => k.HareketNovu == KassaHareketiNovu.Daxilolma &&
+                    ? (k => k.HareketNovu == KassaHareketiNovu.Daxilolma &&
                                                     k.Tarix.Date >= baslangicTarixi.Value.Date)
                     : bitisTarixi.HasValue
-                        ? (Func<KassaHareketi, bool>)(k => k.HareketNovu == KassaHareketiNovu.Daxilolma &&
+                        ? (k => k.HareketNovu == KassaHareketiNovu.Daxilolma &&
                                                         k.Tarix.Date <= bitisTarixi.Value.Date)
-                        : (Func<KassaHareketi, bool>)(k => k.HareketNovu == KassaHareketiNovu.Daxilolma);
+                        : (k => k.HareketNovu == KassaHareketiNovu.Daxilolma);
 
-            var gelirler = (await _unitOfWork.KassaHareketleri.ButununuGetirAsync()).Where(gelirFilter);
-            var umumiGelir = gelirler.Sum(k => k.Mebleg);
+            IEnumerable<KassaHareketi> gelirler = (await _unitOfWork.KassaHareketleri.ButununuGetirAsync()).Where(gelirFilter);
+            decimal umumiGelir = gelirler.Sum(k => k.Mebleg);
 
             // Xərcləri hesabla
-            var xercFilter = baslangicTarixi.HasValue && bitisTarixi.HasValue
-                ? (Func<KassaHareketi, bool>)(k => k.HareketNovu == KassaHareketiNovu.Cixis &&
+            Func<KassaHareketi, bool> xercFilter = baslangicTarixi.HasValue && bitisTarixi.HasValue
+                ? (k => k.HareketNovu == KassaHareketiNovu.Cixis &&
                                                 k.Tarix.Date >= baslangicTarixi.Value.Date &&
                                                 k.Tarix.Date <= bitisTarixi.Value.Date)
                 : baslangicTarixi.HasValue
-                    ? (Func<KassaHareketi, bool>)(k => k.HareketNovu == KassaHareketiNovu.Cixis &&
+                    ? (k => k.HareketNovu == KassaHareketiNovu.Cixis &&
                                                     k.Tarix.Date >= baslangicTarixi.Value.Date)
                     : bitisTarixi.HasValue
-                        ? (Func<KassaHareketi, bool>)(k => k.HareketNovu == KassaHareketiNovu.Cixis &&
+                        ? (k => k.HareketNovu == KassaHareketiNovu.Cixis &&
                                                         k.Tarix.Date <= bitisTarixi.Value.Date)
-                        : (Func<KassaHareketi, bool>)(k => k.HareketNovu == KassaHareketiNovu.Cixis);
+                        : (k => k.HareketNovu == KassaHareketiNovu.Cixis);
 
-            var xercler = (await _unitOfWork.KassaHareketleri.ButununuGetirAsync()).Where(xercFilter);
-            var umumiXerc = xercler.Sum(k => k.Mebleg);
+            IEnumerable<KassaHareketi> xercler = (await _unitOfWork.KassaHareketleri.ButununuGetirAsync()).Where(xercFilter);
+            decimal umumiXerc = xercler.Sum(k => k.Mebleg);
 
-            var menfeet = umumiGelir - umumiXerc;
+            decimal menfeet = umumiGelir - umumiXerc;
 
             Logger.MelumatYaz($"Mənfəət/zərər hesablandı: Gəlir={umumiGelir}, Xərc={umumiXerc}, Nəticə={menfeet}");
             return EmeliyyatNeticesi<decimal>.Ugurlu(menfeet);
@@ -557,12 +553,12 @@ public class MaliyyeManager
         Logger.MelumatYaz($"Səhifələnmiş xərclər əldə edilir - Səhifə: {parametrler.SehifeNomresi}, Ölçü: {parametrler.SehifeOlcusu}");
         try
         {
-            var (xercler, umumiSay) = await _unitOfWork.Xercler.SehifelenmisGetirAsync(
+            (IEnumerable<Xerc>? xercler, int umumiSay) = await _unitOfWork.Xercler.SehifelenmisGetirAsync(
                 parametrler.SehifeNomresi,
                 parametrler.SehifeOlcusu,
                 x => !x.Silinib);
 
-            var dtolar = xercler.Select(x => new XercDto
+            List<XercDto> dtolar = xercler.Select(x => new XercDto
             {
                 Id = x.Id,
                 Novu = x.Novu,
@@ -574,7 +570,7 @@ public class MaliyyeManager
                 IstifadeciAdi = x.Istifadeci?.TamAd
             }).ToList();
 
-            var sehifelenmis = new SehifelenmisMelumat<XercDto>(
+            SehifelenmisMelumat<XercDto> sehifelenmis = new(
                 dtolar,
                 umumiSay,
                 parametrler.SehifeNomresi,
@@ -601,12 +597,12 @@ public class MaliyyeManager
         Logger.MelumatYaz($"Səhifələnmiş kassa hərəkətləri əldə edilir - Səhifə: {parametrler.SehifeNomresi}, Ölçü: {parametrler.SehifeOlcusu}");
         try
         {
-            var (hareketler, umumiSay) = await _unitOfWork.KassaHareketleri.SehifelenmisGetirAsync(
+            (IEnumerable<KassaHareketi>? hareketler, int umumiSay) = await _unitOfWork.KassaHareketleri.SehifelenmisGetirAsync(
                 parametrler.SehifeNomresi,
                 parametrler.SehifeOlcusu,
                 k => !k.Silinib);
 
-            var sehifelenmis = new SehifelenmisMelumat<KassaHareketi>(
+            SehifelenmisMelumat<KassaHareketi> sehifelenmis = new(
                 hareketler.ToList(),
                 umumiSay,
                 parametrler.SehifeNomresi,

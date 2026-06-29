@@ -1,11 +1,12 @@
 // Fayl: AzAgroPOS.Mentiq/Idareciler/StokHareketiManager.cs
-namespace AzAgroPOS.Mentiq.Idareciler;
 
+using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Mentiq.Yardimcilar;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 
+namespace AzAgroPOS.Mentiq.Idareciler;
 /// <summary>
 /// Anbar stok hərəkətləri ilə bağlı biznes məntiqini idarə edir
 /// diqqət: Bu sinif, stok hərəkətlərinin qeydiyyatı və anbar qalıqlarının hesablanması üçün mərkəzi mənbədir.
@@ -67,7 +68,7 @@ public class StokHareketiManager
             }
 
             // Məhsulun mövcudluğunu yoxla
-            var mehsul = await _unitOfWork.Mehsullar.GetirAsync(mehsulId);
+            Mehsul mehsul = await _unitOfWork.Mehsullar.GetirAsync(mehsulId);
             if (mehsul == null)
             {
                 Logger.XəbərdarlıqYaz($"Məhsul tapılmadı: ID={mehsulId}");
@@ -75,7 +76,7 @@ public class StokHareketiManager
             }
 
             // Yeni stok hərəkəti yarat
-            var stokHareketi = new StokHareketi
+            StokHareketi stokHareketi = new()
             {
                 HareketTipi = hareketTipi,
                 SenedNovu = senedNovu,
@@ -113,7 +114,7 @@ public class StokHareketiManager
 
         try
         {
-            var qaliq = await _stokHareketiRepo.MehsulQaliginHesabla(mehsulId);
+            int qaliq = await _stokHareketiRepo.MehsulQaliginHesabla(mehsulId);
 
             Logger.MelumatYaz($"Məhsul qalığı hesablandı: Qalıq={qaliq}");
             return EmeliyyatNeticesi<int>.Ugurlu(qaliq);
@@ -139,7 +140,7 @@ public class StokHareketiManager
 
         try
         {
-            var hereketler = await _stokHareketiRepo.MehsulHereketleriniGetir(mehsulId, baslangicTarixi, bitisTarixi);
+            IEnumerable<StokHareketi> hereketler = await _stokHareketiRepo.MehsulHereketleriniGetir(mehsulId, baslangicTarixi, bitisTarixi);
 
             Logger.MelumatYaz($"Məhsul hərəkət tarixçəsi əldə edildi: Say={hereketler.Count()}");
             return EmeliyyatNeticesi<IEnumerable<StokHareketi>>.Ugurlu(hereketler);
@@ -164,7 +165,7 @@ public class StokHareketiManager
 
         try
         {
-            var hereketler = await _stokHareketiRepo.SenedHereketleriniGetir(senedNovu, senedId);
+            IEnumerable<StokHareketi> hereketler = await _stokHareketiRepo.SenedHereketleriniGetir(senedNovu, senedId);
 
             Logger.MelumatYaz($"Sənəd hərəkətləri əldə edildi: Say={hereketler.Count()}");
             return EmeliyyatNeticesi<IEnumerable<StokHareketi>>.Ugurlu(hereketler);
@@ -187,7 +188,7 @@ public class StokHareketiManager
 
         try
         {
-            var qaliqlar = await _stokHareketiRepo.ButunMehsulQaliqlariniHesabla();
+            Dictionary<int, int> qaliqlar = await _stokHareketiRepo.ButunMehsulQaliqlariniHesabla();
 
             Logger.MelumatYaz($"Bütün məhsul qalıqları hesablandı: Say={qaliqlar.Count}");
             return EmeliyyatNeticesi<Dictionary<int, int>>.Ugurlu(qaliqlar);
@@ -220,10 +221,10 @@ public class StokHareketiManager
         try
         {
             // Sistem qalığını hesabla
-            var sistemQaliqi = await _stokHareketiRepo.MehsulQaliginHesabla(mehsulId);
+            int sistemQaliqi = await _stokHareketiRepo.MehsulQaliginHesabla(mehsulId);
 
             // Fərqi hesabla
-            var ferq = fizikiQaliq - sistemQaliqi;
+            int ferq = fizikiQaliq - sistemQaliqi;
 
             if (ferq == 0)
             {
@@ -232,18 +233,18 @@ public class StokHareketiManager
             }
 
             // Fərqə görə hərəkət tipi müəyyən et
-            var hareketTipi = ferq > 0 ? StokHareketTipi.Daxilolma : StokHareketTipi.Cixis;
-            var miqdar = Math.Abs(ferq);
-            var senedNovu = ferq > 0 ? SenedNovu.DuzeltmeArtirim : SenedNovu.DuzeltmeAzalma;
+            StokHareketTipi hareketTipi = ferq > 0 ? StokHareketTipi.Daxilolma : StokHareketTipi.Cixis;
+            int miqdar = Math.Abs(ferq);
+            SenedNovu senedNovu = ferq > 0 ? SenedNovu.DuzeltmeArtirim : SenedNovu.DuzeltmeAzalma;
 
-            var qeydMetni = $"İnventarizasiya düzəlişi. Sistem: {sistemQaliqi}, Fiziki: {fizikiQaliq}, Fərq: {ferq}";
+            string qeydMetni = $"İnventarizasiya düzəlişi. Sistem: {sistemQaliqi}, Fiziki: {fizikiQaliq}, Fərq: {ferq}";
             if (!string.IsNullOrWhiteSpace(qeyd))
             {
                 qeydMetni += $" - {qeyd}";
             }
 
             // Stok hərəkəti yarat
-            var netice = await StokHareketiQeydeAlAsync(
+            EmeliyyatNeticesi<int> netice = await StokHareketiQeydeAlAsync(
                 hareketTipi,
                 senedNovu,
                 null, // Sənəd ID-si yoxdur
@@ -286,23 +287,23 @@ public class StokHareketiManager
 
         try
         {
-            var filter = baslangicTarixi.HasValue && bitisTarixi.HasValue
-                ? (Func<StokHareketi, bool>)(sh => sh.MehsulId == mehsulId &&
+            Func<StokHareketi, bool> filter = baslangicTarixi.HasValue && bitisTarixi.HasValue
+                ? (sh => sh.MehsulId == mehsulId &&
                                                 sh.Tarix.Date >= baslangicTarixi.Value.Date &&
                                                 sh.Tarix.Date <= bitisTarixi.Value.Date)
                 : baslangicTarixi.HasValue
-                    ? (Func<StokHareketi, bool>)(sh => sh.MehsulId == mehsulId &&
+                    ? (sh => sh.MehsulId == mehsulId &&
                                                     sh.Tarix.Date >= baslangicTarixi.Value.Date)
                     : bitisTarixi.HasValue
-                        ? (Func<StokHareketi, bool>)(sh => sh.MehsulId == mehsulId &&
+                        ? (sh => sh.MehsulId == mehsulId &&
                                                         sh.Tarix.Date <= bitisTarixi.Value.Date)
-                        : (Func<StokHareketi, bool>)(sh => sh.MehsulId == mehsulId);
+                        : (sh => sh.MehsulId == mehsulId);
 
-            var hereketler = (await _stokHareketiRepo.ButununuGetirAsync()).Where(filter).ToList();
+            List<StokHareketi> hereketler = (await _stokHareketiRepo.ButununuGetirAsync()).Where(filter).ToList();
 
             decimal menfeetToplami = 0;
 
-            foreach (var hereket in hereketler)
+            foreach (StokHareketi? hereket in hereketler)
             {
                 // Mənfəət hərəkətə görə hesablanır
                 if (hereket.HareketTipi == StokHareketTipi.Cixis &&
@@ -342,20 +343,20 @@ public class StokHareketiManager
 
         try
         {
-            var filter = baslangicTarixi.HasValue && bitisTarixi.HasValue
-                ? (Func<StokHareketi, bool>)(sh => sh.Tarix.Date >= baslangicTarixi.Value.Date &&
+            Func<StokHareketi, bool> filter = baslangicTarixi.HasValue && bitisTarixi.HasValue
+                ? (sh => sh.Tarix.Date >= baslangicTarixi.Value.Date &&
                                                 sh.Tarix.Date <= bitisTarixi.Value.Date)
                 : baslangicTarixi.HasValue
-                    ? (Func<StokHareketi, bool>)(sh => sh.Tarix.Date >= baslangicTarixi.Value.Date)
+                    ? (sh => sh.Tarix.Date >= baslangicTarixi.Value.Date)
                     : bitisTarixi.HasValue
-                        ? (Func<StokHareketi, bool>)(sh => sh.Tarix.Date <= bitisTarixi.Value.Date)
-                        : (Func<StokHareketi, bool>)(sh => true);
+                        ? (sh => sh.Tarix.Date <= bitisTarixi.Value.Date)
+                        : (sh => true);
 
-            var hereketler = (await _stokHareketiRepo.ButununuGetirAsync()).Where(filter).ToList();
+            List<StokHareketi> hereketler = (await _stokHareketiRepo.ButununuGetirAsync()).Where(filter).ToList();
 
             decimal menfeetToplami = 0;
 
-            foreach (var hereket in hereketler)
+            foreach (StokHareketi? hereket in hereketler)
             {
                 // Mənfəət hərəkətə görə hesablanır
                 if (hereket.HareketTipi == StokHareketTipi.Cixis &&
@@ -393,12 +394,12 @@ public class StokHareketiManager
         Logger.MelumatYaz($"Səhifələnmiş stok hərəkətləri əldə edilir - Səhifə: {parametrler.SehifeNomresi}, Ölçü: {parametrler.SehifeOlcusu}");
         try
         {
-            var (hereketler, umumiSay) = await _stokHareketiRepo.SehifelenmisGetirAsync(
+            (IEnumerable<StokHareketi>? hereketler, int umumiSay) = await _stokHareketiRepo.SehifelenmisGetirAsync(
                 parametrler.SehifeNomresi,
                 parametrler.SehifeOlcusu,
                 sh => true);
 
-            var sehifelenmis = new SehifelenmisMelumat<StokHareketi>(
+            SehifelenmisMelumat<StokHareketi> sehifelenmis = new(
                 hereketler.ToList(), umumiSay, parametrler.SehifeNomresi, parametrler.SehifeOlcusu);
 
             Logger.MelumatYaz($"Səhifələnmiş stok hərəkətləri uğurla əldə edildi - {hereketler.Count()}/{umumiSay}");
@@ -439,7 +440,7 @@ public class StokHareketiManager
             }
 
             // Entity-ləri DTO-ya çevir
-            var dtolar = hereketler
+            List<StokHareketiDto> dtolar = hereketler
                 .OrderByDescending(h => h.Tarix)
                 .Take(limit)
                 .Select(h => new DTOs.StokHareketiDto

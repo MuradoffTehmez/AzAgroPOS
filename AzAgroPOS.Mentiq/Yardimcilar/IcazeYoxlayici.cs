@@ -1,13 +1,11 @@
 // Fayl: AzAgroPOS.Mentiq/Yardimcilar/IcazeYoxlayici.cs
-namespace AzAgroPOS.Mentiq.Yardimcilar;
 
+using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Varliglar;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
+namespace AzAgroPOS.Mentiq.Yardimcilar;
 /// <summary>
 /// Mərkəzləşdirilmiş icazə yoxlama sistemi
 /// diqqət: Bu sinif singleton pattern ilə işləyir və bütün tətbiqat boyu istifadəçi icazələrini idarə edir
@@ -18,20 +16,18 @@ public sealed class IcazeYoxlayici
 {
     private static IcazeYoxlayici? _instance;
     private static readonly object _lock = new();
-
-    private Istifadeci? _aktivIstifadeci;
     private IcazeManager? _icazeManager;
     private HashSet<string> _istifadeciIcazeleri;
 
     /// <summary>
     /// Hazırda aktiv olan istifadəçi
     /// </summary>
-    public Istifadeci? AktivIstifadeci => _aktivIstifadeci;
+    public Istifadeci? AktivIstifadeci { get; private set; }
 
     /// <summary>
     /// İstifadəçinin rol adı
     /// </summary>
-    public string? IstifadeciRolu => _aktivIstifadeci?.Rol?.Ad;
+    public string? IstifadeciRolu => AktivIstifadeci?.Rol?.Ad;
 
     private IcazeYoxlayici()
     {
@@ -49,10 +45,7 @@ public sealed class IcazeYoxlayici
             {
                 lock (_lock)
                 {
-                    if (_instance == null)
-                    {
-                        _instance = new IcazeYoxlayici();
-                    }
+                    _instance ??= new IcazeYoxlayici();
                 }
             }
             return _instance;
@@ -76,7 +69,7 @@ public sealed class IcazeYoxlayici
     /// </summary>
     public async Task AktivIstifadeciniTeyinEtAsync(Istifadeci istifadeci)
     {
-        _aktivIstifadeci = istifadeci ?? throw new ArgumentNullException(nameof(istifadeci));
+        AktivIstifadeci = istifadeci ?? throw new ArgumentNullException(nameof(istifadeci));
         await IcazeleriYukleAsync();
 
         Logger.MelumatYaz($"Aktiv istifadəçi təyin edildi: {istifadeci.IstifadeciAdi} (Rol: {IstifadeciRolu})");
@@ -89,16 +82,18 @@ public sealed class IcazeYoxlayici
     {
         _istifadeciIcazeleri.Clear();
 
-        if (_aktivIstifadeci == null || _icazeManager == null)
+        if (AktivIstifadeci == null || _icazeManager == null)
+        {
             return;
+        }
 
         // Admin istifadəçiləri bütün icazələrə sahibdir
-        if (_aktivIstifadeci.RolId == 1) // 1 - Admin rolu
+        if (AktivIstifadeci.RolId == 1) // 1 - Admin rolu
         {
-            var butunIcazeler = await _icazeManager.ButunIcazeleriGetirAsync();
+            EmeliyyatNeticesi<IEnumerable<IcazeDto>> butunIcazeler = await _icazeManager.ButunIcazeleriGetirAsync();
             if (butunIcazeler.UgurluDur && butunIcazeler.Data != null)
             {
-                foreach (var icaze in butunIcazeler.Data)
+                foreach (IcazeDto icaze in butunIcazeler.Data)
                 {
                     _istifadeciIcazeleri.Add(icaze.Ad);
                 }
@@ -107,10 +102,10 @@ public sealed class IcazeYoxlayici
         }
         else
         {
-            var rolIcazeleri = await _icazeManager.RolIcazeleriniGetirAsync(_aktivIstifadeci.RolId);
+            EmeliyyatNeticesi<IEnumerable<IcazeDto>> rolIcazeleri = await _icazeManager.RolIcazeleriniGetirAsync(AktivIstifadeci.RolId);
             if (rolIcazeleri.UgurluDur && rolIcazeleri.Data != null)
             {
-                foreach (var icaze in rolIcazeleri.Data)
+                foreach (IcazeDto icaze in rolIcazeleri.Data)
                 {
                     _istifadeciIcazeleri.Add(icaze.Ad);
                 }
@@ -129,9 +124,11 @@ public sealed class IcazeYoxlayici
     public bool IcazeVarmi(string icazeAdi)
     {
         if (string.IsNullOrWhiteSpace(icazeAdi))
+        {
             return false;
+        }
 
-        if (_aktivIstifadeci == null)
+        if (AktivIstifadeci == null)
         {
             Logger.XəbərdarlıqYaz("Aktiv istifadəçi təyin edilməyib");
             return false;
@@ -159,7 +156,7 @@ public sealed class IcazeYoxlayici
         else
         {
             mesaj = $"Bu əməliyyat üçün '{icazeAdi}' icazəsi tələb olunur.";
-            Logger.XəbərdarlıqYaz($"İcazə yoxdur: {icazeAdi} (İstifadəçi: {_aktivIstifadeci?.IstifadeciAdi})");
+            Logger.XəbərdarlıqYaz($"İcazə yoxdur: {icazeAdi} (İstifadəçi: {AktivIstifadeci?.IstifadeciAdi})");
             return false;
         }
     }
@@ -169,7 +166,7 @@ public sealed class IcazeYoxlayici
     /// </summary>
     public bool AdminDirmi()
     {
-        return _aktivIstifadeci?.RolId == 1;
+        return AktivIstifadeci?.RolId == 1;
     }
 
     /// <summary>
@@ -177,7 +174,7 @@ public sealed class IcazeYoxlayici
     /// </summary>
     public bool ManagerDirmi()
     {
-        return _aktivIstifadeci?.RolId == 2; // 2 - Manager rolu
+        return AktivIstifadeci?.RolId == 2; // 2 - Manager rolu
     }
 
     /// <summary>
@@ -185,7 +182,7 @@ public sealed class IcazeYoxlayici
     /// </summary>
     public bool KassirDirmi()
     {
-        return _aktivIstifadeci?.RolId == 3; // 3 - Kassir rolu
+        return AktivIstifadeci?.RolId == 3; // 3 - Kassir rolu
     }
 
     /// <summary>
@@ -195,10 +192,7 @@ public sealed class IcazeYoxlayici
     /// <returns>Bütün icazələr varsa true, əks halda false</returns>
     public bool CoxluIcazeVarmiVE(params string[] icazeAdlari)
     {
-        if (icazeAdlari == null || icazeAdlari.Length == 0)
-            return false;
-
-        return icazeAdlari.All(IcazeVarmi);
+        return icazeAdlari != null && icazeAdlari.Length != 0 && icazeAdlari.All(IcazeVarmi);
     }
 
     /// <summary>
@@ -208,10 +202,7 @@ public sealed class IcazeYoxlayici
     /// <returns>Ən azı bir icazə varsa true, əks halda false</returns>
     public bool CoxluIcazeVarmiVEYA(params string[] icazeAdlari)
     {
-        if (icazeAdlari == null || icazeAdlari.Length == 0)
-            return false;
-
-        return icazeAdlari.Any(IcazeVarmi);
+        return icazeAdlari != null && icazeAdlari.Length != 0 && icazeAdlari.Any(IcazeVarmi);
     }
 
     /// <summary>
@@ -219,7 +210,7 @@ public sealed class IcazeYoxlayici
     /// </summary>
     public void TəmizleTəmizlə()
     {
-        _aktivIstifadeci = null;
+        AktivIstifadeci = null;
         _istifadeciIcazeleri.Clear();
         Logger.MelumatYaz("İstifadəçi sessiyası təmizləndi");
     }

@@ -1,11 +1,9 @@
 // Fayl: AzAgroPOS.Mentiq/Idareciler/TedarukcuMeneceri.cs
-namespace AzAgroPOS.Mentiq.Idareciler;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Uslublar;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
+namespace AzAgroPOS.Mentiq.Idareciler;
 /// <summary>
 /// Tədarükçülərlə bağlı əməliyyatları idarə edən menecer.
 /// </summary>

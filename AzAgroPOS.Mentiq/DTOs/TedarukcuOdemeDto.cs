@@ -1,9 +1,8 @@
 // Fayl: AzAgroPOS.Mentiq/DTOs/TedarukcuOdemeDto.cs
-namespace AzAgroPOS.Mentiq.DTOs;
 
 using AzAgroPOS.Varliglar;
-using System;
 
+namespace AzAgroPOS.Mentiq.DTOs;
 /// <summary>
 /// Tədarükçü ödənişi məlumatlarını təqdimat qatına ötürmək üçün istifadə olunan DTO.
 /// </summary>

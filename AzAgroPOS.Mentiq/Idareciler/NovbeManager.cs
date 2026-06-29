@@ -1,5 +1,4 @@
 ﻿// Fayl: AzAgroPOS.Mentiq/Idareciler/NovbeManager.cs
-namespace AzAgroPOS.Mentiq.Idareciler;
 
 
 using AzAgroPOS.Mentiq.DTOs;
@@ -7,10 +6,8 @@ using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Mentiq.Yardimcilar;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
+namespace AzAgroPOS.Mentiq.Idareciler;
 /// <summary>
 /// Növbə idarə etmə meneceri.
 /// bu menecer növbə açma, bağlama və aktiv növbəni gətirmə əməliyyatlarını idarə edir.
@@ -62,10 +59,13 @@ public class NovbeManager
     /// <returns></returns>
     public async Task<EmeliyyatNeticesi<Novbe>> NovbeAcAsync(int isciId, decimal baslangicMebleg)
     {
-        var aktivNovbe = await AktivNovbeniGetirAsync(isciId);
+        Novbe? aktivNovbe = await AktivNovbeniGetirAsync(isciId);
         if (aktivNovbe != null)
+        {
             return EmeliyyatNeticesi<Novbe>.Ugursuz("Bu istifadəçi üçün artıq açıq növbə mövcuddur.");
-        var yeniNovbe = new Novbe { IsciId = isciId, AcilmaTarixi = DateTime.Now, BaslangicMebleg = baslangicMebleg, Status = NovbeStatusu.Aciq };
+        }
+
+        Novbe yeniNovbe = new() { IsciId = isciId, AcilmaTarixi = DateTime.Now, BaslangicMebleg = baslangicMebleg, Status = NovbeStatusu.Aciq };
         await _unitOfWork.Novbeler.ElaveEtAsync(yeniNovbe);
         await _unitOfWork.EmeliyyatiTesdiqleAsync();
         return EmeliyyatNeticesi<Novbe>.Ugurlu(yeniNovbe);
@@ -85,18 +85,20 @@ public class NovbeManager
     /// <returns></returns>
     public async Task<EmeliyyatNeticesi<ZHesabatDto>> NovbeBaglaAsync(int novbeId, decimal faktikiMebleg)
     {
-        var novbe = await _unitOfWork.Novbeler.GetirAsync(novbeId);
+        Novbe novbe = await _unitOfWork.Novbeler.GetirAsync(novbeId);
         if (novbe == null || novbe.Status == NovbeStatusu.Bagli)
+        {
             return EmeliyyatNeticesi<ZHesabatDto>.Ugursuz("Növbə tapılmadı və ya artıq bağlıdır.");
+        }
 
-        var novbeSatislar = await _unitOfWork.Satislar.AxtarAsync(s => s.NovbeId == novbeId);
+        IEnumerable<Satis> novbeSatislar = await _unitOfWork.Satislar.AxtarAsync(s => s.NovbeId == novbeId);
         decimal nagdSatislar = novbeSatislar.Where(s => s.OdenisMetodu == OdenisMetodu.Nağd).Sum(s => s.UmumiMebleg);
         decimal kartSatislar = novbeSatislar.Where(s => s.OdenisMetodu == OdenisMetodu.Kart).Sum(s => s.UmumiMebleg);
 
         // Kassa hərəkətini qeydə al - növbə gəliri
         if (nagdSatislar > 0)
         {
-            var kassaGeliriNetice = await _maliyyeManager.KassaGeliriElaveEtAsync(
+            EmeliyyatNeticesi<int> kassaGeliriNetice = await _maliyyeManager.KassaGeliriElaveEtAsync(
                 nagdSatislar,
                 novbeId,
                 $"Növbə #{novbeId} nağd satış gəliri",
@@ -117,8 +119,8 @@ public class NovbeManager
         _unitOfWork.Novbeler.Yenile(novbe);
         await _unitOfWork.EmeliyyatiTesdiqleAsync();
 
-        var isci = await _unitOfWork.Istifadeciler.GetirAsync(novbe.IsciId);
-        var hesabat = new ZHesabatDto
+        Istifadeci isci = await _unitOfWork.Istifadeciler.GetirAsync(novbe.IsciId);
+        ZHesabatDto hesabat = new()
         {
             AcilmaTarixi = novbe.AcilmaTarixi,
             BaglanmaTarixi = novbe.BaglanmaTarixi.Value,

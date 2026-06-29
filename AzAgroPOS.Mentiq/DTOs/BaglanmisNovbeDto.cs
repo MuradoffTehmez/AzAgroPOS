@@ -1,8 +1,6 @@
 ﻿// Fayl: AzAgroPOS.Mentiq/DTOs/BaglanmisNovbeDto.cs
+
 namespace AzAgroPOS.Mentiq.DTOs;
-
-using System;
-
 /// <summary>
 /// Z-Hesabat arxivində hər bir bağlanmış növbənin qısa məlumatını saxlayır.
 /// </summary>

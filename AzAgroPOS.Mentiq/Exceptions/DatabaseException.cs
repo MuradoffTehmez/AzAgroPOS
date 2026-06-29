@@ -45,7 +45,7 @@ public class DatabaseException : Exception
     /// </summary>
     public static DatabaseException FromDbUpdateException(DbUpdateException ex)
     {
-        var message = "Verilənlər bazasına məlumat yazarkən xəta baş verdi";
+        string message = "Verilənlər bazasına məlumat yazarkən xəta baş verdi";
 
         // Check for specific SQL errors
         if (ex.InnerException?.Message.Contains("UNIQUE constraint") == true)

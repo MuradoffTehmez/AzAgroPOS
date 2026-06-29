@@ -1,15 +1,12 @@
 // AzAgroPOS.Mentiq/Idareciler/IcazeManager.cs
-namespace AzAgroPOS.Mentiq.Idareciler;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Mentiq.Yardimcilar;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
+namespace AzAgroPOS.Mentiq.Idareciler;
 /// <summary>
 /// İstifadəçilərin ayrı-ayrı icazələrini idarə edən menecer
 /// </summary>
@@ -34,7 +31,7 @@ public class IcazeManager
         try
         {
             // İstifadəçini götürürük
-            var istifadeci = await _unitOfWork.Istifadeciler.GetirAsync(istifadeciId);
+            Istifadeci istifadeci = await _unitOfWork.Istifadeciler.GetirAsync(istifadeciId);
             if (istifadeci == null)
             {
                 return EmeliyyatNeticesi<bool>.Ugursuz("İstifadəçi tapılmadı");
@@ -47,8 +44,8 @@ public class IcazeManager
             }
 
             // İstifadəçinin roluna aid icazələri yoxlayırıq
-            var rolIcazeleri = await _unitOfWork.RolIcazeleri.AxtarAsync(ri => ri.RolId == istifadeci.RolId);
-            var icazeIdleri = rolIcazeleri.Select(ri => ri.IcazeId).ToList();
+            IEnumerable<RolIcazesi> rolIcazeleri = await _unitOfWork.RolIcazeleri.AxtarAsync(ri => ri.RolId == istifadeci.RolId);
+            List<int> icazeIdleri = rolIcazeleri.Select(ri => ri.IcazeId).ToList();
 
             if (!icazeIdleri.Any())
             {
@@ -56,8 +53,8 @@ public class IcazeManager
             }
 
             // İcazələri götürüb axtarırıq
-            var icazeler = await _unitOfWork.Icazeler.AxtarAsync(i => icazeIdleri.Contains(i.Id) && i.Ad == icaeAdi);
-            var icazeVar = icazeler.Any();
+            IEnumerable<Icaze> icazeler = await _unitOfWork.Icazeler.AxtarAsync(i => icazeIdleri.Contains(i.Id) && i.Ad == icaeAdi);
+            bool icazeVar = icazeler.Any();
 
             return EmeliyyatNeticesi<bool>.Ugurlu(icazeVar);
         }
@@ -77,8 +74,8 @@ public class IcazeManager
         Logger.MelumatYaz("Bütün icazələr götürülür.");
         try
         {
-            var icazeler = await _unitOfWork.Icazeler.ButununuGetirAsync();
-            var icazeDtos = icazeler.Select(i => new IcazeDto
+            IEnumerable<Icaze> icazeler = await _unitOfWork.Icazeler.ButununuGetirAsync();
+            IEnumerable<IcazeDto> icazeDtos = icazeler.Select(i => new IcazeDto
             {
                 Id = i.Id,
                 Ad = i.Ad,
@@ -106,16 +103,16 @@ public class IcazeManager
         try
         {
             // Mövcud rol icazələrini silirik
-            var movcudRolIcazeleri = await _unitOfWork.RolIcazeleri.AxtarAsync(ri => ri.RolId == rolId);
-            foreach (var rolIcazesi in movcudRolIcazeleri)
+            IEnumerable<RolIcazesi> movcudRolIcazeleri = await _unitOfWork.RolIcazeleri.AxtarAsync(ri => ri.RolId == rolId);
+            foreach (RolIcazesi rolIcazesi in movcudRolIcazeleri)
             {
                 _unitOfWork.RolIcazeleri.Sil(rolIcazesi);
             }
 
             // Yeni rol icazələrini əlavə edirik
-            foreach (var icazeId in icazeIdleri)
+            foreach (int icazeId in icazeIdleri)
             {
-                var yeniRolIcazesi = new RolIcazesi
+                RolIcazesi yeniRolIcazesi = new()
                 {
                     RolId = rolId,
                     IcazeId = icazeId
@@ -144,16 +141,16 @@ public class IcazeManager
         Logger.MelumatYaz($"Rol ID-si: {rolId} üçün icazələr götürülür.");
         try
         {
-            var rolIcazeleri = await _unitOfWork.RolIcazeleri.AxtarAsync(ri => ri.RolId == rolId);
-            var icazeIdleri = rolIcazeleri.Select(ri => ri.IcazeId).ToList();
+            IEnumerable<RolIcazesi> rolIcazeleri = await _unitOfWork.RolIcazeleri.AxtarAsync(ri => ri.RolId == rolId);
+            List<int> icazeIdleri = rolIcazeleri.Select(ri => ri.IcazeId).ToList();
 
             if (!icazeIdleri.Any())
             {
                 return EmeliyyatNeticesi<IEnumerable<IcazeDto>>.Ugurlu(new List<IcazeDto>());
             }
 
-            var icazeler = await _unitOfWork.Icazeler.AxtarAsync(i => icazeIdleri.Contains(i.Id));
-            var icazeDtos = icazeler.Select(i => new IcazeDto
+            IEnumerable<Icaze> icazeler = await _unitOfWork.Icazeler.AxtarAsync(i => icazeIdleri.Contains(i.Id));
+            IEnumerable<IcazeDto> icazeDtos = icazeler.Select(i => new IcazeDto
             {
                 Id = i.Id,
                 Ad = i.Ad,
@@ -180,19 +177,19 @@ public class IcazeManager
         Logger.MelumatYaz($"Səhifələnmiş icazələr əldə edilir - Səhifə: {parametrler.SehifeNomresi}, Ölçü: {parametrler.SehifeOlcusu}");
         try
         {
-            var (icazeler, umumiSay) = await _unitOfWork.Icazeler.SehifelenmisGetirAsync(
+            (IEnumerable<Icaze>? icazeler, int umumiSay) = await _unitOfWork.Icazeler.SehifelenmisGetirAsync(
                 parametrler.SehifeNomresi,
                 parametrler.SehifeOlcusu,
                 i => true);
 
-            var dtolar = icazeler.Select(i => new IcazeDto
+            List<IcazeDto> dtolar = icazeler.Select(i => new IcazeDto
             {
                 Id = i.Id,
                 Ad = i.Ad,
                 Tesvir = i.Tesvir
             }).ToList();
 
-            var sehifelenmis = new SehifelenmisMelumat<IcazeDto>(
+            SehifelenmisMelumat<IcazeDto> sehifelenmis = new(
                 dtolar, umumiSay, parametrler.SehifeNomresi, parametrler.SehifeOlcusu);
 
             Logger.MelumatYaz($"Səhifələnmiş icazələr uğurla əldə edildi - {dtolar.Count}/{umumiSay}");

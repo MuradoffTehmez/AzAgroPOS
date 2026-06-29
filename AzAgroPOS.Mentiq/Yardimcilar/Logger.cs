@@ -76,22 +76,16 @@ namespace AzAgroPOS.Mentiq.Yardimcilar
                 catch (Exception ex)
                 {
                     // Fallback to console-only logging if main logger fails
-                    if (_fallbackLogger == null)
-                    {
-                        _fallbackLogger = new LoggerConfiguration()
+                    _fallbackLogger ??= new LoggerConfiguration()
                             .MinimumLevel.Information()
                             .WriteTo.Console(
                                 outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
                             .CreateLogger();
-                    }
 
                     _fallbackLogger?.Error(ex, "Logging konfiqurasiya edilərkən xəta baş verdi");
 
                     // Set _logger to fallback so we still have some logging capability
-                    if (_logger == null)
-                    {
-                        _logger = _fallbackLogger;
-                    }
+                    _logger ??= _fallbackLogger;
                 }
             }
         }
@@ -207,7 +201,7 @@ namespace AzAgroPOS.Mentiq.Yardimcilar
         {
             try
             {
-                var logProperties = properties.ToDictionary(p => p.Key, p => p.Value);
+                Dictionary<string, object> logProperties = properties.ToDictionary(p => p.Key, p => p.Value);
                 _logger?.Information(mesaj + " {@Properties}", logProperties);
             }
             catch (Exception ex)
@@ -268,7 +262,7 @@ namespace AzAgroPOS.Mentiq.Yardimcilar
             public void Dispose()
             {
                 _stopwatch.Stop();
-                var elapsedMs = _stopwatch.ElapsedMilliseconds;
+                long elapsedMs = _stopwatch.ElapsedMilliseconds;
 
                 StrukturluMelumatYaz(
                     $"Əməliyyat tamamlandı: {_emeliyyatAdi}",
