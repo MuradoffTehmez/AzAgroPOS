@@ -16,7 +16,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
         private readonly TedarukcuMeneceri _tedarukcuMeneceri;
         private IEnumerable<MehsulDto>? _butunMehsullarCache;
         private bool _isViewAttached;
-        private readonly SehifeParametrleri _sehifeParametrleri = new SehifeParametrleri { SehifeOlcusu = 50 };
+        private readonly SehifeParametrleri _sehifeParametrleri = new() { SehifeOlcusu = 50 };
         private bool _paginationEnabled = true;
 
         public MehsulPresenter(MehsulManager mehsulManager,
@@ -312,8 +312,15 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             }
         }
 
-        private decimal ParseDecimal(string value) => decimal.TryParse(value, out var result) ? result : 0;
-        private int ParseInt(string value) => int.TryParse(value, out var result) ? result : 0;
+        private decimal ParseDecimal(string value)
+        {
+            return decimal.TryParse(value, out var result) ? result : 0;
+        }
+
+        private int ParseInt(string value)
+        {
+            return int.TryParse(value, out var result) ? result : 0;
+        }
 
         private MehsulDto ViewDanMehsulYarat()
         {

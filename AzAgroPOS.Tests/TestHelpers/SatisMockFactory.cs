@@ -37,8 +37,7 @@ public static class SatisMockFactory
         var satis = CreateValid(id);
         satis.SatisDetallari = new List<SatisDetali>
         {
-            new SatisDetali
-            {
+            new() {
                 Id = 1,
                 SatisId = id,
                 MehsulId = mehsulId,
@@ -63,8 +62,7 @@ public static class SatisMockFactory
             OdenisMetodu = OdenisMetodu.Nağd,
             SebetElementleri = new List<SatisSebetiElementiDto>
             {
-                new SatisSebetiElementiDto
-                {
+                new() {
                     MehsulId = 1,
                     Miqdar = 2,
                     VahidinQiymeti = 50m,
@@ -103,8 +101,7 @@ public static class SatisMockFactory
         var satis = CreateValid(id);
         satis.SatisDetallari = new List<SatisDetali>
         {
-            new SatisDetali
-            {
+            new() {
                 Id = 1,
                 SatisId = id,
                 MehsulId = 1,
@@ -112,8 +109,7 @@ public static class SatisMockFactory
                 Qiymet = 50m,
                 UmumiMebleg = 100m
             },
-            new SatisDetali
-            {
+            new() {
                 Id = 2,
                 SatisId = id,
                 MehsulId = 2,
@@ -121,8 +117,7 @@ public static class SatisMockFactory
                 Qiymet = 30m,
                 UmumiMebleg = 90m
             },
-            new SatisDetali
-            {
+            new() {
                 Id = 3,
                 SatisId = id,
                 MehsulId = 3,

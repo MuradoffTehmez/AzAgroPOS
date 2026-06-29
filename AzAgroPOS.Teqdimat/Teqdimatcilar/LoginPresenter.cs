@@ -90,25 +90,23 @@ public class LoginPresenter : IDisposable
         {
             // Threading problemini həll etmək üçün yeni scope yaradırıq
             // Bu DbContext-in eyni vaxtda müxtəlif thread-lər tərəfindən istifadəsini önləyir
-            using (var scope = _serviceProvider.CreateScope())
+            using var scope = _serviceProvider.CreateScope();
+            var novbeManager = scope.ServiceProvider.GetRequiredService<NovbeManager>();
+
+            // İstifadəçinin açıq növbəsini tap
+            var aciqNovbe = await novbeManager.AktivNovbeniGetirAsync(istifadeciId);
+
+            if (aciqNovbe != null)
             {
-                var novbeManager = scope.ServiceProvider.GetRequiredService<NovbeManager>();
-
-                // İstifadəçinin açıq növbəsini tap
-                var aciqNovbe = await novbeManager.AktivNovbeniGetirAsync(istifadeciId);
-
-                if (aciqNovbe != null)
-                {
-                    // Aktiv növbə ID-sini təyin et
-                    AktivSessiya.AktivNovbeId = aciqNovbe.Id;
-                    System.Diagnostics.Debug.WriteLine($"[LoginPresenter] Açıq növbə tapıldı və yükləndi: ID={aciqNovbe.Id}");
-                }
-                else
-                {
-                    // Açıq növbə yoxdursa, null təyin et
-                    AktivSessiya.AktivNovbeId = null;
-                    System.Diagnostics.Debug.WriteLine("[LoginPresenter] Açıq növbə tapılmadı");
-                }
+                // Aktiv növbə ID-sini təyin et
+                AktivSessiya.AktivNovbeId = aciqNovbe.Id;
+                System.Diagnostics.Debug.WriteLine($"[LoginPresenter] Açıq növbə tapıldı və yükləndi: ID={aciqNovbe.Id}");
+            }
+            else
+            {
+                // Açıq növbə yoxdursa, null təyin et
+                AktivSessiya.AktivNovbeId = null;
+                System.Diagnostics.Debug.WriteLine("[LoginPresenter] Açıq növbə tapılmadı");
             }
         }
         catch (Exception ex)

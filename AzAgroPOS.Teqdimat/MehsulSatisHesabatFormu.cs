@@ -214,7 +214,7 @@ public partial class MehsulSatisHesabatFormu : BazaForm, IMehsulSatisHesabatView
             var mehsulAdi = enCoxSatilan.MehsulAdi;
             if (mehsulAdi.Length > 30)
             {
-                mehsulAdi = mehsulAdi.Substring(0, 27) + "...";
+                mehsulAdi = mehsulAdi[..27] + "...";
             }
             lblEnCoxSatilanDeger.Text = $"{mehsulAdi} ({enCoxSatilan.CemiSatilanMiqdar:N0} ed.)";
         }

@@ -557,18 +557,66 @@ namespace AzAgroPOS.Teqdimat
                 StatusMesajiGoster($"Sürətli satış zamanı xəta: {ex.Message}", StatusMesajiNovu.Xeta);
             }
         }
-        private void btnSebetdenSil_Click(object sender, EventArgs e) => SebetdenSilIstek?.Invoke(this, EventArgs.Empty);
-        private void btnSebetTemizle_Click(object sender, EventArgs e) => SebetiTemizleIstek?.Invoke(this, EventArgs.Empty);
-        private void btnNagd_Click(object sender, EventArgs e) => SatisiTesdiqleIstek?.Invoke(this, OdenisMetodu.Nağd);
-        private void btnKart_Click(object sender, EventArgs e) => SatisiTesdiqleIstek?.Invoke(this, OdenisMetodu.Kart);
-        private void btnNisye_Click(object sender, EventArgs e) => SatisiTesdiqleIstek?.Invoke(this, OdenisMetodu.Nisyə);
-        private void btn5AZN_Click(object sender, EventArgs e) => SatisiTesdiqleIstek?.Invoke(this, OdenisMetodu.Nağd);
-        private void btn10AZN_Click(object sender, EventArgs e) => SatisiTesdiqleIstek?.Invoke(this, OdenisMetodu.Nağd);
-        private void btn20AZN_Click(object sender, EventArgs e) => SatisiTesdiqleIstek?.Invoke(this, OdenisMetodu.Nağd);
-        private void btn50AZN_Click(object sender, EventArgs e) => SatisiTesdiqleIstek?.Invoke(this, OdenisMetodu.Nağd);
-        private void btn100AZN_Click(object sender, EventArgs e) => SatisiTesdiqleIstek?.Invoke(this, OdenisMetodu.Nağd);
-        private void btnSatisiGozlet_Click(object sender, EventArgs e) => SatisiGozletIstek?.Invoke(this, EventArgs.Empty);
-        private void btnGozleyenSatislar_Click(object sender, EventArgs e) => GozleyenSatisiAcIstek?.Invoke(this, EventArgs.Empty);
+        private void btnSebetdenSil_Click(object sender, EventArgs e)
+        {
+            SebetdenSilIstek?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void btnSebetTemizle_Click(object sender, EventArgs e)
+        {
+            SebetiTemizleIstek?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void btnNagd_Click(object sender, EventArgs e)
+        {
+            SatisiTesdiqleIstek?.Invoke(this, OdenisMetodu.Nağd);
+        }
+
+        private void btnKart_Click(object sender, EventArgs e)
+        {
+            SatisiTesdiqleIstek?.Invoke(this, OdenisMetodu.Kart);
+        }
+
+        private void btnNisye_Click(object sender, EventArgs e)
+        {
+            SatisiTesdiqleIstek?.Invoke(this, OdenisMetodu.Nisyə);
+        }
+
+        private void btn5AZN_Click(object sender, EventArgs e)
+        {
+            SatisiTesdiqleIstek?.Invoke(this, OdenisMetodu.Nağd);
+        }
+
+        private void btn10AZN_Click(object sender, EventArgs e)
+        {
+            SatisiTesdiqleIstek?.Invoke(this, OdenisMetodu.Nağd);
+        }
+
+        private void btn20AZN_Click(object sender, EventArgs e)
+        {
+            SatisiTesdiqleIstek?.Invoke(this, OdenisMetodu.Nağd);
+        }
+
+        private void btn50AZN_Click(object sender, EventArgs e)
+        {
+            SatisiTesdiqleIstek?.Invoke(this, OdenisMetodu.Nağd);
+        }
+
+        private void btn100AZN_Click(object sender, EventArgs e)
+        {
+            SatisiTesdiqleIstek?.Invoke(this, OdenisMetodu.Nağd);
+        }
+
+        private void btnSatisiGozlet_Click(object sender, EventArgs e)
+        {
+            SatisiGozletIstek?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void btnGozleyenSatislar_Click(object sender, EventArgs e)
+        {
+            GozleyenSatisiAcIstek?.Invoke(this, EventArgs.Empty);
+        }
+
         private void contextMenuStripGozleyenler_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             if (e.ClickedItem?.Tag is GozleyenSatis secilmisSatis)
@@ -578,12 +626,10 @@ namespace AzAgroPOS.Teqdimat
         }
         private void btnIndirim_Click(object sender, EventArgs e)
         {
-            using (var endirimFormu = new EndirimFormu(SecilmisSebetElementi))
+            using var endirimFormu = new EndirimFormu(SecilmisSebetElementi);
+            if (endirimFormu.ShowDialog() == DialogResult.OK)
             {
-                if (endirimFormu.ShowDialog() == DialogResult.OK)
-                {
-                    IndirimIstek?.Invoke(this, endirimFormu.EndirimParametrləri);
-                }
+                IndirimIstek?.Invoke(this, endirimFormu.EndirimParametrləri);
             }
         }
         private void btnIxracEt_Click(object sender, EventArgs e)
@@ -890,14 +936,12 @@ namespace AzAgroPOS.Teqdimat
             {
                 try
                 {
-                    using (var mehsulFormu = _serviceProvider.GetRequiredService<MehsulIdareetmeFormu>())
-                    {
-                        mehsulFormu.MehsulDuzelisEt(mehsul.Id);
-                        mehsulFormu.ShowDialog();
+                    using var mehsulFormu = _serviceProvider.GetRequiredService<MehsulIdareetmeFormu>();
+                    mehsulFormu.MehsulDuzelisEt(mehsul.Id);
+                    mehsulFormu.ShowDialog();
 
-                        // Refresh search results after editing
-                        MehsulAxtarIstek?.Invoke(this, EventArgs.Empty);
-                    }
+                    // Refresh search results after editing
+                    MehsulAxtarIstek?.Invoke(this, EventArgs.Empty);
                 }
                 catch (Exception ex)
                 {

@@ -25,13 +25,20 @@ public class EmeliyyatNeticesi
     /// qeyd: Əgər əməliyyat uğursuz olarsa, Ugursuz metodundan istifadə olunur ki, müvafiq mesajı göstərsin.
     /// </summary>
     /// <returns></returns>
-    public static EmeliyyatNeticesi Ugurlu() => new() { UgurluDur = true };
+    public static EmeliyyatNeticesi Ugurlu()
+    {
+        return new() { UgurluDur = true };
+    }
+
     /// <summary>
     /// Uğursuz əməliyyatın nəticəsini qaytarır. bu metod əməliyyatın uğursuz olduğunu göstərir və UgurluDur sahəsini false olaraq təyin edir.
     /// </summary>
     /// <param name="mesaj"></param>
     /// <returns></returns>
-    public static EmeliyyatNeticesi Ugursuz(string mesaj) => new() { UgurluDur = false, Mesaj = mesaj };
+    public static EmeliyyatNeticesi Ugursuz(string mesaj)
+    {
+        return new() { UgurluDur = false, Mesaj = mesaj };
+    }
 }
 
 /// <summary>
@@ -51,11 +58,18 @@ public class EmeliyyatNeticesi<T> : EmeliyyatNeticesi
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
-    public static EmeliyyatNeticesi<T> Ugurlu(T data) => new() { UgurluDur = true, Data = data };
+    public static EmeliyyatNeticesi<T> Ugurlu(T data)
+    {
+        return new() { UgurluDur = true, Data = data };
+    }
+
     /// <summary>
     /// Uğursuz əməliyyatın nəticəsini qaytarır. bu metod əməliyyatın uğursuz olduğunu göstərir və UgurluDur sahəsini false olaraq təyin edir.
     /// </summary>
     /// <param name="mesaj"></param>
     /// <returns></returns>
-    public static new EmeliyyatNeticesi<T> Ugursuz(string mesaj) => new() { UgurluDur = false, Mesaj = mesaj };
+    public static new EmeliyyatNeticesi<T> Ugursuz(string mesaj)
+    {
+        return new() { UgurluDur = false, Mesaj = mesaj };
+    }
 }

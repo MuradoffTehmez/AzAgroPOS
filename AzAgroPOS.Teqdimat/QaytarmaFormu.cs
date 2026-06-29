@@ -54,7 +54,7 @@ namespace AzAgroPOS.Teqdimat
                 // Add a checkbox column for selection if it doesn't exist
                 if (dgvSatisMehsullari.Columns["Secim"] == null)
                 {
-                    DataGridViewCheckBoxColumn secimCol = new DataGridViewCheckBoxColumn();
+                    DataGridViewCheckBoxColumn secimCol = new();
                     secimCol.Name = "Secim";
                     secimCol.HeaderText = "Seç";
                     dgvSatisMehsullari.Columns.Insert(0, secimCol);

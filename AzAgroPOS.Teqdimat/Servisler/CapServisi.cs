@@ -400,7 +400,7 @@ public class CapServisi
         // Metni qisalt
         while (text.Length > 3 && g.MeasureString(text + "...", font).Width > maxWidth)
         {
-            text = text.Substring(0, text.Length - 1);
+            text = text[..^1];
         }
 
         return text + "...";

@@ -17,7 +17,7 @@ public class IsciPresenter
     private readonly IIsciView _view;
     private readonly IsciManager _isciManager;
     private List<IsciDto> _isciCache;
-    private readonly SehifeParametrleri _sehifeParametrleri = new SehifeParametrleri { SehifeOlcusu = 50 };
+    private readonly SehifeParametrleri _sehifeParametrleri = new() { SehifeOlcusu = 50 };
     private bool _paginationEnabled = true;
 
     public IsciPresenter(IIsciView view, IsciManager isciManager)

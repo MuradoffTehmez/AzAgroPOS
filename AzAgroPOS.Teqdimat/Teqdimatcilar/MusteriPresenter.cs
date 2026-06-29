@@ -10,7 +10,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
         private readonly IMusteriView _view;
         private readonly MusteriManager _musteriManager;
         private List<MusteriDto> _musteriCache;
-        private readonly SehifeParametrleri _sehifeParametrleri = new SehifeParametrleri { SehifeOlcusu = 50 };
+        private readonly SehifeParametrleri _sehifeParametrleri = new() { SehifeOlcusu = 50 };
         private bool _paginationEnabled = true;
 
         public MusteriPresenter(IMusteriView view, MusteriManager musteriManager)

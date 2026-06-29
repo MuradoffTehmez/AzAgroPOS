@@ -369,16 +369,14 @@ namespace AzAgroPOS.Teqdimat
 
         public string LogoSecDialoquGoster()
         {
-            using (var openFileDialog = new OpenFileDialog())
-            {
-                openFileDialog.Title = "Şirkət Loqosunu Seçin";
-                openFileDialog.Filter = "Şəkil Faylları (*.png;*.jpg;*.jpeg;*.bmp)|*.png;*.jpg;*.jpeg;*.bmp";
-                openFileDialog.FilterIndex = 1;
+            using var openFileDialog = new OpenFileDialog();
+            openFileDialog.Title = "Şirkət Loqosunu Seçin";
+            openFileDialog.Filter = "Şəkil Faylları (*.png;*.jpg;*.jpeg;*.bmp)|*.png;*.jpg;*.jpeg;*.bmp";
+            openFileDialog.FilterIndex = 1;
 
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    return openFileDialog.FileName;
-                }
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                return openFileDialog.FileName;
             }
 
             return null;
@@ -403,10 +401,8 @@ namespace AzAgroPOS.Teqdimat
                 }
 
                 // Yeni şəkli yüklə
-                using (var stream = new FileStream(logoYolu, FileMode.Open, FileAccess.Read))
-                {
-                    picLogo.Image = Image.FromStream(stream);
-                }
+                using var stream = new FileStream(logoYolu, FileMode.Open, FileAccess.Read);
+                picLogo.Image = Image.FromStream(stream);
             }
             catch (Exception ex)
             {

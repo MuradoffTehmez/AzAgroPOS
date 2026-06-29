@@ -398,9 +398,21 @@ namespace AzAgroPOS.Teqdimat
             toolTip1.SetToolTip(btnKopyala, "Seçilmiş məhsulu kopyalayın");
             toolTip1.SetToolTip(txtAxtar, "Məhsullar arasında axtarış edin");
         }
-        private void btnElaveEt_Click(object sender, EventArgs e) => MehsulElaveEt_Istek?.Invoke(this, EventArgs.Empty);
-        private void btnYenile_Click(object sender, EventArgs e) => MehsulYenile_Istek?.Invoke(this, EventArgs.Empty);
-        private void btnSil_Click(object sender, EventArgs e) => MehsulSil_Istek?.Invoke(this, EventArgs.Empty);
+        private void btnElaveEt_Click(object sender, EventArgs e)
+        {
+            MehsulElaveEt_Istek?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void btnYenile_Click(object sender, EventArgs e)
+        {
+            MehsulYenile_Istek?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void btnSil_Click(object sender, EventArgs e)
+        {
+            MehsulSil_Istek?.Invoke(this, EventArgs.Empty);
+        }
+
         private void btnTemizle_Click(object sender, EventArgs e)
         {
             FormuTemizle_Istek?.Invoke(this, EventArgs.Empty);
@@ -410,9 +422,21 @@ namespace AzAgroPOS.Teqdimat
             btnElaveEt.Text = "Yeni Məhsulu Yadda Saxla";
             btnKopyala.Enabled = false;
         }
-        private void btnStokKoduYarat_Click(object sender, EventArgs e) => StokKoduGeneralasiyaIstek?.Invoke(this, EventArgs.Empty);
-        private void btnBarkodYarat_Click(object sender, EventArgs e) => BarkodGeneralasiyaIstek?.Invoke(this, EventArgs.Empty);
-        private void btnKopyala_Click(object sender, EventArgs e) => Kopyala_Istek?.Invoke(this, EventArgs.Empty);
+        private void btnStokKoduYarat_Click(object sender, EventArgs e)
+        {
+            StokKoduGeneralasiyaIstek?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void btnBarkodYarat_Click(object sender, EventArgs e)
+        {
+            BarkodGeneralasiyaIstek?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void btnKopyala_Click(object sender, EventArgs e)
+        {
+            Kopyala_Istek?.Invoke(this, EventArgs.Empty);
+        }
+
         private void btnIxracEt_Click(object sender, EventArgs e)
         {
             Yardimcilar.ExportHelper.ShowExportDialog(dgvMehsullar, "mehsullar");
@@ -448,7 +472,10 @@ namespace AzAgroPOS.Teqdimat
                 btnKopyala.Enabled = false;
             }
         }
-        private void txtAxtar_TextChanged(object sender, EventArgs e) => Axtaris_Istek?.Invoke(this, EventArgs.Empty);
+        private void txtAxtar_TextChanged(object sender, EventArgs e)
+        {
+            Axtaris_Istek?.Invoke(this, EventArgs.Empty);
+        }
         #endregion
 
         #region Auto-complete Setup
@@ -487,10 +514,8 @@ namespace AzAgroPOS.Teqdimat
                 try
                 {
                     // Barkod çapı formasını açırıq və məhsulu əlavə edirik
-                    using (var barkodCapiFormu = _serviceProvider.GetRequiredService<BarkodCapiFormu>())
-                    {
-                        barkodCapiFormu.ShowDialog();
-                    }
+                    using var barkodCapiFormu = _serviceProvider.GetRequiredService<BarkodCapiFormu>();
+                    barkodCapiFormu.ShowDialog();
                 }
                 catch (Exception ex)
                 {
@@ -516,10 +541,8 @@ namespace AzAgroPOS.Teqdimat
             {
                 try
                 {
-                    using (var mehsulFormu = _serviceProvider.GetRequiredService<MehsulIdareetmeFormu>())
-                    {
-                        mehsulFormu.MehsulDuzelisEt(mehsul.Id);
-                    }
+                    using var mehsulFormu = _serviceProvider.GetRequiredService<MehsulIdareetmeFormu>();
+                    mehsulFormu.MehsulDuzelisEt(mehsul.Id);
                 }
                 catch (Exception ex)
                 {

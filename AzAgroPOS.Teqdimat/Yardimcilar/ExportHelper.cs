@@ -36,45 +36,43 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
                 }
 
                 // Yeni Excel paketi yarat
-                using (var package = new ExcelPackage())
+                using var package = new ExcelPackage();
+                var worksheet = package.Workbook.Worksheets.Add("Data");
+
+                // Başlıqları yaz
+                for (int i = 0; i < dataGridView.Columns.Count; i++)
                 {
-                    var worksheet = package.Workbook.Worksheets.Add("Data");
-
-                    // Başlıqları yaz
-                    for (int i = 0; i < dataGridView.Columns.Count; i++)
+                    if (dataGridView.Columns[i].Visible)
                     {
-                        if (dataGridView.Columns[i].Visible)
-                        {
-                            worksheet.Cells[1, i + 1].Value = dataGridView.Columns[i].HeaderText;
-                            worksheet.Cells[1, i + 1].Style.Font.Bold = true;
-                        }
+                        worksheet.Cells[1, i + 1].Value = dataGridView.Columns[i].HeaderText;
+                        worksheet.Cells[1, i + 1].Style.Font.Bold = true;
                     }
-
-                    // Məlumatları yaz
-                    for (int i = 0; i < dataGridView.Rows.Count; i++)
-                    {
-                        int excelColumn = 1;
-                        for (int j = 0; j < dataGridView.Columns.Count; j++)
-                        {
-                            if (dataGridView.Columns[j].Visible)
-                            {
-                                var cellValue = dataGridView.Rows[i].Cells[j].Value;
-                                worksheet.Cells[i + 2, excelColumn].Value = cellValue?.ToString() ?? string.Empty;
-                                excelColumn++;
-                            }
-                        }
-                    }
-
-                    // Avtomatik sütun genişliyi
-                    worksheet.Cells.AutoFitColumns();
-
-                    // Faylı saxla
-                    var fileBytes = package.GetAsByteArray();
-                    File.WriteAllBytes(fileName, fileBytes);
-
-                    MessageBox.Show($"Məlumatlar uğurla {fileName} faylına ixrac edildi.",
-                        "İxrac Uğurlu", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
+
+                // Məlumatları yaz
+                for (int i = 0; i < dataGridView.Rows.Count; i++)
+                {
+                    int excelColumn = 1;
+                    for (int j = 0; j < dataGridView.Columns.Count; j++)
+                    {
+                        if (dataGridView.Columns[j].Visible)
+                        {
+                            var cellValue = dataGridView.Rows[i].Cells[j].Value;
+                            worksheet.Cells[i + 2, excelColumn].Value = cellValue?.ToString() ?? string.Empty;
+                            excelColumn++;
+                        }
+                    }
+                }
+
+                // Avtomatik sütun genişliyi
+                worksheet.Cells.AutoFitColumns();
+
+                // Faylı saxla
+                var fileBytes = package.GetAsByteArray();
+                File.WriteAllBytes(fileName, fileBytes);
+
+                MessageBox.Show($"Məlumatlar uğurla {fileName} faylına ixrac edildi.",
+                    "İxrac Uğurlu", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
@@ -94,43 +92,41 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         {
             try
             {
-                using (var package = new ExcelPackage())
+                using var package = new ExcelPackage();
+                var worksheet = package.Workbook.Worksheets.Add(sheetName);
+
+                // T tipinin xüsusiyyətlərini əldə et
+                var properties = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                    .Where(p => p.CanRead)
+                    .ToList();
+
+                // Başlıqları yaz
+                for (int i = 0; i < properties.Count; i++)
                 {
-                    var worksheet = package.Workbook.Worksheets.Add(sheetName);
-
-                    // T tipinin xüsusiyyətlərini əldə et
-                    var properties = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                        .Where(p => p.CanRead)
-                        .ToList();
-
-                    // Başlıqları yaz
-                    for (int i = 0; i < properties.Count; i++)
-                    {
-                        worksheet.Cells[1, i + 1].Value = properties[i].Name;
-                        worksheet.Cells[1, i + 1].Style.Font.Bold = true;
-                    }
-
-                    // Məlumatları yaz
-                    var dataList = data.ToList();
-                    for (int i = 0; i < dataList.Count; i++)
-                    {
-                        for (int j = 0; j < properties.Count; j++)
-                        {
-                            var value = properties[j].GetValue(dataList[i]);
-                            worksheet.Cells[i + 2, j + 1].Value = value?.ToString() ?? string.Empty;
-                        }
-                    }
-
-                    // Avtomatik sütun genişliyi
-                    worksheet.Cells.AutoFitColumns();
-
-                    // Faylı saxla
-                    var fileBytes = package.GetAsByteArray();
-                    File.WriteAllBytes(fileName, fileBytes);
-
-                    MessageBox.Show($"Məlumatlar uğurla {fileName} faylına ixrac edildi.",
-                        "İxrac Uğurlu", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    worksheet.Cells[1, i + 1].Value = properties[i].Name;
+                    worksheet.Cells[1, i + 1].Style.Font.Bold = true;
                 }
+
+                // Məlumatları yaz
+                var dataList = data.ToList();
+                for (int i = 0; i < dataList.Count; i++)
+                {
+                    for (int j = 0; j < properties.Count; j++)
+                    {
+                        var value = properties[j].GetValue(dataList[i]);
+                        worksheet.Cells[i + 2, j + 1].Value = value?.ToString() ?? string.Empty;
+                    }
+                }
+
+                // Avtomatik sütun genişliyi
+                worksheet.Cells.AutoFitColumns();
+
+                // Faylı saxla
+                var fileBytes = package.GetAsByteArray();
+                File.WriteAllBytes(fileName, fileBytes);
+
+                MessageBox.Show($"Məlumatlar uğurla {fileName} faylına ixrac edildi.",
+                    "İxrac Uğurlu", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
@@ -146,16 +142,14 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         /// <param name="defaultFileName">Defolt fayl adı</param>
         public static void ShowExportDialog(DataGridView dataGridView, string defaultFileName = "export")
         {
-            using (var saveFileDialog = new SaveFileDialog())
-            {
-                saveFileDialog.Filter = "Excel Kitabları|*.xlsx|Bütün Fayllar|*.*";
-                saveFileDialog.DefaultExt = "xlsx";
-                saveFileDialog.FileName = $"{defaultFileName}_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
+            using var saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Excel Kitabları|*.xlsx|Bütün Fayllar|*.*";
+            saveFileDialog.DefaultExt = "xlsx";
+            saveFileDialog.FileName = $"{defaultFileName}_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
 
-                if (saveFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    ExportToExcel(dataGridView, saveFileDialog.FileName);
-                }
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                ExportToExcel(dataGridView, saveFileDialog.FileName);
             }
         }
     }

@@ -106,7 +106,7 @@ public class NovbePresenter
             AktivSessiya.AktivNovbeId = null;
             _view.NovbeBaxlidirGoster();
             var h = netice.Data;
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             sb.AppendLine("         Z-HESABATI");
             sb.AppendLine("---------------------------------");
             sb.AppendLine($"Kassir: {h.KassirAdi}");

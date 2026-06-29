@@ -446,14 +446,17 @@ namespace AzAgroPOS.Teqdimat
         /// <summary>
         /// Yenidən cəhd etməyə dəyməyən SQL Server xəta kodları
         /// </summary>
-        private static bool IsFatalSqlError(int errorNumber) => errorNumber switch
+        private static bool IsFatalSqlError(int errorNumber)
         {
-            18456 => true, // Login failed
-            4060 => true, // Cannot open database
-            18452 => true, // Login from untrusted domain
-            547 => true, // Constraint violation (konfigurasiya xətası)
-            _ => false
-        };
+            return errorNumber switch
+            {
+                18456 => true, // Login failed
+                4060 => true, // Cannot open database
+                18452 => true, // Login from untrusted domain
+                547 => true, // Constraint violation (konfigurasiya xətası)
+                _ => false
+            };
+        }
 
         private static string BuildSqlErrorMessage(string connectionString, SqlException ex)
         {

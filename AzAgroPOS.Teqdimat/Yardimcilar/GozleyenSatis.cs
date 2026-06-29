@@ -14,6 +14,9 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
             Sebet = sebet;
         }
 
-        public override string ToString() => Ad;
+        public override string ToString()
+        {
+            return Ad;
+        }
     }
 }

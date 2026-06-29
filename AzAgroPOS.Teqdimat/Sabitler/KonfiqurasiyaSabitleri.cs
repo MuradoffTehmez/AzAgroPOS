@@ -133,20 +133,20 @@ namespace AzAgroPOS.Teqdimat.Sabitler
         public static class Validasiya
         {
             // VÖEN 10 rəqəm olmalıdır
-            public static readonly Regex VoenPattern = new Regex(@"^\d{10}$", RegexOptions.Compiled);
+            public static readonly Regex VoenPattern = new(@"^\d{10}$", RegexOptions.Compiled);
 
             // Email validasiyası
-            public static readonly Regex EmailPattern = new Regex(
+            public static readonly Regex EmailPattern = new(
                 @"^[^@\s]+@[^@\s]+\.[^@\s]+$",
                 RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
             // Telefon (müxtəlif formatlar)
-            public static readonly Regex TelefonPattern = new Regex(
+            public static readonly Regex TelefonPattern = new(
                 @"^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$",
                 RegexOptions.Compiled);
 
             // URL validasiyası
-            public static readonly Regex UrlPattern = new Regex(
+            public static readonly Regex UrlPattern = new(
                 @"^(http|https)://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)?$",
                 RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
@@ -159,7 +159,7 @@ namespace AzAgroPOS.Teqdimat.Sabitler
             public const int SessiyaTimeoutMaksimum = 1440; // 24 saat
 
             // Saat formatı (HH:mm)
-            public static readonly Regex SaatPattern = new Regex(
+            public static readonly Regex SaatPattern = new(
                 @"^([01]?[0-9]|2[0-3]):[0-5][0-9]$",
                 RegexOptions.Compiled);
         }
