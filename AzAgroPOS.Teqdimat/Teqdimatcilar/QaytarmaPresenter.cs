@@ -64,7 +64,14 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             }
 
             string satisNomresi = _view.SatisNomresi;
-            if (string.IsNullOrWhiteSpace(satisNomresi) || !int.TryParse(satisNomresi, out int satisId))
+            string cleaned = string.IsNullOrWhiteSpace(satisNomresi) ? "" : satisNomresi.Trim();
+            string[] toRemove = { "ÇEK-", "ÇEK", "Çək-", "Çək", "QƏBZ-", "QƏBZ", "Qebz-", "Qebz", "№", "No.", "No", "Nə", "-", " " };
+            foreach (var item in toRemove)
+            {
+                cleaned = cleaned.Replace(item, "", StringComparison.OrdinalIgnoreCase);
+            }
+
+            if (string.IsNullOrEmpty(cleaned) || !int.TryParse(cleaned, out int satisId))
             {
                 _view.MesajGoster("Zəhmət olmasa, düzgün satış nömrəsi daxil edin.", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;

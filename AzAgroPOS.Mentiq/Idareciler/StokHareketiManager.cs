@@ -90,10 +90,20 @@ public class StokHareketiManager
                 IstifadeciId = istifadeciId
             };
 
+            if (hareketTipi == StokHareketTipi.Daxilolma)
+            {
+                mehsul.MovcudSay += miqdar;
+            }
+            else if (hareketTipi == StokHareketTipi.Cixis)
+            {
+                mehsul.MovcudSay -= miqdar;
+            }
+            _unitOfWork.Mehsullar.Yenile(mehsul);
+
             await _stokHareketiRepo.ElaveEtAsync(stokHareketi);
             // QEYD: UnitOfWork.Save() çağıran tərəf tərəfindən həyata keçirilməlidir
 
-            Logger.MelumatYaz($"Stok hərəkəti uğurla qeydə alındı: ID={stokHareketi.Id}");
+            Logger.MelumatYaz($"Stok hərəkəti uğurla qeydə alındı: ID={stokHareketi.Id}, Yeni Stok={mehsul.MovcudSay}");
             return EmeliyyatNeticesi<int>.Ugurlu(stokHareketi.Id);
         }
         catch (Exception ex)
