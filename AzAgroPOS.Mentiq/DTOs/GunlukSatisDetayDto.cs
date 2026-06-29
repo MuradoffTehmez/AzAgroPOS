@@ -1,8 +1,6 @@
 ﻿// Fayl: AzAgroPOS.Mentiq/DTOs/GunlukSatisDetayDto.cs
+
 namespace AzAgroPOS.Mentiq.DTOs;
-
-using System;
-
 /// <summary>
 /// Günlük satış hesabatında hər bir satış əməliyyatının detalını təmsil edir.
 /// </summary>

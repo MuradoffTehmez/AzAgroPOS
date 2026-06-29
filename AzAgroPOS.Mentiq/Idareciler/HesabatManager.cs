@@ -1,16 +1,12 @@
 ﻿// Fayl: AzAgroPOS.Mentiq/Idareciler/HesabatManager.cs
-namespace AzAgroPOS.Mentiq.Idareciler;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Mentiq.Yardimcilar;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
+namespace AzAgroPOS.Mentiq.Idareciler;
 /// <summary>
 /// Hesabatların hazırlanması ilə bağlı biznes məntiqini idarə edir.
 /// </summary>
@@ -33,19 +29,19 @@ public class HesabatManager
     /// <param name="tarix">Hesabatın hazırlanacağı gün.</param>
     public async Task<EmeliyyatNeticesi<GunlukSatisHesabatDto>> GunlukSatisHesabatiGetirAsync(DateTime tarix)
     {
-        Logger.MelumatYaz($"Günlük satış hesabatı üçün tarix: {tarix.ToShortDateString()}");
+        Logger.MelumatYaz($"Günlük satış hesabatı üçün tarix: {tarix:d}");
         try
         {
-            var gununBasi = tarix.Date;
-            var gununSonu = gununBasi.AddDays(1).AddTicks(-1);
+            DateTime gununBasi = tarix.Date;
+            DateTime gununSonu = gununBasi.AddDays(1).AddTicks(-1);
 
             // Verilənlər bazasından həmin günə aid satışları müştəri məlumatları ilə birlikdə çəkirik.
-            var satislar = await _unitOfWork.Satislar
+            IEnumerable<Satis> satislar = await _unitOfWork.Satislar
                 .AxtarAsync(s => s.Tarix >= gununBasi && s.Tarix <= gununSonu);
 
             // Müştəri məlumatlarını əlavə etmək üçün ayrıca sorğu
-            var musteriIds = satislar.Where(s => s.MusteriId.HasValue).Select(s => s.MusteriId.Value).Distinct().ToList();
-            var musteriler = (await _unitOfWork.Musteriler.AxtarAsync(m => musteriIds.Contains(m.Id)))
+            List<int> musteriIds = satislar.Where(s => s.MusteriId.HasValue).Select(s => s.MusteriId.Value).Distinct().ToList();
+            Dictionary<int, string> musteriler = (await _unitOfWork.Musteriler.AxtarAsync(m => musteriIds.Contains(m.Id)))
                              .ToDictionary(m => m.Id, m => m.TamAd);
 
 
@@ -54,7 +50,7 @@ public class HesabatManager
                 return EmeliyyatNeticesi<GunlukSatisHesabatDto>.Ugursuz("Seçilmiş tarix üçün heç bir satış tapılmadı.");
             }
 
-            var hesabat = new GunlukSatisHesabatDto
+            GunlukSatisHesabatDto hesabat = new()
             {
                 HesabatTarixi = gununBasi,
                 UmumiDovriyye = satislar.Sum(s => s.UmumiMebleg),
@@ -89,16 +85,16 @@ public class HesabatManager
     /// <param name="bitis">Hesabatın bitiş tarixi.</param>
     public async Task<EmeliyyatNeticesi<List<MehsulUzreSatisDetayDto>>> MehsulUzreSatisHesabatiGetirAsync(DateTime baslangic, DateTime bitis)
     {
-        Logger.MelumatYaz($"Məhsul üzrə satış hesabatı üçün tarix aralığı: {baslangic.ToShortDateString()} - {bitis.ToShortDateString()}");
+        Logger.MelumatYaz($"Məhsul üzrə satış hesabatı üçün tarix aralığı: {baslangic:d} - {bitis:d}");
         try
         {
-            var baslangicTarixi = baslangic.Date;
-            var bitisTarixi = bitis.Date.AddDays(1).AddTicks(-1);
+            DateTime baslangicTarixi = baslangic.Date;
+            DateTime bitisTarixi = bitis.Date.AddDays(1).AddTicks(-1);
 
-            var satisDetallari = await _unitOfWork.Satislar.AxtarAsync(s => s.Tarix >= baslangicTarixi && s.Tarix <= bitisTarixi);
+            IEnumerable<Satis> satisDetallari = await _unitOfWork.Satislar.AxtarAsync(s => s.Tarix >= baslangicTarixi && s.Tarix <= bitisTarixi);
 
-            var mehsulIds = satisDetallari.SelectMany(s => s.SatisDetallari).Select(d => d.MehsulId).Distinct().ToList();
-            var mehsullar = (await _unitOfWork.Mehsullar.AxtarAsync(m => mehsulIds.Contains(m.Id)))
+            List<int> mehsulIds = satisDetallari.SelectMany(s => s.SatisDetallari).Select(d => d.MehsulId).Distinct().ToList();
+            Dictionary<int, Mehsul> mehsullar = (await _unitOfWork.Mehsullar.AxtarAsync(m => mehsulIds.Contains(m.Id)))
                             .ToDictionary(m => m.Id);
 
 
@@ -107,7 +103,7 @@ public class HesabatManager
                 return EmeliyyatNeticesi<List<MehsulUzreSatisDetayDto>>.Ugursuz("Seçilmiş tarix aralığı üçün heç bir satış tapılmadı.");
             }
 
-            var hesabat = satisDetallari
+            List<MehsulUzreSatisDetayDto> hesabat = satisDetallari
                 .SelectMany(s => s.SatisDetallari)
                 .GroupBy(d => d.MehsulId)
                 .Select(g => new MehsulUzreSatisDetayDto
@@ -139,14 +135,14 @@ public class HesabatManager
         Logger.MelumatYaz($"Anbar qalıq hesabatı üçün limit: {limitSay}");
         try
         {
-            var mehsullar = await _unitOfWork.Mehsullar.AxtarAsync(m => m.MovcudSay <= limitSay);
+            IEnumerable<Mehsul> mehsullar = await _unitOfWork.Mehsullar.AxtarAsync(m => m.MovcudSay <= limitSay);
 
             if (!mehsullar.Any())
             {
                 return EmeliyyatNeticesi<List<AnbarQaliqDetayDto>>.Ugursuz($"Anbarda sayı {limitSay}-dən az olan məhsul tapılmadı.");
             }
 
-            var hesabat = mehsullar
+            List<AnbarQaliqDetayDto> hesabat = mehsullar
                 .Select(m => new AnbarQaliqDetayDto
                 {
                     StokKodu = m.StokKodu,
@@ -172,16 +168,18 @@ public class HesabatManager
         Logger.MelumatYaz("Bağlanmış növbələr gətirilir.");
         try
         {
-            var novbeler = await _unitOfWork.Novbeler.AxtarAsync(n => n.Status == NovbeStatusu.Bagli);
+            IEnumerable<Novbe> novbeler = await _unitOfWork.Novbeler.AxtarAsync(n => n.Status == NovbeStatusu.Bagli);
 
-            var isciIds = novbeler.Select(n => n.IsciId).Distinct().ToList();
-            var isciler = (await _unitOfWork.Istifadeciler.AxtarAsync(i => isciIds.Contains(i.Id)))
+            List<int> isciIds = novbeler.Select(n => n.IsciId).Distinct().ToList();
+            Dictionary<int, string> isciler = (await _unitOfWork.Istifadeciler.AxtarAsync(i => isciIds.Contains(i.Id)))
                           .ToDictionary(i => i.Id, i => i.TamAd);
 
             if (!novbeler.Any())
+            {
                 return EmeliyyatNeticesi<List<BaglanmisNovbeDto>>.Ugursuz("Heç bir bağlanmış növbə tapılmadı.");
+            }
 
-            var dtoSiyahisi = novbeler
+            List<BaglanmisNovbeDto> dtoSiyahisi = novbeler
                 .Select(n => new BaglanmisNovbeDto
                 {
                     NovbeId = n.Id,
@@ -209,14 +207,16 @@ public class HesabatManager
         Logger.MelumatYaz($"Z-Hesabat üçün növbə ID-si: {novbeId}");
         try
         {
-            var novbe = await _unitOfWork.Novbeler.GetirAsync(novbeId);
+            Novbe novbe = await _unitOfWork.Novbeler.GetirAsync(novbeId);
             if (novbe == null || novbe.Status == NovbeStatusu.Aciq)
+            {
                 return EmeliyyatNeticesi<ZHesabatDto>.Ugursuz("Bağlanmış növbə tapılmadı.");
+            }
 
-            var novbeSatislar = await _unitOfWork.Satislar.AxtarAsync(s => s.NovbeId == novbeId);
-            var isci = await _unitOfWork.Istifadeciler.GetirAsync(novbe.IsciId);
+            IEnumerable<Satis> novbeSatislar = await _unitOfWork.Satislar.AxtarAsync(s => s.NovbeId == novbeId);
+            Istifadeci isci = await _unitOfWork.Istifadeciler.GetirAsync(novbe.IsciId);
 
-            var hesabat = new ZHesabatDto
+            ZHesabatDto hesabat = new()
             {
                 AcilmaTarixi = novbe.AcilmaTarixi,
                 BaglanmaTarixi = novbe.BaglanmaTarixi.Value,
@@ -249,27 +249,27 @@ public class HesabatManager
     /// <returns>P&L hesabat məlumatları</returns>
     public async Task<EmeliyyatNeticesi<MenfeetZererHesabatDto>> MenfeetZererHesabatiGetirAsync(DateTime baslangic, DateTime bitis)
     {
-        Logger.MelumatYaz($"Mənfəət və Zərər hesabatı hazırlanır: {baslangic.ToShortDateString()} - {bitis.ToShortDateString()}");
+        Logger.MelumatYaz($"Mənfəət və Zərər hesabatı hazırlanır: {baslangic:d} - {bitis:d}");
         try
         {
-            var baslangicTarixi = baslangic.Date;
-            var bitisTarixi = bitis.Date.AddDays(1).AddTicks(-1);
+            DateTime baslangicTarixi = baslangic.Date;
+            DateTime bitisTarixi = bitis.Date.AddDays(1).AddTicks(-1);
 
             // 1. Ümumi Satış Gəlirini hesabla
-            var satislar = await _unitOfWork.Satislar.AxtarAsync(s => s.Tarix >= baslangicTarixi && s.Tarix <= bitisTarixi);
-            var umumiSatisGeliri = satislar.Sum(s => s.UmumiMebleg);
+            IEnumerable<Satis> satislar = await _unitOfWork.Satislar.AxtarAsync(s => s.Tarix >= baslangicTarixi && s.Tarix <= bitisTarixi);
+            decimal umumiSatisGeliri = satislar.Sum(s => s.UmumiMebleg);
 
             // 2. Satılan Malların Maya Dəyərini (COGS) hesabla
             // COGS = Satılan məhsulların alış qiymətlərinin cəmi
             decimal cogs = 0;
-            foreach (var satis in satislar)
+            foreach (Satis satis in satislar)
             {
                 // Satış detallarını əldə et
-                var satisDetallari = satis.SatisDetallari;
-                foreach (var detal in satisDetallari)
+                ICollection<SatisDetali> satisDetallari = satis.SatisDetallari;
+                foreach (SatisDetali detal in satisDetallari)
                 {
                     // Məhsulun alış qiymətini tap
-                    var mehsul = await _unitOfWork.Mehsullar.GetirAsync(detal.MehsulId);
+                    Mehsul mehsul = await _unitOfWork.Mehsullar.GetirAsync(detal.MehsulId);
                     if (mehsul != null && mehsul.AlisQiymeti > 0)
                     {
                         cogs += detal.Miqdar * mehsul.AlisQiymeti;
@@ -278,18 +278,18 @@ public class HesabatManager
             }
 
             // 3. Əməliyyat Xərclərini hesabla (Xərc cədvəlindən)
-            var xerclerNetice = await _maliyyeManager.ButunXercleriGetirAsync(baslangicTarixi, bitisTarixi);
-            var emeliyyatXercleri = xerclerNetice.UgurluDur
+            EmeliyyatNeticesi<List<Xerc>> xerclerNetice = await _maliyyeManager.ButunXercleriGetirAsync(baslangicTarixi, bitisTarixi);
+            decimal emeliyyatXercleri = xerclerNetice.UgurluDur
                 ? xerclerNetice.Data.Where(x => x.Novu != XercNovu.EmekHaqqi).Sum(x => x.Mebleg)
                 : 0;
 
             // 4. Əmək Haqqı Xərclərini hesabla
-            var emekHaqqiXercleri = xerclerNetice.UgurluDur
+            decimal emekHaqqiXercleri = xerclerNetice.UgurluDur
                 ? xerclerNetice.Data.Where(x => x.Novu == XercNovu.EmekHaqqi).Sum(x => x.Mebleg)
                 : 0;
 
             // 5. Hesabatı yarat
-            var hesabat = new MenfeetZererHesabatDto
+            MenfeetZererHesabatDto hesabat = new()
             {
                 BaslangicTarixi = baslangicTarixi,
                 BitisTarixi = bitisTarixi,

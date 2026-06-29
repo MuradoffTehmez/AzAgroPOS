@@ -1,16 +1,12 @@
 // Fayl: AzAgroPOS.Mentiq/Idareciler/TemirManager.cs
-namespace AzAgroPOS.Mentiq.Idareciler;
 // using-lər
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Mentiq.Yardimcilar;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
+namespace AzAgroPOS.Mentiq.Idareciler;
 /// <summary>
 /// temir meneceri, təmir sifarişləri ilə bağlı əməliyyatları
 /// rol modelini idarə edən menecer.
@@ -38,8 +34,8 @@ public class TemirManager
     {
         try
         {
-            var sifarisler = await _unitOfWork.TemirSifarisleri.ButununuGetirAsync();
-            var dtolar = sifarisler.Select(s => new TemirDto
+            IEnumerable<Temir> sifarisler = await _unitOfWork.TemirSifarisleri.ButununuGetirAsync();
+            List<TemirDto> dtolar = sifarisler.Select(s => new TemirDto
             {
                 Id = s.Id,
                 MusteriAdi = s.MusteriAdi,
@@ -78,9 +74,11 @@ public class TemirManager
         try
         {
             if (string.IsNullOrWhiteSpace(yeniSifaris.MusteriAdi) || string.IsNullOrWhiteSpace(yeniSifaris.CihazAdi))
+            {
                 return EmeliyyatNeticesi<int>.Ugursuz("Müştəri adı və cihaz adı boş ola bilməz.");
+            }
 
-            var sifaris = new Temir
+            Temir sifaris = new()
             {
                 MusteriAdi = yeniSifaris.MusteriAdi,
                 MusteriTelefonu = yeniSifaris.MusteriTelefonu,
@@ -121,11 +119,15 @@ public class TemirManager
         try
         {
             if (string.IsNullOrWhiteSpace(sifarisDto.MusteriAdi) || string.IsNullOrWhiteSpace(sifarisDto.CihazAdi))
+            {
                 return EmeliyyatNeticesi.Ugursuz("Müştəri adı və cihaz adı boş ola bilməz.");
+            }
 
-            var movcudSifaris = await _unitOfWork.TemirSifarisleri.GetirAsync(sifarisDto.Id);
+            Temir movcudSifaris = await _unitOfWork.TemirSifarisleri.GetirAsync(sifarisDto.Id);
             if (movcudSifaris == null)
+            {
                 return EmeliyyatNeticesi.Ugursuz("Yenilənmək üçün təmir sifarişi tapılmadı.");
+            }
 
             movcudSifaris.MusteriAdi = sifarisDto.MusteriAdi;
             movcudSifaris.MusteriTelefonu = sifarisDto.MusteriTelefonu;
@@ -162,9 +164,11 @@ public class TemirManager
     {
         try
         {
-            var sifaris = await _unitOfWork.TemirSifarisleri.GetirAsync(id);
+            Temir sifaris = await _unitOfWork.TemirSifarisleri.GetirAsync(id);
             if (sifaris == null)
+            {
                 return EmeliyyatNeticesi.Ugursuz("Silinəcək təmir sifarişi tapılmadı.");
+            }
 
             _unitOfWork.TemirSifarisleri.Sil(sifaris);
             await _unitOfWork.EmeliyyatiTesdiqleAsync();
@@ -192,9 +196,11 @@ public class TemirManager
     {
         try
         {
-            var sifaris = await _unitOfWork.TemirSifarisleri.GetirAsync(id);
+            Temir sifaris = await _unitOfWork.TemirSifarisleri.GetirAsync(id);
             if (sifaris == null)
+            {
                 return EmeliyyatNeticesi.Ugursuz("Statusu dəyişdirilmək üçün təmir sifarişi tapılmadı.");
+            }
 
             sifaris.Status = yeniStatus;
             if (yeniStatus == TemirStatusu.Hazırdır)
@@ -231,9 +237,11 @@ public class TemirManager
         try
         {
             // Təmir sifarişini tap
-            var sifaris = await _unitOfWork.TemirSifarisleri.GetirAsync(temirId);
+            Temir sifaris = await _unitOfWork.TemirSifarisleri.GetirAsync(temirId);
             if (sifaris == null)
+            {
                 return EmeliyyatNeticesi.Ugursuz("Təmir sifarişi tapılmadı.");
+            }
 
             // Təmiri tamamla
             sifaris.Status = TemirStatusu.Hazırdır;
@@ -245,10 +253,10 @@ public class TemirManager
             // Ehtiyat hissələrini stokdan çıxar
             if (ehtiyatHissəleri != null && ehtiyatHissəleri.Any())
             {
-                foreach (var hisse in ehtiyatHissəleri)
+                foreach (EhtiyatHissəsiDto hisse in ehtiyatHissəleri)
                 {
                     // Məhsulun mövcudluğunu yoxla
-                    var mehsul = await _unitOfWork.Mehsullar.GetirAsync(hisse.MehsulId);
+                    Mehsul mehsul = await _unitOfWork.Mehsullar.GetirAsync(hisse.MehsulId);
                     if (mehsul == null)
                     {
                         Logger.XəbərdarlıqYaz($"Ehtiyat hissəsi məhsulu tapılmadı: ID={hisse.MehsulId}");
@@ -256,7 +264,7 @@ public class TemirManager
                     }
 
                     // Stokda kifayət qədər məhsul olub-olmadığını yoxla
-                    var qaliqNetice = await _stokHareketiManager.MehsulQaliginGetirAsync(hisse.MehsulId);
+                    EmeliyyatNeticesi<int> qaliqNetice = await _stokHareketiManager.MehsulQaliginGetirAsync(hisse.MehsulId);
                     if (!qaliqNetice.UgurluDur || qaliqNetice.Data < (int)hisse.Miqdar)
                     {
                         return EmeliyyatNeticesi.Ugursuz(
@@ -265,7 +273,7 @@ public class TemirManager
                     }
 
                     // Stok çıxışı yarat
-                    var stokCixisNetice = await _stokHareketiManager.StokHareketiQeydeAlAsync(
+                    EmeliyyatNeticesi<int> stokCixisNetice = await _stokHareketiManager.StokHareketiQeydeAlAsync(
                         StokHareketTipi.Cixis,
                         SenedNovu.Temir,
                         temirId,
@@ -308,17 +316,19 @@ public class TemirManager
         try
         {
             // Təmirə aid stok hərəkətlərini tap
-            var hereketlerNetice = await _stokHareketiManager.SenedHereketleriniGetirAsync(SenedNovu.Temir, temirId);
+            EmeliyyatNeticesi<IEnumerable<StokHareketi>> hereketlerNetice = await _stokHareketiManager.SenedHereketleriniGetirAsync(SenedNovu.Temir, temirId);
             if (!hereketlerNetice.UgurluDur)
+            {
                 return EmeliyyatNeticesi<List<EhtiyatHissəsiDto>>.Ugursuz(hereketlerNetice.Mesaj);
+            }
 
-            var hereketler = hereketlerNetice.Data;
-            var ehtiyatHissəleri = new List<EhtiyatHissəsiDto>();
+            IEnumerable<StokHareketi>? hereketler = hereketlerNetice.Data;
+            List<EhtiyatHissəsiDto> ehtiyatHissəleri = new();
 
             // Hər bir hərəkət üçün məhsul məlumatlarını əlavə et
-            foreach (var hereket in hereketler)
+            foreach (StokHareketi hereket in hereketler)
             {
-                var mehsul = await _unitOfWork.Mehsullar.GetirAsync(hereket.MehsulId);
+                Mehsul mehsul = await _unitOfWork.Mehsullar.GetirAsync(hereket.MehsulId);
                 if (mehsul != null)
                 {
                     ehtiyatHissəleri.Add(new EhtiyatHissəsiDto
@@ -352,12 +362,12 @@ public class TemirManager
         Logger.MelumatYaz($"Səhifələnmiş təmir sifarişləri əldə edilir - Səhifə: {parametrler.SehifeNomresi}, Ölçü: {parametrler.SehifeOlcusu}");
         try
         {
-            var (sifarisler, umumiSay) = await _unitOfWork.TemirSifarisleri.SehifelenmisGetirAsync(
+            (IEnumerable<Temir>? sifarisler, int umumiSay) = await _unitOfWork.TemirSifarisleri.SehifelenmisGetirAsync(
                 parametrler.SehifeNomresi,
                 parametrler.SehifeOlcusu,
                 t => !t.Silinib);
 
-            var dtolar = sifarisler.Select(s => new TemirDto
+            List<TemirDto> dtolar = sifarisler.Select(s => new TemirDto
             {
                 Id = s.Id,
                 MusteriAdi = s.MusteriAdi,
@@ -374,7 +384,7 @@ public class TemirManager
                 IsciId = s.IsciId
             }).ToList();
 
-            var sehifelenmis = new SehifelenmisMelumat<TemirDto>(
+            SehifelenmisMelumat<TemirDto> sehifelenmis = new(
                 dtolar,
                 umumiSay,
                 parametrler.SehifeNomresi,

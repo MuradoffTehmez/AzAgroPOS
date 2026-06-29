@@ -1,8 +1,6 @@
 // Fayl: AzAgroPOS.Mentiq/DTOs/IsciPerformansDto.cs
+
 namespace AzAgroPOS.Mentiq.DTOs;
-
-using System;
-
 /// <summary>
 /// İşçinin performans məlumatlarını təqdimat qatına ötürmək üçün istifadə olunan DTO.
 /// </summary>

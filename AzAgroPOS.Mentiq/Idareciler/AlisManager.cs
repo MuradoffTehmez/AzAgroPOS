@@ -1,5 +1,4 @@
 // Fayl: AzAgroPOS.Mentiq/Idareciler/AlisManager.cs
-namespace AzAgroPOS.Mentiq.Idareciler;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Uslublar;
@@ -7,11 +6,8 @@ using AzAgroPOS.Mentiq.Yardimcilar;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
+namespace AzAgroPOS.Mentiq.Idareciler;
 /// <summary>
 /// Alış prosesini idarə edən menecer.
 /// Bu menecer tədarükçülərin qeydiyyatı, alış sifarişlərinin yaradılması, 
@@ -36,8 +32,8 @@ public class AlisManager
     /// </summary>
     private async Task<T> ExecuteInSeparateScope<T>(Func<IUnitOfWork, Task<T>> operation)
     {
-        using var scope = _serviceProvider.CreateScope();
-        var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+        using IServiceScope scope = _serviceProvider.CreateScope();
+        IUnitOfWork unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
         return await operation(unitOfWork);
     }
 
@@ -51,8 +47,8 @@ public class AlisManager
         Logger.MelumatYaz("ButunTedarukculeriGetirAsync metodu çağırıldı.");
         try
         {
-            var tedarukculer = await _unitOfWork.Tedarukculer.ButununuGetirAsync();
-            var dtolar = tedarukculer.Select(t => new TedarukcuDto
+            IEnumerable<Tedarukcu> tedarukculer = await _unitOfWork.Tedarukculer.ButununuGetirAsync();
+            List<TedarukcuDto> dtolar = tedarukculer.Select(t => new TedarukcuDto
             {
                 Id = t.Id,
                 Ad = t.Ad,
@@ -81,11 +77,13 @@ public class AlisManager
         Logger.MelumatYaz($"TedarukcuGetirAsync metodu çağırıldı. ID: {id}");
         try
         {
-            var tedarukcu = await _unitOfWork.Tedarukculer.GetirAsync(id);
+            Tedarukcu tedarukcu = await _unitOfWork.Tedarukculer.GetirAsync(id);
             if (tedarukcu == null)
+            {
                 return EmeliyyatNeticesi<TedarukcuDto>.Ugursuz("Tədarükçü tapılmadı.");
+            }
 
-            var dto = new TedarukcuDto
+            TedarukcuDto dto = new()
             {
                 Id = tedarukcu.Id,
                 Ad = tedarukcu.Ad,
@@ -116,10 +114,12 @@ public class AlisManager
         {
             // Validasiya
             if (string.IsNullOrWhiteSpace(dto.Ad))
+            {
                 return EmeliyyatNeticesi<int>.Ugursuz("Tədarükçü adı boş ola bilməz.");
+            }
 
             // Yeni tədarükçü obyekti yaradırıq
-            var yeniTedarukcu = new Tedarukcu
+            Tedarukcu yeniTedarukcu = new()
             {
                 Ad = dto.Ad,
                 Voen = dto.Voen,
@@ -150,13 +150,17 @@ public class AlisManager
         Logger.MelumatYaz($"TedarukcuYenileAsync metodu çağırıldı. ID: {dto.Id}");
         try
         {
-            var movcudTedarukcu = await _unitOfWork.Tedarukculer.GetirAsync(dto.Id);
+            Tedarukcu movcudTedarukcu = await _unitOfWork.Tedarukculer.GetirAsync(dto.Id);
             if (movcudTedarukcu == null)
+            {
                 return EmeliyyatNeticesi.Ugursuz("Yenilənmək üçün tədarükçü tapılmadı.");
+            }
 
             // Validasiya
             if (string.IsNullOrWhiteSpace(dto.Ad))
+            {
                 return EmeliyyatNeticesi.Ugursuz("Tədarükçü adı boş ola bilməz.");
+            }
 
             // Məlumatları yeniləyirik
             movcudTedarukcu.Ad = dto.Ad;
@@ -187,9 +191,11 @@ public class AlisManager
         Logger.MelumatYaz($"TedarukcuSilAsync metodu çağırıldı. ID: {id}");
         try
         {
-            var tedarukcu = await _unitOfWork.Tedarukculer.GetirAsync(id);
+            Tedarukcu tedarukcu = await _unitOfWork.Tedarukculer.GetirAsync(id);
             if (tedarukcu == null)
+            {
                 return EmeliyyatNeticesi.Ugursuz("Silinəcək tədarükçü tapılmadı.");
+            }
 
             _unitOfWork.Tedarukculer.Sil(tedarukcu);
             await _unitOfWork.EmeliyyatiTesdiqleAsync();
@@ -217,14 +223,14 @@ public class AlisManager
         {
             // Parallel execution with separate DbContext instances - performance optimization
             // Hər sorğu ayrı scope-da icra olunur ki, DbContext concurrency xətası yaranmasın
-            var sifarislerTask = ExecuteInSeparateScope(uow => uow.AlisSifarisleri.ButununuGetirAsync());
-            var tedarukculerTask = ExecuteInSeparateScope(uow => uow.Tedarukculer.ButununuGetirAsync());
+            Task<IEnumerable<AlisSifaris>> sifarislerTask = ExecuteInSeparateScope(uow => uow.AlisSifarisleri.ButununuGetirAsync());
+            Task<IEnumerable<Tedarukcu>> tedarukculerTask = ExecuteInSeparateScope(uow => uow.Tedarukculer.ButununuGetirAsync());
             await Task.WhenAll(sifarislerTask, tedarukculerTask);
 
-            var sifarisler = await sifarislerTask;
-            var tedarukculer = await tedarukculerTask;
+            IEnumerable<AlisSifaris> sifarisler = await sifarislerTask;
+            IEnumerable<Tedarukcu> tedarukculer = await tedarukculerTask;
 
-            var dtolar = sifarisler.Select(s => new AlisSifarisDto
+            List<AlisSifarisDto> dtolar = sifarisler.Select(s => new AlisSifarisDto
             {
                 Id = s.Id,
                 SifarisNomresi = s.SifarisNomresi,
@@ -256,22 +262,24 @@ public class AlisManager
         Logger.MelumatYaz($"AlisSifarisGetirAsync metodu çağırıldı. ID: {id}");
         try
         {
-            var sifaris = await _unitOfWork.AlisSifarisleri.GetirAsync(id);
+            AlisSifaris sifaris = await _unitOfWork.AlisSifarisleri.GetirAsync(id);
             if (sifaris == null)
+            {
                 return EmeliyyatNeticesi<AlisSifarisDto>.Ugursuz("Alış sifarişi tapılmadı.");
+            }
 
             // Parallel execution with separate DbContext instances - performance optimization
             // Hər sorğu ayrı scope-da icra olunur ki, DbContext concurrency xətası yaranmasın
-            var tedarukcuTask = ExecuteInSeparateScope(uow => uow.Tedarukculer.GetirAsync(sifaris.TedarukcuId));
-            var sifarisSetirTask = ExecuteInSeparateScope(uow => uow.AlisSifarisSetirleri.AxtarAsync(s => s.AlisSifarisId == sifaris.Id));
-            var mehsullarTask = ExecuteInSeparateScope(uow => uow.Mehsullar.ButununuGetirAsync());
+            Task<Tedarukcu> tedarukcuTask = ExecuteInSeparateScope(uow => uow.Tedarukculer.GetirAsync(sifaris.TedarukcuId));
+            Task<IEnumerable<AlisSifarisSetiri>> sifarisSetirTask = ExecuteInSeparateScope(uow => uow.AlisSifarisSetirleri.AxtarAsync(s => s.AlisSifarisId == sifaris.Id));
+            Task<IEnumerable<Mehsul>> mehsullarTask = ExecuteInSeparateScope(uow => uow.Mehsullar.ButununuGetirAsync());
             await Task.WhenAll(tedarukcuTask, sifarisSetirTask, mehsullarTask);
 
-            var tedarukcu = await tedarukcuTask;
-            var sifarisSetirleri = await sifarisSetirTask;
-            var mehsullar = await mehsullarTask;
+            Tedarukcu tedarukcu = await tedarukcuTask;
+            IEnumerable<AlisSifarisSetiri> sifarisSetirleri = await sifarisSetirTask;
+            IEnumerable<Mehsul> mehsullar = await mehsullarTask;
 
-            var dto = new AlisSifarisDto
+            AlisSifarisDto dto = new()
             {
                 Id = sifaris.Id,
                 SifarisNomresi = sifaris.SifarisNomresi,
@@ -317,13 +325,17 @@ public class AlisManager
         {
             // Validasiya
             if (string.IsNullOrWhiteSpace(dto.SifarisNomresi))
+            {
                 return EmeliyyatNeticesi<int>.Ugursuz("Sifariş nömrəsi boş ola bilməz.");
+            }
 
             if (dto.TedarukcuId <= 0)
+            {
                 return EmeliyyatNeticesi<int>.Ugursuz("Tədarükçü seçilməlidir.");
+            }
 
             // Yeni alış sifarişi obyekti yaradırıq
-            var yeniSifaris = new AlisSifaris
+            AlisSifaris yeniSifaris = new()
             {
                 SifarisNomresi = dto.SifarisNomresi,
                 YaradilmaTarixi = dto.YaradilmaTarixi,
@@ -339,9 +351,9 @@ public class AlisManager
             await _unitOfWork.EmeliyyatiTesdiqleAsync();
 
             // Sifariş sətirlərini yaradırıq
-            foreach (var setirDto in dto.SifarisSetirleri)
+            foreach (AlisSifarisSetiriDto setirDto in dto.SifarisSetirleri)
             {
-                var setir = new AlisSifarisSetiri
+                AlisSifarisSetiri setir = new()
                 {
                     AlisSifarisId = yeniSifaris.Id,
                     MehsulId = setirDto.MehsulId,
@@ -375,15 +387,21 @@ public class AlisManager
         {
             // Validasiya
             if (string.IsNullOrWhiteSpace(dto.SifarisNomresi))
+            {
                 return EmeliyyatNeticesi.Ugursuz("Sifariş nömrəsi boş ola bilməz.");
+            }
 
             if (dto.TedarukcuId <= 0)
+            {
                 return EmeliyyatNeticesi.Ugursuz("Tədarükçü seçilməlidir.");
+            }
 
             // Mövcud alış sifarişini axtarırıq
-            var movcudSifaris = await _unitOfWork.AlisSifarisleri.GetirAsync(dto.Id);
+            AlisSifaris movcudSifaris = await _unitOfWork.AlisSifarisleri.GetirAsync(dto.Id);
             if (movcudSifaris == null)
+            {
                 return EmeliyyatNeticesi.Ugursuz("Yenilənmək üçün alış sifarişi tapılmadı.");
+            }
 
             // Məlumatları yeniləyirik
             movcudSifaris.SifarisNomresi = dto.SifarisNomresi;
@@ -416,9 +434,11 @@ public class AlisManager
         try
         {
             // Mövcud alış sifarişini axtarırıq
-            var movcudSifaris = await _unitOfWork.AlisSifarisleri.GetirAsync(id);
+            AlisSifaris movcudSifaris = await _unitOfWork.AlisSifarisleri.GetirAsync(id);
             if (movcudSifaris == null)
+            {
                 return EmeliyyatNeticesi.Ugursuz("Silinəcək alış sifarişi tapılmadı.");
+            }
 
             _unitOfWork.AlisSifarisleri.Sil(movcudSifaris);
             await _unitOfWork.EmeliyyatiTesdiqleAsync();
@@ -440,12 +460,16 @@ public class AlisManager
         Logger.MelumatYaz($"AlisSifarisiniTesdiqleAsync metodu çağırıldı. ID: {id}");
         try
         {
-            var sifaris = await _unitOfWork.AlisSifarisleri.GetirAsync(id);
+            AlisSifaris sifaris = await _unitOfWork.AlisSifarisleri.GetirAsync(id);
             if (sifaris == null)
+            {
                 return EmeliyyatNeticesi.Ugursuz("Təsdiqlənmək üçün alış sifarişi tapılmadı.");
+            }
 
             if (sifaris.Status != AlisSifarisStatusu.Yaradildi)
+            {
                 return EmeliyyatNeticesi.Ugursuz("Yalnız yaradılmış sifarişləri təsdiqləmək olar.");
+            }
 
             sifaris.Status = AlisSifarisStatusu.Tesdiqlendi;
             sifaris.TesdiqTarixi = DateTime.Now;
@@ -474,10 +498,10 @@ public class AlisManager
         Logger.MelumatYaz("ButunAlisSenetleriniGetirAsync metodu çağırıldı.");
         try
         {
-            var senetler = await _unitOfWork.AlisSenetleri.ButununuGetirAsync();
-            var tedarukculer = await _unitOfWork.Tedarukculer.ButununuGetirAsync();
+            IEnumerable<AlisSened> senetler = await _unitOfWork.AlisSenetleri.ButununuGetirAsync();
+            IEnumerable<Tedarukcu> tedarukculer = await _unitOfWork.Tedarukculer.ButununuGetirAsync();
 
-            var dtolar = senetler.Select(s => new AlisSenedDto
+            List<AlisSenedDto> dtolar = senetler.Select(s => new AlisSenedDto
             {
                 Id = s.Id,
                 SenedNomresi = s.SenedNomresi,
@@ -509,13 +533,17 @@ public class AlisManager
         {
             // Validasiya
             if (string.IsNullOrWhiteSpace(dto.SenedNomresi))
+            {
                 return EmeliyyatNeticesi<int>.Ugursuz("Sənəd nömrəsi boş ola bilməz.");
+            }
 
             if (dto.TedarukcuId <= 0)
+            {
                 return EmeliyyatNeticesi<int>.Ugursuz("Tədarükçü seçilməlidir.");
+            }
 
             // Yeni alış sənədi obyekti yaradırıq
-            var yeniSened = new AlisSened
+            AlisSened yeniSened = new()
             {
                 SenedNomresi = dto.SenedNomresi,
                 YaradilmaTarixi = dto.YaradilmaTarixi,
@@ -530,9 +558,9 @@ public class AlisManager
             await _unitOfWork.EmeliyyatiTesdiqleAsync();
 
             // Sənəd sətirlərini yaradırıq
-            foreach (var setirDto in dto.SenedSetirleri)
+            foreach (AlisSenedSetiriDto setirDto in dto.SenedSetirleri)
             {
-                var setir = new AlisSenedSetiri
+                AlisSenedSetiri setir = new()
                 {
                     AlisSenedId = yeniSened.Id,
                     MehsulId = setirDto.MehsulId,
@@ -545,7 +573,7 @@ public class AlisManager
                 await _unitOfWork.AlisSenedSetirleri.ElaveEtAsync(setir);
 
                 // Məhsulun alış qiymətini yeniləyirik
-                var mehsul = await _unitOfWork.Mehsullar.GetirAsync(setirDto.MehsulId);
+                Mehsul mehsul = await _unitOfWork.Mehsullar.GetirAsync(setirDto.MehsulId);
                 if (mehsul != null)
                 {
                     mehsul.AlisQiymeti = setirDto.BirVahidQiymet;
@@ -553,7 +581,7 @@ public class AlisManager
                 }
 
                 // Stok hərəkətini qeydə alırıq (Daxilolma)
-                var stokNeticesi = await _stokHareketiManager.StokHareketiQeydeAlAsync(
+                EmeliyyatNeticesi<int> stokNeticesi = await _stokHareketiManager.StokHareketiQeydeAlAsync(
                     StokHareketTipi.Daxilolma,
                     SenedNovu.Alis,
                     yeniSened.Id,
@@ -593,15 +621,21 @@ public class AlisManager
         {
             // Validasiya
             if (string.IsNullOrWhiteSpace(dto.SenedNomresi))
+            {
                 return EmeliyyatNeticesi.Ugursuz("Sənəd nömrəsi boş ola bilməz.");
+            }
 
             if (dto.TedarukcuId <= 0)
+            {
                 return EmeliyyatNeticesi.Ugursuz("Tədarükçü seçilməlidir.");
+            }
 
             // Mövcud alış sənədini axtarırıq
-            var movcudSened = await _unitOfWork.AlisSenetleri.GetirAsync(dto.Id);
+            AlisSened movcudSened = await _unitOfWork.AlisSenetleri.GetirAsync(dto.Id);
             if (movcudSened == null)
+            {
                 return EmeliyyatNeticesi.Ugursuz("Yenilənmək üçün alış sənədi tapılmadı.");
+            }
 
             // Məlumatları yeniləyirik
             movcudSened.SenedNomresi = dto.SenedNomresi;
@@ -633,9 +667,11 @@ public class AlisManager
         try
         {
             // Mövcud alış sənədini axtarırıq
-            var movcudSened = await _unitOfWork.AlisSenetleri.GetirAsync(id);
+            AlisSened movcudSened = await _unitOfWork.AlisSenetleri.GetirAsync(id);
             if (movcudSened == null)
+            {
                 return EmeliyyatNeticesi.Ugursuz("Silinəcək alış sənədi tapılmadı.");
+            }
 
             _unitOfWork.AlisSenetleri.Sil(movcudSened);
             await _unitOfWork.EmeliyyatiTesdiqleAsync();
@@ -661,11 +697,11 @@ public class AlisManager
         Logger.MelumatYaz("ButunTedarukcuOdemeleriniGetirAsync metodu çağırıldı.");
         try
         {
-            var odemeler = await _unitOfWork.TedarukcuOdemeleri.ButununuGetirAsync();
-            var tedarukculer = await _unitOfWork.Tedarukculer.ButununuGetirAsync();
-            var senetler = await _unitOfWork.AlisSenetleri.ButununuGetirAsync();
+            IEnumerable<TedarukcuOdeme> odemeler = await _unitOfWork.TedarukcuOdemeleri.ButununuGetirAsync();
+            IEnumerable<Tedarukcu> tedarukculer = await _unitOfWork.Tedarukculer.ButununuGetirAsync();
+            IEnumerable<AlisSened> senetler = await _unitOfWork.AlisSenetleri.ButununuGetirAsync();
 
-            var dtolar = odemeler.Select(o => new TedarukcuOdemeDto
+            List<TedarukcuOdemeDto> dtolar = odemeler.Select(o => new TedarukcuOdemeDto
             {
                 Id = o.Id,
                 OdemeNomresi = o.OdemeNomresi,
@@ -701,16 +737,22 @@ public class AlisManager
         {
             // Validasiya
             if (string.IsNullOrWhiteSpace(dto.OdemeNomresi))
+            {
                 return EmeliyyatNeticesi<int>.Ugursuz("Ödəniş nömrəsi boş ola bilməz.");
+            }
 
             if (dto.TedarukcuId <= 0)
+            {
                 return EmeliyyatNeticesi<int>.Ugursuz("Tədarükçü seçilməlidir.");
+            }
 
             if (dto.Mebleg <= 0)
+            {
                 return EmeliyyatNeticesi<int>.Ugursuz("Ödəniş məbləği müsbət olmalıdır.");
+            }
 
             // Yeni tədarükçü ödənişi obyekti yaradırıq
-            var yeniOdeme = new TedarukcuOdeme
+            TedarukcuOdeme yeniOdeme = new()
             {
                 OdemeNomresi = dto.OdemeNomresi,
                 YaradilmaTarixi = dto.YaradilmaTarixi,
@@ -746,18 +788,26 @@ public class AlisManager
         {
             // Validasiya
             if (string.IsNullOrWhiteSpace(dto.OdemeNomresi))
+            {
                 return EmeliyyatNeticesi.Ugursuz("Ödəniş nömrəsi boş ola bilməz.");
+            }
 
             if (dto.TedarukcuId <= 0)
+            {
                 return EmeliyyatNeticesi.Ugursuz("Tədarükçü seçilməlidir.");
+            }
 
             if (dto.Mebleg <= 0)
+            {
                 return EmeliyyatNeticesi.Ugursuz("Ödəniş məbləği müsbət olmalıdır.");
+            }
 
             // Mövcud tədarükçü ödənişini axtarırıq
-            var movcudOdeme = await _unitOfWork.TedarukcuOdemeleri.GetirAsync(dto.Id);
+            TedarukcuOdeme movcudOdeme = await _unitOfWork.TedarukcuOdemeleri.GetirAsync(dto.Id);
             if (movcudOdeme == null)
+            {
                 return EmeliyyatNeticesi.Ugursuz("Yenilənmək üçün tədarükçü ödənişi tapılmadı.");
+            }
 
             // Məlumatları yeniləyirik
             movcudOdeme.OdemeNomresi = dto.OdemeNomresi;
@@ -792,9 +842,11 @@ public class AlisManager
         try
         {
             // Mövcud tədarükçü ödənişini axtarırıq
-            var movcudOdeme = await _unitOfWork.TedarukcuOdemeleri.GetirAsync(id);
+            TedarukcuOdeme movcudOdeme = await _unitOfWork.TedarukcuOdemeleri.GetirAsync(id);
             if (movcudOdeme == null)
+            {
                 return EmeliyyatNeticesi.Ugursuz("Silinəcək tədarükçü ödənişi tapılmadı.");
+            }
 
             _unitOfWork.TedarukcuOdemeleri.Sil(movcudOdeme);
             await _unitOfWork.EmeliyyatiTesdiqleAsync();
@@ -822,12 +874,12 @@ public class AlisManager
         Logger.MelumatYaz($"Səhifələnmiş tədarükçülər əldə edilir - Səhifə: {parametrler.SehifeNomresi}, Ölçü: {parametrler.SehifeOlcusu}");
         try
         {
-            var (tedarukculer, umumiSay) = await _unitOfWork.Tedarukculer.SehifelenmisGetirAsync(
+            (IEnumerable<Tedarukcu>? tedarukculer, int umumiSay) = await _unitOfWork.Tedarukculer.SehifelenmisGetirAsync(
                 parametrler.SehifeNomresi,
                 parametrler.SehifeOlcusu,
                 t => t.Aktivdir);
 
-            var dtolar = tedarukculer.Select(t => new TedarukcuDto
+            List<TedarukcuDto> dtolar = tedarukculer.Select(t => new TedarukcuDto
             {
                 Id = t.Id,
                 Ad = t.Ad,
@@ -839,7 +891,7 @@ public class AlisManager
                 Aktivdir = t.Aktivdir
             }).ToList();
 
-            var sehifelenmis = new SehifelenmisMelumat<TedarukcuDto>(
+            SehifelenmisMelumat<TedarukcuDto> sehifelenmis = new(
                 dtolar,
                 umumiSay,
                 parametrler.SehifeNomresi,
@@ -866,14 +918,14 @@ public class AlisManager
         Logger.MelumatYaz($"Səhifələnmiş alış sifarişləri əldə edilir - Səhifə: {parametrler.SehifeNomresi}, Ölçü: {parametrler.SehifeOlcusu}");
         try
         {
-            var (sifarisler, umumiSay) = await _unitOfWork.AlisSifarisleri.SehifelenmisGetirAsync(
+            (IEnumerable<AlisSifaris>? sifarisler, int umumiSay) = await _unitOfWork.AlisSifarisleri.SehifelenmisGetirAsync(
                 parametrler.SehifeNomresi,
                 parametrler.SehifeOlcusu,
                 a => !a.Silinib);
 
-            var tedarukculer = await _unitOfWork.Tedarukculer.ButununuGetirAsync();
+            IEnumerable<Tedarukcu> tedarukculer = await _unitOfWork.Tedarukculer.ButununuGetirAsync();
 
-            var dtolar = sifarisler.Select(s => new AlisSifarisDto
+            List<AlisSifarisDto> dtolar = sifarisler.Select(s => new AlisSifarisDto
             {
                 Id = s.Id,
                 SifarisNomresi = s.SifarisNomresi,
@@ -888,7 +940,7 @@ public class AlisManager
                 Qeydler = s.Qeydler
             }).ToList();
 
-            var sehifelenmis = new SehifelenmisMelumat<AlisSifarisDto>(
+            SehifelenmisMelumat<AlisSifarisDto> sehifelenmis = new(
                 dtolar,
                 umumiSay,
                 parametrler.SehifeNomresi,
@@ -915,14 +967,14 @@ public class AlisManager
         Logger.MelumatYaz($"Səhifələnmiş alış sənədləri əldə edilir - Səhifə: {parametrler.SehifeNomresi}, Ölçü: {parametrler.SehifeOlcusu}");
         try
         {
-            var (senetler, umumiSay) = await _unitOfWork.AlisSenetleri.SehifelenmisGetirAsync(
+            (IEnumerable<AlisSened>? senetler, int umumiSay) = await _unitOfWork.AlisSenetleri.SehifelenmisGetirAsync(
                 parametrler.SehifeNomresi,
                 parametrler.SehifeOlcusu,
                 a => !a.Silinib);
 
-            var tedarukculer = await _unitOfWork.Tedarukculer.ButununuGetirAsync();
+            IEnumerable<Tedarukcu> tedarukculer = await _unitOfWork.Tedarukculer.ButununuGetirAsync();
 
-            var dtolar = senetler.Select(s => new AlisSenedDto
+            List<AlisSenedDto> dtolar = senetler.Select(s => new AlisSenedDto
             {
                 Id = s.Id,
                 SenedNomresi = s.SenedNomresi,
@@ -935,7 +987,7 @@ public class AlisManager
                 Qeydler = s.Qeydler
             }).ToList();
 
-            var sehifelenmis = new SehifelenmisMelumat<AlisSenedDto>(
+            SehifelenmisMelumat<AlisSenedDto> sehifelenmis = new(
                 dtolar,
                 umumiSay,
                 parametrler.SehifeNomresi,
@@ -962,15 +1014,15 @@ public class AlisManager
         Logger.MelumatYaz($"Səhifələnmiş tədarükçü ödənişləri əldə edilir - Səhifə: {parametrler.SehifeNomresi}, Ölçü: {parametrler.SehifeOlcusu}");
         try
         {
-            var (odemeler, umumiSay) = await _unitOfWork.TedarukcuOdemeleri.SehifelenmisGetirAsync(
+            (IEnumerable<TedarukcuOdeme>? odemeler, int umumiSay) = await _unitOfWork.TedarukcuOdemeleri.SehifelenmisGetirAsync(
                 parametrler.SehifeNomresi,
                 parametrler.SehifeOlcusu,
                 o => !o.Silinib);
 
-            var tedarukculer = await _unitOfWork.Tedarukculer.ButununuGetirAsync();
-            var senetler = await _unitOfWork.AlisSenetleri.ButununuGetirAsync();
+            IEnumerable<Tedarukcu> tedarukculer = await _unitOfWork.Tedarukculer.ButununuGetirAsync();
+            IEnumerable<AlisSened> senetler = await _unitOfWork.AlisSenetleri.ButununuGetirAsync();
 
-            var dtolar = odemeler.Select(o => new TedarukcuOdemeDto
+            List<TedarukcuOdemeDto> dtolar = odemeler.Select(o => new TedarukcuOdemeDto
             {
                 Id = o.Id,
                 OdemeNomresi = o.OdemeNomresi,
@@ -987,7 +1039,7 @@ public class AlisManager
                 BankMelumatlari = o.BankMelumatlari
             }).ToList();
 
-            var sehifelenmis = new SehifelenmisMelumat<TedarukcuOdemeDto>(
+            SehifelenmisMelumat<TedarukcuOdemeDto> sehifelenmis = new(
                 dtolar,
                 umumiSay,
                 parametrler.SehifeNomresi,

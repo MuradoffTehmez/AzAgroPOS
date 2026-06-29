@@ -1,9 +1,8 @@
 // Fayl: AzAgroPOS.Mentiq/DTOs/IsciIzniDto.cs
-namespace AzAgroPOS.Mentiq.DTOs;
 
 using AzAgroPOS.Varliglar;
-using System;
 
+namespace AzAgroPOS.Mentiq.DTOs;
 /// <summary>
 /// İşçinin məzuniyyət və digər icazələrini təqdimat qatına ötürmək üçün istifadə olunan DTO.
 /// </summary>

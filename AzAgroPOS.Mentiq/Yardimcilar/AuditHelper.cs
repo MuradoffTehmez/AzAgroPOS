@@ -1,11 +1,9 @@
 // Fayl: AzAgroPOS.Mentiq/Yardimcilar/AuditHelper.cs
-namespace AzAgroPOS.Mentiq.Yardimcilar;
 
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
-using System;
-using System.Threading.Tasks;
 
+namespace AzAgroPOS.Mentiq.Yardimcilar;
 /// <summary>
 /// Audit jurnalı yazılması üçün yardımçı sinif.
 /// Diqqət: Bu sinif Manager siniflərində kritik əməliyyatlar zamanı istifadə olunur.
@@ -32,7 +30,7 @@ public class AuditHelper
     {
         try
         {
-            var audit = new EmeliyyatJurnali
+            EmeliyyatJurnali audit = new()
             {
                 IstifadeciId = _istifadeciId,
                 EmeliyyatTarixi = DateTime.UtcNow,
@@ -64,7 +62,7 @@ public class AuditHelper
     {
         try
         {
-            var audit = new EmeliyyatJurnali
+            EmeliyyatJurnali audit = new()
             {
                 IstifadeciId = _istifadeciId,
                 EmeliyyatTarixi = DateTime.UtcNow,
@@ -95,7 +93,7 @@ public class AuditHelper
     {
         try
         {
-            var audit = new EmeliyyatJurnali
+            EmeliyyatJurnali audit = new()
             {
                 IstifadeciId = _istifadeciId,
                 EmeliyyatTarixi = DateTime.UtcNow,
@@ -132,7 +130,7 @@ public class AuditHelper
     {
         try
         {
-            var audit = new EmeliyyatJurnali
+            EmeliyyatJurnali audit = new()
             {
                 IstifadeciId = _istifadeciId,
                 EmeliyyatTarixi = DateTime.UtcNow,
@@ -163,10 +161,7 @@ public class AuditHelper
     /// <returns>Dəyişikliyin təsviri və ya null (dəyişiklik yoxdursa)</returns>
     public static string? DeyisiklikYarat<T>(string saheAdi, T? kohneDeyer, T? yeniDeyer)
     {
-        if (Equals(kohneDeyer, yeniDeyer))
-            return null;
-
-        return $"{saheAdi}: {kohneDeyer} → {yeniDeyer}";
+        return Equals(kohneDeyer, yeniDeyer) ? null : $"{saheAdi}: {kohneDeyer} → {yeniDeyer}";
     }
 
     /// <summary>
@@ -176,7 +171,7 @@ public class AuditHelper
     /// <returns>Birləşdirilmiş dəyişikliklər</returns>
     public static string? DeyisikleriBirlesdir(params string?[] deyisiklikler)
     {
-        var deyisiklikSiyahisi = deyisiklikler
+        List<string?> deyisiklikSiyahisi = deyisiklikler
             .Where(d => !string.IsNullOrEmpty(d))
             .ToList();
 

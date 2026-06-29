@@ -1,15 +1,11 @@
 // Fayl: AzAgroPOS.Mentiq/Idareciler/QaytarmaManager.cs
-namespace AzAgroPOS.Mentiq.Idareciler;
 
 using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Mentiq.Yardimcilar;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
+namespace AzAgroPOS.Mentiq.Idareciler;
 /// <summary>
 /// Qaytarma əməliyyatlarını idarə edən menecer
 /// diqqət: Bu sinif satış qaytarma prosesini tam şəkildə idarə edir:
@@ -73,7 +69,7 @@ public class QaytarmaManager
             }
 
             // 2. Əsas satışı tap və yoxla
-            var satis = await _unitOfWork.Satislar.GetirAsync(satisId);
+            Satis satis = await _unitOfWork.Satislar.GetirAsync(satisId);
             if (satis == null)
             {
                 Logger.XəbərdarlıqYaz($"Satış tapılmadı: ID={satisId}");
@@ -81,9 +77,9 @@ public class QaytarmaManager
             }
 
             // 3. Qaytarılan məhsulların satışda olub-olmadığını yoxla
-            foreach (var (mehsulId, miqdar, _) in qaytarilanMehsullar)
+            foreach ((int mehsulId, int miqdar, decimal _) in qaytarilanMehsullar)
             {
-                var satisDetali = satis.SatisDetallari.FirstOrDefault(sd => sd.MehsulId == mehsulId);
+                SatisDetali? satisDetali = satis.SatisDetallari.FirstOrDefault(sd => sd.MehsulId == mehsulId);
                 if (satisDetali == null)
                 {
                     Logger.XəbərdarlıqYaz($"Məhsul bu satışda yoxdur: MehsulId={mehsulId}");
@@ -91,8 +87,8 @@ public class QaytarmaManager
                 }
 
                 // Artıq qaytarılmış miqdarı yoxla
-                var artiqQaytarilan = await HesablaArtiqQaytarilanMiqdarAsync(satisId, mehsulId);
-                var qalan = satisDetali.Miqdar - artiqQaytarilan;
+                decimal artiqQaytarilan = await HesablaArtiqQaytarilanMiqdarAsync(satisId, mehsulId);
+                decimal qalan = satisDetali.Miqdar - artiqQaytarilan;
 
                 if (miqdar > qalan)
                 {
@@ -105,7 +101,7 @@ public class QaytarmaManager
             decimal umumiMebleg = qaytarilanMehsullar.Sum(m => m.Miqdar * m.VahidinQiymeti);
 
             // 5. Qaytarma qeydini yarat
-            var qaytarma = new Qaytarma
+            Qaytarma qaytarma = new()
             {
                 Tarix = DateTime.Now,
                 SatisId = satisId,
@@ -118,10 +114,10 @@ public class QaytarmaManager
             await _unitOfWork.EmeliyyatiTesdiqleAsync(); // ID əldə etmək üçün
 
             // 6. Qaytarma detallarını və stok hərəkətlərini qeydə al
-            foreach (var (mehsulId, miqdar, vahidinQiymeti) in qaytarilanMehsullar)
+            foreach ((int mehsulId, int miqdar, decimal vahidinQiymeti) in qaytarilanMehsullar)
             {
                 // Qaytarma detalı
-                var detali = new QaytarmaDetali
+                QaytarmaDetali detali = new()
                 {
                     QaytarmaId = qaytarma.Id,
                     MehsulId = mehsulId,
@@ -132,7 +128,7 @@ public class QaytarmaManager
                 qaytarma.QaytarmaDetallari.Add(detali);
 
                 // Stok hərəkəti (Daxilolma - məhsul anbara qaytarılır)
-                var stokNeticesi = await _stokHareketiManager.StokHareketiQeydeAlAsync(
+                EmeliyyatNeticesi<int> stokNeticesi = await _stokHareketiManager.StokHareketiQeydeAlAsync(
                     StokHareketTipi.Daxilolma,
                     SenedNovu.Qaytarma,
                     qaytarma.Id,
@@ -154,7 +150,7 @@ public class QaytarmaManager
             // 7. Nisyə hesabını düzəlt (əgər satış nisyə idisə)
             if (satis.OdenisMetodu == OdenisMetodu.Nisyə && satis.MusteriId.HasValue)
             {
-                var musteri = await _unitOfWork.Musteriler.GetirAsync(satis.MusteriId.Value);
+                Musteri musteri = await _unitOfWork.Musteriler.GetirAsync(satis.MusteriId.Value);
                 if (musteri != null)
                 {
                     // Müştəri borcunu azalt
@@ -162,7 +158,7 @@ public class QaytarmaManager
                     _unitOfWork.Musteriler.Yenile(musteri);
 
                     // Nisyə hərəkəti yarat
-                    var nisyeHereketi = new NisyeHereketi
+                    NisyeHereketi nisyeHereketi = new()
                     {
                         MusteriId = satis.MusteriId.Value,
                         Mebleg = -umumiMebleg, // Mənfi - çünki borc azalır
@@ -180,7 +176,7 @@ public class QaytarmaManager
             // 8. Növbə maliyyəsini yenilə
             if (aktivNovbeId.HasValue)
             {
-                var novbe = await _unitOfWork.Novbeler.GetirAsync(aktivNovbeId.Value);
+                Novbe novbe = await _unitOfWork.Novbeler.GetirAsync(aktivNovbeId.Value);
                 if (novbe != null)
                 {
                     // Ödəniş metoduna görə növbə məbləğini azalt
@@ -192,7 +188,7 @@ public class QaytarmaManager
                         // Maliyyə jurnalına giriş qeydi əlavə et (nağd qaytarma)
                         try
                         {
-                            var kassaHareketiNetice = await _maliyyeManager.KassaHareketiElaveEtAsync(
+                            EmeliyyatNeticesi<int> kassaHareketiNetice = await _maliyyeManager.KassaHareketiElaveEtAsync(
                                 KassaHareketiNovu.Cixis,  // Pul geri qaytarılır, ona görə çıxış
                                 EmeliyyatNovu.Qaytarma,
                                 emeliyyatId: qaytarma.Id,
@@ -221,7 +217,7 @@ public class QaytarmaManager
                         // Maliyyə jurnalına giriş qeydi əlavə et (kart qaytarma)
                         try
                         {
-                            var kassaHareketiNetice = await _maliyyeManager.KassaHareketiElaveEtAsync(
+                            EmeliyyatNeticesi<int> kassaHareketiNetice = await _maliyyeManager.KassaHareketiElaveEtAsync(
                                 KassaHareketiNovu.Cixis,  // Pul geri qaytarılır, ona görə çıxış
                                 EmeliyyatNovu.Qaytarma,
                                 emeliyyatId: qaytarma.Id,
@@ -264,12 +260,12 @@ public class QaytarmaManager
     /// </summary>
     private async Task<decimal> HesablaArtiqQaytarilanMiqdarAsync(int satisId, int mehsulId)
     {
-        var qaytarmalar = await _unitOfWork.Qaytarmalar.AxtarAsync(q => q.SatisId == satisId && !q.Silinib);
+        IEnumerable<Qaytarma> qaytarmalar = await _unitOfWork.Qaytarmalar.AxtarAsync(q => q.SatisId == satisId && !q.Silinib);
 
         decimal toplam = 0;
-        foreach (var qaytarma in qaytarmalar)
+        foreach (Qaytarma qaytarma in qaytarmalar)
         {
-            var detali = qaytarma.QaytarmaDetallari.FirstOrDefault(d => d.MehsulId == mehsulId);
+            QaytarmaDetali? detali = qaytarma.QaytarmaDetallari.FirstOrDefault(d => d.MehsulId == mehsulId);
             if (detali != null)
             {
                 toplam += detali.Miqdar;
@@ -288,8 +284,8 @@ public class QaytarmaManager
 
         try
         {
-            var qaytarmalar = await _unitOfWork.Qaytarmalar.AxtarAsync(q => q.SatisId == satisId && !q.Silinib);
-            var siyahi = qaytarmalar.OrderByDescending(q => q.Tarix).ToList();
+            IEnumerable<Qaytarma> qaytarmalar = await _unitOfWork.Qaytarmalar.AxtarAsync(q => q.SatisId == satisId && !q.Silinib);
+            List<Qaytarma> siyahi = qaytarmalar.OrderByDescending(q => q.Tarix).ToList();
 
             Logger.MelumatYaz($"Satış qaytarmaları əldə edildi: Say={siyahi.Count}");
             return EmeliyyatNeticesi<List<Qaytarma>>.Ugurlu(siyahi);
@@ -312,12 +308,12 @@ public class QaytarmaManager
 
         try
         {
-            var qaytarmalar = await _unitOfWork.Qaytarmalar.AxtarAsync(q =>
+            IEnumerable<Qaytarma> qaytarmalar = await _unitOfWork.Qaytarmalar.AxtarAsync(q =>
                 q.Tarix >= baslangicTarixi &&
                 q.Tarix <= bitisTarixi &&
                 !q.Silinib);
 
-            var siyahi = qaytarmalar.OrderByDescending(q => q.Tarix).ToList();
+            List<Qaytarma> siyahi = qaytarmalar.OrderByDescending(q => q.Tarix).ToList();
 
             Logger.MelumatYaz($"Tarix aralığında qaytarmalar əldə edildi: Say={siyahi.Count}");
             return EmeliyyatNeticesi<List<Qaytarma>>.Ugurlu(siyahi);
@@ -338,7 +334,7 @@ public class QaytarmaManager
 
         try
         {
-            var qaytarma = await _unitOfWork.Qaytarmalar.GetirAsync(qaytarmaId);
+            Qaytarma qaytarma = await _unitOfWork.Qaytarmalar.GetirAsync(qaytarmaId);
             if (qaytarma == null)
             {
                 Logger.XəbərdarlıqYaz($"Qaytarma tapılmadı: ID={qaytarmaId}");
@@ -366,12 +362,12 @@ public class QaytarmaManager
         Logger.MelumatYaz($"Səhifələnmiş qaytarmalar əldə edilir - Səhifə: {parametrler.SehifeNomresi}, Ölçü: {parametrler.SehifeOlcusu}");
         try
         {
-            var (qaytarmalar, umumiSay) = await _unitOfWork.Qaytarmalar.SehifelenmisGetirAsync(
+            (IEnumerable<Qaytarma>? qaytarmalar, int umumiSay) = await _unitOfWork.Qaytarmalar.SehifelenmisGetirAsync(
                 parametrler.SehifeNomresi,
                 parametrler.SehifeOlcusu,
                 q => !q.Silinib);
 
-            var sehifelenmis = new SehifelenmisMelumat<Qaytarma>(
+            SehifelenmisMelumat<Qaytarma> sehifelenmis = new(
                 qaytarmalar.ToList(), umumiSay, parametrler.SehifeNomresi, parametrler.SehifeOlcusu);
 
             Logger.MelumatYaz($"Səhifələnmiş qaytarmalar uğurla əldə edildi - {qaytarmalar.Count()}/{umumiSay}");

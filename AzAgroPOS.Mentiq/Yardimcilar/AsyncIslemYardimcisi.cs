@@ -33,7 +33,7 @@ public static class AsyncIslemYardimcisi
                 Logger.MelumatYaz(baslamaMesaji);
             }
 
-            var netice = await emeliyyat();
+            T? netice = await emeliyyat();
 
             // Əməliyyat bitdi
             if (!string.IsNullOrWhiteSpace(bitmeMesaji))
@@ -108,7 +108,7 @@ public static class AsyncIslemYardimcisi
             // Yükləmə başladı
             yuklemeBasladi?.Invoke();
 
-            var netice = await emeliyyat();
+            T? netice = await emeliyyat();
 
             // Yükləmə bitdi
             yuklemeBitti?.Invoke(netice);
@@ -120,7 +120,7 @@ public static class AsyncIslemYardimcisi
             // Xəta baş verdi
             yuklemeXeta?.Invoke(ex);
             Logger.XetaYaz(ex, "Asinxron əməliyyat zamanı xəta baş verdi");
-            return default(T); // Və ya uyğun nəticə qaytarılır
+            return default; // Və ya uyğun nəticə qaytarılır
         }
     }
 }

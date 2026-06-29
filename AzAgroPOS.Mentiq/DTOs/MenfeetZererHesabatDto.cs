@@ -1,8 +1,6 @@
 // Fayl: AzAgroPOS.Mentiq/DTOs/MenfeetZererHesabatDto.cs
+
 namespace AzAgroPOS.Mentiq.DTOs;
-
-using System;
-
 /// <summary>
 /// Mənfəət və Zərər (P&L - Profit & Loss) hesabatı üçün məlumatları daşıyan DTO.
 /// </summary>

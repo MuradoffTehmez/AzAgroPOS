@@ -1,16 +1,12 @@
 // Fayl: AzAgroPOS.Mentiq/Idareciler/KateqoriyaMeneceri.cs
-namespace AzAgroPOS.Mentiq.Idareciler;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Mentiq.Yardimcilar;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
+namespace AzAgroPOS.Mentiq.Idareciler;
 /// <summary>
 /// Kateqoriya əməliyyatlarını idarə edən menecer.
 /// Bu menecer kateqoriya yaratma, yeniləmə, silmə və axtarış əməliyyatlarını həyata keçirir.
@@ -33,8 +29,8 @@ public class KateqoriyaMeneceri
         Logger.MelumatYaz("Bütün kateqoriyaları gətiririk.");
         try
         {
-            var kateqoriyalar = await _unitOfWork.Kateqoriyalar.ButununuGetirAsync();
-            var dtolar = kateqoriyalar.Select(k => new KateqoriyaDto
+            IEnumerable<Kateqoriya> kateqoriyalar = await _unitOfWork.Kateqoriyalar.ButununuGetirAsync();
+            List<KateqoriyaDto> dtolar = kateqoriyalar.Select(k => new KateqoriyaDto
             {
                 Id = k.Id,
                 Ad = k.Ad,
@@ -59,11 +55,13 @@ public class KateqoriyaMeneceri
         Logger.MelumatYaz($"KateqoriyaGetirAsync metodu çağırıldı. ID: {id}");
         try
         {
-            var kateqoriya = await _unitOfWork.Kateqoriyalar.GetirAsync(id);
+            Kateqoriya kateqoriya = await _unitOfWork.Kateqoriyalar.GetirAsync(id);
             if (kateqoriya == null)
+            {
                 return EmeliyyatNeticesi<KateqoriyaDto>.Ugursuz("Kateqoriya tapılmadı.");
+            }
 
-            var dto = new KateqoriyaDto
+            KateqoriyaDto dto = new()
             {
                 Id = kateqoriya.Id,
                 Ad = kateqoriya.Ad,
@@ -91,10 +89,12 @@ public class KateqoriyaMeneceri
         {
             // Validasiya
             if (string.IsNullOrWhiteSpace(dto.Ad))
+            {
                 return EmeliyyatNeticesi<int>.Ugursuz("Kateqoriya adı boş ola bilməz.");
+            }
 
             // Yeni kateqoriya obyekti yaradırıq
-            var yeniKateqoriya = new Kateqoriya
+            Kateqoriya yeniKateqoriya = new()
             {
                 Ad = dto.Ad,
                 Tesvir = dto.Tesvir,
@@ -121,13 +121,17 @@ public class KateqoriyaMeneceri
         Logger.MelumatYaz(dto.ToString());
         try
         {
-            var movcudKateqoriya = await _unitOfWork.Kateqoriyalar.GetirAsync(dto.Id);
+            Kateqoriya movcudKateqoriya = await _unitOfWork.Kateqoriyalar.GetirAsync(dto.Id);
             if (movcudKateqoriya == null)
+            {
                 return EmeliyyatNeticesi.Ugursuz("Yenilənmək üçün kateqoriya tapılmadı.");
+            }
 
             // Validasiya
             if (string.IsNullOrWhiteSpace(dto.Ad))
+            {
                 return EmeliyyatNeticesi.Ugursuz("Kateqoriya adı boş ola bilməz.");
+            }
 
             // Məlumatları yeniləyirik
             movcudKateqoriya.Ad = dto.Ad;
@@ -154,9 +158,11 @@ public class KateqoriyaMeneceri
         Logger.MelumatYaz($"KateqoriyaSilAsync metodu çağırıldı. ID: {id}");
         try
         {
-            var kateqoriya = await _unitOfWork.Kateqoriyalar.GetirAsync(id);
+            Kateqoriya kateqoriya = await _unitOfWork.Kateqoriyalar.GetirAsync(id);
             if (kateqoriya == null)
+            {
                 return EmeliyyatNeticesi.Ugursuz("Silinəcək kateqoriya tapılmadı.");
+            }
 
             _unitOfWork.Kateqoriyalar.Sil(kateqoriya);
             await _unitOfWork.EmeliyyatiTesdiqleAsync();
@@ -181,12 +187,12 @@ public class KateqoriyaMeneceri
         Logger.MelumatYaz($"Səhifələnmiş kateqoriyalar əldə edilir - Səhifə: {parametrler.SehifeNomresi}, Ölçü: {parametrler.SehifeOlcusu}");
         try
         {
-            var (kateqoriyalar, umumiSay) = await _unitOfWork.Kateqoriyalar.SehifelenmisGetirAsync(
+            (IEnumerable<Kateqoriya>? kateqoriyalar, int umumiSay) = await _unitOfWork.Kateqoriyalar.SehifelenmisGetirAsync(
                 parametrler.SehifeNomresi,
                 parametrler.SehifeOlcusu,
                 k => k.Aktivdir);
 
-            var dtolar = kateqoriyalar.Select(k => new KateqoriyaDto
+            List<KateqoriyaDto> dtolar = kateqoriyalar.Select(k => new KateqoriyaDto
             {
                 Id = k.Id,
                 Ad = k.Ad,
@@ -194,7 +200,7 @@ public class KateqoriyaMeneceri
                 Aktivdir = k.Aktivdir
             }).ToList();
 
-            var sehifelenmis = new SehifelenmisMelumat<KateqoriyaDto>(
+            SehifelenmisMelumat<KateqoriyaDto> sehifelenmis = new(
                 dtolar, umumiSay, parametrler.SehifeNomresi, parametrler.SehifeOlcusu);
 
             Logger.MelumatYaz($"Səhifələnmiş kateqoriyalar uğurla əldə edildi - {dtolar.Count}/{umumiSay}");

@@ -1,10 +1,6 @@
 ﻿// Fayl: AzAgroPOS.Mentiq/DTOs/SatisQebzDto.cs
+
 namespace AzAgroPOS.Mentiq.DTOs;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 /// <summary>
 /// Satış qəbzini çap etmək üçün lazım olan bütün məlumatları saxlayır.
 /// </summary>

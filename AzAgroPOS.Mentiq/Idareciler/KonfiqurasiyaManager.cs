@@ -30,14 +30,14 @@ public class KonfiqurasiyaManager
         Logger.MelumatYaz(acar);
         try
         {
-            var konfiqurasiya = await _unitOfWork.Konfiqurasiyalar.AcarlaGetirAsync(acar);
+            Konfiqurasiya? konfiqurasiya = await _unitOfWork.Konfiqurasiyalar.AcarlaGetirAsync(acar);
 
             if (konfiqurasiya == null)
             {
                 return EmeliyyatNeticesi<KonfiqurasiyaDto>.Ugursuz("Konfiqurasiya parametri tapılmadı");
             }
 
-            var dto = new KonfiqurasiyaDto
+            KonfiqurasiyaDto dto = new()
             {
                 Id = konfiqurasiya.Id,
                 Acar = konfiqurasiya.Acar,
@@ -65,9 +65,9 @@ public class KonfiqurasiyaManager
         Logger.MelumatYaz(qrup);
         try
         {
-            var konfiqurasiyalar = await _unitOfWork.Konfiqurasiyalar.QruplaGetirAsync(qrup);
+            IEnumerable<Konfiqurasiya> konfiqurasiyalar = await _unitOfWork.Konfiqurasiyalar.QruplaGetirAsync(qrup);
 
-            var dtos = konfiqurasiyalar.Select(k => new KonfiqurasiyaDto
+            IEnumerable<KonfiqurasiyaDto> dtos = konfiqurasiyalar.Select(k => new KonfiqurasiyaDto
             {
                 Id = k.Id,
                 Acar = k.Acar,
@@ -95,12 +95,12 @@ public class KonfiqurasiyaManager
 
         try
         {
-            var movcudKonfiqurasiya = await _unitOfWork.Konfiqurasiyalar.AcarlaGetirAsync(dto.Acar);
+            Konfiqurasiya? movcudKonfiqurasiya = await _unitOfWork.Konfiqurasiyalar.AcarlaGetirAsync(dto.Acar);
 
             if (movcudKonfiqurasiya == null)
             {
                 // Yeni konfiqurasiya yaradırıq
-                var yeniKonfiqurasiya = new Konfiqurasiya
+                Konfiqurasiya yeniKonfiqurasiya = new()
                 {
                     Acar = dto.Acar,
                     Deyer = dto.Deyer,
@@ -139,9 +139,9 @@ public class KonfiqurasiyaManager
     {
         try
         {
-            var konfiqurasiyalar = await _unitOfWork.Konfiqurasiyalar.ButununuGetirAsync();
+            IEnumerable<Konfiqurasiya> konfiqurasiyalar = await _unitOfWork.Konfiqurasiyalar.ButununuGetirAsync();
 
-            var dtos = konfiqurasiyalar.Select(k => new KonfiqurasiyaDto
+            IEnumerable<KonfiqurasiyaDto> dtos = konfiqurasiyalar.Select(k => new KonfiqurasiyaDto
             {
                 Id = k.Id,
                 Acar = k.Acar,
@@ -169,7 +169,7 @@ public class KonfiqurasiyaManager
     {
         try
         {
-            var netice = await AcarlaGetirAsync(acar);
+            EmeliyyatNeticesi<KonfiqurasiyaDto> netice = await AcarlaGetirAsync(acar);
             return netice.UgurluDur && netice.Data != null ? netice.Data.Deyer : varsayilan;
         }
         catch (Exception)
@@ -188,7 +188,7 @@ public class KonfiqurasiyaManager
     /// <returns>Əməliyyat nəticəsi</returns>
     public async Task<EmeliyyatNeticesi<bool>> SetAsync(string acar, string deyer, string tesvir = "", string qrup = "")
     {
-        var dto = new KonfiqurasiyaDto
+        KonfiqurasiyaDto dto = new()
         {
             Acar = acar,
             Deyer = deyer,
@@ -208,14 +208,14 @@ public class KonfiqurasiyaManager
     {
         try
         {
-            foreach (var parametr in parametrler)
+            foreach (KeyValuePair<string, string> parametr in parametrler)
             {
-                var movcudKonfiqurasiya = await _unitOfWork.Konfiqurasiyalar.AcarlaGetirAsync(parametr.Key);
+                Konfiqurasiya? movcudKonfiqurasiya = await _unitOfWork.Konfiqurasiyalar.AcarlaGetirAsync(parametr.Key);
 
                 if (movcudKonfiqurasiya == null)
                 {
                     // Yeni konfiqurasiya yaradırıq
-                    var yeniKonfiqurasiya = new Konfiqurasiya
+                    Konfiqurasiya yeniKonfiqurasiya = new()
                     {
                         Acar = parametr.Key,
                         Deyer = parametr.Value,

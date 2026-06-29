@@ -1,16 +1,12 @@
 // Fayl: AzAgroPOS.Mentiq/Idareciler/BrendMeneceri.cs
-namespace AzAgroPOS.Mentiq.Idareciler;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Mentiq.Yardimcilar;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
+namespace AzAgroPOS.Mentiq.Idareciler;
 /// <summary>
 /// Brend əməliyyatlarını idarə edən menecer.
 /// Bu menecer brend yaratma, yeniləmə, silmə və axtarış əməliyyatlarını həyata keçirir.
@@ -32,8 +28,8 @@ public class BrendMeneceri
         Logger.MelumatYaz("ButunBrendleriGetirAsync metodu çağırıldı.");
         try
         {
-            var brendler = await _unitOfWork.Brendler.ButununuGetirAsync();
-            var dtolar = brendler.Select(b => new BrendDto
+            IEnumerable<Brend> brendler = await _unitOfWork.Brendler.ButununuGetirAsync();
+            List<BrendDto> dtolar = brendler.Select(b => new BrendDto
             {
                 Id = b.Id,
                 Ad = b.Ad,
@@ -61,11 +57,13 @@ public class BrendMeneceri
         Logger.MelumatYaz($"BrendGetirAsync metodu çağırıldı. ID: {id}");
         try
         {
-            var brend = await _unitOfWork.Brendler.GetirAsync(id);
+            Brend brend = await _unitOfWork.Brendler.GetirAsync(id);
             if (brend == null)
+            {
                 return EmeliyyatNeticesi<BrendDto>.Ugursuz("Brend tapılmadı.");
+            }
 
-            var dto = new BrendDto
+            BrendDto dto = new()
             {
                 Id = brend.Id,
                 Ad = brend.Ad,
@@ -95,10 +93,12 @@ public class BrendMeneceri
         {
             // Validasiya
             if (string.IsNullOrWhiteSpace(dto.Ad))
+            {
                 return EmeliyyatNeticesi<int>.Ugursuz("Brend adı boş ola bilməz.");
+            }
 
             // Yeni brend obyekti yaradırıq
-            var yeniBrend = new Brend
+            Brend yeniBrend = new()
             {
                 Ad = dto.Ad,
                 Olke = dto.Olke,
@@ -128,13 +128,17 @@ public class BrendMeneceri
         Logger.MelumatYaz($"BrendYenileAsync metodu çağırıldı. ID: {dto.Id}");
         try
         {
-            var movcudBrend = await _unitOfWork.Brendler.GetirAsync(dto.Id);
+            Brend movcudBrend = await _unitOfWork.Brendler.GetirAsync(dto.Id);
             if (movcudBrend == null)
+            {
                 return EmeliyyatNeticesi.Ugursuz("Yenilənmək üçün brend tapılmadı.");
+            }
 
             // Validasiya
             if (string.IsNullOrWhiteSpace(dto.Ad))
+            {
                 return EmeliyyatNeticesi.Ugursuz("Brend adı boş ola bilməz.");
+            }
 
             // Məlumatları yeniləyirik
             movcudBrend.Ad = dto.Ad;
@@ -164,9 +168,11 @@ public class BrendMeneceri
         Logger.MelumatYaz($"BrendSilAsync metodu çağırıldı. ID: {id}");
         try
         {
-            var brend = await _unitOfWork.Brendler.GetirAsync(id);
+            Brend brend = await _unitOfWork.Brendler.GetirAsync(id);
             if (brend == null)
+            {
                 return EmeliyyatNeticesi.Ugursuz("Silinəcək brend tapılmadı.");
+            }
 
             _unitOfWork.Brendler.Sil(brend);
             await _unitOfWork.EmeliyyatiTesdiqleAsync();
@@ -191,12 +197,12 @@ public class BrendMeneceri
         Logger.MelumatYaz($"Səhifələnmiş brendlər əldə edilir - Səhifə: {parametrler.SehifeNomresi}, Ölçü: {parametrler.SehifeOlcusu}");
         try
         {
-            var (brendler, umumiSay) = await _unitOfWork.Brendler.SehifelenmisGetirAsync(
+            (IEnumerable<Brend>? brendler, int umumiSay) = await _unitOfWork.Brendler.SehifelenmisGetirAsync(
                 parametrler.SehifeNomresi,
                 parametrler.SehifeOlcusu,
                 b => b.Aktivdir);
 
-            var dtolar = brendler.Select(b => new BrendDto
+            List<BrendDto> dtolar = brendler.Select(b => new BrendDto
             {
                 Id = b.Id,
                 Ad = b.Ad,
@@ -207,7 +213,7 @@ public class BrendMeneceri
                 Aktivdir = b.Aktivdir
             }).ToList();
 
-            var sehifelenmis = new SehifelenmisMelumat<BrendDto>(
+            SehifelenmisMelumat<BrendDto> sehifelenmis = new(
                 dtolar, umumiSay, parametrler.SehifeNomresi, parametrler.SehifeOlcusu);
 
             Logger.MelumatYaz($"Səhifələnmiş brendlər uğurla əldə edildi - {dtolar.Count}/{umumiSay}");

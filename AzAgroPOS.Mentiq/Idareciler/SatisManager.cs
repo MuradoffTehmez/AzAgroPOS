@@ -1,5 +1,4 @@
 ﻿// Fayl: AzAgroPOS.Mentiq/Idareciler/SatisManager.cs
-namespace AzAgroPOS.Mentiq.Idareciler;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Uslublar;
@@ -7,10 +6,8 @@ using AzAgroPOS.Mentiq.Yardimcilar;
 // Removed direct reference to Teqdimat namespace
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
+namespace AzAgroPOS.Mentiq.Idareciler;
 /// <summary>
 /// Satışlarla bağlı əməliyyatları idarə edən menecer.
 /// </summary>
@@ -48,20 +45,20 @@ public class SatisManager
             }
 
             // Stok yoxlaması - Batch query (N+1 problemini həll edir)
-            var mehsulIdleri = satisDto.SebetElementleri.Select(e => e.MehsulId).ToList();
-            var mehsullar = (await _unitOfWork.Mehsullar.AxtarAsync(m => mehsulIdleri.Contains(m.Id)))
+            List<int> mehsulIdleri = satisDto.SebetElementleri.Select(e => e.MehsulId).ToList();
+            Dictionary<int, Mehsul> mehsullar = (await _unitOfWork.Mehsullar.AxtarAsync(m => mehsulIdleri.Contains(m.Id)))
                 .ToDictionary(m => m.Id);
 
-            foreach (var element in satisDto.SebetElementleri)
+            foreach (SatisSebetiElementiDto element in satisDto.SebetElementleri)
             {
-                if (!mehsullar.TryGetValue(element.MehsulId, out var mehsul) || mehsul.MovcudSay < element.Miqdar)
+                if (!mehsullar.TryGetValue(element.MehsulId, out Mehsul? mehsul) || mehsul.MovcudSay < element.Miqdar)
                 {
                     Logger.XəbərdarlıqYaz($"'{element.MehsulAdi}' üçün stokda kifayət qədər məhsul yoxdur");
                     return EmeliyyatNeticesi<Satis>.Ugursuz($"'{element.MehsulAdi}' üçün stokda kifayət qədər məhsul yoxdur.");
                 }
             }
 
-            var satis = new Satis
+            Satis satis = new()
             {
                 Tarix = System.DateTime.Now,
                 OdenisMetodu = satisDto.OdenisMetodu,
@@ -74,7 +71,7 @@ public class SatisManager
             await _unitOfWork.EmeliyyatiTesdiqleAsync(); // Satış ID-sini əldə etmək üçün
 
             // Satış detallarını əlavə et və stok hərəkətlərini qeydə al
-            foreach (var element in satisDto.SebetElementleri)
+            foreach (SatisSebetiElementiDto element in satisDto.SebetElementleri)
             {
                 satis.SatisDetallari.Add(new SatisDetali
                 {
@@ -85,7 +82,7 @@ public class SatisManager
                 });
 
                 // Stok hərəkətini qeydə al (Çıxış)
-                var stokNeticesi = await _stokHareketiManager.StokHareketiQeydeAlAsync(
+                EmeliyyatNeticesi<int> stokNeticesi = await _stokHareketiManager.StokHareketiQeydeAlAsync(
                     StokHareketTipi.Cixis,
                     SenedNovu.Satis,
                     satis.Id,
@@ -107,7 +104,7 @@ public class SatisManager
             // Əgər nisyədirsə, borcu qeydə al
             if (satis.OdenisMetodu == OdenisMetodu.Nisyə)
             {
-                var nisyeNetice = await _nisyeManager.NisyeyeSatisElaveEtAsync(satis);
+                EmeliyyatNeticesi nisyeNetice = await _nisyeManager.NisyeyeSatisElaveEtAsync(satis);
                 if (!nisyeNetice.UgurluDur)
                 {
                     Logger.XetaYaz(new Exception(nisyeNetice.Mesaj), "Nisyə qeydiyatı zamanı xəta");
@@ -144,7 +141,7 @@ public class SatisManager
             }
 
             // Eager Loading: Satışı SatisDetallari və onların Mehsul məlumatları ilə yüklə
-            var satis = await _unitOfWork.Satislar.GetirAsync(satisId, new[] { "SatisDetallari.Mehsul" });
+            Satis satis = await _unitOfWork.Satislar.GetirAsync(satisId, new[] { "SatisDetallari.Mehsul" });
             if (satis == null)
             {
                 Logger.XəbərdarlıqYaz("Satış tapılmadı");
@@ -152,7 +149,7 @@ public class SatisManager
             }
 
             // Satış detallarını və məhsul məlumatlarını map et (artıq database query yoxdur)
-            var sebetElementleri = satis.SatisDetallari
+            List<SatisSebetiElementiDto> sebetElementleri = satis.SatisDetallari
                 .Where(detali => detali.Mehsul != null)
                 .Select(detali => new SatisSebetiElementiDto
                 {
@@ -163,7 +160,7 @@ public class SatisManager
                 })
                 .ToList();
 
-            var satisDto = new SatisQebzDto
+            SatisQebzDto satisDto = new()
             {
                 SatisId = satis.Id,
                 Tarix = satis.Tarix,
@@ -189,7 +186,7 @@ public class SatisManager
         try
         {
             // Əsas satışı tap
-            var satis = await _unitOfWork.Satislar.GetirAsync(satisId);
+            Satis satis = await _unitOfWork.Satislar.GetirAsync(satisId);
             if (satis == null)
             {
                 Logger.XəbərdarlıqYaz("Satış tapılmadı");
@@ -197,7 +194,7 @@ public class SatisManager
             }
 
             // Qaytarma obyektini yarat
-            var qaytarma = new Qaytarma
+            Qaytarma qaytarma = new()
             {
                 Tarix = DateTime.Now,
                 SatisId = satisId,
@@ -211,7 +208,7 @@ public class SatisManager
             await _unitOfWork.EmeliyyatiTesdiqleAsync(); // Qaytarma ID-sini əldə etmək üçün
 
             // Qaytarma detallarını əlavə et və stok hərəkətlərini qeydə al
-            foreach (var element in qaytarilanMehsullar)
+            foreach (SatisSebetiElementiDto element in qaytarilanMehsullar)
             {
                 // Qaytarma detallarını əlavə et
                 qaytarma.QaytarmaDetallari.Add(new QaytarmaDetali
@@ -223,7 +220,7 @@ public class SatisManager
                 });
 
                 // Stok hərəkətini qeydə al (Daxilolma - qaytarma)
-                var stokNeticesi = await _stokHareketiManager.StokHareketiQeydeAlAsync(
+                EmeliyyatNeticesi<int> stokNeticesi = await _stokHareketiManager.StokHareketiQeydeAlAsync(
                     StokHareketTipi.Daxilolma,
                     SenedNovu.Qaytarma,
                     qaytarma.Id,
@@ -245,14 +242,14 @@ public class SatisManager
             // Müştərinin borcunu azalt (əgər satış nisyə idisə)
             if (satis.OdenisMetodu == OdenisMetodu.Nisyə && satis.MusteriId.HasValue)
             {
-                var musteri = await _unitOfWork.Musteriler.GetirAsync(satis.MusteriId.Value);
+                Musteri musteri = await _unitOfWork.Musteriler.GetirAsync(satis.MusteriId.Value);
                 if (musteri != null)
                 {
                     musteri.UmumiBorc -= qaytarma.UmumiMebleg;
                     _unitOfWork.Musteriler.Yenile(musteri);
 
                     // Nisyə hərəkəti yarat
-                    var nisyeHereketi = new NisyeHereketi
+                    NisyeHereketi nisyeHereketi = new()
                     {
                         MusteriId = satis.MusteriId.Value,
                         Mebleg = qaytarma.UmumiMebleg,
@@ -267,7 +264,7 @@ public class SatisManager
             // Kassirin aktiv növbəsindəki nağd və ya kart məbləğini azalt
             if (aktivNovbeId.HasValue)
             {
-                var novbe = await _unitOfWork.Novbeler.GetirAsync(aktivNovbeId.Value);
+                Novbe novbe = await _unitOfWork.Novbeler.GetirAsync(aktivNovbeId.Value);
                 if (novbe != null)
                 {
                     if (satis.OdenisMetodu == OdenisMetodu.Nağd)
@@ -307,12 +304,12 @@ public class SatisManager
         Logger.MelumatYaz($"Səhifələnmiş satışlar əldə edilir - Səhifə: {parametrler.SehifeNomresi}, Ölçü: {parametrler.SehifeOlcusu}");
         try
         {
-            var (satislar, umumiSay) = await _unitOfWork.Satislar.SehifelenmisGetirAsync(
+            (IEnumerable<Satis>? satislar, int umumiSay) = await _unitOfWork.Satislar.SehifelenmisGetirAsync(
                 parametrler.SehifeNomresi,
                 parametrler.SehifeOlcusu,
                 s => !s.Silinib);
 
-            var satisDtolar = satislar.Select(s => new SatisDto
+            List<SatisDto> satisDtolar = satislar.Select(s => new SatisDto
             {
                 Id = s.Id,
                 Tarix = s.Tarix,
@@ -322,7 +319,7 @@ public class SatisManager
                 MusteriId = s.MusteriId
             }).ToList();
 
-            var sehifelenmis = new SehifelenmisMelumat<SatisDto>(
+            SehifelenmisMelumat<SatisDto> sehifelenmis = new(
                 satisDtolar,
                 umumiSay,
                 parametrler.SehifeNomresi,

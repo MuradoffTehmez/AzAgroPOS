@@ -16,8 +16,8 @@ namespace AzAgroPOS.Mentiq.Idareciler
 
         public async Task<EmeliyyatNeticesi<List<MusteriDto>>> ButunMusterileriGetirAsync()
         {
-            var musteriler = await _unitOfWork.Musteriler.ButununuGetirAsync();
-            var dtolar = musteriler.Select(m => new MusteriDto
+            IEnumerable<Musteri> musteriler = await _unitOfWork.Musteriler.ButununuGetirAsync();
+            List<MusteriDto> dtolar = musteriler.Select(m => new MusteriDto
             {
                 Id = m.Id,
                 TamAd = m.TamAd,
@@ -31,11 +31,13 @@ namespace AzAgroPOS.Mentiq.Idareciler
 
         public async Task<EmeliyyatNeticesi> MusteriYaratAsync(MusteriDto dto)
         {
-            var movcudMusteri = (await _unitOfWork.Musteriler.AxtarAsync(m => m.TelefonNomresi == dto.TelefonNomresi)).FirstOrDefault();
+            Musteri? movcudMusteri = (await _unitOfWork.Musteriler.AxtarAsync(m => m.TelefonNomresi == dto.TelefonNomresi)).FirstOrDefault();
             if (movcudMusteri != null)
+            {
                 return EmeliyyatNeticesi.Ugursuz("Bu telefon nömrəsi ilə müştəri artıq mövcuddur.");
+            }
 
-            var musteri = new Musteri
+            Musteri musteri = new()
             {
                 TamAd = dto.TamAd,
                 TelefonNomresi = dto.TelefonNomresi,
@@ -50,9 +52,11 @@ namespace AzAgroPOS.Mentiq.Idareciler
 
         public async Task<EmeliyyatNeticesi> MusteriYenileAsync(MusteriDto dto)
         {
-            var musteri = await _unitOfWork.Musteriler.GetirAsync(dto.Id);
+            Musteri musteri = await _unitOfWork.Musteriler.GetirAsync(dto.Id);
             if (musteri == null)
+            {
                 return EmeliyyatNeticesi.Ugursuz("Müştəri tapılmadı.");
+            }
 
             musteri.TamAd = dto.TamAd;
             musteri.TelefonNomresi = dto.TelefonNomresi;
@@ -66,12 +70,16 @@ namespace AzAgroPOS.Mentiq.Idareciler
 
         public async Task<EmeliyyatNeticesi> MusteriSilAsync(int id)
         {
-            var musteri = await _unitOfWork.Musteriler.GetirAsync(id);
+            Musteri musteri = await _unitOfWork.Musteriler.GetirAsync(id);
             if (musteri == null)
+            {
                 return EmeliyyatNeticesi.Ugursuz("Müştəri tapılmadı.");
+            }
 
             if (musteri.UmumiBorc > 0)
+            {
                 return EmeliyyatNeticesi.Ugursuz("Borcu olan müştərini silmək olmaz.");
+            }
 
             _unitOfWork.Musteriler.Sil(musteri);
             await _unitOfWork.EmeliyyatiTesdiqleAsync();
@@ -88,11 +96,11 @@ namespace AzAgroPOS.Mentiq.Idareciler
         {
             try
             {
-                var (musteriler, umumiSay) = await _unitOfWork.Musteriler.SehifelenmisGetirAsync(
+                (IEnumerable<Musteri>? musteriler, int umumiSay) = await _unitOfWork.Musteriler.SehifelenmisGetirAsync(
                     parametrler.SehifeNomresi,
                     parametrler.SehifeOlcusu);
 
-                var dtolar = musteriler.Select(m => new MusteriDto
+                List<MusteriDto> dtolar = musteriler.Select(m => new MusteriDto
                 {
                     Id = m.Id,
                     TamAd = m.TamAd,
@@ -102,7 +110,7 @@ namespace AzAgroPOS.Mentiq.Idareciler
                     KreditLimiti = m.KreditLimiti
                 }).OrderBy(m => m.TamAd).ToList();
 
-                var sehifelenmis = new SehifelenmisMelumat<MusteriDto>(
+                SehifelenmisMelumat<MusteriDto> sehifelenmis = new(
                     dtolar,
                     umumiSay,
                     parametrler.SehifeNomresi,
@@ -132,21 +140,21 @@ namespace AzAgroPOS.Mentiq.Idareciler
                 if (string.IsNullOrWhiteSpace(axtarisTermini))
                 {
                     // Axtarış termini yoxdursa, ilk N qeydi qaytarırıq
-                    var (topMusteriler, _) = await _unitOfWork.Musteriler.SehifelenmisGetirAsync(1, maksimumSay);
+                    (IEnumerable<Musteri>? topMusteriler, int _) = await _unitOfWork.Musteriler.SehifelenmisGetirAsync(1, maksimumSay);
                     musteriler = topMusteriler;
                 }
                 else
                 {
                     // Axtarış termini əsasında filtrləyirik
-                    var axtarisLower = axtarisTermini.ToLower();
-                    var butunMusteriler = await _unitOfWork.Musteriler.AxtarAsync(m =>
+                    string axtarisLower = axtarisTermini.ToLower();
+                    IEnumerable<Musteri> butunMusteriler = await _unitOfWork.Musteriler.AxtarAsync(m =>
                         m.TamAd.ToLower().Contains(axtarisLower) ||
                         (m.TelefonNomresi != null && m.TelefonNomresi.Contains(axtarisTermini)));
 
                     musteriler = butunMusteriler.Take(maksimumSay);
                 }
 
-                var dtolar = musteriler.Select(m => new MusteriDto
+                List<MusteriDto> dtolar = musteriler.Select(m => new MusteriDto
                 {
                     Id = m.Id,
                     TamAd = m.TamAd,
@@ -174,14 +182,18 @@ namespace AzAgroPOS.Mentiq.Idareciler
             try
             {
                 if (balMiqdari <= 0)
+                {
                     return EmeliyyatNeticesi.Ugursuz("Bal miqdarı 0-dan böyük olmalıdır.");
+                }
 
-                var musteri = await _unitOfWork.Musteriler.GetirAsync(musteriId);
+                Musteri musteri = await _unitOfWork.Musteriler.GetirAsync(musteriId);
                 if (musteri == null)
+                {
                     return EmeliyyatNeticesi.Ugursuz("Müştəri tapılmadı.");
+                }
 
                 // Müştərinin bonus qeydini tap və ya yarat
-                var musteriBonus = (await _unitOfWork.MusteriBonuslari.AxtarAsync(mb => mb.MusteriId == musteriId)).FirstOrDefault();
+                MusteriBonus? musteriBonus = (await _unitOfWork.MusteriBonuslari.AxtarAsync(mb => mb.MusteriId == musteriId)).FirstOrDefault();
                 if (musteriBonus == null)
                 {
                     musteriBonus = new MusteriBonus
@@ -205,7 +217,7 @@ namespace AzAgroPOS.Mentiq.Idareciler
                 _unitOfWork.MusteriBonuslari.Yenile(musteriBonus);
 
                 // Bonus qeydini əlavə et
-                var bonusQeydi = new BonusQeydi
+                BonusQeydi bonusQeydi = new()
                 {
                     MusteriBonusId = musteriBonus.Id,
                     EmeliyyatNovu = BonusEmeliyyatNovu.Qazanma,
@@ -234,14 +246,20 @@ namespace AzAgroPOS.Mentiq.Idareciler
             try
             {
                 if (balMiqdari <= 0)
+                {
                     return EmeliyyatNeticesi.Ugursuz("Bal miqdarı 0-dan böyük olmalıdır.");
+                }
 
-                var musteriBonus = (await _unitOfWork.MusteriBonuslari.AxtarAsync(mb => mb.MusteriId == musteriId)).FirstOrDefault();
+                MusteriBonus? musteriBonus = (await _unitOfWork.MusteriBonuslari.AxtarAsync(mb => mb.MusteriId == musteriId)).FirstOrDefault();
                 if (musteriBonus == null)
+                {
                     return EmeliyyatNeticesi.Ugursuz("Müştərinin bonus qeydi tapılmadı.");
+                }
 
                 if (musteriBonus.MovcudBal < balMiqdari)
+                {
                     return EmeliyyatNeticesi.Ugursuz($"Kifayət qədər bal yoxdur. Mövcud bal: {musteriBonus.MovcudBal}");
+                }
 
                 // Balı istifadə et
                 musteriBonus.IstifadeEdilmisBal += balMiqdari;
@@ -250,7 +268,7 @@ namespace AzAgroPOS.Mentiq.Idareciler
                 _unitOfWork.MusteriBonuslari.Yenile(musteriBonus);
 
                 // Bonus qeydini əlavə et
-                var bonusQeydi = new BonusQeydi
+                BonusQeydi bonusQeydi = new()
                 {
                     MusteriBonusId = musteriBonus.Id,
                     EmeliyyatNovu = BonusEmeliyyatNovu.Istifade,
@@ -279,14 +297,20 @@ namespace AzAgroPOS.Mentiq.Idareciler
             try
             {
                 if (balMiqdari <= 0)
+                {
                     return EmeliyyatNeticesi.Ugursuz("Bal miqdarı 0-dan böyük olmalıdır.");
+                }
 
-                var musteriBonus = (await _unitOfWork.MusteriBonuslari.AxtarAsync(mb => mb.MusteriId == musteriId)).FirstOrDefault();
+                MusteriBonus? musteriBonus = (await _unitOfWork.MusteriBonuslari.AxtarAsync(mb => mb.MusteriId == musteriId)).FirstOrDefault();
                 if (musteriBonus == null)
+                {
                     return EmeliyyatNeticesi.Ugursuz("Müştərinin bonus qeydi tapılmadı.");
+                }
 
                 if (musteriBonus.MovcudBal < balMiqdari)
+                {
                     return EmeliyyatNeticesi.Ugursuz($"Kifayət qədər bal yoxdur. Mövcud bal: {musteriBonus.MovcudBal}");
+                }
 
                 // Balı ləğv et (istifadə edilmiş kimi qeyd et)
                 musteriBonus.IstifadeEdilmisBal += balMiqdari;
@@ -297,7 +321,7 @@ namespace AzAgroPOS.Mentiq.Idareciler
                 _unitOfWork.MusteriBonuslari.Yenile(musteriBonus);
 
                 // Bonus qeydini əlavə et
-                var bonusQeydi = new BonusQeydi
+                BonusQeydi bonusQeydi = new()
                 {
                     MusteriBonusId = musteriBonus.Id,
                     EmeliyyatNovu = BonusEmeliyyatNovu.Legv,
@@ -325,13 +349,17 @@ namespace AzAgroPOS.Mentiq.Idareciler
             try
             {
                 if (balMiqdari == 0)
+                {
                     return EmeliyyatNeticesi.Ugursuz("Bal miqdarı 0 ola bilməz.");
+                }
 
-                var musteri = await _unitOfWork.Musteriler.GetirAsync(musteriId);
+                Musteri musteri = await _unitOfWork.Musteriler.GetirAsync(musteriId);
                 if (musteri == null)
+                {
                     return EmeliyyatNeticesi.Ugursuz("Müştəri tapılmadı.");
+                }
 
-                var musteriBonus = (await _unitOfWork.MusteriBonuslari.AxtarAsync(mb => mb.MusteriId == musteriId)).FirstOrDefault();
+                MusteriBonus? musteriBonus = (await _unitOfWork.MusteriBonuslari.AxtarAsync(mb => mb.MusteriId == musteriId)).FirstOrDefault();
                 if (musteriBonus == null)
                 {
                     musteriBonus = new MusteriBonus
@@ -359,7 +387,7 @@ namespace AzAgroPOS.Mentiq.Idareciler
                 YenileSeviyye(musteriBonus);
                 _unitOfWork.MusteriBonuslari.Yenile(musteriBonus);
 
-                var bonusQeydi = new BonusQeydi
+                BonusQeydi bonusQeydi = new()
                 {
                     MusteriBonusId = musteriBonus.Id,
                     EmeliyyatNovu = BonusEmeliyyatNovu.ManualElave,
@@ -386,7 +414,7 @@ namespace AzAgroPOS.Mentiq.Idareciler
         {
             try
             {
-                var musteriBonus = (await _unitOfWork.MusteriBonuslari.AxtarAsync(mb => mb.MusteriId == musteriId)).FirstOrDefault();
+                MusteriBonus? musteriBonus = (await _unitOfWork.MusteriBonuslari.AxtarAsync(mb => mb.MusteriId == musteriId)).FirstOrDefault();
                 return EmeliyyatNeticesi<MusteriBonus?>.Ugurlu(musteriBonus);
             }
             catch (Exception ex)
@@ -402,11 +430,13 @@ namespace AzAgroPOS.Mentiq.Idareciler
         {
             try
             {
-                var musteriBonus = (await _unitOfWork.MusteriBonuslari.AxtarAsync(mb => mb.MusteriId == musteriId)).FirstOrDefault();
+                MusteriBonus? musteriBonus = (await _unitOfWork.MusteriBonuslari.AxtarAsync(mb => mb.MusteriId == musteriId)).FirstOrDefault();
                 if (musteriBonus == null)
+                {
                     return EmeliyyatNeticesi<List<BonusQeydi>>.Ugurlu(new List<BonusQeydi>());
+                }
 
-                var qeydler = (await _unitOfWork.BonusQeydleri.AxtarAsync(bq => bq.MusteriBonusId == musteriBonus.Id))
+                List<BonusQeydi> qeydler = (await _unitOfWork.BonusQeydleri.AxtarAsync(bq => bq.MusteriBonusId == musteriBonus.Id))
                     .OrderByDescending(bq => bq.EmeliyyatTarixi)
                     .ToList();
 
@@ -425,7 +455,7 @@ namespace AzAgroPOS.Mentiq.Idareciler
         {
             try
             {
-                var bonuslar = (await _unitOfWork.MusteriBonuslari.ButununuGetirAsync())
+                List<MusteriBonus> bonuslar = (await _unitOfWork.MusteriBonuslari.ButununuGetirAsync())
                     .OrderByDescending(mb => mb.MovcudBal)
                     .ToList();
 
@@ -442,16 +472,11 @@ namespace AzAgroPOS.Mentiq.Idareciler
         /// </summary>
         private void YenileSeviyye(MusteriBonus musteriBonus)
         {
-            var movcudBal = musteriBonus.MovcudBal;
+            decimal movcudBal = musteriBonus.MovcudBal;
 
-            if (movcudBal >= 10000)
-                musteriBonus.Seviyye = MusteriSeviyyesi.Platinum;
-            else if (movcudBal >= 5000)
-                musteriBonus.Seviyye = MusteriSeviyyesi.Qizil;
-            else if (movcudBal >= 1000)
-                musteriBonus.Seviyye = MusteriSeviyyesi.Gumus;
-            else
-                musteriBonus.Seviyye = MusteriSeviyyesi.Esas;
+            musteriBonus.Seviyye = movcudBal >= 10000
+                ? MusteriSeviyyesi.Platinum
+                : movcudBal >= 5000 ? MusteriSeviyyesi.Qizil : movcudBal >= 1000 ? MusteriSeviyyesi.Gumus : MusteriSeviyyesi.Esas;
         }
 
         #endregion

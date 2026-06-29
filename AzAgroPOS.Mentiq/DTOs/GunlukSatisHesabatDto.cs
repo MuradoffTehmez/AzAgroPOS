@@ -1,9 +1,6 @@
 ﻿// Fayl: AzAgroPOS.Mentiq/DTOs/GunlukSatisHesabatDto.cs
+
 namespace AzAgroPOS.Mentiq.DTOs;
-
-using System;
-using System.Collections.Generic;
-
 /// <summary>
 /// Günlük satış hesabatının yekun nəticələrini və detallarını özündə cəmləyir.
 /// </summary>

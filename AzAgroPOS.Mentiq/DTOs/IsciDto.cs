@@ -1,9 +1,8 @@
 // Fayl: AzAgroPOS.Mentiq/DTOs/IsciDto.cs
-namespace AzAgroPOS.Mentiq.DTOs;
 
 using AzAgroPOS.Varliglar;
-using System;
 
+namespace AzAgroPOS.Mentiq.DTOs;
 /// <summary>
 /// İşçi məlumatlarını təqdimat qatına ötürmək üçün istifadə olunan DTO.
 /// </summary>

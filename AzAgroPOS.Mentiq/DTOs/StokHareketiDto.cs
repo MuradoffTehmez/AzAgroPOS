@@ -1,8 +1,6 @@
 // Fayl: AzAgroPOS.Mentiq/DTOs/StokHareketiDto.cs
+
 namespace AzAgroPOS.Mentiq.DTOs;
-
-using System;
-
 /// <summary>
 /// Stok hərəkəti məlumatları üçün DTO
 /// </summary>

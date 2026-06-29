@@ -1,16 +1,12 @@
 // Fayl: AzAgroPOS.Mentiq/Idareciler/EmekHaqqiManager.cs
-namespace AzAgroPOS.Mentiq.Idareciler;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Mentiq.Yardimcilar;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
+namespace AzAgroPOS.Mentiq.Idareciler;
 /// <summary>
 /// Əmək haqqı (Payroll) əməliyyatlarını idarə edən menecer.
 /// diqqət: Bu sinif, işçilərin əmək haqqının hesablanması, ödənilməsi və maliyyə sistemi ilə inteqrasiyasını idarə edir.
@@ -55,51 +51,63 @@ public class EmekHaqqiManager
         try
         {
             // İşçi məlumatlarını əldə et
-            var isciNetice = await _isciManager.IsciGetirAsync(isciId);
+            EmeliyyatNeticesi<IsciDto> isciNetice = await _isciManager.IsciGetirAsync(isciId);
             if (!isciNetice.UgurluDur || isciNetice.Data == null)
+            {
                 return EmeliyyatNeticesi<int>.Ugursuz($"İşçi tapılmadı: {isciNetice.Mesaj}");
+            }
 
-            var isci = isciNetice.Data;
+            IsciDto isci = isciNetice.Data;
 
             // Validasiya
             if (isci.Status != IsciStatusu.Aktiv)
+            {
                 return EmeliyyatNeticesi<int>.Ugursuz("Yalnız aktiv işçilər üçün əmək haqqı hesablana bilər.");
+            }
 
             if (string.IsNullOrWhiteSpace(dovr))
+            {
                 return EmeliyyatNeticesi<int>.Ugursuz("Əmək haqqı dövrü təyin edilməlidir.");
+            }
 
             // Eyni dövr üçün artıq əmək haqqı hesablanıb-hesablanmadığını yoxla
-            var movcudEmekHaqqi = await _unitOfWork.EmekHaqqilari.AxtarAsync(
+            IEnumerable<EmekHaqqi> movcudEmekHaqqi = await _unitOfWork.EmekHaqqilari.AxtarAsync(
                 eh => eh.IsciId == isciId && eh.Dovr == dovr && eh.Status != EmekHaqqiStatusu.Legv);
 
             if (movcudEmekHaqqi.Any())
+            {
                 return EmeliyyatNeticesi<int>.Ugursuz($"Bu dövr ({dovr}) üçün artıq əmək haqqı hesablanmışdır.");
+            }
 
             // Performans bonuslarını hesabla (isteğe bağlı)
             decimal bonuslar = 0;
-            var performansNetice = await _isciManager.IscininPerformansQeydleriniGetirAsync(isciId);
+            EmeliyyatNeticesi<List<IsciPerformansDto>> performansNetice = await _isciManager.IscininPerformansQeydleriniGetirAsync(isciId);
             if (performansNetice.UgurluDur && performansNetice.Data.Any())
             {
                 // Son performans qeydini tap
-                var sonPerformans = performansNetice.Data.OrderByDescending(p => p.Tarix).FirstOrDefault();
+                IsciPerformansDto? sonPerformans = performansNetice.Data.OrderByDescending(p => p.Tarix).FirstOrDefault();
                 if (sonPerformans != null && sonPerformans.QeydDovru == dovr)
                 {
                     // Performans qiymətinə görə bonus hesabla
                     // Məsələn: Qiymət 8-10 arasındadırsa, maaşın 10%-i bonus
                     if (sonPerformans.Qiymet >= 8)
+                    {
                         bonuslar = isci.Maas * 0.10m; // 10% bonus
+                    }
                     else if (sonPerformans.Qiymet >= 6)
+                    {
                         bonuslar = isci.Maas * 0.05m; // 5% bonus
+                    }
                 }
             }
 
             // İcazə tutulmalarını hesabla
             decimal icazeTutulmasi = 0;
-            var izinNetice = await _isciManager.IscininIzinQeydleriniGetirAsync(isciId);
+            EmeliyyatNeticesi<List<IsciIzniDto>> izinNetice = await _isciManager.IscininIzinQeydleriniGetirAsync(isciId);
             if (izinNetice.UgurluDur && izinNetice.Data.Any())
             {
                 // Cari dövr üçün ödənişsiz icazələri tap
-                var odenissizIzinler = izinNetice.Data.Where(i =>
+                List<IsciIzniDto> odenissizIzinler = izinNetice.Data.Where(i =>
                     i.IzinNovu == IzinNovu.Mezuniyyetsiz &&
                     i.Status == IzinStatusu.Tesdiqlenib &&
                     i.BaslamaTarixi.Year == DateTime.Now.Year &&
@@ -107,15 +115,15 @@ public class EmekHaqqiManager
 
                 if (odenissizIzinler.Any())
                 {
-                    var umumiIzinGunleri = odenissizIzinler.Sum(i => i.IzinGunu);
+                    int umumiIzinGunleri = odenissizIzinler.Sum(i => i.IzinGunu);
                     // Günlük maaş = Aylıq maaş / 30
-                    var gunlukMaas = isci.Maas / 30m;
+                    decimal gunlukMaas = isci.Maas / 30m;
                     icazeTutulmasi = gunlukMaas * umumiIzinGunleri;
                 }
             }
 
             // Əmək haqqı qeydini yarat
-            var emekHaqqi = new EmekHaqqi
+            EmekHaqqi emekHaqqi = new()
             {
                 IsciId = isciId,
                 Dovr = dovr,
@@ -160,24 +168,32 @@ public class EmekHaqqiManager
         try
         {
             // Əmək haqqı qeydini tap
-            var emekHaqqi = await _unitOfWork.EmekHaqqilari.GetirAsync(emekHaqqiId);
+            EmekHaqqi emekHaqqi = await _unitOfWork.EmekHaqqilari.GetirAsync(emekHaqqiId);
             if (emekHaqqi == null)
+            {
                 return EmeliyyatNeticesi.Ugursuz("Əmək haqqı qeydi tapılmadı.");
+            }
 
             // Statusu yoxla
             if (emekHaqqi.Status == EmekHaqqiStatusu.Odenilmis)
+            {
                 return EmeliyyatNeticesi.Ugursuz("Bu əmək haqqı artıq ödənilmişdir.");
+            }
 
             if (emekHaqqi.Status == EmekHaqqiStatusu.Legv)
+            {
                 return EmeliyyatNeticesi.Ugursuz("Ləğv edilmiş əmək haqqı ödənilə bilməz.");
+            }
 
             // İşçi məlumatlarını əldə et
-            var isci = await _unitOfWork.Isciler.GetirAsync(emekHaqqi.IsciId);
+            Isci isci = await _unitOfWork.Isciler.GetirAsync(emekHaqqi.IsciId);
             if (isci == null)
+            {
                 return EmeliyyatNeticesi.Ugursuz("İşçi tapılmadı.");
+            }
 
             // Xərc qeydiyyatı yarat
-            var xercNetice = await _maliyyeManager.XercYaratAsync(
+            EmeliyyatNeticesi<int> xercNetice = await _maliyyeManager.XercYaratAsync(
                 XercNovu.EmekHaqqi,
                 $"Əmək haqqı - {isci.TamAd} - {emekHaqqi.Dovr}",
                 emekHaqqi.YekunEmekHaqqi,
@@ -187,7 +203,9 @@ public class EmekHaqqiManager
                 istifadeciId);
 
             if (!xercNetice.UgurluDur)
+            {
                 return EmeliyyatNeticesi.Ugursuz($"Xərc qeydiyyatı yaradılarkən xəta: {xercNetice.Mesaj}");
+            }
 
             // Əmək haqqı statusunu "Ödənilmiş" et
             emekHaqqi.Status = EmekHaqqiStatusu.Odenilmis;
@@ -221,20 +239,26 @@ public class EmekHaqqiManager
         try
         {
             // Aktiv işçiləri əldə et
-            var iscilerNetice = await _isciManager.ButunIscileriGetirAsync();
+            EmeliyyatNeticesi<List<IsciDto>> iscilerNetice = await _isciManager.ButunIscileriGetirAsync();
             if (!iscilerNetice.UgurluDur || !iscilerNetice.Data.Any())
+            {
                 return EmeliyyatNeticesi<int>.Ugursuz("Aktiv işçi tapılmadı.");
+            }
 
-            var aktivIsciler = iscilerNetice.Data.Where(i => i.Status == IsciStatusu.Aktiv).ToList();
+            List<IsciDto> aktivIsciler = iscilerNetice.Data.Where(i => i.Status == IsciStatusu.Aktiv).ToList();
             int hesablananSay = 0;
 
-            foreach (var isci in aktivIsciler)
+            foreach (IsciDto? isci in aktivIsciler)
             {
-                var netice = await EmekHaqqiHesablaAsync(isci.Id, dovr, 0, 0, null, istifadeciId);
+                EmeliyyatNeticesi<int> netice = await EmekHaqqiHesablaAsync(isci.Id, dovr, 0, 0, null, istifadeciId);
                 if (netice.UgurluDur)
+                {
                     hesablananSay++;
+                }
                 else
+                {
                     Logger.XəbərdarlıqYaz($"İşçi {isci.TamAd} üçün əmək haqqı hesablana bilmədi: {netice.Mesaj}");
+                }
             }
 
             Logger.MelumatYaz($"Toplu əmək haqqı hesablaması tamamlandı: {hesablananSay} / {aktivIsciler.Count}");
@@ -261,21 +285,21 @@ public class EmekHaqqiManager
 
         try
         {
-            var filter = baslangicTarixi.HasValue && bitisTarixi.HasValue
-                ? (Func<EmekHaqqi, bool>)(eh => eh.HesablanmaTarixi.Date >= baslangicTarixi.Value.Date &&
+            Func<EmekHaqqi, bool> filter = baslangicTarixi.HasValue && bitisTarixi.HasValue
+                ? (eh => eh.HesablanmaTarixi.Date >= baslangicTarixi.Value.Date &&
                                                 eh.HesablanmaTarixi.Date <= bitisTarixi.Value.Date)
                 : baslangicTarixi.HasValue
-                    ? (Func<EmekHaqqi, bool>)(eh => eh.HesablanmaTarixi.Date >= baslangicTarixi.Value.Date)
+                    ? (eh => eh.HesablanmaTarixi.Date >= baslangicTarixi.Value.Date)
                     : bitisTarixi.HasValue
-                        ? (Func<EmekHaqqi, bool>)(eh => eh.HesablanmaTarixi.Date <= bitisTarixi.Value.Date)
-                        : (Func<EmekHaqqi, bool>)(eh => true);
+                        ? (eh => eh.HesablanmaTarixi.Date <= bitisTarixi.Value.Date)
+                        : (eh => true);
 
-            var emekHaqqlari = (await _unitOfWork.EmekHaqqilari.ButununuGetirAsync()).Where(filter).ToList();
-            var dtolar = new List<EmekHaqqiDto>();
+            List<EmekHaqqi> emekHaqqlari = (await _unitOfWork.EmekHaqqilari.ButununuGetirAsync()).Where(filter).ToList();
+            List<EmekHaqqiDto> dtolar = new();
 
-            foreach (var eh in emekHaqqlari)
+            foreach (EmekHaqqi? eh in emekHaqqlari)
             {
-                var isci = await _unitOfWork.Isciler.GetirAsync(eh.IsciId);
+                Isci isci = await _unitOfWork.Isciler.GetirAsync(eh.IsciId);
                 dtolar.Add(new EmekHaqqiDto
                 {
                     Id = eh.Id,
@@ -317,12 +341,16 @@ public class EmekHaqqiManager
 
         try
         {
-            var emekHaqqi = await _unitOfWork.EmekHaqqilari.GetirAsync(emekHaqqiId);
+            EmekHaqqi emekHaqqi = await _unitOfWork.EmekHaqqilari.GetirAsync(emekHaqqiId);
             if (emekHaqqi == null)
+            {
                 return EmeliyyatNeticesi.Ugursuz("Əmək haqqı qeydi tapılmadı.");
+            }
 
             if (emekHaqqi.Status == EmekHaqqiStatusu.Odenilmis)
+            {
                 return EmeliyyatNeticesi.Ugursuz("Ödənilmiş əmək haqqı ləğv edilə bilməz.");
+            }
 
             emekHaqqi.Status = EmekHaqqiStatusu.Legv;
             _unitOfWork.EmekHaqqilari.Yenile(emekHaqqi);
@@ -349,15 +377,15 @@ public class EmekHaqqiManager
         Logger.MelumatYaz($"Səhifələnmiş əmək haqqıları əldə edilir - Səhifə: {parametrler.SehifeNomresi}, Ölçü: {parametrler.SehifeOlcusu}");
         try
         {
-            var (emekHaqqlari, umumiSay) = await _unitOfWork.EmekHaqqilari.SehifelenmisGetirAsync(
+            (IEnumerable<EmekHaqqi>? emekHaqqlari, int umumiSay) = await _unitOfWork.EmekHaqqilari.SehifelenmisGetirAsync(
                 parametrler.SehifeNomresi,
                 parametrler.SehifeOlcusu,
                 e => !e.Silinib);
 
-            var dtolar = new List<EmekHaqqiDto>();
-            foreach (var eh in emekHaqqlari)
+            List<EmekHaqqiDto> dtolar = new();
+            foreach (EmekHaqqi eh in emekHaqqlari)
             {
-                var isci = await _unitOfWork.Isciler.GetirAsync(eh.IsciId);
+                Isci isci = await _unitOfWork.Isciler.GetirAsync(eh.IsciId);
                 dtolar.Add(new EmekHaqqiDto
                 {
                     Id = eh.Id,
@@ -376,7 +404,7 @@ public class EmekHaqqiManager
                 });
             }
 
-            var sehifelenmis = new SehifelenmisMelumat<EmekHaqqiDto>(
+            SehifelenmisMelumat<EmekHaqqiDto> sehifelenmis = new(
                 dtolar,
                 umumiSay,
                 parametrler.SehifeNomresi,

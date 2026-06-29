@@ -1,13 +1,12 @@
 ﻿// Fayl: AzAgroPOS.Mentiq/Idareciler/AnbarManager.cs
-namespace AzAgroPOS.Mentiq.Idareciler;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Mentiq.Yardimcilar;
+using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
-using System.Linq;
-using System.Threading.Tasks;
 
+namespace AzAgroPOS.Mentiq.Idareciler;
 /// <summary>
 /// Anbar əməliyyatları (stok artımı və s.) ilə bağlı biznes məntiqini idarə edir.
 /// </summary>
@@ -31,14 +30,18 @@ public class AnbarManager
         try
         {
             if (string.IsNullOrWhiteSpace(barkodVeyaStokKodu))
+            {
                 return EmeliyyatNeticesi<MehsulDto>.Ugursuz("Axtarış üçün dəyər daxil edin.");
+            }
 
-            var mehsul = (await _unitOfWork.Mehsullar.AxtarAsync(m => m.Barkod == barkodVeyaStokKodu || m.StokKodu == barkodVeyaStokKodu)).FirstOrDefault();
+            Mehsul? mehsul = (await _unitOfWork.Mehsullar.AxtarAsync(m => m.Barkod == barkodVeyaStokKodu || m.StokKodu == barkodVeyaStokKodu)).FirstOrDefault();
 
             if (mehsul == null)
+            {
                 return EmeliyyatNeticesi<MehsulDto>.Ugursuz("Bu koda uyğun məhsul tapılmadı.");
+            }
 
-            var mehsulDto = new MehsulDto
+            MehsulDto mehsulDto = new()
             {
                 Id = mehsul.Id,
                 Ad = mehsul.Ad,
@@ -70,11 +73,15 @@ public class AnbarManager
         try
         {
             if (elaveOlunanSay <= 0)
+            {
                 return EmeliyyatNeticesi<int>.Ugursuz("Əlavə edilən say 0-dan böyük olmalıdır.");
+            }
 
-            var mehsul = await _unitOfWork.Mehsullar.GetirAsync(mehsulId);
+            Mehsul mehsul = await _unitOfWork.Mehsullar.GetirAsync(mehsulId);
             if (mehsul == null)
+            {
                 return EmeliyyatNeticesi<int>.Ugursuz("Məhsul tapılmadı.");
+            }
 
             mehsul.MovcudSay += elaveOlunanSay;
             _unitOfWork.Mehsullar.Yenile(mehsul);
@@ -99,9 +106,9 @@ public class AnbarManager
         Logger.MelumatYaz("ButunMehsullariGetirAsync çağırıldı");
         try
         {
-            var mehsullar = await _unitOfWork.Mehsullar.ButununuGetirAsync();
+            IEnumerable<Mehsul> mehsullar = await _unitOfWork.Mehsullar.ButununuGetirAsync();
 
-            var mehsulDtolar = mehsullar.Select(m => new MehsulDto
+            List<MehsulDto> mehsulDtolar = mehsullar.Select(m => new MehsulDto
             {
                 Id = m.Id,
                 Ad = m.Ad,

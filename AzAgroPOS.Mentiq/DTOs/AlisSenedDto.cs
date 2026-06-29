@@ -1,10 +1,8 @@
 // Fayl: AzAgroPOS.Mentiq/DTOs/AlisSenedDto.cs
-namespace AzAgroPOS.Mentiq.DTOs;
 
 using AzAgroPOS.Varliglar;
-using System;
-using System.Collections.Generic;
 
+namespace AzAgroPOS.Mentiq.DTOs;
 /// <summary>
 /// Alış sənədi məlumatlarını təqdimat qatına ötürmək üçün istifadə olunan DTO.
 /// </summary>

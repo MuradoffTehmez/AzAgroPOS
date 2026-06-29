@@ -1,16 +1,12 @@
 // Fayl: AzAgroPOS.Mentiq/Idareciler/IsciManager.cs
-namespace AzAgroPOS.Mentiq.Idareciler;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Mentiq.Yardimcilar;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
+namespace AzAgroPOS.Mentiq.Idareciler;
 /// <summary>
 /// İşçilərlə bağlı biznes məntiqini idarə edən menecer.
 /// </summary>
@@ -32,8 +28,8 @@ public class IsciManager
         Logger.MelumatYaz("Bütün işçilər gətirilir.");
         try
         {
-            var isciler = await _unitOfWork.Isciler.ButununuGetirAsync();
-            var dtolar = isciler.Select(i => new IsciDto
+            IEnumerable<Isci> isciler = await _unitOfWork.Isciler.ButununuGetirAsync();
+            List<IsciDto> dtolar = isciler.Select(i => new IsciDto
             {
                 Id = i.Id,
                 TamAd = i.TamAd,
@@ -78,14 +74,14 @@ public class IsciManager
             if (string.IsNullOrWhiteSpace(axtarisTermini))
             {
                 // Axtarış termini yoxdursa, aktiv işçilərdən ilk N qeydi qaytarırıq
-                var butunIsciler = await _unitOfWork.Isciler.AxtarAsync(i => i.Status == IsciStatusu.Aktiv);
+                IEnumerable<Isci> butunIsciler = await _unitOfWork.Isciler.AxtarAsync(i => i.Status == IsciStatusu.Aktiv);
                 isciler = butunIsciler.Take(maksimumSay);
             }
             else
             {
                 // Axtarış termini əsasında filtrləyirik
-                var axtarisLower = axtarisTermini.ToLower();
-                var tapilmisIsciler = await _unitOfWork.Isciler.AxtarAsync(i =>
+                string axtarisLower = axtarisTermini.ToLower();
+                IEnumerable<Isci> tapilmisIsciler = await _unitOfWork.Isciler.AxtarAsync(i =>
                     i.Status == IsciStatusu.Aktiv &&
                     (i.TamAd.ToLower().Contains(axtarisLower) ||
                      (i.TelefonNomresi != null && i.TelefonNomresi.Contains(axtarisTermini)) ||
@@ -94,7 +90,7 @@ public class IsciManager
                 isciler = tapilmisIsciler.Take(maksimumSay);
             }
 
-            var dtolar = isciler.Select(i => new IsciDto
+            List<IsciDto> dtolar = isciler.Select(i => new IsciDto
             {
                 Id = i.Id,
                 TamAd = i.TamAd,
@@ -132,11 +128,13 @@ public class IsciManager
         Logger.MelumatYaz($"Axtarılan işçi ID-si: {id}");
         try
         {
-            var isci = await _unitOfWork.Isciler.GetirAsync(id);
+            Isci isci = await _unitOfWork.Isciler.GetirAsync(id);
             if (isci == null)
+            {
                 return EmeliyyatNeticesi<IsciDto>.Ugursuz("İşçi tapılmadı.");
+            }
 
-            var dto = new IsciDto
+            IsciDto dto = new()
             {
                 Id = isci.Id,
                 TamAd = isci.TamAd,
@@ -175,13 +173,17 @@ public class IsciManager
         {
             // Validasiya
             if (string.IsNullOrWhiteSpace(dto.TamAd))
+            {
                 return EmeliyyatNeticesi<int>.Ugursuz("İşçinin tam adı boş ola bilməz.");
+            }
 
             if (dto.Maas < 0)
+            {
                 return EmeliyyatNeticesi<int>.Ugursuz("Maaş mənfi ola bilməz.");
+            }
 
             // Yeni işçi obyekti yaradırıq
-            var yeniIsci = new Isci
+            Isci yeniIsci = new()
             {
                 TamAd = dto.TamAd,
                 DogumTarixi = dto.DogumTarixi,
@@ -219,16 +221,22 @@ public class IsciManager
         Logger.MelumatYaz($"Yenilənəcək işçi ID-si: {dto.Id}");
         try
         {
-            var movcudIsci = await _unitOfWork.Isciler.GetirAsync(dto.Id);
+            Isci movcudIsci = await _unitOfWork.Isciler.GetirAsync(dto.Id);
             if (movcudIsci == null)
+            {
                 return EmeliyyatNeticesi.Ugursuz("Yenilənmək üçün işçi tapılmadı.");
+            }
 
             // Validasiya
             if (string.IsNullOrWhiteSpace(dto.TamAd))
+            {
                 return EmeliyyatNeticesi.Ugursuz("İşçinin tam adı boş ola bilməz.");
+            }
 
             if (dto.Maas < 0)
+            {
                 return EmeliyyatNeticesi.Ugursuz("Maaş mənfi ola bilməz.");
+            }
 
             // Məlumatları yeniləyirik
             movcudIsci.TamAd = dto.TamAd;
@@ -266,9 +274,11 @@ public class IsciManager
         Logger.MelumatYaz($"Silinəcək işçi ID-si: {id}");
         try
         {
-            var isci = await _unitOfWork.Isciler.GetirAsync(id);
+            Isci isci = await _unitOfWork.Isciler.GetirAsync(id);
             if (isci == null)
+            {
                 return EmeliyyatNeticesi.Ugursuz("Silinəcək işçi tapılmadı.");
+            }
 
             _unitOfWork.Isciler.Sil(isci);
             await _unitOfWork.EmeliyyatiTesdiqleAsync();
@@ -291,8 +301,8 @@ public class IsciManager
         Logger.MelumatYaz($"Performans qeydləri gətiriləcək işçi ID-si: {isciId}");
         try
         {
-            var performansQeydleri = await _unitOfWork.IsciPerformanslari.AxtarAsync(p => p.IsciId == isciId);
-            var dtolar = performansQeydleri.Select(p => new IsciPerformansDto
+            IEnumerable<IsciPerformans> performansQeydleri = await _unitOfWork.IsciPerformanslari.AxtarAsync(p => p.IsciId == isciId);
+            List<IsciPerformansDto> dtolar = performansQeydleri.Select(p => new IsciPerformansDto
             {
                 Id = p.Id,
                 IsciId = p.IsciId,
@@ -323,8 +333,8 @@ public class IsciManager
         Logger.MelumatYaz($"Məzuniyyət/icazə qeydləri gətiriləcək işçi ID-si: {isciId}");
         try
         {
-            var izinQeydleri = await _unitOfWork.IsciIznleri.AxtarAsync(i => i.IsciId == isciId);
-            var dtolar = izinQeydleri.Select(i => new IsciIzniDto
+            IEnumerable<IsciIzni> izinQeydleri = await _unitOfWork.IsciIznleri.AxtarAsync(i => i.IsciId == isciId);
+            List<IsciIzniDto> dtolar = izinQeydleri.Select(i => new IsciIzniDto
             {
                 Id = i.Id,
                 IsciId = i.IsciId,
@@ -361,12 +371,12 @@ public class IsciManager
         Logger.MelumatYaz($"Səhifələnmiş işçilər əldə edilir - Səhifə: {parametrler.SehifeNomresi}, Ölçü: {parametrler.SehifeOlcusu}");
         try
         {
-            var (isciler, umumiSay) = await _unitOfWork.Isciler.SehifelenmisGetirAsync(
+            (IEnumerable<Isci>? isciler, int umumiSay) = await _unitOfWork.Isciler.SehifelenmisGetirAsync(
                 parametrler.SehifeNomresi,
                 parametrler.SehifeOlcusu,
                 i => !i.Silinib);
 
-            var dtolar = isciler.Select(i => new IsciDto
+            List<IsciDto> dtolar = isciler.Select(i => new IsciDto
             {
                 Id = i.Id,
                 TamAd = i.TamAd,
@@ -385,7 +395,7 @@ public class IsciManager
                 SistemIstifadeciAdi = i.SistemIstifadecisi?.IstifadeciAdi
             }).ToList();
 
-            var sehifelenmis = new SehifelenmisMelumat<IsciDto>(
+            SehifelenmisMelumat<IsciDto> sehifelenmis = new(
                 dtolar,
                 umumiSay,
                 parametrler.SehifeNomresi,

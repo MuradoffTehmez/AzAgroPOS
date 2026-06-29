@@ -1,5 +1,4 @@
 ﻿// Fayl: AzAgroPOS.Mentiq/Idareciler/NisyeManager.cs
-namespace AzAgroPOS.Mentiq.Idareciler;
 
 // using-lər
 using AzAgroPOS.Mentiq.DTOs;
@@ -8,6 +7,7 @@ using AzAgroPOS.Mentiq.Yardimcilar;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 
+namespace AzAgroPOS.Mentiq.Idareciler;
 /// <summary>
 /// Nisye (borc) əməliyyatlarını idarə edən menecer.
 /// </summary>
@@ -29,8 +29,8 @@ public class NisyeManager
     /// <returns></returns>
     public async Task<EmeliyyatNeticesi<List<MusteriDto>>> MusterileriGetirAsync()
     {
-        var musteriler = await _unitOfWork.Musteriler.ButununuGetirAsync();
-        var dtolar = musteriler.Select(m => new MusteriDto
+        IEnumerable<Musteri> musteriler = await _unitOfWork.Musteriler.ButununuGetirAsync();
+        List<MusteriDto> dtolar = musteriler.Select(m => new MusteriDto
         {
             Id = m.Id,
             TamAd = m.TamAd,
@@ -51,10 +51,10 @@ public class NisyeManager
     /// <returns></returns>
     public async Task<EmeliyyatNeticesi<List<NisyeHereketiDto>>> MusteriHereketleriniGetirAsync(int musteriId)
     {
-        var hereketler = await _unitOfWork.NisyeHereketleri
+        IEnumerable<NisyeHereketi> hereketler = await _unitOfWork.NisyeHereketleri
                                           .AxtarAsync(h => h.MusteriId == musteriId);
 
-        var dtolar = hereketler.OrderByDescending(h => h.Tarix)
+        List<NisyeHereketiDto> dtolar = hereketler.OrderByDescending(h => h.Tarix)
                                .Select(h => new NisyeHereketiDto
                                {
                                    Tarix = h.Tarix,
@@ -91,7 +91,7 @@ public class NisyeManager
             }
 
             // Müştəri yoxlaması
-            var musteri = await _unitOfWork.Musteriler.GetirAsync(musteriId);
+            Musteri musteri = await _unitOfWork.Musteriler.GetirAsync(musteriId);
             if (musteri == null)
             {
                 Logger.XəbərdarlıqYaz($"Müştəri tapılmadı - ID: {musteriId}");
@@ -113,7 +113,7 @@ public class NisyeManager
             Logger.MelumatYaz($"Müştəri borcu yeniləndi - Əvvəlki: {evvelkiBorc}, Yeni: {musteri.UmumiBorc}");
 
             // Hərəkəti qeydə al
-            var hereket = new NisyeHereketi
+            NisyeHereketi hereket = new()
             {
                 MusteriId = musteriId,
                 Tarix = DateTime.Now,
@@ -144,16 +144,20 @@ public class NisyeManager
     public async Task<EmeliyyatNeticesi> NisyeyeSatisElaveEtAsync(Satis satis)
     {
         if (!satis.MusteriId.HasValue)
+        {
             return EmeliyyatNeticesi.Ugursuz("Nisyə satış üçün müştəri seçilməlidir.");
+        }
 
-        var musteri = await _unitOfWork.Musteriler.GetirAsync(satis.MusteriId.Value);
+        Musteri musteri = await _unitOfWork.Musteriler.GetirAsync(satis.MusteriId.Value);
         if (musteri == null)
+        {
             return EmeliyyatNeticesi.Ugursuz("Müştəri tapılmadı.");
+        }
 
         musteri.UmumiBorc += satis.UmumiMebleg;
         _unitOfWork.Musteriler.Yenile(musteri);
 
-        var hereket = new NisyeHereketi
+        NisyeHereketi hereket = new()
         {
             MusteriId = musteri.Id,
             Tarix = satis.Tarix,
@@ -178,12 +182,12 @@ public class NisyeManager
         Logger.MelumatYaz($"Səhifələnmiş müştərilər əldə edilir - Səhifə: {parametrler.SehifeNomresi}, Ölçü: {parametrler.SehifeOlcusu}");
         try
         {
-            var (musteriler, umumiSay) = await _unitOfWork.Musteriler.SehifelenmisGetirAsync(
+            (IEnumerable<Musteri>? musteriler, int umumiSay) = await _unitOfWork.Musteriler.SehifelenmisGetirAsync(
                 parametrler.SehifeNomresi,
                 parametrler.SehifeOlcusu,
                 m => true);
 
-            var dtolar = musteriler.Select(m => new MusteriDto
+            List<MusteriDto> dtolar = musteriler.Select(m => new MusteriDto
             {
                 Id = m.Id,
                 TamAd = m.TamAd,
@@ -192,7 +196,7 @@ public class NisyeManager
                 UmumiBorc = m.UmumiBorc
             }).ToList();
 
-            var sehifelenmis = new SehifelenmisMelumat<MusteriDto>(
+            SehifelenmisMelumat<MusteriDto> sehifelenmis = new(
                 dtolar, umumiSay, parametrler.SehifeNomresi, parametrler.SehifeOlcusu);
 
             Logger.MelumatYaz($"Səhifələnmiş müştərilər uğurla əldə edildi - {dtolar.Count}/{umumiSay}");

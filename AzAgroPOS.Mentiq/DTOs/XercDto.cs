@@ -1,9 +1,8 @@
 // Fayl: AzAgroPOS.Mentiq/DTOs/XercDto.cs
-namespace AzAgroPOS.Mentiq.DTOs;
 
 using AzAgroPOS.Varliglar;
-using System;
 
+namespace AzAgroPOS.Mentiq.DTOs;
 /// <summary>
 /// Xərc məlumatlarını daşıyan DTO (Data Transfer Object)
 /// diqqət: Bu sinif xərc əməliyyatları üçün məlumat transferi üçündür.

@@ -1,14 +1,12 @@
 ﻿// Fayl: AzAgroPOS.Mentiq/Idareciler/TehlukesizlikManager.cs
-namespace AzAgroPOS.Mentiq.Idareciler;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Mentiq.Yardimcilar;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
-using System.Linq;
-using System.Threading.Tasks;
 
+namespace AzAgroPOS.Mentiq.Idareciler;
 /// <summary>
 /// TehlukesizlikManager, istifadəçi girişini və təhlükəsizlik yoxlamalarını idarə edən menecer.
 /// Features: Account lockout, session management, password validation, audit logging
@@ -48,8 +46,8 @@ public class TehlukesizlikManager
         string? ipUnvani = null,
         string? komputerAdi = null)
     {
-        var temizlenmisAd = istifadeciAdi.Trim();
-        var temizlenmisParol = parol.Trim();
+        string temizlenmisAd = istifadeciAdi.Trim();
+        string temizlenmisParol = parol.Trim();
 
         if (string.IsNullOrWhiteSpace(temizlenmisAd) || string.IsNullOrWhiteSpace(temizlenmisParol))
         {
@@ -57,7 +55,7 @@ public class TehlukesizlikManager
             return EmeliyyatNeticesi<IstifadeciDto>.Ugursuz("İstifadəçi adı və parol boş ola bilməz.");
         }
 
-        var istifadeci = (await _unitOfWork.Istifadeciler.AxtarAsync(i => i.IstifadeciAdi == temizlenmisAd)).FirstOrDefault();
+        Istifadeci? istifadeci = (await _unitOfWork.Istifadeciler.AxtarAsync(i => i.IstifadeciAdi == temizlenmisAd)).FirstOrDefault();
 
         if (istifadeci == null)
         {
@@ -75,11 +73,11 @@ public class TehlukesizlikManager
         // ===== ACCOUNT LOCKOUT CHECK =====
         if (istifadeci.HesabKilidlenmeTarixi.HasValue)
         {
-            var kilidAcilmaVaxti = istifadeci.HesabKilidlenmeTarixi.Value.AddMinutes(Kilidlenmemuddeti);
+            DateTime kilidAcilmaVaxti = istifadeci.HesabKilidlenmeTarixi.Value.AddMinutes(Kilidlenmemuddeti);
 
             if (DateTime.Now < kilidAcilmaVaxti)
             {
-                var qalanDeqiqe = (int)(kilidAcilmaVaxti - DateTime.Now).TotalMinutes;
+                int qalanDeqiqe = (int)(kilidAcilmaVaxti - DateTime.Now).TotalMinutes;
                 await GirisLoquYaz(temizlenmisAd, false, "Hesab kilidlənib", ipUnvani, komputerAdi);
                 return EmeliyyatNeticesi<IstifadeciDto>.Ugursuz($"Hesabınız kilidlənib. {qalanDeqiqe} dəqiqədən sonra yenidən cəhd edin.");
             }
@@ -117,7 +115,7 @@ public class TehlukesizlikManager
             _unitOfWork.Istifadeciler.Yenile(istifadeci);
             await _unitOfWork.EmeliyyatiTesdiqleAsync();
 
-            var qalanCehd = MaksimumUgursuzCehd - istifadeci.UgursuzGirisCehdi;
+            int qalanCehd = MaksimumUgursuzCehd - istifadeci.UgursuzGirisCehdi;
             await GirisLoquYaz(temizlenmisAd, false, "Yanlış parol", ipUnvani, komputerAdi);
 
             return EmeliyyatNeticesi<IstifadeciDto>.Ugursuz($"İstifadəçi adı və ya parol yanlışdır. Qalan cəhd: {qalanCehd}");
@@ -137,8 +135,8 @@ public class TehlukesizlikManager
         // Giriş loqunu yaz
         await GirisLoquYaz(temizlenmisAd, true, "Uğurlu giriş", ipUnvani, komputerAdi);
 
-        var istifadeciRol = await _unitOfWork.Rollar.GetirAsync(istifadeci.RolId);
-        var istifadeciDto = new IstifadeciDto
+        Rol istifadeciRol = await _unitOfWork.Rollar.GetirAsync(istifadeci.RolId);
+        IstifadeciDto istifadeciDto = new()
         {
             Id = istifadeci.Id,
             IstifadeciAdi = istifadeci.IstifadeciAdi,
@@ -156,19 +154,25 @@ public class TehlukesizlikManager
     /// </summary>
     public async Task<EmeliyyatNeticesi> SifreDeyisAsync(int istifadeciId, string kohneParol, string yeniParol)
     {
-        var istifadeci = await _unitOfWork.Istifadeciler.GetirAsync(istifadeciId);
+        Istifadeci istifadeci = await _unitOfWork.Istifadeciler.GetirAsync(istifadeciId);
         if (istifadeci == null)
+        {
             return EmeliyyatNeticesi.Ugursuz("İstifadəçi tapılmadı.");
+        }
 
         // Köhnə şifrəni yoxla
         bool parolDogrudur = BCrypt.Net.BCrypt.Verify(kohneParol, istifadeci.ParolHash);
         if (!parolDogrudur)
+        {
             return EmeliyyatNeticesi.Ugursuz("Köhnə şifrə yanlışdır.");
+        }
 
         // Yeni şifrəni validate et
-        var (kecerlidir, mesaj) = SifreValidator.Yoxla(yeniParol);
+        (bool kecerlidir, string? mesaj) = SifreValidator.Yoxla(yeniParol);
         if (!kecerlidir)
+        {
             return EmeliyyatNeticesi.Ugursuz(mesaj);
+        }
 
         // Yeni şifrəni hash-lə və yadda saxla
         istifadeci.ParolHash = BCrypt.Net.BCrypt.HashPassword(yeniParol);
@@ -189,7 +193,7 @@ public class TehlukesizlikManager
         try
         {
             // Yeni sessiya yarat
-            var yeniSessiya = new IstifadeciSessiyasi
+            IstifadeciSessiyasi yeniSessiya = new()
             {
                 IstifadeciId = istifadeciId,
                 BaslamaTarixi = DateTime.Now,
@@ -218,7 +222,7 @@ public class TehlukesizlikManager
     {
         try
         {
-            var logQeydi = new GirisLoquKaydi
+            GirisLoquKaydi logQeydi = new()
             {
                 IstifadeciAdi = istifadeciAdi,
                 Ugurlu = ugurlu,

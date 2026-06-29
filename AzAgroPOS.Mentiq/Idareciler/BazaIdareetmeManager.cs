@@ -32,7 +32,9 @@ public class BazaIdareetmeManager
     private static string QuoteName(string identifier)
     {
         if (string.IsNullOrWhiteSpace(identifier))
+        {
             throw new ArgumentException("Identifikator boş ola bilməz", nameof(identifier));
+        }
 
         // SQL Server QUOTENAME funksiyasının davranışını təqlid edirik:
         // ] simvolunu ]] ilə əvəz edirik və [..] arasında qaytarırıq
@@ -57,15 +59,15 @@ public class BazaIdareetmeManager
             }
 
             // Backup qovluğunun mövcud olduğunu yoxlayırıq
-            var backupDirectory = Path.GetDirectoryName(backupPath);
+            string? backupDirectory = Path.GetDirectoryName(backupPath);
             if (!Directory.Exists(backupDirectory))
             {
                 Directory.CreateDirectory(backupDirectory!);
             }
 
             // Connection string-dən verilənlər bazası adını çıxarırıq
-            var builder = new SqlConnectionStringBuilder(_connectionString);
-            var databaseName = builder.InitialCatalog;
+            SqlConnectionStringBuilder builder = new(_connectionString);
+            string databaseName = builder.InitialCatalog;
 
             if (string.IsNullOrEmpty(databaseName))
             {
@@ -74,17 +76,17 @@ public class BazaIdareetmeManager
 
             // Backup SQL komandası
             // Use QUOTENAME to safely escape database name
-            var backupSql = $@"
+            string backupSql = $@"
                 BACKUP DATABASE {QuoteName(databaseName)}
                 TO DISK = @BackupPath
                 WITH FORMAT,
                      MEDIANAME = 'AzAgroPOSBackup',
                      NAME = 'Full Backup of ' + @DatabaseName;";
 
-            await using var connection = new SqlConnection(_connectionString);
+            await using SqlConnection connection = new(_connectionString);
             await connection.OpenAsync();
 
-            await using var command = new SqlCommand(backupSql, connection);
+            await using SqlCommand command = new(backupSql, connection);
             command.CommandTimeout = 600; // 10 dəqiqə timeout (böyük verilənlər bazaları üçün)
             command.Parameters.AddWithValue("@BackupPath", backupPath);
             command.Parameters.AddWithValue("@DatabaseName", databaseName);
@@ -120,8 +122,8 @@ public class BazaIdareetmeManager
             }
 
             // Connection string-dən verilənlər bazası adını çıxarırıq
-            var builder = new SqlConnectionStringBuilder(_connectionString);
-            var databaseName = builder.InitialCatalog;
+            SqlConnectionStringBuilder builder = new(_connectionString);
+            string databaseName = builder.InitialCatalog;
 
             if (string.IsNullOrEmpty(databaseName))
             {
@@ -130,28 +132,28 @@ public class BazaIdareetmeManager
 
             // Master bazasına qoşuluruq (çünki target bazasını restore edərkən ona qoşula bilmərik)
             builder.InitialCatalog = "master";
-            var masterConnectionString = builder.ToString();
+            string masterConnectionString = builder.ToString();
 
-            await using var connection = new SqlConnection(masterConnectionString);
+            await using SqlConnection connection = new(masterConnectionString);
             await connection.OpenAsync();
 
             // 1. Bütün aktiv bağlantıları bağlayırıq
-            var killConnectionsSql = $@"
+            string killConnectionsSql = $@"
                 ALTER DATABASE {QuoteName(databaseName)} SET SINGLE_USER WITH ROLLBACK IMMEDIATE;";
 
-            await using (var killCommand = new SqlCommand(killConnectionsSql, connection))
+            await using (SqlCommand killCommand = new(killConnectionsSql, connection))
             {
                 killCommand.CommandTimeout = 60;
                 await killCommand.ExecuteNonQueryAsync();
             }
 
             // 2. Restore əməliyyatını icra edirik
-            var restoreSql = $@"
+            string restoreSql = $@"
                 RESTORE DATABASE {QuoteName(databaseName)}
                 FROM DISK = @BackupPath
                 WITH REPLACE;";
 
-            await using (var restoreCommand = new SqlCommand(restoreSql, connection))
+            await using (SqlCommand restoreCommand = new(restoreSql, connection))
             {
                 restoreCommand.CommandTimeout = 600; // 10 dəqiqə timeout
                 restoreCommand.Parameters.AddWithValue("@BackupPath", backupPath);
@@ -159,10 +161,10 @@ public class BazaIdareetmeManager
             }
 
             // 3. Verilənlər bazasını yenidən multi-user rejimə qaytarırıq
-            var multiUserSql = $@"
+            string multiUserSql = $@"
                 ALTER DATABASE {QuoteName(databaseName)} SET MULTI_USER;";
 
-            await using (var multiUserCommand = new SqlCommand(multiUserSql, connection))
+            await using (SqlCommand multiUserCommand = new(multiUserSql, connection))
             {
                 multiUserCommand.CommandTimeout = 60;
                 await multiUserCommand.ExecuteNonQueryAsync();
@@ -185,8 +187,8 @@ public class BazaIdareetmeManager
     /// <returns>Tam backup fayl yolu</returns>
     public static string StandartBackupAdiYarat(string backupDirectory)
     {
-        var timestamp = DateTime.Now.ToString("yyyy-MM-dd_HHmmss");
-        var fileName = $"AzAgroPOS_Backup_{timestamp}.bak";
+        string timestamp = DateTime.Now.ToString("yyyy-MM-dd_HHmmss");
+        string fileName = $"AzAgroPOS_Backup_{timestamp}.bak";
         return Path.Combine(backupDirectory, fileName);
     }
 
@@ -198,25 +200,25 @@ public class BazaIdareetmeManager
     {
         try
         {
-            var builder = new SqlConnectionStringBuilder(_connectionString);
-            var databaseName = builder.InitialCatalog;
+            SqlConnectionStringBuilder builder = new(_connectionString);
+            string databaseName = builder.InitialCatalog;
 
-            var sizeSql = @"
+            string sizeSql = @"
                 SELECT
                     SUM(size) * 8.0 / 1024 AS DatabaseSizeMB
                 FROM sys.master_files
                 WHERE database_id = DB_ID(@DatabaseName);";
 
-            await using var connection = new SqlConnection(_connectionString);
+            await using SqlConnection connection = new(_connectionString);
             await connection.OpenAsync();
 
-            await using var command = new SqlCommand(sizeSql, connection);
+            await using SqlCommand command = new(sizeSql, connection);
             command.Parameters.AddWithValue("@DatabaseName", databaseName);
-            var result = await command.ExecuteScalarAsync();
+            object? result = await command.ExecuteScalarAsync();
 
             if (result != null && result != DBNull.Value)
             {
-                var sizeMB = Convert.ToDecimal(result);
+                decimal sizeMB = Convert.ToDecimal(result);
                 return EmeliyyatNeticesi<decimal>.Ugurlu(sizeMB);
             }
 
@@ -237,26 +239,26 @@ public class BazaIdareetmeManager
     {
         try
         {
-            var builder = new SqlConnectionStringBuilder(_connectionString);
-            var databaseName = builder.InitialCatalog;
+            SqlConnectionStringBuilder builder = new(_connectionString);
+            string databaseName = builder.InitialCatalog;
 
-            var lastBackupSql = @"
+            string lastBackupSql = @"
                 SELECT TOP 1 backup_finish_date
                 FROM msdb.dbo.backupset
                 WHERE database_name = @DatabaseName
                   AND type = 'D' -- Full backup
                 ORDER BY backup_finish_date DESC;";
 
-            await using var connection = new SqlConnection(_connectionString);
+            await using SqlConnection connection = new(_connectionString);
             await connection.OpenAsync();
 
-            await using var command = new SqlCommand(lastBackupSql, connection);
+            await using SqlCommand command = new(lastBackupSql, connection);
             command.Parameters.AddWithValue("@DatabaseName", databaseName);
-            var result = await command.ExecuteScalarAsync();
+            object? result = await command.ExecuteScalarAsync();
 
             if (result != null && result != DBNull.Value)
             {
-                var lastBackupDate = Convert.ToDateTime(result);
+                DateTime lastBackupDate = Convert.ToDateTime(result);
                 return EmeliyyatNeticesi<DateTime?>.Ugurlu(lastBackupDate);
             }
 

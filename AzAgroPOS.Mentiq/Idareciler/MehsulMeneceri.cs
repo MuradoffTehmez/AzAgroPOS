@@ -1,16 +1,12 @@
 // Fayl: AzAgroPOS.Mentiq/Idareciler/MehsulMeneceri.cs
-namespace AzAgroPOS.Mentiq.Idareciler;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Mentiq.Yardimcilar;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
+namespace AzAgroPOS.Mentiq.Idareciler;
 /// <summary>
 /// Məhsul əməliyyatlarını idarə edən menecer.
 /// Bu menecer məhsul yaratma, yeniləmə, silmə və axtarış əməliyyatlarını həyata keçirir.
@@ -31,8 +27,8 @@ public class MehsulMeneceri
     {
         try
         {
-            var mehsullar = await _unitOfWork.Mehsullar.ButununuGetirAsync();
-            var dtolar = mehsullar.Select(m => new MehsulDto
+            IEnumerable<Mehsul> mehsullar = await _unitOfWork.Mehsullar.ButununuGetirAsync();
+            List<MehsulDto> dtolar = mehsullar.Select(m => new MehsulDto
             {
                 Id = m.Id,
                 Ad = m.Ad,
@@ -73,11 +69,13 @@ public class MehsulMeneceri
     {
         try
         {
-            var mehsul = await _unitOfWork.Mehsullar.GetirAsync(id);
+            Mehsul mehsul = await _unitOfWork.Mehsullar.GetirAsync(id);
             if (mehsul == null)
+            {
                 return EmeliyyatNeticesi<MehsulDto>.Ugursuz("Məhsul tapılmadı.");
+            }
 
-            var dto = new MehsulDto
+            MehsulDto dto = new()
             {
                 Id = mehsul.Id,
                 Ad = mehsul.Ad,
@@ -120,10 +118,12 @@ public class MehsulMeneceri
         {
             // Validasiya
             if (string.IsNullOrWhiteSpace(dto.Ad))
+            {
                 return EmeliyyatNeticesi<int>.Ugursuz("Məhsul adı boş ola bilməz.");
+            }
 
             // Yeni məhsul obyekti yaradırıq
-            var yeniMehsul = new Mehsul
+            Mehsul yeniMehsul = new()
             {
                 Ad = dto.Ad,
                 Barkod = dto.Barkod,
@@ -161,13 +161,17 @@ public class MehsulMeneceri
     {
         try
         {
-            var movcudMehsul = await _unitOfWork.Mehsullar.GetirAsync(dto.Id);
+            Mehsul movcudMehsul = await _unitOfWork.Mehsullar.GetirAsync(dto.Id);
             if (movcudMehsul == null)
+            {
                 return EmeliyyatNeticesi.Ugursuz("Yenilənmək üçün məhsul tapılmadı.");
+            }
 
             // Validasiya
             if (string.IsNullOrWhiteSpace(dto.Ad))
+            {
                 return EmeliyyatNeticesi.Ugursuz("Məhsul adı boş ola bilməz.");
+            }
 
             // Məlumatları yeniləyirik
             movcudMehsul.Ad = dto.Ad;
@@ -205,9 +209,11 @@ public class MehsulMeneceri
     {
         try
         {
-            var mehsul = await _unitOfWork.Mehsullar.GetirAsync(id);
+            Mehsul mehsul = await _unitOfWork.Mehsullar.GetirAsync(id);
             if (mehsul == null)
+            {
                 return EmeliyyatNeticesi.Ugursuz("Silinəcək məhsul tapılmadı.");
+            }
 
             _unitOfWork.Mehsullar.Sil(mehsul);
             await _unitOfWork.EmeliyyatiTesdiqleAsync();
@@ -227,9 +233,11 @@ public class MehsulMeneceri
     {
         try
         {
-            var mehsul = await _unitOfWork.Mehsullar.GetirAsync(mehsulId);
+            Mehsul mehsul = await _unitOfWork.Mehsullar.GetirAsync(mehsulId);
             if (mehsul == null)
+            {
                 return EmeliyyatNeticesi.Ugursuz("Məhsul tapılmadı.");
+            }
 
             mehsul.MovcudSay += miqdar;
             _unitOfWork.Mehsullar.Yenile(mehsul);
@@ -250,12 +258,16 @@ public class MehsulMeneceri
     {
         try
         {
-            var mehsul = await _unitOfWork.Mehsullar.GetirAsync(mehsulId);
+            Mehsul mehsul = await _unitOfWork.Mehsullar.GetirAsync(mehsulId);
             if (mehsul == null)
+            {
                 return EmeliyyatNeticesi.Ugursuz("Məhsul tapılmadı.");
+            }
 
             if (mehsul.MovcudSay < miqdar)
+            {
                 return EmeliyyatNeticesi.Ugursuz("Anbarda kifayət qədər məhsul yoxdur.");
+            }
 
             mehsul.MovcudSay -= miqdar;
             _unitOfWork.Mehsullar.Yenile(mehsul);
@@ -276,8 +288,8 @@ public class MehsulMeneceri
     {
         try
         {
-            var mehsullar = await _unitOfWork.Mehsullar.AxtarAsync(m => m.MovcudSay <= m.MinimumStok && m.Aktivdir);
-            var dtolar = mehsullar.Select(m => new MehsulDto
+            IEnumerable<Mehsul> mehsullar = await _unitOfWork.Mehsullar.AxtarAsync(m => m.MovcudSay <= m.MinimumStok && m.Aktivdir);
+            List<MehsulDto> dtolar = mehsullar.Select(m => new MehsulDto
             {
                 Id = m.Id,
                 Ad = m.Ad,
@@ -322,12 +334,12 @@ public class MehsulMeneceri
         Logger.MelumatYaz($"Səhifələnmiş məhsullar əldə edilir - Səhifə: {parametrler.SehifeNomresi}, Ölçü: {parametrler.SehifeOlcusu}");
         try
         {
-            var (mehsullar, umumiSay) = await _unitOfWork.Mehsullar.SehifelenmisGetirAsync(
+            (IEnumerable<Mehsul>? mehsullar, int umumiSay) = await _unitOfWork.Mehsullar.SehifelenmisGetirAsync(
                 parametrler.SehifeNomresi,
                 parametrler.SehifeOlcusu,
                 m => m.Aktivdir);
 
-            var dtolar = mehsullar.Select(m => new MehsulDto
+            List<MehsulDto> dtolar = mehsullar.Select(m => new MehsulDto
             {
                 Id = m.Id,
                 Ad = m.Ad,
@@ -352,7 +364,7 @@ public class MehsulMeneceri
                 SekilYolu = m.SekilYolu
             }).ToList();
 
-            var sehifelenmis = new SehifelenmisMelumat<MehsulDto>(
+            SehifelenmisMelumat<MehsulDto> sehifelenmis = new(
                 dtolar, umumiSay, parametrler.SehifeNomresi, parametrler.SehifeOlcusu);
 
             Logger.MelumatYaz($"Səhifələnmiş məhsullar uğurla əldə edildi - {dtolar.Count}/{umumiSay}");
