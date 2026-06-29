@@ -1,0 +1,314 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-mono,"Consolas",monospace);background:transparent;color:var(--text-primary)}
+.doc{max-width:680px;padding:1.5rem 0}
+.hero{border-left:3px solid var(--border-accent,#378ADD);padding:0.75rem 1.25rem;margin-bottom:2rem;background:var(--bg-accent)}
+.hero-title{font-size:22px;font-weight:500;color:var(--text-primary);letter-spacing:-0.3px;margin-bottom:4px}
+.hero-sub{font-size:13px;color:var(--text-secondary);display:flex;gap:16px;flex-wrap:wrap}
+.hero-sub span{display:flex;align-items:center;gap:5px}
+.section{margin-bottom:2rem}
+.section-head{display:flex;align-items:center;gap:10px;margin-bottom:1rem;padding-bottom:6px;border-bottom:0.5px solid var(--border-strong)}
+.section-head .badge{font-size:11px;font-weight:500;padding:2px 8px;border-radius:4px;background:var(--bg-accent);color:var(--text-accent)}
+.section-title{font-size:15px;font-weight:500;color:var(--text-primary)}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px}
+.grid-4{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px}
+.card{background:var(--surface-1);border:0.5px solid var(--border);border-radius:var(--radius,8px);padding:0.75rem 1rem}
+.card-label{font-size:11px;color:var(--text-muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.5px}
+.card-value{font-size:20px;font-weight:500;color:var(--text-primary);line-height:1.2}
+.card-value.accent{color:var(--text-accent)}
+.card-value.success{color:var(--text-success)}
+.card-value.warning{color:var(--text-warning)}
+.card-sub{font-size:11px;color:var(--text-muted);margin-top:2px}
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.bar-label{font-size:12px;color:var(--text-secondary);width:130px;flex-shrink:0;text-align:right}
+.bar-track{flex:1;background:var(--surface-0,#f1efe8);border-radius:3px;height:8px;overflow:hidden}
+.bar-fill{height:100%;border-radius:3px;background:var(--fill-accent,#378ADD)}
+.bar-fill.g{background:#639922}
+.bar-fill.a{background:#BA7517}
+.bar-fill.p{background:#7F77DD}
+.bar-fill.t{background:#1D9E75}
+.bar-num{font-size:12px;color:var(--text-secondary);width:42px;text-align:right;flex-shrink:0}
+.arch-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.layer{border:0.5px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.layer-head{padding:6px 12px;font-size:11px;font-weight:500;letter-spacing:0.4px;text-transform:uppercase}
+.layer-body{padding:8px 12px}
+.layer-item{display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:0.5px solid var(--border);font-size:12px}
+.layer-item:last-child{border-bottom:none}
+.layer-item .k{color:var(--text-secondary)}
+.layer-item .v{font-weight:500;color:var(--text-primary);font-family:var(--font-mono)}
+.l-blue .layer-head{background:var(--bg-accent);color:var(--text-accent)}
+.l-green .layer-head{background:var(--bg-success);color:var(--text-success)}
+.l-purple .layer-head{background:var(--bg-pro);color:var(--text-pro)}
+.l-amber .layer-head{background:var(--bg-warning);color:var(--text-warning)}
+.top10{border:0.5px solid var(--border);border-radius:var(--radius)}
+.top-row{display:grid;grid-template-columns:28px 1fr auto;gap:8px;align-items:center;padding:7px 12px;border-bottom:0.5px solid var(--border);font-size:12px}
+.top-row:last-child{border-bottom:none}
+.top-row:nth-child(1){background:var(--surface-1)}
+.rank{color:var(--text-muted);font-family:var(--font-mono);font-size:11px}
+.rank.gold{color:#BA7517;font-weight:500}
+.rank.silver{color:var(--text-secondary);font-weight:500}
+.rank.bronze{color:#996040;font-weight:500}
+.fname{color:var(--text-primary);font-family:var(--font-mono);font-size:11px}
+.fline{font-family:var(--font-mono);font-size:11px;font-weight:500;color:var(--text-accent)}
+.pill-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.pill{font-size:11px;padding:3px 10px;border-radius:12px;background:var(--surface-1);border:0.5px solid var(--border);color:var(--text-secondary)}
+.pill.blue{background:var(--bg-accent);color:var(--text-accent);border-color:var(--border-accent)}
+.pill.green{background:var(--bg-success);color:var(--text-success);border-color:var(--border-success)}
+.pill.purple{background:var(--bg-pro);color:var(--text-pro);border-color:var(--border-pro)}
+.strength-row{display:flex;align-items:flex-start;gap:10px;padding:7px 0;border-bottom:0.5px solid var(--border);font-size:12px}
+.strength-row:last-child{border-bottom:none}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:3px;background:var(--fill-success)}
+.str-title{color:var(--text-primary);font-weight:500;margin-bottom:2px}
+.str-desc{color:var(--text-secondary);font-size:11px}
+.verdict{background:var(--surface-1);border:0.5px solid var(--border);border-radius:12px;padding:1.25rem;margin-top:1.5rem;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.v-item{display:flex;flex-direction:column;gap:2px}
+.v-label{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.4px}
+.v-val{font-size:13px;font-weight:500;color:var(--text-primary)}
+.divider{border:none;border-top:0.5px solid var(--border);margin:1.5rem 0}
+</style>
+
+<div class="doc">
+<h2 class="sr-only">AzAgroPOS texniki layihə statistikası — vizual hesabat</h2>
+
+<div class="hero">
+  <div class="hero-title">AzAgroPOS — Texniki Layihə Profili</div>
+  <div class="hero-sub">
+    <span><i class="ti ti-brand-c-sharp" aria-hidden="true"></i> .NET 8 · C# · WinForms</span>
+    <span><i class="ti ti-database" aria-hidden="true"></i> SQL Server · EF Core 9</span>
+    <span><i class="ti ti-layers-intersect" aria-hidden="true"></i> Layered + MVP</span>
+    <span><i class="ti ti-building-store" aria-hidden="true"></i> ERP / POS</span>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <span class="section-title">Ümumi miqyas</span>
+    <span class="badge">Overview</span>
+  </div>
+  <div class="grid-4">
+    <div class="card">
+      <div class="card-label">Ümumi fayl</div>
+      <div class="card-value">1,261</div>
+    </div>
+    <div class="card">
+      <div class="card-label">C# faylı</div>
+      <div class="card-value accent">483</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Layihə (Project)</div>
+      <div class="card-value">6</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Namespace</div>
+      <div class="card-value">432</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <span class="section-title">Kod həcmi</span>
+    <span class="badge">Lines of Code</span>
+  </div>
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-label">Əl ilə yazılan C#</div>
+      <div class="card-value accent">45,660</div>
+      <div class="card-sub">sətir</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Designer tərəfindən</div>
+      <div class="card-value">51,002</div>
+      <div class="card-sub">sətir</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Ümumi C# kodu</div>
+      <div class="card-value">96,662</div>
+      <div class="card-sub">sətir</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <span class="section-title">OOP strukturu</span>
+    <span class="badge">Object-Oriented</span>
+  </div>
+  <div class="grid-4">
+    <div class="card">
+      <div class="card-label">Class</div>
+      <div class="card-value">332</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Interface</div>
+      <div class="card-value accent">66</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Abstract</div>
+      <div class="card-value">3</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Partial Class</div>
+      <div class="card-value">128</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Generic</div>
+      <div class="card-value">36</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Enum</div>
+      <div class="card-value">26</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Record</div>
+      <div class="card-value" style="color:var(--text-muted)">0</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <span class="section-title">Metod statistikası</span>
+    <span class="badge">Methods</span>
+  </div>
+  <div style="margin-bottom:4px">
+    <div class="bar-row"><span class="bar-label">Public</span><div class="bar-track"><div class="bar-fill" style="width:97%"></div></div><span class="bar-num">903</span></div>
+    <div class="bar-row"><span class="bar-label">Private</span><div class="bar-track"><div class="bar-fill" style="width:75%"></div></div><span class="bar-num">696</span></div>
+    <div class="bar-row"><span class="bar-label">Async</span><div class="bar-track"><div class="bar-fill g" style="width:66%"></div></div><span class="bar-num">611</span></div>
+    <div class="bar-row"><span class="bar-label">Static</span><div class="bar-track"><div class="bar-fill a" style="width:20%"></div></div><span class="bar-num">186</span></div>
+    <div class="bar-row"><span class="bar-label">Protected</span><div class="bar-track"><div class="bar-fill p" style="width:16%"></div></div><span class="bar-num">150</span></div>
+    <div class="bar-row"><span class="bar-label">Override</span><div class="bar-track"><div class="bar-fill t" style="width:15%"></div></div><span class="bar-num">135</span></div>
+    <div class="bar-row"><span class="bar-label">Virtual</span><div class="bar-track"><div class="bar-fill" style="width:1%"></div></div><span class="bar-num">7</span></div>
+    <div class="bar-row"><span class="bar-label">Event Handler</span><div class="bar-track"><div class="bar-fill a" style="width:30%"></div></div><span class="bar-num">276</span></div>
+    <div class="bar-row"><span class="bar-label">Property</span><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><span class="bar-num">934</span></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <span class="section-title">Arxitektura komponentləri</span>
+    <span class="badge">Architecture</span>
+  </div>
+  <div class="arch-grid">
+    <div class="layer l-blue">
+      <div class="layer-head">Verilənlər Qatı</div>
+      <div class="layer-body">
+        <div class="layer-item"><span class="k">Entity</span><span class="v">60</span></div>
+        <div class="layer-item"><span class="k">DbSet</span><span class="v">35</span></div>
+        <div class="layer-item"><span class="k">Migration</span><span class="v">32</span></div>
+        <div class="layer-item"><span class="k">DbContext</span><span class="v">1</span></div>
+      </div>
+    </div>
+    <div class="layer l-green">
+      <div class="layer-head">Məntiqi Qat</div>
+      <div class="layer-body">
+        <div class="layer-item"><span class="k">Repository</span><span class="v">65</span></div>
+        <div class="layer-item"><span class="k">Manager</span><span class="v">22</span></div>
+        <div class="layer-item"><span class="k">DTO</span><span class="v">38</span></div>
+        <div class="layer-item"><span class="k">Presenter</span><span class="v">30</span></div>
+      </div>
+    </div>
+    <div class="layer l-purple">
+      <div class="layer-head">DI & Konfiqurasiya</div>
+      <div class="layer-body">
+        <div class="layer-item"><span class="k">DI qeydiyyatı</span><span class="v">84</span></div>
+        <div class="layer-item"><span class="k">using direktivi</span><span class="v">1,086</span></div>
+      </div>
+    </div>
+    <div class="layer l-amber">
+      <div class="layer-head">Etibarlılıq</div>
+      <div class="layer-body">
+        <div class="layer-item"><span class="k">try-catch</span><span class="v">381</span></div>
+        <div class="layer-item"><span class="k">IDisposable</span><span class="v">11</span></div>
+        <div class="layer-item"><span class="k">Logger</span><span class="v">2</span></div>
+        <div class="layer-item"><span class="k">TODO / FIXME</span><span class="v">0</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <span class="section-title">Müasir C# xüsusiyyətləri</span>
+    <span class="badge">Modern C#</span>
+  </div>
+  <div class="grid-4">
+    <div class="card">
+      <div class="card-label">Lambda / <code>=></code></div>
+      <div class="card-value accent">2,779</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Nullable <code>?</code></div>
+      <div class="card-value">2,021</div>
+    </div>
+    <div class="card">
+      <div class="card-label">LINQ</div>
+      <div class="card-value">261</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Task&lt;T&gt;</div>
+      <div class="card-value success">246</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <span class="section-title">Ən böyük fayllar — Top 10</span>
+    <span class="badge">File Ranking</span>
+  </div>
+  <div class="top10">
+    <div class="top-row" style="background:var(--surface-1)"><span class="rank">#</span><span class="fname" style="font-weight:500;color:var(--text-secondary)">Fayl adı</span><span class="fline" style="color:var(--text-muted)">Sətir</span></div>
+    <div class="top-row"><span class="rank gold">1</span><span class="fname">SatisFormu.cs</span><span class="fline">1,008</span></div>
+    <div class="top-row"><span class="rank silver">2</span><span class="fname">AlisManager.cs</span><span class="fline">937</span></div>
+    <div class="top-row"><span class="rank bronze">3</span><span class="fname">AzAgroPOSDbContext.cs</span><span class="fline">729</span></div>
+    <div class="top-row"><span class="rank">4</span><span class="fname">MehsulIdareetmeFormu.cs</span><span class="fline">610</span></div>
+    <div class="top-row"><span class="rank">5</span><span class="fname">IsciIzniFormu.cs</span><span class="fline">610</span></div>
+    <div class="top-row"><span class="rank">6</span><span class="fname">Program.cs</span><span class="fline">600</span></div>
+    <div class="top-row"><span class="rank">7</span><span class="fname">AnaMenuFormu.cs</span><span class="fline">592</span></div>
+    <div class="top-row"><span class="rank">8</span><span class="fname">MaliyyeManager.cs</span><span class="fline">550</span></div>
+    <div class="top-row"><span class="rank">9</span><span class="fname">AnbarFormu.cs</span><span class="fline">541</span></div>
+    <div class="top-row"><span class="rank">10</span><span class="fname">KonfiqurasiyaFormu.cs</span><span class="fline">504</span></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <span class="section-title">Texnologiya yığımı</span>
+    <span class="badge">Tech Stack</span>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:10px">
+    <div><div class="card-label" style="margin-bottom:6px">Platforma & Dil</div><div class="pill-row"><span class="pill blue">.NET 8</span><span class="pill blue">C#</span><span class="pill blue">WinForms</span></div></div>
+    <div><div class="card-label" style="margin-bottom:6px">Verilənlər bazası</div><div class="pill-row"><span class="pill green">SQL Server</span><span class="pill green">EF Core 9</span><span class="pill green">Code First</span></div></div>
+    <div><div class="card-label" style="margin-bottom:6px">Arxitektura</div><div class="pill-row"><span class="pill purple">Layered Architecture</span><span class="pill purple">MVP</span><span class="pill purple">Repository Pattern</span><span class="pill purple">DI</span></div></div>
+    <div><div class="card-label" style="margin-bottom:6px">Kitabxanalar</div><div class="pill-row"><span class="pill">MaterialSkin 2</span><span class="pill">EPPlus</span><span class="pill">MS.Ext.DI</span><span class="pill">MS.Ext.Configuration</span></div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <span class="section-title">Güclü tərəflər</span>
+    <span class="badge">Strengths</span>
+  </div>
+  <div style="border:0.5px solid var(--border);border-radius:var(--radius);padding:4px 12px">
+    <div class="strength-row"><span class="dot"></span><div><div class="str-title">Repository Pattern — tam tətbiq</div><div class="str-desc">65 repository ilə verilənlər giriş qatı tamamilə abstraksiya edilib; biznesdən ayrılma təmin olunub.</div></div></div>
+    <div class="strength-row"><span class="dot"></span><div><div class="str-title">MVP arxitekturası</div><div class="str-desc">30 Presenter vasitəsilə UI loqikası formlardan çıxarılıb; test edilə bilən, ayrılmış komponent strukturu yaradılıb.</div></div></div>
+    <div class="strength-row"><span class="dot"></span><div><div class="str-title">Asinxron proqramlaşdırma</div><div class="str-desc">611 async metod — UI donma problemi minimuma endirilmiş, 246 Task&lt;T&gt; istifadəsi ilə tam async pipeline qurulub.</div></div></div>
+    <div class="strength-row"><span class="dot"></span><div><div class="str-title">Dependency Injection</div><div class="str-desc">84 DI qeydiyyatı ilə komponentlər arası əlaqə loosely coupled prinsipə uyğun idarə olunur.</div></div></div>
+    <div class="strength-row"><span class="dot"></span><div><div class="str-title">Müasir C# sintaksisi</div><div class="str-desc">2,779 lambda, 2,021 nullable reference — kod müasir, qısa və oxunaqlı saxlanılıb; null-safety gücləndirilmişdir.</div></div></div>
+    <div class="strength-row"><span class="dot"></span><div><div class="str-title">Etibarlılıq strukturu</div><div class="str-desc">381 try-catch bloku ilə xəta idarəetməsi geniş əhatəlidir. TODO/FIXME sıfırdır — kod borcu minimaldır.</div></div></div>
+  </div>
+</div>
+
+<div class="verdict">
+  <div class="v-item"><span class="v-label">Miqyas</span><span class="v-val">Orta–Böyük (Medium-Large)</span></div>
+  <div class="v-item"><span class="v-label">Arxitektura</span><span class="v-val">Layered + MVP</span></div>
+  <div class="v-item"><span class="v-label">OOP səviyyəsi</span><span class="v-val">Yüksək</span></div>
+  <div class="v-item"><span class="v-label">Async əhatə</span><span class="v-val">Geniş</span></div>
+  <div class="v-item"><span class="v-label">EF Core</span><span class="v-val">Code First · 32 Migration</span></div>
+  <div class="v-item"><span class="v-label">Məqsəd</span><span class="v-val">ERP / POS / Anbar / Maliyyə</span></div>
+</div>
+
+</div>
