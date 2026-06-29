@@ -142,8 +142,20 @@ public class SatisManager
         Logger.MelumatYaz($"Satış məlumatları əldə edilir: {satisNomresi}");
         try
         {
+            if (string.IsNullOrWhiteSpace(satisNomresi))
+            {
+                return EmeliyyatNeticesi<SatisQebzDto>.Ugursuz("Satış nömrəsi boş ola bilməz.");
+            }
+
+            string cleaned = satisNomresi.Trim();
+            string[] toRemove = { "ÇEK-", "ÇEK", "Çək-", "Çək", "QƏBZ-", "QƏBZ", "Qebz-", "Qebz", "№", "No.", "No", "Nə", "-", " " };
+            foreach (var item in toRemove)
+            {
+                cleaned = cleaned.Replace(item, "", StringComparison.OrdinalIgnoreCase);
+            }
+
             // Satış nömrəsi formatı kontrolü
-            if (!int.TryParse(satisNomresi, out int satisId))
+            if (string.IsNullOrEmpty(cleaned) || !int.TryParse(cleaned, out int satisId))
             {
                 Logger.XəbərdarlıqYaz("Yanlış satış nömrəsi formatı");
                 return EmeliyyatNeticesi<SatisQebzDto>.Ugursuz("Yanlış satış nömrəsi formatı.");

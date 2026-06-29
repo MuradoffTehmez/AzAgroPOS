@@ -139,4 +139,68 @@ public class SatisManagerTests
         result.UgurluDur.Should().BeFalse();
         result.Mesaj.Should().Contain("Satış tapılmadı");
     }
+
+    [Fact]
+    public async Task SatisGetirAsync_FormattedSatisNomresi_ReturnsSuccess()
+    {
+        // Arrange
+        var satis = new Satis { Id = 5, Tarix = DateTime.Now };
+        _mockSatisRepo.Setup(x => x.GetirAsync(5, It.IsAny<Expression<Func<Satis, object>>[]>()))
+            .ReturnsAsync(satis);
+
+        // Act
+        EmeliyyatNeticesi<SatisQebzDto> result = await _satisManager.SatisGetirAsync("Çek № 5");
+
+        // Assert
+        result.UgurluDur.Should().BeTrue();
+        result.Data.SatisId.Should().Be(5);
+    }
+
+    [Fact]
+    public async Task StokHareketiQeydeAlAsync_Cixis_DecrementsStock()
+    {
+        // Arrange
+        var mehsul = new Mehsul { Id = 1, MovcudSay = 10 };
+        _mockMehsulRepo.Setup(x => x.GetirAsync(1)).ReturnsAsync(mehsul);
+
+        // Act
+        var result = await _stokManager.StokHareketiQeydeAlAsync(
+            StokHareketTipi.Cixis,
+            SenedNovu.Satis,
+            1, // SenedId
+            1, // MehsulId
+            3, // Miqdar
+            5.0m, // AlisQiymeti
+            7.0m // SatisQiymeti
+        );
+
+        // Assert
+        result.UgurluDur.Should().BeTrue();
+        mehsul.MovcudSay.Should().Be(7);
+        _mockMehsulRepo.Verify(x => x.Yenile(mehsul), Times.Once);
+    }
+
+    [Fact]
+    public async Task StokHareketiQeydeAlAsync_Daxilolma_IncrementsStock()
+    {
+        // Arrange
+        var mehsul = new Mehsul { Id = 1, MovcudSay = 10 };
+        _mockMehsulRepo.Setup(x => x.GetirAsync(1)).ReturnsAsync(mehsul);
+
+        // Act
+        var result = await _stokManager.StokHareketiQeydeAlAsync(
+            StokHareketTipi.Daxilolma,
+            SenedNovu.Alis,
+            1, // SenedId
+            1, // MehsulId
+            3, // Miqdar
+            5.0m, // AlisQiymeti
+            7.0m // SatisQiymeti
+        );
+
+        // Assert
+        result.UgurluDur.Should().BeTrue();
+        mehsul.MovcudSay.Should().Be(13);
+        _mockMehsulRepo.Verify(x => x.Yenile(mehsul), Times.Once);
+    }
 }
