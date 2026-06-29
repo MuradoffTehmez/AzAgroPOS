@@ -1,10 +1,8 @@
 // Fayl: AzAgroPOS.Teqdimat/Interfeysler/IAlisSenedView.cs
-namespace AzAgroPOS.Teqdimat.Interfeysler;
 
 using AzAgroPOS.Mentiq.DTOs;
-using System;
-using System.Collections.Generic;
 
+namespace AzAgroPOS.Teqdimat.Interfeysler;
 /// <summary>
 /// Alış sənədi idarəetmə forması üçün interfeys.
 /// </summary>

@@ -1,8 +1,8 @@
 ﻿// Fayl: AzAgroPOS.Teqdimat/Interfeysler/INisyeView.cs
-namespace AzAgroPOS.Teqdimat.Interfeysler;
 
 using AzAgroPOS.Mentiq.DTOs;
 
+namespace AzAgroPOS.Teqdimat.Interfeysler;
 /// <summary>
 /// İnterfeys, Nisye (borc) əməliyyatlarını idarə etmək üçün istifadə olunur.
 /// İnterfeys, müştəri məlumatlarını göstərmək, müştəri hərəkətlərini göstərmək və ödəniş əməliyyatlarını idarə etmək üçün metodlar və hadisələr təyin edir.

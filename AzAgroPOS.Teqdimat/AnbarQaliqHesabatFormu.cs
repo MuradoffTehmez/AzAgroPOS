@@ -1,11 +1,12 @@
 // Fayl: AzAgroPOS.Teqdimat/AnbarQaliqHesabatFormu.cs
-namespace AzAgroPOS.Teqdimat;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
 using AzAgroPOS.Teqdimat.Yardimcilar;
+
+namespace AzAgroPOS.Teqdimat;
 
 public partial class AnbarQaliqHesabatFormu : BazaForm, IAnbarQaliqHesabatView
 {
@@ -69,17 +70,34 @@ public partial class AnbarQaliqHesabatFormu : BazaForm, IAnbarQaliqHesabatView
 
         // Sütun başlıqlarını tərcümə et
         if (dgvHesabat.Columns.Contains("StokKodu"))
+        {
             dgvHesabat.Columns["StokKodu"].HeaderText = "Stok Kodu";
+        }
+
         if (dgvHesabat.Columns.Contains("MehsulAdi"))
+        {
             dgvHesabat.Columns["MehsulAdi"].HeaderText = "Məhsul Adı";
+        }
+
         if (dgvHesabat.Columns.Contains("MovcudMiqdar"))
+        {
             dgvHesabat.Columns["MovcudMiqdar"].HeaderText = "Mövcud Miqdar";
+        }
+
         if (dgvHesabat.Columns.Contains("MinimumSay"))
+        {
             dgvHesabat.Columns["MinimumSay"].HeaderText = "Min. Say";
+        }
+
         if (dgvHesabat.Columns.Contains("AlisQiymeti"))
+        {
             dgvHesabat.Columns["AlisQiymeti"].HeaderText = "Alış Qiyməti";
+        }
+
         if (dgvHesabat.Columns.Contains("SatisQiymeti"))
+        {
             dgvHesabat.Columns["SatisQiymeti"].HeaderText = "Satış Qiyməti";
+        }
 
         lblMesaj.Visible = false;
         dgvHesabat.Visible = true;
@@ -132,7 +150,7 @@ public partial class AnbarQaliqHesabatFormu : BazaForm, IAnbarQaliqHesabatView
 
         cmbKateqoriya.Items.Clear();
         cmbKateqoriya.Items.Add("Hamısı");
-        foreach (var kateqoriya in kateqoriyalar)
+        foreach (string kateqoriya in kateqoriyalar)
         {
             cmbKateqoriya.Items.Add(kateqoriya);
         }
@@ -169,7 +187,7 @@ public partial class AnbarQaliqHesabatFormu : BazaForm, IAnbarQaliqHesabatView
     private void BtnGoster_Click(object? sender, EventArgs e)
     {
         // Limit validasiyası
-        if (!int.TryParse(txtLimit.Text, out var limit) || limit < 0)
+        if (!int.TryParse(txtLimit.Text, out int limit) || limit < 0)
         {
             MessageBox.Show("Zəhmət olmasa düzgün limit sayı daxil edin.", "Xəbərdarlıq",
                 MessageBoxButtons.OK, MessageBoxIcon.Warning);

@@ -1,19 +1,17 @@
 // Fayl: AzAgroPOS.Teqdimat/XercIdareetmeFormu.cs
-namespace AzAgroPOS.Teqdimat;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
 using AzAgroPOS.Varliglar;
 using System.ComponentModel;
-using System.Drawing;
-using System.Windows.Forms;
+
+namespace AzAgroPOS.Teqdimat;
 
 public partial class XercIdareetmeFormu : BazaForm, IXercView
 {
     private XercPresenter? _presenter;
     private readonly BindingList<XercDto> _xercBindingList = new();
-    private int? _secilmisXercId;
 
     public XercIdareetmeFormu()
     {
@@ -29,7 +27,7 @@ public partial class XercIdareetmeFormu : BazaForm, IXercView
     public DateTime XercTarixi => dtpXercTarixi.Value;
     public string? XercSenedNomresi => txtSenedNomresi.Text;
     public string? XercQeydi => txtQeyd.Text;
-    public int? SecilmisXercId => _secilmisXercId;
+    public int? SecilmisXercId { get; private set; }
 
     public event EventHandler? XercElaveEtIstek;
     public event EventHandler? XercYenileIstek;
@@ -46,7 +44,7 @@ public partial class XercIdareetmeFormu : BazaForm, IXercView
         }
 
         _xercBindingList.Clear();
-        foreach (var xerc in xercler)
+        foreach (XercDto xerc in xercler)
         {
             _xercBindingList.Add(xerc);
         }
@@ -54,19 +52,39 @@ public partial class XercIdareetmeFormu : BazaForm, IXercView
         ConfigureDataGridViewStyles();
 
         if (dgvXercler.Columns.Contains("Novu"))
+        {
             dgvXercler.Columns["Novu"].HeaderText = "Növ";
+        }
+
         if (dgvXercler.Columns.Contains("Ad"))
+        {
             dgvXercler.Columns["Ad"].HeaderText = "Ad";
+        }
+
         if (dgvXercler.Columns.Contains("Mebleg"))
+        {
             dgvXercler.Columns["Mebleg"].HeaderText = "Məbləğ";
+        }
+
         if (dgvXercler.Columns.Contains("Tarix"))
+        {
             dgvXercler.Columns["Tarix"].HeaderText = "Tarix";
+        }
+
         if (dgvXercler.Columns.Contains("SenedNomresi"))
+        {
             dgvXercler.Columns["SenedNomresi"].HeaderText = "Sənəd №";
+        }
+
         if (dgvXercler.Columns.Contains("Qeyd"))
+        {
             dgvXercler.Columns["Qeyd"].HeaderText = "Qeyd";
+        }
+
         if (dgvXercler.Columns.Contains("IstifadeciAdi"))
+        {
             dgvXercler.Columns["IstifadeciAdi"].HeaderText = "İstifadəçi";
+        }
     }
 
     public void XercFormunuSifirla()
@@ -83,7 +101,7 @@ public partial class XercIdareetmeFormu : BazaForm, IXercView
         dtpXercTarixi.Value = DateTime.Now;
         txtSenedNomresi.Clear();
         txtQeyd.Clear();
-        _secilmisXercId = null;
+        SecilmisXercId = null;
         btnXercElaveEt.Text = "Əlavə Et";
         btnXercYenile.Enabled = false;
         btnXercSil.Enabled = false;
@@ -99,12 +117,12 @@ public partial class XercIdareetmeFormu : BazaForm, IXercView
 
         cmbXercNovu.SelectedItem = xerc.Novu;
         txtXercAdi.Text = xerc.Ad ?? string.Empty;
-        var mebleg = decimal.Clamp(xerc.Mebleg, nudXercMeblegi.Minimum, nudXercMeblegi.Maximum);
+        decimal mebleg = decimal.Clamp(xerc.Mebleg, nudXercMeblegi.Minimum, nudXercMeblegi.Maximum);
         nudXercMeblegi.Value = mebleg;
         dtpXercTarixi.Value = xerc.Tarix;
         txtSenedNomresi.Text = xerc.SenedNomresi ?? string.Empty;
         txtQeyd.Text = xerc.Qeyd ?? string.Empty;
-        _secilmisXercId = xerc.Id;
+        SecilmisXercId = xerc.Id;
         btnXercElaveEt.Text = "Yenilə";
         btnXercYenile.Enabled = true;
         btnXercSil.Enabled = true;
@@ -123,7 +141,9 @@ public partial class XercIdareetmeFormu : BazaForm, IXercView
     private void ConfigureDataGridViewStyles()
     {
         if (dgvXercler.Columns.Count == 0)
+        {
             return;
+        }
 
         dgvXercler.RowTemplate.Height = 38;
         dgvXercler.DefaultCellStyle.Padding = new Padding(8, 4, 8, 4);
@@ -136,22 +156,44 @@ public partial class XercIdareetmeFormu : BazaForm, IXercView
         dgvXercler.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
 
         if (dgvXercler.Columns.Contains("Novu"))
+        {
             dgvXercler.Columns["Novu"].Width = 120;
+        }
+
         if (dgvXercler.Columns.Contains("Ad"))
+        {
             dgvXercler.Columns["Ad"].Width = 150;
-        if (dgvXercler.Columns.Contains("Mebleg"))
-            dgvXercler.Columns["Mebleg"].Width = 100;
-        if (dgvXercler.Columns.Contains("Tarix"))
-            dgvXercler.Columns["Tarix"].Width = 120;
-        if (dgvXercler.Columns.Contains("SenedNomresi"))
-            dgvXercler.Columns["SenedNomresi"].Width = 100;
-        if (dgvXercler.Columns.Contains("Qeyd"))
-            dgvXercler.Columns["Qeyd"].Width = 150;
-        if (dgvXercler.Columns.Contains("IstifadeciAdi"))
-            dgvXercler.Columns["IstifadeciAdi"].Width = 120;
+        }
 
         if (dgvXercler.Columns.Contains("Mebleg"))
+        {
+            dgvXercler.Columns["Mebleg"].Width = 100;
+        }
+
+        if (dgvXercler.Columns.Contains("Tarix"))
+        {
+            dgvXercler.Columns["Tarix"].Width = 120;
+        }
+
+        if (dgvXercler.Columns.Contains("SenedNomresi"))
+        {
+            dgvXercler.Columns["SenedNomresi"].Width = 100;
+        }
+
+        if (dgvXercler.Columns.Contains("Qeyd"))
+        {
+            dgvXercler.Columns["Qeyd"].Width = 150;
+        }
+
+        if (dgvXercler.Columns.Contains("IstifadeciAdi"))
+        {
+            dgvXercler.Columns["IstifadeciAdi"].Width = 120;
+        }
+
+        if (dgvXercler.Columns.Contains("Mebleg"))
+        {
             dgvXercler.Columns["Mebleg"].DefaultCellStyle.Format = "N2";
+        }
     }
 
     private void XercIdareetmeFormu_Load(object sender, EventArgs e)
@@ -171,7 +213,7 @@ public partial class XercIdareetmeFormu : BazaForm, IXercView
 
     private void btnXercElaveEt_Click(object sender, EventArgs e)
     {
-        if (_secilmisXercId.HasValue)
+        if (SecilmisXercId.HasValue)
         {
             XercYenileIstek?.Invoke(this, EventArgs.Empty);
         }

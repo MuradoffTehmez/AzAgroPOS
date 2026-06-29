@@ -1,12 +1,11 @@
 ﻿// Fayl: AzAgroPOS.Teqdimat/NovbeIdareetmesiFormu.cs
-namespace AzAgroPOS.Teqdimat;
 
 using AzAgroPOS.Mentiq.Idareciler;
 // using-lər...
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
-using System;
-using System.Windows.Forms;
+
+namespace AzAgroPOS.Teqdimat;
 /// <summary>
 ///  bu class, növbə idarəetməsi üçün istifadə olunan formu təmsil edir.
 ///  diqqət - bu form, MaterialSkin kitabxanasından MaterialForm sinifindən törədilmişdir.
@@ -35,13 +34,13 @@ public partial class NovbeIdareetmesiFormu : BazaForm, INovbeView
     /// diqqət - bu məbləğ, istifadəçi tərəfindən txtBaslangicMebleg adlı TextBox-a daxil edilir.
     /// qeyd - əgər daxil edilən məbləğ düzgün formatda deyilsə, 0 qaytarılır.
     /// </summary>
-    public decimal BaslangicMebleg => decimal.TryParse(txtBaslangicMebleg.Text, out var m) ? m : 0;
+    public decimal BaslangicMebleg => decimal.TryParse(txtBaslangicMebleg.Text, out decimal m) ? m : 0;
     /// <summary>
     /// Faktiki məbləğ, növbə bağlamaq üçün istifadə olunan məbləğdir.
     /// Diqqət - bu məbləğ, istifadəçi tərəfindən txtFaktikiMebleg adlı TextBox-a daxil edilir.
     /// Qeyd - əgər daxil edilən məbləğ düzgün formatda deyilsə, 0 qaytarılır.
     /// </summary>
-    public decimal FaktikiMebleg => decimal.TryParse(txtFaktikiMebleg.Text, out var m) ? m : 0;
+    public decimal FaktikiMebleg => decimal.TryParse(txtFaktikiMebleg.Text, out decimal m) ? m : 0;
     /// <summary>
     /// Növbə açmaq üçün istifadə olunan hadisə.
     /// Diqqət - bu hadisə, istifadəçi btnNovbeAc adlı düyməni kliklədikdə tetiklenir.

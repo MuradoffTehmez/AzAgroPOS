@@ -1,11 +1,9 @@
 // Fayl: AzAgroPOS.Teqdimat/Interfeysler/IBonusIdareetmeView.cs
-namespace AzAgroPOS.Teqdimat.Interfeysler;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Varliglar;
-using System;
-using System.Collections.Generic;
 
+namespace AzAgroPOS.Teqdimat.Interfeysler;
 /// <summary>
 /// Bonus idarəetmə forması üçün interfeys.
 /// </summary>

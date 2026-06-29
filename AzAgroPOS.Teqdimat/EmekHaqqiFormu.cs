@@ -1,14 +1,12 @@
 // Fayl: AzAgroPOS.Teqdimat/EmekHaqqiFormu.cs
-namespace AzAgroPOS.Teqdimat;
 
+using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Teqdimat.Yardimcilar;
 using AzAgroPOS.Varliglar;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
+namespace AzAgroPOS.Teqdimat;
 /// <summary>
 /// Əmək haqqı hesablama və idarəetmə forması.
 /// Diqqət: Bu forma işçilərin əmək haqqını hesablamaq, ödəmək və tarixçəyə baxmaq üçündür.
@@ -49,7 +47,11 @@ public partial class EmekHaqqiFormu : BazaForm
 
     private async Task YukleAsync()
     {
-        if (_yuklenmeDevamEdir) return;
+        if (_yuklenmeDevamEdir)
+        {
+            return;
+        }
+
         _yuklenmeDevamEdir = true;
         _formaYuklenir = true;
 
@@ -79,10 +81,10 @@ public partial class EmekHaqqiFormu : BazaForm
     {
         try
         {
-            var netice = await _isciManager.ButunIscileriGetirAsync();
+            EmeliyyatNeticesi<List<IsciDto>> netice = await _isciManager.ButunIscileriGetirAsync();
             if (netice.UgurluDur && netice.Data != null)
             {
-                var aktivIsciler = netice.Data.Where(i => i.Status == IsciStatusu.Aktiv).ToList();
+                List<IsciDto> aktivIsciler = netice.Data.Where(i => i.Status == IsciStatusu.Aktiv).ToList();
                 cmbIsci.DataSource = aktivIsciler;
                 cmbIsci.DisplayMember = "TamAd";
                 cmbIsci.ValueMember = "Id";
@@ -106,7 +108,7 @@ public partial class EmekHaqqiFormu : BazaForm
     {
         try
         {
-            var netice = await _emekHaqqiManager.EmekHaqqilariGetirAsync();
+            EmeliyyatNeticesi<List<EmekHaqqiDto>> netice = await _emekHaqqiManager.EmekHaqqilariGetirAsync();
             if (netice.UgurluDur && netice.Data != null)
             {
                 dgvEmekHaqqlari.DataSource = netice.Data.ToList();
@@ -124,18 +126,31 @@ public partial class EmekHaqqiFormu : BazaForm
     /// </summary>
     private void FormatGrid()
     {
-        if (dgvEmekHaqqlari.Columns.Count == 0) return;
+        if (dgvEmekHaqqlari.Columns.Count == 0)
+        {
+            return;
+        }
 
         // Sütunların mövcudluğunu yoxlayaraq formatla
         if (dgvEmekHaqqlari.Columns["Id"] != null)
+        {
             dgvEmekHaqqlari.Columns["Id"].Visible = false;
+        }
+
         if (dgvEmekHaqqlari.Columns["IsciId"] != null)
+        {
             dgvEmekHaqqlari.Columns["IsciId"].Visible = false;
+        }
 
         if (dgvEmekHaqqlari.Columns["IsciAdi"] != null)
+        {
             dgvEmekHaqqlari.Columns["IsciAdi"].HeaderText = "İşçi";
+        }
+
         if (dgvEmekHaqqlari.Columns["Dovr"] != null)
+        {
             dgvEmekHaqqlari.Columns["Dovr"].HeaderText = "Dövr";
+        }
 
         if (dgvEmekHaqqlari.Columns["EsasMaas"] != null)
         {
@@ -174,7 +189,9 @@ public partial class EmekHaqqiFormu : BazaForm
         }
 
         if (dgvEmekHaqqlari.Columns["Status"] != null)
+        {
             dgvEmekHaqqlari.Columns["Status"].HeaderText = "Status";
+        }
 
         if (dgvEmekHaqqlari.Columns["HesablanmaTarixi"] != null)
         {
@@ -190,7 +207,9 @@ public partial class EmekHaqqiFormu : BazaForm
         }
 
         if (dgvEmekHaqqlari.Columns["Qeyd"] != null)
+        {
             dgvEmekHaqqlari.Columns["Qeyd"].HeaderText = "Qeyd";
+        }
 
         dgvEmekHaqqlari.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
     }
@@ -200,7 +219,11 @@ public partial class EmekHaqqiFormu : BazaForm
     /// </summary>
     private void btnHesabla_Click(object sender, EventArgs e)
     {
-        if (_yuklenmeDevamEdir) return;
+        if (_yuklenmeDevamEdir)
+        {
+            return;
+        }
+
         if (cmbIsci.SelectedValue == null)
         {
             MessageBox.Show("Zəhmət olmasa işçi seçin!", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -212,18 +235,22 @@ public partial class EmekHaqqiFormu : BazaForm
 
     private async Task HesablaAsync()
     {
-        if (_yuklenmeDevamEdir) return;
+        if (_yuklenmeDevamEdir)
+        {
+            return;
+        }
+
         _yuklenmeDevamEdir = true;
 
         try
         {
-            var isciId = (int)cmbIsci.SelectedValue;
-            var dovr = dtpDovr.Value.ToString("yyyy MMMM");
-            var elaveOdenisler = numElaveOdenisler.Value;
-            var digerTutulmalar = numDigerTutulmalar.Value;
-            var qeyd = txtQeyd.Text;
+            int isciId = (int)cmbIsci.SelectedValue;
+            string dovr = dtpDovr.Value.ToString("yyyy MMMM");
+            decimal elaveOdenisler = numElaveOdenisler.Value;
+            decimal digerTutulmalar = numDigerTutulmalar.Value;
+            string qeyd = txtQeyd.Text;
 
-            var netice = await _emekHaqqiManager.EmekHaqqiHesablaAsync(
+            EmeliyyatNeticesi<int> netice = await _emekHaqqiManager.EmekHaqqiHesablaAsync(
                 isciId,
                 dovr,
                 elaveOdenisler,
@@ -257,15 +284,19 @@ public partial class EmekHaqqiFormu : BazaForm
     /// </summary>
     private void btnOde_Click(object sender, EventArgs e)
     {
-        if (_yuklenmeDevamEdir) return;
+        if (_yuklenmeDevamEdir)
+        {
+            return;
+        }
+
         if (dgvEmekHaqqlari.SelectedRows.Count == 0)
         {
             MessageBox.Show("Zəhmət olmasa ödəniləcək əmək haqqını seçin!", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             return;
         }
 
-        var emekHaqqiId = (int)dgvEmekHaqqlari.SelectedRows[0].Cells["Id"].Value;
-        var status = dgvEmekHaqqlari.SelectedRows[0].Cells["Status"].Value.ToString();
+        int emekHaqqiId = (int)dgvEmekHaqqlari.SelectedRows[0].Cells["Id"].Value;
+        string? status = dgvEmekHaqqlari.SelectedRows[0].Cells["Status"].Value.ToString();
 
         if (status == EmekHaqqiStatusu.Odenilmis.ToString())
         {
@@ -273,25 +304,32 @@ public partial class EmekHaqqiFormu : BazaForm
             return;
         }
 
-        var tesdiq = MessageBox.Show(
+        DialogResult tesdiq = MessageBox.Show(
             "Bu əmək haqqını ödəmək istəyirsiniz?",
             "Təsdiq",
             MessageBoxButtons.YesNo,
             MessageBoxIcon.Question);
 
-        if (tesdiq != DialogResult.Yes) return;
+        if (tesdiq != DialogResult.Yes)
+        {
+            return;
+        }
 
         _ = OdeAsync(emekHaqqiId);
     }
 
     private async Task OdeAsync(int emekHaqqiId)
     {
-        if (_yuklenmeDevamEdir) return;
+        if (_yuklenmeDevamEdir)
+        {
+            return;
+        }
+
         _yuklenmeDevamEdir = true;
 
         try
         {
-            var netice = await _emekHaqqiManager.EmekHaqqiOdeAsync(emekHaqqiId, AktivSessiya.AktivIstifadeci?.Id);
+            EmeliyyatNeticesi netice = await _emekHaqqiManager.EmekHaqqiOdeAsync(emekHaqqiId, AktivSessiya.AktivIstifadeci?.Id);
 
             if (netice.UgurluDur)
             {
@@ -318,15 +356,19 @@ public partial class EmekHaqqiFormu : BazaForm
     /// </summary>
     private void btnLegvEt_Click(object sender, EventArgs e)
     {
-        if (_yuklenmeDevamEdir) return;
+        if (_yuklenmeDevamEdir)
+        {
+            return;
+        }
+
         if (dgvEmekHaqqlari.SelectedRows.Count == 0)
         {
             MessageBox.Show("Zəhmət olmasa ləğv ediləcək əmək haqqını seçin!", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             return;
         }
 
-        var emekHaqqiId = (int)dgvEmekHaqqlari.SelectedRows[0].Cells["Id"].Value;
-        var status = dgvEmekHaqqlari.SelectedRows[0].Cells["Status"].Value.ToString();
+        int emekHaqqiId = (int)dgvEmekHaqqlari.SelectedRows[0].Cells["Id"].Value;
+        string? status = dgvEmekHaqqlari.SelectedRows[0].Cells["Status"].Value.ToString();
 
         if (status == EmekHaqqiStatusu.Legv.ToString())
         {
@@ -334,25 +376,32 @@ public partial class EmekHaqqiFormu : BazaForm
             return;
         }
 
-        var tesdiq = MessageBox.Show(
+        DialogResult tesdiq = MessageBox.Show(
             "Bu əmək haqqını ləğv etmək istəyirsiniz?",
             "Təsdiq",
             MessageBoxButtons.YesNo,
             MessageBoxIcon.Warning);
 
-        if (tesdiq != DialogResult.Yes) return;
+        if (tesdiq != DialogResult.Yes)
+        {
+            return;
+        }
 
         _ = LegvEtAsync(emekHaqqiId);
     }
 
     private async Task LegvEtAsync(int emekHaqqiId)
     {
-        if (_yuklenmeDevamEdir) return;
+        if (_yuklenmeDevamEdir)
+        {
+            return;
+        }
+
         _yuklenmeDevamEdir = true;
 
         try
         {
-            var netice = await _emekHaqqiManager.EmekHaqqiLegvEtAsync(emekHaqqiId);
+            EmeliyyatNeticesi netice = await _emekHaqqiManager.EmekHaqqiLegvEtAsync(emekHaqqiId);
 
             if (netice.UgurluDur)
             {
@@ -390,13 +439,21 @@ public partial class EmekHaqqiFormu : BazaForm
     /// </summary>
     private void btnYenile_Click(object sender, EventArgs e)
     {
-        if (_yuklenmeDevamEdir) return;
+        if (_yuklenmeDevamEdir)
+        {
+            return;
+        }
+
         _ = YenileAsync();
     }
 
     private async Task YenileAsync()
     {
-        if (_yuklenmeDevamEdir) return;
+        if (_yuklenmeDevamEdir)
+        {
+            return;
+        }
+
         _yuklenmeDevamEdir = true;
 
         try
@@ -415,28 +472,39 @@ public partial class EmekHaqqiFormu : BazaForm
     private void cmbIsci_SelectedIndexChanged(object sender, EventArgs e)
     {
         // Forma yüklənərkən və ya başqa əməliyyat davam edərkən işləmə
-        if (_formaYuklenir || _yuklenmeDevamEdir) return;
-        if (cmbIsci.SelectedValue == null) return;
+        if (_formaYuklenir || _yuklenmeDevamEdir)
+        {
+            return;
+        }
+
+        if (cmbIsci.SelectedValue == null)
+        {
+            return;
+        }
 
         _ = IsciSecildiAsync();
     }
 
     private async Task IsciSecildiAsync()
     {
-        if (_yuklenmeDevamEdir) return;
+        if (_yuklenmeDevamEdir)
+        {
+            return;
+        }
+
         _yuklenmeDevamEdir = true;
 
         try
         {
-            var isciId = (int)cmbIsci.SelectedValue;
-            var netice = await _emekHaqqiManager.EmekHaqqilariGetirAsync();
+            int isciId = (int)cmbIsci.SelectedValue;
+            EmeliyyatNeticesi<List<EmekHaqqiDto>> netice = await _emekHaqqiManager.EmekHaqqilariGetirAsync();
 
             if (netice.UgurluDur && netice.Data != null)
             {
-                var isciEmekHaqqlari = netice.Data.Where(eh => eh.IsciId == isciId).ToList();
+                List<EmekHaqqiDto> isciEmekHaqqlari = netice.Data.Where(eh => eh.IsciId == isciId).ToList();
                 if (isciEmekHaqqlari.Any())
                 {
-                    var sonEmekHaqqi = isciEmekHaqqlari.OrderByDescending(eh => eh.HesablanmaTarixi).First();
+                    EmekHaqqiDto sonEmekHaqqi = isciEmekHaqqlari.OrderByDescending(eh => eh.HesablanmaTarixi).First();
                     lblSonMaas.Text = $"Son Maaş: {sonEmekHaqqi.YekunEmekHaqqi:N2} AZN ({sonEmekHaqqi.Dovr})";
                 }
                 else

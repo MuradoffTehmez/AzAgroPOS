@@ -1,5 +1,4 @@
 // Fayl: AzAgroPOS.Teqdimat/ZHesabatArxivFormu.cs
-namespace AzAgroPOS.Teqdimat;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
@@ -7,6 +6,8 @@ using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
 using AzAgroPOS.Teqdimat.Yardimcilar;
 using System.Text;
+
+namespace AzAgroPOS.Teqdimat;
 
 public partial class ZHesabatArxivFormu : BazaForm, IZHesabatArxivView
 {
@@ -32,17 +33,7 @@ public partial class ZHesabatArxivFormu : BazaForm, IZHesabatArxivView
 
     #region IZHesabatArxivView Properties
 
-    public int? SecilmisNovbeId
-    {
-        get
-        {
-            if (dgvNovbeler.CurrentRow != null && dgvNovbeler.CurrentRow.DataBoundItem is BaglanmisNovbeDto novbe)
-            {
-                return novbe.NovbeId;
-            }
-            return null;
-        }
-    }
+    public int? SecilmisNovbeId => dgvNovbeler.CurrentRow != null && dgvNovbeler.CurrentRow.DataBoundItem is BaglanmisNovbeDto novbe ? novbe.NovbeId : null;
 
     public DateTime BaslangicTarixi => dtpBaslangic.Value.Date;
     public DateTime BitisTarixi => dtpBitis.Value.Date.AddDays(1).AddSeconds(-1);
@@ -73,15 +64,29 @@ public partial class ZHesabatArxivFormu : BazaForm, IZHesabatArxivView
         if (dgvNovbeler.Columns.Count > 0)
         {
             if (dgvNovbeler.Columns.Contains("NovbeId"))
+            {
                 dgvNovbeler.Columns["NovbeId"].HeaderText = "Növbə №";
+            }
+
             if (dgvNovbeler.Columns.Contains("AcilmaTarixi"))
+            {
                 dgvNovbeler.Columns["AcilmaTarixi"].HeaderText = "Açılma Tarixi";
+            }
+
             if (dgvNovbeler.Columns.Contains("BaglanmaTarixi"))
+            {
                 dgvNovbeler.Columns["BaglanmaTarixi"].HeaderText = "Bağlanma Tarixi";
+            }
+
             if (dgvNovbeler.Columns.Contains("KassirAdi"))
+            {
                 dgvNovbeler.Columns["KassirAdi"].HeaderText = "Kassir";
+            }
+
             if (dgvNovbeler.Columns.Contains("CemiSatis"))
+            {
                 dgvNovbeler.Columns["CemiSatis"].HeaderText = "Cəmi Satış";
+            }
         }
     }
 
@@ -111,11 +116,17 @@ public partial class ZHesabatArxivFormu : BazaForm, IZHesabatArxivView
         // Fərq rəngini müəyyənləşdir
         lblFerqDeyer.Text = $"{hesabat.Ferq:N2} ₼";
         if (hesabat.Ferq < 0)
+        {
             lblFerqDeyer.ForeColor = Color.FromArgb(244, 67, 54); // Qırmızı - çatışmazlıq
+        }
         else if (hesabat.Ferq > 0)
+        {
             lblFerqDeyer.ForeColor = Color.FromArgb(76, 175, 80); // Yaşıl - artıq
+        }
         else
+        {
             lblFerqDeyer.ForeColor = Color.FromArgb(33, 33, 33); // Normal
+        }
     }
 
     public void MesajGoster(string mesaj)
@@ -223,7 +234,7 @@ public partial class ZHesabatArxivFormu : BazaForm, IZHesabatArxivView
 
         try
         {
-            var builder = new StringBuilder();
+            StringBuilder builder = new();
 
             // Header
             builder.AppendLine("================================");

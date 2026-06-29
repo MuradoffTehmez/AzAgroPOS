@@ -1,14 +1,12 @@
 // Fayl: AzAgroPOS.Teqdimat/IsciIzniFormu.cs
-namespace AzAgroPOS.Teqdimat;
 
+using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Teqdimat.Yardimcilar;
 using AzAgroPOS.Varliglar;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
+namespace AzAgroPOS.Teqdimat;
 /// <summary>
 /// İşçi izni idarəetmə forması.
 /// Diqqət: Bu forma işçilərin məzuniyyət, xəstəlik icazəsi və digər izinlərini idarə edir.
@@ -75,10 +73,10 @@ public partial class IsciIzniFormu : BazaForm
     {
         try
         {
-            var netice = await _isciManager.ButunIscileriGetirAsync();
+            EmeliyyatNeticesi<List<IsciDto>> netice = await _isciManager.ButunIscileriGetirAsync();
             if (netice.UgurluDur && netice.Data != null)
             {
-                var aktivIsciler = netice.Data.Where(i => i.Status == IsciStatusu.Aktiv).ToList();
+                List<IsciDto> aktivIsciler = netice.Data.Where(i => i.Status == IsciStatusu.Aktiv).ToList();
                 cmbIsci.DataSource = aktivIsciler;
                 cmbIsci.DisplayMember = "TamAd";
                 cmbIsci.ValueMember = "Id";
@@ -102,7 +100,7 @@ public partial class IsciIzniFormu : BazaForm
     {
         try
         {
-            var netice = await _izniManager.ButunIzinleriDtoFormatindaGetirAsync();
+            EmeliyyatNeticesi<List<IsciIzniDto>> netice = await _izniManager.ButunIzinleriDtoFormatindaGetirAsync();
             if (netice.UgurluDur && netice.Data != null)
             {
                 dgvIzinler.DataSource = netice.Data.ToList();
@@ -124,20 +122,36 @@ public partial class IsciIzniFormu : BazaForm
     /// </summary>
     private void FormatGrid()
     {
-        if (dgvIzinler.Columns.Count == 0) return;
+        if (dgvIzinler.Columns.Count == 0)
+        {
+            return;
+        }
 
         // Sütunların mövcudluğunu yoxlayaraq formatla
         if (dgvIzinler.Columns["Id"] != null)
+        {
             dgvIzinler.Columns["Id"].Visible = false;
+        }
+
         if (dgvIzinler.Columns["IsciId"] != null)
+        {
             dgvIzinler.Columns["IsciId"].Visible = false;
+        }
+
         if (dgvIzinler.Columns["TesdiqEdenIsciId"] != null)
+        {
             dgvIzinler.Columns["TesdiqEdenIsciId"].Visible = false;
+        }
 
         if (dgvIzinler.Columns["IsciAdi"] != null)
+        {
             dgvIzinler.Columns["IsciAdi"].HeaderText = "İşçi";
+        }
+
         if (dgvIzinler.Columns["IzinNovu"] != null)
+        {
             dgvIzinler.Columns["IzinNovu"].HeaderText = "İzin Növü";
+        }
 
         if (dgvIzinler.Columns["BaslamaTarixi"] != null)
         {
@@ -152,13 +166,24 @@ public partial class IsciIzniFormu : BazaForm
         }
 
         if (dgvIzinler.Columns["IzinGunu"] != null)
+        {
             dgvIzinler.Columns["IzinGunu"].HeaderText = "Gün";
+        }
+
         if (dgvIzinler.Columns["Sebeb"] != null)
+        {
             dgvIzinler.Columns["Sebeb"].HeaderText = "Səbəb";
+        }
+
         if (dgvIzinler.Columns["Status"] != null)
+        {
             dgvIzinler.Columns["Status"].HeaderText = "Status";
+        }
+
         if (dgvIzinler.Columns["TesdiqEdenIsciAdi"] != null)
+        {
             dgvIzinler.Columns["TesdiqEdenIsciAdi"].HeaderText = "Təsdiqləyən";
+        }
 
         if (dgvIzinler.Columns["TesdiqTarixi"] != null)
         {
@@ -167,7 +192,9 @@ public partial class IsciIzniFormu : BazaForm
         }
 
         if (dgvIzinler.Columns["Qeydler"] != null)
+        {
             dgvIzinler.Columns["Qeydler"].HeaderText = "Qeydlər";
+        }
 
         dgvIzinler.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
     }
@@ -181,7 +208,7 @@ public partial class IsciIzniFormu : BazaForm
     /// </summary>
     private void HesablaIzinGunu()
     {
-        var izinGunu = (dtpBitmeTarixi.Value.Date - dtpBaslamaTarixi.Value.Date).Days + 1;
+        int izinGunu = (dtpBitmeTarixi.Value.Date - dtpBaslamaTarixi.Value.Date).Days + 1;
         numIzinGunu.Value = izinGunu > 0 ? izinGunu : 0;
     }
 
@@ -202,7 +229,7 @@ public partial class IsciIzniFormu : BazaForm
     {
         try
         {
-            var netice = await _izniManager.IzinYaratAsync(
+            EmeliyyatNeticesi<int> netice = await _izniManager.IzinYaratAsync(
                 (int)cmbIsci.SelectedValue,
                 (IzinNovu)cmbIzinNovu.SelectedItem,
                 dtpBaslamaTarixi.Value,
@@ -250,7 +277,7 @@ public partial class IsciIzniFormu : BazaForm
     {
         try
         {
-            var netice = await _izniManager.IzinYenileAsync(
+            EmeliyyatNeticesi netice = await _izniManager.IzinYenileAsync(
                 _seciliIzinId,
                 (IzinNovu)cmbIzinNovu.SelectedItem,
                 dtpBaslamaTarixi.Value,
@@ -286,13 +313,16 @@ public partial class IsciIzniFormu : BazaForm
             return;
         }
 
-        var tesdiq = MessageBox.Show(
+        DialogResult tesdiq = MessageBox.Show(
             "Bu izni silmək istəyirsiniz?",
             "Təsdiq",
             MessageBoxButtons.YesNo,
             MessageBoxIcon.Question);
 
-        if (tesdiq != DialogResult.Yes) return;
+        if (tesdiq != DialogResult.Yes)
+        {
+            return;
+        }
 
         _ = SilAsync();
     }
@@ -301,7 +331,7 @@ public partial class IsciIzniFormu : BazaForm
     {
         try
         {
-            var netice = await _izniManager.IzinSilAsync(_seciliIzinId);
+            EmeliyyatNeticesi netice = await _izniManager.IzinSilAsync(_seciliIzinId);
 
             if (netice.UgurluDur)
             {
@@ -331,13 +361,16 @@ public partial class IsciIzniFormu : BazaForm
             return;
         }
 
-        var tesdiq = MessageBox.Show(
+        DialogResult tesdiq = MessageBox.Show(
             "Bu izni təsdiqləmək istəyirsiniz?",
             "Təsdiq",
             MessageBoxButtons.YesNo,
             MessageBoxIcon.Question);
 
-        if (tesdiq != DialogResult.Yes) return;
+        if (tesdiq != DialogResult.Yes)
+        {
+            return;
+        }
 
         _ = TesdiqleAsync();
     }
@@ -346,7 +379,7 @@ public partial class IsciIzniFormu : BazaForm
     {
         try
         {
-            var netice = await _izniManager.IzinTesdiqleAsync(_seciliIzinId, AktivSessiya.AktivIstifadeci?.Id ?? 0);
+            EmeliyyatNeticesi netice = await _izniManager.IzinTesdiqleAsync(_seciliIzinId, AktivSessiya.AktivIstifadeci?.Id ?? 0);
 
             if (netice.UgurluDur)
             {
@@ -377,7 +410,7 @@ public partial class IsciIzniFormu : BazaForm
         }
 
         // Rədd səbəbini soruş
-        var reddSebebi = Microsoft.VisualBasic.Interaction.InputBox(
+        string reddSebebi = Microsoft.VisualBasic.Interaction.InputBox(
             "Rədd səbəbini daxil edin:",
             "İzin Rəddi",
             "",
@@ -397,7 +430,7 @@ public partial class IsciIzniFormu : BazaForm
     {
         try
         {
-            var netice = await _izniManager.IzinReddEtAsync(_seciliIzinId, AktivSessiya.AktivIstifadeci?.Id ?? 0, reddSebebi);
+            EmeliyyatNeticesi netice = await _izniManager.IzinReddEtAsync(_seciliIzinId, AktivSessiya.AktivIstifadeci?.Id ?? 0, reddSebebi);
 
             if (netice.UgurluDur)
             {
@@ -427,13 +460,16 @@ public partial class IsciIzniFormu : BazaForm
             return;
         }
 
-        var tesdiq = MessageBox.Show(
+        DialogResult tesdiq = MessageBox.Show(
             "Bu izni ləğv etmək istəyirsiniz?",
             "Təsdiq",
             MessageBoxButtons.YesNo,
             MessageBoxIcon.Warning);
 
-        if (tesdiq != DialogResult.Yes) return;
+        if (tesdiq != DialogResult.Yes)
+        {
+            return;
+        }
 
         _ = LegvEtAsync();
     }
@@ -442,7 +478,7 @@ public partial class IsciIzniFormu : BazaForm
     {
         try
         {
-            var netice = await _izniManager.IzinLegvEtAsync(_seciliIzinId);
+            EmeliyyatNeticesi netice = await _izniManager.IzinLegvEtAsync(_seciliIzinId);
 
             if (netice.UgurluDur)
             {
@@ -478,7 +514,7 @@ public partial class IsciIzniFormu : BazaForm
 
         try
         {
-            var seciliIzin = dgvIzinler.SelectedRows[0];
+            DataGridViewRow seciliIzin = dgvIzinler.SelectedRows[0];
             _seciliIzinId = (int)seciliIzin.Cells["Id"].Value;
 
             cmbIsci.SelectedValue = seciliIzin.Cells["IsciId"].Value;
@@ -490,7 +526,7 @@ public partial class IsciIzniFormu : BazaForm
             txtQeydler.Text = seciliIzin.Cells["Qeydler"].Value?.ToString() ?? string.Empty;
 
             // Status məlumatını göstər
-            var status = (IzinStatusu)seciliIzin.Cells["Status"].Value;
+            IzinStatusu status = (IzinStatusu)seciliIzin.Cells["Status"].Value;
             lblStatusMelumat.Text = $"Status: {status}";
             lblStatusMelumat.ForeColor = status switch
             {
@@ -511,22 +547,15 @@ public partial class IsciIzniFormu : BazaForm
     /// </summary>
     private void cmbStatusFiltre_SelectedIndexChanged(object sender, EventArgs e)
     {
-        if (cmbStatusFiltre.SelectedIndex == 0) // Hamısı
-        {
-            _ = IzinleriYukle();
-        }
-        else
-        {
-            _ = FiltreAsync();
-        }
+        _ = cmbStatusFiltre.SelectedIndex == 0 ? IzinleriYukle() : FiltreAsync();
     }
 
     private async Task FiltreAsync()
     {
         try
         {
-            var status = (IzinStatusu)cmbStatusFiltre.SelectedItem;
-            var netice = await _izniManager.StatusaGoreGetirAsync(status);
+            IzinStatusu status = (IzinStatusu)cmbStatusFiltre.SelectedItem;
+            EmeliyyatNeticesi<List<IsciIzniDto>> netice = await _izniManager.StatusaGoreGetirAsync(status);
 
             if (netice.UgurluDur && netice.Data != null)
             {
@@ -545,7 +574,10 @@ public partial class IsciIzniFormu : BazaForm
     /// </summary>
     private void cmbIsci_SelectedIndexChanged(object sender, EventArgs e)
     {
-        if (cmbIsci.SelectedValue == null) return;
+        if (cmbIsci.SelectedValue == null)
+        {
+            return;
+        }
 
         _ = IsciSecildiAsync();
     }
@@ -554,13 +586,13 @@ public partial class IsciIzniFormu : BazaForm
     {
         try
         {
-            var isciId = (int)cmbIsci.SelectedValue;
-            var netice = await _izniManager.IsciUcunIzinleriGetirAsync(isciId);
+            int isciId = (int)cmbIsci.SelectedValue;
+            EmeliyyatNeticesi<List<IsciIzniDto>> netice = await _izniManager.IsciUcunIzinleriGetirAsync(isciId);
 
             if (netice.UgurluDur && netice.Data != null)
             {
-                var tesdiqlenibIzinler = netice.Data.Where(i => i.Status == IzinStatusu.Tesdiqlenib).ToList();
-                var cemiGun = tesdiqlenibIzinler.Sum(i => i.IzinGunu);
+                List<IsciIzniDto> tesdiqlenibIzinler = netice.Data.Where(i => i.Status == IzinStatusu.Tesdiqlenib).ToList();
+                int cemiGun = tesdiqlenibIzinler.Sum(i => i.IzinGunu);
                 lblIsciIzinMelumati.Text = $"Təsdiqlənmiş izin günləri: {cemiGun}";
             }
         }

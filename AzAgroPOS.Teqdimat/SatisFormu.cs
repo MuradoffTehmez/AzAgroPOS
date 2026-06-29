@@ -8,6 +8,8 @@ using AzAgroPOS.Varliglar;
 using MaterialSkin.Controls;
 using Microsoft.Extensions.DependencyInjection;
 using System.ComponentModel;
+using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace AzAgroPOS.Teqdimat
 {
@@ -59,8 +61,7 @@ namespace AzAgroPOS.Teqdimat
             {
                 try
                 {
-                    if (dgvAxtarisNeticeleri.CurrentRow == null) return null;
-                    return dgvAxtarisNeticeleri.CurrentRow.DataBoundItem as MehsulDto;
+                    return dgvAxtarisNeticeleri.CurrentRow == null ? null : dgvAxtarisNeticeleri.CurrentRow.DataBoundItem as MehsulDto;
                 }
                 catch (Exception ex)
                 {
@@ -100,7 +101,7 @@ namespace AzAgroPOS.Teqdimat
             flpSuretliSatis.Controls.Clear();
 
             // Sürətli satış başlığı
-            var lblBasliq = new Label
+            Label lblBasliq = new()
             {
                 Text = "SÜRƏTLİ SATIŞ",
                 Font = new Font("Segoe UI", 12F, FontStyle.Bold),
@@ -113,9 +114,9 @@ namespace AzAgroPOS.Teqdimat
             };
             flpSuretliSatis.Controls.Add(lblBasliq);
 
-            foreach (var mehsul in mehsullar)
+            foreach (MehsulDto mehsul in mehsullar)
             {
-                var button = new MaterialButton
+                MaterialButton button = new()
                 {
                     Text = mehsul.Ad,
                     Tag = mehsul,
@@ -163,7 +164,8 @@ namespace AzAgroPOS.Teqdimat
                 return;
             }
 
-            var listDataSource = new List<object> { new { Id = 0, TamAd = "Şəxsi Satış (müştərisiz)" } };
+            List<object> listDataSource = new()
+            { new { Id = 0, TamAd = "Şəxsi Satış (müştərisiz)" } };
             listDataSource.AddRange(musteriler.Select(m => new { m.Id, TamAd = $@"{m.TamAd} (Borc: {m.UmumiBorc:N2})" }).ToList());
 
             cmbMusteriler.DataSource = listDataSource;
@@ -198,7 +200,10 @@ namespace AzAgroPOS.Teqdimat
                 string[] gorunenler = { "Ad", "StokKodu" };
                 foreach (DataGridViewColumn col in dgvAxtarisNeticeleri.Columns)
                 {
-                    if (!gorunenler.Contains(col.Name)) col.Visible = false;
+                    if (!gorunenler.Contains(col.Name))
+                    {
+                        col.Visible = false;
+                    }
                 }
             }
         }
@@ -289,10 +294,12 @@ namespace AzAgroPOS.Teqdimat
 
             // Gizli sütunlar
             string[] gizliSutunlar = { "MehsulId", "EndirimliQiymet", "EndirimFaizi" };
-            foreach (var sutunAdi in gizliSutunlar)
+            foreach (string sutunAdi in gizliSutunlar)
             {
                 if (dgvSebet.Columns.Contains(sutunAdi))
+                {
                     dgvSebet.Columns[sutunAdi].Visible = false;
+                }
             }
 
             // Artır/Azalt düymələrinin sırasını düzəlt
@@ -319,9 +326,9 @@ namespace AzAgroPOS.Teqdimat
             }
             else
             {
-                foreach (var satis in gozleyenSatislar)
+                foreach (GozleyenSatis satis in gozleyenSatislar)
                 {
-                    var menuItem = new ToolStripMenuItem(satis.Ad) { Tag = satis };
+                    ToolStripMenuItem menuItem = new(satis.Ad) { Tag = satis };
                     contextMenuStripGozleyenler.Items.Add(menuItem);
                 }
             }
@@ -331,7 +338,10 @@ namespace AzAgroPOS.Teqdimat
         public void FormuTamSifirla()
         {
             AxtarisPaneliniSifirla();
-            if (cmbMusteriler.Items.Count > 0) cmbMusteriler.SelectedIndex = 0;
+            if (cmbMusteriler.Items.Count > 0)
+            {
+                cmbMusteriler.SelectedIndex = 0;
+            }
         }
 
         public void StatusMesajiGoster(string mesaj, StatusMesajiNovu nov)
@@ -441,17 +451,12 @@ namespace AzAgroPOS.Teqdimat
         /// <returns>Rəng adı ("Red", "Orange" və ya "Black")</returns>
         public string GetMusteriBorcRengi(decimal borc)
         {
-            if (borc > 5000)
-                return "Red";
-            else if (borc > 1000)
-                return "Orange";
-            else
-                return "Black";
+            return borc > 5000 ? "Red" : borc > 1000 ? "Orange" : "Black";
         }
 
         public async Task EmeliyyatIcraEtAsync(Func<Task> emeliyyat, string mesaj)
         {
-            var gosterici = new YuklemeGostergeci(this);
+            YuklemeGostergeci gosterici = new(this);
             await gosterici.EmeliyyatIcraEtAsync(emeliyyat, mesaj);
         }
 
@@ -494,11 +499,14 @@ namespace AzAgroPOS.Teqdimat
         private void dgvAxtarisNeticeleri_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             // Başlıq sətirinə click etmə
-            if (e.RowIndex < 0) return;
+            if (e.RowIndex < 0)
+            {
+                return;
+            }
 
             try
             {
-                var dataItem = dgvAxtarisNeticeleri.Rows[e.RowIndex].DataBoundItem;
+                object dataItem = dgvAxtarisNeticeleri.Rows[e.RowIndex].DataBoundItem;
 
                 // Click edilən sətirdən məhsulu al - məhsulu parametr kimi ötür
                 if (dataItem is MehsulDto mehsul)
@@ -626,7 +634,7 @@ namespace AzAgroPOS.Teqdimat
         }
         private void btnIndirim_Click(object sender, EventArgs e)
         {
-            using var endirimFormu = new EndirimFormu(SecilmisSebetElementi);
+            using EndirimFormu endirimFormu = new(SecilmisSebetElementi);
             if (endirimFormu.ShowDialog() == DialogResult.OK)
             {
                 IndirimIstek?.Invoke(this, endirimFormu.EndirimParametrləri);
@@ -638,9 +646,9 @@ namespace AzAgroPOS.Teqdimat
         }
         private void btnYeniMusteri_Click(object sender, EventArgs e)
         {
-            var musteriFormu = _serviceProvider.GetRequiredService<MusteriIdareetmeFormu>();
-            var musteriManager = _serviceProvider.GetRequiredService<MusteriManager>();
-            var musteriPresenter = new MusteriPresenter(musteriFormu, musteriManager);
+            MusteriIdareetmeFormu musteriFormu = _serviceProvider.GetRequiredService<MusteriIdareetmeFormu>();
+            MusteriManager musteriManager = _serviceProvider.GetRequiredService<MusteriManager>();
+            MusteriPresenter musteriPresenter = new(musteriFormu, musteriManager);
             musteriFormu.InitializePresenter(musteriPresenter);
 
             if (musteriFormu.ShowDialog() == DialogResult.OK)
@@ -659,10 +667,17 @@ namespace AzAgroPOS.Teqdimat
         }
         private void dgvSebet_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex < 0) return;
-            if (!(dgvSebet.Rows[e.RowIndex].DataBoundItem is SatisSebetiElementiDto sebetElementi)) return;
+            if (e.RowIndex < 0)
+            {
+                return;
+            }
 
-            var mehsulId = sebetElementi.MehsulId;
+            if (dgvSebet.Rows[e.RowIndex].DataBoundItem is not SatisSebetiElementiDto sebetElementi)
+            {
+                return;
+            }
+
+            int mehsulId = sebetElementi.MehsulId;
 
             if (dgvSebet.Columns[e.ColumnIndex].Name == "artir_col")
             {
@@ -676,7 +691,7 @@ namespace AzAgroPOS.Teqdimat
         private void SatisFormu_KeyDown(object sender, KeyEventArgs e)
         {
             // Əgər TextBox-da yazı yazılırsa, bəzi qısayolları deaktiv et
-            bool isTextBoxFocused = ActiveControl is TextBox || ActiveControl is ComboBox;
+            bool isTextBoxFocused = ActiveControl is TextBox or ComboBox;
 
             switch (e.KeyCode)
             {
@@ -762,7 +777,7 @@ namespace AzAgroPOS.Teqdimat
         {
             if (dgvSebet.Columns["artir_col"] == null)
             {
-                var artirCol = new DataGridViewButtonColumn
+                DataGridViewButtonColumn artirCol = new()
                 {
                     Name = "artir_col",
                     Text = "+",
@@ -775,7 +790,7 @@ namespace AzAgroPOS.Teqdimat
 
             if (dgvSebet.Columns["azalt_col"] == null)
             {
-                var azaltCol = new DataGridViewButtonColumn
+                DataGridViewButtonColumn azaltCol = new()
                 {
                     Name = "azalt_col",
                     Text = "-",
@@ -859,16 +874,19 @@ namespace AzAgroPOS.Teqdimat
         /// </summary>
         private void CmbMusteriler_DrawItem(object sender, DrawItemEventArgs e)
         {
-            if (e.Index < 0) return;
+            if (e.Index < 0)
+            {
+                return;
+            }
 
             e.DrawBackground();
 
             ComboBox cmb = sender as ComboBox;
-            var item = cmb.Items[e.Index];
+            object? item = cmb.Items[e.Index];
 
             // Get the customer data
-            var customerIdProp = item.GetType().GetProperty("Id");
-            var customerId = (int)customerIdProp.GetValue(item);
+            PropertyInfo? customerIdProp = item.GetType().GetProperty("Id");
+            int customerId = (int)customerIdProp.GetValue(item);
 
             // Skip formatting for "Şəxsi Satış" option (Id = 0)
             if (customerId == 0)
@@ -881,7 +899,7 @@ namespace AzAgroPOS.Teqdimat
             // Extract debt from the display text
             // The format is: "Name (Borc: amount)"
             string displayText = cmb.GetItemText(item);
-            var match = System.Text.RegularExpressions.Regex.Match(displayText, @"\((Borc|Debt): ([\d,\.]+)\)");
+            Match match = System.Text.RegularExpressions.Regex.Match(displayText, @"\((Borc|Debt): ([\d,\.]+)\)");
             if (match.Success)
             {
                 if (decimal.TryParse(match.Groups[2].Value, out decimal debt))
@@ -936,7 +954,7 @@ namespace AzAgroPOS.Teqdimat
             {
                 try
                 {
-                    using var mehsulFormu = _serviceProvider.GetRequiredService<MehsulIdareetmeFormu>();
+                    using MehsulIdareetmeFormu mehsulFormu = _serviceProvider.GetRequiredService<MehsulIdareetmeFormu>();
                     mehsulFormu.MehsulDuzelisEt(mehsul.Id);
                     mehsulFormu.ShowDialog();
 
@@ -955,14 +973,14 @@ namespace AzAgroPOS.Teqdimat
             // Delete selected product
             if (dgvAxtarisNeticeleri.CurrentRow?.DataBoundItem is MehsulDto mehsul)
             {
-                var tesdiq = _dialogXidmeti.TesdiqSorus($"{mehsul.Ad} məhsulunu silmək istədiyinizə əminsiniz?",
+                bool tesdiq = _dialogXidmeti.TesdiqSorus($"{mehsul.Ad} məhsulunu silmək istədiyinizə əminsiniz?",
                     "Təsdiq");
 
                 if (tesdiq)
                 {
                     try
                     {
-                        var silindi = await _presenter.MehsulSilAsync(mehsul.Id);
+                        bool silindi = await _presenter.MehsulSilAsync(mehsul.Id);
                         if (silindi)
                         {
                             _dialogXidmeti.UgurGoster("Məhsul uğurla silindi.", "Uğur");

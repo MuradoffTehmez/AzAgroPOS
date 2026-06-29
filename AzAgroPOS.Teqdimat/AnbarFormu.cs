@@ -1,15 +1,12 @@
 // Fayl: AzAgroPOS.Teqdimat/AnbarFormu.cs
-namespace AzAgroPOS.Teqdimat;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Sabitler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
-using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
 
+namespace AzAgroPOS.Teqdimat;
 /// <summary>
 /// Anbar idarəetmə formu - Stok artırma, azaltma, düzəliş əməliyyatları
 /// </summary>
@@ -18,7 +15,6 @@ public partial class AnbarFormu : BazaForm, IAnbarView
     #region Fields
 
     private readonly AnbarPresenter _presenter;
-    private bool _isLoading;
     private bool _suppressEvents = false;
 
     #endregion
@@ -45,15 +41,7 @@ public partial class AnbarFormu : BazaForm, IAnbarView
 
     public string ElaveOlunanSay => txtSay.Text?.Trim() ?? string.Empty;
 
-    public int? SecilmisMehsulId
-    {
-        get
-        {
-            if (int.TryParse(lblMehsulId.Text, out int id) && id > 0)
-                return id;
-            return null;
-        }
-    }
+    public int? SecilmisMehsulId => int.TryParse(lblMehsulId.Text, out int id) && id > 0 ? id : null;
 
     public string Qeyd => txtQeyd.Text?.Trim() ?? string.Empty;
 
@@ -63,7 +51,7 @@ public partial class AnbarFormu : BazaForm, IAnbarView
 
     #region IAnbarView Properties - State
 
-    public bool IsLoading => _isLoading;
+    public bool IsLoading { get; private set; }
 
     public bool MehsulSecilmisdir => SecilmisMehsulId.HasValue && SecilmisMehsulId.Value > 0;
 
@@ -160,7 +148,7 @@ public partial class AnbarFormu : BazaForm, IAnbarView
         switch (e.KeyCode)
         {
             case Keys.F3:
-                if (!_isLoading)
+                if (!IsLoading)
                 {
                     AxtarIstek?.Invoke(this, EventArgs.Empty);
                     e.Handled = true;
@@ -168,7 +156,7 @@ public partial class AnbarFormu : BazaForm, IAnbarView
                 break;
 
             case Keys.F5:
-                if (!_isLoading && grpEmeliyyat.Enabled)
+                if (!IsLoading && grpEmeliyyat.Enabled)
                 {
                     TemizleIstek?.Invoke(this, EventArgs.Empty);
                     e.Handled = true;
@@ -176,7 +164,7 @@ public partial class AnbarFormu : BazaForm, IAnbarView
                 break;
 
             case Keys.F12:
-                if (!_isLoading && MehsulSecilmisdir)
+                if (!IsLoading && MehsulSecilmisdir)
                 {
                     TarixceGosterIstek?.Invoke(this, EventArgs.Empty);
                     e.Handled = true;
@@ -184,7 +172,7 @@ public partial class AnbarFormu : BazaForm, IAnbarView
                 break;
 
             case Keys.Escape:
-                if (!_isLoading)
+                if (!IsLoading)
                 {
                     FormuTemizle();
                     e.Handled = true;
@@ -199,7 +187,10 @@ public partial class AnbarFormu : BazaForm, IAnbarView
 
     private void DgvMehsullar_SelectionChanged(object sender, EventArgs e)
     {
-        if (_isLoading || _suppressEvents) return;
+        if (IsLoading || _suppressEvents)
+        {
+            return;
+        }
 
         if (dgvMehsullar.SelectedRows.Count > 0 && dgvMehsullar.SelectedRows[0].DataBoundItem is MehsulDto mehsul)
         {
@@ -213,7 +204,7 @@ public partial class AnbarFormu : BazaForm, IAnbarView
 
     private void TxtAxtaris_KeyDown(object sender, KeyEventArgs e)
     {
-        if (e.KeyCode == Keys.Enter && !_isLoading)
+        if (e.KeyCode == Keys.Enter && !IsLoading)
         {
             AxtarIstek?.Invoke(this, EventArgs.Empty);
             e.SuppressKeyPress = true; // "ding" səsini blokla
@@ -222,7 +213,7 @@ public partial class AnbarFormu : BazaForm, IAnbarView
 
     private void BtnAxtar_Click(object sender, EventArgs e)
     {
-        if (!_isLoading)
+        if (!IsLoading)
         {
             AxtarIstek?.Invoke(this, EventArgs.Empty);
         }
@@ -234,7 +225,7 @@ public partial class AnbarFormu : BazaForm, IAnbarView
 
     private void BtnStokArtir_Click(object sender, EventArgs e)
     {
-        if (!_isLoading)
+        if (!IsLoading)
         {
             EmeliyyatNovu = AnbarSabitleri.EmeliyyatNovu.StokArtirma;
             StokArtirIstek?.Invoke(this, EventArgs.Empty);
@@ -243,7 +234,7 @@ public partial class AnbarFormu : BazaForm, IAnbarView
 
     private void BtnStokAzalt_Click(object sender, EventArgs e)
     {
-        if (!_isLoading)
+        if (!IsLoading)
         {
             EmeliyyatNovu = AnbarSabitleri.EmeliyyatNovu.StokAzaltma;
             StokAzaltIstek?.Invoke(this, EventArgs.Empty);
@@ -252,7 +243,7 @@ public partial class AnbarFormu : BazaForm, IAnbarView
 
     private void BtnStokDuzelis_Click(object sender, EventArgs e)
     {
-        if (!_isLoading)
+        if (!IsLoading)
         {
             EmeliyyatNovu = AnbarSabitleri.EmeliyyatNovu.StokDuzelis;
             StokDuzelisIstek?.Invoke(this, EventArgs.Empty);
@@ -261,7 +252,7 @@ public partial class AnbarFormu : BazaForm, IAnbarView
 
     private void BtnTemizle_Click(object sender, EventArgs e)
     {
-        if (!_isLoading)
+        if (!IsLoading)
         {
             TemizleIstek?.Invoke(this, EventArgs.Empty);
         }
@@ -273,7 +264,7 @@ public partial class AnbarFormu : BazaForm, IAnbarView
 
     private void BtnTarixceYenile_Click(object sender, EventArgs e)
     {
-        if (!_isLoading && MehsulSecilmisdir)
+        if (!IsLoading && MehsulSecilmisdir)
         {
             TarixceGosterIstek?.Invoke(this, EventArgs.Empty);
         }
@@ -528,7 +519,10 @@ public partial class AnbarFormu : BazaForm, IAnbarView
 
     public void XetaGoster(Control control, string mesaj)
     {
-        if (control == null) return;
+        if (control == null)
+        {
+            return;
+        }
 
         errorProvider1.SetError(control, mesaj);
         errorProvider1.SetIconAlignment(control, ErrorIconAlignment.MiddleRight);
@@ -537,7 +531,10 @@ public partial class AnbarFormu : BazaForm, IAnbarView
 
     public void XetaniTemizle(Control control)
     {
-        if (control == null) return;
+        if (control == null)
+        {
+            return;
+        }
 
         errorProvider1.SetError(control, string.Empty);
     }
@@ -550,7 +547,10 @@ public partial class AnbarFormu : BazaForm, IAnbarView
 
     private void ClearErrorsRecursive(Control parent)
     {
-        if (parent == null) return;
+        if (parent == null)
+        {
+            return;
+        }
 
         errorProvider1.SetError(parent, string.Empty);
 
@@ -562,7 +562,10 @@ public partial class AnbarFormu : BazaForm, IAnbarView
 
     public void ValidasiyaXetalariGoster(string xetalar)
     {
-        if (string.IsNullOrWhiteSpace(xetalar)) return;
+        if (string.IsNullOrWhiteSpace(xetalar))
+        {
+            return;
+        }
 
         XetaMesajiGoster(xetalar);
     }
@@ -598,7 +601,7 @@ public partial class AnbarFormu : BazaForm, IAnbarView
 
     public bool TesdiqSorusu(string mesaj)
     {
-        var netice = MessageBox.Show(this, mesaj, "Təsdiq",
+        DialogResult netice = MessageBox.Show(this, mesaj, "Təsdiq",
             MessageBoxButtons.YesNo, MessageBoxIcon.Question);
         return netice == DialogResult.Yes;
     }
@@ -609,7 +612,7 @@ public partial class AnbarFormu : BazaForm, IAnbarView
 
     public void YuklemeGoster(string mesaj = "Yüklənir...")
     {
-        _isLoading = true;
+        IsLoading = true;
         _suppressEvents = true;
 
         // BazaForm yükləmə göstəricisi
@@ -623,7 +626,7 @@ public partial class AnbarFormu : BazaForm, IAnbarView
 
     public void YuklemeGizle()
     {
-        _isLoading = false;
+        IsLoading = false;
         _suppressEvents = false;
 
         // BazaForm yükləmə göstəricisi
@@ -657,7 +660,7 @@ public partial class AnbarFormu : BazaForm, IAnbarView
     protected override void OnFormClosing(FormClosingEventArgs e)
     {
         // Əgər yüklənmə gedərsə, bağlanmasını blokla
-        if (_isLoading)
+        if (IsLoading)
         {
             e.Cancel = true;
             XeberdarlikMesajiGoster("Əməliyyat davam edir. Lütfən gözləyin.");

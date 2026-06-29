@@ -30,7 +30,7 @@ public class DialogXidmeti : IDialogXidmeti
 
     public bool TesdiqSorus(string mesaj, string basliq = "Təsdiq")
     {
-        var netice = MessageBox.Show(mesaj, basliq, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+        DialogResult netice = MessageBox.Show(mesaj, basliq, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
         return netice == DialogResult.Yes;
     }
 

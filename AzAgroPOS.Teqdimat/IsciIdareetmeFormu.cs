@@ -1,15 +1,13 @@
 // Fayl: AzAgroPOS.Teqdimat/IsciIdareetmeFormu.cs
-namespace AzAgroPOS.Teqdimat;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
+using AzAgroPOS.Teqdimat.Yardimcilar;
 using AzAgroPOS.Varliglar;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Forms;
+
+namespace AzAgroPOS.Teqdimat;
 
 public partial class IsciIdareetmeFormu : BazaForm, IIsciView
 {
@@ -118,7 +116,7 @@ public partial class IsciIdareetmeFormu : BazaForm, IIsciView
 
     public decimal Maas
     {
-        get => decimal.TryParse(txtMaas.Text, out var maas) ? maas : 0;
+        get => decimal.TryParse(txtMaas.Text, out decimal maas) ? maas : 0;
         set => txtMaas.Text = value.ToString("N2");
     }
 
@@ -236,8 +234,8 @@ public partial class IsciIdareetmeFormu : BazaForm, IIsciView
         }
 
         // Performans qeydlərini mətn formatında göstəririk
-        var mesaj = $"İşçinin {performansQeydleri.Count} performans qeydi:\n\n";
-        foreach (var qeyd in performansQeydleri.Take(5)) // İlk 5 qeydi göstəririk
+        string mesaj = $"İşçinin {performansQeydleri.Count} performans qeydi:\n\n";
+        foreach (IsciPerformansDto? qeyd in performansQeydleri.Take(5)) // İlk 5 qeydi göstəririk
         {
             mesaj += $"• Tarix: {qeyd.Tarix:dd.MM.yyyy} | Dövr: {qeyd.QeydDovru}\n";
             mesaj += $"  Qiymət: {qeyd.Qiymet}/10 | Qeydlər: {qeyd.Qeydler}\n\n";
@@ -260,8 +258,8 @@ public partial class IsciIdareetmeFormu : BazaForm, IIsciView
         }
 
         // İzin qeydlərini mətn formatında göstəririk
-        var mesaj = $"İşçinin {izinQeydleri.Count} məzuniyyət/icazə qeydi:\n\n";
-        foreach (var izin in izinQeydleri.Take(5)) // İlk 5 qeydi göstəririk
+        string mesaj = $"İşçinin {izinQeydleri.Count} məzuniyyət/icazə qeydi:\n\n";
+        foreach (IsciIzniDto? izin in izinQeydleri.Take(5)) // İlk 5 qeydi göstəririk
         {
             mesaj += $"• {izin.IzinNovu}: {izin.BaslamaTarixi:dd.MM.yyyy} - {izin.BitmeTarixi:dd.MM.yyyy}\n";
             mesaj += $"  Günlər: {izin.IzinGunu} | Status: {izin.Status}\n";
@@ -296,7 +294,7 @@ public partial class IsciIdareetmeFormu : BazaForm, IIsciView
 
     public async Task EmeliyyatIcraEtAsync(Func<Task> emeliyyat, string mesaj)
     {
-        var gosterici = new Yardimcilar.YuklemeGostergeci(this);
+        YuklemeGostergeci gosterici = new(this);
         await gosterici.EmeliyyatIcraEtAsync(emeliyyat, mesaj);
     }
 

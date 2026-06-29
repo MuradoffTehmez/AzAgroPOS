@@ -1,11 +1,12 @@
 ﻿// Fayl: AzAgroPOS.Teqdimat/NisyeIdareetmeFormu.cs
-namespace AzAgroPOS.Teqdimat;
 
 // using-lər
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
+
+namespace AzAgroPOS.Teqdimat;
 
 public partial class NisyeIdareetmeFormu : BazaForm, INisyeView
 {
@@ -19,19 +20,9 @@ public partial class NisyeIdareetmeFormu : BazaForm, INisyeView
         StilVerDataGridView(dgvNisyeHereketleri);
     }
 
-    public int? SecilmisMusteriId
-    {
-        get
-        {
-            if (dgvMusteriler.CurrentRow != null && dgvMusteriler.CurrentRow.DataBoundItem is MusteriDto musteri)
-            {
-                return musteri.Id;
-            }
-            return null;
-        }
-    }
+    public int? SecilmisMusteriId => dgvMusteriler.CurrentRow != null && dgvMusteriler.CurrentRow.DataBoundItem is MusteriDto musteri ? musteri.Id : null;
 
-    public decimal OdenisMeblegi => decimal.TryParse(txtOdenisMeblegi.Text, out var mebleg) ? mebleg : 0;
+    public decimal OdenisMeblegi => decimal.TryParse(txtOdenisMeblegi.Text, out decimal mebleg) ? mebleg : 0;
 
     /// <summary>
     /// Ödəniş düyməsinin aktiv/deaktiv olma vəziyyəti
@@ -64,7 +55,9 @@ public partial class NisyeIdareetmeFormu : BazaForm, INisyeView
         {
             // İstənilən sütunları gizlət
             if (dgvMusteriler.Columns.Contains("Id"))
+            {
                 dgvMusteriler.Columns["Id"].Visible = false;
+            }
         }
     }
 
@@ -76,9 +69,14 @@ public partial class NisyeIdareetmeFormu : BazaForm, INisyeView
         {
             // İstənilən sütunları gizlət
             if (dgvNisyeHereketleri.Columns.Contains("Id"))
+            {
                 dgvNisyeHereketleri.Columns["Id"].Visible = false;
+            }
+
             if (dgvNisyeHereketleri.Columns.Contains("MusteriId"))
+            {
                 dgvNisyeHereketleri.Columns["MusteriId"].Visible = false;
+            }
         }
     }
 

@@ -1,5 +1,6 @@
 // Fayl: AzAgroPOS.Teqdimat/BazaIdareetmeFormu.cs
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Teqdimat.Yardimcilar;
 
 namespace AzAgroPOS.Teqdimat
@@ -19,7 +20,7 @@ namespace AzAgroPOS.Teqdimat
             _bazaManager = bazaManager ?? throw new ArgumentNullException(nameof(bazaManager));
 
             // Standart backup qovluğu tətbiqatın yanında "Backups" qovluğu olacaq
-            var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string appDirectory = AppDomain.CurrentDomain.BaseDirectory;
             _standartBackupQovlugu = Path.Combine(appDirectory, "Backups");
 
             // Qovluğun mövcudluğunu təmin edirik
@@ -51,14 +52,14 @@ namespace AzAgroPOS.Teqdimat
             try
             {
                 // Verilənlər bazası ölçüsünü göstəririk
-                var ölçüNetice = await _bazaManager.BazaOlcusunuGetirAsync();
+                EmeliyyatNeticesi<decimal> ölçüNetice = await _bazaManager.BazaOlcusunuGetirAsync();
                 if (ölçüNetice.UgurluDur)
                 {
                     lblBazaOlcusu.Text = $"Verilənlər Bazası Ölçüsü: {ölçüNetice.Data:N2} MB";
                 }
 
                 // Son backup tarixini göstəririk
-                var sonBackupNetice = await _bazaManager.SonBackupTarixiniGetirAsync();
+                EmeliyyatNeticesi<DateTime?> sonBackupNetice = await _bazaManager.SonBackupTarixiniGetirAsync();
                 if (sonBackupNetice.UgurluDur)
                 {
                     if (sonBackupNetice.Data.HasValue)
@@ -90,18 +91,18 @@ namespace AzAgroPOS.Teqdimat
 
                 if (Directory.Exists(_standartBackupQovlugu))
                 {
-                    var backupFaylları = Directory.GetFiles(_standartBackupQovlugu, "*.bak");
+                    string[] backupFaylları = Directory.GetFiles(_standartBackupQovlugu, "*.bak");
                     Array.Sort(backupFaylları); // Əlifba sırasına görə
                     Array.Reverse(backupFaylları); // Ən yeni əvvəldə
 
-                    foreach (var fayl in backupFaylları)
+                    foreach (string fayl in backupFaylları)
                     {
-                        var faylInfo = new FileInfo(fayl);
-                        var faylAdı = Path.GetFileName(fayl);
-                        var faylÖlçüsü = faylInfo.Length / 1024.0 / 1024.0; // MB-da
-                        var tarixi = faylInfo.LastWriteTime;
+                        FileInfo faylInfo = new(fayl);
+                        string faylAdı = Path.GetFileName(fayl);
+                        double faylÖlçüsü = faylInfo.Length / 1024.0 / 1024.0; // MB-da
+                        DateTime tarixi = faylInfo.LastWriteTime;
 
-                        var item = new ListViewItem(faylAdı);
+                        ListViewItem item = new(faylAdı);
                         item.SubItems.Add($"{faylÖlçüsü:N2} MB");
                         item.SubItems.Add(tarixi.ToString("dd.MM.yyyy HH:mm"));
                         item.Tag = fayl; // Tam yolu Tag-də saxlayırıq
@@ -119,7 +120,7 @@ namespace AzAgroPOS.Teqdimat
         private void btnBackupYarat_Click(object sender, EventArgs e)
         {
             // İstifadəçidən təsdiq alırıq
-            var təsdiq = MessageBox.Show(
+            DialogResult təsdiq = MessageBox.Show(
                 "Verilənlər bazasının ehtiyat nüsxəsini yaratmaq istəyirsiniz?\n\n" +
                 "Bu əməliyyat bir neçə dəqiqə çəkə bilər.",
                 "Backup Yaratma",
@@ -127,10 +128,12 @@ namespace AzAgroPOS.Teqdimat
                 MessageBoxIcon.Question);
 
             if (təsdiq != DialogResult.Yes)
+            {
                 return;
+            }
 
             // SaveFileDialog göstəririk
-            using var saveDialog = new SaveFileDialog
+            using SaveFileDialog saveDialog = new()
             {
                 Filter = "Backup Faylları (*.bak)|*.bak",
                 DefaultExt = "bak",
@@ -139,9 +142,11 @@ namespace AzAgroPOS.Teqdimat
             };
 
             if (saveDialog.ShowDialog() != DialogResult.OK)
+            {
                 return;
+            }
 
-            var backupYolu = saveDialog.FileName;
+            string backupYolu = saveDialog.FileName;
             _ = BackupYaratAsync(backupYolu);
         }
 
@@ -155,7 +160,7 @@ namespace AzAgroPOS.Teqdimat
                     "Backup yaradılır...",
                     async () =>
                     {
-                        var nəticə = await _bazaManager.BackupYaratAsync(backupYolu);
+                        EmeliyyatNeticesi nəticə = await _bazaManager.BackupYaratAsync(backupYolu);
                         if (!nəticə.UgurluDur)
                         {
                             throw new Exception(nəticə.Mesaj);
@@ -183,7 +188,7 @@ namespace AzAgroPOS.Teqdimat
             else
             {
                 // Əgər seçim yoxdursa, OpenFileDialog göstəririk
-                using var openDialog = new OpenFileDialog
+                using OpenFileDialog openDialog = new()
                 {
                     Filter = "Backup Faylları (*.bak)|*.bak",
                     InitialDirectory = _standartBackupQovlugu,
@@ -191,7 +196,9 @@ namespace AzAgroPOS.Teqdimat
                 };
 
                 if (openDialog.ShowDialog() != DialogResult.OK)
+                {
                     return;
+                }
 
                 restoreYolu = openDialog.FileName;
             }
@@ -203,7 +210,7 @@ namespace AzAgroPOS.Teqdimat
             }
 
             // Çox ciddi xəbərdarlıq!
-            var xəbərdarlıq = MessageBox.Show(
+            DialogResult xəbərdarlıq = MessageBox.Show(
                 "⚠️ DİQQƏT! ⚠️\n\n" +
                 "Bu əməliyyat mövcud verilənlər bazasını SİLƏCƏK və seçilmiş " +
                 "backup ilə ƏVƏZ EDƏCƏK!\n\n" +
@@ -214,10 +221,12 @@ namespace AzAgroPOS.Teqdimat
                 MessageBoxIcon.Warning);
 
             if (xəbərdarlıq != DialogResult.Yes)
+            {
                 return;
+            }
 
             // İkinci təsdiq
-            var ikinciTəsdiq = MessageBox.Show(
+            DialogResult ikinciTəsdiq = MessageBox.Show(
                 "Son dəfə soruşuruq:\n\n" +
                 "Həqiqətən restore etmək istəyirsiniz?\n\n" +
                 "Proqram bağlanacaq və yenidən açmalısınız!",
@@ -226,7 +235,9 @@ namespace AzAgroPOS.Teqdimat
                 MessageBoxIcon.Stop);
 
             if (ikinciTəsdiq != DialogResult.Yes)
+            {
                 return;
+            }
 
             _ = RestoreEtAsync(restoreYolu);
         }
@@ -241,7 +252,7 @@ namespace AzAgroPOS.Teqdimat
                     "Verilənlər bazası bərpa edilir...\nBu, bir neçə dəqiqə çəkə bilər...",
                     async () =>
                     {
-                        var nəticə = await _bazaManager.RestoreEtAsync(restoreYolu);
+                        EmeliyyatNeticesi nəticə = await _bazaManager.RestoreEtAsync(restoreYolu);
                         if (!nəticə.UgurluDur)
                         {
                             throw new Exception(nəticə.Mesaj);
@@ -295,14 +306,14 @@ namespace AzAgroPOS.Teqdimat
                     return;
                 }
 
-                var seçilmişFayl = lstBackuplar.SelectedItems[0].Tag as string;
+                string? seçilmişFayl = lstBackuplar.SelectedItems[0].Tag as string;
                 if (string.IsNullOrEmpty(seçilmişFayl) || !File.Exists(seçilmişFayl))
                 {
                     MessageBox.Show("Fayl tapılmadı!", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
-                var təsdiq = MessageBox.Show(
+                DialogResult təsdiq = MessageBox.Show(
                     $"Bu backup faylını silmək istəyirsiniz?\n\n{Path.GetFileName(seçilmişFayl)}",
                     "Backup Silmə",
                     MessageBoxButtons.YesNo,

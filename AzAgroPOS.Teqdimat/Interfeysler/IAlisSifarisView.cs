@@ -1,10 +1,8 @@
 // Fayl: AzAgroPOS.Teqdimat/Interfeysler/IAlisSifarisView.cs
-namespace AzAgroPOS.Teqdimat.Interfeysler;
 
 using AzAgroPOS.Mentiq.DTOs;
-using System;
-using System.Collections.Generic;
 
+namespace AzAgroPOS.Teqdimat.Interfeysler;
 /// <summary>
 /// Alış sifarişi idarəetmə forması üçün interfeys.   mnc
 /// </summary>

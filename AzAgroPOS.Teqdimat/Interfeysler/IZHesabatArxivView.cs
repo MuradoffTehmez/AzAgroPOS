@@ -1,9 +1,8 @@
 // Fayl: AzAgroPOS.Teqdimat/Interfeysler/IZHesabatArxivView.cs
-namespace AzAgroPOS.Teqdimat.Interfeysler;
 
 using AzAgroPOS.Mentiq.DTOs;
-using System;
-using System.Collections.Generic;
+
+namespace AzAgroPOS.Teqdimat.Interfeysler;
 
 public interface IZHesabatArxivView
 {

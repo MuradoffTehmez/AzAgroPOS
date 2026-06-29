@@ -1,11 +1,12 @@
 ﻿// Fayl: AzAgroPOS.Teqdimat/BarkodCapiFormu.cs
-namespace AzAgroPOS.Teqdimat;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
 using System.ComponentModel;
+
+namespace AzAgroPOS.Teqdimat;
 
 public partial class BarkodCapiFormu : BazaForm, IBarkodCapiView
 {
@@ -46,7 +47,7 @@ public partial class BarkodCapiFormu : BazaForm, IBarkodCapiView
     public void CapSiyahisiniYenile(List<BarkodEtiketDto> siyahı)
     {
         _capSiyahisiBindingList.Clear();
-        foreach (var item in siyahı)
+        foreach (BarkodEtiketDto item in siyahı)
         {
             _capSiyahisiBindingList.Add(item);
         }
@@ -113,14 +114,14 @@ public partial class BarkodCapiFormu : BazaForm, IBarkodCapiView
         if (dgvAxtarisNeticeleri.CurrentRow?.DataBoundItem is MehsulDto secilmisMehsul)
         {
             // Eyni məhsul siyahıda varsa, sayını artır
-            var movcud = _capSiyahisiBindingList.FirstOrDefault(x => x.MehsulId == secilmisMehsul.Id);
+            BarkodEtiketDto? movcud = _capSiyahisiBindingList.FirstOrDefault(x => x.MehsulId == secilmisMehsul.Id);
             if (movcud != null)
             {
                 movcud.CapEdilecekSay++;
             }
             else // Yoxdursa, yeni əlavə et
             {
-                var yeniEtiket = new BarkodEtiketDto
+                BarkodEtiketDto yeniEtiket = new()
                 {
                     MehsulId = secilmisMehsul.Id,
                     MehsulAdi = secilmisMehsul.Ad,

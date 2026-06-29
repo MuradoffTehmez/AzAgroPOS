@@ -13,8 +13,6 @@ namespace AzAgroPOS.Teqdimat
     public partial class KonfiqurasiyaFormu : BazaForm, IKonfiqurasiyaView
     {
         private readonly KonfiqurasiyaPresenter _presenter;
-        private bool _isDirty = false;
-        private bool _isLoading = false;
         private bool _suppressEvents = false;
 
         #region Constructor
@@ -50,29 +48,29 @@ namespace AzAgroPOS.Teqdimat
             btnLogoSec.Click += (s, e) => LogoSecClick?.Invoke(this, EventArgs.Empty);
 
             // Text change events
-            txtSirketAdi.TextChanged += (s, e) => { if (!_suppressEvents) DeyerDeyisdi?.Invoke(this, EventArgs.Empty); };
-            txtSirketUnvani.TextChanged += (s, e) => { if (!_suppressEvents) DeyerDeyisdi?.Invoke(this, EventArgs.Empty); };
-            txtSirketVoen.TextChanged += (s, e) => { if (!_suppressEvents) DeyerDeyisdi?.Invoke(this, EventArgs.Empty); };
-            txtSirketTelefon.TextChanged += (s, e) => { if (!_suppressEvents) DeyerDeyisdi?.Invoke(this, EventArgs.Empty); };
-            txtSirketEmail.TextChanged += (s, e) => { if (!_suppressEvents) DeyerDeyisdi?.Invoke(this, EventArgs.Empty); };
-            txtSirketVebSayt.TextChanged += (s, e) => { if (!_suppressEvents) DeyerDeyisdi?.Invoke(this, EventArgs.Empty); };
-            txtYedeklemeSaati.TextChanged += (s, e) => { if (!_suppressEvents) DeyerDeyisdi?.Invoke(this, EventArgs.Empty); };
-            txtTarixFormati.TextChanged += (s, e) => { if (!_suppressEvents) DeyerDeyisdi?.Invoke(this, EventArgs.Empty); };
-            txtReqemFormati.TextChanged += (s, e) => { if (!_suppressEvents) DeyerDeyisdi?.Invoke(this, EventArgs.Empty); };
+            txtSirketAdi.TextChanged += (s, e) => { if (!_suppressEvents) { DeyerDeyisdi?.Invoke(this, EventArgs.Empty); } };
+            txtSirketUnvani.TextChanged += (s, e) => { if (!_suppressEvents) { DeyerDeyisdi?.Invoke(this, EventArgs.Empty); } };
+            txtSirketVoen.TextChanged += (s, e) => { if (!_suppressEvents) { DeyerDeyisdi?.Invoke(this, EventArgs.Empty); } };
+            txtSirketTelefon.TextChanged += (s, e) => { if (!_suppressEvents) { DeyerDeyisdi?.Invoke(this, EventArgs.Empty); } };
+            txtSirketEmail.TextChanged += (s, e) => { if (!_suppressEvents) { DeyerDeyisdi?.Invoke(this, EventArgs.Empty); } };
+            txtSirketVebSayt.TextChanged += (s, e) => { if (!_suppressEvents) { DeyerDeyisdi?.Invoke(this, EventArgs.Empty); } };
+            txtYedeklemeSaati.TextChanged += (s, e) => { if (!_suppressEvents) { DeyerDeyisdi?.Invoke(this, EventArgs.Empty); } };
+            txtTarixFormati.TextChanged += (s, e) => { if (!_suppressEvents) { DeyerDeyisdi?.Invoke(this, EventArgs.Empty); } };
+            txtReqemFormati.TextChanged += (s, e) => { if (!_suppressEvents) { DeyerDeyisdi?.Invoke(this, EventArgs.Empty); } };
 
             // Numeric change events
-            nudEdvDerecesi.ValueChanged += (s, e) => { if (!_suppressEvents) DeyerDeyisdi?.Invoke(this, EventArgs.Empty); };
-            nudSessiyaTimeout.ValueChanged += (s, e) => { if (!_suppressEvents) DeyerDeyisdi?.Invoke(this, EventArgs.Empty); };
+            nudEdvDerecesi.ValueChanged += (s, e) => { if (!_suppressEvents) { DeyerDeyisdi?.Invoke(this, EventArgs.Empty); } };
+            nudSessiyaTimeout.ValueChanged += (s, e) => { if (!_suppressEvents) { DeyerDeyisdi?.Invoke(this, EventArgs.Empty); } };
 
             // Checkbox change events
-            chkQebzAvtoCap.CheckedChanged += (s, e) => { if (!_suppressEvents) DeyerDeyisdi?.Invoke(this, EventArgs.Empty); };
-            chkAvtomatikYedekleme.CheckedChanged += (s, e) => { if (!_suppressEvents) DeyerDeyisdi?.Invoke(this, EventArgs.Empty); };
+            chkQebzAvtoCap.CheckedChanged += (s, e) => { if (!_suppressEvents) { DeyerDeyisdi?.Invoke(this, EventArgs.Empty); } };
+            chkAvtomatikYedekleme.CheckedChanged += (s, e) => { if (!_suppressEvents) { DeyerDeyisdi?.Invoke(this, EventArgs.Empty); } };
 
             // ComboBox change events
-            cmbKagizOlcusu.SelectedIndexChanged += (s, e) => { if (!_suppressEvents) DeyerDeyisdi?.Invoke(this, EventArgs.Empty); };
-            cmbDil.SelectedIndexChanged += (s, e) => { if (!_suppressEvents) DeyerDeyisdi?.Invoke(this, EventArgs.Empty); };
-            cmbValyuta.SelectedIndexChanged += (s, e) => { if (!_suppressEvents) DeyerDeyisdi?.Invoke(this, EventArgs.Empty); };
-            cmbTema.SelectedIndexChanged += (s, e) => { if (!_suppressEvents) DeyerDeyisdi?.Invoke(this, EventArgs.Empty); };
+            cmbKagizOlcusu.SelectedIndexChanged += (s, e) => { if (!_suppressEvents) { DeyerDeyisdi?.Invoke(this, EventArgs.Empty); } };
+            cmbDil.SelectedIndexChanged += (s, e) => { if (!_suppressEvents) { DeyerDeyisdi?.Invoke(this, EventArgs.Empty); } };
+            cmbValyuta.SelectedIndexChanged += (s, e) => { if (!_suppressEvents) { DeyerDeyisdi?.Invoke(this, EventArgs.Empty); } };
+            cmbTema.SelectedIndexChanged += (s, e) => { if (!_suppressEvents) { DeyerDeyisdi?.Invoke(this, EventArgs.Empty); } };
         }
 
         #endregion
@@ -148,9 +146,11 @@ namespace AzAgroPOS.Teqdimat
             get => cmbKagizOlcusu.SelectedItem?.ToString() ?? "";
             set
             {
-                var index = cmbKagizOlcusu.Items.IndexOf(value);
+                int index = cmbKagizOlcusu.Items.IndexOf(value);
                 if (index >= 0)
+                {
                     cmbKagizOlcusu.SelectedIndex = index;
+                }
             }
         }
 
@@ -197,9 +197,11 @@ namespace AzAgroPOS.Teqdimat
             get => cmbValyuta.SelectedItem?.ToString() ?? "";
             set
             {
-                var index = cmbValyuta.Items.IndexOf(value);
+                int index = cmbValyuta.Items.IndexOf(value);
                 if (index >= 0)
+                {
                     cmbValyuta.SelectedIndex = index;
+                }
             }
         }
 
@@ -220,9 +222,11 @@ namespace AzAgroPOS.Teqdimat
             get => cmbTema.SelectedItem?.ToString() ?? "";
             set
             {
-                var index = cmbTema.Items.IndexOf(value);
+                int index = cmbTema.Items.IndexOf(value);
                 if (index >= 0)
+                {
                     cmbTema.SelectedIndex = index;
+                }
             }
         }
 
@@ -236,13 +240,9 @@ namespace AzAgroPOS.Teqdimat
 
         #region IKonfiqurasiyaView Properties - State
 
-        public bool IsDirty
-        {
-            get => _isDirty;
-            set => _isDirty = value;
-        }
+        public bool IsDirty { get; set; } = false;
 
-        public bool IsLoading => _isLoading;
+        public bool IsLoading { get; private set; } = false;
 
         #endregion
 
@@ -275,7 +275,7 @@ namespace AzAgroPOS.Teqdimat
 
         public bool TesdiqSorusu(string mesaj)
         {
-            var netice = MessageBox.Show(mesaj, "Təsdiq", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult netice = MessageBox.Show(mesaj, "Təsdiq", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             return netice == DialogResult.Yes;
         }
 
@@ -285,14 +285,14 @@ namespace AzAgroPOS.Teqdimat
 
         public void YuklemeGoster(string mesaj = "Yüklənir...")
         {
-            _isLoading = true;
+            IsLoading = true;
             _suppressEvents = true; // Event-ləri suppress et yükləmə zamanı
             base.YuklemeGoster();
         }
 
         public void YuklemeGizle()
         {
-            _isLoading = false;
+            IsLoading = false;
             _suppressEvents = false; // Event-ləri yenidən aktiv et
             base.YuklemeGizle();
         }
@@ -369,17 +369,12 @@ namespace AzAgroPOS.Teqdimat
 
         public string LogoSecDialoquGoster()
         {
-            using var openFileDialog = new OpenFileDialog();
+            using OpenFileDialog openFileDialog = new();
             openFileDialog.Title = "Şirkət Loqosunu Seçin";
             openFileDialog.Filter = "Şəkil Faylları (*.png;*.jpg;*.jpeg;*.bmp)|*.png;*.jpg;*.jpeg;*.bmp";
             openFileDialog.FilterIndex = 1;
 
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                return openFileDialog.FileName;
-            }
-
-            return null;
+            return openFileDialog.ShowDialog() == DialogResult.OK ? openFileDialog.FileName : null;
         }
 
         public void LogoGoster(string logoYolu)
@@ -395,13 +390,13 @@ namespace AzAgroPOS.Teqdimat
                 // Əvvəlki şəkli təmizlə
                 if (picLogo.Image != null)
                 {
-                    var oldImage = picLogo.Image;
+                    Image oldImage = picLogo.Image;
                     picLogo.Image = null;
                     oldImage.Dispose();
                 }
 
                 // Yeni şəkli yüklə
-                using var stream = new FileStream(logoYolu, FileMode.Open, FileAccess.Read);
+                using FileStream stream = new(logoYolu, FileMode.Open, FileAccess.Read);
                 picLogo.Image = Image.FromStream(stream);
             }
             catch (Exception ex)
@@ -438,7 +433,9 @@ namespace AzAgroPOS.Teqdimat
             txtQebzPrinteri.Clear();
             txtBarkodPrinteri.Clear();
             if (cmbKagizOlcusu.Items.Count > 0)
+            {
                 cmbKagizOlcusu.SelectedIndex = 0;
+            }
 
             // Davranış tab
             chkQebzAvtoCap.Checked = false;
@@ -447,13 +444,22 @@ namespace AzAgroPOS.Teqdimat
 
             // Sistem tab
             if (cmbDil.Items.Count > 0)
+            {
                 cmbDil.SelectedIndex = 0;
+            }
+
             if (cmbValyuta.Items.Count > 0)
+            {
                 cmbValyuta.SelectedIndex = 0;
+            }
+
             txtTarixFormati.Text = "dd.MM.yyyy";
             txtReqemFormati.Text = "N2";
             if (cmbTema.Items.Count > 0)
+            {
                 cmbTema.SelectedIndex = 0;
+            }
+
             nudSessiyaTimeout.Value = 30;
 
             IsDirty = false;
@@ -474,7 +480,7 @@ namespace AzAgroPOS.Teqdimat
             cmbDil.DisplayMember = "Value";
             cmbDil.ValueMember = "Key";
 
-            foreach (var dil in diller)
+            foreach (KeyValuePair<string, string> dil in diller)
             {
                 cmbDil.Items.Add(new KeyValuePair<string, string>(dil.Key, dil.Value));
             }
@@ -483,7 +489,7 @@ namespace AzAgroPOS.Teqdimat
             {
                 for (int i = 0; i < cmbDil.Items.Count; i++)
                 {
-                    var item = (KeyValuePair<string, string>)cmbDil.Items[i];
+                    KeyValuePair<string, string> item = (KeyValuePair<string, string>)cmbDil.Items[i];
                     if (item.Key == secilmisDil)
                     {
                         cmbDil.SelectedIndex = i;
@@ -501,16 +507,18 @@ namespace AzAgroPOS.Teqdimat
         {
             cmbValyuta.Items.Clear();
 
-            foreach (var valyuta in valyutalar)
+            foreach (string valyuta in valyutalar)
             {
                 cmbValyuta.Items.Add(valyuta);
             }
 
             if (!string.IsNullOrEmpty(secilmisValyuta))
             {
-                var index = cmbValyuta.Items.IndexOf(secilmisValyuta);
+                int index = cmbValyuta.Items.IndexOf(secilmisValyuta);
                 if (index >= 0)
+                {
                     cmbValyuta.SelectedIndex = index;
+                }
             }
             else if (cmbValyuta.Items.Count > 0)
             {
@@ -522,16 +530,18 @@ namespace AzAgroPOS.Teqdimat
         {
             cmbKagizOlcusu.Items.Clear();
 
-            foreach (var olcu in olculer)
+            foreach (string olcu in olculer)
             {
                 cmbKagizOlcusu.Items.Add(olcu);
             }
 
             if (!string.IsNullOrEmpty(secilmisOlcu))
             {
-                var index = cmbKagizOlcusu.Items.IndexOf(secilmisOlcu);
+                int index = cmbKagizOlcusu.Items.IndexOf(secilmisOlcu);
                 if (index >= 0)
+                {
                     cmbKagizOlcusu.SelectedIndex = index;
+                }
             }
             else if (cmbKagizOlcusu.Items.Count > 0)
             {
@@ -543,16 +553,18 @@ namespace AzAgroPOS.Teqdimat
         {
             cmbTema.Items.Clear();
 
-            foreach (var tema in temalar)
+            foreach (string tema in temalar)
             {
                 cmbTema.Items.Add(tema);
             }
 
             if (!string.IsNullOrEmpty(secilmisTema))
             {
-                var index = cmbTema.Items.IndexOf(secilmisTema);
+                int index = cmbTema.Items.IndexOf(secilmisTema);
                 if (index >= 0)
+                {
                     cmbTema.SelectedIndex = index;
+                }
             }
             else if (cmbTema.Items.Count > 0)
             {

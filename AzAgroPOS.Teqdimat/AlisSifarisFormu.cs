@@ -1,16 +1,12 @@
 // Fayl: AzAgroPOS.Teqdimat/AlisSifarisFormu.cs
-namespace AzAgroPOS.Teqdimat;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
 using AzAgroPOS.Varliglar;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Forms;
 
+namespace AzAgroPOS.Teqdimat;
 /// <summary>
 /// Alış sifarişi (Purchase Order) idarəetmə forması.
 /// diqqət: Bu forma MVP pattern istifadə edir və IAlisSifarisView interfeysi implement edir.
@@ -59,7 +55,7 @@ public partial class AlisSifarisFormu : BazaForm, IAlisSifarisView
 
     public DateTime? TesdiqTarixi
     {
-        get => chkTesdiq.Checked ? dtpTesdiqTarixi.Value : (DateTime?)null;
+        get => chkTesdiq.Checked ? dtpTesdiqTarixi.Value : null;
         set
         {
             if (value.HasValue)
@@ -76,7 +72,7 @@ public partial class AlisSifarisFormu : BazaForm, IAlisSifarisView
 
     public DateTime? GozlenilenTehvilTarixi
     {
-        get => chkGozlenilenTehvil.Checked ? dtpGozlenilenTehvilTarixi.Value : (DateTime?)null;
+        get => chkGozlenilenTehvil.Checked ? dtpGozlenilenTehvilTarixi.Value : null;
         set
         {
             if (value.HasValue)
@@ -180,20 +176,36 @@ public partial class AlisSifarisFormu : BazaForm, IAlisSifarisView
 
     private void FormatSifarisGrid()
     {
-        if (dgvSifarisler.Columns.Count == 0) return;
+        if (dgvSifarisler.Columns.Count == 0)
+        {
+            return;
+        }
 
         // Sütunların mövcudluğunu yoxlayaraq formatla
         if (dgvSifarisler.Columns["Id"] != null)
+        {
             dgvSifarisler.Columns["Id"].Visible = false;
+        }
+
         if (dgvSifarisler.Columns["TedarukcuId"] != null)
+        {
             dgvSifarisler.Columns["TedarukcuId"].Visible = false;
+        }
+
         if (dgvSifarisler.Columns["SifarisSetirleri"] != null)
+        {
             dgvSifarisler.Columns["SifarisSetirleri"].Visible = false;
+        }
 
         if (dgvSifarisler.Columns["SifarisNomresi"] != null)
+        {
             dgvSifarisler.Columns["SifarisNomresi"].HeaderText = "Sifariş №";
+        }
+
         if (dgvSifarisler.Columns["TedarukcuAdi"] != null)
+        {
             dgvSifarisler.Columns["TedarukcuAdi"].HeaderText = "Tədarükçü";
+        }
 
         if (dgvSifarisler.Columns["YaradilmaTarixi"] != null)
         {
@@ -226,27 +238,45 @@ public partial class AlisSifarisFormu : BazaForm, IAlisSifarisView
         }
 
         if (dgvSifarisler.Columns["Status"] != null)
+        {
             dgvSifarisler.Columns["Status"].HeaderText = "Status";
+        }
+
         if (dgvSifarisler.Columns["Qeydler"] != null)
+        {
             dgvSifarisler.Columns["Qeydler"].HeaderText = "Qeydlər";
+        }
 
         dgvSifarisler.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
     }
 
     private void FormatSetirGrid()
     {
-        if (dgvSetirler.Columns.Count == 0) return;
+        if (dgvSetirler.Columns.Count == 0)
+        {
+            return;
+        }
 
         // Sütunların mövcudluğunu yoxlayaraq formatla
         if (dgvSetirler.Columns["Id"] != null)
+        {
             dgvSetirler.Columns["Id"].Visible = false;
+        }
+
         if (dgvSetirler.Columns["AlisSifarisId"] != null)
+        {
             dgvSetirler.Columns["AlisSifarisId"].Visible = false;
+        }
+
         if (dgvSetirler.Columns["MehsulId"] != null)
+        {
             dgvSetirler.Columns["MehsulId"].Visible = false;
+        }
 
         if (dgvSetirler.Columns["MehsulAdi"] != null)
+        {
             dgvSetirler.Columns["MehsulAdi"].HeaderText = "Məhsul";
+        }
 
         if (dgvSetirler.Columns["Miqdar"] != null)
         {
@@ -314,7 +344,7 @@ public partial class AlisSifarisFormu : BazaForm, IAlisSifarisView
             return;
         }
 
-        var tesdiq = MessageBox.Show(
+        DialogResult tesdiq = MessageBox.Show(
             "Bu sifarişi silmək istəyirsiniz?",
             "Təsdiq",
             MessageBoxButtons.YesNo,
@@ -334,7 +364,7 @@ public partial class AlisSifarisFormu : BazaForm, IAlisSifarisView
             return;
         }
 
-        var tesdiq = MessageBox.Show(
+        DialogResult tesdiq = MessageBox.Show(
             "Bu sifarişi təsdiqləmək istəyirsiniz?",
             "Təsdiq",
             MessageBoxButtons.YesNo,
@@ -353,10 +383,15 @@ public partial class AlisSifarisFormu : BazaForm, IAlisSifarisView
 
     private void dgvSifarisler_SelectionChanged(object sender, EventArgs e)
     {
-        if (dgvSifarisler.SelectedRows.Count == 0) return;
+        if (dgvSifarisler.SelectedRows.Count == 0)
+        {
+            return;
+        }
 
-        var seciliSifaris = dgvSifarisler.SelectedRows[0].DataBoundItem as AlisSifarisDto;
-        if (seciliSifaris == null) return;
+        if (dgvSifarisler.SelectedRows[0].DataBoundItem is not AlisSifarisDto seciliSifaris)
+        {
+            return;
+        }
 
         SifarisId = seciliSifaris.Id;
         txtSifarisNomresi.Text = seciliSifaris.SifarisNomresi;
@@ -392,13 +427,13 @@ public partial class AlisSifarisFormu : BazaForm, IAlisSifarisView
             return;
         }
 
-        var mehsulId = (int)cmbMehsul.SelectedValue;
-        var mehsulAdi = cmbMehsul.Text;
-        var miqdar = numMiqdar.Value;
-        var birVahidQiymet = numBirVahidQiymet.Value;
-        var cemiMebleg = miqdar * birVahidQiymet;
+        int mehsulId = (int)cmbMehsul.SelectedValue;
+        string mehsulAdi = cmbMehsul.Text;
+        decimal miqdar = numMiqdar.Value;
+        decimal birVahidQiymet = numBirVahidQiymet.Value;
+        decimal cemiMebleg = miqdar * birVahidQiymet;
 
-        var setir = new AlisSifarisSetiriDto
+        AlisSifarisSetiriDto setir = new()
         {
             MehsulId = mehsulId,
             MehsulAdi = mehsulAdi,
@@ -429,8 +464,7 @@ public partial class AlisSifarisFormu : BazaForm, IAlisSifarisView
             return;
         }
 
-        var seciliSetir = dgvSetirler.SelectedRows[0].DataBoundItem as AlisSifarisSetiriDto;
-        if (seciliSetir != null)
+        if (dgvSetirler.SelectedRows[0].DataBoundItem is AlisSifarisSetiriDto seciliSetir)
         {
             _sifarisSetirleri.Remove(seciliSetir);
             dgvSetirler.DataSource = null;

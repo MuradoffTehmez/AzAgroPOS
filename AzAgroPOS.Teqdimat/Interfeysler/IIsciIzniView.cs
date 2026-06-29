@@ -1,11 +1,9 @@
 // Fayl: AzAgroPOS.Teqdimat/Interfeysler/IIsciIzniView.cs
-namespace AzAgroPOS.Teqdimat.Interfeysler;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Varliglar;
-using System;
-using System.Collections.Generic;
 
+namespace AzAgroPOS.Teqdimat.Interfeysler;
 /// <summary>
 /// İşçi izni idarəetmə forması üçün interfeys.
 /// </summary>

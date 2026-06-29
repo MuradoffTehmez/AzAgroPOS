@@ -1,16 +1,12 @@
 // Fayl: AzAgroPOS.Teqdimat/MehsulSatisHesabatFormu.cs
-namespace AzAgroPOS.Teqdimat;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
 using AzAgroPOS.Teqdimat.Yardimcilar;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Forms;
 
+namespace AzAgroPOS.Teqdimat;
 /// <summary>
 /// Mehsul uzre satis hesabati formu - tarix araliginda mehsullarin satis statistikasini gosterir.
 /// </summary>
@@ -77,13 +73,24 @@ public partial class MehsulSatisHesabatFormu : BazaForm, IMehsulSatisHesabatView
     private void SutunlarıDuzelt()
     {
         if (dgvHesabat.Columns.Contains("MehsulAdi"))
+        {
             dgvHesabat.Columns["MehsulAdi"].HeaderText = "Mehsul Adi";
+        }
+
         if (dgvHesabat.Columns.Contains("CemiSatilanMiqdar"))
+        {
             dgvHesabat.Columns["CemiSatilanMiqdar"].HeaderText = "Satilan Miqdar";
+        }
+
         if (dgvHesabat.Columns.Contains("CemiMebleg"))
+        {
             dgvHesabat.Columns["CemiMebleg"].HeaderText = "Cemi Mebleg";
+        }
+
         if (dgvHesabat.Columns.Contains("OrtalamaQiymet"))
+        {
             dgvHesabat.Columns["OrtalamaQiymet"].HeaderText = "Ortalama Qiymet";
+        }
     }
 
     public void MesajGoster(string mesaj)
@@ -179,7 +186,7 @@ public partial class MehsulSatisHesabatFormu : BazaForm, IMehsulSatisHesabatView
         }
 
         // Maximum 1 illik aralig
-        var gunFerqi = (dtpBitis.Value.Date - dtpBaslangic.Value.Date).TotalDays;
+        double gunFerqi = (dtpBitis.Value.Date - dtpBaslangic.Value.Date).TotalDays;
         if (gunFerqi > 365)
         {
             MessageBox.Show(
@@ -200,18 +207,18 @@ public partial class MehsulSatisHesabatFormu : BazaForm, IMehsulSatisHesabatView
     private void XulaseniYenile(List<MehsulUzreSatisDetayDto> hesabat)
     {
         // Umumi satis meblegi
-        var umumiSatis = hesabat.Sum(h => h.CemiMebleg);
+        decimal umumiSatis = hesabat.Sum(h => h.CemiMebleg);
         lblUmumiSatisDeger.Text = $"{umumiSatis:N2} AZN";
 
         // Mehsul sayi
         lblMehsulSayiDeger.Text = hesabat.Count.ToString();
 
         // En cox satilan mehsul
-        var enCoxSatilan = hesabat.OrderByDescending(h => h.CemiSatilanMiqdar).FirstOrDefault();
+        MehsulUzreSatisDetayDto? enCoxSatilan = hesabat.OrderByDescending(h => h.CemiSatilanMiqdar).FirstOrDefault();
         if (enCoxSatilan != null)
         {
             // Uzun adlari qisalt
-            var mehsulAdi = enCoxSatilan.MehsulAdi;
+            string mehsulAdi = enCoxSatilan.MehsulAdi;
             if (mehsulAdi.Length > 30)
             {
                 mehsulAdi = mehsulAdi[..27] + "...";

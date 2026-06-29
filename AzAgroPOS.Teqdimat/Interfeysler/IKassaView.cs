@@ -1,11 +1,9 @@
 // Fayl: AzAgroPOS.Teqdimat/Interfeysler/IKassaView.cs
-namespace AzAgroPOS.Teqdimat.Interfeysler;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Varliglar;
-using System;
-using System.Collections.Generic;
 
+namespace AzAgroPOS.Teqdimat.Interfeysler;
 /// <summary>
 /// Kassa və maliyyə idarəetmə forması üçün interfeys.
 /// </summary>

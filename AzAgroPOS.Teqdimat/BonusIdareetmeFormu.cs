@@ -1,4 +1,6 @@
+using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Teqdimat.Xidmetler;
 using AzAgroPOS.Varliglar;
 
@@ -42,7 +44,7 @@ namespace AzAgroPOS.Teqdimat
 
         private async Task MusterileriYukle()
         {
-            var netice = await _musteriManager.ButunMusterileriGetirAsync();
+            EmeliyyatNeticesi<List<MusteriDto>> netice = await _musteriManager.ButunMusterileriGetirAsync();
             if (!netice.UgurluDur || netice.Data == null)
             {
                 _dialogXidmeti.XetaGoster(netice.Mesaj ?? "Müştərilər yüklənə bilmədi", "Xəta");
@@ -52,7 +54,7 @@ namespace AzAgroPOS.Teqdimat
             cmbMusteri.DataSource = null;
             cmbMusteri.Items.Clear();
 
-            var musteriler = netice.Data
+            List<MusteriDto> musteriler = netice.Data
                 .OrderBy(m => m.TamAd)
                 .ToList();
 
@@ -72,7 +74,7 @@ namespace AzAgroPOS.Teqdimat
 
         private async Task ButunBonuslariYukle()
         {
-            var netice = await _musteriManager.ButunBonuslariGetirAsync();
+            EmeliyyatNeticesi<List<MusteriBonus>> netice = await _musteriManager.ButunBonuslariGetirAsync();
             if (!netice.UgurluDur || netice.Data == null)
             {
                 _dialogXidmeti.XetaGoster(netice.Mesaj ?? "Bonuslar yüklənə bilmədi", "Xəta");
@@ -122,7 +124,9 @@ namespace AzAgroPOS.Teqdimat
                 }
 
                 if (dgvButunBonuslar.Columns["BonusQeydleri"] != null)
+                {
                     dgvButunBonuslar.Columns["BonusQeydleri"]!.Visible = false;
+                }
             }
 
             // Bonus tarixçəsi grid
@@ -153,10 +157,14 @@ namespace AzAgroPOS.Teqdimat
                 }
 
                 if (dgvBonusTarixcesi.Columns["MusteriBonus"] != null)
+                {
                     dgvBonusTarixcesi.Columns["MusteriBonus"]!.Visible = false;
+                }
 
                 if (dgvBonusTarixcesi.Columns["Satis"] != null)
+                {
                     dgvBonusTarixcesi.Columns["Satis"]!.Visible = false;
+                }
             }
         }
 
@@ -196,7 +204,7 @@ namespace AzAgroPOS.Teqdimat
 
         private async Task MusteriBonusMelumatlariniYukle()
         {
-            var netice = await _musteriManager.MusteriBonusunuGetirAsync(_seciliMusteriId);
+            EmeliyyatNeticesi<MusteriBonus?> netice = await _musteriManager.MusteriBonusunuGetirAsync(_seciliMusteriId);
             if (!netice.UgurluDur)
             {
                 _dialogXidmeti.XetaGoster(netice.Mesaj ?? "Bonus məlumatı yüklənə bilmədi", "Xəta");
@@ -252,7 +260,7 @@ namespace AzAgroPOS.Teqdimat
 
         private async Task BonusTarixcesiniYukle()
         {
-            var netice = await _musteriManager.BonusQeydleriniGetirAsync(_seciliMusteriId);
+            EmeliyyatNeticesi<List<BonusQeydi>> netice = await _musteriManager.BonusQeydleriniGetirAsync(_seciliMusteriId);
             if (!netice.UgurluDur || netice.Data == null)
             {
                 dgvBonusTarixcesi.DataSource = null;
@@ -316,7 +324,7 @@ namespace AzAgroPOS.Teqdimat
         {
             try
             {
-                var netice = await _musteriManager.BalElaveEtAsync(
+                EmeliyyatNeticesi netice = await _musteriManager.BalElaveEtAsync(
                     _seciliMusteriId,
                     numBalMiqdari.Value,
                     txtAciklama.Text);
@@ -374,7 +382,7 @@ namespace AzAgroPOS.Teqdimat
         {
             try
             {
-                var netice = await _musteriManager.BalIstifadeEtAsync(
+                EmeliyyatNeticesi netice = await _musteriManager.BalIstifadeEtAsync(
                     _seciliMusteriId,
                     numBalMiqdari.Value,
                     txtAciklama.Text);
@@ -419,10 +427,12 @@ namespace AzAgroPOS.Teqdimat
                 return;
             }
 
-            var tesdiq = _dialogXidmeti.TesdiqSorus($"Müştərinin {numBalMiqdari.Value:N2} balı ləğv ediləcək. Davam etmək istəyirsiniz?", "Təsdiq");
+            bool tesdiq = _dialogXidmeti.TesdiqSorus($"Müştərinin {numBalMiqdari.Value:N2} balı ləğv ediləcək. Davam etmək istəyirsiniz?", "Təsdiq");
 
             if (!tesdiq)
+            {
                 return;
+            }
 
             _ = BalLegvEtAsync();
         }
@@ -431,7 +441,7 @@ namespace AzAgroPOS.Teqdimat
         {
             try
             {
-                var netice = await _musteriManager.BalLegvEtAsync(
+                EmeliyyatNeticesi netice = await _musteriManager.BalLegvEtAsync(
                     _seciliMusteriId,
                     numBalMiqdari.Value,
                     txtAciklama.Text);
@@ -476,10 +486,12 @@ namespace AzAgroPOS.Teqdimat
                 return;
             }
 
-            var tesdiq = _dialogXidmeti.TesdiqSorus($"Müştərinin balına {numBalMiqdari.Value:N2} manual əlavə ediləcək. Davam etmək istəyirsiniz?", "Təsdiq");
+            bool tesdiq = _dialogXidmeti.TesdiqSorus($"Müştərinin balına {numBalMiqdari.Value:N2} manual əlavə ediləcək. Davam etmək istəyirsiniz?", "Təsdiq");
 
             if (!tesdiq)
+            {
                 return;
+            }
 
             _ = ManualBalElaveEtAsync();
         }
@@ -488,7 +500,7 @@ namespace AzAgroPOS.Teqdimat
         {
             try
             {
-                var netice = await _musteriManager.ManualBalElaveEtAsync(
+                EmeliyyatNeticesi netice = await _musteriManager.ManualBalElaveEtAsync(
                     _seciliMusteriId,
                     numBalMiqdari.Value,
                     txtAciklama.Text);

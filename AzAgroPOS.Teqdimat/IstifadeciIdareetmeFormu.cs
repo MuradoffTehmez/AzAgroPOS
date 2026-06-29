@@ -1,11 +1,12 @@
 ﻿// Fayl: AzAgroPOS.Teqdimat/IstifadeciIdareetmeFormu.cs
-namespace AzAgroPOS.Teqdimat;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
 using AzAgroPOS.Varliglar;
+
+namespace AzAgroPOS.Teqdimat;
 
 public partial class IstifadeciIdareetmeFormu : BazaForm, IIstifadeciView
 {
@@ -35,7 +36,7 @@ public partial class IstifadeciIdareetmeFormu : BazaForm, IIstifadeciView
     {
         dgvIstifadeciler.SelectionChanged -= dgvIstifadeciler_SelectionChanged;
         // Cədvəli yeniləmədən əvvəl seçimi qorumaq üçün
-        var secilmisId = string.IsNullOrEmpty(txtId.Text) ? -1 : int.Parse(txtId.Text);
+        int secilmisId = string.IsNullOrEmpty(txtId.Text) ? -1 : int.Parse(txtId.Text);
 
         dgvIstifadeciler.DataSource = istifadeciler;
 

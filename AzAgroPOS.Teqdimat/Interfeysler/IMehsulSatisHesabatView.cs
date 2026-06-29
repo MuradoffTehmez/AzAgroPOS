@@ -1,10 +1,8 @@
 ﻿// Fayl: AzAgroPOS.Teqdimat/Interfeysler/IMehsulSatisHesabatView.cs
-namespace AzAgroPOS.Teqdimat.Interfeysler;
 
 using AzAgroPOS.Mentiq.DTOs;
-using System;
-using System.Collections.Generic;
 
+namespace AzAgroPOS.Teqdimat.Interfeysler;
 /// <summary>
 /// Məhsul üzrə satış hesabatı formu üçün "müqavilə".
 /// </summary>

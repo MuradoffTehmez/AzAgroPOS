@@ -1,10 +1,8 @@
 // Fayl: AzAgroPOS.Teqdimat/Interfeysler/IEmekHaqqiView.cs
-namespace AzAgroPOS.Teqdimat.Interfeysler;
 
 using AzAgroPOS.Mentiq.DTOs;
-using System;
-using System.Collections.Generic;
 
+namespace AzAgroPOS.Teqdimat.Interfeysler;
 /// <summary>
 /// Əmək haqqı idarəetmə forması üçün interfeys.
 /// </summary>

@@ -17,18 +17,18 @@ namespace AzAgroPOS.Teqdimat
 
             // Yeni məlumatları əlavə edirik
             int satir = 0;
-            foreach (var melumat in melumatlar)
+            foreach (KeyValuePair<string, string> melumat in melumatlar)
             {
                 tblMelumatlar.RowStyles.Add(new RowStyle(SizeType.Absolute, 25F));
 
-                var lblAcar = new Label();
+                Label lblAcar = new();
                 lblAcar.Text = melumat.Key + ":";
                 lblAcar.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Bold);
                 lblAcar.Dock = DockStyle.Fill;
                 lblAcar.TextAlign = ContentAlignment.MiddleLeft;
                 tblMelumatlar.Controls.Add(lblAcar, 0, satir);
 
-                var lblDeyer = new Label();
+                Label lblDeyer = new();
                 lblDeyer.Text = melumat.Value;
                 lblDeyer.Font = new Font("Microsoft Sans Serif", 10F);
                 lblDeyer.Dock = DockStyle.Fill;
