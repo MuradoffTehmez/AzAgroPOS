@@ -32,7 +32,7 @@ namespace AzAgroPOS.Teqdimat
             InitializeComponent();
 
             // Versiya nömrəsini göstər
-            var version = Assembly.GetExecutingAssembly().GetName().Version;
+            Version? version = Assembly.GetExecutingAssembly().GetName().Version;
             lblVersion.Text = $"v{version?.Major}.{version?.Minor}.{version?.Build}";
 
             // Hadisələri qoş
@@ -148,7 +148,9 @@ namespace AzAgroPOS.Teqdimat
             {
                 // Form tam yüklənməyibsə çıx
                 if (pnlMain.ClientSize.Width <= 0 || pnlMain.ClientSize.Height <= 0)
+                {
                     return;
+                }
 
                 int x = (pnlMain.ClientSize.Width - pnlLoginCard.Width) / 2;
                 int y = ((pnlMain.ClientSize.Height - pnlLoginCard.Height) / 2) - 20;
@@ -171,7 +173,7 @@ namespace AzAgroPOS.Teqdimat
         private void PnlMain_Paint(object? sender, PaintEventArgs e)
         {
             // Gradient background çək
-            using var brush = new LinearGradientBrush(
+            using LinearGradientBrush brush = new(
                 pnlMain.ClientRectangle,
                 Color.FromArgb(25, 118, 210),  // Mavi
                 Color.FromArgb(21, 101, 192),  // Daha tünd mavi
@@ -183,16 +185,16 @@ namespace AzAgroPOS.Teqdimat
         {
             // Kartın kənarlarını yuvarlaqlaşdır (vizual olaraq, Region olmadan)
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-            var path = GetRoundedRectPath(new Rectangle(0, 0, pnlLoginCard.Width, pnlLoginCard.Height), 12);
-            using var brush = new SolidBrush(pnlLoginCard.BackColor);
+            GraphicsPath path = GetRoundedRectPath(new Rectangle(0, 0, pnlLoginCard.Width, pnlLoginCard.Height), 12);
+            using SolidBrush brush = new(pnlLoginCard.BackColor);
             e.Graphics.FillPath(brush, path);
         }
 
         private void PnlCardShadow_Paint(object? sender, PaintEventArgs e)
         {
             // Kölgəni yarı-şəffaf çək
-            using var brush = new SolidBrush(Color.FromArgb(30, 0, 0, 0));
-            var path = GetRoundedRectPath(new Rectangle(0, 0, pnlCardShadow.Width, pnlCardShadow.Height), 12);
+            using SolidBrush brush = new(Color.FromArgb(30, 0, 0, 0));
+            GraphicsPath path = GetRoundedRectPath(new Rectangle(0, 0, pnlCardShadow.Width, pnlCardShadow.Height), 12);
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             e.Graphics.FillPath(brush, path);
         }
@@ -201,7 +203,7 @@ namespace AzAgroPOS.Teqdimat
         {
             // Dairəvi logo konteyneri (Region olmadan, yalnız vizual)
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-            using var brush = new SolidBrush(Color.FromArgb(25, 118, 210));
+            using SolidBrush brush = new(Color.FromArgb(25, 118, 210));
             e.Graphics.FillEllipse(brush, 0, 0, pnlLogoContainer.Width - 1, pnlLogoContainer.Height - 1);
         }
 
@@ -212,12 +214,12 @@ namespace AzAgroPOS.Teqdimat
             {
                 e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
                 e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-                using var font = new Font("Segoe UI", 22F, FontStyle.Bold);
-                using var brush = new SolidBrush(Color.White);
-                var text = "AZ";
-                var size = e.Graphics.MeasureString(text, font);
-                var x = (picLogo.Width - size.Width) / 2;
-                var y = (picLogo.Height - size.Height) / 2;
+                using Font font = new("Segoe UI", 22F, FontStyle.Bold);
+                using SolidBrush brush = new(Color.White);
+                string text = "AZ";
+                SizeF size = e.Graphics.MeasureString(text, font);
+                float x = (picLogo.Width - size.Width) / 2;
+                float y = (picLogo.Height - size.Height) / 2;
                 e.Graphics.DrawString(text, font, brush, x, y);
             }
         }
@@ -225,13 +227,13 @@ namespace AzAgroPOS.Teqdimat
         private void LoadingTimer_Tick(object? sender, EventArgs e)
         {
             _loadingDots = (_loadingDots + 1) % 4;
-            var dots = new string('.', _loadingDots);
+            string dots = new('.', _loadingDots);
             lblLoading.Text = $"Giriş edilir{dots}";
         }
 
         private static GraphicsPath GetRoundedRectPath(Rectangle rect, int radius)
         {
-            var path = new GraphicsPath();
+            GraphicsPath path = new();
             path.AddArc(rect.X, rect.Y, radius * 2, radius * 2, 180, 90);
             path.AddArc(rect.Right - (radius * 2), rect.Y, radius * 2, radius * 2, 270, 90);
             path.AddArc(rect.Right - (radius * 2), rect.Bottom - (radius * 2), radius * 2, radius * 2, 0, 90);
@@ -284,7 +286,10 @@ namespace AzAgroPOS.Teqdimat
 
         private void btnDaxilOl_Click(object sender, EventArgs e)
         {
-            if (_girişEdilir) return;
+            if (_girişEdilir)
+            {
+                return;
+            }
 
             YuklemeGoster();
             DaxilOl_Istek?.Invoke(this, EventArgs.Empty);
@@ -350,9 +355,11 @@ namespace AzAgroPOS.Teqdimat
         {
             try
             {
-                var dir = Path.GetDirectoryName(_settingsPath);
+                string? dir = Path.GetDirectoryName(_settingsPath);
                 if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
+                {
                     Directory.CreateDirectory(dir);
+                }
 
                 File.WriteAllText(_settingsPath, txtIstifadeciAdi.Text);
             }
@@ -368,7 +375,7 @@ namespace AzAgroPOS.Teqdimat
             {
                 if (File.Exists(_settingsPath))
                 {
-                    var savedUsername = File.ReadAllText(_settingsPath);
+                    string savedUsername = File.ReadAllText(_settingsPath);
                     if (!string.IsNullOrWhiteSpace(savedUsername))
                     {
                         txtIstifadeciAdi.Text = savedUsername;
@@ -388,7 +395,9 @@ namespace AzAgroPOS.Teqdimat
             try
             {
                 if (File.Exists(_settingsPath))
+                {
                     File.Delete(_settingsPath);
+                }
             }
             catch
             {

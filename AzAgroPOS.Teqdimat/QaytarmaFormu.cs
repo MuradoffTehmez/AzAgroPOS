@@ -22,7 +22,7 @@ namespace AzAgroPOS.Teqdimat
         {
             get
             {
-                var secilmisler = new List<SatisSebetiElementiDto>();
+                List<SatisSebetiElementiDto> secilmisler = new();
                 foreach (DataGridViewRow row in dgvSatisMehsullari.Rows)
                 {
                     if (row.Cells["Secim"].Value != null && (bool)row.Cells["Secim"].Value)

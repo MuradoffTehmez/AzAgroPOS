@@ -1,8 +1,10 @@
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
 using AzAgroPOS.Teqdimat.Xidmetler;
+using AzAgroPOS.Teqdimat.Yardimcilar;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AzAgroPOS.Teqdimat
@@ -60,8 +62,7 @@ namespace AzAgroPOS.Teqdimat
 
         public int SecilmisMusteriId => dgvMusteriler.CurrentRow?.DataBoundItem is MusteriDto musteri ? musteri.Id : 0;
 
-        private string _musteriId = "";
-        public string MusteriId { get => _musteriId; set => _musteriId = value; }
+        public string MusteriId { get; set; } = "";
         public string TamAd { get => txtTamAd.Text; set => txtTamAd.Text = value; }
         public string Telefon { get => txtTelefon.Text; set => txtTelefon.Text = value; }
         public string Unvan { get => txtUnvan.Text; set => txtUnvan.Text = value; }
@@ -262,7 +263,7 @@ namespace AzAgroPOS.Teqdimat
         /// </summary>
         public async Task EmeliyyatIcraEtAsync(Func<Task> emeliyyat, string mesaj)
         {
-            var gosterici = new Yardimcilar.YuklemeGostergeci(this);
+            YuklemeGostergeci gosterici = new(this);
             await gosterici.EmeliyyatIcraEtAsync(emeliyyat, mesaj);
         }
 
@@ -275,14 +276,7 @@ namespace AzAgroPOS.Teqdimat
             MusteriSecildi?.Invoke(sender, e);
 
             // Update selected customer ID when selection changes
-            if (dgvMusteriler.CurrentRow?.DataBoundItem is MusteriDto musteri)
-            {
-                SecilenMusteriId = musteri.Id;
-            }
-            else
-            {
-                SecilenMusteriId = 0;
-            }
+            SecilenMusteriId = dgvMusteriler.CurrentRow?.DataBoundItem is MusteriDto musteri ? musteri.Id : 0;
         }
 
         private void btnYeni_Click(object sender, EventArgs e)
@@ -394,7 +388,7 @@ namespace AzAgroPOS.Teqdimat
                 try
                 {
                     // Barkod çapı formasını açırıq
-                    using var barkodCapiFormu = _serviceProvider.GetRequiredService<BarkodCapiFormu>();
+                    using BarkodCapiFormu barkodCapiFormu = _serviceProvider.GetRequiredService<BarkodCapiFormu>();
                     barkodCapiFormu.ShowDialog();
                 }
                 catch (Exception ex)
@@ -409,15 +403,15 @@ namespace AzAgroPOS.Teqdimat
             // Delete selected customer
             if (dgvMusteriler.CurrentRow?.DataBoundItem is MusteriDto musteri)
             {
-                var tesdiq = _dialogXidmeti.TesdiqSorus($"{musteri.TamAd} müştərisini silmək istədiyinizə əminsiniz?",
+                bool tesdiq = _dialogXidmeti.TesdiqSorus($"{musteri.TamAd} müştərisini silmək istədiyinizə əminsiniz?",
                     "Təsdiq");
 
                 if (tesdiq)
                 {
                     try
                     {
-                        var _musteriManager = _serviceProvider.GetRequiredService<MusteriManager>();
-                        var silindi = await _musteriManager.MusteriSilAsync(musteri.Id);
+                        MusteriManager _musteriManager = _serviceProvider.GetRequiredService<MusteriManager>();
+                        EmeliyyatNeticesi silindi = await _musteriManager.MusteriSilAsync(musteri.Id);
                         if (silindi.UgurluDur)
                         {
                             _dialogXidmeti.UgurGoster("Müştəri uğurla silindi.", "Uğur");

@@ -1,11 +1,12 @@
 // Fayl: AzAgroPOS.Teqdimat/HesabatFormu.cs
-namespace AzAgroPOS.Teqdimat;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
 using AzAgroPOS.Teqdimat.Yardimcilar;
+
+namespace AzAgroPOS.Teqdimat;
 
 public partial class HesabatFormu : BazaForm, IHesabatView
 {
@@ -37,10 +38,13 @@ public partial class HesabatFormu : BazaForm, IHesabatView
 
     private void FiltriTetbiqEt()
     {
-        if (_cariHesabat?.SatislarinSiyahisi == null) return;
+        if (_cariHesabat?.SatislarinSiyahisi == null)
+        {
+            return;
+        }
 
-        var axtarisMeni = txtAxtaris.Text?.ToLower() ?? string.Empty;
-        var odenisTipi = cmbOdenisTipiFiltr.SelectedItem?.ToString();
+        string axtarisMeni = txtAxtaris.Text?.ToLower() ?? string.Empty;
+        string? odenisTipi = cmbOdenisTipiFiltr.SelectedItem?.ToString();
 
         _filtreliSatislar = _cariHesabat.SatislarinSiyahisi
             .Where(s =>
@@ -126,15 +130,29 @@ public partial class HesabatFormu : BazaForm, IHesabatView
     private void SutunBasliqlariniDuzelt()
     {
         if (dgvSatislar.Columns.Contains("SatisId"))
+        {
             dgvSatislar.Columns["SatisId"].HeaderText = "Satis No";
+        }
+
         if (dgvSatislar.Columns.Contains("SatisVaxti"))
+        {
             dgvSatislar.Columns["SatisVaxti"].HeaderText = "Satis Vaxti";
+        }
+
         if (dgvSatislar.Columns.Contains("CemiMebleg"))
+        {
             dgvSatislar.Columns["CemiMebleg"].HeaderText = "Cemi Mebleg";
+        }
+
         if (dgvSatislar.Columns.Contains("OdenisTipi"))
+        {
             dgvSatislar.Columns["OdenisTipi"].HeaderText = "Odenis Tipi";
+        }
+
         if (dgvSatislar.Columns.Contains("KassirAdi"))
+        {
             dgvSatislar.Columns["KassirAdi"].HeaderText = "Kassir";
+        }
     }
 
     public void XetaMesajiGoster(string mesaj)

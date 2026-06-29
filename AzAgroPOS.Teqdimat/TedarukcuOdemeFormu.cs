@@ -1,15 +1,12 @@
 // Fayl: AzAgroPOS.Teqdimat/TedarukcuOdemeFormu.cs
-namespace AzAgroPOS.Teqdimat;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
 using AzAgroPOS.Varliglar;
-using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
 
+namespace AzAgroPOS.Teqdimat;
 /// <summary>
 /// Tədarükçü ödənişi idarəetmə forması.
 /// diqqət: Bu forma MVP pattern istifadə edir və ITedarukcuOdemeView interfeysi implement edir.
@@ -106,7 +103,7 @@ public partial class TedarukcuOdemeFormu : BazaForm, ITedarukcuOdemeView
     public void SenetleriGoster(List<AlisSenedDto> senetler)
     {
         // "Seçilməyib" seçimi üçün boş bir element əlavə edirik
-        var senetListesi = new List<AlisSenedDto>
+        List<AlisSenedDto> senetListesi = new()
         {
             new() { Id = 0, SenedNomresi = "-- Seçilməyib --" }
         };
@@ -163,22 +160,41 @@ public partial class TedarukcuOdemeFormu : BazaForm, ITedarukcuOdemeView
 
     private void FormatGrid()
     {
-        if (dgvOdemeler.Columns.Count == 0) return;
+        if (dgvOdemeler.Columns.Count == 0)
+        {
+            return;
+        }
 
         // Sütunların mövcudluğunu yoxlayaraq formatla
         if (dgvOdemeler.Columns["Id"] != null)
+        {
             dgvOdemeler.Columns["Id"].Visible = false;
+        }
+
         if (dgvOdemeler.Columns["TedarukcuId"] != null)
+        {
             dgvOdemeler.Columns["TedarukcuId"].Visible = false;
+        }
+
         if (dgvOdemeler.Columns["AlisSenedId"] != null)
+        {
             dgvOdemeler.Columns["AlisSenedId"].Visible = false;
+        }
 
         if (dgvOdemeler.Columns["OdemeNomresi"] != null)
+        {
             dgvOdemeler.Columns["OdemeNomresi"].HeaderText = "Ödəniş №";
+        }
+
         if (dgvOdemeler.Columns["TedarukcuAdi"] != null)
+        {
             dgvOdemeler.Columns["TedarukcuAdi"].HeaderText = "Tədarükçü";
+        }
+
         if (dgvOdemeler.Columns["AlisSenedNomresi"] != null)
+        {
             dgvOdemeler.Columns["AlisSenedNomresi"].HeaderText = "Alış Sənədi";
+        }
 
         if (dgvOdemeler.Columns["YaradilmaTarixi"] != null)
         {
@@ -199,13 +215,24 @@ public partial class TedarukcuOdemeFormu : BazaForm, ITedarukcuOdemeView
         }
 
         if (dgvOdemeler.Columns["OdemeUsulu"] != null)
+        {
             dgvOdemeler.Columns["OdemeUsulu"].HeaderText = "Ödəniş Üsulu";
+        }
+
         if (dgvOdemeler.Columns["Status"] != null)
+        {
             dgvOdemeler.Columns["Status"].HeaderText = "Status";
+        }
+
         if (dgvOdemeler.Columns["Qeydler"] != null)
+        {
             dgvOdemeler.Columns["Qeydler"].HeaderText = "Qeydlər";
+        }
+
         if (dgvOdemeler.Columns["BankMelumatlari"] != null)
+        {
             dgvOdemeler.Columns["BankMelumatlari"].HeaderText = "Bank Məlumatları";
+        }
 
         dgvOdemeler.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
     }
@@ -238,7 +265,7 @@ public partial class TedarukcuOdemeFormu : BazaForm, ITedarukcuOdemeView
             return;
         }
 
-        var tesdiq = MessageBox.Show(
+        DialogResult tesdiq = MessageBox.Show(
             "Bu ödənişi silmək istəyirsiniz?",
             "Təsdiq",
             MessageBoxButtons.YesNo,
@@ -257,10 +284,15 @@ public partial class TedarukcuOdemeFormu : BazaForm, ITedarukcuOdemeView
 
     private void dgvOdemeler_SelectionChanged(object sender, EventArgs e)
     {
-        if (dgvOdemeler.SelectedRows.Count == 0) return;
+        if (dgvOdemeler.SelectedRows.Count == 0)
+        {
+            return;
+        }
 
-        var seciliOdeme = dgvOdemeler.SelectedRows[0].DataBoundItem as TedarukcuOdemeDto;
-        if (seciliOdeme == null) return;
+        if (dgvOdemeler.SelectedRows[0].DataBoundItem is not TedarukcuOdemeDto seciliOdeme)
+        {
+            return;
+        }
 
         OdemeId = seciliOdeme.Id;
         txtOdemeNomresi.Text = seciliOdeme.OdemeNomresi;

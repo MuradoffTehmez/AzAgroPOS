@@ -1,9 +1,11 @@
 // Fayl: AzAgroPOS.Teqdimat/MehsulIdareetmeFormu.cs
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
 using AzAgroPOS.Teqdimat.Xidmetler;
+using AzAgroPOS.Teqdimat.Yardimcilar;
 using AzAgroPOS.Varliglar;
 using Microsoft.Extensions.DependencyInjection; // Required for GetRequiredService
 
@@ -77,7 +79,7 @@ namespace AzAgroPOS.Teqdimat
             // Seçili satırı güncelle
             if (dgvMehsullar.DataSource is List<MehsulDto> mehsullar)
             {
-                var secilmisMehsul = mehsullar.FirstOrDefault(m => m.Id == mehsulId);
+                MehsulDto? secilmisMehsul = mehsullar.FirstOrDefault(m => m.Id == mehsulId);
                 if (secilmisMehsul != null)
                 {
                     // Seçili satırı seç
@@ -107,19 +109,31 @@ namespace AzAgroPOS.Teqdimat
                     cmbOlcuVahidi.SelectedItem = secilmisMehsul.OlcuVahidi;
 
                     if (secilmisMehsul.KateqoriyaId.HasValue)
+                    {
                         cmbKateqoriya.SelectedValue = secilmisMehsul.KateqoriyaId.Value;
+                    }
                     else
+                    {
                         cmbKateqoriya.SelectedIndex = -1;
+                    }
 
                     if (secilmisMehsul.BrendId.HasValue)
+                    {
                         cmbBrend.SelectedValue = secilmisMehsul.BrendId.Value;
+                    }
                     else
+                    {
                         cmbBrend.SelectedIndex = -1;
+                    }
 
                     if (secilmisMehsul.TedarukcuId.HasValue)
+                    {
                         cmbTedarukcu.SelectedValue = secilmisMehsul.TedarukcuId.Value;
+                    }
                     else
+                    {
                         cmbTedarukcu.SelectedIndex = -1;
+                    }
 
                     // Buton metnini güncelle
                     btnElaveEt.Text = "Yeni Məhsul";
@@ -132,7 +146,9 @@ namespace AzAgroPOS.Teqdimat
         {
             cmbOlcuVahidi.DataSource = olcuVahidleri;
             if (cmbOlcuVahidi.Items.Count > 0)
+            {
                 cmbOlcuVahidi.SelectedIndex = 0;
+            }
         }
 
         public void KateqoriyalariGoster(IEnumerable<KateqoriyaDto> kateqoriyalar)
@@ -161,7 +177,7 @@ namespace AzAgroPOS.Teqdimat
 
         public void MehsullariGoster(IEnumerable<MehsulDto> mehsullar)
         {
-            var mehsulSiyahisi = mehsullar?.ToList() ?? new List<MehsulDto>();
+            List<MehsulDto> mehsulSiyahisi = mehsullar?.ToList() ?? new List<MehsulDto>();
             dgvMehsullar.SelectionChanged -= dgvMehsullar_SelectionChanged;
             dgvMehsullar.DataSource = mehsulSiyahisi;
             dgvMehsullar.SelectionChanged += dgvMehsullar_SelectionChanged;
@@ -179,9 +195,15 @@ namespace AzAgroPOS.Teqdimat
                 }
 
                 if (dgvMehsullar.Columns["Ad"] != null)
+                {
                     dgvMehsullar.Columns["Ad"].HeaderText = "Məhsulun Adı";
+                }
+
                 if (dgvMehsullar.Columns["StokKodu"] != null)
+                {
                     dgvMehsullar.Columns["StokKodu"].HeaderText = "Stok Kodu";
+                }
+
                 if (dgvMehsullar.Columns["PerakendeSatisQiymetiStr"] != null)
                 {
                     dgvMehsullar.Columns["PerakendeSatisQiymetiStr"].HeaderText = "Pərakəndə Qiymət";
@@ -194,7 +216,9 @@ namespace AzAgroPOS.Teqdimat
                     dgvMehsullar.Columns["MovcudSay"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 }
                 if (dgvMehsullar.Columns["OlcuVahidiStr"] != null)
+                {
                     dgvMehsullar.Columns["OlcuVahidiStr"].HeaderText = "Ölçü Vahidi";
+                }
             }
         }
 
@@ -290,7 +314,7 @@ namespace AzAgroPOS.Teqdimat
         /// </summary>
         public async Task EmeliyyatIcraEtAsync(Func<Task> emeliyyat, string mesaj)
         {
-            var gosterici = new Yardimcilar.YuklemeGostergeci(this);
+            YuklemeGostergeci gosterici = new(this);
             await gosterici.EmeliyyatIcraEtAsync(emeliyyat, mesaj);
         }
 
@@ -417,7 +441,11 @@ namespace AzAgroPOS.Teqdimat
         {
             FormuTemizle_Istek?.Invoke(this, EventArgs.Empty);
             dgvMehsullar.ClearSelection();
-            if (cmbOlcuVahidi.Items.Count > 0) cmbOlcuVahidi.SelectedIndex = 0;
+            if (cmbOlcuVahidi.Items.Count > 0)
+            {
+                cmbOlcuVahidi.SelectedIndex = 0;
+            }
+
             txtAd.Focus();
             btnElaveEt.Text = "Yeni Məhsulu Yadda Saxla";
             btnKopyala.Enabled = false;
@@ -449,19 +477,31 @@ namespace AzAgroPOS.Teqdimat
                 cmbOlcuVahidi.SelectedItem = secilmisMehsul.OlcuVahidi;
                 // Kateqoriya, Brend və Tedarukçu seçimlərini də təyin edirik
                 if (secilmisMehsul.KateqoriyaId.HasValue)
+                {
                     cmbKateqoriya.SelectedValue = secilmisMehsul.KateqoriyaId.Value;
+                }
                 else
+                {
                     cmbKateqoriya.SelectedIndex = -1;
+                }
 
                 if (secilmisMehsul.BrendId.HasValue)
+                {
                     cmbBrend.SelectedValue = secilmisMehsul.BrendId.Value;
+                }
                 else
+                {
                     cmbBrend.SelectedIndex = -1;
+                }
 
                 if (secilmisMehsul.TedarukcuId.HasValue)
+                {
                     cmbTedarukcu.SelectedValue = secilmisMehsul.TedarukcuId.Value;
+                }
                 else
+                {
                     cmbTedarukcu.SelectedIndex = -1;
+                }
 
                 CedvelSecimiDeyisdi_Istek?.Invoke(this, EventArgs.Empty);
                 btnElaveEt.Text = "Yeni Məhsul";
@@ -514,7 +554,7 @@ namespace AzAgroPOS.Teqdimat
                 try
                 {
                     // Barkod çapı formasını açırıq və məhsulu əlavə edirik
-                    using var barkodCapiFormu = _serviceProvider.GetRequiredService<BarkodCapiFormu>();
+                    using BarkodCapiFormu barkodCapiFormu = _serviceProvider.GetRequiredService<BarkodCapiFormu>();
                     barkodCapiFormu.ShowDialog();
                 }
                 catch (Exception ex)
@@ -541,7 +581,7 @@ namespace AzAgroPOS.Teqdimat
             {
                 try
                 {
-                    using var mehsulFormu = _serviceProvider.GetRequiredService<MehsulIdareetmeFormu>();
+                    using MehsulIdareetmeFormu mehsulFormu = _serviceProvider.GetRequiredService<MehsulIdareetmeFormu>();
                     mehsulFormu.MehsulDuzelisEt(mehsul.Id);
                 }
                 catch (Exception ex)
@@ -556,15 +596,15 @@ namespace AzAgroPOS.Teqdimat
             // Delete selected product
             if (dgvMehsullar.CurrentRow?.DataBoundItem is MehsulDto mehsul)
             {
-                var tesdiq = _dialogXidmeti.TesdiqSorus($"{mehsul.Ad} məhsulunu silmək istədiyinizə əminsiniz?",
+                bool tesdiq = _dialogXidmeti.TesdiqSorus($"{mehsul.Ad} məhsulunu silmək istədiyinizə əminsiniz?",
                     "Təsdiq");
 
                 if (tesdiq)
                 {
                     try
                     {
-                        var _mehsulManager = _serviceProvider.GetRequiredService<MehsulManager>();
-                        var silindi = await _mehsulManager.MehsulSilAsync(mehsul.Id);
+                        MehsulManager _mehsulManager = _serviceProvider.GetRequiredService<MehsulManager>();
+                        EmeliyyatNeticesi silindi = await _mehsulManager.MehsulSilAsync(mehsul.Id);
                         if (silindi.UgurluDur)
                         {
                             _dialogXidmeti.UgurGoster("Məhsul uğurla silindi.", "Uğur");

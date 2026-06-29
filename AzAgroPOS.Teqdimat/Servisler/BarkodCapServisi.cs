@@ -1,10 +1,9 @@
 ﻿// Fayl: AzAgroPOS.Teqdimat/Servisler/BarkodCapServisi.cs
-namespace AzAgroPOS.Teqdimat.Servisler;
 
 using AzAgroPOS.Mentiq.DTOs;
-using System.Drawing;
 using System.Drawing.Printing;
-using System.Windows.Forms;
+
+namespace AzAgroPOS.Teqdimat.Servisler;
 
 public class BarkodCapServisi
 {
@@ -26,7 +25,9 @@ public class BarkodCapServisi
     public void EtiketleriCapaGonder(IReadOnlyList<BarkodEtiketDto> etiketler)
     {
         if (etiketler == null || etiketler.Count == 0)
+        {
             throw new ArgumentException("Çap ediləcək etiket siyahısı boş ola bilməz.");
+        }
 
         _etiketler = etiketler;
         _hazirkiEtiketIndexi = 0;
@@ -53,9 +54,12 @@ public class BarkodCapServisi
 
     private void Pd_PrintPage(object? sender, PrintPageEventArgs e)
     {
-        if (e.Graphics == null) return;
+        if (e.Graphics == null)
+        {
+            return;
+        }
 
-        var hazirkiEtiket = _etiketler[_hazirkiEtiketIndexi];
+        BarkodEtiketDto hazirkiEtiket = _etiketler[_hazirkiEtiketIndexi];
         float en = e.PageBounds.Width;
         float y = 5;
 

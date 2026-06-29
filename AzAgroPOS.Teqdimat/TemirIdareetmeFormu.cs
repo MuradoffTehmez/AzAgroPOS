@@ -59,33 +59,23 @@ namespace AzAgroPOS.Teqdimat
 
         public decimal TemirXerci
         {
-            get => decimal.TryParse(txtTemirXerci.Text, out var xerc) ? xerc : 0;
+            get => decimal.TryParse(txtTemirXerci.Text, out decimal xerc) ? xerc : 0;
             set => txtTemirXerci.Text = value.ToString("N2");
         }
 
         public decimal ServisHaqqi
         {
-            get => decimal.TryParse(txtServisHaqqi.Text, out var haqq) ? haqq : 0;
+            get => decimal.TryParse(txtServisHaqqi.Text, out decimal haqq) ? haqq : 0;
             set => txtServisHaqqi.Text = value.ToString("N2");
         }
 
         public decimal YekunMebleg
         {
-            get => decimal.TryParse(txtYekunMebleg.Text, out var mebleg) ? mebleg : 0;
+            get => decimal.TryParse(txtYekunMebleg.Text, out decimal mebleg) ? mebleg : 0;
             set => txtYekunMebleg.Text = value.ToString("N2");
         }
 
-        public int SecilmisSifarisId
-        {
-            get
-            {
-                if (dgvSifarisler.CurrentRow?.DataBoundItem is TemirDto sifaris)
-                {
-                    return sifaris.Id;
-                }
-                return 0;
-            }
-        }
+        public int SecilmisSifarisId => dgvSifarisler.CurrentRow?.DataBoundItem is TemirDto sifaris ? sifaris.Id : 0;
 
         public event EventHandler FormYuklendi;
         public event EventHandler YeniSifarisYarat_Istek;
@@ -116,7 +106,8 @@ namespace AzAgroPOS.Teqdimat
 
         public void UstaSiyahisiniGoster(List<IstifadeciDto> ustalar)
         {
-            var listDataSource = new List<object> { new { Id = 0, TamAd = "Seçilməyib" } };
+            List<object> listDataSource = new()
+            { new { Id = 0, TamAd = "Seçilməyib" } };
             listDataSource.AddRange(ustalar.Select(u => new { u.Id, TamAd = u.TamAd }).ToList());
 
             cmbUsta.DataSource = listDataSource;
@@ -236,7 +227,7 @@ namespace AzAgroPOS.Teqdimat
 
         private void txtTemirXerci_TextChanged(object sender, EventArgs e)
         {
-            if (decimal.TryParse(txtTemirXerci.Text, out var xerc) && decimal.TryParse(txtServisHaqqi.Text, out var haqq))
+            if (decimal.TryParse(txtTemirXerci.Text, out decimal xerc) && decimal.TryParse(txtServisHaqqi.Text, out decimal haqq))
             {
                 txtYekunMebleg.Text = (xerc + haqq).ToString("N2");
             }
@@ -244,7 +235,7 @@ namespace AzAgroPOS.Teqdimat
 
         private void txtServisHaqqi_TextChanged(object sender, EventArgs e)
         {
-            if (decimal.TryParse(txtTemirXerci.Text, out var xerc) && decimal.TryParse(txtServisHaqqi.Text, out var haqq))
+            if (decimal.TryParse(txtTemirXerci.Text, out decimal xerc) && decimal.TryParse(txtServisHaqqi.Text, out decimal haqq))
             {
                 txtYekunMebleg.Text = (xerc + haqq).ToString("N2");
             }

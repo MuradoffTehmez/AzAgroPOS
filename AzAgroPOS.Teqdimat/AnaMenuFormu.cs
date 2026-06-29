@@ -1,27 +1,26 @@
 // Fayl: AzAgroPOS.Teqdimat/AnaMenuFormu.cs
-namespace AzAgroPOS.Teqdimat;
 
+using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Teqdimat.Interfeysler;
+using AzAgroPOS.Teqdimat.Teqdimatcilar;
+using AzAgroPOS.Teqdimat.Xidmetler;
 using AzAgroPOS.Teqdimat.Yardimcilar;
+using AzAgroPOS.Varliglar;
 using MaterialSkin.Controls;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+
+namespace AzAgroPOS.Teqdimat;
 
 public partial class AnaMenuFormu : BazaForm, IAnaMenuView
 {
-    private readonly IServiceProvider _serviceProvider;
     private readonly Dictionary<Type, MaterialButton> _formButtonMap;
     private readonly Dictionary<TabPage, IServiceScope> _tabScopes = new();
 
     // IAnaMenuView interface implementasiyası
-    public IServiceProvider ServiceProvider => _serviceProvider;
+    public IServiceProvider ServiceProvider { get; }
 
     // Hadisələr
     public event EventHandler FormYuklendi;
@@ -30,7 +29,7 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
     public AnaMenuFormu(IServiceProvider serviceProvider)
     {
         InitializeComponent();
-        _serviceProvider = serviceProvider;
+        ServiceProvider = serviceProvider;
 
         Load += (sender, e) => FormYuklendi?.Invoke(this, EventArgs.Empty);
         Shown += AnaMenuFormu_Shown;
@@ -94,7 +93,7 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
 
     public void UsaqFormuAc<T>() where T : Form
     {
-        var mövcudSehife = mdiTabControl.TabPages.OfType<TabPage>().FirstOrDefault(p => p.Tag is T);
+        TabPage? mövcudSehife = mdiTabControl.TabPages.OfType<TabPage>().FirstOrDefault(p => p.Tag is T);
 
         if (mövcudSehife != null)
         {
@@ -103,8 +102,8 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
         else
         {
             // Hər form üçün yeni scope yaradırıq
-            var scope = _serviceProvider.CreateScope();
-            var yeniForm = scope.ServiceProvider.GetRequiredService<T>();
+            IServiceScope scope = ServiceProvider.CreateScope();
+            T yeniForm = scope.ServiceProvider.GetRequiredService<T>();
             yeniForm.TopLevel = false;
             yeniForm.FormBorderStyle = FormBorderStyle.None;
             yeniForm.Dock = DockStyle.Fill;
@@ -112,7 +111,7 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
             // Initialize presenter for forms that need it
             InitializeFormPresenter(yeniForm, scope.ServiceProvider);
 
-            var yeniSehife = new TabPage(yeniForm.Text) { Tag = yeniForm };
+            TabPage yeniSehife = new(yeniForm.Text) { Tag = yeniForm };
             yeniSehife.Controls.Add(yeniForm);
             mdiTabControl.TabPages.Add(yeniSehife);
             mdiTabControl.SelectedTab = yeniSehife;
@@ -138,38 +137,38 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
         // Initialize presenter for SatisFormu
         if (form is SatisFormu satisFormu)
         {
-            var satisManager = serviceProvider.GetRequiredService<SatisManager>();
-            var mehsulManager = serviceProvider.GetRequiredService<MehsulManager>();
-            var musteriManager = serviceProvider.GetRequiredService<MusteriManager>();
-            var satisPresenter = new Teqdimatcilar.SatisPresenter(satisFormu, satisManager, mehsulManager, musteriManager);
+            SatisManager satisManager = serviceProvider.GetRequiredService<SatisManager>();
+            MehsulManager mehsulManager = serviceProvider.GetRequiredService<MehsulManager>();
+            MusteriManager musteriManager = serviceProvider.GetRequiredService<MusteriManager>();
+            SatisPresenter satisPresenter = new(satisFormu, satisManager, mehsulManager, musteriManager);
             satisFormu.InitializePresenter(satisPresenter);
         }
         // Initialize presenter for TemirIdareetmeFormu
         else if (form is TemirIdareetmeFormu temirFormu)
         {
-            var temirManager = serviceProvider.GetRequiredService<TemirManager>();
-            var musteriManager = serviceProvider.GetRequiredService<MusteriManager>();
-            var istifadeciManager = serviceProvider.GetRequiredService<IstifadeciManager>();
-            var mehsulManager = serviceProvider.GetRequiredService<MehsulManager>();
-            var dialogXidmeti = new Xidmetler.DialogXidmeti();
-            var temirPresenter = new Teqdimatcilar.TemirPresenter(temirFormu, temirManager, musteriManager, istifadeciManager, mehsulManager, dialogXidmeti);
+            TemirManager temirManager = serviceProvider.GetRequiredService<TemirManager>();
+            MusteriManager musteriManager = serviceProvider.GetRequiredService<MusteriManager>();
+            IstifadeciManager istifadeciManager = serviceProvider.GetRequiredService<IstifadeciManager>();
+            MehsulManager mehsulManager = serviceProvider.GetRequiredService<MehsulManager>();
+            DialogXidmeti dialogXidmeti = new();
+            TemirPresenter temirPresenter = new(temirFormu, temirManager, musteriManager, istifadeciManager, mehsulManager, dialogXidmeti);
             temirFormu.InitializePresenter(temirPresenter);
         }
         // Initialize presenter for QaytarmaFormu
         else if (form is QaytarmaFormu qaytarmaFormu)
         {
-            var qaytarmaManager = serviceProvider.GetRequiredService<QaytarmaManager>();
-            var satisManager = serviceProvider.GetRequiredService<SatisManager>();
-            var mehsulManager = serviceProvider.GetRequiredService<MehsulManager>();
-            var maliyyeManager = serviceProvider.GetRequiredService<MaliyyeManager>();
-            var qaytarmaPresenter = new Teqdimatcilar.QaytarmaPresenter(qaytarmaFormu, qaytarmaManager, satisManager, mehsulManager, maliyyeManager);
+            QaytarmaManager qaytarmaManager = serviceProvider.GetRequiredService<QaytarmaManager>();
+            SatisManager satisManager = serviceProvider.GetRequiredService<SatisManager>();
+            MehsulManager mehsulManager = serviceProvider.GetRequiredService<MehsulManager>();
+            MaliyyeManager maliyyeManager = serviceProvider.GetRequiredService<MaliyyeManager>();
+            QaytarmaPresenter qaytarmaPresenter = new(qaytarmaFormu, qaytarmaManager, satisManager, mehsulManager, maliyyeManager);
             qaytarmaFormu.InitializePresenter(qaytarmaPresenter);
         }
         // Initialize presenter for XercIdareetmeFormu
         else if (form is XercIdareetmeFormu xercFormu)
         {
-            var maliyyeManager = serviceProvider.GetRequiredService<MaliyyeManager>();
-            var xercPresenter = new Teqdimatcilar.XercPresenter(xercFormu, maliyyeManager);
+            MaliyyeManager maliyyeManager = serviceProvider.GetRequiredService<MaliyyeManager>();
+            XercPresenter xercPresenter = new(xercFormu, maliyyeManager);
             xercFormu.InitializePresenter(xercPresenter);
         }
     }
@@ -225,7 +224,7 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
     private void UpdateActiveButtonHighlight()
     {
         // Bütün düymələri normal vəziyyətə qaytır
-        foreach (var btn in _formButtonMap.Values)
+        foreach (MaterialButton btn in _formButtonMap.Values)
         {
             AnaMenuFormModernStyle.ResetButton(btn);
         }
@@ -233,10 +232,10 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
         // Aktiv düyməni vurğula
         if (mdiTabControl.SelectedTab?.Tag is Form aktivForm)
         {
-            var formTipi = aktivForm.GetType();
+            Type formTipi = aktivForm.GetType();
             if (_formButtonMap.ContainsKey(formTipi))
             {
-                var aktivButton = _formButtonMap[formTipi];
+                MaterialButton aktivButton = _formButtonMap[formTipi];
                 AnaMenuFormModernStyle.HighlightActiveButton(aktivButton);
             }
         }
@@ -244,24 +243,24 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
 
     private Image CreateInitialsAvatar(string fullName, Color backColor)
     {
-        var initials = string.Concat(fullName.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s[0])).ToUpper();
+        string initials = string.Concat(fullName.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s[0])).ToUpper();
         if (initials.Length > 2)
         {
             initials = initials[..2];
         }
 
-        var bmp = new Bitmap(50, 50);
-        using (var g = Graphics.FromImage(bmp))
+        Bitmap bmp = new(50, 50);
+        using (Graphics g = Graphics.FromImage(bmp))
         {
             g.SmoothingMode = SmoothingMode.AntiAlias;
-            using (var brush = new SolidBrush(backColor))
+            using (SolidBrush brush = new(backColor))
             {
                 g.FillEllipse(brush, 0, 0, 50, 50);
             }
 
-            using var font = new Font("Segoe UI", 14, FontStyle.Bold);
-            var textSize = g.MeasureString(initials, font);
-            var textPoint = new PointF((50 - textSize.Width) / 2, (50 - textSize.Height) / 2);
+            using Font font = new("Segoe UI", 14, FontStyle.Bold);
+            SizeF textSize = g.MeasureString(initials, font);
+            PointF textPoint = new((50 - textSize.Width) / 2, (50 - textSize.Height) / 2);
             g.DrawString(initials, font, Brushes.White, textPoint);
         }
         return bmp;
@@ -319,8 +318,8 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
         try
         {
             // Günlük satış məbləğini hesablayırıq
-            var hesabatManager = _serviceProvider.GetRequiredService<HesabatManager>();
-            var gunlukHesabat = await hesabatManager.GunlukSatisHesabatiGetirAsync(DateTime.Today);
+            HesabatManager hesabatManager = ServiceProvider.GetRequiredService<HesabatManager>();
+            EmeliyyatNeticesi<GunlukSatisHesabatDto> gunlukHesabat = await hesabatManager.GunlukSatisHesabatiGetirAsync(DateTime.Today);
             if (gunlukHesabat.UgurluDur && lblDailySalesValue != null)
             {
                 lblDailySalesValue.Text = $"{gunlukHesabat.Data.UmumiDovriyye:N2} AZN";
@@ -333,7 +332,9 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
         catch
         {
             if (lblDailySalesValue != null)
+            {
                 lblDailySalesValue.Text = "0.00 AZN";
+            }
         }
 
         // Aktiv növbə məlumatlarını göstəririk
@@ -343,16 +344,9 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
             {
                 if (AktivSessiya.AktivNovbeId.HasValue)
                 {
-                    var novbeManager = _serviceProvider.GetRequiredService<NovbeManager>();
-                    var novbe = await novbeManager.NovbeGetirAsync(AktivSessiya.AktivNovbeId.Value);
-                    if (novbe != null)
-                    {
-                        lblActiveShiftValue.Text = $"{AktivSessiya.AktivIstifadeci?.TamAd}\n{novbe.AcilmaTarixi:HH:mm}";
-                    }
-                    else
-                    {
-                        lblActiveShiftValue.Text = "Məlumat tapılmadı";
-                    }
+                    NovbeManager novbeManager = ServiceProvider.GetRequiredService<NovbeManager>();
+                    Novbe? novbe = await novbeManager.NovbeGetirAsync(AktivSessiya.AktivNovbeId.Value);
+                    lblActiveShiftValue.Text = novbe != null ? $"{AktivSessiya.AktivIstifadeci?.TamAd}\n{novbe.AcilmaTarixi:HH:mm}" : "Məlumat tapılmadı";
                 }
                 else
                 {
@@ -363,20 +357,22 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
         catch
         {
             if (lblActiveShiftValue != null)
+            {
                 lblActiveShiftValue.Text = "Xəta";
+            }
         }
 
         // Borclu müştəri sayını və ümumi borcu hesablayırıq
         try
         {
-            var musteriManager = _serviceProvider.GetRequiredService<MusteriManager>();
-            var musteriler = await musteriManager.ButunMusterileriGetirAsync();
+            MusteriManager musteriManager = ServiceProvider.GetRequiredService<MusteriManager>();
+            EmeliyyatNeticesi<List<MusteriDto>> musteriler = await musteriManager.ButunMusterileriGetirAsync();
 
             if (lblDebtorCustomersValue != null)
             {
                 if (musteriler.UgurluDur && musteriler.Data != null)
                 {
-                    var borcluMusteriSayi = musteriler.Data.Count(m => m.UmumiBorc > 0);
+                    int borcluMusteriSayi = musteriler.Data.Count(m => m.UmumiBorc > 0);
                     lblDebtorCustomersValue.Text = borcluMusteriSayi.ToString();
                 }
                 else
@@ -390,7 +386,7 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
             {
                 if (musteriler.UgurluDur && musteriler.Data != null)
                 {
-                    var umumiBorc = musteriler.Data.Sum(m => m.UmumiBorc);
+                    decimal umumiBorc = musteriler.Data.Sum(m => m.UmumiBorc);
                     lblTotalDebtValue.Text = $"{umumiBorc:N2} AZN";
                 }
                 else
@@ -402,9 +398,14 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
         catch
         {
             if (lblDebtorCustomersValue != null)
+            {
                 lblDebtorCustomersValue.Text = "0";
+            }
+
             if (lblTotalDebtValue != null)
+            {
                 lblTotalDebtValue.Text = "0.00 AZN";
+            }
         }
 
         // Aşağı stoklu məhsulların sayını hesablayırıq
@@ -412,35 +413,36 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
         {
             if (lblLowStockProductsValue != null)
             {
-                var mehsulMeneceri = _serviceProvider.GetRequiredService<MehsulMeneceri>();
-                var minimumStokMehsullari = await mehsulMeneceri.MinimumStokMehsullariniGetirAsync();
-                if (minimumStokMehsullari.UgurluDur)
-                {
-                    lblLowStockProductsValue.Text = minimumStokMehsullari.Data.Count.ToString();
-                }
-                else
-                {
-                    lblLowStockProductsValue.Text = "0";
-                }
+                MehsulMeneceri mehsulMeneceri = ServiceProvider.GetRequiredService<MehsulMeneceri>();
+                EmeliyyatNeticesi<List<MehsulDto>> minimumStokMehsullari = await mehsulMeneceri.MinimumStokMehsullariniGetirAsync();
+                lblLowStockProductsValue.Text = minimumStokMehsullari.UgurluDur ? minimumStokMehsullari.Data.Count.ToString() : "0";
             }
         }
         catch
         {
             if (lblLowStockProductsValue != null)
+            {
                 lblLowStockProductsValue.Text = "0";
+            }
         }
 
         // Aylıq satış məbləğini hesablayırıq (placeholder)
         if (lblMonthlySalesValue != null)
+        {
             lblMonthlySalesValue.Text = "N/A";
+        }
 
         // Aktiv təmir sayını hesablayırıq (placeholder)
         if (lblActiveRepairsValue != null)
+        {
             lblActiveRepairsValue.Text = "N/A";
+        }
 
         // Tədarükçü borcu (placeholder)
         if (lblSupplierDebtValue != null)
+        {
             lblSupplierDebtValue.Text = "N/A";
+        }
     }
 
     #endregion
@@ -448,7 +450,7 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
     // IAnaMenuView interface implementasiyası
     public void IcazeleriYoxla()
     {
-        var istifadeci = AktivSessiya.AktivIstifadeci;
+        IstifadeciDto? istifadeci = AktivSessiya.AktivIstifadeci;
         if (istifadeci == null)
         {
             MessageBox.Show("Aktiv istifadəçi sessiyası tapılmadı.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Stop);
@@ -474,7 +476,10 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
             panelColor = Color.FromArgb(44, 62, 80); // Neytral
             foreach (Control c in pnlMenu.Controls)
             {
-                if (c is MaterialButton button) button.Enabled = false;
+                if (c is MaterialButton button)
+                {
+                    button.Enabled = false;
+                }
             }
         }
 
@@ -494,7 +499,7 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
     // Operational Functions
     private void btnNovbeIdareetme_Click(object sender, EventArgs e)
     {
-        using (var form = _serviceProvider.GetRequiredService<NovbeIdareetmesiFormu>())
+        using (NovbeIdareetmesiFormu form = ServiceProvider.GetRequiredService<NovbeIdareetmesiFormu>())
         {
             form.ShowDialog();
         }
@@ -506,7 +511,7 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
         // Növbə açılmayıbsa istifadəçiyə növbə açmaq təklif edirik
         if (!AktivSessiya.AktivNovbeId.HasValue)
         {
-            var netice = MessageBox.Show(
+            DialogResult netice = MessageBox.Show(
                 "Satış əməliyyatı üçün növbə açılmalıdır.\n\nİndi növbə açmaq istəyirsiniz?",
                 "Növbə Tələb Olunur",
                 MessageBoxButtons.YesNo,
@@ -516,7 +521,7 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
             if (netice == DialogResult.Yes)
             {
                 // Növbə idarəetməsi formasını açırıq
-                using (var form = _serviceProvider.GetRequiredService<NovbeIdareetmesiFormu>())
+                using (NovbeIdareetmesiFormu form = ServiceProvider.GetRequiredService<NovbeIdareetmesiFormu>())
                 {
                     form.ShowDialog();
                 }

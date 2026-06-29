@@ -1,8 +1,8 @@
 // Fayl: AzAgroPOS.Teqdimat/Interfeysler/ITemirView.cs
-namespace AzAgroPOS.Teqdimat.Interfeysler;
 
 using AzAgroPOS.Mentiq.DTOs;
 
+namespace AzAgroPOS.Teqdimat.Interfeysler;
 /// <summary>
 ///  Temir view interfeysi. 
 ///  AzAgroPOS.Teqdimat.Interfeysler.ITemirView

@@ -1,9 +1,9 @@
 // Fayl: AzAgroPOS.Teqdimat/Interfeysler/IXercView.cs
-namespace AzAgroPOS.Teqdimat.Interfeysler;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Varliglar;
-using System.Windows.Forms;
+
+namespace AzAgroPOS.Teqdimat.Interfeysler;
 
 public interface IXercView
 {

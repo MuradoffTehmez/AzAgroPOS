@@ -1,13 +1,11 @@
 // Fayl: AzAgroPOS.Teqdimat/MinimumStokMehsullariFormu.cs
-namespace AzAgroPOS.Teqdimat;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
-using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
+
+namespace AzAgroPOS.Teqdimat;
 
 public partial class MinimumStokMehsullariFormu : BazaForm, IMinimumStokMehsullariView
 {

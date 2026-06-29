@@ -1,5 +1,6 @@
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using System.Data;
 
@@ -8,14 +9,14 @@ namespace AzAgroPOS.Teqdimat
     public partial class EhtiyatHissəsiFormu : Form, IEhtiyatHissəsiView
     {
         private readonly MehsulManager _mehsulManager;
-        private readonly List<EhtiyatHissəsiDto> _ehtiyatHissələri;
-        public List<EhtiyatHissəsiDto> EhtiyatHissələri => _ehtiyatHissələri;
+
+        public List<EhtiyatHissəsiDto> EhtiyatHissələri { get; }
 
         public EhtiyatHissəsiFormu(MehsulManager mehsulManager)
         {
             InitializeComponent();
             _mehsulManager = mehsulManager;
-            _ehtiyatHissələri = new List<EhtiyatHissəsiDto>();
+            EhtiyatHissələri = new List<EhtiyatHissəsiDto>();
             StilVerDataGridView(dgvMehsullar);
             StilVerDataGridView(dgvSeçilmişMehsullar);
         }
@@ -58,7 +59,7 @@ namespace AzAgroPOS.Teqdimat
 
         private async Task MehsullariYukle()
         {
-            var netice = await _mehsulManager.ButunMehsullariGetirAsync();
+            EmeliyyatNeticesi<IEnumerable<MehsulDto>> netice = await _mehsulManager.ButunMehsullariGetirAsync();
             if (netice.UgurluDur)
             {
                 dgvMehsullar.DataSource = netice.Data;
@@ -80,8 +81,8 @@ namespace AzAgroPOS.Teqdimat
         {
             if (dgvMehsullar.DataSource is List<MehsulDto> mehsullar)
             {
-                var axtarışMətni = txtAxtar.Text.ToLower();
-                var filtrlenmisMehsullar = mehsullar.Where(m =>
+                string axtarışMətni = txtAxtar.Text.ToLower();
+                List<MehsulDto> filtrlenmisMehsullar = mehsullar.Where(m =>
                     m.Ad.ToLower().Contains(axtarışMətni) ||
                     m.StokKodu.ToLower().Contains(axtarışMətni)).ToList();
 
@@ -95,7 +96,7 @@ namespace AzAgroPOS.Teqdimat
             {
                 if (decimal.TryParse(txtMiqdar.Text, out decimal miqdar) && miqdar > 0)
                 {
-                    var ehtiyatHissəsi = new EhtiyatHissəsiDto
+                    EhtiyatHissəsiDto ehtiyatHissəsi = new()
                     {
                         MehsulId = mehsul.Id,
                         MehsulAdi = mehsul.Ad,
@@ -103,7 +104,7 @@ namespace AzAgroPOS.Teqdimat
                         Qiymet = mehsul.AlisQiymeti
                     };
 
-                    _ehtiyatHissələri.Add(ehtiyatHissəsi);
+                    EhtiyatHissələri.Add(ehtiyatHissəsi);
                     SeçilmişMehsullariGoster();
                     txtMiqdar.Text = "1";
                 }
@@ -163,7 +164,7 @@ namespace AzAgroPOS.Teqdimat
         private void SeçilmişMehsullariGoster()
         {
             dgvSeçilmişMehsullar.DataSource = null;
-            dgvSeçilmişMehsullar.DataSource = _ehtiyatHissələri;
+            dgvSeçilmişMehsullar.DataSource = EhtiyatHissələri;
 
             if (dgvSeçilmişMehsullar.Columns.Count > 0)
             {
@@ -179,7 +180,7 @@ namespace AzAgroPOS.Teqdimat
         {
             if (dgvSeçilmişMehsullar.CurrentRow?.DataBoundItem is EhtiyatHissəsiDto ehtiyatHissəsi)
             {
-                _ehtiyatHissələri.Remove(ehtiyatHissəsi);
+                EhtiyatHissələri.Remove(ehtiyatHissəsi);
                 SeçilmişMehsullariGoster();
             }
         }

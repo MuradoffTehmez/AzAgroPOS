@@ -1,9 +1,8 @@
 // Fayl: AzAgroPOS.Teqdimat/Interfeysler/IHesabatView.cs
-namespace AzAgroPOS.Teqdimat.Interfeysler;
 
 using AzAgroPOS.Mentiq.DTOs;
-using System;
 
+namespace AzAgroPOS.Teqdimat.Interfeysler;
 /// <summary>
 /// Hesabatlar formu üçün "müqavilə".
 /// </summary>

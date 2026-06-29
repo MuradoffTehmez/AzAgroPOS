@@ -1,8 +1,6 @@
 // Fayl: AzAgroPOS.Teqdimat/Interfeysler/IBazaIdareetmeView.cs
+
 namespace AzAgroPOS.Teqdimat.Interfeysler;
-
-using System;
-
 /// <summary>
 /// Baza idarəetmə forması üçün interfeys.
 /// Verilənlər bazası backup və restore əməliyyatlarını idarə edir.

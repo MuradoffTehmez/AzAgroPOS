@@ -1,8 +1,8 @@
 ﻿// Fayl: AzAgroPOS.Teqdimat/Interfeysler/IBarkodCapiView.cs
-namespace AzAgroPOS.Teqdimat.Interfeysler;
 
 using AzAgroPOS.Mentiq.DTOs;
-using System.Collections.Generic;
+
+namespace AzAgroPOS.Teqdimat.Interfeysler;
 
 public interface IBarkodCapiView
 {

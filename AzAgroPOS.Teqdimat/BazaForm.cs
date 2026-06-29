@@ -14,7 +14,7 @@ namespace AzAgroPOS.Teqdimat
         public BazaForm()
         {
             InitializeComponent();
-            Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, (byte)0);
+            Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
             InitializeMaterialSkin();
             InitializeStatusMesaji();
         }
@@ -77,7 +77,9 @@ namespace AzAgroPOS.Teqdimat
             dgv.ColumnHeadersHeight = 45;
 
             foreach (DataGridViewColumn column in dgv.Columns)
+            {
                 column.SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
 
             dgv.RowHeadersVisible = false;
             dgv.DefaultCellStyle.Font = new Font("Segoe UI", 9.5F);
@@ -102,8 +104,8 @@ namespace AzAgroPOS.Teqdimat
         {
             if (e.RowIndex >= 0)
             {
-                var dgv = (DataGridView)sender;
-                var row = dgv.Rows[e.RowIndex];
+                DataGridView dgv = (DataGridView)sender;
+                DataGridViewRow row = dgv.Rows[e.RowIndex];
 
                 if (!row.Selected)
                 {
@@ -120,11 +122,13 @@ namespace AzAgroPOS.Teqdimat
         {
             if (e.RowIndex >= 0)
             {
-                var dgv = (DataGridView)sender;
-                var row = dgv.Rows[e.RowIndex];
+                DataGridView dgv = (DataGridView)sender;
+                DataGridViewRow row = dgv.Rows[e.RowIndex];
 
                 if (!row.Selected)
+                {
                     row.DefaultCellStyle.BackColor = originalRowColor;
+                }
             }
         }
 
@@ -155,7 +159,7 @@ namespace AzAgroPOS.Teqdimat
         {
             foreach (Control c in control.Controls)
             {
-                if (c is DataGridView || c is TextBox || c is ComboBox || c is Button || c is CheckBox)
+                if (c is DataGridView or TextBox or ComboBox or Button or CheckBox)
                 {
                     c.Enabled = false;
                 }
@@ -171,7 +175,7 @@ namespace AzAgroPOS.Teqdimat
         {
             foreach (Control c in control.Controls)
             {
-                if (c is DataGridView || c is TextBox || c is ComboBox || c is Button || c is CheckBox)
+                if (c is DataGridView or TextBox or ComboBox or Button or CheckBox)
                 {
                     c.Enabled = true;
                 }
@@ -222,7 +226,9 @@ namespace AzAgroPOS.Teqdimat
         protected void ButtonIcazeIleGoster(Control button, string icazeAdi)
         {
             if (button == null)
+            {
                 return;
+            }
 
             button.Visible = IcazeVarmi(icazeAdi);
         }
@@ -237,7 +243,9 @@ namespace AzAgroPOS.Teqdimat
         protected void ButtonIcazeIleAktivleshdir(Control button, string icazeAdi)
         {
             if (button == null)
+            {
                 return;
+            }
 
             button.Enabled = IcazeVarmi(icazeAdi);
         }
@@ -252,12 +260,16 @@ namespace AzAgroPOS.Teqdimat
         protected void ButtonlariIcazeIleKonfiqureEt(Dictionary<Control, string> buttonIcazeler, bool gizlet = false)
         {
             if (buttonIcazeler == null)
+            {
                 return;
+            }
 
-            foreach (var pair in buttonIcazeler)
+            foreach (KeyValuePair<Control, string> pair in buttonIcazeler)
             {
                 if (pair.Key == null)
+                {
                     continue;
+                }
 
                 bool icazeVar = IcazeVarmi(pair.Value);
 

@@ -1,13 +1,9 @@
 // Fayl: AzAgroPOS.Teqdimat/Servisler/CapServisi.cs
-namespace AzAgroPOS.Teqdimat.Servisler;
 
 using AzAgroPOS.Mentiq.DTOs;
-using System;
-using System.Drawing;
 using System.Drawing.Printing;
-using System.Linq;
-using System.Windows.Forms;
 
+namespace AzAgroPOS.Teqdimat.Servisler;
 /// <summary>
 /// 80mm termal printer ucun cek cap servisi.
 /// Standart 80mm printer ucun optimize edilib (285px genislik).
@@ -158,7 +154,7 @@ public class CapServisi
     /// </summary>
     public static string DefaultPrinterGetir()
     {
-        using var pd = new PrintDocument();
+        using PrintDocument pd = new();
         return pd.PrinterSettings.PrinterName;
     }
 
@@ -168,7 +164,10 @@ public class CapServisi
 
     private void PrintDocument_PrintPage(object sender, PrintPageEventArgs e)
     {
-        if (_qebzMelumatlari == null || e.Graphics == null) return;
+        if (_qebzMelumatlari == null || e.Graphics == null)
+        {
+            return;
+        }
 
         Graphics g = e.Graphics;
         float y = 10;
@@ -262,7 +261,7 @@ public class CapServisi
         DrawSolidLine(g, ref y, x, width);
 
         // Mehsullar
-        foreach (var mehsul in _qebzMelumatlari!.SatilanMehsullar)
+        foreach (SatisSebetiElementiDto mehsul in _qebzMelumatlari!.SatilanMehsullar)
         {
             // Mehsul adi (uzun adlari qisalt)
             string mehsulAdi = TruncateText(mehsul.MehsulAdi, colName - 5, _smallFont, g);
@@ -373,7 +372,7 @@ public class CapServisi
     /// </summary>
     private void DrawDashedLine(Graphics g, ref float y, float x, float width)
     {
-        using var pen = new Pen(Color.Black, 1) { DashStyle = System.Drawing.Drawing2D.DashStyle.Dash };
+        using Pen pen = new(Color.Black, 1) { DashStyle = System.Drawing.Drawing2D.DashStyle.Dash };
         g.DrawLine(pen, x, y, x + width, y);
         y += 5;
     }
@@ -392,10 +391,16 @@ public class CapServisi
     /// </summary>
     private string TruncateText(string text, float maxWidth, Font font, Graphics g)
     {
-        if (string.IsNullOrEmpty(text)) return string.Empty;
+        if (string.IsNullOrEmpty(text))
+        {
+            return string.Empty;
+        }
 
-        var size = g.MeasureString(text, font);
-        if (size.Width <= maxWidth) return text;
+        SizeF size = g.MeasureString(text, font);
+        if (size.Width <= maxWidth)
+        {
+            return text;
+        }
 
         // Metni qisalt
         while (text.Length > 3 && g.MeasureString(text + "...", font).Width > maxWidth)

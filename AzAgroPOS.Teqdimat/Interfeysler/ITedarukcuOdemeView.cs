@@ -1,10 +1,8 @@
 // Fayl: AzAgroPOS.Teqdimat/Interfeysler/ITedarukcuOdemeView.cs
-namespace AzAgroPOS.Teqdimat.Interfeysler;
 
 using AzAgroPOS.Mentiq.DTOs;
-using System;
-using System.Collections.Generic;
 
+namespace AzAgroPOS.Teqdimat.Interfeysler;
 /// <summary>
 /// Tədarükçü ödənişi idarəetmə forması üçün interfeys.
 /// </summary>

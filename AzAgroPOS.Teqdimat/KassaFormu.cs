@@ -1,14 +1,12 @@
 // Fayl: AzAgroPOS.Teqdimat/KassaFormu.cs
-namespace AzAgroPOS.Teqdimat;
 
+using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Teqdimat.Yardimcilar;
 using AzAgroPOS.Varliglar;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
+namespace AzAgroPOS.Teqdimat;
 /// <summary>
 /// Mərkəzi kassa və maliyyə idarəetmə forması.
 /// Diqqət: Bu forma xərcləri, kassa hərəkətlərini və maliyyə hesabatlarını idarə edir.
@@ -72,7 +70,7 @@ public partial class KassaFormu : BazaForm
     {
         try
         {
-            var netice = await _maliyyeManager.ButunXercleriDtoFormatindaGetirAsync();
+            EmeliyyatNeticesi<List<XercDto>> netice = await _maliyyeManager.ButunXercleriDtoFormatindaGetirAsync();
             if (netice.UgurluDur && netice.Data != null)
             {
                 dgvXercler.DataSource = netice.Data.ToList();
@@ -94,18 +92,31 @@ public partial class KassaFormu : BazaForm
     /// </summary>
     private void FormatXerclerGrid()
     {
-        if (dgvXercler.Columns.Count == 0) return;
+        if (dgvXercler.Columns.Count == 0)
+        {
+            return;
+        }
 
         // Sütunların mövcudluğunu yoxlayaraq formatla
         if (dgvXercler.Columns["Id"] != null)
+        {
             dgvXercler.Columns["Id"].Visible = false;
+        }
+
         if (dgvXercler.Columns["IstifadeciId"] != null)
+        {
             dgvXercler.Columns["IstifadeciId"].Visible = false;
+        }
 
         if (dgvXercler.Columns["Novu"] != null)
+        {
             dgvXercler.Columns["Novu"].HeaderText = "Növ";
+        }
+
         if (dgvXercler.Columns["Ad"] != null)
+        {
             dgvXercler.Columns["Ad"].HeaderText = "Ad";
+        }
 
         if (dgvXercler.Columns["Mebleg"] != null)
         {
@@ -120,11 +131,19 @@ public partial class KassaFormu : BazaForm
         }
 
         if (dgvXercler.Columns["SenedNomresi"] != null)
+        {
             dgvXercler.Columns["SenedNomresi"].HeaderText = "Sənəd №";
+        }
+
         if (dgvXercler.Columns["Qeyd"] != null)
+        {
             dgvXercler.Columns["Qeyd"].HeaderText = "Qeyd";
+        }
+
         if (dgvXercler.Columns["IstifadeciAdi"] != null)
+        {
             dgvXercler.Columns["IstifadeciAdi"].HeaderText = "İstifadəçi";
+        }
 
         dgvXercler.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
     }
@@ -146,7 +165,7 @@ public partial class KassaFormu : BazaForm
     {
         try
         {
-            var netice = await _maliyyeManager.XercYaratAsync(
+            EmeliyyatNeticesi<int> netice = await _maliyyeManager.XercYaratAsync(
                 (XercNovu)cmbXercNovu.SelectedItem,
                 txtXercAd.Text,
                 numXercMebleg.Value,
@@ -197,7 +216,7 @@ public partial class KassaFormu : BazaForm
     {
         try
         {
-            var netice = await _maliyyeManager.XercYenileAsync(
+            EmeliyyatNeticesi netice = await _maliyyeManager.XercYenileAsync(
                 _seciliXercId,
                 (XercNovu)cmbXercNovu.SelectedItem,
                 txtXercAd.Text,
@@ -237,13 +256,16 @@ public partial class KassaFormu : BazaForm
             return;
         }
 
-        var tesdiq = MessageBox.Show(
+        DialogResult tesdiq = MessageBox.Show(
             "Bu xərci silmək istəyirsiniz?",
             "Təsdiq",
             MessageBoxButtons.YesNo,
             MessageBoxIcon.Question);
 
-        if (tesdiq != DialogResult.Yes) return;
+        if (tesdiq != DialogResult.Yes)
+        {
+            return;
+        }
 
         _ = XercSilAsync();
     }
@@ -252,7 +274,7 @@ public partial class KassaFormu : BazaForm
     {
         try
         {
-            var netice = await _maliyyeManager.XercSilAsync(_seciliXercId);
+            EmeliyyatNeticesi netice = await _maliyyeManager.XercSilAsync(_seciliXercId);
 
             if (netice.UgurluDur)
             {
@@ -286,7 +308,7 @@ public partial class KassaFormu : BazaForm
 
         try
         {
-            var seciliXerc = dgvXercler.SelectedRows[0];
+            DataGridViewRow seciliXerc = dgvXercler.SelectedRows[0];
             _seciliXercId = (int)seciliXerc.Cells["Id"].Value;
 
             cmbXercNovu.SelectedItem = seciliXerc.Cells["Novu"].Value;
@@ -357,7 +379,7 @@ public partial class KassaFormu : BazaForm
     {
         try
         {
-            var netice = await _maliyyeManager.KassaHareketleriniGetirAsync(
+            EmeliyyatNeticesi<List<KassaHareketi>> netice = await _maliyyeManager.KassaHareketleriniGetirAsync(
                 dtpBaslangic.Value.Date,
                 dtpBitis.Value.Date);
 
@@ -382,19 +404,36 @@ public partial class KassaFormu : BazaForm
     /// </summary>
     private void FormatKassaHareketleriGrid()
     {
-        if (dgvKassaHareketleri.Columns.Count == 0) return;
+        if (dgvKassaHareketleri.Columns.Count == 0)
+        {
+            return;
+        }
 
         if (dgvKassaHareketleri.Columns["Id"] != null)
+        {
             dgvKassaHareketleri.Columns["Id"].Visible = false;
+        }
+
         if (dgvKassaHareketleri.Columns["EmeliyyatId"] != null)
+        {
             dgvKassaHareketleri.Columns["EmeliyyatId"].Visible = false;
+        }
+
         if (dgvKassaHareketleri.Columns["IstifadeciId"] != null)
+        {
             dgvKassaHareketleri.Columns["IstifadeciId"].Visible = false;
+        }
 
         if (dgvKassaHareketleri.Columns["HareketNovu"] != null)
+        {
             dgvKassaHareketleri.Columns["HareketNovu"].HeaderText = "Hərəkət Növü";
+        }
+
         if (dgvKassaHareketleri.Columns["EmeliyyatNovu"] != null)
+        {
             dgvKassaHareketleri.Columns["EmeliyyatNovu"].HeaderText = "Əməliyyat";
+        }
+
         if (dgvKassaHareketleri.Columns["Mebleg"] != null)
         {
             dgvKassaHareketleri.Columns["Mebleg"].HeaderText = "Məbləğ";
@@ -406,22 +445,17 @@ public partial class KassaFormu : BazaForm
             dgvKassaHareketleri.Columns["Tarix"].DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
         }
         if (dgvKassaHareketleri.Columns["Qeyd"] != null)
+        {
             dgvKassaHareketleri.Columns["Qeyd"].HeaderText = "Qeyd";
+        }
 
         // Hərəkət növünə görə rəng
         foreach (DataGridViewRow row in dgvKassaHareketleri.Rows)
         {
             if (row.Cells["HareketNovu"].Value != null)
             {
-                var hareketNovu = (KassaHareketiNovu)row.Cells["HareketNovu"].Value;
-                if (hareketNovu == KassaHareketiNovu.Daxilolma)
-                {
-                    row.DefaultCellStyle.ForeColor = System.Drawing.Color.Green;
-                }
-                else
-                {
-                    row.DefaultCellStyle.ForeColor = System.Drawing.Color.Red;
-                }
+                KassaHareketiNovu hareketNovu = (KassaHareketiNovu)row.Cells["HareketNovu"].Value;
+                row.DefaultCellStyle.ForeColor = hareketNovu == KassaHareketiNovu.Daxilolma ? Color.Green : Color.Red;
             }
         }
 
@@ -447,14 +481,14 @@ public partial class KassaFormu : BazaForm
     {
         try
         {
-            var baslangic = dtpXesabatBaslangic.Value.Date;
-            var bitis = dtpXesabatBitis.Value.Date;
+            DateTime baslangic = dtpXesabatBaslangic.Value.Date;
+            DateTime bitis = dtpXesabatBitis.Value.Date;
 
             // Gəlirləri hesabla
-            var kassaHareketleriNetice = await _maliyyeManager.KassaHareketleriniGetirAsync(baslangic, bitis);
+            EmeliyyatNeticesi<List<KassaHareketi>> kassaHareketleriNetice = await _maliyyeManager.KassaHareketleriniGetirAsync(baslangic, bitis);
             if (kassaHareketleriNetice.UgurluDur && kassaHareketleriNetice.Data != null)
             {
-                var gelirler = kassaHareketleriNetice.Data
+                decimal gelirler = kassaHareketleriNetice.Data
                     .Where(k => k.HareketNovu == KassaHareketiNovu.Daxilolma)
                     .Sum(k => k.Mebleg);
 
@@ -462,17 +496,17 @@ public partial class KassaFormu : BazaForm
             }
 
             // Xərcləri hesabla
-            var xercCemiNetice = await _maliyyeManager.XercCeminiHesablaAsync(baslangic, bitis);
+            EmeliyyatNeticesi<decimal> xercCemiNetice = await _maliyyeManager.XercCeminiHesablaAsync(baslangic, bitis);
             if (xercCemiNetice.UgurluDur)
             {
                 lblUmumiXerc.Text = $"Ümumi Xərc: {xercCemiNetice.Data:N2} AZN";
             }
 
             // Mənfəət/Zərəri hesabla
-            var menfeetNetice = await _maliyyeManager.MenfeetZerereHesablaAsync(baslangic, bitis);
+            EmeliyyatNeticesi<decimal> menfeetNetice = await _maliyyeManager.MenfeetZerereHesablaAsync(baslangic, bitis);
             if (menfeetNetice.UgurluDur)
             {
-                var menfeet = menfeetNetice.Data;
+                decimal menfeet = menfeetNetice.Data;
                 lblMenfeetZerere.Text = menfeet >= 0
                     ? $"Mənfəət: {menfeet:N2} AZN"
                     : $"Zərər: {Math.Abs(menfeet):N2} AZN";
@@ -483,18 +517,18 @@ public partial class KassaFormu : BazaForm
             }
 
             // Cari kassa balansını hesabla (bütün tarixlər üçün)
-            var butunHareketlerNetice = await _maliyyeManager.KassaHareketleriniGetirAsync();
+            EmeliyyatNeticesi<List<KassaHareketi>> butunHareketlerNetice = await _maliyyeManager.KassaHareketleriniGetirAsync();
             if (butunHareketlerNetice.UgurluDur && butunHareketlerNetice.Data != null)
             {
-                var gelirlerCem = butunHareketlerNetice.Data
+                decimal gelirlerCem = butunHareketlerNetice.Data
                     .Where(k => k.HareketNovu == KassaHareketiNovu.Daxilolma)
                     .Sum(k => k.Mebleg);
 
-                var xerclerCem = butunHareketlerNetice.Data
+                decimal xerclerCem = butunHareketlerNetice.Data
                     .Where(k => k.HareketNovu == KassaHareketiNovu.Cixis)
                     .Sum(k => k.Mebleg);
 
-                var balans = gelirlerCem - xerclerCem;
+                decimal balans = gelirlerCem - xerclerCem;
                 lblCariBalans.Text = $"Cari Balans: {balans:N2} AZN";
                 lblCariBalans.ForeColor = balans >= 0
                     ? System.Drawing.Color.Green

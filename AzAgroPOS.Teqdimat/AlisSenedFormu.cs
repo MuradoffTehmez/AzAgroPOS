@@ -113,32 +113,65 @@ namespace AzAgroPOS.Teqdimat
             {
                 // Sütunların mövcudluğunu yoxlayaraq formatla
                 if (dgvSenetler.Columns["Id"] != null)
+                {
                     dgvSenetler.Columns["Id"].Visible = false;
+                }
+
                 if (dgvSenetler.Columns["TedarukcuId"] != null)
+                {
                     dgvSenetler.Columns["TedarukcuId"].Visible = false;
+                }
+
                 if (dgvSenetler.Columns["SenedSetirleri"] != null)
+                {
                     dgvSenetler.Columns["SenedSetirleri"].Visible = false;
+                }
 
                 if (dgvSenetler.Columns["SenedNomresi"] != null)
+                {
                     dgvSenetler.Columns["SenedNomresi"].HeaderText = "Sənəd №";
+                }
+
                 if (dgvSenetler.Columns["YaradilmaTarixi"] != null)
+                {
                     dgvSenetler.Columns["YaradilmaTarixi"].HeaderText = "Yaradılma Tarixi";
+                }
+
                 if (dgvSenetler.Columns["TedarukcuAdi"] != null)
+                {
                     dgvSenetler.Columns["TedarukcuAdi"].HeaderText = "Tədarükçü";
+                }
+
                 if (dgvSenetler.Columns["TehvilTarixi"] != null)
+                {
                     dgvSenetler.Columns["TehvilTarixi"].HeaderText = "Təhvil Tarixi";
+                }
+
                 if (dgvSenetler.Columns["UmumiMebleg"] != null)
+                {
                     dgvSenetler.Columns["UmumiMebleg"].HeaderText = "Ümumi Məbləğ";
+                }
+
                 if (dgvSenetler.Columns["Status"] != null)
+                {
                     dgvSenetler.Columns["Status"].HeaderText = "Status";
+                }
+
                 if (dgvSenetler.Columns["Qeydler"] != null)
+                {
                     dgvSenetler.Columns["Qeydler"].HeaderText = "Qeydlər";
+                }
 
                 // Format tarixi
                 if (dgvSenetler.Columns["YaradilmaTarixi"] != null)
+                {
                     dgvSenetler.Columns["YaradilmaTarixi"].DefaultCellStyle.Format = "dd.MM.yyyy";
+                }
+
                 if (dgvSenetler.Columns["TehvilTarixi"] != null)
+                {
                     dgvSenetler.Columns["TehvilTarixi"].DefaultCellStyle.Format = "dd.MM.yyyy";
+                }
 
                 // Format məbləğ
                 if (dgvSenetler.Columns["UmumiMebleg"] != null)
@@ -167,24 +200,49 @@ namespace AzAgroPOS.Teqdimat
             {
                 // Sütunların mövcudluğunu yoxlayaraq formatla
                 if (dgvSenedSetirleri.Columns["Id"] != null)
+                {
                     dgvSenedSetirleri.Columns["Id"].Visible = false;
+                }
+
                 if (dgvSenedSetirleri.Columns["AlisSenedId"] != null)
+                {
                     dgvSenedSetirleri.Columns["AlisSenedId"].Visible = false;
+                }
+
                 if (dgvSenedSetirleri.Columns["MehsulId"] != null)
+                {
                     dgvSenedSetirleri.Columns["MehsulId"].Visible = false;
+                }
+
                 if (dgvSenedSetirleri.Columns["AlisSifarisSetiriId"] != null)
+                {
                     dgvSenedSetirleri.Columns["AlisSifarisSetiriId"].Visible = false;
+                }
+
                 if (dgvSenedSetirleri.Columns["AlisSifarisSetiriNomresi"] != null)
+                {
                     dgvSenedSetirleri.Columns["AlisSifarisSetiriNomresi"].Visible = false;
+                }
 
                 if (dgvSenedSetirleri.Columns["MehsulAdi"] != null)
+                {
                     dgvSenedSetirleri.Columns["MehsulAdi"].HeaderText = "Məhsul";
+                }
+
                 if (dgvSenedSetirleri.Columns["Miqdar"] != null)
+                {
                     dgvSenedSetirleri.Columns["Miqdar"].HeaderText = "Miqdar";
+                }
+
                 if (dgvSenedSetirleri.Columns["BirVahidQiymet"] != null)
+                {
                     dgvSenedSetirleri.Columns["BirVahidQiymet"].HeaderText = "Vahid Qiyməti";
+                }
+
                 if (dgvSenedSetirleri.Columns["CemiMebleg"] != null)
+                {
                     dgvSenedSetirleri.Columns["CemiMebleg"].HeaderText = "Cəmi Məbləğ";
+                }
 
                 // Format
                 if (dgvSenedSetirleri.Columns["Miqdar"] != null)
@@ -249,7 +307,9 @@ namespace AzAgroPOS.Teqdimat
             dtpTehvilTarixi.Value = DateTime.Now;
             txtQeydler.Clear();
             if (cmbTedarukcu.Items.Count > 0)
+            {
                 cmbTedarukcu.SelectedIndex = 0;
+            }
 
             _senedSetirleri.Clear();
             SenedSetirleriniGoster(_senedSetirleri);
@@ -322,7 +382,7 @@ namespace AzAgroPOS.Teqdimat
                 return;
             }
 
-            var result = MessageBox.Show(
+            DialogResult result = MessageBox.Show(
                 "Seçilmiş sənədi silmək istədiyinizdən əminsiniz?",
                 "Təsdiq",
                 MessageBoxButtons.YesNo,
@@ -356,8 +416,8 @@ namespace AzAgroPOS.Teqdimat
                 return;
             }
 
-            var mehsulDto = cmbMehsul.SelectedItem as MehsulDto;
-            var setir = new AlisSenedSetiriDto
+            MehsulDto? mehsulDto = cmbMehsul.SelectedItem as MehsulDto;
+            AlisSenedSetiriDto setir = new()
             {
                 MehsulId = mehsulId,
                 MehsulAdi = mehsulDto?.Ad ?? "",

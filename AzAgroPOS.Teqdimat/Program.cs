@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace AzAgroPOS.Teqdimat
 {
@@ -37,12 +38,14 @@ namespace AzAgroPOS.Teqdimat
 
             // ── 2. Logger konfiqurasiyası ──────────────────────────────────
             if (!InitializeLogger())
+            {
                 return; // kritik: logger olmadan davam etmirik
+            }
 
             // ── 3. DI + Verilənlər bazası + UI ────────────────────────────
             try
             {
-                var services = new ServiceCollection();
+                ServiceCollection services = new();
                 ConfigureServices(services);
                 ServiceProvider = services.BuildServiceProvider();
 
@@ -114,21 +117,21 @@ namespace AzAgroPOS.Teqdimat
 
         private static void RunApplication()
         {
-            var loginFormu = ServiceProvider.GetRequiredService<LoginFormu>();
-            var tehlukesizlikManager = ServiceProvider.GetRequiredService<TehlukesizlikManager>();
-            var unitOfWork = ServiceProvider.GetRequiredService<IUnitOfWork>();
-            var icazeManager = ServiceProvider.GetRequiredService<IcazeManager>();
+            LoginFormu loginFormu = ServiceProvider.GetRequiredService<LoginFormu>();
+            TehlukesizlikManager tehlukesizlikManager = ServiceProvider.GetRequiredService<TehlukesizlikManager>();
+            IUnitOfWork unitOfWork = ServiceProvider.GetRequiredService<IUnitOfWork>();
+            IcazeManager icazeManager = ServiceProvider.GetRequiredService<IcazeManager>();
 
-            using var loginPresenter = new LoginPresenter(
+            using LoginPresenter loginPresenter = new(
                 loginFormu, tehlukesizlikManager, unitOfWork, icazeManager, ServiceProvider);
 
             loginFormu.InitializePresenter(loginPresenter);
 
-            var dialogResult = loginFormu.ShowDialog();
+            DialogResult dialogResult = loginFormu.ShowDialog();
 
             if (dialogResult == DialogResult.OK && loginFormu.UgurluDaxilOlundu)
             {
-                var anaMenuFormu = ServiceProvider.GetRequiredService<AnaMenuFormu>();
+                AnaMenuFormu anaMenuFormu = ServiceProvider.GetRequiredService<AnaMenuFormu>();
                 Application.Run(anaMenuFormu);
             }
         }
@@ -147,7 +150,7 @@ namespace AzAgroPOS.Teqdimat
             int exitCode,
             bool terminate)
         {
-            var sb = new System.Text.StringBuilder();
+            StringBuilder sb = new();
             sb.AppendLine($"Xəta növü : {ex.GetType().FullName}");
             sb.AppendLine($"Mesaj     : {ex.Message}");
 
@@ -174,7 +177,9 @@ namespace AzAgroPOS.Teqdimat
                 terminate ? MessageBoxIcon.Error : MessageBoxIcon.Warning);
 
             if (terminate)
+            {
                 Environment.Exit(exitCode);
+            }
         }
 
         private static bool InitializeLogger()
@@ -249,8 +254,10 @@ namespace AzAgroPOS.Teqdimat
                     configuration, Konfiqurasiya.Sabitler.DefaultConnection);
 
                 if (string.IsNullOrWhiteSpace(connectionString))
+                {
                     throw new InvalidOperationException(
                         "Connection string boşdur. appsettings.json-da 'DefaultConnection' dəyərini yoxlayın.");
+                }
             }
             catch (InvalidOperationException) { throw; }
             catch (Exception ex)
@@ -395,16 +402,16 @@ namespace AzAgroPOS.Teqdimat
 
             for (int attempt = 1; attempt <= maxRetry; attempt++)
             {
-                using var connection = new SqlConnection(connectionString);
+                using SqlConnection connection = new(connectionString);
                 try
                 {
                     connection.Open();
 
                     // Əlavə yoxlama: real sorğu göndər
-                    using var cmd = connection.CreateCommand();
+                    using SqlCommand cmd = connection.CreateCommand();
                     cmd.CommandText = "SELECT @@VERSION";
                     cmd.CommandTimeout = 10;
-                    var version = cmd.ExecuteScalar()?.ToString();
+                    string? version = cmd.ExecuteScalar()?.ToString();
 
                     AzAgroPOS.Mentiq.Yardimcilar.Logger.MelumatYaz(
                         $"VB bağlantısı uğurlu (cəhd #{attempt}). " +
@@ -423,7 +430,9 @@ namespace AzAgroPOS.Teqdimat
                         $"Kod: {ex.Number}, Mesaj: {ex.Message}");
 
                     if (attempt == maxRetry)
+                    {
                         throw new InvalidOperationException(BuildSqlErrorMessage(connectionString, ex), ex);
+                    }
 
                     Thread.Sleep(retryDelay);
                 }
@@ -460,7 +469,7 @@ namespace AzAgroPOS.Teqdimat
 
         private static string BuildSqlErrorMessage(string connectionString, SqlException ex)
         {
-            var sb = new System.Text.StringBuilder();
+            StringBuilder sb = new();
             sb.AppendLine("═══ VERİLƏNLƏR BAZASI BAĞLANTI XƏTAı ═══");
             sb.AppendLine();
             sb.AppendLine($"Connection String : {MaskConnectionString(connectionString)}");
@@ -480,9 +489,13 @@ namespace AzAgroPOS.Teqdimat
             sb.AppendLine("  4. SSMS ilə manual bağlantı test edin");
 
             if (ex.Number == 18456)
+            {
                 sb.AppendLine("  5. SQL Server login/şifrəni yoxlayın (Xəta 18456: Login failed)");
+            }
             else if (ex.Number == 4060)
+            {
                 sb.AppendLine("  5. Verilənlər bazasının mövcudluğunu yoxlayın (Xəta 4060)");
+            }
 
             return sb.ToString();
         }
@@ -501,7 +514,9 @@ namespace AzAgroPOS.Teqdimat
             object sender, UnhandledExceptionEventArgs e)
         {
             if (e.ExceptionObject is Exception exception)
+            {
                 HandleUnhandledException(exception, "Non-UI Thread", e.IsTerminating);
+            }
         }
 
         /// <summary>
@@ -529,7 +544,7 @@ namespace AzAgroPOS.Teqdimat
                 ? "Tətbiq bağlanacaq."
                 : "Əməliyyat ləğv edildi, tətbiq davam edir.";
 
-            var sb = new System.Text.StringBuilder();
+            StringBuilder sb = new();
             sb.AppendLine($"Mənbə    : {mənbə}");
             sb.AppendLine($"Növ      : {exception.GetType().FullName}");
             sb.AppendLine($"Mesaj    : {exception.Message}");
@@ -558,7 +573,9 @@ namespace AzAgroPOS.Teqdimat
             }
 
             if (isTerminating)
+            {
                 Environment.Exit(EXIT_UNHANDLED_ERROR);
+            }
         }
 
         // ══════════════════════════════════════════════════════════════════
@@ -570,8 +587,8 @@ namespace AzAgroPOS.Teqdimat
         /// </summary>
         private static string BuildInnerExceptionChain(Exception ex)
         {
-            var sb = new System.Text.StringBuilder();
-            var inner = ex.InnerException;
+            StringBuilder sb = new();
+            Exception? inner = ex.InnerException;
             int səviyyə = 1;
 
             while (inner != null)
@@ -585,7 +602,9 @@ namespace AzAgroPOS.Teqdimat
                     sb.AppendLine($"  Server    : {sqlEx.Server}");
 
                     foreach (SqlError error in sqlEx.Errors)
+                    {
                         sb.AppendLine($"  SQL Error : [{error.Number}] {error.Message} (Proc: {error.Procedure}, Line: {error.LineNumber})");
+                    }
                 }
 
                 inner = inner.InnerException;
@@ -610,7 +629,7 @@ namespace AzAgroPOS.Teqdimat
                 try
                 {
                     // Fallback: faylı birbaşa yaz
-                    var logPath = Path.Combine(AppContext.BaseDirectory, "logs", "emergency.log");
+                    string logPath = Path.Combine(AppContext.BaseDirectory, "logs", "emergency.log");
                     Directory.CreateDirectory(Path.GetDirectoryName(logPath)!);
                     File.AppendAllText(logPath,
                         $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] {məlumat}{Environment.NewLine}");
@@ -631,9 +650,12 @@ namespace AzAgroPOS.Teqdimat
         {
             try
             {
-                var builder = new SqlConnectionStringBuilder(connectionString);
+                SqlConnectionStringBuilder builder = new(connectionString);
                 if (!string.IsNullOrEmpty(builder.Password))
+                {
                     builder.Password = "****";
+                }
+
                 return builder.ConnectionString;
             }
             catch

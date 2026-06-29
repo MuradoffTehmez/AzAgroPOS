@@ -1,13 +1,11 @@
 // Fayl: AzAgroPOS.Teqdimat/TedarukcuIdareetmeFormu.cs
-namespace AzAgroPOS.Teqdimat;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
-using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
+
+namespace AzAgroPOS.Teqdimat;
 
 public partial class TedarukcuIdareetmeFormu : BazaForm, ITedarukcuView
 {
@@ -97,7 +95,7 @@ public partial class TedarukcuIdareetmeFormu : BazaForm, ITedarukcuView
 
     public void MesajGoster(string mesaj, bool xetadir = false)
     {
-        var ikon = xetadir ? MessageBoxIcon.Error : MessageBoxIcon.Information;
+        MessageBoxIcon ikon = xetadir ? MessageBoxIcon.Error : MessageBoxIcon.Information;
         MessageBox.Show(mesaj, "Məlumat", MessageBoxButtons.OK, ikon);
     }
 
