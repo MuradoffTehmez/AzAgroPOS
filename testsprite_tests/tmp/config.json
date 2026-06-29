@@ -1,0 +1,18 @@
+{
+  "status": "commited",
+  "type": "backend",
+  "scope": "codebase",
+  "localEndpoint": "http://localhost:5000/c:\\\\Users\\\\Tahmaz Muradov\\\\source\\\\repos\\\\AzAgroPOS",
+  "backendAuthType": "public",
+  "executionArgs": {
+    "projectName": "AzAgroPOS",
+    "projectPath": "c:\\Users\\Tahmaz Muradov\\source\\repos\\AzAgroPOS",
+    "testIds": [],
+    "additionalInstruction": "",
+    "serverMode": "development",
+    "envs": {
+      "API_KEY": "sk-user-Z9IZA5sBE8qwg8rT5Pi_8_uelwDfmV7PZjJUV3ePtr1K8B7BRAiXHXOY0AM0cTRqi8ihNdlwyXHBvH43Z-KLmCR4yovycKgHPG0rwi8fISY7AyDpn8STRb-yOSik14j3MFk"
+    }
+  },
+  "serverPort": 47048
+}

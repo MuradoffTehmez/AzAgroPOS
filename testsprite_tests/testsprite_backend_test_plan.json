@@ -1,0 +1,17 @@
+[
+  {
+    "id": "TC001",
+    "title": "post api auth login with valid credentials",
+    "description": "Verify that POST /api/auth/login with valid username and password returns HTTP 200 and a valid JWT token for authenticated sessions."
+  },
+  {
+    "id": "TC002",
+    "title": "post api sales create new sale with valid items and token",
+    "description": "Verify that POST /api/sales with a valid items array and a valid authentication token returns HTTP 200 with a SaleResponse confirming the sale."
+  },
+  {
+    "id": "TC003",
+    "title": "get api products list all products with valid token",
+    "description": "Verify that GET /api/products with a valid authentication token returns HTTP 200 with a list of Product objects representing the current product catalog."
+  }
+]

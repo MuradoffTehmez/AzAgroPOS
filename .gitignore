@@ -372,3 +372,5 @@ appsettings.Staging.json
 appsettings.*.json
 !appsettings.json
 secrets.json
+
+testsprite_tests\tmp\config.json
