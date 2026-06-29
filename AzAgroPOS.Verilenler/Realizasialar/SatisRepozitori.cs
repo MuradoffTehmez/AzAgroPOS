@@ -1,6 +1,8 @@
-﻿using AzAgroPOS.Verilenler.Interfeysler;
+using AzAgroPOS.Varliglar;
+using AzAgroPOS.Verilenler.Interfeysler;
 using AzAgroPOS.Verilenler.Kontekst;
 using AzAgroPOS.Verilenler.Realizasialar;
+using Microsoft.EntityFrameworkCore;
 
 /// <summary>
 /// satis üçün CRUD əməliyyatlarını həyata keçirən repozitoriya.
@@ -9,16 +11,20 @@ using AzAgroPOS.Verilenler.Realizasialar;
 /// </summary>
 public class SatisRepozitori : Repozitori<AzAgroPOS.Varliglar.Satis>, ISatisRepozitori
 {
-    /// <summary>
-    /// satisRepozitoriyasını yaratmaq üçün konstruktor.
-    /// qeyd: Bu konstruktor, konkret varlıq repozitoriyaları üçün istifadə olunur.
-    /// </summary>
-    /// <param name="kontekst"></param>
     public SatisRepozitori(AzAgroPOSDbContext kontekst) : base(kontekst)
     {
-        // Burada əlavə konfiqurasiyalar və ya metodlar əlavə edilə bilər
-        // Məsələn, satışla əlaqəli xüsusi əməliyyatlar əlavə edilə bilər, məsələn: Müəyyən tarix aralığında satışları tapmaq, müəyyən məhsulun satışlarını filtrləmək və s.
-        // ən çox satılan məhsulları tapmaq üçün xüsusi metodlar əlavə edilə bilər.
-        // ən az satılan məhsulları tapmaq üçün xüsusi metodlar əlavə edilə bilər.
     }
-}
+
+    /// <summary>
+    /// Satışı SatisDetallari + Mehsul nested-include ilə gətirir.
+    /// Include(s => s.SatisDetallari).ThenInclude(d => d.Mehsul) EF Core zənciri istifadə edir.
+    /// </summary>
+    public async Task<Satis?> SatisDetallariIleBirlikdeGetirAsync(int satisId)
+    {
+        return await _kontekst.Set<Satis>()
+            .AsNoTracking()
+            .Include(s => s.SatisDetallari)
+                .ThenInclude(d => d.Mehsul)
+            .FirstOrDefaultAsync(s => s.Id == satisId);
+    }
+}

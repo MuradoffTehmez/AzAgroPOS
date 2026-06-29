@@ -1,6 +1,5 @@
-﻿// Fayl: AzAgroPOS.Verilenler/Interfeysler/ISatisRepozitori.cs
-
 using AzAgroPOS.Varliglar;
+using Microsoft.EntityFrameworkCore;
 
 namespace AzAgroPOS.Verilenler.Interfeysler;
 /// <summary>
@@ -10,5 +9,9 @@ namespace AzAgroPOS.Verilenler.Interfeysler;
 /// </summary>
 public interface ISatisRepozitori : IRepozitori<Satis>
 {
-    // Burada satış ilə əlaqəli xüsusi əməliyyatlar əlavə edilə bilər, məsələn: Müəyyən bir tarixdəki satışları tapmaq, istifadəçiyə görə satışları filtrləmək və s.
+    /// <summary>
+    /// Satışı SatisDetallari + Mehsul nested-include ilə gətirir.
+    /// Include(s => s.SatisDetallari).ThenInclude(d => d.Mehsul) EF Core zənciri istifadə edir.
+    /// </summary>
+    Task<Satis?> SatisDetallariIleBirlikdeGetirAsync(int satisId);
 }
