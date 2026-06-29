@@ -223,4 +223,19 @@ public interface IUnitOfWork : IAsyncDisposable
     /// </summary>
     /// <returns>Təsirlənən sətirlərin sayı.</returns>
     Task<int> EmeliyyatiTesdiqleAsync();
+
+    /// <summary>
+    /// Yeni bir verilənlər bazası tranzaksiyası başladır.
+    /// </summary>
+    Task BeginTransactionAsync();
+
+    /// <summary>
+    /// Aktiv olan verilənlər bazası tranzaksiyasını təsdiqləyir (commit).
+    /// </summary>
+    Task CommitTransactionAsync();
+
+    /// <summary>
+    /// Aktiv olan verilənlər bazası tranzaksiyasını ləğv edir (rollback).
+    /// </summary>
+    Task RollbackTransactionAsync();
 }

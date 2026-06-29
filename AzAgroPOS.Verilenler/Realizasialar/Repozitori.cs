@@ -1,4 +1,4 @@
-﻿using AzAgroPOS.Varliglar;
+using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using AzAgroPOS.Verilenler.Kontekst;
 using Microsoft.EntityFrameworkCore;
@@ -41,23 +41,20 @@ namespace AzAgroPOS.Verilenler.Realizasialar
             }
         }
 
-        public async Task<IEnumerable<T>> AxtarAsync(Expression<Func<T, bool>>? filter = null, string[]? includeProperties = null)
+        public async Task<IEnumerable<T>> AxtarAsync(Expression<Func<T, bool>>? filter = null, params Expression<Func<T, object>>[] includes)
         {
             IQueryable<T> query = _dbSet;
-
-            // Filter out deleted records by default
-            query = query.Where(e => !e.Silinib);
 
             if (filter != null)
             {
                 query = query.Where(filter);
             }
 
-            if (includeProperties != null)
+            if (includes != null)
             {
-                foreach (string includeProperty in includeProperties)
+                foreach (var include in includes)
                 {
-                    query = query.Include(includeProperty);
+                    query = query.Include(include);
                 }
             }
 
@@ -67,25 +64,28 @@ namespace AzAgroPOS.Verilenler.Realizasialar
 
         public async Task<T> GetirAsync(int id)
         {
-            return await _dbSet.AsNoTracking().FirstOrDefaultAsync(e => e.Id == id && !e.Silinib);
+            return await _dbSet.AsNoTracking().FirstOrDefaultAsync(e => e.Id == id);
         }
 
-        public async Task<T> GetirAsync(int id, string[] includeProperties)
+        public async Task<T> GetirAsync(int id, params Expression<Func<T, object>>[] includes)
         {
             IQueryable<T> query = _dbSet.AsNoTracking();
 
             // Include related entities
-            foreach (string includeProperty in includeProperties)
+            if (includes != null)
             {
-                query = query.Include(includeProperty);
+                foreach (var include in includes)
+                {
+                    query = query.Include(include);
+                }
             }
 
-            return await query.FirstOrDefaultAsync(e => e.Id == id && !e.Silinib);
+            return await query.FirstOrDefaultAsync(e => e.Id == id);
         }
 
         public async Task<IEnumerable<T>> ButununuGetirAsync()
         {
-            return await _dbSet.Where(e => !e.Silinib).AsNoTracking().ToListAsync();
+            return await _dbSet.AsNoTracking().ToListAsync();
         }
 
         public async Task ElaveEtAsync(T varliq)
@@ -166,9 +166,9 @@ namespace AzAgroPOS.Verilenler.Realizasialar
         /// <param name="filter">Əlavə filtr</param>
         /// <param name="includeProperties">Əlaqəli xüsusiyyətlər</param>
         /// <returns>Silinmiş varlıqların siyahısı</returns>
-        public async Task<IEnumerable<T>> SilinmisleriGetirAsync(Expression<Func<T, bool>>? filter = null, string[]? includeProperties = null)
+        public async Task<IEnumerable<T>> SilinmisleriGetirAsync(Expression<Func<T, bool>>? filter = null, params Expression<Func<T, object>>[] includes)
         {
-            IQueryable<T> query = _dbSet;
+            IQueryable<T> query = _dbSet.IgnoreQueryFilters();
 
             // Only show deleted records
             query = query.Where(e => e.Silinib);
@@ -178,11 +178,11 @@ namespace AzAgroPOS.Verilenler.Realizasialar
                 query = query.Where(filter);
             }
 
-            if (includeProperties != null)
+            if (includes != null)
             {
-                foreach (string includeProperty in includeProperties)
+                foreach (var include in includes)
                 {
-                    query = query.Include(includeProperty);
+                    query = query.Include(include);
                 }
             }
 
@@ -193,22 +193,22 @@ namespace AzAgroPOS.Verilenler.Realizasialar
         /// Bütün varlıqları göstərir (silinmişlər də daxil olmaqla)
         /// </summary>
         /// <param name="filter">Əlavə filtr</param>
-        /// <param name="includeProperties">Əlaqəli xüsusiyyətlər</param>
+        /// <param name="includes">Əlaqəli xüsusiyyətlər</param>
         /// <returns>Bütün varlıqların siyahısı</returns>
-        public async Task<IEnumerable<T>> ButununuVeSilinmisleriGetirAsync(Expression<Func<T, bool>>? filter = null, string[]? includeProperties = null)
+        public async Task<IEnumerable<T>> ButununuVeSilinmisleriGetirAsync(Expression<Func<T, bool>>? filter = null, params Expression<Func<T, object>>[] includes)
         {
-            IQueryable<T> query = _dbSet;
+            IQueryable<T> query = _dbSet.IgnoreQueryFilters();
 
             if (filter != null)
             {
                 query = query.Where(filter);
             }
 
-            if (includeProperties != null)
+            if (includes != null)
             {
-                foreach (string includeProperty in includeProperties)
+                foreach (var include in includes)
                 {
-                    query = query.Include(includeProperty);
+                    query = query.Include(include);
                 }
             }
 
@@ -221,18 +221,15 @@ namespace AzAgroPOS.Verilenler.Realizasialar
         /// <param name="sehifeNomresi">Səhifə nömrəsi (1-dən başlayır)</param>
         /// <param name="sehifeOlcusu">Hər səhifədə göstəriləcək qeyd sayı</param>
         /// <param name="filter">Filtr şərti</param>
-        /// <param name="includeProperties">Əlaqəli xüsusiyyətlər</param>
+        /// <param name="includes">Əlaqəli xüsusiyyətlər</param>
         /// <returns>Səhifələnmiş məlumat və ümumi say</returns>
         public async Task<(IEnumerable<T> Melumatlar, int UmumiSay)> SehifelenmisGetirAsync(
             int sehifeNomresi,
             int sehifeOlcusu,
             Expression<Func<T, bool>>? filter = null,
-            string[]? includeProperties = null)
+            params Expression<Func<T, object>>[] includes)
         {
             IQueryable<T> query = _dbSet;
-
-            // Silinmiş qeydləri filter et
-            query = query.Where(e => !e.Silinib);
 
             // Əlavə filtr tətbiq et
             if (filter != null)
@@ -244,11 +241,11 @@ namespace AzAgroPOS.Verilenler.Realizasialar
             int umumiSay = await query.CountAsync();
 
             // Include properties
-            if (includeProperties != null)
+            if (includes != null)
             {
-                foreach (string includeProperty in includeProperties)
+                foreach (var include in includes)
                 {
-                    query = query.Include(includeProperty);
+                    query = query.Include(include);
                 }
             }
 

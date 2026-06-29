@@ -4,6 +4,7 @@ using AzAgroPOS.Varliglar;
 using AzAgroPOS.Varliglar.Interfeysler;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System.Linq.Expressions;
 
 namespace AzAgroPOS.Verilenler.Kontekst;
 
@@ -97,6 +98,19 @@ public class AzAgroPOSDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        // Apply global query filter for all entities derived from BazaVarligi
+        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        {
+            if (typeof(BazaVarligi).IsAssignableFrom(entityType.ClrType))
+            {
+                var parameter = Expression.Parameter(entityType.ClrType, "e");
+                var property = Expression.Property(parameter, nameof(BazaVarligi.Silinib));
+                var notExpression = Expression.Not(property);
+                var lambda = Expression.Lambda(notExpression, parameter);
+                modelBuilder.Entity(entityType.ClrType).HasQueryFilter(lambda);
+            }
+        }
 
         modelBuilder.Entity<Mehsul>().Property(m => m.PerakendeSatisQiymeti).HasColumnType("decimal(18, 2)");
         modelBuilder.Entity<Mehsul>().Property(m => m.TopdanSatisQiymeti).HasColumnType("decimal(18, 2)");

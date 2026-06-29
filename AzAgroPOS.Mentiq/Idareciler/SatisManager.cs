@@ -1,11 +1,11 @@
-﻿// Fayl: AzAgroPOS.Mentiq/Idareciler/SatisManager.cs
+// Fayl: AzAgroPOS.Mentiq/Idareciler/SatisManager.cs
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Mentiq.Yardimcilar;
-// Removed direct reference to Teqdimat namespace
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
+using System.Linq;
 
 namespace AzAgroPOS.Mentiq.Idareciler;
 /// <summary>
@@ -58,6 +58,9 @@ public class SatisManager
                 }
             }
 
+            // Tranzaksiyanı başladırıq
+            await _unitOfWork.BeginTransactionAsync();
+
             Satis satis = new()
             {
                 Tarix = System.DateTime.Now,
@@ -97,6 +100,7 @@ public class SatisManager
                 if (!stokNeticesi.UgurluDur)
                 {
                     Logger.XəbərdarlıqYaz($"Stok hərəkəti qeydə alınarkən xəta: {stokNeticesi.Mesaj}");
+                    await _unitOfWork.RollbackTransactionAsync();
                     return EmeliyyatNeticesi<Satis>.Ugursuz($"Stok hərəkəti qeydə alınarkən xəta: {stokNeticesi.Mesaj}");
                 }
             }
@@ -108,6 +112,7 @@ public class SatisManager
                 if (!nisyeNetice.UgurluDur)
                 {
                     Logger.XetaYaz(new Exception(nisyeNetice.Mesaj), "Nisyə qeydiyatı zamanı xəta");
+                    await _unitOfWork.RollbackTransactionAsync();
                     return EmeliyyatNeticesi<Satis>.Ugursuz($"Nisyə qeydiyatı zamanı xəta: {nisyeNetice.Mesaj}");
                 }
             }
@@ -115,11 +120,15 @@ public class SatisManager
             // Vacib: Bütün dəyişiklikləri təsdiqlə
             await _unitOfWork.EmeliyyatiTesdiqleAsync();
 
+            // Tranzaksiyanı tamamlayırıq
+            await _unitOfWork.CommitTransactionAsync();
+
             Logger.MelumatYaz("Satış uğurla yaradıldı");
             return EmeliyyatNeticesi<Satis>.Ugurlu(satis);
         }
         catch (Exception ex)
         {
+            await _unitOfWork.RollbackTransactionAsync();
             Logger.XetaYaz(ex, "Satış yaratma əməliyyatı zamanı istisna baş verdi");
             return EmeliyyatNeticesi<Satis>.Ugursuz("Satış yaratma əməliyyatı zamanı istisna baş verdi: " + ex.Message);
         }
@@ -141,7 +150,7 @@ public class SatisManager
             }
 
             // Eager Loading: Satışı SatisDetallari və onların Mehsul məlumatları ilə yüklə
-            Satis satis = await _unitOfWork.Satislar.GetirAsync(satisId, new[] { "SatisDetallari.Mehsul" });
+            Satis satis = await _unitOfWork.Satislar.GetirAsync(satisId, s => s.SatisDetallari.Select(d => d.Mehsul));
             if (satis == null)
             {
                 Logger.XəbərdarlıqYaz("Satış tapılmadı");
@@ -193,6 +202,9 @@ public class SatisManager
                 return EmeliyyatNeticesi<bool>.Ugursuz("Satış tapılmadı.");
             }
 
+            // Tranzaksiyanı başladırıq
+            await _unitOfWork.BeginTransactionAsync();
+
             // Qaytarma obyektini yarat
             Qaytarma qaytarma = new()
             {
@@ -235,6 +247,7 @@ public class SatisManager
                 if (!stokNeticesi.UgurluDur)
                 {
                     Logger.XəbərdarlıqYaz($"Stok hərəkəti qeydə alınarkən xəta: {stokNeticesi.Mesaj}");
+                    await _unitOfWork.RollbackTransactionAsync();
                     return EmeliyyatNeticesi<bool>.Ugursuz($"Stok hərəkəti qeydə alınarkən xəta: {stokNeticesi.Mesaj}");
                 }
             }
@@ -283,11 +296,15 @@ public class SatisManager
             // Bütün əməliyyatları təsdiqlə
             await _unitOfWork.EmeliyyatiTesdiqleAsync();
 
+            // Tranzaksiyanı tamamlayırıq
+            await _unitOfWork.CommitTransactionAsync();
+
             Logger.MelumatYaz("Qaytarma əməliyyatı uğurla tamamlandı");
             return EmeliyyatNeticesi<bool>.Ugurlu(true);
         }
         catch (Exception ex)
         {
+            await _unitOfWork.RollbackTransactionAsync();
             Logger.XetaYaz(ex, "Qaytarma əməliyyatı zamanı istisna baş verdi");
             return EmeliyyatNeticesi<bool>.Ugursuz("Qaytarma əməliyyatı zamanı istisna baş verdi: " + ex.Message);
         }

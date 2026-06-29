@@ -6,6 +6,7 @@ using AzAgroPOS.Verilenler.Kontekst;
 using AzAgroPOS.Verilenler.Realisasialar;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace AzAgroPOS.Verilenler.Realizasialar;
 /// <summary>
@@ -21,6 +22,7 @@ public class UnitOfWork : IUnitOfWork
     /// qeyd: Bu kontekst, verilənlər bazası bağlantısını və digər konfiqurasiyaları ehtiva edir.
     /// </summary>
     private readonly AzAgroPOSDbContext _kontekst;
+    private IDbContextTransaction? _cariTranzaksiya;
 
     /// <summary>
     /// Hazırda sistemdə aktiv olan istifadəçinin ID-si
@@ -385,6 +387,60 @@ public class UnitOfWork : IUnitOfWork
     }
 
     /// <summary>
+    /// Yeni bir verilənlər bazası tranzaksiyası başladır.
+    /// </summary>
+    public async Task BeginTransactionAsync()
+    {
+        if (_cariTranzaksiya != null)
+        {
+            throw new InvalidOperationException("Artıq aktiv bir tranzaksiya mövcuddur.");
+        }
+        _cariTranzaksiya = await _kontekst.Database.BeginTransactionAsync();
+    }
+
+    /// <summary>
+    /// Aktiv olan verilənlər bazası tranzaksiyasını təsdiqləyir (commit).
+    /// </summary>
+    public async Task CommitTransactionAsync()
+    {
+        if (_cariTranzaksiya == null)
+        {
+            throw new InvalidOperationException("Aktiv tranzaksiya tapılmadı.");
+        }
+
+        try
+        {
+            await _cariTranzaksiya.CommitAsync();
+        }
+        finally
+        {
+            await _cariTranzaksiya.DisposeAsync();
+            _cariTranzaksiya = null;
+        }
+    }
+
+    /// <summary>
+    /// Aktiv olan verilənlər bazası tranzaksiyasını ləğv edir (rollback).
+    /// </summary>
+    public async Task RollbackTransactionAsync()
+    {
+        if (_cariTranzaksiya == null)
+        {
+            return;
+        }
+
+        try
+        {
+            await _cariTranzaksiya.RollbackAsync();
+        }
+        finally
+        {
+            await _cariTranzaksiya.DisposeAsync();
+            _cariTranzaksiya = null;
+        }
+    }
+
+    /// <summary>
     /// DisposeAsync metodu, verilənlər bazası kontekstini asinxron şəkildə sərbəst buraxır.
     /// Diqqət: Bu metod, IDisposable interfeysinin implementasiyasıdır.
     /// Qeyd: Bu metod, verilənlər bazası kontekstinin düzgün şəkildə bağlanmasını təmin edir.
@@ -392,6 +448,11 @@ public class UnitOfWork : IUnitOfWork
     /// <returns></returns>
     public async ValueTask DisposeAsync()
     {
+        if (_cariTranzaksiya != null)
+        {
+            await _cariTranzaksiya.DisposeAsync();
+            _cariTranzaksiya = null;
+        }
         await _kontekst.DisposeAsync();
     }
 }

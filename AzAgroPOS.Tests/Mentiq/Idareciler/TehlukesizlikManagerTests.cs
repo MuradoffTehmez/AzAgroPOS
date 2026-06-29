@@ -5,6 +5,7 @@ using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
+using System.Linq.Expressions;
 
 namespace AzAgroPOS.Tests.Mentiq.Idareciler;
 
@@ -65,7 +66,7 @@ public class TehlukesizlikManagerTests : IDisposable
         string parol = "test123";
 
         _mockIstifadeciRepo
-            .Setup(x => x.AxtarAsync(It.IsAny<System.Linq.Expressions.Expression<Func<Istifadeci, bool>>>(), null))
+            .Setup(x => x.AxtarAsync(It.IsAny<Expression<Func<Istifadeci, bool>>>(), It.IsAny<Expression<Func<Istifadeci, object>>[]>()))
             .ReturnsAsync(new List<Istifadeci>());
 
         // Act
@@ -94,7 +95,7 @@ public class TehlukesizlikManagerTests : IDisposable
         };
 
         _mockIstifadeciRepo
-            .Setup(x => x.AxtarAsync(It.IsAny<System.Linq.Expressions.Expression<Func<Istifadeci, bool>>>(), null))
+            .Setup(x => x.AxtarAsync(It.IsAny<Expression<Func<Istifadeci, bool>>>(), It.IsAny<Expression<Func<Istifadeci, object>>[]>()))
             .ReturnsAsync(new List<Istifadeci> { istifadeci });
 
         // Act
@@ -124,7 +125,7 @@ public class TehlukesizlikManagerTests : IDisposable
         };
 
         _mockIstifadeciRepo
-            .Setup(x => x.AxtarAsync(It.IsAny<System.Linq.Expressions.Expression<Func<Istifadeci, bool>>>(), null))
+            .Setup(x => x.AxtarAsync(It.IsAny<Expression<Func<Istifadeci, bool>>>(), It.IsAny<Expression<Func<Istifadeci, object>>[]>()))
             .ReturnsAsync(new List<Istifadeci> { istifadeci });
 
         // Act
@@ -155,7 +156,7 @@ public class TehlukesizlikManagerTests : IDisposable
         };
 
         _mockIstifadeciRepo
-            .Setup(x => x.AxtarAsync(It.IsAny<System.Linq.Expressions.Expression<Func<Istifadeci, bool>>>(), null))
+            .Setup(x => x.AxtarAsync(It.IsAny<Expression<Func<Istifadeci, bool>>>(), It.IsAny<Expression<Func<Istifadeci, object>>[]>()))
             .ReturnsAsync(new List<Istifadeci> { istifadeci });
 
         // Act
@@ -193,7 +194,7 @@ public class TehlukesizlikManagerTests : IDisposable
         };
 
         _mockIstifadeciRepo
-            .Setup(x => x.AxtarAsync(It.IsAny<System.Linq.Expressions.Expression<Func<Istifadeci, bool>>>(), null))
+            .Setup(x => x.AxtarAsync(It.IsAny<Expression<Func<Istifadeci, bool>>>(), It.IsAny<Expression<Func<Istifadeci, object>>[]>()))
             .ReturnsAsync(new List<Istifadeci> { istifadeci });
 
         _mockRolRepo
