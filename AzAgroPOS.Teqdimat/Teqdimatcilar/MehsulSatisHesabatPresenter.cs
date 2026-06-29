@@ -1,10 +1,11 @@
 ﻿// Fayl: AzAgroPOS.Teqdimat/Teqdimatcilar/MehsulSatisHesabatPresenter.cs
-namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 
+using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Teqdimat.Interfeysler;
-using System.Threading.Tasks;
 
+namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 /// <summary>
 /// Məhsul üzrə satış hesabatı formu ilə biznes məntiqi arasında əlaqəni qurur.
 /// </summary>
@@ -24,7 +25,7 @@ public class MehsulSatisHesabatPresenter
 
     private async Task MehsulSatisHesabatiniGoster()
     {
-        var netice = await _hesabatManager.MehsulUzreSatisHesabatiGetirAsync(_view.BaslangicTarix, _view.BitisTarix);
+        EmeliyyatNeticesi<List<MehsulUzreSatisDetayDto>> netice = await _hesabatManager.MehsulUzreSatisHesabatiGetirAsync(_view.BaslangicTarix, _view.BitisTarix);
 
         if (netice.UgurluDur)
         {

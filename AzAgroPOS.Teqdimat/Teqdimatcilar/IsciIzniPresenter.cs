@@ -1,15 +1,14 @@
 // Fayl: AzAgroPOS.Teqdimat/Teqdimatcilar/IsciIzniPresenter.cs
-namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 
+using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Mentiq.Yardimcilar;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Yardimcilar;
 using AzAgroPOS.Varliglar;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
+namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 /// <summary>
 /// İşçi izni idarəetmə forması üçün presenter.
 /// İşçilərin məzuniyyət, xəstəlik icazəsi və digər izinlərini idarə edir.
@@ -63,10 +62,10 @@ public class IsciIzniPresenter
     {
         try
         {
-            var netice = await _isciManager.ButunIscileriGetirAsync();
+            EmeliyyatNeticesi<List<IsciDto>> netice = await _isciManager.ButunIscileriGetirAsync();
             if (netice.UgurluDur && netice.Data != null)
             {
-                var aktivIsciler = netice.Data.Where(i => i.Status == IsciStatusu.Aktiv).ToList();
+                List<IsciDto> aktivIsciler = netice.Data.Where(i => i.Status == IsciStatusu.Aktiv).ToList();
                 _view.IscileriGoster(aktivIsciler);
             }
             else
@@ -88,7 +87,7 @@ public class IsciIzniPresenter
     {
         try
         {
-            var netice = await _izniManager.ButunIzinleriDtoFormatindaGetirAsync();
+            EmeliyyatNeticesi<List<IsciIzniDto>> netice = await _izniManager.ButunIzinleriDtoFormatindaGetirAsync();
             if (netice.UgurluDur && netice.Data != null)
             {
                 _view.IzinleriGoster(netice.Data.ToList());
@@ -119,11 +118,11 @@ public class IsciIzniPresenter
                 return;
             }
 
-            var netice = await _izniManager.IsciUcunIzinleriGetirAsync(_view.SecilenIsciId.Value);
+            EmeliyyatNeticesi<List<IsciIzniDto>> netice = await _izniManager.IsciUcunIzinleriGetirAsync(_view.SecilenIsciId.Value);
             if (netice.UgurluDur && netice.Data != null)
             {
-                var tesdiqlenibIzinler = netice.Data.Where(i => i.Status == IzinStatusu.Tesdiqlenib).ToList();
-                var cemiGun = tesdiqlenibIzinler.Sum(i => i.IzinGunu);
+                List<IsciIzniDto> tesdiqlenibIzinler = netice.Data.Where(i => i.Status == IzinStatusu.Tesdiqlenib).ToList();
+                int cemiGun = tesdiqlenibIzinler.Sum(i => i.IzinGunu);
                 _view.IsciIzinMelumatGoster($"Təsdiqlənmiş izin günləri: {cemiGun}");
             }
             else
@@ -151,7 +150,7 @@ public class IsciIzniPresenter
                 return;
             }
 
-            var netice = await _izniManager.IzinYaratAsync(
+            EmeliyyatNeticesi<int> netice = await _izniManager.IzinYaratAsync(
                 _view.SecilenIsciId.Value,
                 _view.IzinNovu,
                 _view.BaslamaTarixi,
@@ -190,7 +189,7 @@ public class IsciIzniPresenter
                 return;
             }
 
-            var netice = await _izniManager.IzinYenileAsync(
+            EmeliyyatNeticesi netice = await _izniManager.IzinYenileAsync(
                 _view.SecilenIzinId,
                 _view.IzinNovu,
                 _view.BaslamaTarixi,
@@ -229,7 +228,7 @@ public class IsciIzniPresenter
                 return;
             }
 
-            var netice = await _izniManager.IzinSilAsync(_view.SecilenIzinId);
+            EmeliyyatNeticesi netice = await _izniManager.IzinSilAsync(_view.SecilenIzinId);
 
             if (netice.UgurluDur)
             {
@@ -262,7 +261,7 @@ public class IsciIzniPresenter
                 return;
             }
 
-            var netice = await _izniManager.IzinTesdiqleAsync(_view.SecilenIzinId, AktivSessiya.AktivIstifadeci?.Id ?? 0);
+            EmeliyyatNeticesi netice = await _izniManager.IzinTesdiqleAsync(_view.SecilenIzinId, AktivSessiya.AktivIstifadeci?.Id ?? 0);
 
             if (netice.UgurluDur)
             {
@@ -296,7 +295,7 @@ public class IsciIzniPresenter
             }
 
             // Rədd səbəbini view-dan alırıq (view-da implementasiya edilməlidir)
-            var reddSebebi = Microsoft.VisualBasic.Interaction.InputBox(
+            string reddSebebi = Microsoft.VisualBasic.Interaction.InputBox(
                 "Rədd səbəbini daxil edin:",
                 "İzin Rəddi",
                 "",
@@ -309,7 +308,7 @@ public class IsciIzniPresenter
                 return;
             }
 
-            var netice = await _izniManager.IzinReddEtAsync(_view.SecilenIzinId, AktivSessiya.AktivIstifadeci?.Id ?? 0, reddSebebi);
+            EmeliyyatNeticesi netice = await _izniManager.IzinReddEtAsync(_view.SecilenIzinId, AktivSessiya.AktivIstifadeci?.Id ?? 0, reddSebebi);
 
             if (netice.UgurluDur)
             {
@@ -342,7 +341,7 @@ public class IsciIzniPresenter
                 return;
             }
 
-            var netice = await _izniManager.IzinLegvEtAsync(_view.SecilenIzinId);
+            EmeliyyatNeticesi netice = await _izniManager.IzinLegvEtAsync(_view.SecilenIzinId);
 
             if (netice.UgurluDur)
             {

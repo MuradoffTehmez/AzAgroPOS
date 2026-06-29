@@ -1,8 +1,8 @@
 ﻿// Fayl: AzAgroPOS.Teqdimat/Yardimcilar/LokalizasiyaManager.cs
-namespace AzAgroPOS.Teqdimat.Yardimcilar;
 
 using System.Globalization;
-using System.Threading;
+
+namespace AzAgroPOS.Teqdimat.Yardimcilar;
 
 public static class LokalizasiyaManager
 {

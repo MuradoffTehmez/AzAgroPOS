@@ -1,10 +1,8 @@
 // AzAgroPOS.Teqdimat/Yardimcilar/IcazeKontroluNümunəsi.cs
-namespace AzAgroPOS.Teqdimat.Yardimcilar;
 
 using AzAgroPOS.Mentiq.Idareciler;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
+namespace AzAgroPOS.Teqdimat.Yardimcilar;
 /// <summary>
 /// İcazə yoxlamasının necə tətbiq ediləcəyinə dair nümunə
 /// Bu sinif, düymələrin aktiv/və ya qeyri-aktiv edilməsi kimi hallarda istifadə edilə bilər
@@ -19,10 +17,10 @@ public static class IcazeKontroluNümunəsi
     /// <param name="icaeManager">İcazə meneceri</param>
     public static async Task SatışSilDüyməsiniYeniləAsync(Form form, string buttonName, IcazeManager icaeManager)
     {
-        var button = form.Controls.Find(buttonName, true);
+        Control[] button = form.Controls.Find(buttonName, true);
         if (button.Length > 0 && button[0] is Button düymə)
         {
-            var icazeVar = await IcazeYoxlayici.IstifadecininIcazesiVarAsync(icaeManager, "CanDeleteSale");
+            bool icazeVar = await IcazeYoxlayici.IstifadecininIcazesiVarAsync(icaeManager, "CanDeleteSale");
             düymə.Enabled = icazeVar;
         }
     }
@@ -34,7 +32,7 @@ public static class IcazeKontroluNümunəsi
     /// <param name="icaeManager">İcazə meneceri</param>
     public static async Task EndirimMenyuElementiniYeniləAsync(ToolStripMenuItem menuItem, IcazeManager icaeManager)
     {
-        var icazeVar = await IcazeYoxlayici.IstifadecininIcazesiVarAsync(icaeManager, "CanGiveDiscount");
+        bool icazeVar = await IcazeYoxlayici.IstifadecininIcazesiVarAsync(icaeManager, "CanGiveDiscount");
         menuItem.Enabled = icazeVar;
     }
 
@@ -46,10 +44,10 @@ public static class IcazeKontroluNümunəsi
     /// <param name="icaeManager">İcazə meneceri</param>
     public static async Task HesabatElementiniYeniləAsync(Form form, string controlName, IcazeManager icaeManager)
     {
-        var controls = form.Controls.Find(controlName, true);
+        Control[] controls = form.Controls.Find(controlName, true);
         if (controls.Length > 0)
         {
-            var icazeVar = await IcazeYoxlayici.IstifadecininIcazesiVarAsync(icaeManager, "CanViewReports");
+            bool icazeVar = await IcazeYoxlayici.IstifadecininIcazesiVarAsync(icaeManager, "CanViewReports");
             controls[0].Visible = icazeVar;
         }
     }

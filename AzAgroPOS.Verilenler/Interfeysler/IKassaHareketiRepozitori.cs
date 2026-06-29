@@ -1,8 +1,8 @@
 // Fayl: AzAgroPOS.Verilenler/Interfeysler/IKassaHareketiRepozitori.cs
-namespace AzAgroPOS.Verilenler.Interfeysler;
 
 using AzAgroPOS.Varliglar;
 
+namespace AzAgroPOS.Verilenler.Interfeysler;
 /// <summary>
 /// Kassa hərəkətlərini idarə edən repozitorinin interfeysi
 /// diqqət: Bu interfeys kassa hərəkətləri ilə bağlı əməliyyatlar üçün nəzərdə tutulub.

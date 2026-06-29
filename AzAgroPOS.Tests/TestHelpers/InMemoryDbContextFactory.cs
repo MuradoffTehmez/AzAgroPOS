@@ -15,11 +15,11 @@ public static class InMemoryDbContextFactory
     /// </summary>
     public static AzAgroPOSDbContext Create()
     {
-        var options = new DbContextOptionsBuilder<AzAgroPOSDbContext>()
+        DbContextOptions<AzAgroPOSDbContext> options = new DbContextOptionsBuilder<AzAgroPOSDbContext>()
             .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
             .Options;
 
-        var context = new AzAgroPOSDbContext(options);
+        AzAgroPOSDbContext context = new(options);
 
         // Database-i initialize et
         context.Database.EnsureCreated();

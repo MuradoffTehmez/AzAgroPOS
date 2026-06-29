@@ -1,6 +1,8 @@
 // Fayl: AzAgroPOS.Tests/Mentiq/Idareciler/TehlukesizlikManagerTests.cs
 
+using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 
@@ -29,11 +31,11 @@ public class TehlukesizlikManagerTests : IDisposable
     public async Task DaxilOlAsync_BosIstifadeciAdi_UgursuzNeticeQaytar()
     {
         // Arrange
-        var istifadeciAdi = "";
-        var parol = "test123";
+        string istifadeciAdi = "";
+        string parol = "test123";
 
         // Act
-        var netice = await _manager.DaxilOlAsync(istifadeciAdi, parol);
+        EmeliyyatNeticesi<IstifadeciDto> netice = await _manager.DaxilOlAsync(istifadeciAdi, parol);
 
         // Assert
         netice.UgurluDur.Should().BeFalse();
@@ -44,11 +46,11 @@ public class TehlukesizlikManagerTests : IDisposable
     public async Task DaxilOlAsync_BosParol_UgursuzNeticeQaytar()
     {
         // Arrange
-        var istifadeciAdi = "admin";
-        var parol = "";
+        string istifadeciAdi = "admin";
+        string parol = "";
 
         // Act
-        var netice = await _manager.DaxilOlAsync(istifadeciAdi, parol);
+        EmeliyyatNeticesi<IstifadeciDto> netice = await _manager.DaxilOlAsync(istifadeciAdi, parol);
 
         // Assert
         netice.UgurluDur.Should().BeFalse();
@@ -59,15 +61,15 @@ public class TehlukesizlikManagerTests : IDisposable
     public async Task DaxilOlAsync_IstifadeciTapilmadi_UgursuzNeticeQaytar()
     {
         // Arrange
-        var istifadeciAdi = "neexistuser";
-        var parol = "test123";
+        string istifadeciAdi = "neexistuser";
+        string parol = "test123";
 
         _mockIstifadeciRepo
             .Setup(x => x.AxtarAsync(It.IsAny<System.Linq.Expressions.Expression<Func<Istifadeci, bool>>>(), null))
             .ReturnsAsync(new List<Istifadeci>());
 
         // Act
-        var netice = await _manager.DaxilOlAsync(istifadeciAdi, parol);
+        EmeliyyatNeticesi<IstifadeciDto> netice = await _manager.DaxilOlAsync(istifadeciAdi, parol);
 
         // Assert
         netice.UgurluDur.Should().BeFalse();
@@ -78,11 +80,11 @@ public class TehlukesizlikManagerTests : IDisposable
     public async Task DaxilOlAsync_HesabDeaktiv_UgursuzNeticeQaytar()
     {
         // Arrange
-        var istifadeciAdi = "admin";
-        var parol = "test123";
-        var parolHash = BCrypt.Net.BCrypt.HashPassword(parol);
+        string istifadeciAdi = "admin";
+        string parol = "test123";
+        string parolHash = BCrypt.Net.BCrypt.HashPassword(parol);
 
-        var istifadeci = new Istifadeci
+        Istifadeci istifadeci = new()
         {
             Id = 1,
             IstifadeciAdi = istifadeciAdi,
@@ -96,7 +98,7 @@ public class TehlukesizlikManagerTests : IDisposable
             .ReturnsAsync(new List<Istifadeci> { istifadeci });
 
         // Act
-        var netice = await _manager.DaxilOlAsync(istifadeciAdi, parol);
+        EmeliyyatNeticesi<IstifadeciDto> netice = await _manager.DaxilOlAsync(istifadeciAdi, parol);
 
         // Assert
         netice.UgurluDur.Should().BeFalse();
@@ -107,11 +109,11 @@ public class TehlukesizlikManagerTests : IDisposable
     public async Task DaxilOlAsync_HesabKilidlenmis_UgursuzNeticeQaytar()
     {
         // Arrange
-        var istifadeciAdi = "admin";
-        var parol = "test123";
-        var parolHash = BCrypt.Net.BCrypt.HashPassword(parol);
+        string istifadeciAdi = "admin";
+        string parol = "test123";
+        string parolHash = BCrypt.Net.BCrypt.HashPassword(parol);
 
-        var istifadeci = new Istifadeci
+        Istifadeci istifadeci = new()
         {
             Id = 1,
             IstifadeciAdi = istifadeciAdi,
@@ -126,7 +128,7 @@ public class TehlukesizlikManagerTests : IDisposable
             .ReturnsAsync(new List<Istifadeci> { istifadeci });
 
         // Act
-        var netice = await _manager.DaxilOlAsync(istifadeciAdi, parol);
+        EmeliyyatNeticesi<IstifadeciDto> netice = await _manager.DaxilOlAsync(istifadeciAdi, parol);
 
         // Assert
         netice.UgurluDur.Should().BeFalse();
@@ -137,12 +139,12 @@ public class TehlukesizlikManagerTests : IDisposable
     public async Task DaxilOlAsync_YanlisParol_UgursuzNeticeQaytar()
     {
         // Arrange
-        var istifadeciAdi = "admin";
-        var dogruParol = "test123";
-        var yanlisParol = "wrong123";
-        var parolHash = BCrypt.Net.BCrypt.HashPassword(dogruParol);
+        string istifadeciAdi = "admin";
+        string dogruParol = "test123";
+        string yanlisParol = "wrong123";
+        string parolHash = BCrypt.Net.BCrypt.HashPassword(dogruParol);
 
-        var istifadeci = new Istifadeci
+        Istifadeci istifadeci = new()
         {
             Id = 1,
             IstifadeciAdi = istifadeciAdi,
@@ -157,7 +159,7 @@ public class TehlukesizlikManagerTests : IDisposable
             .ReturnsAsync(new List<Istifadeci> { istifadeci });
 
         // Act
-        var netice = await _manager.DaxilOlAsync(istifadeciAdi, yanlisParol);
+        EmeliyyatNeticesi<IstifadeciDto> netice = await _manager.DaxilOlAsync(istifadeciAdi, yanlisParol);
 
         // Assert
         netice.UgurluDur.Should().BeFalse();
@@ -169,11 +171,11 @@ public class TehlukesizlikManagerTests : IDisposable
     public async Task DaxilOlAsync_DogruMelumatlar_UgurluNeticeQaytar()
     {
         // Arrange
-        var istifadeciAdi = "admin";
-        var parol = "test123";
-        var parolHash = BCrypt.Net.BCrypt.HashPassword(parol);
+        string istifadeciAdi = "admin";
+        string parol = "test123";
+        string parolHash = BCrypt.Net.BCrypt.HashPassword(parol);
 
-        var istifadeci = new Istifadeci
+        Istifadeci istifadeci = new()
         {
             Id = 1,
             IstifadeciAdi = istifadeciAdi,
@@ -184,7 +186,7 @@ public class TehlukesizlikManagerTests : IDisposable
             RolId = 1
         };
 
-        var rol = new Rol
+        Rol rol = new()
         {
             Id = 1,
             Ad = "Administrator"
@@ -199,7 +201,7 @@ public class TehlukesizlikManagerTests : IDisposable
             .ReturnsAsync(rol);
 
         // Act
-        var netice = await _manager.DaxilOlAsync(istifadeciAdi, parol);
+        EmeliyyatNeticesi<IstifadeciDto> netice = await _manager.DaxilOlAsync(istifadeciAdi, parol);
 
         // Assert
         netice.UgurluDur.Should().BeTrue();
@@ -214,12 +216,12 @@ public class TehlukesizlikManagerTests : IDisposable
     public async Task SifreDeyisAsync_KohneParolYanlis_UgursuzNeticeQaytar()
     {
         // Arrange
-        var istifadeciId = 1;
-        var kohneParol = "wrong";
-        var yeniParol = "newpass123A@";
-        var parolHash = BCrypt.Net.BCrypt.HashPassword("correctold");
+        int istifadeciId = 1;
+        string kohneParol = "wrong";
+        string yeniParol = "newpass123A@";
+        string parolHash = BCrypt.Net.BCrypt.HashPassword("correctold");
 
-        var istifadeci = new Istifadeci
+        Istifadeci istifadeci = new()
         {
             Id = istifadeciId,
             ParolHash = parolHash
@@ -230,7 +232,7 @@ public class TehlukesizlikManagerTests : IDisposable
             .ReturnsAsync(istifadeci);
 
         // Act
-        var netice = await _manager.SifreDeyisAsync(istifadeciId, kohneParol, yeniParol);
+        EmeliyyatNeticesi netice = await _manager.SifreDeyisAsync(istifadeciId, kohneParol, yeniParol);
 
         // Assert
         netice.UgurluDur.Should().BeFalse();
@@ -241,12 +243,12 @@ public class TehlukesizlikManagerTests : IDisposable
     public async Task SifreDeyisAsync_YeniParolZeif_UgursuzNeticeQaytar()
     {
         // Arrange
-        var istifadeciId = 1;
-        var kohneParol = "oldpass123";
-        var yeniParol = "123"; // Çox qısa
-        var parolHash = BCrypt.Net.BCrypt.HashPassword(kohneParol);
+        int istifadeciId = 1;
+        string kohneParol = "oldpass123";
+        string yeniParol = "123"; // Çox qısa
+        string parolHash = BCrypt.Net.BCrypt.HashPassword(kohneParol);
 
-        var istifadeci = new Istifadeci
+        Istifadeci istifadeci = new()
         {
             Id = istifadeciId,
             ParolHash = parolHash
@@ -257,7 +259,7 @@ public class TehlukesizlikManagerTests : IDisposable
             .ReturnsAsync(istifadeci);
 
         // Act
-        var netice = await _manager.SifreDeyisAsync(istifadeciId, kohneParol, yeniParol);
+        EmeliyyatNeticesi netice = await _manager.SifreDeyisAsync(istifadeciId, kohneParol, yeniParol);
 
         // Assert
         netice.UgurluDur.Should().BeFalse();

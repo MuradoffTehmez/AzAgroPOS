@@ -1,14 +1,11 @@
 // Fayl: AzAgroPOS.Teqdimat/Teqdimatcilar/IsciPresenter.cs
-namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Teqdimat.Interfeysler;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
+namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 /// <summary>
 /// İşçi idarəetmə forması üçün presenter.
 /// </summary>
@@ -51,16 +48,16 @@ public class IsciPresenter
     {
         if (_paginationEnabled)
         {
-            var netice = await _isciManager.IscileriSehifelenmisGetirAsync(_sehifeParametrleri);
+            EmeliyyatNeticesi<SehifelenmisMelumat<IsciDto>> netice = await _isciManager.IscileriSehifelenmisGetirAsync(_sehifeParametrleri);
             if (netice.UgurluDur && netice.Data != null)
             {
-                var sehifelenmis = netice.Data;
-                var axtarisMetni = _view.AxtarisMetni;
+                SehifelenmisMelumat<IsciDto> sehifelenmis = netice.Data;
+                string axtarisMetni = _view.AxtarisMetni;
 
                 IEnumerable<IsciDto> isciler = sehifelenmis.Melumatlar;
                 if (!string.IsNullOrWhiteSpace(axtarisMetni))
                 {
-                    var axtarisLower = axtarisMetni.ToLower();
+                    string axtarisLower = axtarisMetni.ToLower();
                     isciler = isciler.Where(i =>
                         i.TamAd.ToLower().Contains(axtarisLower) ||
                         i.TelefonNomresi.Contains(axtarisLower) ||
@@ -79,7 +76,7 @@ public class IsciPresenter
         }
         else
         {
-            var netice = await _isciManager.ButunIscileriGetirAsync();
+            EmeliyyatNeticesi<List<IsciDto>> netice = await _isciManager.ButunIscileriGetirAsync();
             if (netice.UgurluDur)
             {
                 _isciCache = netice.Data;
@@ -121,7 +118,7 @@ public class IsciPresenter
 
     private async Task IsciYarat()
     {
-        var dto = new IsciDto
+        IsciDto dto = new()
         {
             TamAd = _view.TamAd,
             DogumTarixi = _view.DogumTarixi,
@@ -139,7 +136,7 @@ public class IsciPresenter
             SistemIstifadeciAdi = _view.SistemIstifadeciAdi
         };
 
-        var netice = await _isciManager.IsciYaratAsync(dto);
+        EmeliyyatNeticesi<int> netice = await _isciManager.IsciYaratAsync(dto);
         if (netice.UgurluDur)
         {
             _view.MesajGoster("İşçi uğurla yaradıldı.");
@@ -160,7 +157,7 @@ public class IsciPresenter
             return;
         }
 
-        var dto = new IsciDto
+        IsciDto dto = new()
         {
             Id = _view.IsciId,
             TamAd = _view.TamAd,
@@ -179,7 +176,7 @@ public class IsciPresenter
             SistemIstifadeciAdi = _view.SistemIstifadeciAdi
         };
 
-        var netice = await _isciManager.IsciYenileAsync(dto);
+        EmeliyyatNeticesi netice = await _isciManager.IsciYenileAsync(dto);
         if (netice.UgurluDur)
         {
             _view.MesajGoster("İşçi məlumatları uğurla yeniləndi.");
@@ -200,7 +197,7 @@ public class IsciPresenter
             return;
         }
 
-        var netice = await _isciManager.IsciSilAsync(_view.IsciId);
+        EmeliyyatNeticesi netice = await _isciManager.IsciSilAsync(_view.IsciId);
         if (netice.UgurluDur)
         {
             _view.MesajGoster("İşçi silindi.");
@@ -221,7 +218,7 @@ public class IsciPresenter
             return;
         }
 
-        var netice = await _isciManager.IscininPerformansQeydleriniGetirAsync(_view.IsciId);
+        EmeliyyatNeticesi<List<IsciPerformansDto>> netice = await _isciManager.IscininPerformansQeydleriniGetirAsync(_view.IsciId);
         if (netice.UgurluDur)
         {
             // Performans qeydlərini göstərmək üçün uyğun view metodu çağırılır
@@ -241,7 +238,7 @@ public class IsciPresenter
             return;
         }
 
-        var netice = await _isciManager.IscininIzinQeydleriniGetirAsync(_view.IsciId);
+        EmeliyyatNeticesi<List<IsciIzniDto>> netice = await _isciManager.IscininIzinQeydleriniGetirAsync(_view.IsciId);
         if (netice.UgurluDur)
         {
             // İzn qeydlərini göstərmək üçün uyğun view metodu çağırılır

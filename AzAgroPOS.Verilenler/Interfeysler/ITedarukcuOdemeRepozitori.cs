@@ -1,8 +1,8 @@
 // Fayl: AzAgroPOS.Verilenler/Interfeysler/ITedarukcuOdemeRepozitori.cs
-namespace AzAgroPOS.Verilenler.Interfeysler;
 
 using AzAgroPOS.Varliglar;
 
+namespace AzAgroPOS.Verilenler.Interfeysler;
 /// <summary>
 /// Bütün tədarükçü ödənişi verilənlər bazası əməliyyatları üçün interfeys.
 /// </summary>

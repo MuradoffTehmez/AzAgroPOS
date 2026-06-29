@@ -1,6 +1,8 @@
 // Fayl: AzAgroPOS.Tests/Unit/Managers/MusteriManagerTests.cs
 
+using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Tests.TestHelpers;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
@@ -28,13 +30,13 @@ public class MusteriManagerTests
     public async Task MusteriYaratAsync_DuplicateTelefonNomresi_ReturnsFailure()
     {
         // Arrange
-        var dto = MusteriMockFactory.CreateValidDto();
-        var existingMusteri = MusteriMockFactory.CreateValid();
+        MusteriDto dto = MusteriMockFactory.CreateValidDto();
+        Musteri existingMusteri = MusteriMockFactory.CreateValid();
         _mockMusteriRepo.Setup(x => x.AxtarAsync(It.IsAny<System.Linq.Expressions.Expression<Func<Musteri, bool>>>(), null))
             .ReturnsAsync(new List<Musteri> { existingMusteri });
 
         // Act
-        var result = await _musteriManager.MusteriYaratAsync(dto);
+        EmeliyyatNeticesi result = await _musteriManager.MusteriYaratAsync(dto);
 
         // Assert
         result.UgurluDur.Should().BeFalse();
@@ -46,7 +48,7 @@ public class MusteriManagerTests
     public async Task MusteriYaratAsync_ValidData_ReturnsSuccess()
     {
         // Arrange
-        var dto = MusteriMockFactory.CreateValidDto();
+        MusteriDto dto = MusteriMockFactory.CreateValidDto();
         _mockMusteriRepo.Setup(x => x.AxtarAsync(It.IsAny<System.Linq.Expressions.Expression<Func<Musteri, bool>>>(), null))
             .ReturnsAsync(new List<Musteri>());
         _mockMusteriRepo.Setup(x => x.ElaveEtAsync(It.IsAny<Musteri>()))
@@ -55,7 +57,7 @@ public class MusteriManagerTests
             .ReturnsAsync(1);
 
         // Act
-        var result = await _musteriManager.MusteriYaratAsync(dto);
+        EmeliyyatNeticesi result = await _musteriManager.MusteriYaratAsync(dto);
 
         // Assert
         result.UgurluDur.Should().BeTrue();
@@ -67,12 +69,12 @@ public class MusteriManagerTests
     public async Task MusteriYenileAsync_NonExistingMusteri_ReturnsFailure()
     {
         // Arrange
-        var dto = MusteriMockFactory.CreateValidDto(999);
+        MusteriDto dto = MusteriMockFactory.CreateValidDto(999);
         _mockMusteriRepo.Setup(x => x.GetirAsync(999))
             .ReturnsAsync((Musteri?)null);
 
         // Act
-        var result = await _musteriManager.MusteriYenileAsync(dto);
+        EmeliyyatNeticesi result = await _musteriManager.MusteriYenileAsync(dto);
 
         // Assert
         result.UgurluDur.Should().BeFalse();
@@ -84,8 +86,8 @@ public class MusteriManagerTests
     public async Task MusteriYenileAsync_ValidData_ReturnsSuccess()
     {
         // Arrange
-        var musteri = MusteriMockFactory.CreateValid(1);
-        var dto = MusteriMockFactory.CreateValidDto(1);
+        Musteri musteri = MusteriMockFactory.CreateValid(1);
+        MusteriDto dto = MusteriMockFactory.CreateValidDto(1);
         dto.TamAd = "Yenilənmiş Ad";
 
         _mockMusteriRepo.Setup(x => x.GetirAsync(1))
@@ -94,7 +96,7 @@ public class MusteriManagerTests
             .ReturnsAsync(1);
 
         // Act
-        var result = await _musteriManager.MusteriYenileAsync(dto);
+        EmeliyyatNeticesi result = await _musteriManager.MusteriYenileAsync(dto);
 
         // Assert
         result.UgurluDur.Should().BeTrue();
@@ -106,12 +108,12 @@ public class MusteriManagerTests
     public async Task MusteriSilAsync_MusteriWithDebt_ReturnsFailure()
     {
         // Arrange
-        var musteri = MusteriMockFactory.CreateWithDebt(1, 500m);
+        Musteri musteri = MusteriMockFactory.CreateWithDebt(1, 500m);
         _mockMusteriRepo.Setup(x => x.GetirAsync(1))
             .ReturnsAsync(musteri);
 
         // Act
-        var result = await _musteriManager.MusteriSilAsync(1);
+        EmeliyyatNeticesi result = await _musteriManager.MusteriSilAsync(1);
 
         // Assert
         result.UgurluDur.Should().BeFalse();
@@ -123,7 +125,7 @@ public class MusteriManagerTests
     public async Task MusteriSilAsync_ValidMusteri_ReturnsSuccess()
     {
         // Arrange
-        var musteri = MusteriMockFactory.CreateValid(1);
+        Musteri musteri = MusteriMockFactory.CreateValid(1);
         musteri.UmumiBorc = 0; // Borcu yoxdur
         _mockMusteriRepo.Setup(x => x.GetirAsync(1))
             .ReturnsAsync(musteri);
@@ -133,7 +135,7 @@ public class MusteriManagerTests
             .ReturnsAsync(1);
 
         // Act
-        var result = await _musteriManager.MusteriSilAsync(1);
+        EmeliyyatNeticesi result = await _musteriManager.MusteriSilAsync(1);
 
         // Assert
         result.UgurluDur.Should().BeTrue();
@@ -145,12 +147,12 @@ public class MusteriManagerTests
     public async Task ButunMusterileriGetirAsync_ReturnsAllMusteriler()
     {
         // Arrange
-        var musteriler = MusteriMockFactory.CreateList(5);
+        List<Musteri> musteriler = MusteriMockFactory.CreateList(5);
         _mockMusteriRepo.Setup(x => x.ButununuGetirAsync())
             .ReturnsAsync(musteriler);
 
         // Act
-        var result = await _musteriManager.ButunMusterileriGetirAsync();
+        EmeliyyatNeticesi<List<MusteriDto>> result = await _musteriManager.ButunMusterileriGetirAsync();
 
         // Assert
         result.UgurluDur.Should().BeTrue();

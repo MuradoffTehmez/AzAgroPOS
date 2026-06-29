@@ -1,11 +1,12 @@
 ﻿// Fayl: AzAgroPOS.Teqdimat/Teqdimatcilar/BarkodCapiPresenter.cs
-namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 
+using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Servisler;
-using System.Linq;
-using System.Threading.Tasks;
+
+namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 
 public class BarkodCapiPresenter
 {
@@ -24,7 +25,7 @@ public class BarkodCapiPresenter
 
     private async Task MehsulAxtar()
     {
-        var netice = await _barkodCapiManager.MehsullariAxtarAsync(_view.AxtarisMetni);
+        EmeliyyatNeticesi<List<MehsulDto>> netice = await _barkodCapiManager.MehsullariAxtarAsync(_view.AxtarisMetni);
         if (netice.UgurluDur)
         {
             _view.AxtarisNeticeleriniGoster(netice.Data);
@@ -37,7 +38,7 @@ public class BarkodCapiPresenter
 
     private void SiyahiniCapaGonder()
     {
-        var siyahı = _view.CapSiyahisi;
+        List<BarkodEtiketDto> siyahı = _view.CapSiyahisi;
         if (siyahı == null || !siyahı.Any())
         {
             _view.MesajGoster("Çap etmək üçün siyahı boşdur.", "Xəbərdarlıq");

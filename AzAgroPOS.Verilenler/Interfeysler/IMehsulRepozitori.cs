@@ -1,7 +1,8 @@
 ﻿// Fayl: AzAgroPOS.Verilenler/Interfeysler/IMehsulRepozitori.cs
-namespace AzAgroPOS.Verilenler.Interfeysler;
 
 using AzAgroPOS.Varliglar;
+
+namespace AzAgroPOS.Verilenler.Interfeysler;
 /// <summary>
 /// Bütün məhsul verilənlər bazası əməliyyatları üçün interfeys.
 /// Uzunluğu IRepozitori  interfeysindən miras alır və məhsul ilə əlaqəli xüsusi əməliyyatları əlavə etmək üçün genişləndirilə bilər.

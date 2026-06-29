@@ -1,6 +1,9 @@
+using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Yardimcilar;
+using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -53,7 +56,7 @@ public class LoginPresenter : IDisposable
 
     private async Task DaxilOlAsync()
     {
-        var netice = await _tehlukesizlikManager.DaxilOlAsync(_view.IstifadeciAdi, _view.Parol);
+        EmeliyyatNeticesi<IstifadeciDto> netice = await _tehlukesizlikManager.DaxilOlAsync(_view.IstifadeciAdi, _view.Parol);
 
         if (netice.UgurluDur)
         {
@@ -61,7 +64,7 @@ public class LoginPresenter : IDisposable
             _unitOfWork.AktivIstifadeciniTeyinEt(netice.Data.Id);
 
             // İstifadəçi entity-ni verilənlər bazasından götür (icazələrlə birlikdə)
-            var istifadeci = await _unitOfWork.Istifadeciler.GetirAsync(netice.Data.Id);
+            Istifadeci istifadeci = await _unitOfWork.Istifadeciler.GetirAsync(netice.Data.Id);
             if (istifadeci != null)
             {
                 // İcazeYoxlayici-yə aktiv istifadəçini təyin et
@@ -90,11 +93,11 @@ public class LoginPresenter : IDisposable
         {
             // Threading problemini həll etmək üçün yeni scope yaradırıq
             // Bu DbContext-in eyni vaxtda müxtəlif thread-lər tərəfindən istifadəsini önləyir
-            using var scope = _serviceProvider.CreateScope();
-            var novbeManager = scope.ServiceProvider.GetRequiredService<NovbeManager>();
+            using IServiceScope scope = _serviceProvider.CreateScope();
+            NovbeManager novbeManager = scope.ServiceProvider.GetRequiredService<NovbeManager>();
 
             // İstifadəçinin açıq növbəsini tap
-            var aciqNovbe = await novbeManager.AktivNovbeniGetirAsync(istifadeciId);
+            Novbe? aciqNovbe = await novbeManager.AktivNovbeniGetirAsync(istifadeciId);
 
             if (aciqNovbe != null)
             {

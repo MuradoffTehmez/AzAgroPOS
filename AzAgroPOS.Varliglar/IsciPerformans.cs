@@ -1,8 +1,6 @@
 // Fayl: AzAgroPOS.Varliglar/IsciPerformans.cs
+
 namespace AzAgroPOS.Varliglar;
-
-using System;
-
 /// <summary>
 /// İşçinin performansını izləmək üçün istifadə olunan varlıq sinifi.
 /// Bu sinif, işçinin aylıq/vəzifəli performansını qiymətləndirmək üçün istifadə olunur.

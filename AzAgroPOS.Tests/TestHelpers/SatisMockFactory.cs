@@ -34,7 +34,7 @@ public static class SatisMockFactory
     /// </summary>
     public static Satis CreateWithDetails(int id = 1, int mehsulId = 1, decimal miqdar = 2)
     {
-        var satis = CreateValid(id);
+        Satis satis = CreateValid(id);
         satis.SatisDetallari = new List<SatisDetali>
         {
             new() {
@@ -78,7 +78,7 @@ public static class SatisMockFactory
     /// </summary>
     public static Satis CreateCashless(int id = 1)
     {
-        var satis = CreateValid(id);
+        Satis satis = CreateValid(id);
         satis.OdenisMetodu = OdenisMetodu.Kart;
         return satis;
     }
@@ -88,7 +88,7 @@ public static class SatisMockFactory
     /// </summary>
     public static Satis CreateCredit(int id = 1, int musteriId = 1)
     {
-        var satis = CreateValid(id, musteriId);
+        Satis satis = CreateValid(id, musteriId);
         satis.OdenisMetodu = OdenisMetodu.Nisyə;
         return satis;
     }
@@ -98,7 +98,7 @@ public static class SatisMockFactory
     /// </summary>
     public static Satis CreateWithMultipleProducts(int id = 1)
     {
-        var satis = CreateValid(id);
+        Satis satis = CreateValid(id);
         satis.SatisDetallari = new List<SatisDetali>
         {
             new() {
@@ -135,7 +135,7 @@ public static class SatisMockFactory
     /// </summary>
     public static Satis CreateDeleted(int id = 1)
     {
-        var satis = CreateValid(id);
+        Satis satis = CreateValid(id);
         satis.Silinib = true;
         return satis;
     }

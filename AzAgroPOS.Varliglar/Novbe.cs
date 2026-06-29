@@ -1,8 +1,6 @@
 ﻿// Fayl: AzAgroPOS.Varliglar/Novbe.cs
-namespace AzAgroPOS.Varliglar;
 
-using System;
-using System.Collections.Generic;
+namespace AzAgroPOS.Varliglar;
 
 public class Novbe : BazaVarligi
 {

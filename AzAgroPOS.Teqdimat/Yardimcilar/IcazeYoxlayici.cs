@@ -1,9 +1,9 @@
 // AzAgroPOS.Teqdimat/Yardimcilar/IcazeYoxlayici.cs
-namespace AzAgroPOS.Teqdimat.Yardimcilar;
 
 using AzAgroPOS.Mentiq.Idareciler;
-using System.Threading.Tasks;
+using AzAgroPOS.Mentiq.Uslublar;
 
+namespace AzAgroPOS.Teqdimat.Yardimcilar;
 /// <summary>
 /// İstifadəçilərin icazələrini yoxlamaq üçün köməkçi sinif
 /// </summary>
@@ -29,7 +29,7 @@ public static class IcazeYoxlayici
             return true;
         }
 
-        var netice = await icaeManager.IstifadecininIcazesiVarAsync(
+        EmeliyyatNeticesi<bool> netice = await icaeManager.IstifadecininIcazesiVarAsync(
             AktivSessiya.AktivIstifadeci.Id,
             icaeAdi);
 

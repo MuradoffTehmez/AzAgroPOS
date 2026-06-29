@@ -1,10 +1,12 @@
 ﻿// Fayl: AzAgroPOS.Teqdimat/Teqdimatcilar/ZHesabatArxivPresenter.cs
-namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 
+using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using System.Text;
-using System.Threading.Tasks;
+
+namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 
 public class ZHesabatArxivPresenter
 {
@@ -23,7 +25,7 @@ public class ZHesabatArxivPresenter
 
     private async Task FormuYukle()
     {
-        var netice = await _hesabatManager.BaglanmisNovbeleriGetirAsync();
+        EmeliyyatNeticesi<List<BaglanmisNovbeDto>> netice = await _hesabatManager.BaglanmisNovbeleriGetirAsync();
         if (netice.UgurluDur)
         {
             _view.NovbeleriGoster(netice.Data);
@@ -42,11 +44,11 @@ public class ZHesabatArxivPresenter
             return;
         }
 
-        var netice = await _hesabatManager.ZHesabatTekrarGetirAsync(_view.SecilmisNovbeId.Value);
+        EmeliyyatNeticesi<ZHesabatDto> netice = await _hesabatManager.ZHesabatTekrarGetirAsync(_view.SecilmisNovbeId.Value);
 
         if (netice.UgurluDur)
         {
-            var h = netice.Data;
+            ZHesabatDto? h = netice.Data;
             StringBuilder sb = new();
             sb.AppendLine("         Z-HESABATI (Arxiv)");
             sb.AppendLine("---------------------------------");

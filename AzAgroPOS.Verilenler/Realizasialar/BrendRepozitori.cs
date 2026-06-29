@@ -1,10 +1,10 @@
 // Fayl: AzAgroPOS.Verilenler/Realizasialar/BrendRepozitori.cs
-namespace AzAgroPOS.Verilenler.Realizasialar;
 
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using AzAgroPOS.Verilenler.Kontekst;
 
+namespace AzAgroPOS.Verilenler.Realizasialar;
 /// <summary>
 /// Brend varlığı üçün repozitoriya realizasiyası.
 /// </summary>

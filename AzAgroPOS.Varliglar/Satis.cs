@@ -1,9 +1,6 @@
 ﻿// Fayl: AzAgroPOS.Varliglar/Satis.cs
+
 namespace AzAgroPOS.Varliglar;
-
-using System;
-using System.Collections.Generic;
-
 /// <summary>
 /// Bir satış əməliyyatının başlığını təmsil edir.
 /// Ümumi məbləğ, tarix və müştəri kimi məlumatları saxlayır.

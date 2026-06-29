@@ -28,7 +28,7 @@ public class RepozitoriTests : IDisposable
     public async Task ElaveEtAsync_ValidEntity_AddsToDatabase()
     {
         // Arrange
-        var mehsul = MockData.CreateMehsul();
+        Mehsul mehsul = MockData.CreateMehsul();
         mehsul.Id = 0; // EF Core will auto-generate
 
         // Act
@@ -36,7 +36,7 @@ public class RepozitoriTests : IDisposable
         await _context.SaveChangesAsync();
 
         // Assert
-        var result = await _repository.GetirAsync(mehsul.Id);
+        Mehsul result = await _repository.GetirAsync(mehsul.Id);
         result.Should().NotBeNull();
         result!.Ad.Should().Be("Test Məhsul");
     }
@@ -45,13 +45,13 @@ public class RepozitoriTests : IDisposable
     public async Task GetirAsync_ExistingId_ReturnsEntity()
     {
         // Arrange
-        var mehsul = MockData.CreateMehsul();
+        Mehsul mehsul = MockData.CreateMehsul();
         mehsul.Id = 0; // EF Core will auto-generate
         await _repository.ElaveEtAsync(mehsul);
         await _context.SaveChangesAsync();
 
         // Act
-        var result = await _repository.GetirAsync(mehsul.Id);
+        Mehsul result = await _repository.GetirAsync(mehsul.Id);
 
         // Assert
         result.Should().NotBeNull();
@@ -63,7 +63,7 @@ public class RepozitoriTests : IDisposable
     public async Task GetirAsync_NonExistingId_ReturnsNull()
     {
         // Act
-        var result = await _repository.GetirAsync(999);
+        Mehsul result = await _repository.GetirAsync(999);
 
         // Assert
         result.Should().BeNull();
@@ -73,8 +73,8 @@ public class RepozitoriTests : IDisposable
     public async Task ButununuGetirAsync_ReturnsAllNonDeletedEntities()
     {
         // Arrange
-        var mehsullar = MockData.CreateMehsulList(5);
-        foreach (var mehsul in mehsullar)
+        List<Mehsul> mehsullar = MockData.CreateMehsulList(5);
+        foreach (Mehsul mehsul in mehsullar)
         {
             mehsul.Id = 0; // EF Core will auto-generate
             await _repository.ElaveEtAsync(mehsul);
@@ -82,7 +82,7 @@ public class RepozitoriTests : IDisposable
         await _context.SaveChangesAsync();
 
         // Act
-        var result = await _repository.ButununuGetirAsync();
+        IEnumerable<Mehsul> result = await _repository.ButununuGetirAsync();
 
         // Assert
         result.Should().HaveCount(5);
@@ -92,7 +92,7 @@ public class RepozitoriTests : IDisposable
     public async Task Sil_SoftDeletesEntity()
     {
         // Arrange
-        var mehsul = MockData.CreateMehsul();
+        Mehsul mehsul = MockData.CreateMehsul();
         mehsul.Id = 0; // EF Core will auto-generate
         await _repository.ElaveEtAsync(mehsul);
         await _context.SaveChangesAsync();
@@ -102,10 +102,10 @@ public class RepozitoriTests : IDisposable
         await _context.SaveChangesAsync();
 
         // Assert
-        var result = await _repository.GetirAsync(mehsul.Id);
+        Mehsul result = await _repository.GetirAsync(mehsul.Id);
         result.Should().BeNull(); // Soft deleted, so should not be returned
 
-        var deleted = (await _repository.SilinmisleriGetirAsync()).FirstOrDefault(m => m.Id == mehsul.Id);
+        Mehsul? deleted = (await _repository.SilinmisleriGetirAsync()).FirstOrDefault(m => m.Id == mehsul.Id);
         deleted.Should().NotBeNull();
         deleted!.Silinib.Should().BeTrue();
     }
@@ -114,8 +114,8 @@ public class RepozitoriTests : IDisposable
     public async Task AxtarAsync_WithFilter_ReturnsMatchingEntities()
     {
         // Arrange
-        var mehsullar = MockData.CreateMehsulList(5);
-        foreach (var mehsul in mehsullar)
+        List<Mehsul> mehsullar = MockData.CreateMehsulList(5);
+        foreach (Mehsul mehsul in mehsullar)
         {
             mehsul.Id = 0; // EF Core will auto-generate
             await _repository.ElaveEtAsync(mehsul);
@@ -123,7 +123,7 @@ public class RepozitoriTests : IDisposable
         await _context.SaveChangesAsync();
 
         // Act
-        var result = await _repository.AxtarAsync(m => m.Ad.Contains("Məhsul 2"));
+        IEnumerable<Mehsul> result = await _repository.AxtarAsync(m => m.Ad.Contains("Məhsul 2"));
 
         // Assert
         result.Should().HaveCount(1);
@@ -134,8 +134,8 @@ public class RepozitoriTests : IDisposable
     public async Task SehifelenmisGetirAsync_ReturnsPaginatedResults()
     {
         // Arrange
-        var mehsullar = MockData.CreateMehsulList(20);
-        foreach (var mehsul in mehsullar)
+        List<Mehsul> mehsullar = MockData.CreateMehsulList(20);
+        foreach (Mehsul mehsul in mehsullar)
         {
             mehsul.Id = 0; // EF Core will auto-generate
             await _repository.ElaveEtAsync(mehsul);
@@ -143,7 +143,7 @@ public class RepozitoriTests : IDisposable
         await _context.SaveChangesAsync();
 
         // Act
-        var (melumatlar, umumiSay) = await _repository.SehifelenmisGetirAsync(
+        (IEnumerable<Mehsul>? melumatlar, int umumiSay) = await _repository.SehifelenmisGetirAsync(
             sehifeNomresi: 2,
             sehifeOlcusu: 5);
 

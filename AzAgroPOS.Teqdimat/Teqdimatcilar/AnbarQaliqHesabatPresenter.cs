@@ -1,9 +1,11 @@
 ﻿// Fayl: AzAgroPOS.Teqdimat/Teqdimatcilar/AnbarQaliqHesabatPresenter.cs
-namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 
+using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Teqdimat.Interfeysler;
-using System.Threading.Tasks;
+
+namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 
 public class AnbarQaliqHesabatPresenter
 {
@@ -27,7 +29,7 @@ public class AnbarQaliqHesabatPresenter
             return;
         }
 
-        var netice = await _hesabatManager.AnbarQaliqHesabatiGetirAsync(limit);
+        EmeliyyatNeticesi<List<AnbarQaliqDetayDto>> netice = await _hesabatManager.AnbarQaliqHesabatiGetirAsync(limit);
 
         if (netice.UgurluDur)
         {

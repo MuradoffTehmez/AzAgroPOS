@@ -41,7 +41,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         /// </summary>
         public static ValidasiyaNeticesi AxtarisMetniValidet(string axtarisMetni)
         {
-            var netice = new ValidasiyaNeticesi { UgurludurMu = true };
+            ValidasiyaNeticesi netice = new() { UgurludurMu = true };
 
             // Boş olub-olmadığını yoxla
             if (string.IsNullOrWhiteSpace(axtarisMetni))
@@ -68,7 +68,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         /// </summary>
         public static ValidasiyaNeticesi SayValidet(string sayMetni, bool telebe = true)
         {
-            var netice = new ValidasiyaNeticesi { UgurludurMu = true };
+            ValidasiyaNeticesi netice = new() { UgurludurMu = true };
 
             // Boş olub-olmadığını yoxla
             if (string.IsNullOrWhiteSpace(sayMetni))
@@ -126,7 +126,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         /// </summary>
         public static ValidasiyaNeticesi SayValidet(decimal say)
         {
-            var netice = new ValidasiyaNeticesi { UgurludurMu = true };
+            ValidasiyaNeticesi netice = new() { UgurludurMu = true };
 
             // Müsbət olub-olmadığını yoxla
             if (say <= 0)
@@ -165,10 +165,10 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         /// </summary>
         public static ValidasiyaNeticesi StokAzaltmaValidet(decimal movcudStok, decimal azaltilacaqSay)
         {
-            var netice = new ValidasiyaNeticesi { UgurludurMu = true };
+            ValidasiyaNeticesi netice = new() { UgurludurMu = true };
 
             // Say validasiyası
-            var sayNetice = SayValidet(azaltilacaqSay);
+            ValidasiyaNeticesi sayNetice = SayValidet(azaltilacaqSay);
             if (!sayNetice.UgurludurMu)
             {
                 netice.Xetalar.AddRange(sayNetice.Xetalar);
@@ -204,7 +204,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         /// </summary>
         public static ValidasiyaNeticesi QeydValidet(string qeyd, bool telebe = false)
         {
-            var netice = new ValidasiyaNeticesi { UgurludurMu = true };
+            ValidasiyaNeticesi netice = new() { UgurludurMu = true };
 
             // Boş olub-olmadığını yoxla (tələb olunarsa)
             if (string.IsNullOrWhiteSpace(qeyd))
@@ -249,10 +249,10 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
             string sayMetni,
             string qeyd = null)
         {
-            var netice = new ValidasiyaNeticesi { UgurludurMu = true };
+            ValidasiyaNeticesi netice = new() { UgurludurMu = true };
 
             // Axtarış mətni validasiyası
-            var axtarisNetice = AxtarisMetniValidet(axtarisMetni);
+            ValidasiyaNeticesi axtarisNetice = AxtarisMetniValidet(axtarisMetni);
             if (!axtarisNetice.UgurludurMu)
             {
                 netice.Xetalar.AddRange(axtarisNetice.Xetalar);
@@ -260,7 +260,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
             }
 
             // Say validasiyası
-            var sayNetice = SayValidet(sayMetni);
+            ValidasiyaNeticesi sayNetice = SayValidet(sayMetni);
             if (!sayNetice.UgurludurMu)
             {
                 netice.Xetalar.AddRange(sayNetice.Xetalar);
@@ -270,7 +270,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
             // Qeyd validasiyası (opsional)
             if (!string.IsNullOrWhiteSpace(qeyd))
             {
-                var qeydNetice = QeydValidet(qeyd, false);
+                ValidasiyaNeticesi qeydNetice = QeydValidet(qeyd, false);
                 if (!qeydNetice.UgurludurMu)
                 {
                     netice.Xetalar.AddRange(qeydNetice.Xetalar);
@@ -290,7 +290,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         /// </summary>
         public static ValidasiyaNeticesi MehsulSecilmisValidet(int? mehsulId)
         {
-            var netice = new ValidasiyaNeticesi { UgurludurMu = true };
+            ValidasiyaNeticesi netice = new() { UgurludurMu = true };
 
             if (!mehsulId.HasValue || mehsulId.Value <= 0)
             {
@@ -311,7 +311,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
             decimal yeniStok,
             string qeyd)
         {
-            var netice = new ValidasiyaNeticesi { UgurludurMu = true };
+            ValidasiyaNeticesi netice = new() { UgurludurMu = true };
 
             // Yeni stok mənfi ola bilməz
             if (yeniStok < 0)
@@ -328,7 +328,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
             }
 
             // Qeyd mütləq olmalıdır stok düzəliş üçün
-            var qeydNetice = QeydValidet(qeyd, true);
+            ValidasiyaNeticesi qeydNetice = QeydValidet(qeyd, true);
             if (!qeydNetice.UgurludurMu)
             {
                 netice.Xetalar.AddRange(qeydNetice.Xetalar);
@@ -376,13 +376,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         /// </summary>
         public static decimal? StringiDecimalaCevir(string metn)
         {
-            if (string.IsNullOrWhiteSpace(metn))
-                return null;
-
-            if (decimal.TryParse(metn.Trim(), out decimal netice))
-                return netice;
-
-            return null;
+            return string.IsNullOrWhiteSpace(metn) ? null : decimal.TryParse(metn.Trim(), out decimal netice) ? netice : null;
         }
 
         /// <summary>
@@ -391,7 +385,9 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         public static string SayInputuTemizle(string input)
         {
             if (string.IsNullOrWhiteSpace(input))
+            {
                 return string.Empty;
+            }
 
             // Yalnız rəqəm, nöqtə və mənfi işarəsi saxla
             return new string(input.Where(c => char.IsDigit(c) || c == '.' || c == ',').ToArray())

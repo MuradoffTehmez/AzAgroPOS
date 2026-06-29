@@ -2,6 +2,7 @@
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Tests.TestHelpers;
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
@@ -44,11 +45,11 @@ public class SatisManagerTests
     public async Task SatisYaratAsync_EmptySebetElementleri_ReturnsFailure()
     {
         // Arrange
-        var dto = SatisMockFactory.CreateValidYaratDto();
+        SatisYaratDto dto = SatisMockFactory.CreateValidYaratDto();
         dto.SebetElementleri = new List<SatisSebetiElementiDto>();
 
         // Act
-        var result = await _satisManager.SatisYaratAsync(dto);
+        EmeliyyatNeticesi<Satis> result = await _satisManager.SatisYaratAsync(dto);
 
         // Assert
         result.UgurluDur.Should().BeFalse();
@@ -60,12 +61,12 @@ public class SatisManagerTests
     public async Task SatisYaratAsync_NisyeWithoutMusteri_ReturnsFailure()
     {
         // Arrange
-        var dto = SatisMockFactory.CreateValidYaratDto();
+        SatisYaratDto dto = SatisMockFactory.CreateValidYaratDto();
         dto.OdenisMetodu = OdenisMetodu.Nisyə;
         dto.MusteriId = null;
 
         // Act
-        var result = await _satisManager.SatisYaratAsync(dto);
+        EmeliyyatNeticesi<Satis> result = await _satisManager.SatisYaratAsync(dto);
 
         // Assert
         result.UgurluDur.Should().BeFalse();
@@ -77,15 +78,15 @@ public class SatisManagerTests
     public async Task SatisYaratAsync_InsufficientStock_ReturnsFailure()
     {
         // Arrange
-        var dto = SatisMockFactory.CreateValidYaratDto();
-        var mehsul = MehsulMockFactory.CreateValid(1);
+        SatisYaratDto dto = SatisMockFactory.CreateValidYaratDto();
+        Mehsul mehsul = MehsulMockFactory.CreateValid(1);
         mehsul.MovcudSay = 1; // Səbətdə 2 ədəd var, amma stokda 1
 
         _mockMehsulRepo.Setup(x => x.GetirAsync(1))
             .ReturnsAsync(mehsul);
 
         // Act
-        var result = await _satisManager.SatisYaratAsync(dto);
+        EmeliyyatNeticesi<Satis> result = await _satisManager.SatisYaratAsync(dto);
 
         // Assert
         result.UgurluDur.Should().BeFalse();
@@ -97,12 +98,12 @@ public class SatisManagerTests
     public async Task SatisYaratAsync_NullMehsul_ReturnsFailure()
     {
         // Arrange
-        var dto = SatisMockFactory.CreateValidYaratDto();
+        SatisYaratDto dto = SatisMockFactory.CreateValidYaratDto();
         _mockMehsulRepo.Setup(x => x.GetirAsync(1))
             .ReturnsAsync((Mehsul?)null);
 
         // Act
-        var result = await _satisManager.SatisYaratAsync(dto);
+        EmeliyyatNeticesi<Satis> result = await _satisManager.SatisYaratAsync(dto);
 
         // Assert
         result.UgurluDur.Should().BeFalse();
@@ -113,10 +114,10 @@ public class SatisManagerTests
     public async Task SatisGetirAsync_InvalidSatisNomresi_ReturnsFailure()
     {
         // Arrange
-        var invalidNomre = "ABC123"; // Non-numeric
+        string invalidNomre = "ABC123"; // Non-numeric
 
         // Act
-        var result = await _satisManager.SatisGetirAsync(invalidNomre);
+        EmeliyyatNeticesi<SatisQebzDto> result = await _satisManager.SatisGetirAsync(invalidNomre);
 
         // Assert
         result.UgurluDur.Should().BeFalse();
@@ -131,7 +132,7 @@ public class SatisManagerTests
             .ReturnsAsync((Satis?)null);
 
         // Act
-        var result = await _satisManager.SatisGetirAsync("999");
+        EmeliyyatNeticesi<SatisQebzDto> result = await _satisManager.SatisGetirAsync("999");
 
         // Assert
         result.UgurluDur.Should().BeFalse();

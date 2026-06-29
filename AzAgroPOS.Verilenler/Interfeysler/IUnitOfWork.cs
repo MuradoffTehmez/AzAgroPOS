@@ -1,8 +1,6 @@
 // Fayl: AzAgroPOS.Verilenler/Interfeysler/IUnitOfWork.cs
+
 namespace AzAgroPOS.Verilenler.Interfeysler;
-
-using System;
-
 /// <summary>
 /// Verilənlər bazası ilə bütün əməliyyatları vahid bir tranzaksiya altında idarə edir.
 /// Repozitorilərə müraciəti təmin edir və dəyişiklikləri yaddaşa yazır.

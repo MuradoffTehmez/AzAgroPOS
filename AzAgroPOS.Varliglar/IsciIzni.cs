@@ -1,8 +1,6 @@
 // Fayl: AzAgroPOS.Varliglar/IsciIzni.cs
+
 namespace AzAgroPOS.Varliglar;
-
-using System;
-
 /// <summary>
 /// İşçinin məzuniyyət və digər icazələrini izləmək üçün istifadə olunan varlıq sinifi.
 /// Bu sinif, işçinin məzuniyyət, xəstəlik icazəsi və digər icazələrini qeyd etmək üçün istifadə olunur.

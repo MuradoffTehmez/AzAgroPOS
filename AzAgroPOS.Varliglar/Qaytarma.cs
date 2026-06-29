@@ -1,9 +1,6 @@
 ﻿// Fayl: AzAgroPOS.Varliglar/Qaytarma.cs
+
 namespace AzAgroPOS.Varliglar;
-
-using System;
-using System.Collections.Generic;
-
 /// <summary>
 /// Qaytarma əməliyyatlarını təmsil edir.
 /// </summary>

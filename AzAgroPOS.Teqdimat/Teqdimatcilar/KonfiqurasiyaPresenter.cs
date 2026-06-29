@@ -1,5 +1,6 @@
 // Fayl: AzAgroPOS.Teqdimat/Teqdimatcilar/KonfiqurasiyaPresenter.cs
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Mentiq.Yardimcilar;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Sabitler;
@@ -75,7 +76,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
         private void ComboBoxlariDoldur()
         {
             // Dillər
-            var diller = new Dictionary<string, string>
+            Dictionary<string, string> diller = new()
             {
                 { KonfiqurasiyaSabitleri.Diller.Azerbaycan, "Azərbaycan" },
                 { KonfiqurasiyaSabitleri.Diller.English, "English" },
@@ -85,7 +86,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             _view.DilComboBoxDoldur(diller, _view.SistemDil);
 
             // Valyutalar
-            var valyutalar = new List<string>
+            List<string> valyutalar = new()
             {
                 KonfiqurasiyaSabitleri.Valyutalar.AZN,
                 KonfiqurasiyaSabitleri.Valyutalar.USD,
@@ -96,7 +97,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             _view.ValyutaComboBoxDoldur(valyutalar, _view.SistemValyuta);
 
             // Kağız ölçüləri
-            var olculer = new List<string>
+            List<string> olculer = new()
             {
                 KonfiqurasiyaSabitleri.KagizOlculeri.A4,
                 KonfiqurasiyaSabitleri.KagizOlculeri.A5,
@@ -107,7 +108,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             _view.KagizOlcusuComboBoxDoldur(olculer, _view.PrinterKagizOlcusu);
 
             // Temalar
-            var temalar = new List<string>
+            List<string> temalar = new()
             {
                 KonfiqurasiyaSabitleri.Temalar.Light,
                 KonfiqurasiyaSabitleri.Temalar.Dark
@@ -122,9 +123,11 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
         {
             if (_view.IsDirty)
             {
-                var netice = _view.TesdiqSorusu("Yadda saxlanmamış dəyişikliklər var. Formu bağlamaq istədiyinizə əminsiniz?");
+                bool netice = _view.TesdiqSorusu("Yadda saxlanmamış dəyişikliklər var. Formu bağlamaq istədiyinizə əminsiniz?");
                 if (!netice)
+                {
                     return;
+                }
             }
 
             _view.FormuYenile();
@@ -177,7 +180,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                     KonfiqurasiyaSabitleri.Acarlar.SirketVebSayt,
                     KonfiqurasiyaSabitleri.VarsayilanDeyerler.SirketVebSayt);
 
-                var logoYolu = await _konfiqurasiyaManager.GetirAsync(
+                string logoYolu = await _konfiqurasiyaManager.GetirAsync(
                     KonfiqurasiyaSabitleri.Acarlar.SirketLogo,
                     KonfiqurasiyaSabitleri.VarsayilanDeyerler.SirketLogo);
                 _view.SirketLogo = logoYolu;
@@ -187,10 +190,10 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                 }
 
                 // Vergi parametrləri
-                var edvStr = await _konfiqurasiyaManager.GetirAsync(
+                string edvStr = await _konfiqurasiyaManager.GetirAsync(
                     KonfiqurasiyaSabitleri.Acarlar.VergiEdvDerecesi,
                     KonfiqurasiyaSabitleri.VarsayilanDeyerler.VergiEdvDerecesi);
-                _view.EdvDerecesi = decimal.TryParse(edvStr, out var edv) ? edv : 18;
+                _view.EdvDerecesi = decimal.TryParse(edvStr, out decimal edv) ? edv : 18;
 
                 // Printer tənzimləmələri
                 _view.QebzPrinteri = await _konfiqurasiyaManager.GetirAsync(
@@ -206,15 +209,15 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                     KonfiqurasiyaSabitleri.VarsayilanDeyerler.PrinterKagizOlcusu);
 
                 // Proqram davranışı
-                var qebzCapStr = await _konfiqurasiyaManager.GetirAsync(
+                string qebzCapStr = await _konfiqurasiyaManager.GetirAsync(
                     KonfiqurasiyaSabitleri.Acarlar.DavranisQebzCap,
                     KonfiqurasiyaSabitleri.VarsayilanDeyerler.DavranisQebzCap);
-                _view.QebzAvtoCap = bool.TryParse(qebzCapStr, out var qebzCap) && qebzCap;
+                _view.QebzAvtoCap = bool.TryParse(qebzCapStr, out bool qebzCap) && qebzCap;
 
-                var avtoYedeklemeStr = await _konfiqurasiyaManager.GetirAsync(
+                string avtoYedeklemeStr = await _konfiqurasiyaManager.GetirAsync(
                     KonfiqurasiyaSabitleri.Acarlar.DavranisAvtoYedekleme,
                     KonfiqurasiyaSabitleri.VarsayilanDeyerler.DavranisAvtoYedekleme);
-                _view.AvtomatikYedekleme = bool.TryParse(avtoYedeklemeStr, out var avtoYedekleme) && avtoYedekleme;
+                _view.AvtomatikYedekleme = bool.TryParse(avtoYedeklemeStr, out bool avtoYedekleme) && avtoYedekleme;
 
                 _view.YedeklemeSaati = await _konfiqurasiyaManager.GetirAsync(
                     KonfiqurasiyaSabitleri.Acarlar.DavranisYedeklemeSaati,
@@ -241,10 +244,10 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                     KonfiqurasiyaSabitleri.Acarlar.SistemTema,
                     KonfiqurasiyaSabitleri.VarsayilanDeyerler.SistemTema);
 
-                var sessiyaStr = await _konfiqurasiyaManager.GetirAsync(
+                string sessiyaStr = await _konfiqurasiyaManager.GetirAsync(
                     KonfiqurasiyaSabitleri.Acarlar.SistemSessiyaTimeout,
                     KonfiqurasiyaSabitleri.VarsayilanDeyerler.SistemSessiyaTimeout);
-                _view.SistemSessiyaTimeout = int.TryParse(sessiyaStr, out var sessiya) ? sessiya : 30;
+                _view.SistemSessiyaTimeout = int.TryParse(sessiyaStr, out int sessiya) ? sessiya : 30;
 
                 // IsDirty bayrağını sıfırla
                 _view.IsDirty = false;
@@ -272,7 +275,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             try
             {
                 // Validasiya
-                var validasiyaNeticesi = KonfiqurasiyaValidasiyasi.ButunParametrleriValidet(
+                ValidasiyaNeticesi validasiyaNeticesi = KonfiqurasiyaValidasiyasi.ButunParametrleriValidet(
                     _view.SirketAdi,
                     _view.SirketUnvani,
                     _view.SirketVoen,
@@ -294,7 +297,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                 _view.YuklemeGoster("Konfiqurasiya parametrləri saxlanılır...");
 
                 // Bütün parametrləri bir dictionary-də topla
-                var parametrler = new Dictionary<string, string>
+                Dictionary<string, string> parametrler = new()
                 {
                     // Şirkət məlumatları
                     { KonfiqurasiyaSabitleri.Acarlar.SirketAdi, _view.SirketAdi },
@@ -328,7 +331,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                 };
 
                 // Batch əməliyyatı ilə saxla
-                var netice = await _konfiqurasiyaManager.TopluSaxlaAsync(parametrler);
+                EmeliyyatNeticesi<bool> netice = await _konfiqurasiyaManager.TopluSaxlaAsync(parametrler);
 
                 _view.YuklemeGizle();
 
@@ -363,7 +366,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
         /// </summary>
         private void QebzPrinterSec()
         {
-            var secilmisPrinter = _view.PrinterSecDialoquGoster(_view.QebzPrinteri);
+            string secilmisPrinter = _view.PrinterSecDialoquGoster(_view.QebzPrinteri);
             if (!string.IsNullOrEmpty(secilmisPrinter))
             {
                 _view.QebzPrinteri = secilmisPrinter;
@@ -376,7 +379,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
         /// </summary>
         private void BarkodPrinterSec()
         {
-            var secilmisPrinter = _view.PrinterSecDialoquGoster(_view.BarkodPrinteri);
+            string secilmisPrinter = _view.PrinterSecDialoquGoster(_view.BarkodPrinteri);
             if (!string.IsNullOrEmpty(secilmisPrinter))
             {
                 _view.BarkodPrinteri = secilmisPrinter;
@@ -393,7 +396,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
         /// </summary>
         private void LogoSec()
         {
-            var logoYolu = _view.LogoSecDialoquGoster();
+            string logoYolu = _view.LogoSecDialoquGoster();
             if (!string.IsNullOrEmpty(logoYolu))
             {
                 _view.SirketLogo = logoYolu;

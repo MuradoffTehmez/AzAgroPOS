@@ -1,14 +1,12 @@
 // Fayl: AzAgroPOS.Teqdimat/Teqdimatcilar/EhtiyatHissəsiPresenter.cs
-namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 
+using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Mentiq.Yardimcilar;
 using AzAgroPOS.Teqdimat.Interfeysler;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
+namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 /// <summary>
 /// Ehtiyat hissəsi forması üçün presenter.
 /// Məhsul ehtiyat hissələrini seçmək və idarə etmək üçün istifadə olunur.
@@ -55,7 +53,7 @@ public class EhtiyatHissəsiPresenter
     {
         try
         {
-            var netice = await _mehsulManager.ButunMehsullariGetirAsync();
+            EmeliyyatNeticesi<IEnumerable<MehsulDto>> netice = await _mehsulManager.ButunMehsullariGetirAsync();
             if (netice.UgurluDur && netice.Data != null)
             {
                 _view.MehsullariGoster(netice.Data.ToList());
@@ -81,10 +79,10 @@ public class EhtiyatHissəsiPresenter
     {
         try
         {
-            var netice = await _mehsulManager.ButunMehsullariGetirAsync();
+            EmeliyyatNeticesi<IEnumerable<MehsulDto>> netice = await _mehsulManager.ButunMehsullariGetirAsync();
             if (netice.UgurluDur && netice.Data != null)
             {
-                var axtarisMetni = _view.AxtarisMetni?.ToLower() ?? string.Empty;
+                string axtarisMetni = _view.AxtarisMetni?.ToLower() ?? string.Empty;
 
                 if (string.IsNullOrWhiteSpace(axtarisMetni))
                 {
@@ -92,7 +90,7 @@ public class EhtiyatHissəsiPresenter
                 }
                 else
                 {
-                    var filtrlenmisMehsullar = netice.Data
+                    List<MehsulDto> filtrlenmisMehsullar = netice.Data
                         .Where(m => m.Ad.ToLower().Contains(axtarisMetni) ||
                                    m.StokKodu.ToLower().Contains(axtarisMetni))
                         .ToList();

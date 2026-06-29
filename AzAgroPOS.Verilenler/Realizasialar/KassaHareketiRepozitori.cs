@@ -1,11 +1,11 @@
 // Fayl: AzAgroPOS.Verilenler/Realizasialar/KassaHareketiRepozitori.cs
-namespace AzAgroPOS.Verilenler.Realisasialar;
 
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using AzAgroPOS.Verilenler.Kontekst;
 using AzAgroPOS.Verilenler.Realizasialar;
 
+namespace AzAgroPOS.Verilenler.Realisasialar;
 /// <summary>
 /// Kassa hərəkəti repozitorisinin Entity Framework tətbiqi
 /// diqqət: Bu sinif kassa hərəkətləri əməliyyatları üçün verilənlər bazası əməliyyatlarını həyata keçirir.

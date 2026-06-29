@@ -26,7 +26,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         /// </summary>
         public static ValidasiyaNeticesi SirketAdiValidet(string ad)
         {
-            var netice = new ValidasiyaNeticesi { UgurludurMu = true };
+            ValidasiyaNeticesi netice = new() { UgurludurMu = true };
 
             if (string.IsNullOrWhiteSpace(ad))
             {
@@ -52,7 +52,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         /// </summary>
         public static ValidasiyaNeticesi VoenValidet(string voen)
         {
-            var netice = new ValidasiyaNeticesi { UgurludurMu = true };
+            ValidasiyaNeticesi netice = new() { UgurludurMu = true };
 
             if (string.IsNullOrWhiteSpace(voen))
             {
@@ -74,7 +74,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         /// </summary>
         public static ValidasiyaNeticesi EmailValidet(string email)
         {
-            var netice = new ValidasiyaNeticesi { UgurludurMu = true };
+            ValidasiyaNeticesi netice = new() { UgurludurMu = true };
 
             if (string.IsNullOrWhiteSpace(email))
             {
@@ -96,7 +96,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         /// </summary>
         public static ValidasiyaNeticesi TelefonValidet(string telefon)
         {
-            var netice = new ValidasiyaNeticesi { UgurludurMu = true };
+            ValidasiyaNeticesi netice = new() { UgurludurMu = true };
 
             if (string.IsNullOrWhiteSpace(telefon))
             {
@@ -118,7 +118,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         /// </summary>
         public static ValidasiyaNeticesi UrlValidet(string url)
         {
-            var netice = new ValidasiyaNeticesi { UgurludurMu = true };
+            ValidasiyaNeticesi netice = new() { UgurludurMu = true };
 
             if (string.IsNullOrWhiteSpace(url))
             {
@@ -140,10 +140,10 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         /// </summary>
         public static ValidasiyaNeticesi EdvDerecesiValidet(decimal derece)
         {
-            var netice = new ValidasiyaNeticesi { UgurludurMu = true };
+            ValidasiyaNeticesi netice = new() { UgurludurMu = true };
 
-            if (derece < KonfiqurasiyaSabitleri.Validasiya.EdvMinimum ||
-                derece > KonfiqurasiyaSabitleri.Validasiya.EdvMaksimum)
+            if (derece is < KonfiqurasiyaSabitleri.Validasiya.EdvMinimum or
+                > KonfiqurasiyaSabitleri.Validasiya.EdvMaksimum)
             {
                 netice.UgurludurMu = false;
                 netice.Xetalar.Add(KonfiqurasiyaSabitleri.XetaMesajlari.EdvDerecesiXetasi);
@@ -157,10 +157,10 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         /// </summary>
         public static ValidasiyaNeticesi SessiyaTimeoutValidet(int timeout)
         {
-            var netice = new ValidasiyaNeticesi { UgurludurMu = true };
+            ValidasiyaNeticesi netice = new() { UgurludurMu = true };
 
-            if (timeout < KonfiqurasiyaSabitleri.Validasiya.SessiyaTimeoutMinimum ||
-                timeout > KonfiqurasiyaSabitleri.Validasiya.SessiyaTimeoutMaksimum)
+            if (timeout is < KonfiqurasiyaSabitleri.Validasiya.SessiyaTimeoutMinimum or
+                > KonfiqurasiyaSabitleri.Validasiya.SessiyaTimeoutMaksimum)
             {
                 netice.UgurludurMu = false;
                 netice.Xetalar.Add(KonfiqurasiyaSabitleri.XetaMesajlari.SessiyaTimeoutXetasi);
@@ -174,7 +174,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         /// </summary>
         public static ValidasiyaNeticesi SaatValidet(string saat)
         {
-            var netice = new ValidasiyaNeticesi { UgurludurMu = true };
+            ValidasiyaNeticesi netice = new() { UgurludurMu = true };
 
             if (string.IsNullOrWhiteSpace(saat))
             {
@@ -197,7 +197,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         /// </summary>
         public static ValidasiyaNeticesi PrinterValidet(string printerAdi, bool mecburidir = false)
         {
-            var netice = new ValidasiyaNeticesi { UgurludurMu = true };
+            ValidasiyaNeticesi netice = new() { UgurludurMu = true };
 
             if (string.IsNullOrWhiteSpace(printerAdi))
             {
@@ -235,10 +235,10 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
             string yedeklemeSaati,
             int sessiyaTimeout)
         {
-            var netice = new ValidasiyaNeticesi { UgurludurMu = true };
+            ValidasiyaNeticesi netice = new() { UgurludurMu = true };
 
             // Şirkət adı (məcburi)
-            var sirketAdiNetice = SirketAdiValidet(sirketAdi);
+            ValidasiyaNeticesi sirketAdiNetice = SirketAdiValidet(sirketAdi);
             if (!sirketAdiNetice.UgurludurMu)
             {
                 netice.UgurludurMu = false;
@@ -246,7 +246,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
             }
 
             // VÖEN (məcburi deyil)
-            var voenNetice = VoenValidet(sirketVoen);
+            ValidasiyaNeticesi voenNetice = VoenValidet(sirketVoen);
             if (!voenNetice.UgurludurMu)
             {
                 netice.UgurludurMu = false;
@@ -254,7 +254,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
             }
 
             // Telefon (məcburi deyil)
-            var telefonNetice = TelefonValidet(sirketTelefon);
+            ValidasiyaNeticesi telefonNetice = TelefonValidet(sirketTelefon);
             if (!telefonNetice.UgurludurMu)
             {
                 netice.UgurludurMu = false;
@@ -262,7 +262,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
             }
 
             // Email (məcburi deyil)
-            var emailNetice = EmailValidet(sirketEmail);
+            ValidasiyaNeticesi emailNetice = EmailValidet(sirketEmail);
             if (!emailNetice.UgurludurMu)
             {
                 netice.UgurludurMu = false;
@@ -272,7 +272,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
             // URL (məcburi deyil)
             if (!string.IsNullOrWhiteSpace(sirketVebSayt))
             {
-                var urlNetice = UrlValidet(sirketVebSayt);
+                ValidasiyaNeticesi urlNetice = UrlValidet(sirketVebSayt);
                 if (!urlNetice.UgurludurMu)
                 {
                     netice.UgurludurMu = false;
@@ -281,7 +281,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
             }
 
             // ƏDV dərəcəsi
-            var edvNetice = EdvDerecesiValidet(edvDerecesi);
+            ValidasiyaNeticesi edvNetice = EdvDerecesiValidet(edvDerecesi);
             if (!edvNetice.UgurludurMu)
             {
                 netice.UgurludurMu = false;
@@ -291,7 +291,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
             // Printerlər (məcburi deyil, amma doldurulubsa yoxlanmalı)
             if (!string.IsNullOrWhiteSpace(qebzPrinteri))
             {
-                var qebzPrinterNetice = PrinterValidet(qebzPrinteri, false);
+                ValidasiyaNeticesi qebzPrinterNetice = PrinterValidet(qebzPrinteri, false);
                 if (!qebzPrinterNetice.UgurludurMu)
                 {
                     netice.UgurludurMu = false;
@@ -301,7 +301,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
 
             if (!string.IsNullOrWhiteSpace(barkodPrinteri))
             {
-                var barkodPrinterNetice = PrinterValidet(barkodPrinteri, false);
+                ValidasiyaNeticesi barkodPrinterNetice = PrinterValidet(barkodPrinteri, false);
                 if (!barkodPrinterNetice.UgurludurMu)
                 {
                     netice.UgurludurMu = false;
@@ -312,7 +312,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
             // Yedekləmə saatı (məcburi deyil, amma doldurulubsa yoxlanmalı)
             if (!string.IsNullOrWhiteSpace(yedeklemeSaati))
             {
-                var saatNetice = SaatValidet(yedeklemeSaati);
+                ValidasiyaNeticesi saatNetice = SaatValidet(yedeklemeSaati);
                 if (!saatNetice.UgurludurMu)
                 {
                     netice.UgurludurMu = false;
@@ -321,7 +321,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
             }
 
             // Sessiya timeout
-            var timeoutNetice = SessiyaTimeoutValidet(sessiyaTimeout);
+            ValidasiyaNeticesi timeoutNetice = SessiyaTimeoutValidet(sessiyaTimeout);
             if (!timeoutNetice.UgurludurMu)
             {
                 netice.UgurludurMu = false;

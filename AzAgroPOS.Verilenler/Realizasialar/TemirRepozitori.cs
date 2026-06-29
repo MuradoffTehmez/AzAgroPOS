@@ -1,10 +1,10 @@
 ﻿// Fayl: AzAgroPOS.Verilenler/Realizasialar/TemirRepozitori.cs
-namespace AzAgroPOS.Verilenler.Realizasialar;
 
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using AzAgroPOS.Verilenler.Kontekst;
 
+namespace AzAgroPOS.Verilenler.Realizasialar;
 /// <summary>
 /// temir üçün CRUD əməliyyatlarını həyata keçirən repozitoriya.
 /// qeyd: Bu sinif, konkret varlıq repozitoriyaları üçün təməl sinif kimi istifadə olunur.

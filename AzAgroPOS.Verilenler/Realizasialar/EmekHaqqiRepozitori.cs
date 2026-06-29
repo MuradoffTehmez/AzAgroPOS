@@ -1,11 +1,11 @@
 // Fayl: AzAgroPOS.Verilenler/Realizasialar/EmekHaqqiRepozitori.cs
-namespace AzAgroPOS.Verilenler.Realisasialar;
 
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using AzAgroPOS.Verilenler.Kontekst;
 using AzAgroPOS.Verilenler.Realizasialar;
 
+namespace AzAgroPOS.Verilenler.Realisasialar;
 /// <summary>
 /// Əmək haqqı əməliyyatları üçün repozitori sinifi.
 /// diqqət: Bu sinif əmək haqqı qeydlərinin verilənlər bazası əməliyyatlarını həyata keçirir.

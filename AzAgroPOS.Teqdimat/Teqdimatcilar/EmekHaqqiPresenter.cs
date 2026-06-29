@@ -1,15 +1,14 @@
 // Fayl: AzAgroPOS.Teqdimat/Teqdimatcilar/EmekHaqqiPresenter.cs
-namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 
+using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Mentiq.Yardimcilar;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Yardimcilar;
 using AzAgroPOS.Varliglar;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
+namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 /// <summary>
 /// Əmək haqqı idarəetmə forması üçün presenter.
 /// İşçilərin əmək haqqını hesablamaq, ödəmək və tarixçəyə baxmaq əməliyyatlarını idarə edir.
@@ -59,10 +58,10 @@ public class EmekHaqqiPresenter
     {
         try
         {
-            var netice = await _isciManager.ButunIscileriGetirAsync();
+            EmeliyyatNeticesi<List<IsciDto>> netice = await _isciManager.ButunIscileriGetirAsync();
             if (netice.UgurluDur && netice.Data != null)
             {
-                var aktivIsciler = netice.Data.Where(i => i.Status == IsciStatusu.Aktiv).ToList();
+                List<IsciDto> aktivIsciler = netice.Data.Where(i => i.Status == IsciStatusu.Aktiv).ToList();
                 _view.IscileriGoster(aktivIsciler);
             }
             else
@@ -84,7 +83,7 @@ public class EmekHaqqiPresenter
     {
         try
         {
-            var netice = await _emekHaqqiManager.EmekHaqqilariGetirAsync();
+            EmeliyyatNeticesi<List<EmekHaqqiDto>> netice = await _emekHaqqiManager.EmekHaqqilariGetirAsync();
             if (netice.UgurluDur && netice.Data != null)
             {
                 _view.EmekHaqqilariGoster(netice.Data.ToList());
@@ -114,13 +113,13 @@ public class EmekHaqqiPresenter
                 return;
             }
 
-            var netice = await _emekHaqqiManager.EmekHaqqilariGetirAsync();
+            EmeliyyatNeticesi<List<EmekHaqqiDto>> netice = await _emekHaqqiManager.EmekHaqqilariGetirAsync();
             if (netice.UgurluDur && netice.Data != null)
             {
-                var isciEmekHaqqlari = netice.Data.Where(eh => eh.IsciId == _view.SecilenIsciId.Value).ToList();
+                List<EmekHaqqiDto> isciEmekHaqqlari = netice.Data.Where(eh => eh.IsciId == _view.SecilenIsciId.Value).ToList();
                 if (isciEmekHaqqlari.Any())
                 {
-                    var sonEmekHaqqi = isciEmekHaqqlari.OrderByDescending(eh => eh.HesablanmaTarixi).First();
+                    EmekHaqqiDto sonEmekHaqqi = isciEmekHaqqlari.OrderByDescending(eh => eh.HesablanmaTarixi).First();
                     _view.SonMaasGoster($"Son Maaş: {sonEmekHaqqi.YekunEmekHaqqi:N2} AZN ({sonEmekHaqqi.Dovr})");
                 }
                 else
@@ -153,8 +152,8 @@ public class EmekHaqqiPresenter
                 return;
             }
 
-            var dovr = _view.Dovr.ToString("yyyy MMMM");
-            var netice = await _emekHaqqiManager.EmekHaqqiHesablaAsync(
+            string dovr = _view.Dovr.ToString("yyyy MMMM");
+            EmeliyyatNeticesi<int> netice = await _emekHaqqiManager.EmekHaqqiHesablaAsync(
                 _view.SecilenIsciId.Value,
                 dovr,
                 _view.ElaveOdenisler,
@@ -193,7 +192,7 @@ public class EmekHaqqiPresenter
                 return;
             }
 
-            var netice = await _emekHaqqiManager.EmekHaqqiOdeAsync(
+            EmeliyyatNeticesi netice = await _emekHaqqiManager.EmekHaqqiOdeAsync(
                 _view.SecilenEmekHaqqiId.Value,
                 AktivSessiya.AktivIstifadeci?.Id);
 
@@ -227,7 +226,7 @@ public class EmekHaqqiPresenter
                 return;
             }
 
-            var netice = await _emekHaqqiManager.EmekHaqqiLegvEtAsync(_view.SecilenEmekHaqqiId.Value);
+            EmeliyyatNeticesi netice = await _emekHaqqiManager.EmekHaqqiLegvEtAsync(_view.SecilenEmekHaqqiId.Value);
 
             if (netice.UgurluDur)
             {

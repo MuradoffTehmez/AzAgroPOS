@@ -15,7 +15,7 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<AzAgroPOSD
 
         string connectionString = ConnectionStringResolver.Resolve(configuration);
 
-        var optionsBuilder = new DbContextOptionsBuilder<AzAgroPOSDbContext>()
+        DbContextOptionsBuilder<AzAgroPOSDbContext> optionsBuilder = new DbContextOptionsBuilder<AzAgroPOSDbContext>()
             .UseSqlServer(connectionString);
 
         return new AzAgroPOSDbContext(optionsBuilder.Options);

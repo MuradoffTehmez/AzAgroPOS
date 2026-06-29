@@ -1,10 +1,10 @@
 ﻿// Fayl: AzAgroPOS.Verilenler/Realizasialar/QaytarmaRepozitori.cs
-namespace AzAgroPOS.Verilenler.Realizasialar;
 
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using AzAgroPOS.Verilenler.Kontekst;
 
+namespace AzAgroPOS.Verilenler.Realizasialar;
 /// <summary>
 /// Qaytarma verilənlər bazası əməliyyatları üçün realizasiya.
 /// </summary>

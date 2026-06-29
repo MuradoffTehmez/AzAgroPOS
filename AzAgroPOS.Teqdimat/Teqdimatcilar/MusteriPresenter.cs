@@ -2,6 +2,7 @@
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Teqdimat.Interfeysler;
+using System.Reflection;
 
 namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 {
@@ -43,16 +44,16 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
         {
             if (_paginationEnabled)
             {
-                var netice = await _musteriManager.MusterileriSehifelenmisGetirAsync(_sehifeParametrleri);
+                EmeliyyatNeticesi<SehifelenmisMelumat<MusteriDto>> netice = await _musteriManager.MusterileriSehifelenmisGetirAsync(_sehifeParametrleri);
                 if (netice.UgurluDur && netice.Data != null)
                 {
-                    var sehifelenmis = netice.Data;
-                    var axtarisMetni = _view.AxtarisMetni;
+                    SehifelenmisMelumat<MusteriDto> sehifelenmis = netice.Data;
+                    string axtarisMetni = _view.AxtarisMetni;
 
                     IEnumerable<MusteriDto> musteriler = sehifelenmis.Melumatlar;
                     if (!string.IsNullOrWhiteSpace(axtarisMetni))
                     {
-                        var axtarisLower = axtarisMetni.ToLower();
+                        string axtarisLower = axtarisMetni.ToLower();
                         musteriler = musteriler.Where(m =>
                             m.TamAd.ToLower().Contains(axtarisLower) ||
                             m.TelefonNomresi.Contains(axtarisLower));
@@ -70,7 +71,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             }
             else
             {
-                var netice = await _musteriManager.ButunMusterileriGetirAsync();
+                EmeliyyatNeticesi<List<MusteriDto>> netice = await _musteriManager.ButunMusterileriGetirAsync();
                 if (netice.UgurluDur)
                 {
                     _musteriCache = netice.Data;
@@ -117,7 +118,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 
             if (_view.SecilmisMusteriId > 0)
             {
-                var musteri = _musteriCache.FirstOrDefault(m => m.Id == _view.SecilmisMusteriId);
+                MusteriDto? musteri = _musteriCache.FirstOrDefault(m => m.Id == _view.SecilmisMusteriId);
                 if (musteri != null)
                 {
                     _view.TamAd = musteri.TamAd;
@@ -159,25 +160,16 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                     return;
                 }
 
-                var musteriDto = new MusteriDto
+                MusteriDto musteriDto = new()
                 {
                     Id = _view.SecilmisMusteriId,
                     TamAd = _view.TamAd,
                     TelefonNomresi = _view.Telefon,
                     Unvan = _view.Unvan,
-                    KreditLimiti = decimal.TryParse(_view.KreditLimiti, out var limit) ? limit : 0
+                    KreditLimiti = decimal.TryParse(_view.KreditLimiti, out decimal limit) ? limit : 0
                 };
 
-                EmeliyyatNeticesi netice;
-                if (musteriDto.Id > 0)
-                {
-                    netice = await _musteriManager.MusteriYenileAsync(musteriDto);
-                }
-                else
-                {
-                    netice = await _musteriManager.MusteriYaratAsync(musteriDto);
-                }
-
+                EmeliyyatNeticesi netice = musteriDto.Id > 0 ? await _musteriManager.MusteriYenileAsync(musteriDto) : await _musteriManager.MusteriYaratAsync(musteriDto);
                 if (netice.UgurluDur)
                 {
                     _view.MesajGoster("Əməliyyat uğurla tamamlandı.", "Uğurlu", MessageBoxIcon.Information);
@@ -198,7 +190,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
         private Control GetControlByName(string name)
         {
             // Try to find the control directly
-            var field = _view.GetType().GetField(name, System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+            FieldInfo? field = _view.GetType().GetField(name, System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
             if (field != null)
             {
                 return field.GetValue(_view) as Control;
@@ -217,13 +209,17 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
         private Control FindControlRecursive(Control control, string name)
         {
             if (control.Name == name)
+            {
                 return control;
+            }
 
             foreach (Control child in control.Controls)
             {
                 Control found = FindControlRecursive(child, name);
                 if (found != null)
+                {
                     return found;
+                }
             }
 
             return null;
@@ -237,7 +233,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                 return;
             }
 
-            var netice = await _musteriManager.MusteriSilAsync(_view.SecilmisMusteriId);
+            EmeliyyatNeticesi netice = await _musteriManager.MusteriSilAsync(_view.SecilmisMusteriId);
 
             if (netice.UgurluDur)
             {

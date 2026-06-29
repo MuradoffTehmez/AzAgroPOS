@@ -1,8 +1,6 @@
 // Fayl: AzAgroPOS.Varliglar/Kateqoriya.cs
+
 namespace AzAgroPOS.Varliglar;
-
-using System.Collections.Generic;
-
 /// <summary>
 /// Məhsul kateqoriyalarını təmsil edən varlıq sinifi.
 /// </summary>

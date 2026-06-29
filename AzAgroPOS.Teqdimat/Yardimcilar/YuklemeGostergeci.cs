@@ -1,9 +1,6 @@
 // Fayl: AzAgroPOS.Teqdimat\Yardimcilar\YuklemeGostergeci.cs
+
 namespace AzAgroPOS.Teqdimat.Yardimcilar;
-
-using System;
-using System.Windows.Forms;
-
 /// <summary>
 /// Yükləmə göstəricisi - uzun çəkən əməliyyatlar zamanı istifadəçiyə vizual göstərici təmin edir
 /// diqqət: Bu sinif formdakı kontrollerlərə yükləmə göstəricisi əlavə edir
@@ -84,10 +81,7 @@ public class YuklemeGostergeci
         }
 
         // Yükləmə panelini sil
-        if (_yuklemePaneli.Parent != null)
-        {
-            _yuklemePaneli.Parent.Controls.Remove(_yuklemePaneli);
-        }
+        _yuklemePaneli.Parent?.Controls.Remove(_yuklemePaneli);
 
         _yuklemePaneli.Dispose();
         _yuklemeEtiketi.Dispose();
@@ -103,7 +97,7 @@ public class YuklemeGostergeci
     /// <returns>Əməliyyat nəticəsi</returns>
     public async System.Threading.Tasks.Task<T> EmeliyyatIcraEtAsync<T>(Func<System.Threading.Tasks.Task<T>> emeliyyat, string mesaj = "Yüklənir...")
     {
-        T netice = default(T);
+        T netice = default;
 
         try
         {
@@ -144,7 +138,7 @@ public class YuklemeGostergeci
     /// <param name="emeliyyat">İcra ediləcək əməliyyat</param>
     public static async System.Threading.Tasks.Task GosterVeIcraEtAsync(Form form, string mesaj, Func<System.Threading.Tasks.Task> emeliyyat)
     {
-        var gosterici = new YuklemeGostergeci(form);
+        YuklemeGostergeci gosterici = new(form);
         await gosterici.EmeliyyatIcraEtAsync(emeliyyat, mesaj);
     }
 
@@ -157,7 +151,7 @@ public class YuklemeGostergeci
     /// <param name="emeliyyat">İcra ediləcək əməliyyat</param>
     public static async System.Threading.Tasks.Task<T> GosterVeIcraEtAsync<T>(Form form, string mesaj, Func<System.Threading.Tasks.Task<T>> emeliyyat)
     {
-        var gosterici = new YuklemeGostergeci(form);
+        YuklemeGostergeci gosterici = new(form);
         return await gosterici.EmeliyyatIcraEtAsync(emeliyyat, mesaj);
     }
 }

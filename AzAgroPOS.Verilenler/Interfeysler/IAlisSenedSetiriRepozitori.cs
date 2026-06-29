@@ -1,8 +1,8 @@
 // Fayl: AzAgroPOS.Verilenler/Interfeysler/IAlisSenedSetiriRepozitori.cs
-namespace AzAgroPOS.Verilenler.Interfeysler;
 
 using AzAgroPOS.Varliglar;
 
+namespace AzAgroPOS.Verilenler.Interfeysler;
 /// <summary>
 /// Bütün alış sənədi sətiri verilənlər bazası əməliyyatları üçün interfeys.
 /// </summary>

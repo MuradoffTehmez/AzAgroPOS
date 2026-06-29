@@ -1,7 +1,7 @@
+using AzAgroPOS.Mentiq.Istisnalar;
+
 namespace AzAgroPOS.Teqdimat.Yardimcilar
 {
-    using AzAgroPOS.Mentiq.Istisnalar;
-
     /// <summary>
     /// Helper class for managing ErrorProvider controls in forms and displaying error messages
     /// </summary>
@@ -50,7 +50,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         /// <returns>List of all controls</returns>
         private static IEnumerable<Control> GetAllControls(Control container)
         {
-            var controls = container.Controls.Cast<Control>();
+            IEnumerable<Control> controls = container.Controls.Cast<Control>();
             return controls.SelectMany(ctrl => GetAllControls(ctrl)).Concat(controls);
         }
 
@@ -157,7 +157,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         /// <returns>İstifadəçi "Bəli" seçibsə true, "Xeyr" seçibsə false</returns>
         public static bool TesdiqMesajiGoster(string mesaj, string basliq = "Təsdiq")
         {
-            var result = MessageBox.Show(mesaj, basliq, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult result = MessageBox.Show(mesaj, basliq, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             return result == DialogResult.Yes;
         }
     }

@@ -1,9 +1,11 @@
 // Fayl: AzAgroPOS.Verilenler/Kontekst/AzAgroPOSDbContext.cs
-namespace AzAgroPOS.Verilenler.Kontekst;
 
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Varliglar.Interfeysler;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+
+namespace AzAgroPOS.Verilenler.Kontekst;
 
 public class AzAgroPOSDbContext : DbContext
 {
@@ -40,9 +42,9 @@ public class AzAgroPOSDbContext : DbContext
     /// </summary>
     private void UpdateAuditFields()
     {
-        var entries = ChangeTracker.Entries<IAuditableEntity>();
+        IEnumerable<EntityEntry<IAuditableEntity>> entries = ChangeTracker.Entries<IAuditableEntity>();
 
-        foreach (var entry in entries)
+        foreach (EntityEntry<IAuditableEntity> entry in entries)
         {
             if (entry.State == EntityState.Added)
             {
@@ -755,11 +757,11 @@ public class AzAgroPOSDbContext : DbContext
 
     private void SeedData(ModelBuilder modelBuilder)
     {
-        var adminRolu = new Rol { Id = 1, Ad = "Admin" };
-        var kassirRolu = new Rol { Id = 2, Ad = "Kassir" };
+        Rol adminRolu = new() { Id = 1, Ad = "Admin" };
+        Rol kassirRolu = new() { Id = 2, Ad = "Kassir" };
         modelBuilder.Entity<Rol>().HasData(adminRolu, kassirRolu);
 
-        var adminIstifadeci = new Istifadeci
+        Istifadeci adminIstifadeci = new()
         {
             Id = 1,
             IstifadeciAdi = "admin",

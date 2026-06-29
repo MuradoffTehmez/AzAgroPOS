@@ -1,10 +1,10 @@
 // Fayl: AzAgroPOS.Verilenler/Realizasialar/IsciPerformansRepozitori.cs
-namespace AzAgroPOS.Verilenler.Realizasialar;
 
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using AzAgroPOS.Verilenler.Kontekst;
 
+namespace AzAgroPOS.Verilenler.Realizasialar;
 /// <summary>
 /// IsciPerformans varlığı üçün repozitoriya realizasiyası.
 /// </summary>

@@ -1,11 +1,10 @@
 ﻿// Fayl: AzAgroPOS.Verilenler/Realizasialar/IstifadeciRepozitori.cs
-namespace AzAgroPOS.Verilenler.Realizasialar;
 
 using AzAgroPOS.Varliglar;
 using AzAgroPOS.Verilenler.Interfeysler;
 using AzAgroPOS.Verilenler.Kontekst;
 
-
+namespace AzAgroPOS.Verilenler.Realizasialar;
 /// <summary>
 /// Baza repozitoriya sinifi, verilənlər bazası əməliyyatlarını ümumi şəkildə idarə edir.
 /// Diqqət: Bu sinif, CRUD əməliyyatlarını (Yarat, Oxu, Yenilə, Sil) ümumi şəkildə həyata keçirir.
