@@ -14,13 +14,13 @@ public static class LokalizasiyaManager
     {
         try
         {
-            CultureInfo cultureInfo = new CultureInfo(cultureCode);
+            CultureInfo cultureInfo = new(cultureCode);
             Thread.CurrentThread.CurrentCulture = cultureInfo;
             Thread.CurrentThread.CurrentUICulture = cultureInfo;
         }
         catch (CultureNotFoundException)
         {
-            CultureInfo defaultCulture = new CultureInfo("az-AZ");
+            CultureInfo defaultCulture = new("az-AZ");
             Thread.CurrentThread.CurrentCulture = defaultCulture;
             Thread.CurrentThread.CurrentUICulture = defaultCulture;
         }

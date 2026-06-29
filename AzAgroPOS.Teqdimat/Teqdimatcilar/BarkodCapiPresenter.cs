@@ -46,7 +46,7 @@ public class BarkodCapiPresenter
 
         try
         {
-            BarkodCapServisi capServisi = new BarkodCapServisi();
+            BarkodCapServisi capServisi = new();
             capServisi.EtiketleriCapaGonder(siyahı);
         }
         catch (System.Exception ex)

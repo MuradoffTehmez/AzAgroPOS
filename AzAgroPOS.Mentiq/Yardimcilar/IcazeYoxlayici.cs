@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 public sealed class IcazeYoxlayici
 {
     private static IcazeYoxlayici? _instance;
-    private static readonly object _lock = new object();
+    private static readonly object _lock = new();
 
     private Istifadeci? _aktivIstifadeci;
     private IcazeManager? _icazeManager;
@@ -76,10 +76,7 @@ public sealed class IcazeYoxlayici
     /// </summary>
     public async Task AktivIstifadeciniTeyinEtAsync(Istifadeci istifadeci)
     {
-        if (istifadeci == null)
-            throw new ArgumentNullException(nameof(istifadeci));
-
-        _aktivIstifadeci = istifadeci;
+        _aktivIstifadeci = istifadeci ?? throw new ArgumentNullException(nameof(istifadeci));
         await IcazeleriYukleAsync();
 
         Logger.MelumatYaz($"Aktiv istifadəçi təyin edildi: {istifadeci.IstifadeciAdi} (Rol: {IstifadeciRolu})");

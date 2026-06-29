@@ -147,7 +147,11 @@ public partial class NovbeIdareetmesiFormu : BazaForm, INovbeView
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void btnNovbeAc_Click(object sender, EventArgs e) => NovbeAc_Istek?.Invoke(this, EventArgs.Empty);
+    private void btnNovbeAc_Click(object sender, EventArgs e)
+    {
+        NovbeAc_Istek?.Invoke(this, EventArgs.Empty);
+    }
+
     /// <summary>
     /// btnNovbeBagla düyməsi klikləndikdə tetiklenen hadisə.
     /// diqqət - bu metod, NovbeBagla_Istek hadisəsini tetikler.
@@ -155,5 +159,8 @@ public partial class NovbeIdareetmesiFormu : BazaForm, INovbeView
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void btnNovbeBagla_Click(object sender, EventArgs e) => NovbeBagla_Istek?.Invoke(this, EventArgs.Empty);
+    private void btnNovbeBagla_Click(object sender, EventArgs e)
+    {
+        NovbeBagla_Istek?.Invoke(this, EventArgs.Empty);
+    }
 }

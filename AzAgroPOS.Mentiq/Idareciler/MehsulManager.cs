@@ -214,7 +214,7 @@ public class MehsulManager
             }
 
             string yeniStokKodu;
-            Random random = new Random();
+            Random random = new();
 
             // Məhsul adından prefiks yarat (ilk sözün ilk 3 hərfi)
             var hisseler = mehsulAdi.Split(' ', StringSplitOptions.RemoveEmptyEntries);
@@ -248,7 +248,7 @@ public class MehsulManager
         try
         {
             string yeniBarkod;
-            Random random = new Random();
+            Random random = new();
 
             do
             {

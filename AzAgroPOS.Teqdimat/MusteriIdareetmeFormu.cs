@@ -285,10 +285,26 @@ namespace AzAgroPOS.Teqdimat
             }
         }
 
-        private void btnYeni_Click(object sender, EventArgs e) => YeniMusteriIstek?.Invoke(sender, e);
-        private void btnYaddaSaxla_Click(object sender, EventArgs e) => YaddaSaxlaIstek?.Invoke(sender, e);
-        private void btnSil_Click(object sender, EventArgs e) => SilIstek?.Invoke(sender, e);
-        private void txtAxtaris_TextChanged(object sender, EventArgs e) => AxtarIstek?.Invoke(sender, e);
+        private void btnYeni_Click(object sender, EventArgs e)
+        {
+            YeniMusteriIstek?.Invoke(sender, e);
+        }
+
+        private void btnYaddaSaxla_Click(object sender, EventArgs e)
+        {
+            YaddaSaxlaIstek?.Invoke(sender, e);
+        }
+
+        private void btnSil_Click(object sender, EventArgs e)
+        {
+            SilIstek?.Invoke(sender, e);
+        }
+
+        private void txtAxtaris_TextChanged(object sender, EventArgs e)
+        {
+            AxtarIstek?.Invoke(sender, e);
+        }
+
         private void btnIxracEt_Click(object sender, EventArgs e)
         {
             Yardimcilar.ExportHelper.ShowExportDialog(dgvMusteriler, "musteriler");
@@ -378,10 +394,8 @@ namespace AzAgroPOS.Teqdimat
                 try
                 {
                     // Barkod çapı formasını açırıq
-                    using (var barkodCapiFormu = _serviceProvider.GetRequiredService<BarkodCapiFormu>())
-                    {
-                        barkodCapiFormu.ShowDialog();
-                    }
+                    using var barkodCapiFormu = _serviceProvider.GetRequiredService<BarkodCapiFormu>();
+                    barkodCapiFormu.ShowDialog();
                 }
                 catch (Exception ex)
                 {

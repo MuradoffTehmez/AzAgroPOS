@@ -170,23 +170,21 @@ public class TemirPresenter
     private void EhtiyatHissəsiElaveEt()
     {
         // Create a new instance of the form for each use
-        using (var form = new EhtiyatHissəsiFormu(_mehsulManager))
+        using var form = new EhtiyatHissəsiFormu(_mehsulManager);
+        if (form.ShowDialog() == DialogResult.OK)
         {
-            if (form.ShowDialog() == DialogResult.OK)
-            {
-                var ehtiyatHissələri = form.EhtiyatHissələri;
-                decimal ümumiMəbləğ = ehtiyatHissələri.Sum(e => e.ÜmumiMəbləğ);
+            var ehtiyatHissələri = form.EhtiyatHissələri;
+            decimal ümumiMəbləğ = ehtiyatHissələri.Sum(e => e.ÜmumiMəbləğ);
 
-                // Təmir xərcini yeniləyirik
-                var cariXerc = _view.TemirXerci;
-                _view.TemirXerci = cariXerc + ümumiMəbləğ;
+            // Təmir xərcini yeniləyirik
+            var cariXerc = _view.TemirXerci;
+            _view.TemirXerci = cariXerc + ümumiMəbləğ;
 
-                // Yekun məbləği yeniləyirik
-                var servisHaqqi = _view.ServisHaqqi;
-                _view.YekunMebleg = _view.TemirXerci + servisHaqqi;
+            // Yekun məbləği yeniləyirik
+            var servisHaqqi = _view.ServisHaqqi;
+            _view.YekunMebleg = _view.TemirXerci + servisHaqqi;
 
-                _view.MesajGoster($"Ehtiyat hissələri əlavə edildi. Ümumi məbləğ: {ümumiMəbləğ:N2} AZN", "Məlumat");
-            }
+            _view.MesajGoster($"Ehtiyat hissələri əlavə edildi. Ümumi məbləğ: {ümumiMəbləğ:N2} AZN", "Məlumat");
         }
     }
 

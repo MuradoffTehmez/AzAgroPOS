@@ -10,7 +10,10 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         public bool UgurludurMu { get; set; }
         public List<string> Xetalar { get; set; } = new List<string>();
 
-        public string XetalariGoster() => string.Join(Environment.NewLine, Xetalar);
+        public string XetalariGoster()
+        {
+            return string.Join(Environment.NewLine, Xetalar);
+        }
     }
 
     /// <summary>

@@ -9,7 +9,7 @@ namespace AzAgroPOS.Teqdimat
     {
         private readonly AlisSenedPresenter _presenter;
         private readonly IServiceProvider _serviceProvider;
-        private List<AlisSenedSetiriDto> _senedSetirleri = new List<AlisSenedSetiriDto>();
+        private List<AlisSenedSetiriDto> _senedSetirleri = new();
 
         public AlisSenedFormu(AlisManager alisManager, MehsulManager mehsulManager, IServiceProvider serviceProvider)
         {

@@ -53,12 +53,12 @@ namespace AzAgroPOS.Teqdimat.Sabitler
             /// <summary>
             /// Rəqəm pattern (müsbət onluq rəqəmlər)
             /// </summary>
-            public static readonly Regex ReqemPattern = new Regex(@"^\d+(\.\d{1,2})?$", RegexOptions.Compiled);
+            public static readonly Regex ReqemPattern = new(@"^\d+(\.\d{1,2})?$", RegexOptions.Compiled);
 
             /// <summary>
             /// Barkod/Stok kodu pattern (rəqəm və hərflər)
             /// </summary>
-            public static readonly Regex BarkodPattern = new Regex(@"^[A-Z0-9\-]+$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+            public static readonly Regex BarkodPattern = new(@"^[A-Z0-9\-]+$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         }
 
         #endregion

@@ -5,7 +5,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
     /// </summary>
     public static class FormIdarecisi
     {
-        private static readonly Dictionary<Type, Form> _aciqFormlar = new Dictionary<Type, Form>();
+        private static readonly Dictionary<Type, Form> _aciqFormlar = new();
 
         /// <summary>
         /// Gets an existing instance of a form or creates a new one if it doesn't exist

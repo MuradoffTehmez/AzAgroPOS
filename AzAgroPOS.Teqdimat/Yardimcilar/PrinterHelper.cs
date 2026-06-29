@@ -74,12 +74,10 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
         /// </summary>
         public static string PrinterSecDialoquGoster(string hazirkiPrinter = null)
         {
-            using (var dialog = new PrinterSecDialog(hazirkiPrinter))
+            using var dialog = new PrinterSecDialog(hazirkiPrinter);
+            if (dialog.ShowDialog() == DialogResult.OK)
             {
-                if (dialog.ShowDialog() == DialogResult.OK)
-                {
-                    return dialog.SecilmisPrinter;
-                }
+                return dialog.SecilmisPrinter;
             }
 
             return null;

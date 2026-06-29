@@ -18,7 +18,7 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
 {
     private readonly IServiceProvider _serviceProvider;
     private readonly Dictionary<Type, MaterialButton> _formButtonMap;
-    private readonly Dictionary<TabPage, IServiceScope> _tabScopes = new Dictionary<TabPage, IServiceScope>();
+    private readonly Dictionary<TabPage, IServiceScope> _tabScopes = new();
 
     // IAnaMenuView interface implementasiyası
     public IServiceProvider ServiceProvider => _serviceProvider;
@@ -247,7 +247,7 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
         var initials = string.Concat(fullName.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s[0])).ToUpper();
         if (initials.Length > 2)
         {
-            initials = initials.Substring(0, 2);
+            initials = initials[..2];
         }
 
         var bmp = new Bitmap(50, 50);
@@ -259,12 +259,10 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
                 g.FillEllipse(brush, 0, 0, 50, 50);
             }
 
-            using (var font = new Font("Segoe UI", 14, FontStyle.Bold))
-            {
-                var textSize = g.MeasureString(initials, font);
-                var textPoint = new PointF((50 - textSize.Width) / 2, (50 - textSize.Height) / 2);
-                g.DrawString(initials, font, Brushes.White, textPoint);
-            }
+            using var font = new Font("Segoe UI", 14, FontStyle.Bold);
+            var textSize = g.MeasureString(initials, font);
+            var textPoint = new PointF((50 - textSize.Width) / 2, (50 - textSize.Height) / 2);
+            g.DrawString(initials, font, Brushes.White, textPoint);
         }
         return bmp;
     }
@@ -537,41 +535,126 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
         }
     }
 
-    private void btnQaytarma_Click(object sender, EventArgs e) => UsaqFormuAc<QaytarmaFormu>();
-    private void btnNisyeIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<NisyeIdareetmeFormu>();
+    private void btnQaytarma_Click(object sender, EventArgs e)
+    {
+        UsaqFormuAc<QaytarmaFormu>();
+    }
+
+    private void btnNisyeIdareetme_Click(object sender, EventArgs e)
+    {
+        UsaqFormuAc<NisyeIdareetmeFormu>();
+    }
 
     // Product Management
-    private void btnMehsulIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<MehsulIdareetmeFormu>();
-    private void btnMinimumStokMehsullari_Click(object sender, EventArgs e) => UsaqFormuAc<MinimumStokMehsullariFormu>();
-    private void btnBarkodCapi_Click(object sender, EventArgs e) => UsaqFormuAc<BarkodCapiFormu>();
+    private void btnMehsulIdareetme_Click(object sender, EventArgs e)
+    {
+        UsaqFormuAc<MehsulIdareetmeFormu>();
+    }
+
+    private void btnMinimumStokMehsullari_Click(object sender, EventArgs e)
+    {
+        UsaqFormuAc<MinimumStokMehsullariFormu>();
+    }
+
+    private void btnBarkodCapi_Click(object sender, EventArgs e)
+    {
+        UsaqFormuAc<BarkodCapiFormu>();
+    }
 
     // Financial Management
-    private void btnXercIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<XercIdareetmeFormu>();
-    private void btnTemirIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<TemirIdareetmeFormu>();
-    private void btnAlisSened_Click(object sender, EventArgs e) => UsaqFormuAc<AlisSenedFormu>();
-    private void btnAlisSifaris_Click(object sender, EventArgs e) => UsaqFormuAc<AlisSifarisFormu>();
-    private void btnKassaIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<KassaFormu>();
-    private void btnQebz_Click(object sender, EventArgs e) => UsaqFormuAc<QebzFormu>();
-    private void btnTedarukcuOdeme_Click(object sender, EventArgs e) => UsaqFormuAc<TedarukcuOdemeFormu>();
-    private void btnTedarukcuIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<TedarukcuIdareetmeFormu>();
-    private void btnEhtiyatHisse_Click(object sender, EventArgs e) => UsaqFormuAc<EhtiyatHissəsiFormu>();
-    private void btnEmekHaqqi_Click(object sender, EventArgs e) => UsaqFormuAc<EmekHaqqiFormu>();
+    private void btnXercIdareetme_Click(object sender, EventArgs e)
+    {
+        UsaqFormuAc<XercIdareetmeFormu>();
+    }
+
+    private void btnTemirIdareetme_Click(object sender, EventArgs e)
+    {
+        UsaqFormuAc<TemirIdareetmeFormu>();
+    }
+
+    private void btnAlisSened_Click(object sender, EventArgs e)
+    {
+        UsaqFormuAc<AlisSenedFormu>();
+    }
+
+    private void btnAlisSifaris_Click(object sender, EventArgs e)
+    {
+        UsaqFormuAc<AlisSifarisFormu>();
+    }
+
+    private void btnKassaIdareetme_Click(object sender, EventArgs e)
+    {
+        UsaqFormuAc<KassaFormu>();
+    }
+
+    private void btnQebz_Click(object sender, EventArgs e)
+    {
+        UsaqFormuAc<QebzFormu>();
+    }
+
+    private void btnTedarukcuOdeme_Click(object sender, EventArgs e)
+    {
+        UsaqFormuAc<TedarukcuOdemeFormu>();
+    }
+
+    private void btnTedarukcuIdareetme_Click(object sender, EventArgs e)
+    {
+        UsaqFormuAc<TedarukcuIdareetmeFormu>();
+    }
+
+    private void btnEhtiyatHisse_Click(object sender, EventArgs e)
+    {
+        UsaqFormuAc<EhtiyatHissəsiFormu>();
+    }
+
+    private void btnEmekHaqqi_Click(object sender, EventArgs e)
+    {
+        UsaqFormuAc<EmekHaqqiFormu>();
+    }
 
     // Inventory & Storage
-    private void btnAnbar_Click(object sender, EventArgs e) => UsaqFormuAc<AnbarFormu>();
+    private void btnAnbar_Click(object sender, EventArgs e)
+    {
+        UsaqFormuAc<AnbarFormu>();
+    }
 
     // Staff & User Management
-    private void btnIstifadeciIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<IstifadeciIdareetmeFormu>();
-    private void btnIsciIdareetme_Click(object sender, EventArgs e) => UsaqFormuAc<IsciIdareetmeFormu>();
+    private void btnIstifadeciIdareetme_Click(object sender, EventArgs e)
+    {
+        UsaqFormuAc<IstifadeciIdareetmeFormu>();
+    }
+
+    private void btnIsciIdareetme_Click(object sender, EventArgs e)
+    {
+        UsaqFormuAc<IsciIdareetmeFormu>();
+    }
 
     // Reports
-    private void btnHesabatlar_Click(object sender, EventArgs e) => UsaqFormuAc<HesabatFormu>();
-    private void btnMehsulSatisHesabati_Click(object sender, EventArgs e) => UsaqFormuAc<MehsulSatisHesabatFormu>();
-    private void btnAnbarQaliqHesabati_Click(object sender, EventArgs e) => UsaqFormuAc<AnbarQaliqHesabatFormu>();
-    private void btnZHesabatArxivi_Click(object sender, EventArgs e) => UsaqFormuAc<ZHesabatArxivFormu>();
+    private void btnHesabatlar_Click(object sender, EventArgs e)
+    {
+        UsaqFormuAc<HesabatFormu>();
+    }
+
+    private void btnMehsulSatisHesabati_Click(object sender, EventArgs e)
+    {
+        UsaqFormuAc<MehsulSatisHesabatFormu>();
+    }
+
+    private void btnAnbarQaliqHesabati_Click(object sender, EventArgs e)
+    {
+        UsaqFormuAc<AnbarQaliqHesabatFormu>();
+    }
+
+    private void btnZHesabatArxivi_Click(object sender, EventArgs e)
+    {
+        UsaqFormuAc<ZHesabatArxivFormu>();
+    }
 
     // System Configuration
-    private void btnKonfiqurasiya_Click(object sender, EventArgs e) => UsaqFormuAc<KonfiqurasiyaFormu>();
+    private void btnKonfiqurasiya_Click(object sender, EventArgs e)
+    {
+        UsaqFormuAc<KonfiqurasiyaFormu>();
+    }
 
     #endregion
 

@@ -108,7 +108,7 @@ public partial class TedarukcuOdemeFormu : BazaForm, ITedarukcuOdemeView
         // "Seçilməyib" seçimi üçün boş bir element əlavə edirik
         var senetListesi = new List<AlisSenedDto>
         {
-            new AlisSenedDto { Id = 0, SenedNomresi = "-- Seçilməyib --" }
+            new() { Id = 0, SenedNomresi = "-- Seçilməyib --" }
         };
         senetListesi.AddRange(senetler);
 

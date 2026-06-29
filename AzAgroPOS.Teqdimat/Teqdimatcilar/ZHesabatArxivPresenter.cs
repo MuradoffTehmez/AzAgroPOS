@@ -47,7 +47,7 @@ public class ZHesabatArxivPresenter
         if (netice.UgurluDur)
         {
             var h = netice.Data;
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             sb.AppendLine("         Z-HESABATI (Arxiv)");
             sb.AppendLine("---------------------------------");
             sb.AppendLine($"Kassir: {h.KassirAdi}");

@@ -18,7 +18,7 @@ using System.Windows.Forms;
 public partial class AlisSifarisFormu : BazaForm, IAlisSifarisView
 {
     private AlisSifarisPresenter? _presenter;
-    private List<AlisSifarisSetiriDto> _sifarisSetirleri = new List<AlisSifarisSetiriDto>();
+    private List<AlisSifarisSetiriDto> _sifarisSetirleri = new();
 
     public AlisSifarisFormu(AlisManager alisManager, MehsulManager mehsulManager)
     {
