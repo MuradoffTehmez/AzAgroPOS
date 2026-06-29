@@ -1,3 +1,4 @@
+/*
 // Temporary C# file to generate BCrypt hash
 using System;
 
@@ -22,3 +23,5 @@ class Program
         Console.WriteLine("Verification: " + (verified ? "SUCCESS" : "FAILED"));
     }
 }
+
+*/

@@ -1,8 +1,9 @@
-using System;
-using Microsoft.EntityFrameworkCore;
+/*
 using AzAgroPOS.Verilenler.Kontekst;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 
 class ResetAdminPassword
 {
@@ -65,3 +66,4 @@ class ResetAdminPassword
         Console.WriteLine("  Parol: admin123");
     }
 }
+*/
