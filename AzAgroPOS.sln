@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.31903.59
+# Visual Studio Version 18
+VisualStudioVersion = 18.7.11919.86 stable
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzAgroPOS.Varliglar", "AzAgroPOS.Varliglar\AzAgroPOS.Varliglar.csproj", "{C8D4DC99-3737-4985-A4B8-6B23D3D0F36B}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzAgroPOS.Teqdimat", "AzAgroPOS.Teqdimat\AzAgroPOS.Teqdimat.csproj", "{0AE8E72D-D10B-48BE-BBB8-2D02C328D3DF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzAgroPOS.Tests", "AzAgroPOS.Tests\AzAgroPOS.Tests.csproj", "{923BE93A-B83F-4CCE-882A-B4A5515DD94B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PasswordHasher", "PasswordHasher\PasswordHasher.csproj", "{C2B5CD7B-CE36-8DB5-C4DA-7D41A30DDAD6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -83,8 +85,23 @@ Global
 		{923BE93A-B83F-4CCE-882A-B4A5515DD94B}.Release|x64.Build.0 = Release|Any CPU
 		{923BE93A-B83F-4CCE-882A-B4A5515DD94B}.Release|x86.ActiveCfg = Release|Any CPU
 		{923BE93A-B83F-4CCE-882A-B4A5515DD94B}.Release|x86.Build.0 = Release|Any CPU
+		{C2B5CD7B-CE36-8DB5-C4DA-7D41A30DDAD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2B5CD7B-CE36-8DB5-C4DA-7D41A30DDAD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2B5CD7B-CE36-8DB5-C4DA-7D41A30DDAD6}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C2B5CD7B-CE36-8DB5-C4DA-7D41A30DDAD6}.Debug|x64.Build.0 = Debug|Any CPU
+		{C2B5CD7B-CE36-8DB5-C4DA-7D41A30DDAD6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C2B5CD7B-CE36-8DB5-C4DA-7D41A30DDAD6}.Debug|x86.Build.0 = Debug|Any CPU
+		{C2B5CD7B-CE36-8DB5-C4DA-7D41A30DDAD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2B5CD7B-CE36-8DB5-C4DA-7D41A30DDAD6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2B5CD7B-CE36-8DB5-C4DA-7D41A30DDAD6}.Release|x64.ActiveCfg = Release|Any CPU
+		{C2B5CD7B-CE36-8DB5-C4DA-7D41A30DDAD6}.Release|x64.Build.0 = Release|Any CPU
+		{C2B5CD7B-CE36-8DB5-C4DA-7D41A30DDAD6}.Release|x86.ActiveCfg = Release|Any CPU
+		{C2B5CD7B-CE36-8DB5-C4DA-7D41A30DDAD6}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3E69F489-D323-44C8-950B-1EBE2DF2879C}
 	EndGlobalSection
 EndGlobal
