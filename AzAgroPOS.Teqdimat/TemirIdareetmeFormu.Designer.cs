@@ -86,10 +86,9 @@
             pnlTop.Dock = DockStyle.Top;
             pnlTop.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             pnlTop.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            pnlTop.Location = new Point(3, 85);
-            pnlTop.Margin = new Padding(3, 4, 3, 4);
+            pnlTop.Location = new Point(3, 64);
             pnlTop.Name = "pnlTop";
-            pnlTop.Size = new Size(1137, 80);
+            pnlTop.Size = new Size(994, 60);
             pnlTop.TabIndex = 0;
             // 
             // lblBaslik
@@ -100,7 +99,7 @@
             lblBaslik.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblBaslik.Location = new Point(0, 0);
             lblBaslik.Name = "lblBaslik";
-            lblBaslik.Size = new Size(1137, 80);
+            lblBaslik.Size = new Size(994, 60);
             lblBaslik.TabIndex = 0;
             lblBaslik.Text = "Təmir İdarəetmə";
             lblBaslik.TextAlign = ContentAlignment.MiddleCenter;
@@ -112,11 +111,10 @@
             pnlMain.Dock = DockStyle.Fill;
             pnlMain.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             pnlMain.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            pnlMain.Location = new Point(3, 165);
-            pnlMain.Margin = new Padding(3, 4, 3, 4);
+            pnlMain.Location = new Point(3, 124);
             pnlMain.Name = "pnlMain";
-            pnlMain.Padding = new Padding(11, 13, 11, 13);
-            pnlMain.Size = new Size(1137, 687);
+            pnlMain.Padding = new Padding(10);
+            pnlMain.Size = new Size(994, 511);
             pnlMain.TabIndex = 1;
             // 
             // splitContainer1
@@ -125,8 +123,7 @@
             splitContainer1.Dock = DockStyle.Fill;
             splitContainer1.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             splitContainer1.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            splitContainer1.Location = new Point(11, 13);
-            splitContainer1.Margin = new Padding(3, 4, 3, 4);
+            splitContainer1.Location = new Point(10, 10);
             splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -143,9 +140,8 @@
             splitContainer1.Panel2.Controls.Add(grpSifarisler);
             splitContainer1.Panel2.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             splitContainer1.Panel2.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            splitContainer1.Size = new Size(1115, 661);
-            splitContainer1.SplitterDistance = 397;
-            splitContainer1.SplitterWidth = 5;
+            splitContainer1.Size = new Size(974, 491);
+            splitContainer1.SplitterDistance = 346;
             splitContainer1.TabIndex = 0;
             // 
             // grpSifarisMelumatlari
@@ -157,10 +153,8 @@
             grpSifarisMelumatlari.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             grpSifarisMelumatlari.ForeColor = Color.FromArgb(222, 0, 0, 0);
             grpSifarisMelumatlari.Location = new Point(0, 0);
-            grpSifarisMelumatlari.Margin = new Padding(3, 4, 3, 4);
             grpSifarisMelumatlari.Name = "grpSifarisMelumatlari";
-            grpSifarisMelumatlari.Padding = new Padding(3, 4, 3, 4);
-            grpSifarisMelumatlari.Size = new Size(397, 661);
+            grpSifarisMelumatlari.Size = new Size(346, 491);
             grpSifarisMelumatlari.TabIndex = 0;
             grpSifarisMelumatlari.TabStop = false;
             grpSifarisMelumatlari.Text = "Sifariş Məlumatları";
@@ -194,23 +188,22 @@
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             tableLayoutPanel1.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            tableLayoutPanel1.Location = new Point(3, 21);
-            tableLayoutPanel1.Margin = new Padding(3, 4, 3, 4);
+            tableLayoutPanel1.Location = new Point(3, 20);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 12;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 47F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 47F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 47F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 47F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 133F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 47F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 47F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 47F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 47F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 47F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 47F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 100F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel1.Size = new Size(391, 541);
+            tableLayoutPanel1.Size = new Size(340, 397);
             tableLayoutPanel1.TabIndex = 0;
             // 
             // lblMusteriAdi
@@ -222,7 +215,7 @@
             lblMusteriAdi.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblMusteriAdi.Location = new Point(3, 0);
             lblMusteriAdi.Name = "lblMusteriAdi";
-            lblMusteriAdi.Size = new Size(111, 47);
+            lblMusteriAdi.Size = new Size(96, 35);
             lblMusteriAdi.TabIndex = 0;
             lblMusteriAdi.Text = "Müştəri Adı:";
             lblMusteriAdi.TextAlign = ContentAlignment.MiddleLeft;
@@ -233,10 +226,9 @@
             txtMusteriAdi.Dock = DockStyle.Fill;
             txtMusteriAdi.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             txtMusteriAdi.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            txtMusteriAdi.Location = new Point(120, 5);
-            txtMusteriAdi.Margin = new Padding(3, 5, 3, 5);
+            txtMusteriAdi.Location = new Point(105, 3);
             txtMusteriAdi.Name = "txtMusteriAdi";
-            txtMusteriAdi.Size = new Size(268, 24);
+            txtMusteriAdi.Size = new Size(232, 24);
             txtMusteriAdi.TabIndex = 1;
             // 
             // lblMusteriTelefonu
@@ -246,9 +238,9 @@
             lblMusteriTelefonu.Dock = DockStyle.Fill;
             lblMusteriTelefonu.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             lblMusteriTelefonu.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblMusteriTelefonu.Location = new Point(3, 47);
+            lblMusteriTelefonu.Location = new Point(3, 35);
             lblMusteriTelefonu.Name = "lblMusteriTelefonu";
-            lblMusteriTelefonu.Size = new Size(111, 47);
+            lblMusteriTelefonu.Size = new Size(96, 35);
             lblMusteriTelefonu.TabIndex = 2;
             lblMusteriTelefonu.Text = "Telefon Nömrəsi:";
             lblMusteriTelefonu.TextAlign = ContentAlignment.MiddleLeft;
@@ -259,10 +251,9 @@
             txtMusteriTelefonu.Dock = DockStyle.Fill;
             txtMusteriTelefonu.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             txtMusteriTelefonu.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            txtMusteriTelefonu.Location = new Point(120, 52);
-            txtMusteriTelefonu.Margin = new Padding(3, 5, 3, 5);
+            txtMusteriTelefonu.Location = new Point(105, 38);
             txtMusteriTelefonu.Name = "txtMusteriTelefonu";
-            txtMusteriTelefonu.Size = new Size(268, 24);
+            txtMusteriTelefonu.Size = new Size(232, 24);
             txtMusteriTelefonu.TabIndex = 2;
             // 
             // lblCihazAdi
@@ -272,9 +263,9 @@
             lblCihazAdi.Dock = DockStyle.Fill;
             lblCihazAdi.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             lblCihazAdi.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblCihazAdi.Location = new Point(3, 94);
+            lblCihazAdi.Location = new Point(3, 70);
             lblCihazAdi.Name = "lblCihazAdi";
-            lblCihazAdi.Size = new Size(111, 47);
+            lblCihazAdi.Size = new Size(96, 35);
             lblCihazAdi.TabIndex = 4;
             lblCihazAdi.Text = "Cihaz Adı:";
             lblCihazAdi.TextAlign = ContentAlignment.MiddleLeft;
@@ -285,10 +276,9 @@
             txtCihazAdi.Dock = DockStyle.Fill;
             txtCihazAdi.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             txtCihazAdi.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            txtCihazAdi.Location = new Point(120, 99);
-            txtCihazAdi.Margin = new Padding(3, 5, 3, 5);
+            txtCihazAdi.Location = new Point(105, 73);
             txtCihazAdi.Name = "txtCihazAdi";
-            txtCihazAdi.Size = new Size(268, 24);
+            txtCihazAdi.Size = new Size(232, 24);
             txtCihazAdi.TabIndex = 3;
             // 
             // lblSeriyaNomresi
@@ -298,9 +288,9 @@
             lblSeriyaNomresi.Dock = DockStyle.Fill;
             lblSeriyaNomresi.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             lblSeriyaNomresi.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblSeriyaNomresi.Location = new Point(3, 141);
+            lblSeriyaNomresi.Location = new Point(3, 105);
             lblSeriyaNomresi.Name = "lblSeriyaNomresi";
-            lblSeriyaNomresi.Size = new Size(111, 47);
+            lblSeriyaNomresi.Size = new Size(96, 35);
             lblSeriyaNomresi.TabIndex = 18;
             lblSeriyaNomresi.Text = "Seriya Nömrəsi:";
             lblSeriyaNomresi.TextAlign = ContentAlignment.MiddleLeft;
@@ -311,10 +301,9 @@
             txtSeriyaNomresi.Dock = DockStyle.Fill;
             txtSeriyaNomresi.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             txtSeriyaNomresi.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            txtSeriyaNomresi.Location = new Point(120, 146);
-            txtSeriyaNomresi.Margin = new Padding(3, 5, 3, 5);
+            txtSeriyaNomresi.Location = new Point(105, 108);
             txtSeriyaNomresi.Name = "txtSeriyaNomresi";
-            txtSeriyaNomresi.Size = new Size(268, 24);
+            txtSeriyaNomresi.Size = new Size(232, 24);
             txtSeriyaNomresi.TabIndex = 4;
             // 
             // lblProblemTesviri
@@ -324,9 +313,9 @@
             lblProblemTesviri.Dock = DockStyle.Fill;
             lblProblemTesviri.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             lblProblemTesviri.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblProblemTesviri.Location = new Point(3, 188);
+            lblProblemTesviri.Location = new Point(3, 140);
             lblProblemTesviri.Name = "lblProblemTesviri";
-            lblProblemTesviri.Size = new Size(111, 133);
+            lblProblemTesviri.Size = new Size(96, 100);
             lblProblemTesviri.TabIndex = 6;
             lblProblemTesviri.Text = "Problem Təsviri:";
             lblProblemTesviri.TextAlign = ContentAlignment.MiddleLeft;
@@ -337,12 +326,11 @@
             txtProblemTesviri.Dock = DockStyle.Fill;
             txtProblemTesviri.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             txtProblemTesviri.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            txtProblemTesviri.Location = new Point(120, 193);
-            txtProblemTesviri.Margin = new Padding(3, 5, 3, 5);
+            txtProblemTesviri.Location = new Point(105, 143);
             txtProblemTesviri.Multiline = true;
             txtProblemTesviri.Name = "txtProblemTesviri";
             txtProblemTesviri.ScrollBars = ScrollBars.Vertical;
-            txtProblemTesviri.Size = new Size(268, 123);
+            txtProblemTesviri.Size = new Size(232, 94);
             txtProblemTesviri.TabIndex = 5;
             // 
             // lblTemirXerci
@@ -352,9 +340,9 @@
             lblTemirXerci.Dock = DockStyle.Fill;
             lblTemirXerci.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             lblTemirXerci.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblTemirXerci.Location = new Point(3, 321);
+            lblTemirXerci.Location = new Point(3, 240);
             lblTemirXerci.Name = "lblTemirXerci";
-            lblTemirXerci.Size = new Size(111, 47);
+            lblTemirXerci.Size = new Size(96, 35);
             lblTemirXerci.TabIndex = 10;
             lblTemirXerci.Text = "Təmir Xərci:";
             lblTemirXerci.TextAlign = ContentAlignment.MiddleLeft;
@@ -365,10 +353,9 @@
             txtTemirXerci.Dock = DockStyle.Fill;
             txtTemirXerci.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             txtTemirXerci.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            txtTemirXerci.Location = new Point(120, 326);
-            txtTemirXerci.Margin = new Padding(3, 5, 3, 5);
+            txtTemirXerci.Location = new Point(105, 243);
             txtTemirXerci.Name = "txtTemirXerci";
-            txtTemirXerci.Size = new Size(268, 24);
+            txtTemirXerci.Size = new Size(232, 24);
             txtTemirXerci.TabIndex = 6;
             txtTemirXerci.TextChanged += txtTemirXerci_TextChanged;
             // 
@@ -379,9 +366,9 @@
             lblServisHaqqi.Dock = DockStyle.Fill;
             lblServisHaqqi.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             lblServisHaqqi.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblServisHaqqi.Location = new Point(3, 368);
+            lblServisHaqqi.Location = new Point(3, 275);
             lblServisHaqqi.Name = "lblServisHaqqi";
-            lblServisHaqqi.Size = new Size(111, 47);
+            lblServisHaqqi.Size = new Size(96, 35);
             lblServisHaqqi.TabIndex = 12;
             lblServisHaqqi.Text = "Servis Haqqı:";
             lblServisHaqqi.TextAlign = ContentAlignment.MiddleLeft;
@@ -392,10 +379,9 @@
             txtServisHaqqi.Dock = DockStyle.Fill;
             txtServisHaqqi.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             txtServisHaqqi.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            txtServisHaqqi.Location = new Point(120, 373);
-            txtServisHaqqi.Margin = new Padding(3, 5, 3, 5);
+            txtServisHaqqi.Location = new Point(105, 278);
             txtServisHaqqi.Name = "txtServisHaqqi";
-            txtServisHaqqi.Size = new Size(268, 24);
+            txtServisHaqqi.Size = new Size(232, 24);
             txtServisHaqqi.TabIndex = 7;
             txtServisHaqqi.TextChanged += txtServisHaqqi_TextChanged;
             // 
@@ -406,9 +392,9 @@
             lblYekunMebleg.Dock = DockStyle.Fill;
             lblYekunMebleg.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             lblYekunMebleg.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblYekunMebleg.Location = new Point(3, 415);
+            lblYekunMebleg.Location = new Point(3, 310);
             lblYekunMebleg.Name = "lblYekunMebleg";
-            lblYekunMebleg.Size = new Size(111, 47);
+            lblYekunMebleg.Size = new Size(96, 35);
             lblYekunMebleg.TabIndex = 8;
             lblYekunMebleg.Text = "Yekun Məbləğ:";
             lblYekunMebleg.TextAlign = ContentAlignment.MiddleLeft;
@@ -419,11 +405,10 @@
             txtYekunMebleg.Dock = DockStyle.Fill;
             txtYekunMebleg.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             txtYekunMebleg.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            txtYekunMebleg.Location = new Point(120, 420);
-            txtYekunMebleg.Margin = new Padding(3, 5, 3, 5);
+            txtYekunMebleg.Location = new Point(105, 313);
             txtYekunMebleg.Name = "txtYekunMebleg";
             txtYekunMebleg.ReadOnly = true;
-            txtYekunMebleg.Size = new Size(268, 24);
+            txtYekunMebleg.Size = new Size(232, 24);
             txtYekunMebleg.TabIndex = 8;
             // 
             // lblUsta
@@ -433,9 +418,9 @@
             lblUsta.Dock = DockStyle.Fill;
             lblUsta.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             lblUsta.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblUsta.Location = new Point(3, 462);
+            lblUsta.Location = new Point(3, 345);
             lblUsta.Name = "lblUsta";
-            lblUsta.Size = new Size(111, 47);
+            lblUsta.Size = new Size(96, 35);
             lblUsta.TabIndex = 16;
             lblUsta.Text = "Usta:";
             lblUsta.TextAlign = ContentAlignment.MiddleLeft;
@@ -447,10 +432,9 @@
             cmbUsta.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             cmbUsta.ForeColor = Color.FromArgb(222, 0, 0, 0);
             cmbUsta.FormattingEnabled = true;
-            cmbUsta.Location = new Point(120, 466);
-            cmbUsta.Margin = new Padding(3, 4, 3, 4);
+            cmbUsta.Location = new Point(105, 348);
             cmbUsta.Name = "cmbUsta";
-            cmbUsta.Size = new Size(268, 25);
+            cmbUsta.Size = new Size(232, 25);
             cmbUsta.TabIndex = 9;
             // 
             // btnEhtiyatHissəsiElaveEt
@@ -458,10 +442,9 @@
             btnEhtiyatHissəsiElaveEt.BackColor = Color.FromArgb(242, 242, 242);
             btnEhtiyatHissəsiElaveEt.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             btnEhtiyatHissəsiElaveEt.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            btnEhtiyatHissəsiElaveEt.Location = new Point(120, 513);
-            btnEhtiyatHissəsiElaveEt.Margin = new Padding(3, 4, 3, 4);
+            btnEhtiyatHissəsiElaveEt.Location = new Point(105, 383);
             btnEhtiyatHissəsiElaveEt.Name = "btnEhtiyatHissəsiElaveEt";
-            btnEhtiyatHissəsiElaveEt.Size = new Size(266, 39);
+            btnEhtiyatHissəsiElaveEt.Size = new Size(232, 29);
             btnEhtiyatHissəsiElaveEt.TabIndex = 14;
             btnEhtiyatHissəsiElaveEt.Text = "Ehtiyat Hissəsi Əlavə Et";
             btnEhtiyatHissəsiElaveEt.UseVisualStyleBackColor = false;
@@ -472,10 +455,9 @@
             btnÖdənişiTamamla.BackColor = Color.FromArgb(242, 242, 242);
             btnÖdənişiTamamla.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             btnÖdənişiTamamla.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            btnÖdənişiTamamla.Location = new Point(120, 560);
-            btnÖdənişiTamamla.Margin = new Padding(3, 4, 3, 4);
+            btnÖdənişiTamamla.Location = new Point(105, 418);
             btnÖdənişiTamamla.Name = "btnÖdənişiTamamla";
-            btnÖdənişiTamamla.Size = new Size(266, 39);
+            btnÖdənişiTamamla.Size = new Size(232, 29);
             btnÖdənişiTamamla.TabIndex = 15;
             btnÖdənişiTamamla.Text = "Ödənişi Tamamla";
             btnÖdənişiTamamla.UseVisualStyleBackColor = false;
@@ -491,10 +473,9 @@
             pnlDugmeler.Dock = DockStyle.Bottom;
             pnlDugmeler.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             pnlDugmeler.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            pnlDugmeler.Location = new Point(3, 562);
-            pnlDugmeler.Margin = new Padding(3, 4, 3, 4);
+            pnlDugmeler.Location = new Point(3, 417);
             pnlDugmeler.Name = "pnlDugmeler";
-            pnlDugmeler.Size = new Size(391, 95);
+            pnlDugmeler.Size = new Size(340, 71);
             pnlDugmeler.TabIndex = 1;
             // 
             // btnTemizle
@@ -502,10 +483,9 @@
             btnTemizle.BackColor = Color.FromArgb(242, 242, 242);
             btnTemizle.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             btnTemizle.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            btnTemizle.Location = new Point(274, 27);
-            btnTemizle.Margin = new Padding(3, 4, 3, 4);
+            btnTemizle.Location = new Point(240, 20);
             btnTemizle.Name = "btnTemizle";
-            btnTemizle.Size = new Size(114, 47);
+            btnTemizle.Size = new Size(100, 35);
             btnTemizle.TabIndex = 13;
             btnTemizle.Text = "Təmizlə";
             btnTemizle.UseVisualStyleBackColor = false;
@@ -516,10 +496,9 @@
             btnSil.BackColor = Color.FromArgb(242, 242, 242);
             btnSil.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             btnSil.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            btnSil.Location = new Point(183, 27);
-            btnSil.Margin = new Padding(3, 4, 3, 4);
+            btnSil.Location = new Point(160, 20);
             btnSil.Name = "btnSil";
-            btnSil.Size = new Size(86, 47);
+            btnSil.Size = new Size(75, 35);
             btnSil.TabIndex = 12;
             btnSil.Text = "Sil";
             btnSil.UseVisualStyleBackColor = false;
@@ -530,10 +509,9 @@
             btnYenile.BackColor = Color.FromArgb(242, 242, 242);
             btnYenile.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             btnYenile.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            btnYenile.Location = new Point(91, 27);
-            btnYenile.Margin = new Padding(3, 4, 3, 4);
+            btnYenile.Location = new Point(80, 20);
             btnYenile.Name = "btnYenile";
-            btnYenile.Size = new Size(86, 47);
+            btnYenile.Size = new Size(75, 35);
             btnYenile.TabIndex = 11;
             btnYenile.Text = "Yenilə";
             btnYenile.UseVisualStyleBackColor = false;
@@ -544,10 +522,9 @@
             btnYarat.BackColor = Color.FromArgb(242, 242, 242);
             btnYarat.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             btnYarat.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            btnYarat.Location = new Point(6, 27);
-            btnYarat.Margin = new Padding(3, 4, 3, 4);
+            btnYarat.Location = new Point(5, 20);
             btnYarat.Name = "btnYarat";
-            btnYarat.Size = new Size(80, 47);
+            btnYarat.Size = new Size(70, 35);
             btnYarat.TabIndex = 10;
             btnYarat.Text = "Yarat";
             btnYarat.UseVisualStyleBackColor = false;
@@ -561,10 +538,8 @@
             grpSifarisler.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             grpSifarisler.ForeColor = Color.FromArgb(222, 0, 0, 0);
             grpSifarisler.Location = new Point(0, 0);
-            grpSifarisler.Margin = new Padding(3, 4, 3, 4);
             grpSifarisler.Name = "grpSifarisler";
-            grpSifarisler.Padding = new Padding(3, 4, 3, 4);
-            grpSifarisler.Size = new Size(713, 661);
+            grpSifarisler.Size = new Size(624, 491);
             grpSifarisler.TabIndex = 0;
             grpSifarisler.TabStop = false;
             grpSifarisler.Text = "Sifarişlər";
@@ -592,14 +567,13 @@
             dgvSifarisler.DefaultCellStyle = dataGridViewCellStyle2;
             dgvSifarisler.Dock = DockStyle.Fill;
             dgvSifarisler.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            dgvSifarisler.Location = new Point(3, 21);
-            dgvSifarisler.Margin = new Padding(3, 4, 3, 4);
+            dgvSifarisler.Location = new Point(3, 20);
             dgvSifarisler.MultiSelect = false;
             dgvSifarisler.Name = "dgvSifarisler";
             dgvSifarisler.ReadOnly = true;
             dgvSifarisler.RowHeadersWidth = 51;
             dgvSifarisler.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvSifarisler.Size = new Size(707, 636);
+            dgvSifarisler.Size = new Size(618, 468);
             dgvSifarisler.TabIndex = 16;
             dgvSifarisler.SelectionChanged += dgvSifarisler_SelectionChanged;
             // 
@@ -609,14 +583,12 @@
             // 
             // TemirIdareetmeFormu
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1143, 880);
+            ClientSize = new Size(1000, 660);
             Controls.Add(pnlMain);
             Controls.Add(pnlTop);
-            Margin = new Padding(3, 4, 3, 4);
             Name = "TemirIdareetmeFormu";
-            Padding = new Padding(3, 85, 3, 4);
             Text = "Təmir İdarəetmə";
             Load += TemirIdareetmeFormu_Load;
             Controls.SetChildIndex(pnlTop, 0);

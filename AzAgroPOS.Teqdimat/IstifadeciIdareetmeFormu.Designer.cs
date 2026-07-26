@@ -53,7 +53,7 @@
             splitContainer1.Panel2.Controls.Add(materialCard1);
             splitContainer1.Panel2.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             splitContainer1.Panel2.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            splitContainer1.Size = new Size(978, 517);
+            splitContainer1.Size = new Size(978, 495);
             splitContainer1.SplitterDistance = 550;
             splitContainer1.TabIndex = 0;
             // 
@@ -86,7 +86,7 @@
             dgvIstifadeciler.Name = "dgvIstifadeciler";
             dgvIstifadeciler.ReadOnly = true;
             dgvIstifadeciler.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvIstifadeciler.Size = new Size(550, 517);
+            dgvIstifadeciler.Size = new Size(550, 495);
             dgvIstifadeciler.TabIndex = 0;
             dgvIstifadeciler.SelectionChanged += dgvIstifadeciler_SelectionChanged;
             // 
@@ -109,7 +109,7 @@
             materialCard1.MouseState = MaterialSkin.MouseState.HOVER;
             materialCard1.Name = "materialCard1";
             materialCard1.Padding = new Padding(14);
-            materialCard1.Size = new Size(424, 517);
+            materialCard1.Size = new Size(424, 495);
             materialCard1.TabIndex = 2;
             // 
             // btnYeni
@@ -123,7 +123,7 @@
             btnYeni.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnYeni.HighEmphasis = false;
             btnYeni.Icon = null;
-            btnYeni.Location = new Point(18, 461);
+            btnYeni.Location = new Point(18, 439);
             btnYeni.Margin = new Padding(4, 6, 4, 6);
             btnYeni.MouseState = MaterialSkin.MouseState.HOVER;
             btnYeni.Name = "btnYeni";
@@ -147,7 +147,7 @@
             btnSil.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnSil.HighEmphasis = true;
             btnSil.Icon = null;
-            btnSil.Location = new Point(146, 461);
+            btnSil.Location = new Point(146, 439);
             btnSil.Margin = new Padding(4, 6, 4, 6);
             btnSil.MouseState = MaterialSkin.MouseState.HOVER;
             btnSil.Name = "btnSil";
@@ -171,7 +171,7 @@
             btnYaddaSaxla.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnYaddaSaxla.HighEmphasis = true;
             btnYaddaSaxla.Icon = null;
-            btnYaddaSaxla.Location = new Point(274, 461);
+            btnYaddaSaxla.Location = new Point(274, 439);
             btnYaddaSaxla.Margin = new Padding(4, 6, 4, 6);
             btnYaddaSaxla.MouseState = MaterialSkin.MouseState.HOVER;
             btnYaddaSaxla.Name = "btnYaddaSaxla";

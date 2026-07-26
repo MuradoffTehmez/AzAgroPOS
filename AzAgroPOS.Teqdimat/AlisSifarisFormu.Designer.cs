@@ -124,7 +124,7 @@ namespace AzAgroPOS.Teqdimat
             tabControl.Margin = new Padding(4, 3, 4, 3);
             tabControl.Name = "tabControl";
             tabControl.SelectedIndex = 0;
-            tabControl.Size = new Size(1625, 697);
+            tabControl.Size = new Size(1625, 675);
             tabControl.TabIndex = 1;
             // 
             // tabSifarisler
@@ -134,20 +134,19 @@ namespace AzAgroPOS.Teqdimat
             tabSifarisler.Location = new Point(4, 26);
             tabSifarisler.Margin = new Padding(4, 3, 4, 3);
             tabSifarisler.Name = "tabSifarisler";
-            tabSifarisler.Padding = new Padding(12, 12, 12, 12);
-            tabSifarisler.Size = new Size(1617, 667);
+            tabSifarisler.Padding = new Padding(12);
+            tabSifarisler.Size = new Size(1617, 645);
             tabSifarisler.TabIndex = 0;
             tabSifarisler.Text = "Sifarişlər";
-            //
+            // 
             // dgvSifarisler
-            //
+            // 
             dgvSifarisler.AllowUserToAddRows = false;
             dgvSifarisler.AllowUserToDeleteRows = false;
-            dgvSifarisler.AutoGenerateColumns = false;
             dgvSifarisler.BackgroundColor = Color.White;
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = SystemColors.Control;
-            dataGridViewCellStyle1.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            dataGridViewCellStyle1.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
             dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
@@ -156,7 +155,7 @@ namespace AzAgroPOS.Teqdimat
             dgvSifarisler.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = SystemColors.Window;
-            dataGridViewCellStyle2.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            dataGridViewCellStyle2.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             dataGridViewCellStyle2.ForeColor = Color.FromArgb(222, 0, 0, 0);
             dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
             dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
@@ -170,7 +169,7 @@ namespace AzAgroPOS.Teqdimat
             dgvSifarisler.Name = "dgvSifarisler";
             dgvSifarisler.ReadOnly = true;
             dgvSifarisler.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvSifarisler.Size = new Size(1593, 643);
+            dgvSifarisler.Size = new Size(1593, 621);
             dgvSifarisler.TabIndex = 0;
             dgvSifarisler.SelectionChanged += dgvSifarisler_SelectionChanged;
             // 
@@ -181,7 +180,7 @@ namespace AzAgroPOS.Teqdimat
             tabYeniSifaris.Location = new Point(4, 26);
             tabYeniSifaris.Margin = new Padding(4, 3, 4, 3);
             tabYeniSifaris.Name = "tabYeniSifaris";
-            tabYeniSifaris.Padding = new Padding(12, 12, 12, 12);
+            tabYeniSifaris.Padding = new Padding(12);
             tabYeniSifaris.Size = new Size(1617, 667);
             tabYeniSifaris.TabIndex = 1;
             tabYeniSifaris.Text = "Yeni Sifariş / Redaktə";
@@ -218,7 +217,7 @@ namespace AzAgroPOS.Teqdimat
             groupSetirler.Location = new Point(0, 254);
             groupSetirler.Margin = new Padding(4, 3, 4, 3);
             groupSetirler.Name = "groupSetirler";
-            groupSetirler.Padding = new Padding(12, 12, 12, 12);
+            groupSetirler.Padding = new Padding(12);
             groupSetirler.Size = new Size(1593, 389);
             groupSetirler.TabIndex = 1;
             groupSetirler.TabStop = false;
@@ -357,17 +356,16 @@ namespace AzAgroPOS.Teqdimat
             lblMehsul.Size = new Size(57, 19);
             lblMehsul.TabIndex = 1;
             lblMehsul.Text = "Məhsul:";
-            //
+            // 
             // dgvSetirler
-            //
+            // 
             dgvSetirler.AllowUserToAddRows = false;
             dgvSetirler.AllowUserToDeleteRows = false;
-            dgvSetirler.AutoGenerateColumns = false;
             dgvSetirler.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvSetirler.BackgroundColor = Color.White;
             dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = SystemColors.Control;
-            dataGridViewCellStyle3.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            dataGridViewCellStyle3.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
             dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
             dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
@@ -376,7 +374,7 @@ namespace AzAgroPOS.Teqdimat
             dgvSetirler.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle4.BackColor = SystemColors.Window;
-            dataGridViewCellStyle4.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            dataGridViewCellStyle4.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             dataGridViewCellStyle4.ForeColor = Color.FromArgb(222, 0, 0, 0);
             dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
             dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
@@ -417,7 +415,7 @@ namespace AzAgroPOS.Teqdimat
             groupSifarisInfo.Location = new Point(0, 0);
             groupSifarisInfo.Margin = new Padding(4, 3, 4, 3);
             groupSifarisInfo.Name = "groupSifarisInfo";
-            groupSifarisInfo.Padding = new Padding(12, 12, 12, 12);
+            groupSifarisInfo.Padding = new Padding(12);
             groupSifarisInfo.Size = new Size(1593, 254);
             groupSifarisInfo.TabIndex = 0;
             groupSifarisInfo.TabStop = false;
@@ -675,10 +673,10 @@ namespace AzAgroPOS.Teqdimat
             panelButtons.Dock = DockStyle.Bottom;
             panelButtons.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             panelButtons.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            panelButtons.Location = new Point(4, 840);
+            panelButtons.Location = new Point(4, 818);
             panelButtons.Margin = new Padding(4, 3, 4, 3);
             panelButtons.Name = "panelButtons";
-            panelButtons.Padding = new Padding(12, 12, 12, 12);
+            panelButtons.Padding = new Padding(12);
             panelButtons.Size = new Size(1625, 69);
             panelButtons.TabIndex = 2;
             // 

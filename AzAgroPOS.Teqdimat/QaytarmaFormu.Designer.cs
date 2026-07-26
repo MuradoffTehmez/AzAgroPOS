@@ -63,7 +63,7 @@ namespace AzAgroPOS.Teqdimat
             pnlMain.MouseState = MaterialSkin.MouseState.HOVER;
             pnlMain.Name = "pnlMain";
             pnlMain.Padding = new Padding(16);
-            pnlMain.Size = new Size(1364, 735);
+            pnlMain.Size = new Size(1364, 713);
             pnlMain.TabIndex = 0;
             // 
             // txtQaytarmaSebebi
@@ -140,7 +140,7 @@ namespace AzAgroPOS.Teqdimat
             dgvSatisMehsullari.MultiSelect = false;
             dgvSatisMehsullari.Name = "dgvSatisMehsullari";
             dgvSatisMehsullari.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvSatisMehsullari.Size = new Size(1324, 470);
+            dgvSatisMehsullari.Size = new Size(1324, 448);
             dgvSatisMehsullari.TabIndex = 4;
             // 
             // materialLabel1
@@ -220,7 +220,7 @@ namespace AzAgroPOS.Teqdimat
             btnQaytar.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnQaytar.HighEmphasis = true;
             btnQaytar.Icon = null;
-            btnQaytar.Location = new Point(1266, 682);
+            btnQaytar.Location = new Point(1266, 660);
             btnQaytar.Margin = new Padding(5, 7, 5, 7);
             btnQaytar.MouseState = MaterialSkin.MouseState.HOVER;
             btnQaytar.Name = "btnQaytar";

@@ -358,7 +358,7 @@ namespace AzAgroPOS.Teqdimat
             dgvSatislar.ReadOnly = true;
             dgvSatislar.RowHeadersVisible = false;
             dgvSatislar.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvSatislar.Size = new Size(1178, 432);
+            dgvSatislar.Size = new Size(1178, 410);
             dgvSatislar.TabIndex = 1;
             dgvSatislar.Visible = false;
             // 
@@ -370,7 +370,7 @@ namespace AzAgroPOS.Teqdimat
             lblMesaj.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblMesaj.Location = new Point(3, 314);
             lblMesaj.Name = "lblMesaj";
-            lblMesaj.Size = new Size(1178, 432);
+            lblMesaj.Size = new Size(1178, 410);
             lblMesaj.TabIndex = 2;
             lblMesaj.TextAlign = ContentAlignment.MiddleCenter;
             lblMesaj.Visible = false;

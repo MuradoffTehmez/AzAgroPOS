@@ -9,7 +9,7 @@ namespace AzAgroPOS.Mentiq.Exceptions;
 public class BusinessRuleException : Exception
 {
     /// <summary>
-    /// Business rule kodu (məsələn: "INSUFFICIENT_STOCK", "CREDIT_LIMIT_EXCEEDED")
+    /// Business rule kodu 1 (məsələn: "INSUFFICIENT_STOCK", "CREDIT_LIMIT_EXCEEDED")
     /// </summary>
     public string? RuleCode { get; set; }
 
