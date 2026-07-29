@@ -1,3 +1,5 @@
 # AzAgroPOS Inkisaf Jurnali
 
 Bu fayl layihenin inkisaf prosesini izlemek ucun istifade olunur.
+
+- [2026-07-29 09:00] fix: SatisFormu-da endirim hesablamasinda yuvarlaqlasma xetasi duzeldildi
