@@ -7,3 +7,4 @@ Bu fayl layihenin inkisaf prosesini izlemek ucun istifade olunur.
 - [2026-07-29 11:14] feat: MehsulIdareetmeFormu-na barkod ile axtar funksiyasi elave edildi
 - [2026-07-29 12:21] fix: KassaFormu-da novbe baglananda kassa qaligi sifirlanmir — duzeldildi
 - [2026-07-30 13:28] style: LoginFormu-da duzme olculeri ve fontlar standartlasdirildi
+- [2026-07-30 14:35] chore: AzAgroPOS.Teqdimat.csproj-da NuGet paketleri yenilendi
