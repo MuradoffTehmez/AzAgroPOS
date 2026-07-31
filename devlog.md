@@ -11,3 +11,4 @@ Bu fayl layihenin inkisaf prosesini izlemek ucun istifade olunur.
 - [2026-07-30 15:42] feat: AnbarFormu-na minimum stok xebardarligi elave edildi
 - [2026-07-31 16:49] fix: TedarukcuOdemeFormu-da valyuta formatlamasi locale-a uygunlasdirildi
 - [2026-07-31 17:56] refactor: SatisManager-de tekrarlanan validasiya kodlari ayri metoda cixarildi
+- [2026-07-31 18:03] docs: README-ye baslangic konfigurasiya addimları elave edildi
