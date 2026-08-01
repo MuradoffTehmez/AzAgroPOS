@@ -14,3 +14,4 @@ Bu fayl layihenin inkisaf prosesini izlemek ucun istifade olunur.
 - [2026-07-31 18:03] docs: README-ye baslangic konfigurasiya addimları elave edildi
 - [2026-08-01 09:31] feat: QaytarmaFormu-na qaytarma sebebi sahesi elave edildi
 - [2026-08-01 19:10] fix: EmekHaqqiFormu-da iscinin emek haqqi tarixce siralama xetasi
+- [2026-08-01 20:17] test: SatisManager.YeniSatis() ucun unit test elave edildi
