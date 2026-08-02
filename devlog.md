@@ -18,3 +18,4 @@ Bu fayl layihenin inkisaf prosesini izlemek ucun istifade olunur.
 - [2026-08-01 21:24] refactor: IsciIdareetmeFormu-da DataGridView sutunlarini BindingList-e kecir
 - [2026-08-02 10:38] feat: BonusIdareetmeFormu-na bonus tarixcesi filtri elave edildi
 - [2026-08-02 11:45] fix: MusteriIdareetmeFormu-da telefon nomresi validasiyasi duzeldildi
+- [2026-08-02 12:52] chore: .gitignore-a bin/obj ve appsettings.Production.json elave edildi
