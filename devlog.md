@@ -19,3 +19,4 @@ Bu fayl layihenin inkisaf prosesini izlemek ucun istifade olunur.
 - [2026-08-02 10:38] feat: BonusIdareetmeFormu-na bonus tarixcesi filtri elave edildi
 - [2026-08-02 11:45] fix: MusteriIdareetmeFormu-da telefon nomresi validasiyasi duzeldildi
 - [2026-08-02 12:52] chore: .gitignore-a bin/obj ve appsettings.Production.json elave edildi
+- [2026-08-03 13:59] feat: NisyeIdareetmeFormu-na odenis tarixine gore siralama elave edildi
