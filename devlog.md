@@ -21,3 +21,4 @@ Bu fayl layihenin inkisaf prosesini izlemek ucun istifade olunur.
 - [2026-08-02 12:52] chore: .gitignore-a bin/obj ve appsettings.Production.json elave edildi
 - [2026-08-03 13:59] feat: NisyeIdareetmeFormu-na odenis tarixine gore siralama elave edildi
 - [2026-08-03 14:06] fix: AlisSifarisFormu-da sifaris statusu guncelleme race condition
+- [2026-08-03 15:13] refactor: StokHareketi yaradilmasini ayri servis sinifina kocur
