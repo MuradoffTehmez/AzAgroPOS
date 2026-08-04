@@ -23,3 +23,4 @@ Bu fayl layihenin inkisaf prosesini izlemek ucun istifade olunur.
 - [2026-08-03 14:06] fix: AlisSifarisFormu-da sifaris statusu guncelleme race condition
 - [2026-08-03 15:13] refactor: StokHareketi yaradilmasini ayri servis sinifina kocur
 - [2026-08-04 16:20] feat: XercIdareetmeFormu-na xerc kateqoriyasi filtri elave edildi
+- [2026-08-04 17:27] fix: HesabatFormu-da tarix araliginda son gun daxil edilmir — duzeldildi
