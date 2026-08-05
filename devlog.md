@@ -27,3 +27,4 @@ Bu fayl layihenin inkisaf prosesini izlemek ucun istifade olunur.
 - [2026-08-04 18:34] style: AnaMenuFormu-da sidebar hover effektleri duzeldildi
 - [2026-08-04 19:41] test: StokHareketiManager ucun stok artimi ve azalma testleri
 - [2026-08-05 09:02] feat: KonfiqurasiyaFormu-na printer secimi elave edildi
+- [2026-08-05 20:48] fix: QebzFormu-da uzun mehsul adlarinin kesilmesi problemi
