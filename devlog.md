@@ -29,3 +29,4 @@ Bu fayl layihenin inkisaf prosesini izlemek ucun istifade olunur.
 - [2026-08-05 09:02] feat: KonfiqurasiyaFormu-na printer secimi elave edildi
 - [2026-08-05 20:48] fix: QebzFormu-da uzun mehsul adlarinin kesilmesi problemi
 - [2026-08-05 21:55] refactor: Tedarukcu varligi ucun soft-delete mexanizmi elave edildi
+- [2026-08-06 10:09] docs: ProjectStatistics.md yenilendi — cari modul sayi elave edildi
