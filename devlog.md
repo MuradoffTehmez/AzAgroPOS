@@ -35,3 +35,4 @@ Bu fayl layihenin inkisaf prosesini izlemek ucun istifade olunur.
 - [2026-08-07 13:30] chore: solution faylinda test layihesinin referanslari yenilendi
 - [2026-08-07 14:37] feat: SatisFormu-na musteriye sms bildiris gondermek funksiyasi
 - [2026-08-07 15:44] fix: NovbeIdareetmesiFormu-da novbe baslama vaxtinin UTC cevrimi
+- [2026-08-07 16:51] refactor: DTO siniflarini ayri namespace-e kocur (AzAgroPOS.Mentiq.DTOs)
