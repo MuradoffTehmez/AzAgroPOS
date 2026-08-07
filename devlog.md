@@ -32,3 +32,4 @@ Bu fayl layihenin inkisaf prosesini izlemek ucun istifade olunur.
 - [2026-08-06 10:09] docs: ProjectStatistics.md yenilendi — cari modul sayi elave edildi
 - [2026-08-06 11:16] feat: BarkodCapiFormu-na toplu barkod cap funksiyasi elave edildi
 - [2026-08-06 12:23] fix: IsciIzniFormu-da icaze gunlerinin duzgun hesablanmasi
+- [2026-08-07 13:30] chore: solution faylinda test layihesinin referanslari yenilendi
