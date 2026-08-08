@@ -37,3 +37,4 @@ Bu fayl layihenin inkisaf prosesini izlemek ucun istifade olunur.
 - [2026-08-07 15:44] fix: NovbeIdareetmesiFormu-da novbe baslama vaxtinin UTC cevrimi
 - [2026-08-07 16:51] refactor: DTO siniflarini ayri namespace-e kocur (AzAgroPOS.Mentiq.DTOs)
 - [2026-08-08 17:58] feat: AnbarQaliqHesabatFormu-na Excel-e ixrac duymesin elave et
+- [2026-08-08 18:05] fix: EhtiyatHissesiFormu-da seriyanomresi dublikat yoxlamasi
