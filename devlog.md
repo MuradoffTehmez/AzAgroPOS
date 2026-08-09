@@ -40,3 +40,4 @@ Bu fayl layihenin inkisaf prosesini izlemek ucun istifade olunur.
 - [2026-08-08 18:05] fix: EhtiyatHissesiFormu-da seriyanomresi dublikat yoxlamasi
 - [2026-08-08 19:12] test: QaytarmaManager-de qaytarma limitini asmaq testi
 - [2026-08-09 09:33] style: IsciIzniFormu-da calendar kontrolunun rengleri duzeldildi
+- [2026-08-09 20:19] feat: MehsulSatisHesabatFormu-na qrafik goruntuleme elave edildi
