@@ -42,3 +42,4 @@ Bu fayl layihenin inkisaf prosesini izlemek ucun istifade olunur.
 - [2026-08-09 09:33] style: IsciIzniFormu-da calendar kontrolunun rengleri duzeldildi
 - [2026-08-09 20:19] feat: MehsulSatisHesabatFormu-na qrafik goruntuleme elave edildi
 - [2026-08-09 21:26] fix: Program.cs-de exception handling middleware siralama xetasi
+- [2026-08-10 10:40] refactor: KassaHareketi enum deyerlerini sabit sinifa kocur
