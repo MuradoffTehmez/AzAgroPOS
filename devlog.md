@@ -44,3 +44,4 @@ Bu fayl layihenin inkisaf prosesini izlemek ucun istifade olunur.
 - [2026-08-09 21:26] fix: Program.cs-de exception handling middleware siralama xetasi
 - [2026-08-10 10:40] refactor: KassaHareketi enum deyerlerini sabit sinifa kocur
 - [2026-08-10 11:47] docs: Documentation qovluguna API endpoint siyahisi elave edildi
+- [2026-08-10 12:54] feat: ZHesabatArxivFormu-na Z-hesabat PDF export funksiyasi
