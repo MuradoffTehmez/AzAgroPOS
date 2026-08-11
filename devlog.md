@@ -46,3 +46,4 @@ Bu fayl layihenin inkisaf prosesini izlemek ucun istifade olunur.
 - [2026-08-10 11:47] docs: Documentation qovluguna API endpoint siyahisi elave edildi
 - [2026-08-10 12:54] feat: ZHesabatArxivFormu-na Z-hesabat PDF export funksiyasi
 - [2026-08-10 13:01] fix: AlisSenedFormu-da toplam meblegin yuvarlaqlasdirma ferqi
+- [2026-08-11 14:08] chore: test-neticeleri.xml formatini JUnit standartina kecir
