@@ -48,3 +48,4 @@ Bu fayl layihenin inkisaf prosesini izlemek ucun istifade olunur.
 - [2026-08-10 13:01] fix: AlisSenedFormu-da toplam meblegin yuvarlaqlasdirma ferqi
 - [2026-08-11 14:08] chore: test-neticeleri.xml formatini JUnit standartina kecir
 - [2026-08-11 15:15] feat: LoginFormu-na 'meni xatirla' checkbox-u elave edildi
+- [2026-08-11 16:22] fix: BazaIdareetmeFormu-da migration skriptlerinin siralama xetasi
