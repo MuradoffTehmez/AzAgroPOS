@@ -50,3 +50,4 @@ Bu fayl layihenin inkisaf prosesini izlemek ucun istifade olunur.
 - [2026-08-11 15:15] feat: LoginFormu-na 'meni xatirla' checkbox-u elave edildi
 - [2026-08-11 16:22] fix: BazaIdareetmeFormu-da migration skriptlerinin siralama xetasi
 - [2026-08-12 17:29] refactor: Istifadeci entity-sine son giris tarixi sahesi elave edildi
+- [2026-08-12 18:36] test: EmekHaqqiManager hesablama metodlari ucun unit testler
