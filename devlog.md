@@ -54,3 +54,4 @@ Bu fayl layihenin inkisaf prosesini izlemek ucun istifade olunur.
 - [2026-08-12 19:43] feat: TemirIdareetmeFormu-na temir merhelesi izleme paneli
 - [2026-08-13 09:04] fix: SatisDetali entity-sinde endirim faizinin menfi olmasi yoxlamasi
 - [2026-08-13 10:11] style: TedarukcuIdareetmeFormu-da DataGridView zebrasiralama
+- [2026-08-13 20:50] feat: MusteriIdareetmeFormu-na musteri bonus tarixcesi tab-i
