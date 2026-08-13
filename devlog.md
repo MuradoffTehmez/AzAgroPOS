@@ -52,3 +52,4 @@ Bu fayl layihenin inkisaf prosesini izlemek ucun istifade olunur.
 - [2026-08-12 17:29] refactor: Istifadeci entity-sine son giris tarixi sahesi elave edildi
 - [2026-08-12 18:36] test: EmekHaqqiManager hesablama metodlari ucun unit testler
 - [2026-08-12 19:43] feat: TemirIdareetmeFormu-na temir merhelesi izleme paneli
+- [2026-08-13 09:04] fix: SatisDetali entity-sinde endirim faizinin menfi olmasi yoxlamasi
