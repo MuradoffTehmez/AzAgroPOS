@@ -56,3 +56,4 @@ Bu fayl layihenin inkisaf prosesini izlemek ucun istifade olunur.
 - [2026-08-13 10:11] style: TedarukcuIdareetmeFormu-da DataGridView zebrasiralama
 - [2026-08-13 20:50] feat: MusteriIdareetmeFormu-na musteri bonus tarixcesi tab-i
 - [2026-08-13 21:57] fix: Konfiqurasiya.cs-de defolt deyerlerin null yoxlamasi
+- [2026-08-14 11:18] refactor: AnaMenuFormu-da menu duymelerini dinamik yaratma
