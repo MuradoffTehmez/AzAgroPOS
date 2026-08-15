@@ -59,3 +59,4 @@ Bu fayl layihenin inkisaf prosesini izlemek ucun istifade olunur.
 - [2026-08-14 11:18] refactor: AnaMenuFormu-da menu duymelerini dinamik yaratma
 - [2026-08-14 12:25] docs: sql scrip qovluguna indeks yaratma skripti elave edildi
 - [2026-08-14 13:32] feat: IstifadeciIdareetmeFormu-na rol bazli icaze idareetmesi
+- [2026-08-15 14:39] fix: Satis entity-sinde OdemeUsulu enum parse xetasi duzeldildi
