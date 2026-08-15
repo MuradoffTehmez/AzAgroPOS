@@ -61,3 +61,4 @@ Bu fayl layihenin inkisaf prosesini izlemek ucun istifade olunur.
 - [2026-08-14 13:32] feat: IstifadeciIdareetmeFormu-na rol bazli icaze idareetmesi
 - [2026-08-15 14:39] fix: Satis entity-sinde OdemeUsulu enum parse xetasi duzeldildi
 - [2026-08-15 15:46] test: NisyeManager odenis plani hesablama testleri
+- [2026-08-15 16:53] chore: appsettings.json-da ConnectionString placeholder-i yenilendi
