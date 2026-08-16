@@ -62,3 +62,4 @@ Bu fayl layihenin inkisaf prosesini izlemek ucun istifade olunur.
 - [2026-08-15 14:39] fix: Satis entity-sinde OdemeUsulu enum parse xetasi duzeldildi
 - [2026-08-15 15:46] test: NisyeManager odenis plani hesablama testleri
 - [2026-08-15 16:53] chore: appsettings.json-da ConnectionString placeholder-i yenilendi
+- [2026-08-16 17:00] feat: KassaFormu-na gun sonu hesabat xulasesi paneli
