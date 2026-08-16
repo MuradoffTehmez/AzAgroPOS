@@ -65,3 +65,4 @@ Bu fayl layihenin inkisaf prosesini izlemek ucun istifade olunur.
 - [2026-08-16 17:00] feat: KassaFormu-na gun sonu hesabat xulasesi paneli
 - [2026-08-16 18:07] fix: Mehsul entity-sinde stok miqdarinin negatif olmamasi constrainti
 - [2026-08-16 19:14] refactor: EmeliyyatJurnali-na IP adres ve istifadeci agenti elave et
+- [2026-08-16 20:21] style: QaytarmaFormu-da status reng kodlamasini yenile
