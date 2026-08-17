@@ -68,3 +68,4 @@ Bu fayl layihenin inkisaf prosesini izlemek ucun istifade olunur.
 - [2026-08-16 20:21] style: QaytarmaFormu-da status reng kodlamasini yenile
 - [2026-08-17 09:35] feat: AnbarFormu-na anbar transferi (anbardan-anbara) funksiyasi
 - [2026-08-17 10:42] fix: BonusQeydi entity-sinde bonus faizinin 0-100 arasi validasiyasi
+- [2026-08-17 21:28] test: BarkodCapiFormu ucun cap formatlamasi unit testleri
