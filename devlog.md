@@ -70,3 +70,4 @@ Bu fayl layihenin inkisaf prosesini izlemek ucun istifade olunur.
 - [2026-08-17 10:42] fix: BonusQeydi entity-sinde bonus faizinin 0-100 arasi validasiyasi
 - [2026-08-17 21:28] test: BarkodCapiFormu ucun cap formatlamasi unit testleri
 - [2026-08-18 11:49] docs: README-ye ekran goruntuleri bolmesi elave edildi
+- [2026-08-18 12:56] feat: SatisFormu-na split odeme (naqd + kart) desteklenmesi
