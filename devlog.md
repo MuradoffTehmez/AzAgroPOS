@@ -72,3 +72,4 @@ Bu fayl layihenin inkisaf prosesini izlemek ucun istifade olunur.
 - [2026-08-18 11:49] docs: README-ye ekran goruntuleri bolmesi elave edildi
 - [2026-08-18 12:56] feat: SatisFormu-na split odeme (naqd + kart) desteklenmesi
 - [2026-08-18 13:03] fix: Brend entity-sinde ad unikalligi yoxlamasi elave edildi
+- [2026-08-19 14:10] refactor: Exceptions qovlugundaki xeta siniflarini yeniden adlandir
