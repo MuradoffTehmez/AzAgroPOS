@@ -76,3 +76,4 @@ Bu fayl layihenin inkisaf prosesini izlemek ucun istifade olunur.
 - [2026-08-19 15:17] chore: DatabaseTestApp layihesini solution-dan cixar
 - [2026-08-19 16:24] feat: EmekHaqqiFormu-na emek haqqi hesabat cixarisi (PDF)
 - [2026-08-19 17:31] fix: IsciPerformans entity-sinde qiymetlendirme tarixinin future olmamasi
+- [2026-08-20 18:38] style: HesabatFormu-da chart reng palitrasini yenile
