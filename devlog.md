@@ -80,3 +80,4 @@ Bu fayl layihenin inkisaf prosesini izlemek ucun istifade olunur.
 - [2026-08-20 19:45] test: TedarukcuOdeme hesablama ve valyuta cevrimi testleri
 - [2026-08-20 20:52] feat: NovbeIdareetmesiFormu-na novbe deyisiklikleri tarixi
 - [2026-08-21 09:06] fix: Kateqoriya entity-sinde sonsuz parent-child dongusu yoxlamasi
+- [2026-08-21 10:13] refactor: Servisler qovlugundaki DI registration-i ayri extension-a kocur
