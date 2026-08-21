@@ -79,3 +79,4 @@ Bu fayl layihenin inkisaf prosesini izlemek ucun istifade olunur.
 - [2026-08-20 18:38] style: HesabatFormu-da chart reng palitrasini yenile
 - [2026-08-20 19:45] test: TedarukcuOdeme hesablama ve valyuta cevrimi testleri
 - [2026-08-20 20:52] feat: NovbeIdareetmesiFormu-na novbe deyisiklikleri tarixi
+- [2026-08-21 09:06] fix: Kateqoriya entity-sinde sonsuz parent-child dongusu yoxlamasi
