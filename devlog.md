@@ -82,3 +82,4 @@ Bu fayl layihenin inkisaf prosesini izlemek ucun istifade olunur.
 - [2026-08-21 09:06] fix: Kateqoriya entity-sinde sonsuz parent-child dongusu yoxlamasi
 - [2026-08-21 10:13] refactor: Servisler qovlugundaki DI registration-i ayri extension-a kocur
 - [2026-08-21 21:59] docs: Documentation-a verilenbazasi ER diaqrami elave edildi
+- [2026-08-22 11:20] feat: XercIdareetmeFormu-na aylik xerc budcesi limiti funksiyasi
