@@ -84,3 +84,4 @@ Bu fayl layihenin inkisaf prosesini izlemek ucun istifade olunur.
 - [2026-08-21 21:59] docs: Documentation-a verilenbazasi ER diaqrami elave edildi
 - [2026-08-22 11:20] feat: XercIdareetmeFormu-na aylik xerc budcesi limiti funksiyasi
 - [2026-08-22 12:27] fix: OdenisMetodu entity-sinde aktiv/deaktiv status kecidi
+- [2026-08-22 13:34] test: LoginFormu ucun ugursuz giris cehdleri ve kilid testi
