@@ -86,3 +86,4 @@ Bu fayl layihenin inkisaf prosesini izlemek ucun istifade olunur.
 - [2026-08-22 12:27] fix: OdenisMetodu entity-sinde aktiv/deaktiv status kecidi
 - [2026-08-22 13:34] test: LoginFormu ucun ugursuz giris cehdleri ve kilid testi
 - [2026-08-22 14:41] chore: PasswordHasher layihesindeki koddakı hash algoritmi guclendirmesi
+- [2026-08-23 15:48] feat: TedarukcuIdareetmeFormu-na tedarukcu qiymetlendirme sistemi
