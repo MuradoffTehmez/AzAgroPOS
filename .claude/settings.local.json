@@ -1,9 +1,6 @@
 {
   "permissions": {
     "allow": [
-      // ============================
-      // 🧱 .NET ƏMRLƏRİ
-      // ============================
       "Bash(dotnet build:*)",
       "Bash(dotnet run:*)",
       "Bash(dotnet clean:*)",
@@ -17,10 +14,6 @@
       "Bash(dotnet ef database drop:*)",
       "Bash(dotnet list package:*)",
       "Bash(dotnet new:*)",
-
-      // ============================
-      // ⚙️ FAYL ƏMƏLİYYATLARI
-      // ============================
       "Bash(mkdir:*)",
       "Bash(rmdir:*)",
       "Bash(rm:*)",
@@ -30,36 +23,20 @@
       "Bash(dir:*)",
       "Bash(cat:*)",
       "Bash(echo:*)",
-
-      // ============================
-      // 🧩 KOD ANALİZİ / AXTARIŞ
-      // ============================
       "Bash(Select-String -Pattern \"error|warning\")",
       "Bash(Select-Object -First 50)",
       "Bash(Select-String -Pattern \"EPPlus|System.Data|SqlClient\")",
       "Bash(FindStr:*)",
-
-      // ============================
-      // 🧰 ƏLAVƏ TEXNOLOGİYALAR
-      // ============================
       "Bash(msbuild:*)",
       "Bash(pip install:*)",
       "Bash(npm install:*)",
       "Bash(npm run build:*)",
       "Bash(choco install:*)",
       "Bash(winget install:*)",
-
-      // ============================
-      // 🗄️ VERİLƏNLƏR BAZASI
-      // ============================
       "Bash(sqlcmd:*)",
       "Bash(psql:*)",
       "Bash(mysql:*)",
       "Bash(ping:*)",
-
-      // ============================
-      // 🔒 SİSTEM YOXLAMALARI
-      // ============================
       "Bash(whoami:*)",
       "Bash(timeout:*)",
       "Bash(python:*)",
