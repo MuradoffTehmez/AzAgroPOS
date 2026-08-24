@@ -90,3 +90,4 @@ Bu fayl layihenin inkisaf prosesini izlemek ucun istifade olunur.
 - [2026-08-23 16:55] fix: IstifadeciSessiyasi-da sessiya vaxtasiminin duzgun hesablanmasi
 - [2026-08-23 17:02] refactor: Yardimcilar siniflarini partial class-lara bol
 - [2026-08-24 18:09] style: KonfiqurasiyaFormu-da tab naviqasiya animasiyasi elave et
+- [2026-08-24 19:16] feat: SatisFormu-na musteri axtarisi ve avtomatik tamamlama
