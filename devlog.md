@@ -94,3 +94,4 @@ Bu fayl layihenin inkisaf prosesini izlemek ucun istifade olunur.
 - [2026-08-24 20:23] fix: Novbe entity-sinde novbe muddetinin mentiqi yoxlamasi
 - [2026-08-25 09:37] test: AnbarFormu stok hesabat filtrleme testleri
 - [2026-08-25 10:44] docs: CHANGELOG.md faylini yarad ve son deyisiklikleri elave et
+- [2026-08-25 11:51] feat: MinimumStokMehsullariFormu-na avtomatik sifaris yaratma
