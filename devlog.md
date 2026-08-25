@@ -95,3 +95,4 @@ Bu fayl layihenin inkisaf prosesini izlemek ucun istifade olunur.
 - [2026-08-25 09:37] test: AnbarFormu stok hesabat filtrleme testleri
 - [2026-08-25 10:44] docs: CHANGELOG.md faylini yarad ve son deyisiklikleri elave et
 - [2026-08-25 11:51] feat: MinimumStokMehsullariFormu-na avtomatik sifaris yaratma
+- [2026-08-25 21:30] fix: NisyeHereketi-de gecikme faizinin duzgun hesablanmasi
