@@ -92,3 +92,4 @@ Bu fayl layihenin inkisaf prosesini izlemek ucun istifade olunur.
 - [2026-08-24 18:09] style: KonfiqurasiyaFormu-da tab naviqasiya animasiyasi elave et
 - [2026-08-24 19:16] feat: SatisFormu-na musteri axtarisi ve avtomatik tamamlama
 - [2026-08-24 20:23] fix: Novbe entity-sinde novbe muddetinin mentiqi yoxlamasi
+- [2026-08-25 09:37] test: AnbarFormu stok hesabat filtrleme testleri
