@@ -98,3 +98,4 @@ Bu fayl layihenin inkisaf prosesini izlemek ucun istifade olunur.
 - [2026-08-25 21:30] fix: NisyeHereketi-de gecikme faizinin duzgun hesablanmasi
 - [2026-08-26 12:58] refactor: Kontekst/AppDbContext-de lazy loading-i deaktiv et
 - [2026-08-26 13:05] chore: GitHub Actions CI workflow ucun yaml faylini yenile
+- [2026-08-26 14:12] feat: AlisSifarisFormu-na tedarukcuye e-poct gondermek funksiyasi
