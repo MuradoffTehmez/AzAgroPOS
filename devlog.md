@@ -100,3 +100,4 @@ Bu fayl layihenin inkisaf prosesini izlemek ucun istifade olunur.
 - [2026-08-26 13:05] chore: GitHub Actions CI workflow ucun yaml faylini yenile
 - [2026-08-26 14:12] feat: AlisSifarisFormu-na tedarukcuye e-poct gondermek funksiyasi
 - [2026-08-27 15:19] fix: Qaytarma entity-sinde geri odeme mebleginin satis-dan cox olmamasi
+- [2026-08-27 16:26] style: BazaIdareetmeFormu-da progressbar ve yukleme animasiyasi
