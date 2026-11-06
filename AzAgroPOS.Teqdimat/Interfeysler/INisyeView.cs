@@ -27,6 +27,8 @@ public interface INisyeView
     // View-dan data oxumaq
     int? SecilmisMusteriId { get; }
     decimal OdenisMeblegi { get; }
+    decimal EvvelkiBorcMeblegi { get; }
+    string EvvelkiBorcQeydi { get; }
 
     /// <summary>
     /// Ödəniş düyməsinin aktiv/deaktiv olma vəziyyəti
@@ -37,6 +39,7 @@ public interface INisyeView
     event EventHandler FormYuklendi;
     event EventHandler MusteriSecildi;
     event EventHandler OdenisEdildi;
+    event EventHandler EvvelkiBorcElaveEdildi;
 
     /// <summary>
     /// mesajgoster metodu, istifadəçiyə mesaj göstərmək üçün istifadə olunur.

@@ -43,7 +43,13 @@ public class MehsulManager
                 TekEdedSatisQiymeti = m.TekEdedSatisQiymeti,
                 AlisQiymeti = m.AlisQiymeti,
                 MovcudSay = m.MovcudSay,
-                OlcuVahidi = m.OlcuVahidi
+                OlcuVahidi = m.OlcuVahidi,
+                Aktivdir = m.Aktivdir,
+                MinimumStok = m.MinimumStok,
+                KateqoriyaId = m.KateqoriyaId,
+                BrendId = m.BrendId,
+                TedarukcuId = m.TedarukcuId,
+                SekilYolu = m.SekilYolu
             });
 
             Logger.MelumatYaz("Bütün məhsullar uğurla əldə edildi");
@@ -291,12 +297,20 @@ public class MehsulManager
                 Ad = m.Ad,
                 Barkod = m.Barkod,
                 StokKodu = m.StokKodu,
+                AlisQiymeti = m.AlisQiymeti,
                 PerakendeSatisQiymeti = m.PerakendeSatisQiymeti,
+                TopdanSatisQiymeti = m.TopdanSatisQiymeti,
+                TekEdedSatisQiymeti = m.TekEdedSatisQiymeti,
                 MovcudSay = m.MovcudSay,
                 AnbarMiqdari = m.MovcudSay,
                 Aktivdir = m.Aktivdir,
                 OlcuVahidi = m.OlcuVahidi,
-                OlcuVahidiAdi = m.OlcuVahidi.ToString()
+                OlcuVahidiAdi = m.OlcuVahidi.ToString(),
+                MinimumStok = m.MinimumStok,
+                KateqoriyaId = m.KateqoriyaId,
+                BrendId = m.BrendId,
+                TedarukcuId = m.TedarukcuId,
+                SekilYolu = m.SekilYolu
             }).ToList();
 
             Logger.MelumatYaz($"Məhsul axtarışı tamamlandı. Tapılan nəticə sayı: {dtolar.Count}");
@@ -315,15 +329,19 @@ public class MehsulManager
     /// </summary>
     /// <param name="parametrler">Səhifələmə parametrləri</param>
     /// <returns>Səhifələnmiş məhsul məlumatları</returns>
-    public async Task<EmeliyyatNeticesi<SehifelenmisMelumat<MehsulDto>>> MehsullariSehifelenmisGetirAsync(SehifeParametrleri parametrler)
+    public async Task<EmeliyyatNeticesi<SehifelenmisMelumat<MehsulDto>>> MehsullariSehifelenmisGetirAsync(SehifeParametrleri parametrler, string? axtarisMetni = null)
     {
         Logger.MelumatYaz($"Səhifələnmiş məhsullar əldə edilir - Səhifə: {parametrler.SehifeNomresi}, Ölçü: {parametrler.SehifeOlcusu}");
         try
         {
+            string axtaris = axtarisMetni?.Trim() ?? string.Empty;
             (IEnumerable<Mehsul>? mehsullar, int umumiSay) = await _unitOfWork.Mehsullar.SehifelenmisGetirAsync(
                 parametrler.SehifeNomresi,
                 parametrler.SehifeOlcusu,
-                m => m.Aktivdir);
+                m => m.Aktivdir && (axtaris == string.Empty ||
+                    m.Ad.Contains(axtaris) ||
+                    (m.StokKodu != null && m.StokKodu.Contains(axtaris)) ||
+                    (m.Barkod != null && m.Barkod.Contains(axtaris))));
 
             List<MehsulDto> mehsulDtolar = mehsullar.Select(m => new MehsulDto
             {
@@ -336,7 +354,13 @@ public class MehsulManager
                 TekEdedSatisQiymeti = m.TekEdedSatisQiymeti,
                 AlisQiymeti = m.AlisQiymeti,
                 MovcudSay = m.MovcudSay,
-                OlcuVahidi = m.OlcuVahidi
+                OlcuVahidi = m.OlcuVahidi,
+                Aktivdir = m.Aktivdir,
+                MinimumStok = m.MinimumStok,
+                KateqoriyaId = m.KateqoriyaId,
+                BrendId = m.BrendId,
+                TedarukcuId = m.TedarukcuId,
+                SekilYolu = m.SekilYolu
             }).ToList();
 
             SehifelenmisMelumat<MehsulDto> sehifelenmis = new(

@@ -20,6 +20,9 @@ namespace AzAgroPOS.Teqdimat
         public MehsulIdareetmeFormu(MehsulManager mehsulManager, MehsulPresenter mehsulPresenter, IServiceProvider serviceProvider)
         {
             InitializeComponent();
+            tabPage2.AutoScroll = true;
+            materialCard1.Dock = DockStyle.Top;
+            materialCard1.Height = 820;
             _presenter = mehsulPresenter;
             _serviceProvider = serviceProvider;
             _dialogXidmeti = new DialogXidmeti();
@@ -183,27 +186,35 @@ namespace AzAgroPOS.Teqdimat
             if (dgvMehsullar.Columns.Count == 0)
             {
                 dgvMehsullar.AutoGenerateColumns = false;
+                dgvMehsullar.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+                dgvMehsullar.AllowUserToResizeColumns = true;
+                dgvMehsullar.ScrollBars = ScrollBars.Both;
                 
-                var adCol = new DataGridViewTextBoxColumn { Name = "Ad", DataPropertyName = "Ad", HeaderText = "Məhsulun Adı" };
+                var adCol = new DataGridViewTextBoxColumn { Name = "Ad", DataPropertyName = "Ad", HeaderText = "Məhsulun Adı", Width = 220 };
                 adCol.SortMode = DataGridViewColumnSortMode.Automatic;
                 dgvMehsullar.Columns.Add(adCol);
                 
-                var stokCol = new DataGridViewTextBoxColumn { Name = "StokKodu", DataPropertyName = "StokKodu", HeaderText = "Stok Kodu" };
+                var stokCol = new DataGridViewTextBoxColumn { Name = "StokKodu", DataPropertyName = "StokKodu", HeaderText = "Stok Kodu", Width = 120 };
                 stokCol.SortMode = DataGridViewColumnSortMode.Automatic;
                 dgvMehsullar.Columns.Add(stokCol);
+
+                var alisCol = new DataGridViewTextBoxColumn { Name = "AlisQiymeti", DataPropertyName = "AlisQiymeti", HeaderText = "Alış Qiyməti", Width = 130 };
+                alisCol.DefaultCellStyle.Format = "N2";
+                alisCol.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                alisCol.SortMode = DataGridViewColumnSortMode.Automatic;
+                dgvMehsullar.Columns.Add(alisCol);
                 
-                var priceCol = new DataGridViewTextBoxColumn { Name = "PerakendeSatisQiymetiStr", DataPropertyName = "PerakendeSatisQiymetiStr", HeaderText = "Pərakəndə Qiymət" };
-                priceCol.DefaultCellStyle.Format = "c2";
+                var priceCol = new DataGridViewTextBoxColumn { Name = "PerakendeSatisQiymetiStr", DataPropertyName = "PerakendeSatisQiymetiStr", HeaderText = "Pərakəndə Qiymət", Width = 155 };
                 priceCol.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 priceCol.SortMode = DataGridViewColumnSortMode.Automatic;
                 dgvMehsullar.Columns.Add(priceCol);
                 
-                var qtyCol = new DataGridViewTextBoxColumn { Name = "MovcudSay", DataPropertyName = "MovcudSay", HeaderText = "Mövcud Say" };
+                var qtyCol = new DataGridViewTextBoxColumn { Name = "MovcudSay", DataPropertyName = "MovcudSay", HeaderText = "Mövcud Say", Width = 120 };
                 qtyCol.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 qtyCol.SortMode = DataGridViewColumnSortMode.Automatic;
                 dgvMehsullar.Columns.Add(qtyCol);
                 
-                var unitCol = new DataGridViewTextBoxColumn { Name = "OlcuVahidiStr", DataPropertyName = "OlcuVahidiStr", HeaderText = "Ölçü Vahidi" };
+                var unitCol = new DataGridViewTextBoxColumn { Name = "OlcuVahidiStr", DataPropertyName = "OlcuVahidiStr", HeaderText = "Ölçü Vahidi", Width = 120 };
                 unitCol.SortMode = DataGridViewColumnSortMode.Automatic;
                 dgvMehsullar.Columns.Add(unitCol);
             }

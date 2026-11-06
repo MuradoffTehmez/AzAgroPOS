@@ -44,6 +44,34 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
             grid.AlternatingRowsDefaultCellStyle.BackColor = altRow.Value;
 
             grid.RowTemplate.Height = 35;
+
+            SutunEnleriniQoru(grid);
+        }
+
+        public static void SutunEnleriniQoru(DataGridView grid)
+        {
+            grid.AllowUserToResizeColumns = true;
+            grid.ScrollBars = ScrollBars.Both;
+            grid.ColumnAdded -= SutunElaveEdildi;
+            grid.ColumnAdded += SutunElaveEdildi;
+            foreach (DataGridViewColumn column in grid.Columns)
+                SutunEniniQoru(grid, column);
+        }
+
+        private static void SutunElaveEdildi(object? sender, DataGridViewColumnEventArgs e)
+        {
+            if (sender is DataGridView grid)
+                SutunEniniQoru(grid, e.Column);
+        }
+
+        private static void SutunEniniQoru(DataGridView grid, DataGridViewColumn column)
+        {
+            if (column is DataGridViewButtonColumn || !column.Visible)
+                return;
+
+            Font font = grid.ColumnHeadersDefaultCellStyle.Font ?? grid.Font;
+            int headerWidth = TextRenderer.MeasureText(column.HeaderText ?? string.Empty, font).Width + 24;
+            column.MinimumWidth = Math.Max(90, headerWidth);
         }
     }
 }

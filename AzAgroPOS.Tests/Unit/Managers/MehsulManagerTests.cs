@@ -102,6 +102,32 @@ public class MehsulManagerTests
     }
 
     [Fact]
+    public async Task MehsullariSehifelenmisGetirAsync_AxtarisiButunBazayaOturur()
+    {
+        Mehsul tapilan = MehsulMockFactory.CreateValid(1);
+        tapilan.Ad = "Süd 1L";
+        tapilan.AlisQiymeti = 1.25m;
+        Mehsul tapilmayan = MehsulMockFactory.CreateValid(2);
+        tapilmayan.Ad = "Çörək";
+        tapilmayan.StokKodu = "SK002";
+        tapilmayan.Barkod = "999";
+        _mockMehsulRepo.Setup(x => x.SehifelenmisGetirAsync(
+                1, 50, It.IsAny<Expression<Func<Mehsul, bool>>>(),
+                It.IsAny<Expression<Func<Mehsul, object>>[]>() ))
+            .ReturnsAsync((new List<Mehsul> { tapilan }, 1));
+
+        var netice = await _mehsulManager.MehsullariSehifelenmisGetirAsync(
+            new SehifeParametrleri { SehifeNomresi = 1, SehifeOlcusu = 50 }, "Süd");
+
+        netice.UgurluDur.Should().BeTrue();
+        netice.Data.Melumatlar.Single().AlisQiymeti.Should().Be(1.25m);
+        _mockMehsulRepo.Verify(x => x.SehifelenmisGetirAsync(
+            1, 50,
+            It.Is<Expression<Func<Mehsul, bool>>>(f => f.Compile()(tapilan) && !f.Compile()(tapilmayan)),
+            It.IsAny<Expression<Func<Mehsul, object>>[]>()), Times.Once);
+    }
+
+    [Fact]
     public async Task MehsulSilAsync_ValidId_SoftDeletesSuccessfully()
     {
         // Arrange

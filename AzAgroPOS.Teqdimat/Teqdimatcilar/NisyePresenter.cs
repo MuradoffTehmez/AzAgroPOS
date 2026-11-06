@@ -27,6 +27,47 @@ public class NisyePresenter
         _view.FormYuklendi += async (s, e) => await FormuYukle();
         _view.MusteriSecildi += async (s, e) => await MusteriHereketleriniYukle();
         _view.OdenisEdildi += async (s, e) => await OdenisEt();
+        _view.EvvelkiBorcElaveEdildi += async (s, e) => await EvvelkiBorcElaveEt();
+    }
+
+    private async Task EvvelkiBorcElaveEt()
+    {
+        if (!_view.SecilmisMusteriId.HasValue)
+        {
+            _view.MesajGoster("Əvvəlcə müştəri seçin.", "Xəbərdarlıq");
+            return;
+        }
+
+        int musteriId = _view.SecilmisMusteriId.Value;
+        decimal mebleg = _view.EvvelkiBorcMeblegi;
+        DialogResult cavab = _view.MesajGoster(
+            $"Seçilmiş müştəriyə {mebleg:N2} AZN əvvəlki borc əlavə edilsin?",
+            "Əvvəlki borcu təsdiqləyin",
+            MessageBoxButtons.YesNo,
+            MessageBoxIcon.Question);
+        if (cavab != DialogResult.Yes)
+        {
+            return;
+        }
+
+        try
+        {
+            EmeliyyatNeticesi netice = await _nisyeManager.EvvelkiBorcElaveEtAsync(
+                musteriId, mebleg, _view.EvvelkiBorcQeydi);
+            if (!netice.UgurluDur)
+            {
+                _view.MesajGoster(netice.Mesaj, "Xəta");
+                return;
+            }
+
+            await FormuYukle();
+            await MusteriHereketleriniYukle();
+            _view.MesajGoster("Əvvəlki borc müştərinin hesabına əlavə edildi.", "Uğurlu əməliyyat");
+        }
+        catch (Exception ex)
+        {
+            _view.MesajGoster($"Əvvəlki borc əlavə edilə bilmədi: {ex.Message}", "Xəta");
+        }
     }
 
     private async Task FormuYukle()

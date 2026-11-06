@@ -29,6 +29,7 @@ namespace AzAgroPOS.Teqdimat
             KeyUp += SatisFormu_KeyUp; // Klaviatura hadisələrini idarə etmək üçün
             ConfigureDataGridViewStyles();
             AddCartActionButtons();
+            ConfigureCartColumnWidths();
             ConfigureKeyboardShortcutHints();
 
             StatusMesajiGostericisi.Initialize(toolStripStatusLabel1);
@@ -770,6 +771,31 @@ namespace AzAgroPOS.Teqdimat
                     HeaderText = ""
                 };
                 dgvSebet.Columns.Add(azaltCol);
+            }
+        }
+
+        private void ConfigureCartColumnWidths()
+        {
+            // Fill rejimi dar pəncərədə başlıqları və dəyərləri kəsirdi.
+            dgvSebet.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+            dgvSebet.AllowUserToResizeColumns = true;
+            dgvSebet.ScrollBars = ScrollBars.Both;
+            colSebetMehsulAdi.Width = 220;
+            colSebetMiqdar.Width = 85;
+            colSebetQiymet.Width = 110;
+            colSebetUmumiMebleg.Width = 115;
+            dgvSebet.Columns["artir_col"].Width = 45;
+            dgvSebet.Columns["azalt_col"].Width = 45;
+            dgvSebet.Columns["artir_col"].HeaderText = "+";
+            dgvSebet.Columns["azalt_col"].HeaderText = "−";
+
+            dgvAxtarisNeticeleri.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+            dgvAxtarisNeticeleri.AllowUserToResizeColumns = true;
+            dgvAxtarisNeticeleri.ScrollBars = ScrollBars.Both;
+            foreach (DataGridViewColumn column in dgvAxtarisNeticeleri.Columns)
+            {
+                if (column.Visible)
+                    column.Width = column.DataPropertyName == "Ad" ? 200 : 110;
             }
         }
 

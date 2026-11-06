@@ -32,7 +32,7 @@ public class AlisManager
     /// </summary>
     private async Task<T> ExecuteInSeparateScope<T>(Func<IUnitOfWork, Task<T>> operation)
     {
-        using IServiceScope scope = _serviceProvider.CreateScope();
+        await using AsyncServiceScope scope = _serviceProvider.CreateAsyncScope();
         IUnitOfWork unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
         return await operation(unitOfWork);
     }

@@ -55,7 +55,7 @@ namespace AzAgroPOS.Teqdimat
         {
             dgv.AllowUserToAddRows = false;
             dgv.AllowUserToDeleteRows = false;
-            dgv.AllowUserToResizeColumns = false;
+            dgv.AllowUserToResizeColumns = true;
             dgv.AllowUserToResizeRows = false;
             dgv.ReadOnly = true;
             dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -90,6 +90,7 @@ namespace AzAgroPOS.Teqdimat
 
             dgv.AlternatingRowsDefaultCellStyle.BackColor = Color.White;
             dgv.RowsDefaultCellStyle.BackColor = Color.FromArgb(249, 249, 249);
+            DataGridViewHelper.SutunEnleriniQoru(dgv);
 
             dgv.CellMouseEnter -= dgv_CellMouseEnter;
             dgv.CellMouseLeave -= dgv_CellMouseLeave;

@@ -316,7 +316,7 @@ namespace AzAgroPOS.Teqdimat
             cmbTedarukcu.Hint = "Tədarükçü";
             cmbTedarukcu.IntegralHeight = false;
             cmbTedarukcu.ItemHeight = 43;
-            cmbTedarukcu.Location = new Point(18, 538);
+            cmbTedarukcu.Location = new Point(18, 594);
             cmbTedarukcu.MaxDropDownItems = 4;
             cmbTedarukcu.MouseState = MaterialSkin.MouseState.OUT;
             cmbTedarukcu.Name = "cmbTedarukcu";
@@ -339,7 +339,7 @@ namespace AzAgroPOS.Teqdimat
             cmbBrend.Hint = "Brend";
             cmbBrend.IntegralHeight = false;
             cmbBrend.ItemHeight = 43;
-            cmbBrend.Location = new Point(18, 486);
+            cmbBrend.Location = new Point(18, 540);
             cmbBrend.MaxDropDownItems = 4;
             cmbBrend.MouseState = MaterialSkin.MouseState.OUT;
             cmbBrend.Name = "cmbBrend";
@@ -362,7 +362,7 @@ namespace AzAgroPOS.Teqdimat
             cmbKateqoriya.Hint = "Kateqoriya";
             cmbKateqoriya.IntegralHeight = false;
             cmbKateqoriya.ItemHeight = 43;
-            cmbKateqoriya.Location = new Point(18, 434);
+            cmbKateqoriya.Location = new Point(18, 486);
             cmbKateqoriya.MaxDropDownItems = 4;
             cmbKateqoriya.MouseState = MaterialSkin.MouseState.OUT;
             cmbKateqoriya.Name = "cmbKateqoriya";
@@ -382,7 +382,7 @@ namespace AzAgroPOS.Teqdimat
             txtMinimumStok.HideSelection = true;
             txtMinimumStok.Hint = "Minimum Stok";
             txtMinimumStok.LeadingIcon = null;
-            txtMinimumStok.Location = new Point(311, 380);
+            txtMinimumStok.Location = new Point(311, 432);
             txtMinimumStok.MaxLength = 32767;
             txtMinimumStok.MouseState = MaterialSkin.MouseState.OUT;
             txtMinimumStok.Name = "txtMinimumStok";
@@ -437,7 +437,7 @@ namespace AzAgroPOS.Teqdimat
             txtTekEdedSatisQiymeti.HideSelection = true;
             txtTekEdedSatisQiymeti.Hint = "Tək Ədəd Qiyməti";
             txtTekEdedSatisQiymeti.LeadingIcon = null;
-            txtTekEdedSatisQiymeti.Location = new Point(18, 324);
+            txtTekEdedSatisQiymeti.Location = new Point(18, 378);
             txtTekEdedSatisQiymeti.MaxLength = 32767;
             txtTekEdedSatisQiymeti.MouseState = MaterialSkin.MouseState.OUT;
             txtTekEdedSatisQiymeti.Name = "txtTekEdedSatisQiymeti";
@@ -468,7 +468,7 @@ namespace AzAgroPOS.Teqdimat
             txtTopdanSatisQiymeti.HideSelection = true;
             txtTopdanSatisQiymeti.Hint = "Topdan Satış Qiyməti";
             txtTopdanSatisQiymeti.LeadingIcon = null;
-            txtTopdanSatisQiymeti.Location = new Point(18, 270);
+            txtTopdanSatisQiymeti.Location = new Point(18, 324);
             txtTopdanSatisQiymeti.MaxLength = 32767;
             txtTopdanSatisQiymeti.MouseState = MaterialSkin.MouseState.OUT;
             txtTopdanSatisQiymeti.Name = "txtTopdanSatisQiymeti";
@@ -502,7 +502,7 @@ namespace AzAgroPOS.Teqdimat
             cmbOlcuVahidi.Hint = "Ölçü Vahidi";
             cmbOlcuVahidi.IntegralHeight = false;
             cmbOlcuVahidi.ItemHeight = 43;
-            cmbOlcuVahidi.Location = new Point(18, 380);
+            cmbOlcuVahidi.Location = new Point(18, 432);
             cmbOlcuVahidi.MaxDropDownItems = 4;
             cmbOlcuVahidi.MouseState = MaterialSkin.MouseState.OUT;
             cmbOlcuVahidi.Name = "cmbOlcuVahidi";
@@ -536,7 +536,7 @@ namespace AzAgroPOS.Teqdimat
             // 
             // btnElaveEt
             // 
-            btnElaveEt.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            btnElaveEt.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnElaveEt.AutoSize = false;
             btnElaveEt.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             btnElaveEt.BackColor = Color.FromArgb(242, 242, 242);
@@ -584,7 +584,7 @@ namespace AzAgroPOS.Teqdimat
             // 
             // btnSil
             // 
-            btnSil.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            btnSil.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnSil.AutoSize = false;
             btnSil.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             btnSil.BackColor = Color.FromArgb(242, 242, 242);
@@ -697,7 +697,7 @@ namespace AzAgroPOS.Teqdimat
             txtAlisQiymeti.HideSelection = true;
             txtAlisQiymeti.Hint = "Alış Qiyməti";
             txtAlisQiymeti.LeadingIcon = null;
-            txtAlisQiymeti.Location = new Point(18, 326);
+            txtAlisQiymeti.Location = new Point(18, 216);
             txtAlisQiymeti.MaxLength = 32767;
             txtAlisQiymeti.MouseState = MaterialSkin.MouseState.OUT;
             txtAlisQiymeti.Name = "txtAlisQiymeti";
@@ -709,7 +709,7 @@ namespace AzAgroPOS.Teqdimat
             txtAlisQiymeti.SelectionLength = 0;
             txtAlisQiymeti.SelectionStart = 0;
             txtAlisQiymeti.ShortcutsEnabled = true;
-            txtAlisQiymeti.Size = new Size(287, 48);
+            txtAlisQiymeti.Size = new Size(539, 48);
             txtAlisQiymeti.TabIndex = 2;
             txtAlisQiymeti.TabStop = false;
             txtAlisQiymeti.TextAlign = HorizontalAlignment.Left;
@@ -728,7 +728,7 @@ namespace AzAgroPOS.Teqdimat
             txtPerakendeSatisQiymeti.HideSelection = true;
             txtPerakendeSatisQiymeti.Hint = "Pərakəndə Satış Qiyməti";
             txtPerakendeSatisQiymeti.LeadingIcon = null;
-            txtPerakendeSatisQiymeti.Location = new Point(18, 216);
+            txtPerakendeSatisQiymeti.Location = new Point(18, 270);
             txtPerakendeSatisQiymeti.MaxLength = 32767;
             txtPerakendeSatisQiymeti.MouseState = MaterialSkin.MouseState.OUT;
             txtPerakendeSatisQiymeti.Name = "txtPerakendeSatisQiymeti";

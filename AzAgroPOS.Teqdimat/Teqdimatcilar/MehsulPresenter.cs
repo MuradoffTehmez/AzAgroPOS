@@ -242,24 +242,14 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             {
                 // Səhifələnmiş yükləmə
                 string? axtarisMetni = string.IsNullOrWhiteSpace(_view.AxtarisMetni) ? null : _view.AxtarisMetni;
-                EmeliyyatNeticesi<SehifelenmisMelumat<MehsulDto>> netice = await _mehsulManager.MehsullariSehifelenmisGetirAsync(_sehifeParametrleri);
+                EmeliyyatNeticesi<SehifelenmisMelumat<MehsulDto>> netice = await _mehsulManager.MehsullariSehifelenmisGetirAsync(_sehifeParametrleri, axtarisMetni);
 
                 if (netice.UgurluDur && netice.Data != null)
                 {
                     SehifelenmisMelumat<MehsulDto> sehifelenmis = netice.Data;
 
-                    // Əgər axtarış varsa, client-side filtering tətbiq et
-                    IEnumerable<MehsulDto> mehsullar = sehifelenmis.Melumatlar;
-                    if (!string.IsNullOrWhiteSpace(axtarisMetni))
-                    {
-                        string axtarisLower = axtarisMetni.ToLower();
-                        mehsullar = mehsullar.Where(m =>
-                            m.Ad.ToLower().Contains(axtarisLower) ||
-                            m.StokKodu.ToLower().Contains(axtarisLower) ||
-                            m.Barkod.ToLower().Contains(axtarisLower));
-                    }
-
-                    _view.MehsullariGoster(mehsullar);
+                    _butunMehsullarCache = sehifelenmis.Melumatlar.ToList();
+                    _view.MehsullariGoster(_butunMehsullarCache);
                     _view.SehifeMelumatlariGoster(
                         sehifelenmis.CariSehife,
                         sehifelenmis.UmumiSehifeSayi,

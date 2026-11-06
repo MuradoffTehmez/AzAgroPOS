@@ -61,7 +61,7 @@ namespace AzAgroPOS.Teqdimat
             pnlMain.ForeColor = Color.FromArgb(222, 0, 0, 0);
             pnlMain.Location = new Point(3, 64);
             pnlMain.Name = "pnlMain";
-            pnlMain.Size = new Size(788, 922);
+            pnlMain.Size = new Size(804, 961);
             pnlMain.TabIndex = 1;
             // 
             // pnlLoginCard
@@ -82,7 +82,7 @@ namespace AzAgroPOS.Teqdimat
             pnlLoginCard.Controls.Add(pnlLoading);
             pnlLoginCard.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             pnlLoginCard.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            pnlLoginCard.Location = new Point(393, 451);
+            pnlLoginCard.Location = new Point(401, 470);
             pnlLoginCard.Name = "pnlLoginCard";
             pnlLoginCard.Padding = new Padding(35);
             pnlLoginCard.Size = new Size(430, 560);
@@ -331,7 +331,7 @@ namespace AzAgroPOS.Teqdimat
             lblVersion.BackColor = Color.FromArgb(242, 242, 242);
             lblVersion.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             lblVersion.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblVersion.Location = new Point(12, 1442);
+            lblVersion.Location = new Point(12, 1481);
             lblVersion.Name = "lblVersion";
             lblVersion.Size = new Size(47, 17);
             lblVersion.TabIndex = 0;
@@ -344,7 +344,7 @@ namespace AzAgroPOS.Teqdimat
             lblCopyright.BackColor = Color.FromArgb(242, 242, 242);
             lblCopyright.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             lblCopyright.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            lblCopyright.Location = new Point(1038, 1442);
+            lblCopyright.Location = new Point(1054, 1481);
             lblCopyright.Name = "lblCopyright";
             lblCopyright.Size = new Size(130, 17);
             lblCopyright.TabIndex = 1;
@@ -356,7 +356,7 @@ namespace AzAgroPOS.Teqdimat
             pnlCardShadow.BackColor = Color.FromArgb(242, 242, 242);
             pnlCardShadow.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             pnlCardShadow.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            pnlCardShadow.Location = new Point(398, 459);
+            pnlCardShadow.Location = new Point(406, 478);
             pnlCardShadow.Name = "pnlCardShadow";
             pnlCardShadow.Size = new Size(430, 560);
             pnlCardShadow.TabIndex = 2;
@@ -370,7 +370,7 @@ namespace AzAgroPOS.Teqdimat
             AcceptButton = btnDaxilOl;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(794, 1011);
+            ClientSize = new Size(810, 1050);
             Controls.Add(pnlMain);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;

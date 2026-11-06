@@ -145,7 +145,7 @@ public class SatisManagerTests
     {
         // Arrange
         Satis satis = new() { Id = 5, Tarix = DateTime.Now };
-        _mockSatisRepo.Setup(x => x.GetirAsync(5, It.IsAny<Expression<Func<Satis, object>>[]>()))
+        _mockSatisRepo.Setup(x => x.SatisDetallariIleBirlikdeGetirAsync(5))
             .ReturnsAsync(satis);
 
         // Act

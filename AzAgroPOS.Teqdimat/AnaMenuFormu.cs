@@ -17,7 +17,7 @@ namespace AzAgroPOS.Teqdimat;
 public partial class AnaMenuFormu : BazaForm, IAnaMenuView
 {
     private readonly Dictionary<Type, MaterialButton> _formButtonMap;
-    private readonly Dictionary<TabPage, IServiceScope> _tabScopes = new();
+    private readonly Dictionary<TabPage, AsyncServiceScope> _tabScopes = new();
 
     // IAnaMenuView interface implementasiyası
     public IServiceProvider ServiceProvider { get; }
@@ -102,7 +102,7 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
         else
         {
             // Hər form üçün yeni scope yaradırıq
-            IServiceScope scope = ServiceProvider.CreateScope();
+            AsyncServiceScope scope = ServiceProvider.CreateAsyncScope();
             T yeniForm = scope.ServiceProvider.GetRequiredService<T>();
             yeniForm.TopLevel = false;
             yeniForm.FormBorderStyle = FormBorderStyle.None;
@@ -118,15 +118,6 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
 
             // Scope-u saxlayırıq
             _tabScopes[yeniSehife] = scope;
-
-            // Tab bağlananda scope-u dispose edirik
-            mdiTabControl.Deselecting += (s, e) =>
-            {
-                if (e.TabPage != null && _tabScopes.ContainsKey(e.TabPage) && e.Action == TabControlAction.Deselected)
-                {
-                    // Burada dispose etmirik, yalnız tab remove olunanda edəcəyik
-                }
-            };
 
             yeniForm.Show();
         }
@@ -189,29 +180,34 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
         }
     }
 
-    private void baglaToolStripMenuItem_Click(object sender, EventArgs e)
+    private async void baglaToolStripMenuItem_Click(object sender, EventArgs e)
     {
         if (mdiTabControl.SelectedTab != null)
         {
-            CloseTab(mdiTabControl.SelectedTab);
+            await CloseTabAsync(mdiTabControl.SelectedTab);
         }
     }
 
-    private void hamisiniBaglaToolStripMenuItem_Click(object sender, EventArgs e)
+    private async void hamisiniBaglaToolStripMenuItem_Click(object sender, EventArgs e)
     {
         while (mdiTabControl.TabPages.Count > 0)
         {
-            CloseTab(mdiTabControl.TabPages[0]);
+            await CloseTabAsync(mdiTabControl.TabPages[0]);
         }
     }
 
-    private void CloseTab(TabPage tab)
+    private async Task CloseTabAsync(TabPage tab)
     {
         if (tab.Controls.Count > 0 && tab.Controls[0] is Form form)
         {
             form.Close();
         }
         mdiTabControl.TabPages.Remove(tab);
+        if (_tabScopes.Remove(tab, out AsyncServiceScope scope))
+        {
+            await scope.DisposeAsync();
+        }
+        tab.Dispose();
     }
 
     private void mdiTabControl_SelectedIndexChanged(object sender, EventArgs e)

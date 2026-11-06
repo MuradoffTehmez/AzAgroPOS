@@ -93,7 +93,7 @@ public class LoginPresenter : IDisposable
         {
             // Threading problemini həll etmək üçün yeni scope yaradırıq
             // Bu DbContext-in eyni vaxtda müxtəlif thread-lər tərəfindən istifadəsini önləyir
-            using IServiceScope scope = _serviceProvider.CreateScope();
+            await using AsyncServiceScope scope = _serviceProvider.CreateAsyncScope();
             NovbeManager novbeManager = scope.ServiceProvider.GetRequiredService<NovbeManager>();
 
             // İstifadəçinin açıq növbəsini tap

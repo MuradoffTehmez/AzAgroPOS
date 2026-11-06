@@ -36,7 +36,8 @@ public class NisyeManager
             TamAd = m.TamAd,
             TelefonNomresi = m.TelefonNomresi,
             Unvan = m.Unvan,
-            UmumiBorc = m.UmumiBorc
+            UmumiBorc = m.UmumiBorc,
+            KreditLimiti = m.KreditLimiti
         }).ToList();
         return EmeliyyatNeticesi<List<MusteriDto>>.Ugurlu(dtolar);
     }
@@ -58,12 +59,60 @@ public class NisyeManager
                                .Select(h => new NisyeHereketiDto
                                {
                                    Tarix = h.Tarix,
-                                   EmeliyyatNovu = h.EmeliyyatNovu.ToString(),
+                                   EmeliyyatNovu = h.EmeliyyatNovu == EmeliyyatNovu.IlkinBorc
+                                       ? "Əvvəlki borc"
+                                       : h.EmeliyyatNovu.ToString(),
                                    Mebleg = h.Mebleg,
                                    Qeyd = h.Qeyd ?? ""
                                }).ToList();
 
         return EmeliyyatNeticesi<List<NisyeHereketiDto>>.Ugurlu(dtolar);
+    }
+
+    /// <summary>
+    /// Proqramdan əvvəl yaranmış borcu satış yaratmadan müştərinin hesabına keçirir.
+    /// Borc qalığı və tarixçə eyni SaveChanges əməliyyatında yazılır.
+    /// </summary>
+    public async Task<EmeliyyatNeticesi> EvvelkiBorcElaveEtAsync(int musteriId, decimal mebleg, string? qeyd)
+    {
+        if (mebleg <= 0)
+        {
+            return EmeliyyatNeticesi.Ugursuz("Əvvəlki borcun məbləği müsbət olmalıdır.");
+        }
+
+        if (decimal.Round(mebleg, 2) != mebleg)
+        {
+            return EmeliyyatNeticesi.Ugursuz("Məbləğ iki onluq rəqəmdən artıq ola bilməz.");
+        }
+
+        try
+        {
+            Musteri? musteri = await _unitOfWork.Musteriler.GetirAsync(musteriId);
+            if (musteri == null)
+            {
+                return EmeliyyatNeticesi.Ugursuz("Müştəri tapılmadı.");
+            }
+
+            musteri.UmumiBorc += mebleg;
+            _unitOfWork.Musteriler.Yenile(musteri);
+            await _unitOfWork.NisyeHereketleri.ElaveEtAsync(new NisyeHereketi
+            {
+                MusteriId = musteriId,
+                Tarix = DateTime.Now,
+                EmeliyyatNovu = EmeliyyatNovu.IlkinBorc,
+                Mebleg = mebleg,
+                Qeyd = string.IsNullOrWhiteSpace(qeyd)
+                    ? "Proqramdan əvvəlki borc"
+                    : $"Proqramdan əvvəlki borc: {qeyd.Trim()}"
+            });
+            await _unitOfWork.EmeliyyatiTesdiqleAsync();
+            return EmeliyyatNeticesi.Ugurlu();
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Əvvəlki borc əlavə edilərkən xəta baş verdi");
+            return EmeliyyatNeticesi.Ugursuz($"Əvvəlki borc əlavə edilə bilmədi: {ex.Message}");
+        }
     }
 
     /// <summary>

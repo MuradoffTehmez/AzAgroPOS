@@ -32,5 +32,6 @@ public enum EmeliyyatNovu
     /// </summary>
     Qaytarma = 3, // Satış qaytarma (borcu azaldır)
     Xerc = 4,
-    Gelir = 5
+    Gelir = 5,
+    IlkinBorc = 6 // Proqram istifadəyə verilməzdən əvvəlki müştəri borcu
 }
