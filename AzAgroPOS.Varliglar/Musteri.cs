@@ -40,4 +40,5 @@ public class Musteri : BazaVarligi
     /// 
     /// </summary>
     public decimal KreditLimiti { get; set; } = 0;
+    public byte[] RowVersion { get; set; } = Array.Empty<byte>();
 }

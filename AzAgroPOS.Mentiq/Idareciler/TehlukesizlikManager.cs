@@ -18,7 +18,7 @@ public class TehlukesizlikManager
     // Security Configuration
     private const int MaksimumUgursuzCehd = 5; // 5 uğursuz cəhddən sonra kilidlənir
     private const int Kilidlenmemuddeti = 30; // 30 dəqiqə kilidlənmə
-    private const int SessiyaTimeout = 30; // 30 dəqiqə sessiya timeout
+    private const int VarsayilanSessiyaTimeout = 30;
 
     public TehlukesizlikManager(IUnitOfWork unitOfWork)
     {
@@ -204,8 +204,16 @@ public class TehlukesizlikManager
                 Silinib = false
             };
 
-            // Sadələşdirilmiş versiya - yalnız yeni sessiya yaradırıq
-            // Əvvəlki sessiyaları bağlama funksiyası gələcəkdə əlavə ediləcək
+            IEnumerable<IstifadeciSessiyasi> evvelkiler = await _unitOfWork.IstifadeciSessiyalari.AxtarAsync(
+                s => s.IstifadeciId == istifadeciId && s.Aktivdir);
+            foreach (IstifadeciSessiyasi sessiya in evvelkiler)
+            {
+                sessiya.Aktivdir = false;
+                sessiya.BitməTarixi = DateTime.Now;
+                _unitOfWork.IstifadeciSessiyalari.Yenile(sessiya);
+            }
+            await _unitOfWork.IstifadeciSessiyalari.ElaveEtAsync(yeniSessiya);
+            await _unitOfWork.EmeliyyatiTesdiqleAsync();
             Logger.MelumatYaz($"Yeni sessiya yaradıldı: İstifadəçi ID={istifadeciId}, IP={ipUnvani}, Kompüter={komputerAdi}");
         }
         catch (Exception ex)
@@ -233,10 +241,9 @@ public class TehlukesizlikManager
                 Silinib = false
             };
 
-            // Sadələşdirilmiş versiya - yalnız log edir
-            // Actual DB save will be handled when repository is created
+            await _unitOfWork.GirisLoquKaydlari.ElaveEtAsync(logQeydi);
+            await _unitOfWork.EmeliyyatiTesdiqleAsync();
             Logger.MelumatYaz($"Giriş cəhdi: {istifadeciAdi} - {(ugurlu ? "Uğurlu" : "Uğursuz")} - {sebeb}");
-            await Task.CompletedTask;
         }
         catch (Exception ex)
         {
@@ -252,17 +259,35 @@ public class TehlukesizlikManager
     {
         try
         {
-            // Sadələşdirilmiş versiya - hər zaman true qaytarır
-            // Real implementation will check session timeout from database
-            Logger.MelumatYaz($"Sessiya yoxlanıldı: İstifadəçi ID={istifadeciId}");
-            await Task.CompletedTask;
-            return true;
+            Konfiqurasiya? parametr = await _unitOfWork.Konfiqurasiyalar.AcarlaGetirAsync("Sistem.SessiyaTimeout");
+            int deqiqe = int.TryParse(parametr?.Deyer, out int deyer) && deyer >= 5 ? deyer : VarsayilanSessiyaTimeout;
+            IstifadeciSessiyasi? sessiya = (await _unitOfWork.IstifadeciSessiyalari.AxtarAsync(
+                s => s.IstifadeciId == istifadeciId && s.Aktivdir))
+                .OrderByDescending(s => s.BaslamaTarixi).FirstOrDefault();
+            if (sessiya == null) return false;
+            if (DateTime.Now - sessiya.SonAktivlikTarixi <= TimeSpan.FromMinutes(deqiqe)) return true;
+            sessiya.Aktivdir = false;
+            sessiya.BitməTarixi = DateTime.Now;
+            _unitOfWork.IstifadeciSessiyalari.Yenile(sessiya);
+            await _unitOfWork.EmeliyyatiTesdiqleAsync();
+            return false;
         }
         catch (Exception ex)
         {
             Logger.XetaYaz(ex, "Sessiya yoxlanılarkən xəta baş verdi");
             return false;
         }
+    }
+
+    public async Task SessiyaAktivliyiniYenileAsync(int istifadeciId)
+    {
+        IstifadeciSessiyasi? sessiya = (await _unitOfWork.IstifadeciSessiyalari.AxtarAsync(
+            s => s.IstifadeciId == istifadeciId && s.Aktivdir))
+            .OrderByDescending(s => s.BaslamaTarixi).FirstOrDefault();
+        if (sessiya == null) return;
+        sessiya.SonAktivlikTarixi = DateTime.Now;
+        _unitOfWork.IstifadeciSessiyalari.Yenile(sessiya);
+        await _unitOfWork.EmeliyyatiTesdiqleAsync();
     }
 
     /// <summary>
@@ -272,10 +297,16 @@ public class TehlukesizlikManager
     {
         try
         {
-            // Sadələşdirilmiş versiya - yalnız log edir
-            // Real implementation will mark session as inactive in database
+            IEnumerable<IstifadeciSessiyasi> sessiyalar = await _unitOfWork.IstifadeciSessiyalari.AxtarAsync(
+                s => s.IstifadeciId == istifadeciId && s.Aktivdir);
+            foreach (IstifadeciSessiyasi sessiya in sessiyalar)
+            {
+                sessiya.Aktivdir = false;
+                sessiya.BitməTarixi = DateTime.Now;
+                _unitOfWork.IstifadeciSessiyalari.Yenile(sessiya);
+            }
+            await _unitOfWork.EmeliyyatiTesdiqleAsync();
             Logger.MelumatYaz($"İstifadəçi çıxış etdi: İstifadəçi ID={istifadeciId}");
-            await Task.CompletedTask;
         }
         catch (Exception ex)
         {

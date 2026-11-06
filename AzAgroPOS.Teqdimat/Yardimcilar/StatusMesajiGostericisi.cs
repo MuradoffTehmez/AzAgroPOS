@@ -75,7 +75,7 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
             _clearTimer.Stop();
             if (_statusLabel != null)
             {
-                _statusLabel.Text = "Hazır";
+                _statusLabel.Text = string.Empty;
                 _statusLabel.ForeColor = SystemColors.ControlText;
             }
         }

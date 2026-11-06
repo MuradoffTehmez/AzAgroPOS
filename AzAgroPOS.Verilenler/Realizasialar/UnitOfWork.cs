@@ -237,6 +237,8 @@ public class UnitOfWork : IUnitOfWork
     /// Qeyd: Bonus qeydi əlavə etmə, axtarma və silmə əməliyyatlarını həyata keçirir.
     /// </summary>
     public IBonusQeydiRepozitori BonusQeydleri { get; private set; }
+    public IRepozitori<IstifadeciSessiyasi> IstifadeciSessiyalari { get; private set; }
+    public IRepozitori<GirisLoquKaydi> GirisLoquKaydlari { get; private set; }
 
     /// <summary>
     /// unitOfWork konstruktoru, verilənlər bazası kontekstini qəbul edir və repozitoriyaların instansiyalarını yaradır.
@@ -278,6 +280,8 @@ public class UnitOfWork : IUnitOfWork
         EmekHaqqilari = new EmekHaqqiRepozitori(_kontekst);
         MusteriBonuslari = new MusteriBonusRepozitori(_kontekst);
         BonusQeydleri = new BonusQeydiRepozitori(_kontekst);
+        IstifadeciSessiyalari = new Repozitori<IstifadeciSessiyasi>(_kontekst);
+        GirisLoquKaydlari = new Repozitori<GirisLoquKaydi>(_kontekst);
     }
     /// <summary>
     /// EMELIYYATI TƏSDİQLƏ metod, edilmiş bütün dəyişiklikləri vahid bir tranzaksiya kimi verilənlər bazasına tətbiq edir.

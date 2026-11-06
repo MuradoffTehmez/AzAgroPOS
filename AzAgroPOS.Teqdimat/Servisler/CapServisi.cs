@@ -35,10 +35,10 @@ public class CapServisi
     private decimal _umumiEndirim = 0;
     private decimal _bonusIstifade = 0;
 
-    // Magazanin melumatlari (konfiqurasiyadan alinmalidir)
-    private string _magazaAdi = "AZAGROPOS MARKET";
-    private string _magazaUnvani = "Baki seh., Nizami kuc. 123";
-    private string _voen = "1234567890";
+    private string _magazaAdi = "Şirkət adı";
+    private string _magazaUnvani = string.Empty;
+    private string _voen = string.Empty;
+    private decimal _edvDerecesi = 18m;
 
     // Fontlar
     private readonly Font _storeTitleFont = new("Segoe UI", 14, FontStyle.Bold);
@@ -141,6 +141,8 @@ public class CapServisi
         _voen = voen;
     }
 
+    public void EdvDerecesiTeyinEt(decimal derece) => _edvDerecesi = derece;
+
     /// <summary>
     /// Sistemde olan printerlerin siyahisini qaytarir.
     /// </summary>
@@ -203,14 +205,20 @@ public class CapServisi
         y += 28;
 
         // Unvan
-        g.DrawString(_magazaUnvani, _storeInfoFont, Brushes.Black,
-            new RectangleF(x, y, width, 15), _centerFormat);
-        y += 15;
+        if (!string.IsNullOrWhiteSpace(_magazaUnvani))
+        {
+            g.DrawString(_magazaUnvani, _storeInfoFont, Brushes.Black,
+                new RectangleF(x, y, width, 15), _centerFormat);
+            y += 15;
+        }
 
         // VOEN
-        g.DrawString($"VOEN: {_voen}", _storeInfoFont, Brushes.Black,
-            new RectangleF(x, y, width, 15), _centerFormat);
-        y += 20;
+        if (!string.IsNullOrWhiteSpace(_voen))
+        {
+            g.DrawString($"VÖEN: {_voen}", _storeInfoFont, Brushes.Black,
+                new RectangleF(x, y, width, 15), _centerFormat);
+            y += 20;
+        }
 
         // Ayirici xett
         DrawDashedLine(g, ref y, x, width);
@@ -307,7 +315,9 @@ public class CapServisi
         y += 18;
 
         // Endirim (eger varsa)
-        decimal umumiEndirim = _qebzMelumatlari.SatilanMehsullar.Sum(m => m.EndirimMeblegi) + _umumiEndirim;
+        decimal umumiEndirim = _qebzMelumatlari.YekunMebleg.HasValue
+            ? Math.Max(0, araCem - _qebzMelumatlari.YekunMebleg.Value)
+            : _qebzMelumatlari.SatilanMehsullar.Sum(m => m.EndirimMeblegi) + _umumiEndirim;
         if (umumiEndirim > 0)
         {
             g.DrawString("Endirim:", _normalFont, Brushes.Black, labelX, y);
@@ -329,19 +339,22 @@ public class CapServisi
         DrawSolidLine(g, ref y, x, width);
 
         // YEKUN MEBLEG (boyuk ve qalin)
-        decimal yekunMebleg = araCem - umumiEndirim - _bonusIstifade;
+        decimal yekunMebleg = _qebzMelumatlari.YekunMebleg ?? araCem - umumiEndirim - _bonusIstifade;
         g.DrawString("YEKUN:", _totalFont, Brushes.Black, labelX, y);
         g.DrawString($"{yekunMebleg:N2} AZN", _totalFont, Brushes.Black,
             new RectangleF(x, y, width, 22), _rightFormat);
         y += 26;
 
         // Odenis metodu
-        g.DrawString("Odenis: Nagd", _normalFont, Brushes.Black, x, y);
+        g.DrawString($"Ödəniş: {_qebzMelumatlari.OdenisMetodu}", _normalFont, Brushes.Black, x, y);
         y += 18;
 
         // EDV qeydi
-        g.DrawString("EDV (18%) daxildir", _smallFont, Brushes.Gray, x, y);
-        y += 20;
+        if (_edvDerecesi > 0)
+        {
+            g.DrawString($"ƏDV ({_edvDerecesi:N0}%) daxildir", _smallFont, Brushes.Gray, x, y);
+            y += 20;
+        }
 
         DrawDashedLine(g, ref y, x, width);
     }
@@ -354,7 +367,7 @@ public class CapServisi
         y += 20;
 
         // Sirket adi
-        g.DrawString("Oktay Huseynoglu MMC", _smallFont, Brushes.Gray,
+        g.DrawString(_magazaAdi, _smallFont, Brushes.Gray,
             new RectangleF(x, y, width, 15), _centerFormat);
         y += 18;
 

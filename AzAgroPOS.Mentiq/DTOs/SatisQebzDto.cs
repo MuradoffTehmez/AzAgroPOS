@@ -1,5 +1,7 @@
 ﻿// Fayl: AzAgroPOS.Mentiq/DTOs/SatisQebzDto.cs
 
+using AzAgroPOS.Varliglar;
+
 namespace AzAgroPOS.Mentiq.DTOs;
 /// <summary>
 /// Satış qəbzini çap etmək üçün lazım olan bütün məlumatları saxlayır.
@@ -18,6 +20,8 @@ public class SatisQebzDto
     /// Kassir adı (satışı həyata keçirən kassirin adı).
     /// </summary>
     public string KassirAdi { get; set; } = string.Empty;
+    public OdenisMetodu OdenisMetodu { get; set; } = OdenisMetodu.Nağd;
+    public decimal? YekunMebleg { get; set; }
     /// <summary>
     /// Satılan məhsulların siyahısı (satış zamanı satılan məhsul elementləri).
     /// </summary>

@@ -542,6 +542,11 @@ public class AlisManager
                 return EmeliyyatNeticesi<int>.Ugursuz("Tədarükçü seçilməlidir.");
             }
 
+            if (dto.SenedSetirleri.Count == 0 || dto.SenedSetirleri.Any(s => s.Miqdar <= 0 || s.Miqdar != decimal.Truncate(s.Miqdar)))
+                return EmeliyyatNeticesi<int>.Ugursuz("Alış sənədində müsbət tam ədəd miqdarlı məhsul olmalıdır.");
+
+            return await _unitOfWork.ExecuteInTransactionAsync(async () =>
+            {
             // Yeni alış sənədi obyekti yaradırıq
             AlisSened yeniSened = new()
             {
@@ -596,13 +601,14 @@ public class AlisManager
                 if (!stokNeticesi.UgurluDur)
                 {
                     Logger.XəbərdarlıqYaz($"Stok hərəkəti qeydə alınarkən xəta: {stokNeticesi.Mesaj}");
-                    return EmeliyyatNeticesi<int>.Ugursuz($"Stok hərəkəti qeydə alınarkən xəta: {stokNeticesi.Mesaj}");
+                    throw new InvalidOperationException($"Stok hərəkəti qeydə alınarkən xəta: {stokNeticesi.Mesaj}");
                 }
             }
 
             await _unitOfWork.EmeliyyatiTesdiqleAsync();
 
             return EmeliyyatNeticesi<int>.Ugurlu(yeniSened.Id);
+            });
         }
         catch (Exception ex)
         {

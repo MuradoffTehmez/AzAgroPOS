@@ -1084,6 +1084,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.Property<decimal>("Mebleg")
                         .HasColumnType("decimal(18, 2)");
 
+                    b.Property<int?>("NovbeId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("OdenisMetodu")
+                        .HasColumnType("int");
+
                     b.Property<string>("Qeyd")
                         .HasColumnType("nvarchar(max)");
 
@@ -1281,6 +1287,12 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.Property<decimal>("PerakendeSatisQiymeti")
                         .HasColumnType("decimal(18, 2)");
 
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
                     b.Property<string>("SekilYolu")
                         .HasColumnType("nvarchar(max)");
 
@@ -1346,6 +1358,7 @@ namespace AzAgroPOS.Verilenler.Migrations
                             MovcudSay = 100,
                             OlcuVahidi = 1,
                             PerakendeSatisQiymeti = 0.70m,
+                            RowVersion = new byte[0],
                             Silinib = false,
                             StokKodu = "SK001",
                             TekEdedSatisQiymeti = 0m,
@@ -1363,6 +1376,7 @@ namespace AzAgroPOS.Verilenler.Migrations
                             MovcudSay = 50,
                             OlcuVahidi = 3,
                             PerakendeSatisQiymeti = 2.50m,
+                            RowVersion = new byte[0],
                             Silinib = false,
                             StokKodu = "SK002",
                             TekEdedSatisQiymeti = 0m,
@@ -1380,6 +1394,7 @@ namespace AzAgroPOS.Verilenler.Migrations
                             MovcudSay = 200,
                             OlcuVahidi = 5,
                             PerakendeSatisQiymeti = 3.20m,
+                            RowVersion = new byte[0],
                             Silinib = false,
                             StokKodu = "SK003",
                             TekEdedSatisQiymeti = 0m,
@@ -1404,6 +1419,12 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     b.Property<decimal>("KreditLimiti")
                         .HasColumnType("decimal(18, 2)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
                     b.Property<bool>("Silinib")
                         .ValueGeneratedOnAdd()
@@ -1916,6 +1937,9 @@ namespace AzAgroPOS.Verilenler.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal?>("AlisQiymeti")
+                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<int?>("DeyisdirenIstifadeciId")
                         .HasColumnType("int");

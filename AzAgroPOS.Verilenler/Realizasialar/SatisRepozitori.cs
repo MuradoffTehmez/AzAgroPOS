@@ -27,4 +27,13 @@ public class SatisRepozitori : Repozitori<AzAgroPOS.Varliglar.Satis>, ISatisRepo
                 .ThenInclude(d => d.Mehsul)
             .FirstOrDefaultAsync(s => s.Id == satisId);
     }
-}
+
+    public Task<List<Satis>> TarixAraligindaDetallarlaGetirAsync(DateTime baslangic, DateTime bitis)
+    {
+        return _kontekst.Set<Satis>()
+            .AsNoTracking()
+            .Include(s => s.SatisDetallari)
+            .Where(s => !s.Silinib && s.Tarix >= baslangic && s.Tarix < bitis)
+            .ToListAsync();
+    }
+}

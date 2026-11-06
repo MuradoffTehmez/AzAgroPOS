@@ -6,6 +6,7 @@ using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Mentiq.Yardimcilar;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
+using AzAgroPOS.Varliglar;
 
 namespace AzAgroPOS.Teqdimat;
 
@@ -15,6 +16,8 @@ public partial class NisyeIdareetmeFormu : BazaForm, INisyeView
     private readonly MaterialSkin.Controls.MaterialButton _btnEvvelkiBorc;
     private decimal _evvelkiBorcMeblegi;
     private string _evvelkiBorcQeydi = string.Empty;
+    private DateTime _evvelkiBorcTarixi = DateTime.Today;
+    private readonly ComboBox _odenisMetodu;
 
     public NisyeIdareetmeFormu(NisyeManager nisyeManager, MusteriManager musteriManager)
     {
@@ -32,6 +35,17 @@ public partial class NisyeIdareetmeFormu : BazaForm, INisyeView
             Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined
         };
         materialCard1.Controls.Add(_btnEvvelkiBorc);
+        _odenisMetodu = new ComboBox
+        {
+            Name = "cmbOdenisMetodu",
+            DropDownStyle = ComboBoxStyle.DropDownList,
+            Location = new Point(390, 52),
+            Size = new Size(145, 32),
+            Anchor = AnchorStyles.Top | AnchorStyles.Left
+        };
+        _odenisMetodu.Items.AddRange(new object[] { OdenisMetodu.Nağd, OdenisMetodu.Kart });
+        _odenisMetodu.SelectedIndex = 0;
+        materialCard1.Controls.Add(_odenisMetodu);
         materialCard1.Resize += (_, _) =>
         {
             btnOdenisEt.Left = materialCard1.ClientSize.Width - btnOdenisEt.Width - 24;
@@ -43,6 +57,8 @@ public partial class NisyeIdareetmeFormu : BazaForm, INisyeView
     }
 
     public int? SecilmisMusteriId => dgvMusteriler.CurrentRow != null && dgvMusteriler.CurrentRow.DataBoundItem is MusteriDto musteri ? musteri.Id : null;
+    public OdenisMetodu OdenisMetodu => (OdenisMetodu)_odenisMetodu.SelectedItem!;
+    public DateTime EvvelkiBorcTarixi => _evvelkiBorcTarixi;
 
     public decimal OdenisMeblegi => decimal.TryParse(txtOdenisMeblegi.Text, out decimal mebleg) ? mebleg : 0;
     public decimal EvvelkiBorcMeblegi => _evvelkiBorcMeblegi;
@@ -112,6 +128,7 @@ public partial class NisyeIdareetmeFormu : BazaForm, INisyeView
             }
         }
         dgvMusteriler.SelectionChanged += dgvMusteriler_SelectionChanged;
+        MusteriSecildi?.Invoke(this, EventArgs.Empty);
     }
 
     public void MusteriHereketleriniGoster(List<NisyeHereketiDto> hereketler)
@@ -273,7 +290,7 @@ public partial class NisyeIdareetmeFormu : BazaForm, INisyeView
         using Form dialog = new()
         {
             Text = "Proqramdan əvvəlki borc",
-            ClientSize = new Size(420, 225),
+            ClientSize = new Size(420, 275),
             FormBorderStyle = FormBorderStyle.FixedDialog,
             MaximizeBox = false,
             MinimizeBox = false,
@@ -288,15 +305,18 @@ public partial class NisyeIdareetmeFormu : BazaForm, INisyeView
         };
         Label lblQeyd = new() { Text = "Qeyd / borcun mənbəyi", Location = new Point(20, 90), AutoSize = true };
         TextBox qeyd = new() { Location = new Point(20, 116), Size = new Size(380, 30), MaxLength = 300 };
-        Button tesdiq = new() { Text = "Əlavə et", Location = new Point(220, 170), Size = new Size(85, 32), DialogResult = DialogResult.OK };
-        Button imtina = new() { Text = "İmtina", Location = new Point(315, 170), Size = new Size(85, 32), DialogResult = DialogResult.Cancel };
-        dialog.Controls.AddRange(new Control[] { lblMebleg, mebleg, lblQeyd, qeyd, tesdiq, imtina });
+        Label lblTarix = new() { Text = "Borcun yarandığı tarix", Location = new Point(20, 157), AutoSize = true };
+        DateTimePicker tarix = new() { Location = new Point(20, 181), Size = new Size(380, 30), MaxDate = DateTime.Today };
+        Button tesdiq = new() { Text = "Əlavə et", Location = new Point(220, 225), Size = new Size(85, 32), DialogResult = DialogResult.OK };
+        Button imtina = new() { Text = "İmtina", Location = new Point(315, 225), Size = new Size(85, 32), DialogResult = DialogResult.Cancel };
+        dialog.Controls.AddRange(new Control[] { lblMebleg, mebleg, lblQeyd, qeyd, lblTarix, tarix, tesdiq, imtina });
         dialog.AcceptButton = tesdiq;
         dialog.CancelButton = imtina;
         if (dialog.ShowDialog(this) == DialogResult.OK)
         {
             _evvelkiBorcMeblegi = mebleg.Value;
             _evvelkiBorcQeydi = qeyd.Text;
+            _evvelkiBorcTarixi = tarix.Value.Date;
             EvvelkiBorcElaveEdildi?.Invoke(this, EventArgs.Empty);
         }
     }

@@ -17,7 +17,15 @@ namespace AzAgroPOS.Teqdimat;
 public partial class AnaMenuFormu : BazaForm, IAnaMenuView
 {
     private readonly Dictionary<Type, MaterialButton> _formButtonMap;
+    private readonly Dictionary<MaterialButton, ToolStripMenuItem> _menuItems = new();
+    private readonly MenuStrip _mainMenu = new();
+    private readonly ToolStripLabel _menuUserLabel = new();
+    private readonly ToolStripMenuItem _customerMenuItem = new("Müştərilər");
     private readonly Dictionary<TabPage, AsyncServiceScope> _tabScopes = new();
+    private readonly SemaphoreSlim _dashboardKilidi = new(1, 1);
+    private readonly SessiyaGirisFiltiri _girisFiltiri = new();
+    private readonly System.Windows.Forms.Timer _sessiyaTimer = new() { Interval = 60_000 };
+    private DateTime _sonSessiyaYenilemesi = DateTime.Now;
 
     // IAnaMenuView interface implementasiyası
     public IServiceProvider ServiceProvider { get; }
@@ -30,13 +38,21 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
     {
         InitializeComponent();
         ServiceProvider = serviceProvider;
+        Application.AddMessageFilter(_girisFiltiri);
+        _sessiyaTimer.Tick += async (_, _) => await SessiyaniYoxlaAsync();
+        _sessiyaTimer.Start();
+        FormClosed += (_, _) =>
+        {
+            _sessiyaTimer.Stop();
+            _sessiyaTimer.Dispose();
+            Application.RemoveMessageFilter(_girisFiltiri);
+        };
 
         Load += (sender, e) => FormYuklendi?.Invoke(this, EventArgs.Empty);
         Shown += AnaMenuFormu_Shown;
         FormClosing += (sender, e) => FormBaglaniyor?.Invoke(this, e);
 
         // Modern dizayn tətbiq edirik
-        AnaMenuFormModernStyle.ApplyModernStyle(pnlMenu);
         AnaMenuFormModernStyle.StyleDashboardCards(dashboardPanel);
 
         _formButtonMap = new Dictionary<Type, MaterialButton>
@@ -68,8 +84,101 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
             { typeof(TedarukcuIdareetmeFormu), btnTedarukcuIdareetme },
         };
 
+        InitializeMainMenu();
+
         // Dashboard panelini hazırlayırıq
         InitializeDashboard();
+    }
+
+    private void InitializeMainMenu()
+    {
+        SuspendLayout();
+        pnlMenu.Visible = false;
+        _mainMenu.Name = "mainMenuStrip";
+        _mainMenu.Dock = DockStyle.Top;
+        _mainMenu.AutoSize = false;
+        _mainMenu.Height = 44;
+        _mainMenu.Padding = new Padding(12, 4, 12, 4);
+        _mainMenu.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+        _mainMenu.BackColor = Color.FromArgb(247, 250, 247);
+        _mainMenu.ForeColor = Color.FromArgb(31, 84, 43);
+        _mainMenu.RenderMode = ToolStripRenderMode.Professional;
+
+        ToolStripMenuItem satis = AddMenuGroup("Satış");
+        AddMenuAction(satis, "Yeni satış", btnYeniSatis, btnYeniSatis_Click);
+        AddMenuAction(satis, "Qaytarma", btnQaytarma, btnQaytarma_Click);
+        AddMenuAction(satis, "Nisyə və borclar", btnNisyeIdareetme, btnNisyeIdareetme_Click);
+        _customerMenuItem.ForeColor = Color.FromArgb(31, 48, 36);
+        _customerMenuItem.Padding = new Padding(8, 5, 8, 5);
+        _customerMenuItem.Click += (_, _) => UsaqFormuAc<MusteriIdareetmeFormu>();
+        satis.DropDownItems.Add(_customerMenuItem);
+        AddMenuAction(satis, "Qəbzlər", btnQebz, btnQebz_Click);
+
+        ToolStripMenuItem mehsullar = AddMenuGroup("Məhsullar və anbar");
+        AddMenuAction(mehsullar, "Məhsul idarəetməsi", btnMehsulIdareetme, btnMehsulIdareetme_Click);
+        AddMenuAction(mehsullar, "Anbar", btnAnbar, btnAnbar_Click);
+        AddMenuAction(mehsullar, "Minimum stok", btnMinimumStokMehsullari, btnMinimumStokMehsullari_Click);
+        AddMenuAction(mehsullar, "Barkod çapı", btnBarkodCapi, btnBarkodCapi_Click);
+        AddMenuAction(mehsullar, "Ehtiyat hissələri", btnEhtiyatHisse, btnEhtiyatHisse_Click);
+
+        ToolStripMenuItem alis = AddMenuGroup("Satınalma");
+        AddMenuAction(alis, "Tədarükçülər", btnTedarukcuIdareetme, btnTedarukcuIdareetme_Click);
+        AddMenuAction(alis, "Alış sifarişləri", btnAlisSifaris, btnAlisSifaris_Click);
+        AddMenuAction(alis, "Alış sənədləri", btnAlisSened, btnAlisSened_Click);
+        AddMenuAction(alis, "Tədarükçü ödənişləri", btnTedarukcuOdeme, btnTedarukcuOdeme_Click);
+
+        ToolStripMenuItem maliyye = AddMenuGroup("Maliyyə");
+        AddMenuAction(maliyye, "Növbə idarəetməsi", btnNovbeIdareetme, btnNovbeIdareetme_Click);
+        AddMenuAction(maliyye, "Kassa", btnKassaIdareetme, btnKassaIdareetme_Click);
+        AddMenuAction(maliyye, "Xərclər", btnXercIdareetme, btnXercIdareetme_Click);
+        AddMenuAction(maliyye, "Əmək haqqı", btnEmekHaqqi, btnEmekHaqqi_Click);
+
+        ToolStripMenuItem servis = AddMenuGroup("Servis");
+        AddMenuAction(servis, "Təmir idarəetməsi", btnTemirIdareetme, btnTemirIdareetme_Click);
+        AddMenuAction(servis, "İşçi idarəetməsi", btnIsciIdareetme, btnIsciIdareetme_Click);
+
+        ToolStripMenuItem hesabat = AddMenuGroup("Hesabatlar");
+        AddMenuAction(hesabat, "Ümumi hesabatlar", btnHesabatlar, btnHesabatlar_Click);
+        AddMenuAction(hesabat, "Məhsul satış hesabatı", btnMehsulSatisHesabati, btnMehsulSatisHesabati_Click);
+        AddMenuAction(hesabat, "Anbar qalıq hesabatı", btnAnbarQaliqHesabati, btnAnbarQaliqHesabati_Click);
+        AddMenuAction(hesabat, "Z hesabat arxivi", btnZHesabatArxivi, btnZHesabatArxivi_Click);
+
+        ToolStripMenuItem sistem = AddMenuGroup("Sistem");
+        AddMenuAction(sistem, "İstifadəçi və icazələr", btnIstifadeciIdareetme, btnIstifadeciIdareetme_Click);
+        AddMenuAction(sistem, "Konfiqurasiya", btnKonfiqurasiya, btnKonfiqurasiya_Click);
+
+        _menuUserLabel.Alignment = ToolStripItemAlignment.Right;
+        _menuUserLabel.ForeColor = Color.FromArgb(42, 62, 48);
+        _menuUserLabel.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+        _mainMenu.Items.Add(_menuUserLabel);
+        MainMenuStrip = _mainMenu;
+        Controls.Add(_mainMenu);
+        _mainMenu.BringToFront();
+        ResumeLayout(true);
+    }
+
+    private ToolStripMenuItem AddMenuGroup(string title)
+    {
+        ToolStripMenuItem group = new(title)
+        {
+            ForeColor = Color.FromArgb(31, 84, 43),
+            Padding = new Padding(10, 4, 10, 4)
+        };
+        _mainMenu.Items.Add(group);
+        return group;
+    }
+
+    private void AddMenuAction(ToolStripMenuItem group, string title, MaterialButton legacyButton, EventHandler action)
+    {
+        ToolStripMenuItem item = new(title)
+        {
+            ForeColor = Color.FromArgb(31, 48, 36),
+            Padding = new Padding(8, 5, 8, 5),
+            Tag = legacyButton
+        };
+        item.Click += action;
+        group.DropDownItems.Add(item);
+        _menuItems.Add(legacyButton, item);
     }
 
     private void AnaMenuFormu_Load(object sender, EventArgs e)
@@ -79,7 +188,7 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
         UpdateActiveButtonHighlight();
 
         // Dashboard məlumatlarını yükləyirik
-        _ = UpdateDashboardData(); // Fire and forget
+        _ = UpdateDashboardDataSafe();
     }
 
     private void AnaMenuFormu_Shown(object sender, EventArgs e)
@@ -87,6 +196,49 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
         // Form tam göstərildikdən sonra növbə yoxlamasını yeniləyirik
         // Bu, login zamanı növbənin yüklənməsini gözləyir
         IcazeleriYoxla();
+    }
+
+    private async Task SessiyaniYoxlaAsync()
+    {
+        _sessiyaTimer.Stop();
+        try
+        {
+            int? istifadeciId = AktivSessiya.AktivIstifadeci?.Id;
+            if (!istifadeciId.HasValue) return;
+            await using AsyncServiceScope scope = ServiceProvider.CreateAsyncScope();
+            TehlukesizlikManager manager = scope.ServiceProvider.GetRequiredService<TehlukesizlikManager>();
+            if (!await manager.SessiyaKecerlidirasAsync(istifadeciId.Value))
+            {
+                MessageBox.Show("Sessiyanın müddəti bitdi. Yenidən daxil olun.", "Sessiya bitdi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Application.Restart();
+                return;
+            }
+            if (_girisFiltiri.SonGiris > _sonSessiyaYenilemesi)
+            {
+                await manager.SessiyaAktivliyiniYenileAsync(istifadeciId.Value);
+                _sonSessiyaYenilemesi = DateTime.Now;
+            }
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Sessiya yoxlaması: {ex}");
+        }
+        finally
+        {
+            if (!IsDisposed) _sessiyaTimer.Start();
+        }
+    }
+
+    private sealed class SessiyaGirisFiltiri : IMessageFilter
+    {
+        public DateTime SonGiris { get; private set; } = DateTime.Now;
+        public bool PreFilterMessage(ref Message m)
+        {
+            if (m.Msg is >= 0x0100 and <= 0x0109 or >= 0x0200 and <= 0x020E)
+                SonGiris = DateTime.Now;
+            return false;
+        }
     }
 
     #region Tab İdarəetməsi
@@ -131,7 +283,8 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
             SatisManager satisManager = serviceProvider.GetRequiredService<SatisManager>();
             MehsulManager mehsulManager = serviceProvider.GetRequiredService<MehsulManager>();
             MusteriManager musteriManager = serviceProvider.GetRequiredService<MusteriManager>();
-            SatisPresenter satisPresenter = new(satisFormu, satisManager, mehsulManager, musteriManager);
+            KonfiqurasiyaManager konfiqurasiyaManager = serviceProvider.GetRequiredService<KonfiqurasiyaManager>();
+            SatisPresenter satisPresenter = new(satisFormu, satisManager, mehsulManager, musteriManager, konfiqurasiyaManager);
             satisFormu.InitializePresenter(satisPresenter);
         }
         // Initialize presenter for TemirIdareetmeFormu
@@ -219,22 +372,14 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
     #region UI Təkmilləşdirmələri
     private void UpdateActiveButtonHighlight()
     {
-        // Bütün düymələri normal vəziyyətə qaytır
-        foreach (MaterialButton btn in _formButtonMap.Values)
-        {
-            AnaMenuFormModernStyle.ResetButton(btn);
-        }
+        foreach (ToolStripMenuItem item in _menuItems.Values)
+            item.Checked = false;
+        _customerMenuItem.Checked = mdiTabControl.SelectedTab?.Tag is MusteriIdareetmeFormu;
 
-        // Aktiv düyməni vurğula
-        if (mdiTabControl.SelectedTab?.Tag is Form aktivForm)
-        {
-            Type formTipi = aktivForm.GetType();
-            if (_formButtonMap.ContainsKey(formTipi))
-            {
-                MaterialButton aktivButton = _formButtonMap[formTipi];
-                AnaMenuFormModernStyle.HighlightActiveButton(aktivButton);
-            }
-        }
+        if (mdiTabControl.SelectedTab?.Tag is Form aktivForm &&
+            _formButtonMap.TryGetValue(aktivForm.GetType(), out MaterialButton? button) &&
+            _menuItems.TryGetValue(button, out ToolStripMenuItem? activeItem))
+            activeItem.Checked = true;
     }
 
     private Image CreateInitialsAvatar(string fullName, Color backColor)
@@ -296,6 +441,7 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
 
     private async Task UpdateDashboardDataSafe()
     {
+        if (!await _dashboardKilidi.WaitAsync(0)) return;
         try
         {
             await UpdateDashboardData();
@@ -307,14 +453,20 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
             // Kritik xətalarda istifadəçiyə də məlumat verə bilərik
             MessageBox.Show($"Dashboard yenilənərkən xəta: {ex.Message}", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
+        finally
+        {
+            _dashboardKilidi.Release();
+        }
     }
 
     private async Task UpdateDashboardData()
     {
+        await using AsyncServiceScope scope = ServiceProvider.CreateAsyncScope();
+        IServiceProvider provider = scope.ServiceProvider;
         try
         {
             // Günlük satış məbləğini hesablayırıq
-            HesabatManager hesabatManager = ServiceProvider.GetRequiredService<HesabatManager>();
+            HesabatManager hesabatManager = provider.GetRequiredService<HesabatManager>();
             EmeliyyatNeticesi<GunlukSatisHesabatDto> gunlukHesabat = await hesabatManager.GunlukSatisHesabatiGetirAsync(DateTime.Today);
             if (gunlukHesabat.UgurluDur && lblDailySalesValue != null)
             {
@@ -322,14 +474,15 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
             }
             else if (lblDailySalesValue != null)
             {
-                lblDailySalesValue.Text = "0.00 AZN";
+                lblDailySalesValue.Text = "Xəta";
             }
         }
-        catch
+        catch (Exception ex)
         {
+            System.Diagnostics.Debug.WriteLine(ex);
             if (lblDailySalesValue != null)
             {
-                lblDailySalesValue.Text = "0.00 AZN";
+                lblDailySalesValue.Text = "Xəta";
             }
         }
 
@@ -340,7 +493,7 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
             {
                 if (AktivSessiya.AktivNovbeId.HasValue)
                 {
-                    NovbeManager novbeManager = ServiceProvider.GetRequiredService<NovbeManager>();
+                    NovbeManager novbeManager = provider.GetRequiredService<NovbeManager>();
                     Novbe? novbe = await novbeManager.NovbeGetirAsync(AktivSessiya.AktivNovbeId.Value);
                     lblActiveShiftValue.Text = novbe != null ? $"{AktivSessiya.AktivIstifadeci?.TamAd}\n{novbe.AcilmaTarixi:HH:mm}" : "Məlumat tapılmadı";
                 }
@@ -361,7 +514,7 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
         // Borclu müştəri sayını və ümumi borcu hesablayırıq
         try
         {
-            MusteriManager musteriManager = ServiceProvider.GetRequiredService<MusteriManager>();
+            MusteriManager musteriManager = provider.GetRequiredService<MusteriManager>();
             EmeliyyatNeticesi<List<MusteriDto>> musteriler = await musteriManager.ButunMusterileriGetirAsync();
 
             if (lblDebtorCustomersValue != null)
@@ -373,7 +526,7 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
                 }
                 else
                 {
-                    lblDebtorCustomersValue.Text = "0";
+                    lblDebtorCustomersValue.Text = "Xəta";
                 }
             }
 
@@ -387,20 +540,21 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
                 }
                 else
                 {
-                    lblTotalDebtValue.Text = "0.00 AZN";
+                    lblTotalDebtValue.Text = "Xəta";
                 }
             }
         }
-        catch
+        catch (Exception ex)
         {
+            System.Diagnostics.Debug.WriteLine(ex);
             if (lblDebtorCustomersValue != null)
             {
-                lblDebtorCustomersValue.Text = "0";
+                lblDebtorCustomersValue.Text = "Xəta";
             }
 
             if (lblTotalDebtValue != null)
             {
-                lblTotalDebtValue.Text = "0.00 AZN";
+                lblTotalDebtValue.Text = "Xəta";
             }
         }
 
@@ -409,7 +563,7 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
         {
             if (lblLowStockProductsValue != null)
             {
-                MehsulMeneceri mehsulMeneceri = ServiceProvider.GetRequiredService<MehsulMeneceri>();
+                MehsulMeneceri mehsulMeneceri = provider.GetRequiredService<MehsulMeneceri>();
                 EmeliyyatNeticesi<List<MehsulDto>> minimumStokMehsullari = await mehsulMeneceri.MinimumStokMehsullariniGetirAsync();
                 lblLowStockProductsValue.Text = minimumStokMehsullari.UgurluDur ? minimumStokMehsullari.Data.Count.ToString() : "0";
             }
@@ -422,22 +576,45 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
             }
         }
 
-        // Aylıq satış məbləğini hesablayırıq (placeholder)
-        if (lblMonthlySalesValue != null)
+        try
         {
-            lblMonthlySalesValue.Text = "N/A";
+            decimal ayliqSatis = await provider.GetRequiredService<HesabatManager>().AyligSatisCemiGetirAsync(DateTime.Today);
+            if (lblMonthlySalesValue != null) lblMonthlySalesValue.Text = $"{ayliqSatis:N2} AZN";
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine(ex);
+            if (lblMonthlySalesValue != null) lblMonthlySalesValue.Text = "Xəta";
         }
 
-        // Aktiv təmir sayını hesablayırıq (placeholder)
-        if (lblActiveRepairsValue != null)
+        try
         {
-            lblActiveRepairsValue.Text = "N/A";
+            EmeliyyatNeticesi<List<TemirDto>> temirler = await provider.GetRequiredService<TemirManager>().ButunSifarisleriGetirAsync();
+            if (lblActiveRepairsValue != null)
+                lblActiveRepairsValue.Text = temirler.UgurluDur
+                    ? temirler.Data.Count(t => t.Status == TemirStatusu.Gözləmədə || t.Status == TemirStatusu.Təmirdə).ToString()
+                    : "Xəta";
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine(ex);
+            if (lblActiveRepairsValue != null) lblActiveRepairsValue.Text = "Xəta";
         }
 
-        // Tədarükçü borcu (placeholder)
-        if (lblSupplierDebtValue != null)
+        try
         {
-            lblSupplierDebtValue.Text = "N/A";
+            AlisManager alisManager = provider.GetRequiredService<AlisManager>();
+            EmeliyyatNeticesi<List<AlisSenedDto>> senedler = await alisManager.ButunAlisSenetleriniGetirAsync();
+            EmeliyyatNeticesi<List<TedarukcuOdemeDto>> odenisler = await alisManager.ButunTedarukcuOdemeleriniGetirAsync();
+            if (lblSupplierDebtValue != null)
+                lblSupplierDebtValue.Text = senedler.UgurluDur && odenisler.UgurluDur
+                    ? $"{Math.Max(0, senedler.Data.Where(s => s.Status == AlisSenedStatusu.Tesdiqlendi).Sum(s => s.UmumiMebleg) - odenisler.Data.Where(o => o.Status == OdemeStatusu.Tesdiqlendi).Sum(o => o.Mebleg)):N2} AZN"
+                    : "Xəta";
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine(ex);
+            if (lblSupplierDebtValue != null) lblSupplierDebtValue.Text = "Xəta";
         }
     }
 
@@ -456,6 +633,10 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
 
         Text = $"AzAgroPOS - (İstifadəçi: {istifadeci.TamAd})";
         lblUserName.Text = istifadeci.TamAd;
+        _menuUserLabel.Text = $"{istifadeci.TamAd}  |  {istifadeci.RolAdi}";
+
+        foreach (MaterialButton button in _menuItems.Keys)
+            button.Enabled = true;
 
         Color panelColor;
         if (istifadeci.RolAdi == "Admin")
@@ -483,6 +664,10 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
         picUserIcon.Image = CreateInitialsAvatar(istifadeci.TamAd, panelColor);
 
         btnYeniSatis.Enabled = AktivSessiya.AktivNovbeId.HasValue;
+        btnKonfiqurasiya.Enabled = istifadeci.RolAdi == "Admin";
+        _customerMenuItem.Enabled = istifadeci.RolAdi is "Admin" or "Kassir";
+        foreach ((MaterialButton button, ToolStripMenuItem item) in _menuItems)
+            item.Enabled = button.Enabled;
     }
 
     public void MesajGoster(string mesaj, string basliq, MessageBoxButtons düymələr, MessageBoxIcon ikon)

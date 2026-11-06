@@ -85,6 +85,8 @@ public class NovbeManager
     /// <returns></returns>
     public async Task<EmeliyyatNeticesi<ZHesabatDto>> NovbeBaglaAsync(int novbeId, decimal faktikiMebleg)
     {
+        return await _unitOfWork.ExecuteInTransactionAsync(async () =>
+        {
         Novbe novbe = await _unitOfWork.Novbeler.GetirAsync(novbeId);
         if (novbe == null || novbe.Status == NovbeStatusu.Bagli)
         {
@@ -94,6 +96,11 @@ public class NovbeManager
         IEnumerable<Satis> novbeSatislar = await _unitOfWork.Satislar.AxtarAsync(s => s.NovbeId == novbeId);
         decimal nagdSatislar = novbeSatislar.Where(s => s.OdenisMetodu == OdenisMetodu.Nağd).Sum(s => s.UmumiMebleg);
         decimal kartSatislar = novbeSatislar.Where(s => s.OdenisMetodu == OdenisMetodu.Kart).Sum(s => s.UmumiMebleg);
+        IEnumerable<KassaHareketi> borcOdenisleri = await _unitOfWork.KassaHareketleri.AxtarAsync(
+            k => k.NovbeId == novbeId && k.EmeliyyatNovu == EmeliyyatNovu.Odenis &&
+                 k.HareketNovu == KassaHareketiNovu.Daxilolma);
+        decimal nagdBorcOdenisleri = borcOdenisleri.Where(k => k.OdenisMetodu == OdenisMetodu.Nağd).Sum(k => k.Mebleg);
+        decimal kartBorcOdenisleri = borcOdenisleri.Where(k => k.OdenisMetodu == OdenisMetodu.Kart).Sum(k => k.Mebleg);
 
         // Kassa hərəkətini qeydə al - növbə gəliri
         if (nagdSatislar > 0)
@@ -108,13 +115,13 @@ public class NovbeManager
             if (!kassaGeliriNetice.UgurluDur)
             {
                 Logger.XəbərdarlıqYaz($"Kassa gəliri qeydə alınarkən xəta: {kassaGeliriNetice.Mesaj}");
-                // Xətaya baxmayaraq əməliyyatı davam etdiririk, çünki bu kritik deyil
+                throw new InvalidOperationException(kassaGeliriNetice.Mesaj);
             }
         }
 
         novbe.BaglanmaTarixi = DateTime.Now;
         novbe.FaktikiMebleg = faktikiMebleg;
-        novbe.GozlenilenMebleg = novbe.BaslangicMebleg + nagdSatislar;
+        novbe.GozlenilenMebleg = novbe.BaslangicMebleg + nagdSatislar + nagdBorcOdenisleri;
         novbe.Status = NovbeStatusu.Bagli;
         _unitOfWork.Novbeler.Yenile(novbe);
         await _unitOfWork.EmeliyyatiTesdiqleAsync();
@@ -129,9 +136,12 @@ public class NovbeManager
             SatisSayi = novbeSatislar.Count(),
             NagdSatislar = nagdSatislar,
             KartSatislar = kartSatislar,
+            NagdBorcOdenisleri = nagdBorcOdenisleri,
+            KartBorcOdenisleri = kartBorcOdenisleri,
             GozlenilenMebleg = novbe.GozlenilenMebleg,
             FaktikiMebleg = novbe.FaktikiMebleg
         };
         return EmeliyyatNeticesi<ZHesabatDto>.Ugurlu(hesabat);
+        });
     }
 }

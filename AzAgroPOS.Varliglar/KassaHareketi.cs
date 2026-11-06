@@ -48,6 +48,10 @@ public class KassaHareketi : BazaVarligi
     /// </summary>
     public int? EmeliyyatId { get; set; }
 
+    public int? NovbeId { get; set; }
+
+    public OdenisMetodu? OdenisMetodu { get; set; }
+
     /// <summary>
     /// Hərəkət edilən məbləğ
     /// diqqət: Bu sahə, həmişə müsbət məbləği saxlayır, istiqamət HareketNovu ilə müəyyən edilir.

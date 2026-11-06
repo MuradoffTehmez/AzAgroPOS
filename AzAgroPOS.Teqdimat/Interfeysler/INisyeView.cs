@@ -1,6 +1,7 @@
 ﻿// Fayl: AzAgroPOS.Teqdimat/Interfeysler/INisyeView.cs
 
 using AzAgroPOS.Mentiq.DTOs;
+using AzAgroPOS.Varliglar;
 
 namespace AzAgroPOS.Teqdimat.Interfeysler;
 /// <summary>
@@ -27,8 +28,10 @@ public interface INisyeView
     // View-dan data oxumaq
     int? SecilmisMusteriId { get; }
     decimal OdenisMeblegi { get; }
+    OdenisMetodu OdenisMetodu { get; }
     decimal EvvelkiBorcMeblegi { get; }
     string EvvelkiBorcQeydi { get; }
+    DateTime EvvelkiBorcTarixi { get; }
 
     /// <summary>
     /// Ödəniş düyməsinin aktiv/deaktiv olma vəziyyəti

@@ -418,6 +418,8 @@ public class MaliyyeManager
                 HareketNovu = KassaHareketiNovu.Daxilolma,
                 EmeliyyatNovu = EmeliyyatNovu.Gelir,
                 EmeliyyatId = novbeId,
+                NovbeId = novbeId,
+                OdenisMetodu = OdenisMetodu.Nağd,
                 Mebleg = mebleg,
                 Tarix = DateTime.Now,
                 Qeyd = qeyd ?? $"Növbə gəliri: #{novbeId}",

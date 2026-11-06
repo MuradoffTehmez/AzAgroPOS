@@ -102,16 +102,27 @@ public class IcazeManager
         Logger.MelumatYaz($"Rol ID-si: {rolId} üçün icazələr təyin edilir.");
         try
         {
-            // Mövcud rol icazələrini silirik
+            if (!IcazeYoxlayici.Instance.AdminDirmi())
+                return EmeliyyatNeticesi.Ugursuz("Rol icazələrini yalnız administrator dəyişə bilər.");
+            if (rolId == 1 || await _unitOfWork.Rollar.GetirAsync(rolId) == null)
+                return EmeliyyatNeticesi.Ugursuz("Admin rolu dəyişdirilə bilməz və ya rol tapılmadı.");
+            int[] secilenIdler = icazeIdleri.Distinct().ToArray();
+            HashSet<int> movcudIdler = (await _unitOfWork.Icazeler.ButununuGetirAsync()).Select(i => i.Id).ToHashSet();
+            if (secilenIdler.Any(id => !movcudIdler.Contains(id)))
+                return EmeliyyatNeticesi.Ugursuz("Seçilən icazələrdən biri tapılmadı.");
+
+            // Yalnız fərqləri yazırıq; dəyişməyən hüquqların audit izi qorunur.
             IEnumerable<RolIcazesi> movcudRolIcazeleri = await _unitOfWork.RolIcazeleri.AxtarAsync(ri => ri.RolId == rolId);
+            HashSet<int> cariIdler = movcudRolIcazeleri.Select(ri => ri.IcazeId).ToHashSet();
             foreach (RolIcazesi rolIcazesi in movcudRolIcazeleri)
             {
-                _unitOfWork.RolIcazeleri.Sil(rolIcazesi);
+                if (!secilenIdler.Contains(rolIcazesi.IcazeId))
+                    _unitOfWork.RolIcazeleri.Sil(rolIcazesi);
             }
 
-            // Yeni rol icazələrini əlavə edirik
-            foreach (int icazeId in icazeIdleri)
+            foreach (int icazeId in secilenIdler)
             {
+                if (cariIdler.Contains(icazeId)) continue;
                 RolIcazesi yeniRolIcazesi = new()
                 {
                     RolId = rolId,

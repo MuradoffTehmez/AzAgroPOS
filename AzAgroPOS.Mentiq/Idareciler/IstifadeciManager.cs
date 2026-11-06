@@ -171,7 +171,7 @@ public class IstifadeciManager
     {
         Logger.MelumatYaz("IstifadeciYenileAsync metodu çağırıldı.");
         Logger.MelumatYaz(istifadeciDto.ToString());
-        Logger.MelumatYaz(yeniParol?.ToLower() ?? "Yeni parol daxil edilməyib.");
+        Logger.MelumatYaz(yeniParol == null ? "Yeni parol daxil edilməyib." : "Parolun yenilənməsi tələb olundu.");
         try
         {
             if (string.IsNullOrWhiteSpace(istifadeciDto.TamAd))
@@ -191,6 +191,14 @@ public class IstifadeciManager
                 return EmeliyyatNeticesi.Ugursuz("Əsas Administratorun rolu dəyişdirilə bilməz.");
             }
 
+            string yeniAd = istifadeciDto.IstifadeciAdi.Trim();
+            if (string.IsNullOrWhiteSpace(yeniAd))
+                return EmeliyyatNeticesi.Ugursuz("İstifadəçi adı boş ola bilməz.");
+            if (!string.Equals(movcudIstifadeci.IstifadeciAdi, yeniAd, StringComparison.OrdinalIgnoreCase) &&
+                (await _unitOfWork.Istifadeciler.AxtarAsync(i => i.IstifadeciAdi == yeniAd && i.Id != movcudIstifadeci.Id)).Any())
+                return EmeliyyatNeticesi.Ugursuz("Bu istifadəçi adı artıq mövcuddur.");
+
+            movcudIstifadeci.IstifadeciAdi = yeniAd;
             movcudIstifadeci.TamAd = istifadeciDto.TamAd;
             movcudIstifadeci.RolId = istifadeciDto.RolId;
 

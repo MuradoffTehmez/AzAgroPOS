@@ -13,4 +13,5 @@ public interface ISatisRepozitori : IRepozitori<Satis>
     /// Include(s => s.SatisDetallari).ThenInclude(d => d.Mehsul) EF Core zənciri istifadə edir.
     /// </summary>
     Task<Satis?> SatisDetallariIleBirlikdeGetirAsync(int satisId);
+    Task<List<Satis>> TarixAraligindaDetallarlaGetirAsync(DateTime baslangic, DateTime bitis);
 }

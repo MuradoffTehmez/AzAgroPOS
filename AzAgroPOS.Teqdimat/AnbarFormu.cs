@@ -92,6 +92,28 @@ public partial class AnbarFormu : BazaForm, IAnbarView
 
     private void FormatDataGrid()
     {
+        dgvMehsullar.AutoGenerateColumns = false;
+        dgvMehsullar.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+        dgvMehsullar.AllowUserToResizeColumns = true;
+        dgvMehsullar.ScrollBars = ScrollBars.Both;
+        dgvMehsullar.Columns.Clear();
+        dgvMehsullar.Columns.Add(new DataGridViewTextBoxColumn { Name = "Ad", DataPropertyName = "Ad", HeaderText = "Məhsul", Width = 170 });
+        dgvMehsullar.Columns.Add(new DataGridViewTextBoxColumn { Name = "StokKodu", DataPropertyName = "StokKodu", HeaderText = "Stok kodu", Width = 110 });
+        dgvMehsullar.Columns.Add(new DataGridViewTextBoxColumn { Name = "MovcudSay", DataPropertyName = "MovcudSay", HeaderText = "Qalıq", Width = 90 });
+
+        dgvTarixce.AutoGenerateColumns = false;
+        dgvTarixce.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+        dgvTarixce.AllowUserToResizeColumns = true;
+        dgvTarixce.ScrollBars = ScrollBars.Both;
+        dgvTarixce.Columns.Clear();
+        dgvTarixce.Columns.Add(new DataGridViewTextBoxColumn { Name = "colTarix", DataPropertyName = "Tarix", HeaderText = "Tarix", Width = 145 });
+        dgvTarixce.Columns.Add(new DataGridViewTextBoxColumn { Name = "IstifadeciAdi", DataPropertyName = "IstifadeciAdi", HeaderText = "İstifadəçi", Width = 130 });
+        dgvTarixce.Columns.Add(new DataGridViewTextBoxColumn { Name = "colEmeliyyatNovu", DataPropertyName = "EmeliyyatNovu", HeaderText = "Əməliyyat", Width = 120 });
+        dgvTarixce.Columns.Add(new DataGridViewTextBoxColumn { Name = "KohneStok", DataPropertyName = "KohneStok", HeaderText = "Əvvəlki qalıq", Width = 115 });
+        dgvTarixce.Columns.Add(new DataGridViewTextBoxColumn { Name = "colDeyisiklik", DataPropertyName = "DeyisiklikMiqdari", HeaderText = "Dəyişiklik", Width = 105 });
+        dgvTarixce.Columns.Add(new DataGridViewTextBoxColumn { Name = "YeniStok", DataPropertyName = "YeniStok", HeaderText = "Yeni qalıq", Width = 100 });
+        dgvTarixce.Columns.Add(new DataGridViewTextBoxColumn { Name = "Qeyd", DataPropertyName = "Qeyd", HeaderText = "Qeyd", Width = 220 });
+
         // Tarixçə grid formatlaması
         if (dgvTarixce.Columns["colTarix"] != null)
         {

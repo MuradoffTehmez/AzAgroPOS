@@ -14,6 +14,7 @@ namespace AzAgroPOS.Teqdimat
         public BazaForm()
         {
             InitializeComponent();
+            toolStripStatusLabel1.Text = string.Empty;
             Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
             InitializeMaterialSkin();
             InitializeStatusMesaji();

@@ -134,6 +134,13 @@ public sealed class IcazeYoxlayici
             return false;
         }
 
+        // Admin bütün əməliyyatlara səlahiyyətlidir; yeni icazə adlarının
+        // verilənlər bazası kataloquna əlavə olunması bunu məhdudlaşdırmamalıdır.
+        if (AdminDirmi())
+        {
+            return true;
+        }
+
         return _istifadeciIcazeleri.Contains(icazeAdi, StringComparer.OrdinalIgnoreCase);
     }
 
@@ -155,7 +162,7 @@ public sealed class IcazeYoxlayici
         }
         else
         {
-            mesaj = $"Bu əməliyyat üçün '{icazeAdi}' icazəsi tələb olunur.";
+            mesaj = $"Bu əməliyyat üçün '{icazeAdi}' icazəsi tələb olunur. Administrator icazəni İstifadəçi idarəetmə → Rollar və icazələr bölməsində təyin edə bilər.";
             Logger.XəbərdarlıqYaz($"İcazə yoxdur: {icazeAdi} (İstifadəçi: {AktivIstifadeci?.IstifadeciAdi})");
             return false;
         }

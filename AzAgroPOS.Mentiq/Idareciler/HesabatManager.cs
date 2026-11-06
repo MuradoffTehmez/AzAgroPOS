@@ -16,6 +16,15 @@ public class HesabatManager
     private readonly StokHareketiManager _stokHareketiManager;
     private readonly MaliyyeManager _maliyyeManager;
 
+    public async Task<decimal> AyligSatisCemiGetirAsync(DateTime tarix)
+    {
+        DateTime baslangic = new(tarix.Year, tarix.Month, 1);
+        DateTime son = baslangic.AddMonths(1);
+        IEnumerable<Satis> satislar = await _unitOfWork.Satislar.AxtarAsync(
+            s => !s.Silinib && s.Tarix >= baslangic && s.Tarix < son);
+        return satislar.Sum(s => s.UmumiMebleg);
+    }
+
     public HesabatManager(IUnitOfWork unitOfWork, StokHareketiManager stokHareketiManager, MaliyyeManager maliyyeManager)
     {
         _unitOfWork = unitOfWork;
@@ -91,7 +100,7 @@ public class HesabatManager
             DateTime baslangicTarixi = baslangic.Date;
             DateTime bitisTarixi = bitis.Date.AddDays(1).AddTicks(-1);
 
-            IEnumerable<Satis> satisDetallari = await _unitOfWork.Satislar.AxtarAsync(s => s.Tarix >= baslangicTarixi && s.Tarix <= bitisTarixi);
+            IEnumerable<Satis> satisDetallari = await _unitOfWork.Satislar.TarixAraligindaDetallarlaGetirAsync(baslangicTarixi, bitisTarixi.AddTicks(1));
 
             List<int> mehsulIds = satisDetallari.SelectMany(s => s.SatisDetallari).Select(d => d.MehsulId).Distinct().ToList();
             Dictionary<int, Mehsul> mehsullar = (await _unitOfWork.Mehsullar.AxtarAsync(m => mehsulIds.Contains(m.Id)))
@@ -256,7 +265,7 @@ public class HesabatManager
             DateTime bitisTarixi = bitis.Date.AddDays(1).AddTicks(-1);
 
             // 1. Ümumi Satış Gəlirini hesabla
-            IEnumerable<Satis> satislar = await _unitOfWork.Satislar.AxtarAsync(s => s.Tarix >= baslangicTarixi && s.Tarix <= bitisTarixi);
+            IEnumerable<Satis> satislar = await _unitOfWork.Satislar.TarixAraligindaDetallarlaGetirAsync(baslangicTarixi, bitisTarixi.AddTicks(1));
             decimal umumiSatisGeliri = satislar.Sum(s => s.UmumiMebleg);
 
             // 2. Satılan Malların Maya Dəyərini (COGS) hesabla
@@ -268,12 +277,12 @@ public class HesabatManager
                 ICollection<SatisDetali> satisDetallari = satis.SatisDetallari;
                 foreach (SatisDetali detal in satisDetallari)
                 {
-                    // Məhsulun alış qiymətini tap
-                    Mehsul mehsul = await _unitOfWork.Mehsullar.GetirAsync(detal.MehsulId);
-                    if (mehsul != null && mehsul.AlisQiymeti > 0)
+                    if (!detal.AlisQiymeti.HasValue)
                     {
-                        cogs += detal.Miqdar * mehsul.AlisQiymeti;
+                        return EmeliyyatNeticesi<MenfeetZererHesabatDto>.Ugursuz(
+                            "Bu tarix aralığında maya qiyməti qeydə alınmamış köhnə satış var. Dəqiq mənfəət hesabatı hesablana bilməz.");
                     }
+                    cogs += detal.Miqdar * detal.AlisQiymeti.Value;
                 }
             }
 

@@ -35,6 +35,8 @@ public class ZHesabatDto
     /// Kart satışlar (hesabat dövründə kartla həyata keçirilən satışların məbləği).
     /// </summary>
     public decimal KartSatislar { get; set; }
+    public decimal NagdBorcOdenisleri { get; set; }
+    public decimal KartBorcOdenisleri { get; set; }
     /// <summary>
     /// Cəmi satışlar (hesabat dövründə həyata keçirilən bütün satışların cəmi məbləği).
     /// </summary>

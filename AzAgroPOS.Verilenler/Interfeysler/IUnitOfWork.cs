@@ -1,4 +1,5 @@
 // Fayl: AzAgroPOS.Verilenler/Interfeysler/IUnitOfWork.cs
+using AzAgroPOS.Varliglar;
 
 namespace AzAgroPOS.Verilenler.Interfeysler;
 /// <summary>
@@ -213,6 +214,8 @@ public interface IUnitOfWork : IAsyncDisposable
     /// Qeyd: Bonus qeydi əlavə etmə, axtarma və silmə əməliyyatlarını həyata keçirir.
     /// </summary>
     IBonusQeydiRepozitori BonusQeydleri { get; }
+    IRepozitori<IstifadeciSessiyasi> IstifadeciSessiyalari { get; }
+    IRepozitori<GirisLoquKaydi> GirisLoquKaydlari { get; }
 
     /// <summary>
     /// Edilmiş bütün dəyişiklikləri vahid bir tranzaksiya kimi verilənlər bazasına tətbiq edir.

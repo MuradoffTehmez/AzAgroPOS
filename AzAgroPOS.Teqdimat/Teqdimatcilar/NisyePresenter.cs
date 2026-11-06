@@ -5,6 +5,7 @@ using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Teqdimat.Interfeysler;
+using AzAgroPOS.Teqdimat.Yardimcilar;
 
 namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 /// <summary>
@@ -53,7 +54,8 @@ public class NisyePresenter
         try
         {
             EmeliyyatNeticesi netice = await _nisyeManager.EvvelkiBorcElaveEtAsync(
-                musteriId, mebleg, _view.EvvelkiBorcQeydi);
+                musteriId, mebleg, _view.EvvelkiBorcQeydi,
+                AktivSessiya.AktivIstifadeci?.Id ?? 0, _view.EvvelkiBorcTarixi);
             if (!netice.UgurluDur)
             {
                 _view.MesajGoster(netice.Mesaj, "Xəta");
@@ -72,10 +74,17 @@ public class NisyePresenter
 
     private async Task FormuYukle()
     {
-        EmeliyyatNeticesi<List<MusteriDto>> netice = await _nisyeManager.MusterileriGetirAsync();
-        if (netice.UgurluDur)
+        try
         {
-            _view.MusterileriGoster(netice.Data);
+            EmeliyyatNeticesi<List<MusteriDto>> netice = await _nisyeManager.MusterileriGetirAsync();
+            if (netice.UgurluDur)
+                _view.MusterileriGoster(netice.Data);
+            else
+                _view.MesajGoster(netice.Mesaj, "Müştərilər yüklənmədi");
+        }
+        catch (Exception ex)
+        {
+            _view.MesajGoster($"Müştərilər yüklənmədi: {ex.Message}", "Xəta");
         }
     }
 
@@ -134,10 +143,17 @@ public class NisyePresenter
                 return;
             }
 
+            if (!AktivSessiya.AktivNovbeId.HasValue)
+            {
+                _view.MesajGoster("Borc ödənişi üçün əvvəlcə növbə açın.", "Növbə tələb olunur");
+                return;
+            }
+
             // Confirmation dialog
             DialogResult confirmResult = _view.MesajGoster(
                 $"Ödəniş məlumatları:\n\n" +
-                $"Ödəniləcək məbləğ: {mebleg:N2} AZN\n\n" +
+                $"Ödəniləcək məbləğ: {mebleg:N2} AZN\n" +
+                $"Ödəniş üsulu: {_view.OdenisMetodu}\n\n" +
                 $"Ödənişi təsdiq edirsiniz?",
                 "Ödəniş Təsdiqi",
                 System.Windows.Forms.MessageBoxButtons.YesNo,
@@ -152,7 +168,9 @@ public class NisyePresenter
             _view.OdenisButtonAktivdir = false;
 
             // Ödəniş əməliyyatını icra et
-            EmeliyyatNeticesi netice = await _nisyeManager.BorcOdenisiEtAsync(_view.SecilmisMusteriId.Value, mebleg);
+            EmeliyyatNeticesi netice = await _nisyeManager.BorcOdenisiEtAsync(
+                _view.SecilmisMusteriId.Value, mebleg, AktivSessiya.AktivNovbeId.Value,
+                _view.OdenisMetodu, AktivSessiya.AktivIstifadeci?.Id);
 
             // Düyməni enable et
             _view.OdenisButtonAktivdir = true;

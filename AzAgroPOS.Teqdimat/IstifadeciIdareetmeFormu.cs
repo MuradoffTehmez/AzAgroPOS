@@ -2,6 +2,8 @@
 
 using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
+using AzAgroPOS.Mentiq.Uslublar;
+using AzAgroPOS.Mentiq.Yardimcilar;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Teqdimatcilar;
 using AzAgroPOS.Varliglar;
@@ -11,12 +13,96 @@ namespace AzAgroPOS.Teqdimat;
 public partial class IstifadeciIdareetmeFormu : BazaForm, IIstifadeciView
 {
     private readonly IstifadeciPresenter _presenter;
+    private readonly IcazeManager _icazeManager;
 
-    public IstifadeciIdareetmeFormu(IstifadeciManager istifadeciManager)
+    public IstifadeciIdareetmeFormu(IstifadeciManager istifadeciManager, IcazeManager icazeManager)
     {
         InitializeComponent();
+        _icazeManager = icazeManager;
         _presenter = new IstifadeciPresenter(this, istifadeciManager);
         StilVerDataGridView(dgvIstifadeciler);
+        Button icazeButton = new()
+        {
+            Text = "ROLLAR VƏ İCAZƏLƏR",
+            Location = new Point(18, 338),
+            Size = new Size(380, 40),
+            Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right
+        };
+        icazeButton.Visible = IcazeYoxlayici.Instance.AdminDirmi();
+        icazeButton.Click += async (_, _) => await RolIcazeleriniGosterAsync();
+        materialCard1.Controls.Add(icazeButton);
+    }
+
+    private async Task RolIcazeleriniGosterAsync()
+    {
+        if (!IcazeYoxlayici.Instance.AdminDirmi()) return;
+        EmeliyyatNeticesi<IEnumerable<IcazeDto>> netice = await _icazeManager.ButunIcazeleriGetirAsync();
+        if (!netice.UgurluDur)
+        {
+            MesajGoster(netice.Mesaj, true);
+            return;
+        }
+        List<IcazeDto> icazeler = netice.Data.OrderBy(i => i.Ad).ToList();
+        List<Rol> rollar = cmbRollar.Items.Cast<Rol>().Where(r => r.Id != 1).ToList();
+        if (rollar.Count == 0)
+        {
+            MesajGoster("Redaktə ediləcək rol tapılmadı.", true);
+            return;
+        }
+
+        using Form dialoq = new()
+        {
+            Text = "Rollar və icazələr",
+            ClientSize = new Size(540, 590),
+            MinimumSize = new Size(440, 450),
+            StartPosition = FormStartPosition.CenterParent
+        };
+        ComboBox rolSecimi = new() { Dock = DockStyle.Top, DropDownStyle = ComboBoxStyle.DropDownList, Height = 36 };
+        rolSecimi.DataSource = rollar;
+        rolSecimi.DisplayMember = nameof(Rol.Ad);
+        CheckedListBox siyahi = new() { Dock = DockStyle.Fill, CheckOnClick = true };
+        Button yaddaSaxla = new() { Text = "İCAZƏLƏRİ YADDA SAXLA", Dock = DockStyle.Bottom, Height = 44 };
+        dialoq.Controls.Add(siyahi);
+        dialoq.Controls.Add(yaddaSaxla);
+        dialoq.Controls.Add(rolSecimi);
+
+        async Task SecilmisRoluYukleAsync()
+        {
+            if (rolSecimi.SelectedItem is not Rol rol) return;
+            EmeliyyatNeticesi<IEnumerable<IcazeDto>> rolNeticesi = await _icazeManager.RolIcazeleriniGetirAsync(rol.Id);
+            if (!rolNeticesi.UgurluDur)
+            {
+                MesajGoster(rolNeticesi.Mesaj, true);
+                return;
+            }
+            HashSet<int> secilmis = rolNeticesi.Data.Select(i => i.Id).ToHashSet();
+            siyahi.Items.Clear();
+            foreach (IcazeDto icaze in icazeler)
+                siyahi.Items.Add(icaze, secilmis.Contains(icaze.Id));
+            siyahi.DisplayMember = nameof(IcazeDto.Ad);
+        }
+
+        rolSecimi.SelectedIndexChanged += async (_, _) => await SecilmisRoluYukleAsync();
+        yaddaSaxla.Click += async (_, _) =>
+        {
+            if (rolSecimi.SelectedItem is not Rol rol) return;
+            yaddaSaxla.Enabled = false;
+            try
+            {
+                int[] idler = siyahi.CheckedItems.Cast<IcazeDto>().Select(i => i.Id).ToArray();
+                EmeliyyatNeticesi cavab = await _icazeManager.RolIcazeleriniTeyinEtAsync(rol.Id, idler);
+                if (!cavab.UgurluDur)
+                    MesajGoster(cavab.Mesaj, true);
+                else
+                {
+                    MesajGoster("Rol icazələri yadda saxlanıldı. Təsir üçün həmin istifadəçi yenidən daxil olmalıdır.");
+                    dialoq.Close();
+                }
+            }
+            finally { yaddaSaxla.Enabled = true; }
+        };
+        await SecilmisRoluYukleAsync();
+        dialoq.ShowDialog(this);
     }
 
     public string IstifadeciId { get => txtId.Text; set => txtId.Text = value; }
@@ -129,7 +215,7 @@ public partial class IstifadeciIdareetmeFormu : BazaForm, IIstifadeciView
         {
             txtId.Text = istifadeci.Id.ToString();
             txtIstifadeciAdi.Text = istifadeci.IstifadeciAdi;
-            txtIstifadeciAdi.ReadOnly = true;
+        txtIstifadeciAdi.ReadOnly = false;
             txtTamAd.Text = istifadeci.TamAd;
             cmbRollar.SelectedValue = istifadeci.RolId;
             txtParol.Clear();

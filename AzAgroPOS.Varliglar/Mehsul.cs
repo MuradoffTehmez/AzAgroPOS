@@ -13,6 +13,7 @@ namespace AzAgroPOS.Varliglar
         public decimal TopdanSatisQiymeti { get; set; }
         public decimal TekEdedSatisQiymeti { get; set; }
         public int MovcudSay { get; set; }
+        public byte[] RowVersion { get; set; } = Array.Empty<byte>();
         public bool Aktivdir { get; set; } = true;
 
         // Yeni əlavə edilən sahələr

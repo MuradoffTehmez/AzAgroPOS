@@ -22,6 +22,7 @@ namespace AzAgroPOS.Teqdimat
         public SatisFormu(IServiceProvider serviceProvider)
         {
             InitializeComponent();
+            toolStripStatusLabel1.Text = string.Empty;
             KeyPreview = true; // Klaviatura hadisələrini forma səviyyəsində qəbul etmək üçün istifade olunur
             _serviceProvider = serviceProvider;
             _dialogXidmeti = new DialogXidmeti();

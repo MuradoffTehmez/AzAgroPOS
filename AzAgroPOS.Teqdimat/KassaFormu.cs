@@ -383,6 +383,7 @@ public partial class KassaFormu : BazaForm
         
         dgvKassaHareketleri.Columns.Add(new DataGridViewTextBoxColumn { Name = "HareketNovu", DataPropertyName = "HareketNovu", HeaderText = "Hərəkət Növü" });
         dgvKassaHareketleri.Columns.Add(new DataGridViewTextBoxColumn { Name = "EmeliyyatNovu", DataPropertyName = "EmeliyyatNovu", HeaderText = "Əməliyyat" });
+        dgvKassaHareketleri.Columns.Add(new DataGridViewTextBoxColumn { Name = "OdenisMetodu", DataPropertyName = "OdenisMetodu", HeaderText = "Ödəniş üsulu" });
         
         var sumCol = new DataGridViewTextBoxColumn { Name = "Mebleg", DataPropertyName = "Mebleg", HeaderText = "Məbləğ" };
         sumCol.DefaultCellStyle.Format = "N2";
@@ -453,8 +454,8 @@ public partial class KassaFormu : BazaForm
             {
                 decimal menfeet = menfeetNetice.Data;
                 lblMenfeetZerere.Text = menfeet >= 0
-                    ? $"Mənfəət: {menfeet:N2} AZN"
-                    : $"Zərər: {Math.Abs(menfeet):N2} AZN";
+                    ? $"Pul axını: +{menfeet:N2} AZN"
+                    : $"Pul axını: -{Math.Abs(menfeet):N2} AZN";
 
                 lblMenfeetZerere.ForeColor = menfeet >= 0
                     ? System.Drawing.Color.Green
@@ -466,7 +467,7 @@ public partial class KassaFormu : BazaForm
             if (butunHareketlerNetice.UgurluDur && butunHareketlerNetice.Data != null)
             {
                 decimal gelirlerCem = butunHareketlerNetice.Data
-                    .Where(k => k.HareketNovu == KassaHareketiNovu.Daxilolma)
+                    .Where(k => k.HareketNovu == KassaHareketiNovu.Daxilolma && k.OdenisMetodu != OdenisMetodu.Kart)
                     .Sum(k => k.Mebleg);
 
                 decimal xerclerCem = butunHareketlerNetice.Data
@@ -474,7 +475,7 @@ public partial class KassaFormu : BazaForm
                     .Sum(k => k.Mebleg);
 
                 decimal balans = gelirlerCem - xerclerCem;
-                lblCariBalans.Text = $"Cari Balans: {balans:N2} AZN";
+                lblCariBalans.Text = $"Nağd kassa balansı: {balans:N2} AZN";
                 lblCariBalans.ForeColor = balans >= 0
                     ? System.Drawing.Color.Green
                     : System.Drawing.Color.Red;

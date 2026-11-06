@@ -43,6 +43,12 @@ public class SatisManager
                 return EmeliyyatNeticesi<Satis>.Ugursuz("Nisyə satış üçün müştəri seçilməlidir.");
             }
 
+            decimal yekunMebleg = satisDto.SebetElementleri.Sum(e => e.UmumiMebleg) - satisDto.Endirim;
+            if (yekunMebleg <= 0 || decimal.Round(yekunMebleg, 2) != yekunMebleg)
+            {
+                return EmeliyyatNeticesi<Satis>.Ugursuz("Satışın yekun məbləği düzgün deyil.");
+            }
+
             // Stok yoxlaması - Batch query (N+1 problemini həll edir)
             List<int> mehsulIdleri = satisDto.SebetElementleri.Select(e => e.MehsulId).ToList();
             Dictionary<int, Mehsul> mehsullar = (await _unitOfWork.Mehsullar.AxtarAsync(m => mehsulIdleri.Contains(m.Id)))
@@ -50,6 +56,10 @@ public class SatisManager
 
             foreach (SatisSebetiElementiDto element in satisDto.SebetElementleri)
             {
+                if (element.Miqdar <= 0 || element.Miqdar != decimal.Truncate(element.Miqdar))
+                {
+                    return EmeliyyatNeticesi<Satis>.Ugursuz("Stok vahidi tam ədəd saxlanır; satış miqdarı müsbət tam ədəd olmalıdır.");
+                }
                 if (!mehsullar.TryGetValue(element.MehsulId, out Mehsul? mehsul) || mehsul.MovcudSay < element.Miqdar)
                 {
                     Logger.XəbərdarlıqYaz($"'{element.MehsulAdi}' üçün stokda kifayət qədər məhsul yoxdur");
@@ -60,11 +70,19 @@ public class SatisManager
             // ExecuteInTransactionAsync — SqlServerRetryingExecutionStrategy ilə uyğun tranzaksiya
             return await _unitOfWork.ExecuteInTransactionAsync(async () =>
             {
+                if (satisDto.OdenisMetodu == OdenisMetodu.Nisyə)
+                {
+                    Musteri? borclu = await _unitOfWork.Musteriler.GetirAsync(satisDto.MusteriId!.Value);
+                    if (borclu == null || borclu.UmumiBorc + yekunMebleg > borclu.KreditLimiti)
+                    {
+                        return EmeliyyatNeticesi<Satis>.Ugursuz("Müştəri tapılmadı və ya fərdi kredit limiti aşıldı.");
+                    }
+                }
                 Satis satis = new()
                 {
                     Tarix = System.DateTime.Now,
                     OdenisMetodu = satisDto.OdenisMetodu,
-                    UmumiMebleg = satisDto.SebetElementleri.Sum(e => e.UmumiMebleg),
+                    UmumiMebleg = yekunMebleg,
                     NovbeId = satisDto.NovbeId,
                     MusteriId = satisDto.MusteriId
                 };
@@ -80,7 +98,8 @@ public class SatisManager
                         MehsulId = element.MehsulId,
                         Miqdar = element.Miqdar,
                         Qiymet = element.VahidinQiymeti,
-                        UmumiMebleg = element.Miqdar * element.VahidinQiymeti
+                        AlisQiymeti = mehsullar[element.MehsulId].AlisQiymeti,
+                        UmumiMebleg = element.UmumiMebleg
                     });
 
                     // Stok hərəkətini qeydə al (Çıxış)
@@ -90,7 +109,7 @@ public class SatisManager
                         satis.Id,
                         element.MehsulId,
                         (int)element.Miqdar,
-                        element.VahidinQiymeti,
+                        mehsullar[element.MehsulId].AlisQiymeti,
                         element.VahidinQiymeti,
                         $"Satış: ID={satis.Id}",
                         null
@@ -171,14 +190,22 @@ public class SatisManager
                     MehsulId = detali.MehsulId,
                     MehsulAdi = detali.Mehsul.Ad,
                     Miqdar = detali.Miqdar,
-                    VahidinQiymeti = detali.Qiymet
+                    VahidinQiymeti = detali.Qiymet,
+                    EndirimMeblegi = detali.Qiymet * detali.Miqdar - detali.UmumiMebleg
                 })
                 .ToList();
 
+            Novbe? novbe = satis.NovbeId > 0
+                ? await _unitOfWork.Novbeler.GetirAsync(satis.NovbeId)
+                : null;
+            Istifadeci? kassir = novbe == null ? null : await _unitOfWork.Istifadeciler.GetirAsync(novbe.IsciId);
             SatisQebzDto satisDto = new()
             {
                 SatisId = satis.Id,
                 Tarix = satis.Tarix,
+                OdenisMetodu = satis.OdenisMetodu,
+                YekunMebleg = satis.UmumiMebleg,
+                KassirAdi = kassir?.TamAd ?? "Naməlum kassir",
                 SatilanMehsullar = sebetElementleri
             };
 
@@ -198,6 +225,9 @@ public class SatisManager
     public async Task<EmeliyyatNeticesi<bool>> QaytarmaEmeliyyatiAsync(List<SatisSebetiElementiDto> qaytarilanMehsullar, int satisId, string sebeb, int kassirId, int? aktivNovbeId)
     {
         Logger.MelumatYaz("Qaytarma əməliyyatı başlayır");
+        if (qaytarilanMehsullar == null || qaytarilanMehsullar.Count == 0 ||
+            qaytarilanMehsullar.Any(e => e.Miqdar <= 0 || e.Miqdar != decimal.Truncate(e.Miqdar)))
+            return EmeliyyatNeticesi<bool>.Ugursuz("Qaytarma miqdarı müsbət tam ədəd olmalıdır.");
         try
         {
             // Əsas satışı tap

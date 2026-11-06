@@ -48,7 +48,7 @@
             //
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(35, 17);
-            this.toolStripStatusLabel1.Text = "Hazır";
+            this.toolStripStatusLabel1.Text = "";
             //
             // BazaForm
             //

@@ -9,6 +9,7 @@ namespace AzAgroPOS.Varliglar
         public Mehsul Mehsul { get; set; } = null!;
         public decimal Miqdar { get; set; }
         public decimal Qiymet { get; set; }
+        public decimal? AlisQiymeti { get; set; }
         public decimal UmumiMebleg { get; set; }
     }
 }

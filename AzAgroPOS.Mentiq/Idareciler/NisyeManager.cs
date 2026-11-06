@@ -73,7 +73,8 @@ public class NisyeManager
     /// Proqramdan əvvəl yaranmış borcu satış yaratmadan müştərinin hesabına keçirir.
     /// Borc qalığı və tarixçə eyni SaveChanges əməliyyatında yazılır.
     /// </summary>
-    public async Task<EmeliyyatNeticesi> EvvelkiBorcElaveEtAsync(int musteriId, decimal mebleg, string? qeyd)
+    public async Task<EmeliyyatNeticesi> EvvelkiBorcElaveEtAsync(
+        int musteriId, decimal mebleg, string? qeyd, int istifadeciId, DateTime borcunTarixi)
     {
         if (mebleg <= 0)
         {
@@ -84,9 +85,23 @@ public class NisyeManager
         {
             return EmeliyyatNeticesi.Ugursuz("Məbləğ iki onluq rəqəmdən artıq ola bilməz.");
         }
+        if (borcunTarixi.Date > DateTime.Today || borcunTarixi == default)
+            return EmeliyyatNeticesi.Ugursuz("Borcun tarixi gələcəkdə və ya boş ola bilməz.");
+        if (string.IsNullOrWhiteSpace(qeyd))
+            return EmeliyyatNeticesi.Ugursuz("Köhnə borcun mənbəyini qeyd edin.");
 
         try
         {
+            Istifadeci? istifadeci = await _unitOfWork.Istifadeciler.GetirAsync(istifadeciId);
+            if (istifadeci == null)
+                return EmeliyyatNeticesi.Ugursuz("Aktiv istifadəçi tapılmadı.");
+            if (istifadeci.RolId != 1)
+            {
+                int[] rolIcazeIdleri = (await _unitOfWork.RolIcazeleri.AxtarAsync(ri => ri.RolId == istifadeci.RolId))
+                    .Select(ri => ri.IcazeId).ToArray();
+                if (!(await _unitOfWork.Icazeler.AxtarAsync(i => rolIcazeIdleri.Contains(i.Id) && i.Ad == SistemIcazeleri.NisyeVer)).Any())
+                    return EmeliyyatNeticesi.Ugursuz("Bu əməliyyat üçün NisyeVer icazəsi tələb olunur.");
+            }
             Musteri? musteri = await _unitOfWork.Musteriler.GetirAsync(musteriId);
             if (musteri == null)
             {
@@ -98,12 +113,11 @@ public class NisyeManager
             await _unitOfWork.NisyeHereketleri.ElaveEtAsync(new NisyeHereketi
             {
                 MusteriId = musteriId,
-                Tarix = DateTime.Now,
+                Tarix = borcunTarixi,
+                YaradanIstifadeciId = istifadeciId,
                 EmeliyyatNovu = EmeliyyatNovu.IlkinBorc,
                 Mebleg = mebleg,
-                Qeyd = string.IsNullOrWhiteSpace(qeyd)
-                    ? "Proqramdan əvvəlki borc"
-                    : $"Proqramdan əvvəlki borc: {qeyd.Trim()}"
+                Qeyd = $"Proqramdan əvvəlki borc: {qeyd.Trim()}"
             });
             await _unitOfWork.EmeliyyatiTesdiqleAsync();
             return EmeliyyatNeticesi.Ugurlu();
@@ -126,58 +140,59 @@ public class NisyeManager
     /// <param name="musteriId"></param>
     /// <param name="odenenMebleg"></param>
     /// <returns></returns>
-    public async Task<EmeliyyatNeticesi> BorcOdenisiEtAsync(int musteriId, decimal odenenMebleg)
+    public async Task<EmeliyyatNeticesi> BorcOdenisiEtAsync(
+        int musteriId, decimal odenenMebleg, int novbeId, OdenisMetodu odenisMetodu, int? istifadeciId)
     {
         try
         {
-            Logger.MelumatYaz($"Borc ödənişi başladı - Müştəri: {musteriId}, Məbləğ: {odenenMebleg}");
-
-            // Məbləğ yoxlaması
-            if (odenenMebleg <= 0)
+            if (odenenMebleg <= 0 || decimal.Round(odenenMebleg, 2) != odenenMebleg)
             {
-                Logger.XəbərdarlıqYaz("Ödəniş məbləği müsbət deyil");
-                return EmeliyyatNeticesi.Ugursuz("Ödəniş məbləği müsbət olmalıdır.");
+                return EmeliyyatNeticesi.Ugursuz("Ödəniş məbləği müsbət və iki onluq dəqiqlikdə olmalıdır.");
             }
-
-            // Müştəri yoxlaması
-            Musteri musteri = await _unitOfWork.Musteriler.GetirAsync(musteriId);
-            if (musteri == null)
+            if (odenisMetodu != OdenisMetodu.Nağd && odenisMetodu != OdenisMetodu.Kart)
             {
-                Logger.XəbərdarlıqYaz($"Müştəri tapılmadı - ID: {musteriId}");
-                return EmeliyyatNeticesi.Ugursuz("Müştəri tapılmadı.");
+                return EmeliyyatNeticesi.Ugursuz("Borc ödənişi üçün nağd və ya kart seçin.");
             }
-
-            // Borc məbləği yoxlaması
-            if (odenenMebleg > musteri.UmumiBorc)
+            return await _unitOfWork.ExecuteInTransactionAsync(async () =>
             {
-                Logger.XəbərdarlıqYaz($"Ödəniş məbləği borcdan çoxdur - Ödəniş: {odenenMebleg}, Borc: {musteri.UmumiBorc}");
-                return EmeliyyatNeticesi.Ugursuz($"Ödəniş məbləği mövcud borcdan ({musteri.UmumiBorc:N2} AZN) çox ola bilməz.");
-            }
+                Novbe? novbe = await _unitOfWork.Novbeler.GetirAsync(novbeId);
+                if (novbe == null || novbe.Status != NovbeStatusu.Aciq)
+                    return EmeliyyatNeticesi.Ugursuz("Borc ödənişi üçün açıq növbə tələb olunur.");
 
-            decimal evvelkiBorc = musteri.UmumiBorc;
+                Musteri? musteri = await _unitOfWork.Musteriler.GetirAsync(musteriId);
+                if (musteri == null)
+                    return EmeliyyatNeticesi.Ugursuz("Müştəri tapılmadı.");
+                if (odenenMebleg > musteri.UmumiBorc)
+                    return EmeliyyatNeticesi.Ugursuz($"Ödəniş mövcud borcdan ({musteri.UmumiBorc:N2} AZN) çox ola bilməz.");
 
-            // Borcu azalt
-            musteri.UmumiBorc -= odenenMebleg;
-            _unitOfWork.Musteriler.Yenile(musteri);
-            Logger.MelumatYaz($"Müştəri borcu yeniləndi - Əvvəlki: {evvelkiBorc}, Yeni: {musteri.UmumiBorc}");
+                musteri.UmumiBorc -= odenenMebleg;
+                _unitOfWork.Musteriler.Yenile(musteri);
+                NisyeHereketi hereket = new()
+                {
+                    MusteriId = musteriId,
+                    Tarix = DateTime.Now,
+                    EmeliyyatNovu = EmeliyyatNovu.Odenis,
+                    Mebleg = odenenMebleg,
+                    Qeyd = $"{odenisMetodu} borc ödənişi, növbə #{novbeId}"
+                };
+                await _unitOfWork.NisyeHereketleri.ElaveEtAsync(hereket);
+                await _unitOfWork.EmeliyyatiTesdiqleAsync();
 
-            // Hərəkəti qeydə al
-            NisyeHereketi hereket = new()
-            {
-                MusteriId = musteriId,
-                Tarix = DateTime.Now,
-                EmeliyyatNovu = EmeliyyatNovu.Odenis,
-                Mebleg = odenenMebleg,
-                Qeyd = $"Borc ödənişi - Əvvəlki borc: {evvelkiBorc:N2} AZN, Qalıq: {musteri.UmumiBorc:N2} AZN"
-            };
-            await _unitOfWork.NisyeHereketleri.ElaveEtAsync(hereket);
-            Logger.MelumatYaz("Nisyə hərəkəti əlavə edildi");
-
-            // Dəyişiklikləri databazaya yaz
-            await _unitOfWork.EmeliyyatiTesdiqleAsync();
-            Logger.MelumatYaz("Borc ödənişi uğurla tamamlandı");
-
-            return EmeliyyatNeticesi.Ugurlu();
+                await _unitOfWork.KassaHareketleri.ElaveEtAsync(new KassaHareketi
+                {
+                    HareketNovu = KassaHareketiNovu.Daxilolma,
+                    EmeliyyatNovu = EmeliyyatNovu.Odenis,
+                    EmeliyyatId = hereket.Id,
+                    NovbeId = novbeId,
+                    OdenisMetodu = odenisMetodu,
+                    Mebleg = odenenMebleg,
+                    Tarix = hereket.Tarix,
+                    Qeyd = $"Müştəri #{musteriId} borc ödənişi ({odenisMetodu})",
+                    IstifadeciId = istifadeciId
+                });
+                await _unitOfWork.EmeliyyatiTesdiqleAsync();
+                return EmeliyyatNeticesi.Ugurlu();
+            });
         }
         catch (Exception ex)
         {

@@ -3,9 +3,11 @@ using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Servisler;
+using AzAgroPOS.Teqdimat.Sabitler;
 using AzAgroPOS.Teqdimat.Yardimcilar;
 using AzAgroPOS.Varliglar;
 using System.ComponentModel;
+using System.Globalization;
 
 namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 {
@@ -15,6 +17,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
         private readonly SatisManager _satisManager;
         private readonly MehsulManager _mehsulManager;
         private readonly MusteriManager _musteriManager;
+        private readonly KonfiqurasiyaManager _konfiqurasiyaManager;
         private readonly CapServisi _capServisi;
 
         private BindingList<SatisSebetiElementiDto> _aktivSebet;
@@ -23,12 +26,13 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
         //For simplicity, we'll keep a simple cart-level discount for now, but prepare for item-level.
         private decimal _cartLevelEndirimMeblegi = 0;
 
-        public SatisPresenter(ISatisView view, SatisManager satisManager, MehsulManager mehsulManager, MusteriManager musteriManager)
+        public SatisPresenter(ISatisView view, SatisManager satisManager, MehsulManager mehsulManager, MusteriManager musteriManager, KonfiqurasiyaManager konfiqurasiyaManager)
         {
             _view = view;
             _satisManager = satisManager;
             _mehsulManager = mehsulManager;
             _musteriManager = musteriManager;
+            _konfiqurasiyaManager = konfiqurasiyaManager;
             _capServisi = new CapServisi();
             _aktivSebet = new BindingList<SatisSebetiElementiDto>();
             _gozleyenSebetler = new List<GozleyenSatis>();
@@ -386,9 +390,6 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             GosterisleriYenile();
         }
 
-        // Müştəri borc limiti (konfiqurasiya edilə bilər)
-        private const decimal MUSTERI_BORC_LIMITI = 10000m; // Maksimum 10000 AZN borc
-
         private async Task SatisiTesdiqle(OdenisMetodu odenisMetodu)
         {
             System.Diagnostics.Debug.WriteLine($"[SatisPresenter] Satış təsdiqi başladı. AktivNovbeId: {AktivSessiya.AktivNovbeId}");
@@ -428,21 +429,17 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                                              - _aktivSebet.Sum(e => e.EndirimMeblegi) - _cartLevelEndirimMeblegi;
                         decimal yeniBorc = musteri.UmumiBorc + yekunMebleg;
 
-                        if (yeniBorc > MUSTERI_BORC_LIMITI)
+                        if (yeniBorc > musteri.KreditLimiti)
                         {
-                            DialogResult cavab = _view.MesajGoster(
+                            _view.MesajGoster(
                                 $"Müştərinin cari borcu: {musteri.UmumiBorc:N2} AZN\n" +
                                 $"Bu satış ilə yeni borc: {yeniBorc:N2} AZN\n" +
-                                $"Borc limiti: {MUSTERI_BORC_LIMITI:N2} AZN\n\n" +
-                                "Limit aşılır. Davam etmək istəyirsiniz?",
-                                "Borc Limiti Xəbərdarlığı",
-                                MessageBoxButtons.YesNo,
+                                $"Borc limiti: {musteri.KreditLimiti:N2} AZN\n\n" +
+                                "Müştərinin kredit limitini Müştəri idarəetmə bölməsində yeniləyin.",
+                                "Borc limiti aşıldı",
+                                MessageBoxButtons.OK,
                                 MessageBoxIcon.Warning);
-
-                            if (cavab == DialogResult.No)
-                            {
-                                return;
-                            }
+                            return;
                         }
                     }
                 }
@@ -478,6 +475,8 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                             SatisId = netice.Data!.Id,
                             Tarix = netice.Data.Tarix,
                             KassirAdi = AktivSessiya.AktivIstifadeci?.TamAd ?? "Kassir",
+                            OdenisMetodu = odenisMetodu,
+                            YekunMebleg = netice.Data.UmumiMebleg,
                             SatilanMehsullar = _aktivSebet.Select(e => new SatisSebetiElementiDto
                             {
                                 MehsulId = e.MehsulId,
@@ -488,8 +487,18 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                             }).ToList()
                         };
 
+                        string sirketAdi = await _konfiqurasiyaManager.GetirAsync(KonfiqurasiyaSabitleri.Acarlar.SirketAdi, KonfiqurasiyaSabitleri.VarsayilanDeyerler.SirketAdi);
+                        string unvan = await _konfiqurasiyaManager.GetirAsync(KonfiqurasiyaSabitleri.Acarlar.SirketUnvani);
+                        string voen = await _konfiqurasiyaManager.GetirAsync(KonfiqurasiyaSabitleri.Acarlar.SirketVoen);
+                        string edv = await _konfiqurasiyaManager.GetirAsync(KonfiqurasiyaSabitleri.Acarlar.VergiEdvDerecesi, KonfiqurasiyaSabitleri.VarsayilanDeyerler.VergiEdvDerecesi);
+                        string avtoCap = await _konfiqurasiyaManager.GetirAsync(KonfiqurasiyaSabitleri.Acarlar.DavranisQebzCap, KonfiqurasiyaSabitleri.VarsayilanDeyerler.DavranisQebzCap);
+                        string printer = await _konfiqurasiyaManager.GetirAsync(KonfiqurasiyaSabitleri.Acarlar.PrinterQebz);
+                        _capServisi.MagazaMelumatlariTeyinEt(sirketAdi, unvan, voen);
+                        if (decimal.TryParse(edv, NumberStyles.Number, CultureInfo.CurrentCulture, out decimal edvDerecesi))
+                            _capServisi.EdvDerecesiTeyinEt(edvDerecesi);
                         _capServisi.EndirimTeyinEt(_cartLevelEndirimMeblegi);
-                        _capServisi.CekiCapEt(qebz);
+                        if (!bool.TryParse(avtoCap, out bool capAktivdir) || capAktivdir)
+                            _capServisi.CekiCapEt(qebz, printer);
                     }
                     catch (Exception ex)
                     {
