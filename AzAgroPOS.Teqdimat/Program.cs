@@ -425,7 +425,7 @@ namespace AzAgroPOS.Teqdimat
                 }
                 catch (SqlException ex)
                 {
-                    AzAgroPOS.Mentiq.Yardimcilar.Logger.XeberdarliqYaz(
+                    AzAgroPOS.Mentiq.Yardimcilar.Logger.XəbərdarlıqYaz(
                         $"VB bağlantı cəhdi #{attempt} uğursuz oldu. " +
                         $"Kod: {ex.Number}, Mesaj: {ex.Message}");
 

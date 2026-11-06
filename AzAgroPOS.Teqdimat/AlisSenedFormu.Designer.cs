@@ -18,10 +18,10 @@ namespace AzAgroPOS.Teqdimat
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
             splitContainer1 = new SplitContainer();
             dgvSenetler = new DataGridView();
             txtAxtaris = new MaterialSkin.Controls.MaterialTextBox2();
@@ -83,8 +83,8 @@ namespace AzAgroPOS.Teqdimat
             splitContainer1.Panel2.Controls.Add(materialCard1);
             splitContainer1.Panel2.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             splitContainer1.Panel2.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            splitContainer1.Size = new Size(1194, 661);
-            splitContainer1.SplitterDistance = 330;
+            splitContainer1.Size = new Size(1194, 639);
+            splitContainer1.SplitterDistance = 319;
             splitContainer1.TabIndex = 0;
             // 
             // dgvSenetler
@@ -93,30 +93,30 @@ namespace AzAgroPOS.Teqdimat
             dgvSenetler.AllowUserToDeleteRows = false;
             dgvSenetler.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvSenetler.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = SystemColors.Control;
-            dataGridViewCellStyle5.Font = new Font("Microsoft Sans Serif", 10F);
-            dataGridViewCellStyle5.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle5.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
-            dgvSenetler.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Control;
+            dataGridViewCellStyle1.Font = new Font("Microsoft Sans Serif", 10F);
+            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dgvSenetler.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgvSenetler.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = SystemColors.Window;
-            dataGridViewCellStyle6.Font = new Font("Microsoft Sans Serif", 10F);
-            dataGridViewCellStyle6.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            dataGridViewCellStyle6.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.False;
-            dgvSenetler.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("Microsoft Sans Serif", 10F);
+            dataGridViewCellStyle2.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            dgvSenetler.DefaultCellStyle = dataGridViewCellStyle2;
             dgvSenetler.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             dgvSenetler.Location = new Point(10, 58);
             dgvSenetler.MultiSelect = false;
             dgvSenetler.Name = "dgvSenetler";
             dgvSenetler.ReadOnly = true;
             dgvSenetler.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvSenetler.Size = new Size(794, 260);
+            dgvSenetler.Size = new Size(794, 249);
             dgvSenetler.TabIndex = 0;
             dgvSenetler.SelectionChanged += dgvSenetler_SelectionChanged;
             // 
@@ -174,7 +174,7 @@ namespace AzAgroPOS.Teqdimat
             materialCard2.MouseState = MaterialSkin.MouseState.HOVER;
             materialCard2.Name = "materialCard2";
             materialCard2.Padding = new Padding(14);
-            materialCard2.Size = new Size(370, 314);
+            materialCard2.Size = new Size(370, 303);
             materialCard2.TabIndex = 2;
             // 
             // btnSil
@@ -382,30 +382,30 @@ namespace AzAgroPOS.Teqdimat
             dgvSenedSetirleri.AllowUserToDeleteRows = false;
             dgvSenedSetirleri.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvSenedSetirleri.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle7.BackColor = SystemColors.Control;
-            dataGridViewCellStyle7.Font = new Font("Microsoft Sans Serif", 10F);
-            dataGridViewCellStyle7.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle7.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle7.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle7.WrapMode = DataGridViewTriState.True;
-            dgvSenedSetirleri.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = SystemColors.Control;
+            dataGridViewCellStyle3.Font = new Font("Microsoft Sans Serif", 10F);
+            dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            dgvSenedSetirleri.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             dgvSenedSetirleri.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = SystemColors.Window;
-            dataGridViewCellStyle8.Font = new Font("Microsoft Sans Serif", 10F);
-            dataGridViewCellStyle8.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            dataGridViewCellStyle8.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle8.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle8.WrapMode = DataGridViewTriState.False;
-            dgvSenedSetirleri.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = SystemColors.Window;
+            dataGridViewCellStyle4.Font = new Font("Microsoft Sans Serif", 10F);
+            dataGridViewCellStyle4.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.False;
+            dgvSenedSetirleri.DefaultCellStyle = dataGridViewCellStyle4;
             dgvSenedSetirleri.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             dgvSenedSetirleri.Location = new Point(10, 10);
             dgvSenedSetirleri.MultiSelect = false;
             dgvSenedSetirleri.Name = "dgvSenedSetirleri";
             dgvSenedSetirleri.ReadOnly = true;
             dgvSenedSetirleri.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvSenedSetirleri.Size = new Size(794, 307);
+            dgvSenedSetirleri.Size = new Size(794, 296);
             dgvSenedSetirleri.TabIndex = 0;
             // 
             // materialCard1
@@ -426,7 +426,7 @@ namespace AzAgroPOS.Teqdimat
             materialCard1.MouseState = MaterialSkin.MouseState.HOVER;
             materialCard1.Name = "materialCard1";
             materialCard1.Padding = new Padding(14);
-            materialCard1.Size = new Size(370, 384);
+            materialCard1.Size = new Size(370, 373);
             materialCard1.TabIndex = 1;
             // 
             // lblUmumiMebleg

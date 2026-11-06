@@ -18,10 +18,10 @@ namespace AzAgroPOS.Teqdimat
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
             splitContainer1 = new SplitContainer();
             panelMusteriler = new Panel();
             dgvMusteriler = new DataGridView();
@@ -71,8 +71,8 @@ namespace AzAgroPOS.Teqdimat
             splitContainer1.Panel2.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             splitContainer1.Panel2.ForeColor = Color.FromArgb(222, 0, 0, 0);
             splitContainer1.Panel2.Padding = new Padding(10);
-            splitContainer1.Size = new Size(1178, 573);
-            splitContainer1.SplitterDistance = 250;
+            splitContainer1.Size = new Size(1178, 551);
+            splitContainer1.SplitterDistance = 240;
             splitContainer1.TabIndex = 0;
             // 
             // panelMusteriler
@@ -86,7 +86,7 @@ namespace AzAgroPOS.Teqdimat
             panelMusteriler.Location = new Point(10, 10);
             panelMusteriler.Name = "panelMusteriler";
             panelMusteriler.Padding = new Padding(5);
-            panelMusteriler.Size = new Size(1158, 230);
+            panelMusteriler.Size = new Size(1158, 220);
             panelMusteriler.TabIndex = 0;
             // 
             // dgvMusteriler
@@ -97,24 +97,24 @@ namespace AzAgroPOS.Teqdimat
             dgvMusteriler.BackgroundColor = Color.White;
             dgvMusteriler.BorderStyle = BorderStyle.None;
             dgvMusteriler.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle7.BackColor = Color.FromArgb(0, 105, 92);
-            dataGridViewCellStyle7.Font = new Font("Segoe UI Semibold", 11F, FontStyle.Bold);
-            dataGridViewCellStyle7.ForeColor = Color.White;
-            dataGridViewCellStyle7.SelectionBackColor = Color.FromArgb(0, 105, 92);
-            dataGridViewCellStyle7.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle7.WrapMode = DataGridViewTriState.True;
-            dgvMusteriler.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(0, 105, 92);
+            dataGridViewCellStyle1.Font = new Font("Segoe UI Semibold", 11F, FontStyle.Bold);
+            dataGridViewCellStyle1.ForeColor = Color.White;
+            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(0, 105, 92);
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dgvMusteriler.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgvMusteriler.ColumnHeadersHeight = 45;
-            dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = Color.White;
-            dataGridViewCellStyle8.Font = new Font("Segoe UI", 10F);
-            dataGridViewCellStyle8.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            dataGridViewCellStyle8.Padding = new Padding(5, 3, 5, 3);
-            dataGridViewCellStyle8.SelectionBackColor = Color.FromArgb(225, 245, 254);
-            dataGridViewCellStyle8.SelectionForeColor = Color.FromArgb(0, 77, 64);
-            dataGridViewCellStyle8.WrapMode = DataGridViewTriState.False;
-            dgvMusteriler.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = Color.White;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 10F);
+            dataGridViewCellStyle2.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            dataGridViewCellStyle2.Padding = new Padding(5, 3, 5, 3);
+            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(225, 245, 254);
+            dataGridViewCellStyle2.SelectionForeColor = Color.FromArgb(0, 77, 64);
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            dgvMusteriler.DefaultCellStyle = dataGridViewCellStyle2;
             dgvMusteriler.Dock = DockStyle.Fill;
             dgvMusteriler.EnableHeadersVisualStyles = false;
             dgvMusteriler.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
@@ -126,7 +126,7 @@ namespace AzAgroPOS.Teqdimat
             dgvMusteriler.RowHeadersVisible = false;
             dgvMusteriler.RowTemplate.Height = 35;
             dgvMusteriler.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvMusteriler.Size = new Size(1148, 180);
+            dgvMusteriler.Size = new Size(1148, 170);
             dgvMusteriler.TabIndex = 0;
             dgvMusteriler.SelectionChanged += dgvMusteriler_SelectionChanged;
             // 
@@ -159,7 +159,7 @@ namespace AzAgroPOS.Teqdimat
             panelSag.Location = new Point(10, 10);
             panelSag.Name = "panelSag";
             panelSag.Padding = new Padding(5);
-            panelSag.Size = new Size(1158, 299);
+            panelSag.Size = new Size(1158, 287);
             panelSag.TabIndex = 0;
             // 
             // dgvNisyeHereketleri
@@ -170,24 +170,24 @@ namespace AzAgroPOS.Teqdimat
             dgvNisyeHereketleri.BackgroundColor = Color.White;
             dgvNisyeHereketleri.BorderStyle = BorderStyle.None;
             dgvNisyeHereketleri.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = Color.FromArgb(0, 105, 92);
-            dataGridViewCellStyle5.Font = new Font("Segoe UI Semibold", 11F, FontStyle.Bold);
-            dataGridViewCellStyle5.ForeColor = Color.White;
-            dataGridViewCellStyle5.SelectionBackColor = Color.FromArgb(0, 105, 92);
-            dataGridViewCellStyle5.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
-            dgvNisyeHereketleri.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = Color.FromArgb(0, 105, 92);
+            dataGridViewCellStyle3.Font = new Font("Segoe UI Semibold", 11F, FontStyle.Bold);
+            dataGridViewCellStyle3.ForeColor = Color.White;
+            dataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(0, 105, 92);
+            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            dgvNisyeHereketleri.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             dgvNisyeHereketleri.ColumnHeadersHeight = 45;
-            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = Color.White;
-            dataGridViewCellStyle6.Font = new Font("Segoe UI", 10F);
-            dataGridViewCellStyle6.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            dataGridViewCellStyle6.Padding = new Padding(5, 3, 5, 3);
-            dataGridViewCellStyle6.SelectionBackColor = Color.FromArgb(225, 245, 254);
-            dataGridViewCellStyle6.SelectionForeColor = Color.FromArgb(0, 77, 64);
-            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.False;
-            dgvNisyeHereketleri.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = Color.White;
+            dataGridViewCellStyle4.Font = new Font("Segoe UI", 10F);
+            dataGridViewCellStyle4.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            dataGridViewCellStyle4.Padding = new Padding(5, 3, 5, 3);
+            dataGridViewCellStyle4.SelectionBackColor = Color.FromArgb(225, 245, 254);
+            dataGridViewCellStyle4.SelectionForeColor = Color.FromArgb(0, 77, 64);
+            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.False;
+            dgvNisyeHereketleri.DefaultCellStyle = dataGridViewCellStyle4;
             dgvNisyeHereketleri.Dock = DockStyle.Fill;
             dgvNisyeHereketleri.EnableHeadersVisualStyles = false;
             dgvNisyeHereketleri.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
@@ -198,7 +198,7 @@ namespace AzAgroPOS.Teqdimat
             dgvNisyeHereketleri.RowHeadersVisible = false;
             dgvNisyeHereketleri.RowTemplate.Height = 35;
             dgvNisyeHereketleri.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvNisyeHereketleri.Size = new Size(1148, 139);
+            dgvNisyeHereketleri.Size = new Size(1148, 127);
             dgvNisyeHereketleri.TabIndex = 0;
             // 
             // lblHereketlerBasliq
@@ -227,7 +227,7 @@ namespace AzAgroPOS.Teqdimat
             materialCard1.Depth = 0;
             materialCard1.Dock = DockStyle.Bottom;
             materialCard1.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            materialCard1.Location = new Point(5, 184);
+            materialCard1.Location = new Point(5, 172);
             materialCard1.Margin = new Padding(10);
             materialCard1.MouseState = MaterialSkin.MouseState.HOVER;
             materialCard1.Name = "materialCard1";

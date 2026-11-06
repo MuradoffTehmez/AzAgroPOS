@@ -80,7 +80,7 @@
             splitContainer1.Panel2.Controls.Add(materialCard1);
             splitContainer1.Panel2.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             splitContainer1.Panel2.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            splitContainer1.Size = new Size(1078, 553);
+            splitContainer1.Size = new Size(1078, 531);
             splitContainer1.SplitterDistance = 650;
             splitContainer1.TabIndex = 0;
             // 
@@ -114,7 +114,7 @@
             dgvMusteriler.Name = "dgvMusteriler";
             dgvMusteriler.ReadOnly = true;
             dgvMusteriler.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvMusteriler.Size = new Size(638, 486);
+            dgvMusteriler.Size = new Size(638, 464);
             dgvMusteriler.TabIndex = 1;
             dgvMusteriler.CellDoubleClick += dgvMusteriler_CellDoubleClick;
             dgvMusteriler.SelectionChanged += dgvMusteriler_SelectionChanged;
@@ -204,7 +204,7 @@
             materialCard1.MouseState = MaterialSkin.MouseState.HOVER;
             materialCard1.Name = "materialCard1";
             materialCard1.Padding = new Padding(14);
-            materialCard1.Size = new Size(424, 553);
+            materialCard1.Size = new Size(424, 531);
             materialCard1.TabIndex = 0;
             // 
             // txtKreditLimiti

@@ -209,141 +209,137 @@ namespace AzAgroPOS.Teqdimat
             pnlXulase.Size = new Size(1194, 100);
             pnlXulase.TabIndex = 2;
             pnlXulase.Visible = false;
-            //
-            // pnlMehsulSayi - Modern statistik kart
-            //
-            pnlMehsulSayi.BackColor = Color.White;
+            // 
+            // pnlMehsulSayi
+            // 
+            pnlMehsulSayi.BackColor = Color.FromArgb(242, 242, 242);
             pnlMehsulSayi.Controls.Add(lblMehsulSayiBasliq);
             pnlMehsulSayi.Controls.Add(lblMehsulSayiDeyer);
-            pnlMehsulSayi.Font = new Font("Segoe UI", 10F);
-            pnlMehsulSayi.ForeColor = Color.FromArgb(33, 33, 33);
+            pnlMehsulSayi.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            pnlMehsulSayi.ForeColor = Color.FromArgb(222, 0, 0, 0);
             pnlMehsulSayi.Location = new Point(18, 15);
             pnlMehsulSayi.Name = "pnlMehsulSayi";
             pnlMehsulSayi.Size = new Size(270, 70);
             pnlMehsulSayi.TabIndex = 0;
-            pnlMehsulSayi.BorderStyle = BorderStyle.None;
-            //
+            // 
             // lblMehsulSayiBasliq
-            //
-            lblMehsulSayiBasliq.BackColor = Color.White;
-            lblMehsulSayiBasliq.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
-            lblMehsulSayiBasliq.ForeColor = Color.FromArgb(117, 117, 117);
+            // 
+            lblMehsulSayiBasliq.BackColor = Color.FromArgb(242, 242, 242);
+            lblMehsulSayiBasliq.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblMehsulSayiBasliq.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblMehsulSayiBasliq.Location = new Point(15, 10);
             lblMehsulSayiBasliq.Name = "lblMehsulSayiBasliq";
             lblMehsulSayiBasliq.Size = new Size(240, 20);
             lblMehsulSayiBasliq.TabIndex = 0;
             lblMehsulSayiBasliq.Text = "CEMI MEHSUL";
-            //
+            // 
             // lblMehsulSayiDeyer
-            //
-            lblMehsulSayiDeyer.BackColor = Color.White;
-            lblMehsulSayiDeyer.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
-            lblMehsulSayiDeyer.ForeColor = Color.FromArgb(33, 150, 243);
+            // 
+            lblMehsulSayiDeyer.BackColor = Color.FromArgb(242, 242, 242);
+            lblMehsulSayiDeyer.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblMehsulSayiDeyer.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblMehsulSayiDeyer.Location = new Point(15, 30);
             lblMehsulSayiDeyer.Name = "lblMehsulSayiDeyer";
             lblMehsulSayiDeyer.Size = new Size(240, 35);
             lblMehsulSayiDeyer.TabIndex = 1;
             lblMehsulSayiDeyer.Text = "0";
-            //
-            // pnlUmumiDeger - Modern statistik kart
-            //
-            pnlUmumiDeger.BackColor = Color.White;
+            // 
+            // pnlUmumiDeger
+            // 
+            pnlUmumiDeger.BackColor = Color.FromArgb(242, 242, 242);
             pnlUmumiDeger.Controls.Add(lblUmumiDegerBasliq);
             pnlUmumiDeger.Controls.Add(lblUmumiDegerDeyer);
-            pnlUmumiDeger.Font = new Font("Segoe UI", 10F);
-            pnlUmumiDeger.ForeColor = Color.FromArgb(33, 33, 33);
+            pnlUmumiDeger.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            pnlUmumiDeger.ForeColor = Color.FromArgb(222, 0, 0, 0);
             pnlUmumiDeger.Location = new Point(308, 15);
             pnlUmumiDeger.Name = "pnlUmumiDeger";
             pnlUmumiDeger.Size = new Size(270, 70);
             pnlUmumiDeger.TabIndex = 1;
-            pnlUmumiDeger.BorderStyle = BorderStyle.None;
-            //
+            // 
             // lblUmumiDegerBasliq
-            //
-            lblUmumiDegerBasliq.BackColor = Color.White;
-            lblUmumiDegerBasliq.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
-            lblUmumiDegerBasliq.ForeColor = Color.FromArgb(117, 117, 117);
+            // 
+            lblUmumiDegerBasliq.BackColor = Color.FromArgb(242, 242, 242);
+            lblUmumiDegerBasliq.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblUmumiDegerBasliq.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblUmumiDegerBasliq.Location = new Point(15, 10);
             lblUmumiDegerBasliq.Name = "lblUmumiDegerBasliq";
             lblUmumiDegerBasliq.Size = new Size(240, 20);
             lblUmumiDegerBasliq.TabIndex = 0;
             lblUmumiDegerBasliq.Text = "UMUMI DEYER";
-            //
+            // 
             // lblUmumiDegerDeyer
-            //
-            lblUmumiDegerDeyer.BackColor = Color.White;
-            lblUmumiDegerDeyer.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
-            lblUmumiDegerDeyer.ForeColor = Color.FromArgb(76, 175, 80);
+            // 
+            lblUmumiDegerDeyer.BackColor = Color.FromArgb(242, 242, 242);
+            lblUmumiDegerDeyer.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblUmumiDegerDeyer.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblUmumiDegerDeyer.Location = new Point(15, 30);
             lblUmumiDegerDeyer.Name = "lblUmumiDegerDeyer";
             lblUmumiDegerDeyer.Size = new Size(240, 35);
             lblUmumiDegerDeyer.TabIndex = 1;
             lblUmumiDegerDeyer.Text = "0.00 M";
-            //
-            // pnlKritikSay - Modern statistik kart
-            //
-            pnlKritikSay.BackColor = Color.White;
+            // 
+            // pnlKritikSay
+            // 
+            pnlKritikSay.BackColor = Color.FromArgb(242, 242, 242);
             pnlKritikSay.Controls.Add(lblKritikSayBasliq);
             pnlKritikSay.Controls.Add(lblKritikSayDeyer);
-            pnlKritikSay.Font = new Font("Segoe UI", 10F);
-            pnlKritikSay.ForeColor = Color.FromArgb(33, 33, 33);
+            pnlKritikSay.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            pnlKritikSay.ForeColor = Color.FromArgb(222, 0, 0, 0);
             pnlKritikSay.Location = new Point(598, 15);
             pnlKritikSay.Name = "pnlKritikSay";
             pnlKritikSay.Size = new Size(270, 70);
             pnlKritikSay.TabIndex = 2;
-            pnlKritikSay.BorderStyle = BorderStyle.None;
-            //
+            // 
             // lblKritikSayBasliq
-            //
-            lblKritikSayBasliq.BackColor = Color.White;
-            lblKritikSayBasliq.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
-            lblKritikSayBasliq.ForeColor = Color.FromArgb(117, 117, 117);
+            // 
+            lblKritikSayBasliq.BackColor = Color.FromArgb(242, 242, 242);
+            lblKritikSayBasliq.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblKritikSayBasliq.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblKritikSayBasliq.Location = new Point(15, 10);
             lblKritikSayBasliq.Name = "lblKritikSayBasliq";
             lblKritikSayBasliq.Size = new Size(240, 20);
             lblKritikSayBasliq.TabIndex = 0;
             lblKritikSayBasliq.Text = "KRITIK SEVIYYEDE";
-            //
+            // 
             // lblKritikSayDeyer
-            //
-            lblKritikSayDeyer.BackColor = Color.White;
-            lblKritikSayDeyer.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
-            lblKritikSayDeyer.ForeColor = Color.FromArgb(255, 152, 0);
+            // 
+            lblKritikSayDeyer.BackColor = Color.FromArgb(242, 242, 242);
+            lblKritikSayDeyer.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblKritikSayDeyer.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblKritikSayDeyer.Location = new Point(15, 30);
             lblKritikSayDeyer.Name = "lblKritikSayDeyer";
             lblKritikSayDeyer.Size = new Size(240, 35);
             lblKritikSayDeyer.TabIndex = 1;
             lblKritikSayDeyer.Text = "0";
-            //
-            // pnlTukenmisSay - Modern statistik kart
-            //
-            pnlTukenmisSay.BackColor = Color.White;
+            // 
+            // pnlTukenmisSay
+            // 
+            pnlTukenmisSay.BackColor = Color.FromArgb(242, 242, 242);
             pnlTukenmisSay.Controls.Add(lblTukenmisSayBasliq);
             pnlTukenmisSay.Controls.Add(lblTukenmisSayDeyer);
-            pnlTukenmisSay.Font = new Font("Segoe UI", 10F);
-            pnlTukenmisSay.ForeColor = Color.FromArgb(33, 33, 33);
+            pnlTukenmisSay.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            pnlTukenmisSay.ForeColor = Color.FromArgb(222, 0, 0, 0);
             pnlTukenmisSay.Location = new Point(888, 15);
             pnlTukenmisSay.Name = "pnlTukenmisSay";
             pnlTukenmisSay.Size = new Size(270, 70);
             pnlTukenmisSay.TabIndex = 3;
-            pnlTukenmisSay.BorderStyle = BorderStyle.None;
-            //
+            // 
             // lblTukenmisSayBasliq
-            //
-            lblTukenmisSayBasliq.BackColor = Color.White;
-            lblTukenmisSayBasliq.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
-            lblTukenmisSayBasliq.ForeColor = Color.FromArgb(117, 117, 117);
+            // 
+            lblTukenmisSayBasliq.BackColor = Color.FromArgb(242, 242, 242);
+            lblTukenmisSayBasliq.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblTukenmisSayBasliq.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblTukenmisSayBasliq.Location = new Point(15, 10);
             lblTukenmisSayBasliq.Name = "lblTukenmisSayBasliq";
             lblTukenmisSayBasliq.Size = new Size(240, 20);
             lblTukenmisSayBasliq.TabIndex = 0;
             lblTukenmisSayBasliq.Text = "STOKDA YOX";
-            //
+            // 
             // lblTukenmisSayDeyer
-            //
-            lblTukenmisSayDeyer.BackColor = Color.White;
-            lblTukenmisSayDeyer.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
-            lblTukenmisSayDeyer.ForeColor = Color.FromArgb(244, 67, 54);
+            // 
+            lblTukenmisSayDeyer.BackColor = Color.FromArgb(242, 242, 242);
+            lblTukenmisSayDeyer.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblTukenmisSayDeyer.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblTukenmisSayDeyer.Location = new Point(15, 30);
             lblTukenmisSayDeyer.Name = "lblTukenmisSayDeyer";
             lblTukenmisSayDeyer.Size = new Size(240, 35);

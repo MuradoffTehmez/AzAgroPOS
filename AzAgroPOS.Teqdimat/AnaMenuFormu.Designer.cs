@@ -1200,7 +1200,7 @@ namespace AzAgroPOS.Teqdimat
             // 
             lblActiveRepairsValue.AutoSize = true;
             lblActiveRepairsValue.BackColor = Color.FromArgb(255, 255, 255);
-            lblActiveRepairsValue.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblActiveRepairsValue.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             lblActiveRepairsValue.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblActiveRepairsValue.Location = new Point(15, 29);
             lblActiveRepairsValue.Name = "lblActiveRepairsValue";
@@ -1212,11 +1212,11 @@ namespace AzAgroPOS.Teqdimat
             // 
             lblActiveRepairs.AutoSize = true;
             lblActiveRepairs.BackColor = Color.FromArgb(255, 255, 255);
-            lblActiveRepairs.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblActiveRepairs.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             lblActiveRepairs.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblActiveRepairs.Location = new Point(9, 7);
             lblActiveRepairs.Name = "lblActiveRepairs";
-            lblActiveRepairs.Size = new Size(92, 17);
+            lblActiveRepairs.Size = new Size(94, 17);
             lblActiveRepairs.TabIndex = 0;
             lblActiveRepairs.Text = "Aktiv Təmirlər";
             // 
@@ -1240,7 +1240,7 @@ namespace AzAgroPOS.Teqdimat
             // 
             lblSupplierDebtValue.AutoSize = true;
             lblSupplierDebtValue.BackColor = Color.FromArgb(255, 255, 255);
-            lblSupplierDebtValue.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblSupplierDebtValue.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             lblSupplierDebtValue.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblSupplierDebtValue.Location = new Point(4, 23);
             lblSupplierDebtValue.Name = "lblSupplierDebtValue";
@@ -1252,11 +1252,11 @@ namespace AzAgroPOS.Teqdimat
             // 
             lblSupplierDebt.AutoSize = true;
             lblSupplierDebt.BackColor = Color.FromArgb(255, 255, 255);
-            lblSupplierDebt.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblSupplierDebt.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             lblSupplierDebt.ForeColor = Color.FromArgb(222, 0, 0, 0);
             lblSupplierDebt.Location = new Point(4, 4);
             lblSupplierDebt.Name = "lblSupplierDebt";
-            lblSupplierDebt.Size = new Size(114, 17);
+            lblSupplierDebt.Size = new Size(117, 17);
             lblSupplierDebt.TabIndex = 0;
             lblSupplierDebt.Text = "Tədarükçü Borcu";
             // 

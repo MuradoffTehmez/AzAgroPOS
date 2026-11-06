@@ -17,7 +17,7 @@ namespace AzAgroPOS.Teqdimat
 
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             pnlFiltr = new Panel();
             lblBaslangicTarixi = new MaterialSkin.Controls.MaterialLabel();
             dtpBaslangic = new DateTimePicker();
@@ -340,7 +340,7 @@ namespace AzAgroPOS.Teqdimat
             dgvNovbeler.BorderStyle = BorderStyle.None;
             dgvNovbeler.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
             dgvNovbeler.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dgvNovbeler.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dgvNovbeler.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgvNovbeler.ColumnHeadersHeight = 40;
             dgvNovbeler.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dgvNovbeler.Dock = DockStyle.Fill;

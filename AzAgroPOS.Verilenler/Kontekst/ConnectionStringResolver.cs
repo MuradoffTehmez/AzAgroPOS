@@ -9,14 +9,22 @@ public static class ConnectionStringResolver
 {
     private const string DefaultConnectionName = "DefaultConnection";
     private const string EnvironmentVariableKey = "AZAGROPOS__CONNECTIONSTRING";
-    private const string DefaultFallback =
-        "Server=(localdb)\\\\MSSQLLocalDB;Database=AzAgroPOS_DB;Trusted_Connection=True;TrustServerCertificate=True;";
 
     /// <summary>
     /// Builds a configuration root with the standard appsettings chain and optional local overrides.
     /// </summary>
     public static IConfiguration BuildConfiguration(string basePath)
     {
+        // dotnet ef may start from the solution directory instead of the data project.
+        if (!File.Exists(Path.Combine(basePath, "appsettings.json")))
+        {
+            string dataProjectPath = Path.Combine(basePath, "AzAgroPOS.Verilenler");
+            if (File.Exists(Path.Combine(dataProjectPath, "appsettings.json")))
+            {
+                basePath = dataProjectPath;
+            }
+        }
+
         string environment = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT")
                           ?? Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
                           ?? "Production";
@@ -31,17 +39,26 @@ public static class ConnectionStringResolver
     }
 
     /// <summary>
-    /// Resolves the connection string, preferring environment overrides, then configuration, then a sane fallback.
+    /// Resolves the connection string from environment overrides or configuration.
     /// </summary>
     public static string Resolve(IConfiguration configuration, string? connectionName = null)
     {
-        string? envConnection = Environment.GetEnvironmentVariable(EnvironmentVariableKey);
-        if (!string.IsNullOrWhiteSpace(envConnection))
-        {
-            return envConnection;
-        }
-
         connectionName ??= DefaultConnectionName;
+
+        string[] environmentKeys =
+        {
+            $"AZAGROPOS__ConnectionStrings__{connectionName}",
+            $"ConnectionStrings__{connectionName}",
+            EnvironmentVariableKey
+        };
+        foreach (string key in environmentKeys)
+        {
+            string? value = Environment.GetEnvironmentVariable(key);
+            if (!string.IsNullOrWhiteSpace(value))
+            {
+                return value;
+            }
+        }
 
         string? configConnection = configuration.GetConnectionString(connectionName);
         if (!string.IsNullOrWhiteSpace(configConnection))
@@ -50,6 +67,12 @@ public static class ConnectionStringResolver
         }
 
         string? flatConnection = configuration[connectionName] ?? configuration["ConnectionString"];
-        return !string.IsNullOrWhiteSpace(flatConnection) ? flatConnection! : DefaultFallback;
+        if (!string.IsNullOrWhiteSpace(flatConnection))
+        {
+            return flatConnection;
+        }
+
+        throw new InvalidOperationException(
+            $"ConnectionStrings:{connectionName} konfiqurasiyada tapılmadı.");
     }
 }

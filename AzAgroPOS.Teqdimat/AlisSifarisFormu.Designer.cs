@@ -181,7 +181,7 @@ namespace AzAgroPOS.Teqdimat
             tabYeniSifaris.Margin = new Padding(4, 3, 4, 3);
             tabYeniSifaris.Name = "tabYeniSifaris";
             tabYeniSifaris.Padding = new Padding(12);
-            tabYeniSifaris.Size = new Size(1617, 667);
+            tabYeniSifaris.Size = new Size(1617, 645);
             tabYeniSifaris.TabIndex = 1;
             tabYeniSifaris.Text = "Yeni Sifariş / Redaktə";
             // 
@@ -196,7 +196,7 @@ namespace AzAgroPOS.Teqdimat
             panelYeniSifaris.Location = new Point(12, 12);
             panelYeniSifaris.Margin = new Padding(4, 3, 4, 3);
             panelYeniSifaris.Name = "panelYeniSifaris";
-            panelYeniSifaris.Size = new Size(1593, 643);
+            panelYeniSifaris.Size = new Size(1593, 621);
             panelYeniSifaris.TabIndex = 0;
             // 
             // groupSetirler
@@ -218,7 +218,7 @@ namespace AzAgroPOS.Teqdimat
             groupSetirler.Margin = new Padding(4, 3, 4, 3);
             groupSetirler.Name = "groupSetirler";
             groupSetirler.Padding = new Padding(12);
-            groupSetirler.Size = new Size(1593, 389);
+            groupSetirler.Size = new Size(1593, 367);
             groupSetirler.TabIndex = 1;
             groupSetirler.TabStop = false;
             groupSetirler.Text = "Sifariş Sətirləri";
@@ -387,7 +387,7 @@ namespace AzAgroPOS.Teqdimat
             dgvSetirler.Name = "dgvSetirler";
             dgvSetirler.ReadOnly = true;
             dgvSetirler.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvSetirler.Size = new Size(1562, 247);
+            dgvSetirler.Size = new Size(1562, 225);
             dgvSetirler.TabIndex = 0;
             // 
             // groupSifarisInfo

@@ -28,8 +28,8 @@ namespace AzAgroPOS.Teqdimat
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             pnlTop = new Panel();
             lblBaslik = new Label();
             pnlMain = new Panel();
@@ -121,7 +121,7 @@ namespace AzAgroPOS.Teqdimat
             pnlMain.Location = new Point(3, 124);
             pnlMain.Name = "pnlMain";
             pnlMain.Padding = new Padding(10);
-            pnlMain.Size = new Size(994, 533);
+            pnlMain.Size = new Size(994, 511);
             pnlMain.TabIndex = 1;
             // 
             // splitContainer1
@@ -147,7 +147,7 @@ namespace AzAgroPOS.Teqdimat
             splitContainer1.Panel2.Controls.Add(grpIsciler);
             splitContainer1.Panel2.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             splitContainer1.Panel2.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            splitContainer1.Size = new Size(974, 513);
+            splitContainer1.Size = new Size(974, 491);
             splitContainer1.SplitterDistance = 347;
             splitContainer1.TabIndex = 0;
             // 
@@ -161,7 +161,7 @@ namespace AzAgroPOS.Teqdimat
             grpIsciMelumatlari.ForeColor = Color.FromArgb(222, 0, 0, 0);
             grpIsciMelumatlari.Location = new Point(0, 0);
             grpIsciMelumatlari.Name = "grpIsciMelumatlari";
-            grpIsciMelumatlari.Size = new Size(347, 513);
+            grpIsciMelumatlari.Size = new Size(347, 491);
             grpIsciMelumatlari.TabIndex = 0;
             grpIsciMelumatlari.TabStop = false;
             grpIsciMelumatlari.Text = "İşçi Məlumatları";
@@ -224,7 +224,7 @@ namespace AzAgroPOS.Teqdimat
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel1.Size = new Size(341, 419);
+            tableLayoutPanel1.Size = new Size(341, 397);
             tableLayoutPanel1.TabIndex = 0;
             // 
             // lblId
@@ -615,7 +615,7 @@ namespace AzAgroPOS.Teqdimat
             pnlDugmeler.Dock = DockStyle.Bottom;
             pnlDugmeler.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             pnlDugmeler.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            pnlDugmeler.Location = new Point(3, 439);
+            pnlDugmeler.Location = new Point(3, 417);
             pnlDugmeler.Name = "pnlDugmeler";
             pnlDugmeler.Size = new Size(341, 71);
             pnlDugmeler.TabIndex = 1;
@@ -681,7 +681,7 @@ namespace AzAgroPOS.Teqdimat
             grpIsciler.ForeColor = Color.FromArgb(222, 0, 0, 0);
             grpIsciler.Location = new Point(0, 0);
             grpIsciler.Name = "grpIsciler";
-            grpIsciler.Size = new Size(623, 513);
+            grpIsciler.Size = new Size(623, 491);
             grpIsciler.TabIndex = 0;
             grpIsciler.TabStop = false;
             grpIsciler.Text = "İşçilər";
@@ -690,23 +690,23 @@ namespace AzAgroPOS.Teqdimat
             // 
             dgvIsciler.AllowUserToAddRows = false;
             dgvIsciler.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = SystemColors.Control;
-            dataGridViewCellStyle3.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
-            dgvIsciler.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Control;
+            dataGridViewCellStyle1.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dgvIsciler.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgvIsciler.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = SystemColors.Window;
-            dataGridViewCellStyle4.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            dataGridViewCellStyle4.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.False;
-            dgvIsciler.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            dataGridViewCellStyle2.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            dgvIsciler.DefaultCellStyle = dataGridViewCellStyle2;
             dgvIsciler.Dock = DockStyle.Fill;
             dgvIsciler.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             dgvIsciler.Location = new Point(3, 20);
@@ -714,7 +714,7 @@ namespace AzAgroPOS.Teqdimat
             dgvIsciler.Name = "dgvIsciler";
             dgvIsciler.ReadOnly = true;
             dgvIsciler.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvIsciler.Size = new Size(617, 490);
+            dgvIsciler.Size = new Size(617, 468);
             dgvIsciler.TabIndex = 0;
             dgvIsciler.SelectionChanged += dgvIsciler_SelectionChanged;
             // 

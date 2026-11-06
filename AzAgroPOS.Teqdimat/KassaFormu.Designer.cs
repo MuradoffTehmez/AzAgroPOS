@@ -345,16 +345,15 @@ partial class KassaFormu
         lblXercNovu.Size = new Size(36, 17);
         lblXercNovu.TabIndex = 0;
         lblXercNovu.Text = "Növ:";
-        //
+        // 
         // dgvXercler
-        //
+        // 
         dgvXercler.AllowUserToAddRows = false;
         dgvXercler.AllowUserToDeleteRows = false;
-        dgvXercler.AutoGenerateColumns = false;
         dgvXercler.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
         dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
         dataGridViewCellStyle1.BackColor = SystemColors.Control;
-        dataGridViewCellStyle1.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+        dataGridViewCellStyle1.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
         dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
         dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
         dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
@@ -363,7 +362,7 @@ partial class KassaFormu
         dgvXercler.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
         dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
         dataGridViewCellStyle2.BackColor = SystemColors.Window;
-        dataGridViewCellStyle2.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+        dataGridViewCellStyle2.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
         dataGridViewCellStyle2.ForeColor = Color.FromArgb(222, 0, 0, 0);
         dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
         dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
@@ -474,16 +473,15 @@ partial class KassaFormu
         lblBaslangic.Size = new Size(108, 17);
         lblBaslangic.TabIndex = 0;
         lblBaslangic.Text = "Başlanğıc Tarixi:";
-        //
+        // 
         // dgvKassaHareketleri
-        //
+        // 
         dgvKassaHareketleri.AllowUserToAddRows = false;
         dgvKassaHareketleri.AllowUserToDeleteRows = false;
-        dgvKassaHareketleri.AutoGenerateColumns = false;
         dgvKassaHareketleri.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
         dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
         dataGridViewCellStyle3.BackColor = SystemColors.Control;
-        dataGridViewCellStyle3.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+        dataGridViewCellStyle3.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
         dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
         dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
         dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
@@ -492,7 +490,7 @@ partial class KassaFormu
         dgvKassaHareketleri.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
         dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
         dataGridViewCellStyle4.BackColor = SystemColors.Window;
-        dataGridViewCellStyle4.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+        dataGridViewCellStyle4.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
         dataGridViewCellStyle4.ForeColor = Color.FromArgb(222, 0, 0, 0);
         dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
         dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
