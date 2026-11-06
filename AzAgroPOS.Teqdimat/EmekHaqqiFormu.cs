@@ -159,7 +159,7 @@ public partial class EmekHaqqiFormu : BazaForm
         finalCol.DefaultCellStyle.Format = "N2";
         dgvEmekHaqqlari.Columns.Add(finalCol);
         
-        dgvEmekHaqqlari.Columns.Add(new DataGridViewTextBoxColumn { Name = "Status", DataPropertyName = "StatusStr", HeaderText = "Status" });
+        dgvEmekHaqqlari.Columns.Add(new DataGridViewTextBoxColumn { Name = "Status", DataPropertyName = "Status", HeaderText = "Status" });
         
         var dateCol = new DataGridViewTextBoxColumn { Name = "HesablanmaTarixi", DataPropertyName = "HesablanmaTarixi", HeaderText = "Hesablama Tarixi" };
         dateCol.DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
@@ -246,16 +246,17 @@ public partial class EmekHaqqiFormu : BazaForm
             return;
         }
 
-        if (dgvEmekHaqqlari.SelectedRows.Count == 0)
+        if (dgvEmekHaqqlari.SelectedRows.Count == 0 ||
+            dgvEmekHaqqlari.SelectedRows[0].DataBoundItem is not EmekHaqqiDto secilmis)
         {
             MessageBox.Show("Zəhmət olmasa ödəniləcək əmək haqqını seçin!", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             return;
         }
 
-        int emekHaqqiId = (int)dgvEmekHaqqlari.SelectedRows[0].Cells["Id"].Value;
-        string? status = dgvEmekHaqqlari.SelectedRows[0].Cells["Status"].Value.ToString();
+        int emekHaqqiId = secilmis.Id;
+        EmekHaqqiStatusu status = secilmis.Status;
 
-        if (status == EmekHaqqiStatusu.Odenilmis.ToString())
+        if (status == EmekHaqqiStatusu.Odenilmis)
         {
             MessageBox.Show("Bu əmək haqqı artıq ödənilib!", "Məlumat", MessageBoxButtons.OK, MessageBoxIcon.Information);
             return;
@@ -318,16 +319,17 @@ public partial class EmekHaqqiFormu : BazaForm
             return;
         }
 
-        if (dgvEmekHaqqlari.SelectedRows.Count == 0)
+        if (dgvEmekHaqqlari.SelectedRows.Count == 0 ||
+            dgvEmekHaqqlari.SelectedRows[0].DataBoundItem is not EmekHaqqiDto secilmis)
         {
             MessageBox.Show("Zəhmət olmasa ləğv ediləcək əmək haqqını seçin!", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             return;
         }
 
-        int emekHaqqiId = (int)dgvEmekHaqqlari.SelectedRows[0].Cells["Id"].Value;
-        string? status = dgvEmekHaqqlari.SelectedRows[0].Cells["Status"].Value.ToString();
+        int emekHaqqiId = secilmis.Id;
+        EmekHaqqiStatusu status = secilmis.Status;
 
-        if (status == EmekHaqqiStatusu.Legv.ToString())
+        if (status == EmekHaqqiStatusu.Legv)
         {
             MessageBox.Show("Bu əmək haqqı artıq ləğv edilib!", "Məlumat", MessageBoxButtons.OK, MessageBoxIcon.Information);
             return;

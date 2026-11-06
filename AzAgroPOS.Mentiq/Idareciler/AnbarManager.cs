@@ -13,10 +13,12 @@ namespace AzAgroPOS.Mentiq.Idareciler;
 public class AnbarManager
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IStokHareketiRepozitori _stokHareketiRepo;
 
-    public AnbarManager(IUnitOfWork unitOfWork)
+    public AnbarManager(IUnitOfWork unitOfWork, IStokHareketiRepozitori stokHareketiRepo)
     {
         _unitOfWork = unitOfWork;
+        _stokHareketiRepo = stokHareketiRepo;
     }
 
     /// <summary>
@@ -67,14 +69,15 @@ public class AnbarManager
     /// <param name="mehsulId">Sayı artırılacaq məhsulun ID-si.</param>
     /// <param name="elaveOlunanSay">Anbara əlavə edilən yeni miqdar.</param>
     /// <returns>Əməliyyatın nəticəsi.</returns>
-    public async Task<EmeliyyatNeticesi<int>> AnbardakiStokuArtirAsync(int mehsulId, int elaveOlunanSay)
+    public async Task<EmeliyyatNeticesi<int>> AnbardakiStokuArtirAsync(
+        int mehsulId, int elaveOlunanSay, string? qeyd = null, SenedNovu? senedNovu = null)
     {
         Logger.MelumatYaz($"AnbardakiStokuArtirAsync çağırıldı. Məhsul ID: {mehsulId}, Əlavə olunan say: {elaveOlunanSay}");
         try
         {
-            if (elaveOlunanSay <= 0)
+            if (elaveOlunanSay == 0)
             {
-                return EmeliyyatNeticesi<int>.Ugursuz("Əlavə edilən say 0-dan böyük olmalıdır.");
+                return EmeliyyatNeticesi<int>.Ugursuz("Dəyişiklik miqdarı sıfır ola bilməz.");
             }
 
             Mehsul mehsul = await _unitOfWork.Mehsullar.GetirAsync(mehsulId);
@@ -85,6 +88,17 @@ public class AnbarManager
 
             mehsul.MovcudSay += elaveOlunanSay;
             _unitOfWork.Mehsullar.Yenile(mehsul);
+            await _stokHareketiRepo.ElaveEtAsync(new StokHareketi
+            {
+                MehsulId = mehsulId,
+                HareketTipi = elaveOlunanSay > 0 ? StokHareketTipi.Daxilolma : StokHareketTipi.Cixis,
+                SenedNovu = senedNovu ?? (elaveOlunanSay > 0 ? SenedNovu.DuzeltmeArtirim : SenedNovu.DuzeltmeAzalma),
+                Miqdar = Math.Abs(elaveOlunanSay),
+                AlisQiymeti = mehsul.AlisQiymeti,
+                SatisQiymeti = mehsul.PerakendeSatisQiymeti,
+                Tarix = DateTime.Now,
+                Qeyd = qeyd
+            });
             await _unitOfWork.EmeliyyatiTesdiqleAsync();
 
             return EmeliyyatNeticesi<int>.Ugurlu(mehsul.MovcudSay);
@@ -116,6 +130,7 @@ public class AnbarManager
                 Barkod = m.Barkod,
                 MovcudSay = m.MovcudSay,
                 AlisQiymeti = m.AlisQiymeti,
+                PerakendeSatisQiymeti = m.PerakendeSatisQiymeti,
                 MinimumStok = m.MinimumStok,
                 OlcuVahidi = m.OlcuVahidi,
                 OlcuVahidiAdi = m.OlcuVahidi.ToString()

@@ -15,11 +15,44 @@ public partial class KassaFormu : BazaForm
 {
     private readonly MaliyyeManager _maliyyeManager;
     private int _seciliXercId = 0;
+    private readonly Label _lblKassaCixis = new();
+    private readonly Label _lblXulaseIzahi = new();
 
     public KassaFormu(MaliyyeManager maliyyeManager)
     {
         InitializeComponent();
         _maliyyeManager = maliyyeManager ?? throw new ArgumentNullException(nameof(maliyyeManager));
+
+        dgvKassaHareketleri.BackgroundColor = Color.White;
+        dgvKassaHareketleri.BorderStyle = BorderStyle.None;
+        dgvKassaHareketleri.RowHeadersVisible = false;
+        dgvKassaHareketleri.EnableHeadersVisualStyles = false;
+        dgvKassaHareketleri.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(42, 64, 81);
+        dgvKassaHareketleri.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+        dgvKassaHareketleri.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(245, 248, 246);
+        groupXulase.BackColor = Color.White;
+        tabMaliyyeXulasesi.BackColor = Color.White;
+        foreach (Label label in new[] { lblUmumiGelir, lblUmumiXerc, lblMenfeetZerere, lblCariBalans })
+        {
+            label.BackColor = Color.White;
+            label.Font = new Font("Segoe UI Semibold", 14F, FontStyle.Bold);
+        }
+        lblUmumiGelir.Location = new Point(32, 45);
+        lblUmumiXerc.Location = new Point(32, 155);
+        lblMenfeetZerere.Location = new Point(570, 155);
+        lblCariBalans.Location = new Point(32, 265);
+        _lblKassaCixis.Location = new Point(570, 45);
+        _lblKassaCixis.AutoSize = true;
+        _lblKassaCixis.Font = new Font("Segoe UI Semibold", 14F, FontStyle.Bold);
+        _lblKassaCixis.BackColor = Color.White;
+        groupXulase.Controls.Add(_lblKassaCixis);
+        _lblXulaseIzahi.Text = "Qeydiyyat xərci ilə faktiki kassa çıxışı fərqli göstəricilərdir. Pul axını kassaya daxilolma − kassadan çıxışdır.";
+        _lblXulaseIzahi.Location = new Point(32, 355);
+        _lblXulaseIzahi.Size = new Size(1100, 45);
+        _lblXulaseIzahi.ForeColor = Color.FromArgb(91, 108, 96);
+        _lblXulaseIzahi.BackColor = Color.White;
+        _lblXulaseIzahi.Font = new Font("Segoe UI", 10F);
+        groupXulase.Controls.Add(_lblXulaseIzahi);
 
         // Form yüklənəndə məlumatları yüklə
         Load += KassaFormu_Load;
@@ -35,16 +68,14 @@ public partial class KassaFormu : BazaForm
         try
         {
             InitializeEnums();
+            // Hesablamalar ekranda göstərilən dövrə əsaslanmalıdır.
+            dtpBaslangic.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            dtpBitis.Value = DateTime.Now;
+            dtpXesabatBaslangic.Value = dtpBaslangic.Value;
+            dtpXesabatBitis.Value = dtpBitis.Value;
             await XercleriYukle();
             await KassaHareketleriniYukle();
             await MaliyyeXulasesiniYukle();
-
-            // Tarix aralığını cari ay üçün təyin et
-            dtpBaslangic.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-            dtpBitis.Value = DateTime.Now;
-
-            dtpXesabatBaslangic.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-            dtpXesabatBitis.Value = DateTime.Now;
         }
         catch (Exception ex)
         {
@@ -430,36 +461,31 @@ public partial class KassaFormu : BazaForm
             DateTime baslangic = dtpXesabatBaslangic.Value.Date;
             DateTime bitis = dtpXesabatBitis.Value.Date;
 
-            // Gəlirləri hesabla
+            // Nağd kassa hərəkətlərini hesabla; kart ödənişi fiziki kassaya daxil deyil.
             EmeliyyatNeticesi<List<KassaHareketi>> kassaHareketleriNetice = await _maliyyeManager.KassaHareketleriniGetirAsync(baslangic, bitis);
             if (kassaHareketleriNetice.UgurluDur && kassaHareketleriNetice.Data != null)
             {
                 decimal gelirler = kassaHareketleriNetice.Data
-                    .Where(k => k.HareketNovu == KassaHareketiNovu.Daxilolma)
+                    .Where(k => k.HareketNovu == KassaHareketiNovu.Daxilolma && k.OdenisMetodu != OdenisMetodu.Kart)
                     .Sum(k => k.Mebleg);
 
-                lblUmumiGelir.Text = $"Ümumi Gəlir: {gelirler:N2} AZN";
+                decimal cixislar = kassaHareketleriNetice.Data
+                    .Where(k => k.HareketNovu == KassaHareketiNovu.Cixis && k.OdenisMetodu != OdenisMetodu.Kart)
+                    .Sum(k => k.Mebleg);
+                lblUmumiGelir.Text = $"Kassaya daxilolma: {gelirler:N2} AZN";
+                _lblKassaCixis.Text = $"Kassadan çıxış: {cixislar:N2} AZN";
+                decimal axin = gelirler - cixislar;
+                lblMenfeetZerere.Text = axin >= 0
+                    ? $"Dövr üzrə kassa axını: +{axin:N2} AZN"
+                    : $"Dövr üzrə kassa axını: -{Math.Abs(axin):N2} AZN";
+                lblMenfeetZerere.ForeColor = axin >= 0 ? Color.Green : Color.Red;
             }
 
             // Xərcləri hesabla
             EmeliyyatNeticesi<decimal> xercCemiNetice = await _maliyyeManager.XercCeminiHesablaAsync(baslangic, bitis);
             if (xercCemiNetice.UgurluDur)
             {
-                lblUmumiXerc.Text = $"Ümumi Xərc: {xercCemiNetice.Data:N2} AZN";
-            }
-
-            // Mənfəət/Zərəri hesabla
-            EmeliyyatNeticesi<decimal> menfeetNetice = await _maliyyeManager.MenfeetZerereHesablaAsync(baslangic, bitis);
-            if (menfeetNetice.UgurluDur)
-            {
-                decimal menfeet = menfeetNetice.Data;
-                lblMenfeetZerere.Text = menfeet >= 0
-                    ? $"Pul axını: +{menfeet:N2} AZN"
-                    : $"Pul axını: -{Math.Abs(menfeet):N2} AZN";
-
-                lblMenfeetZerere.ForeColor = menfeet >= 0
-                    ? System.Drawing.Color.Green
-                    : System.Drawing.Color.Red;
+                lblUmumiXerc.Text = $"Qeydiyyat xərcləri: {xercCemiNetice.Data:N2} AZN";
             }
 
             // Cari kassa balansını hesabla (bütün tarixlər üçün)
@@ -471,11 +497,11 @@ public partial class KassaFormu : BazaForm
                     .Sum(k => k.Mebleg);
 
                 decimal xerclerCem = butunHareketlerNetice.Data
-                    .Where(k => k.HareketNovu == KassaHareketiNovu.Cixis)
+                    .Where(k => k.HareketNovu == KassaHareketiNovu.Cixis && k.OdenisMetodu != OdenisMetodu.Kart)
                     .Sum(k => k.Mebleg);
 
                 decimal balans = gelirlerCem - xerclerCem;
-                lblCariBalans.Text = $"Nağd kassa balansı: {balans:N2} AZN";
+                lblCariBalans.Text = $"Bütün dövrlər üzrə nağd kassa qalığı: {balans:N2} AZN";
                 lblCariBalans.ForeColor = balans >= 0
                     ? System.Drawing.Color.Green
                     : System.Drawing.Color.Red;

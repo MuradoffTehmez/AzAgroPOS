@@ -134,20 +134,8 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                     return;
                 }
 
-                // Stok mövcudluğu yoxlaması
                 SatisSebetiElementiDto? movcudElement = _aktivSebet.FirstOrDefault(e => e.MehsulId == secilmisMehsul.Id);
-                decimal sebetdekiMiqdar = movcudElement?.Miqdar ?? 0;
-                decimal istenilenToplamMiqdar = sebetdekiMiqdar + miqdar;
-
-                if (istenilenToplamMiqdar > secilmisMehsul.MovcudSay)
-                {
-                    System.Diagnostics.Debug.WriteLine($"Stok kifayət deyil! Mövcud: {secilmisMehsul.MovcudSay}, Tələb: {istenilenToplamMiqdar}");
-                    _view.StatusMesajiGoster(
-                        $"Stokda kifayət qədər məhsul yoxdur! Mövcud: {secilmisMehsul.MovcudSay}, Tələb: {istenilenToplamMiqdar}",
-                        StatusMesajiNovu.Xeta);
-                    return;
-                }
-
+                decimal istenilenToplamMiqdar = (movcudElement?.Miqdar ?? 0) + miqdar;
                 // Səbətə əlavə et və ya mövcud miqdarı artır
                 if (movcudElement != null)
                 {

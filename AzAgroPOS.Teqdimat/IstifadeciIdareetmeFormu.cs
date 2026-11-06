@@ -61,7 +61,7 @@ public partial class IstifadeciIdareetmeFormu : BazaForm, IIstifadeciView
         rolSecimi.DataSource = rollar;
         rolSecimi.DisplayMember = nameof(Rol.Ad);
         CheckedListBox siyahi = new() { Dock = DockStyle.Fill, CheckOnClick = true };
-        Button yaddaSaxla = new() { Text = "İCAZƏLƏRİ YADDA SAXLA", Dock = DockStyle.Bottom, Height = 44 };
+        Button yaddaSaxla = new() { Text = "İCAZƏLƏRİ YADDA SAXLA", Dock = DockStyle.Bottom, Height = 44, Enabled = false };
         dialoq.Controls.Add(siyahi);
         dialoq.Controls.Add(yaddaSaxla);
         dialoq.Controls.Add(rolSecimi);
@@ -69,6 +69,7 @@ public partial class IstifadeciIdareetmeFormu : BazaForm, IIstifadeciView
         async Task SecilmisRoluYukleAsync()
         {
             if (rolSecimi.SelectedItem is not Rol rol) return;
+            yaddaSaxla.Enabled = false;
             EmeliyyatNeticesi<IEnumerable<IcazeDto>> rolNeticesi = await _icazeManager.RolIcazeleriniGetirAsync(rol.Id);
             if (!rolNeticesi.UgurluDur)
             {
@@ -80,9 +81,12 @@ public partial class IstifadeciIdareetmeFormu : BazaForm, IIstifadeciView
             foreach (IcazeDto icaze in icazeler)
                 siyahi.Items.Add(icaze, secilmis.Contains(icaze.Id));
             siyahi.DisplayMember = nameof(IcazeDto.Ad);
+            yaddaSaxla.Enabled = icazeler.Count > 0;
         }
 
         rolSecimi.SelectedIndexChanged += async (_, _) => await SecilmisRoluYukleAsync();
+        // DataSource seçim bağlaması dialoq görünənədək tamamlanmaya bilər.
+        dialoq.Shown += async (_, _) => await SecilmisRoluYukleAsync();
         yaddaSaxla.Click += async (_, _) =>
         {
             if (rolSecimi.SelectedItem is not Rol rol) return;
@@ -101,7 +105,6 @@ public partial class IstifadeciIdareetmeFormu : BazaForm, IIstifadeciView
             }
             finally { yaddaSaxla.Enabled = true; }
         };
-        await SecilmisRoluYukleAsync();
         dialoq.ShowDialog(this);
     }
 

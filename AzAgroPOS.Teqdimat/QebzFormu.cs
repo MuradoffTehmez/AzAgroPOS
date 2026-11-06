@@ -13,6 +13,7 @@ namespace AzAgroPOS.Teqdimat
         private readonly KonfiqurasiyaManager _konfiqurasiyaManager;
         private readonly CapServisi _capServisi = new();
         private readonly TextBox _satisNomresi = new();
+        private readonly TableLayoutPanel _qebzKart = new();
         private SatisQebzDto? _secilmisQebz;
 
         public QebzFormu(SatisManager satisManager, KonfiqurasiyaManager konfiqurasiyaManager)
@@ -27,10 +28,42 @@ namespace AzAgroPOS.Teqdimat
             tap.Click += async (_, _) => await QebziAxtarAsync();
             axtaris.Controls.Add(_satisNomresi);
             axtaris.Controls.Add(tap);
-            Controls.Add(axtaris);
-            Controls.SetChildIndex(axtaris, 1);
+            Controls.Remove(lblBasliq);
+            Controls.Remove(tblMelumatlar);
+            Controls.Remove(panel1);
+            _qebzKart.ColumnCount = 1;
+            _qebzKart.RowCount = 4;
+            _qebzKart.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
+            _qebzKart.RowStyles.Add(new RowStyle(SizeType.Absolute, 48));
+            _qebzKart.RowStyles.Add(new RowStyle(SizeType.Absolute, 52));
+            _qebzKart.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+            _qebzKart.RowStyles.Add(new RowStyle(SizeType.Absolute, 56));
+            _qebzKart.BackColor = Color.White;
+            _qebzKart.Controls.Add(lblBasliq, 0, 0);
+            _qebzKart.Controls.Add(axtaris, 0, 1);
+            _qebzKart.Controls.Add(tblMelumatlar, 0, 2);
+            _qebzKart.Controls.Add(panel1, 0, 3);
+            Controls.Add(_qebzKart);
+            BackColor = Color.FromArgb(241, 246, 242);
+            lblBasliq.BackColor = Color.FromArgb(40, 115, 55);
+            panel1.BackColor = Color.White;
+            panel1.Resize += (_, _) =>
+            {
+                btnBagla.Left = Math.Max(8, panel1.ClientSize.Width - btnBagla.Width - 12);
+                btnCapEt.Left = Math.Max(8, btnBagla.Left - btnCapEt.Width - 8);
+            };
+            Resize += (_, _) => QebzKartiniYerlesdir();
+            QebzKartiniYerlesdir();
             tblMelumatlar.AutoScroll = true;
             btnCapEt.Enabled = false;
+        }
+
+        private void QebzKartiniYerlesdir()
+        {
+            int width = Math.Min(680, Math.Max(320, ClientSize.Width - 32));
+            int height = Math.Min(720, Math.Max(340, ClientSize.Height - 32));
+            _qebzKart.SetBounds(Math.Max(0, (ClientSize.Width - width) / 2),
+                Math.Max(0, (ClientSize.Height - height) / 2), width, height);
         }
 
         private async Task QebziAxtarAsync()
@@ -56,9 +89,11 @@ namespace AzAgroPOS.Teqdimat
                 SatisSebetiElementiDto mehsul = _secilmisQebz.SatilanMehsullar[i];
                 melumatlar[$"{i + 1}. {mehsul.MehsulAdi}"] = $"{mehsul.Miqdar:N0} × {mehsul.VahidinQiymeti:N2} = {mehsul.UmumiMebleg:N2} AZN";
             }
+            if (_secilmisQebz.SatilanMehsullar.Count == 0)
+                melumatlar["Məhsullar"] = "Bu satışda məhsul sətirləri tapılmadı. Çap dayandırıldı.";
             melumatlar["Yekun"] = $"{_secilmisQebz.YekunMebleg ?? _secilmisQebz.CemiMebleg:N2} AZN";
             QebzMelumatlariniGoster("Satış qəbzi", melumatlar);
-            btnCapEt.Enabled = true;
+            btnCapEt.Enabled = _secilmisQebz.SatilanMehsullar.Count > 0;
         }
 
         public void QebzMelumatlariniGoster(string basliq, Dictionary<string, string> melumatlar)
@@ -74,7 +109,7 @@ namespace AzAgroPOS.Teqdimat
             int satir = 0;
             foreach (KeyValuePair<string, string> melumat in melumatlar)
             {
-                tblMelumatlar.RowStyles.Add(new RowStyle(SizeType.Absolute, 25F));
+                tblMelumatlar.RowStyles.Add(new RowStyle(SizeType.Absolute, 34F));
 
                 Label lblAcar = new();
                 lblAcar.Text = melumat.Key + ":";

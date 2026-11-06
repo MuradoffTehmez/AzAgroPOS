@@ -99,6 +99,7 @@ namespace AzAgroPOS.Teqdimat
             _brandPanel.Controls.Add(subtitle);
             _brandPanel.Controls.Add(features);
             pnlMain.Controls.Add(_brandPanel);
+            _brandPanel.Controls.Add(lblVersion);
             _brandPanel.BringToFront();
         }
 
@@ -207,7 +208,7 @@ namespace AzAgroPOS.Teqdimat
                 {
                     pnlCardShadow.Location = new Point(Math.Max(5, x + 5), Math.Max(17, y + 6));
                 }
-                lblVersion.Location = new Point(18, pnlMain.ClientSize.Height - 27);
+                lblVersion.Location = new Point(18, _brandPanel.ClientSize.Height - 27);
                 lblCopyright.Location = new Point(pnlMain.ClientSize.Width - lblCopyright.Width - 18,
                     pnlMain.ClientSize.Height - 27);
                 lblVersion.BringToFront();

@@ -16,6 +16,9 @@ public partial class AnbarFormu : BazaForm, IAnbarView
 
     private readonly AnbarPresenter _presenter;
     private bool _suppressEvents = false;
+    private readonly Label _inventoryCostLabel = new();
+    private readonly Label _inventoryRetailLabel = new();
+    private readonly Label _negativeStockLabel = new();
 
     #endregion
 
@@ -88,6 +91,44 @@ public partial class AnbarFormu : BazaForm, IAnbarView
 
         // DataGrid formatlaması
         FormatDataGrid();
+        ConfigureInventorySummary();
+    }
+
+    private void ConfigureInventorySummary()
+    {
+        TableLayoutPanel summary = new()
+        {
+            Dock = DockStyle.Bottom,
+            Height = 115,
+            ColumnCount = 1,
+            RowCount = 3,
+            Padding = new Padding(12, 5, 8, 5),
+            BackColor = Color.White
+        };
+        summary.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
+        foreach (Label label in new[] { _inventoryCostLabel, _inventoryRetailLabel, _negativeStockLabel })
+        {
+            label.Dock = DockStyle.Fill;
+            label.AutoEllipsis = true;
+            label.TextAlign = ContentAlignment.MiddleLeft;
+            label.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            summary.RowStyles.Add(new RowStyle(SizeType.Percent, 100F / 3));
+            summary.Controls.Add(label, 0, summary.Controls.Count);
+        }
+        _negativeStockLabel.ForeColor = Color.FromArgb(177, 47, 47);
+        grpMehsullar.Controls.Add(summary);
+        summary.BringToFront();
+        UpdateInventorySummary(new List<MehsulDto>());
+    }
+
+    private void UpdateInventorySummary(IReadOnlyCollection<MehsulDto> products)
+    {
+        decimal cost = products.Sum(p => Math.Max(0, p.MovcudSay) * p.AlisQiymeti);
+        decimal retail = products.Sum(p => Math.Max(0, p.MovcudSay) * p.PerakendeSatisQiymeti);
+        int deficit = products.Sum(p => Math.Max(0, -p.MovcudSay));
+        _inventoryCostLabel.Text = $"Anbar dəyəri (alış): {cost:N2} AZN";
+        _inventoryRetailLabel.Text = $"Satış qiyməti ilə: {retail:N2} AZN";
+        _negativeStockLabel.Text = $"Mənfi qalıq: {deficit} vahid";
     }
 
     private void FormatDataGrid()
@@ -426,6 +467,7 @@ public partial class AnbarFormu : BazaForm, IAnbarView
         {
             if (mehsullar == null || mehsullar.Count == 0)
             {
+                UpdateInventorySummary(Array.Empty<MehsulDto>());
                 if (dgvMehsullar.DataSource is System.ComponentModel.BindingList<MehsulDto> currentList)
                 {
                     currentList.Clear();
@@ -434,6 +476,7 @@ public partial class AnbarFormu : BazaForm, IAnbarView
             }
 
             dgvMehsullar.DataSource = new System.ComponentModel.BindingList<MehsulDto>(mehsullar);
+            UpdateInventorySummary(mehsullar);
 
             // Rəng kodlaması - minimum stok xəbərdarlığı
             foreach (DataGridViewRow row in dgvMehsullar.Rows)

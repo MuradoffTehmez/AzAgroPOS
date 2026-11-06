@@ -5,6 +5,7 @@ using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Teqdimat.Interfeysler;
 using AzAgroPOS.Teqdimat.Sabitler;
 using AzAgroPOS.Teqdimat.Yardimcilar;
+using AzAgroPOS.Varliglar;
 
 namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 {
@@ -260,7 +261,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                     string ugurMesaj = string.Format(AnbarSabitleri.UgurMesajlari.StokArtirilib, netice.Data);
                     _view.UgurMesajiGoster(ugurMesaj);
 
-                    // Tarixçəni yenilə
+                    await ButunMehsullariYukleAsync();
                     await TarixceGridiniYenileAsync();
 
                     // Formu təmizlə
@@ -361,7 +362,8 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                 // Stoku azalt (mənfi say göndəririk)
                 EmeliyyatNeticesi<int> netice = await _anbarManager.AnbardakiStokuArtirAsync(
                     _view.SecilmisMehsulId.Value,
-                    -(int)Math.Round(say));
+                    -(int)Math.Round(say),
+                    _view.Qeyd);
 
                 _view.YuklemeGizle();
                 _view.EmeliyyatDuymeleriniAktivet(true);
@@ -371,7 +373,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                     string ugurMesaj = string.Format(AnbarSabitleri.UgurMesajlari.StokAzaldilib, netice.Data);
                     _view.UgurMesajiGoster(ugurMesaj);
 
-                    // Tarixçəni yenilə
+                    await ButunMehsullariYukleAsync();
                     await TarixceGridiniYenileAsync();
 
                     // Formu təmizlə
@@ -460,11 +462,20 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 
                 decimal movcudStok = mehsulNetice.Data.MovcudSay;
                 decimal ferq = yeniStok - movcudStok;
+                if (ferq == 0)
+                {
+                    _view.YuklemeGizle();
+                    _view.EmeliyyatDuymeleriniAktivet(true);
+                    _view.XeberdarlikMesajiGoster("Anbar sayı artıq daxil edilən dəyərə bərabərdir.");
+                    return;
+                }
 
                 // Stoku düzəlt
                 EmeliyyatNeticesi<int> netice = await _anbarManager.AnbardakiStokuArtirAsync(
                     _view.SecilmisMehsulId.Value,
-                    (int)Math.Round(ferq));
+                    (int)Math.Round(ferq),
+                    _view.Qeyd,
+                    SenedNovu.Inventarizasiya);
 
                 _view.YuklemeGizle();
                 _view.EmeliyyatDuymeleriniAktivet(true);
@@ -474,7 +485,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                     string ugurMesaj = string.Format(AnbarSabitleri.UgurMesajlari.StokDuzelisEdildi, netice.Data);
                     _view.UgurMesajiGoster(ugurMesaj);
 
-                    // Tarixçəni yenilə
+                    await ButunMehsullariYukleAsync();
                     await TarixceGridiniYenileAsync();
 
                     // Formu təmizlə

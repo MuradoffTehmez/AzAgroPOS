@@ -47,6 +47,10 @@ class Program
             {
                 await DemoDataSeeder.SeedAsync(context);
             }
+            if (args.Contains("--repair-sale-details", StringComparer.OrdinalIgnoreCase))
+            {
+                await SaleDetailRepair.RunAsync(context);
+            }
         }
         catch (Exception ex)
         {

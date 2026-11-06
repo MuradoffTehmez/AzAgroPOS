@@ -29,18 +29,13 @@ public class BarkodCapiManager
         Logger.MelumatYaz($"Məhsullar axtarılır: {axtarisMetni}");
         try
         {
-            if (string.IsNullOrWhiteSpace(axtarisMetni))
-            {
-                return EmeliyyatNeticesi<List<MehsulDto>>.Ugursuz("Axtarış üçün mətn daxil edin.");
-            }
-
-            string axtarisKicikHerfle = axtarisMetni.ToLower();
-
-            IEnumerable<Mehsul> mehsullar = await _unitOfWork.Mehsullar.AxtarAsync(m =>
-                m.Ad.ToLower().Contains(axtarisKicikHerfle) ||
-                m.StokKodu.ToLower().Contains(axtarisKicikHerfle) ||
-                m.Barkod.Contains(axtarisKicikHerfle)
-            );
+            string axtarisKicikHerfle = axtarisMetni?.Trim().ToLower() ?? string.Empty;
+            IEnumerable<Mehsul> mehsullar = string.IsNullOrEmpty(axtarisKicikHerfle)
+                ? await _unitOfWork.Mehsullar.AxtarAsync(m => m.Aktivdir)
+                : await _unitOfWork.Mehsullar.AxtarAsync(m => m.Aktivdir &&
+                    (m.Ad.ToLower().Contains(axtarisKicikHerfle) ||
+                     m.StokKodu.ToLower().Contains(axtarisKicikHerfle) ||
+                     m.Barkod.Contains(axtarisKicikHerfle)));
 
             if (!mehsullar.Any())
             {

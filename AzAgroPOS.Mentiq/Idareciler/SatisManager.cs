@@ -60,10 +60,9 @@ public class SatisManager
                 {
                     return EmeliyyatNeticesi<Satis>.Ugursuz("Stok vahidi tam ədəd saxlanır; satış miqdarı müsbət tam ədəd olmalıdır.");
                 }
-                if (!mehsullar.TryGetValue(element.MehsulId, out Mehsul? mehsul) || mehsul.MovcudSay < element.Miqdar)
+                if (!mehsullar.ContainsKey(element.MehsulId))
                 {
-                    Logger.XəbərdarlıqYaz($"'{element.MehsulAdi}' üçün stokda kifayət qədər məhsul yoxdur");
-                    return EmeliyyatNeticesi<Satis>.Ugursuz($"'{element.MehsulAdi}' üçün stokda kifayət qədər məhsul yoxdur.");
+                    return EmeliyyatNeticesi<Satis>.Ugursuz($"'{element.MehsulAdi}' məhsulu tapılmadı.");
                 }
             }
 
@@ -87,10 +86,8 @@ public class SatisManager
                     MusteriId = satisDto.MusteriId
                 };
 
-                await _unitOfWork.Satislar.ElaveEtAsync(satis);
-                await _unitOfWork.EmeliyyatiTesdiqleAsync(); // Satış ID-sini əldə etmək üçün
-
-                // Satış detallarını əlavə et və stok hərəkətlərini qeydə al
+                // Auditli SaveChanges ChangeTracker-i təmizləyir. Detallar satışla
+                // birlikdə ilk saxlamaya daxil edilməlidir, əks halda itirlər.
                 foreach (SatisSebetiElementiDto element in satisDto.SebetElementleri)
                 {
                     satis.SatisDetallari.Add(new SatisDetali
@@ -101,7 +98,14 @@ public class SatisManager
                         AlisQiymeti = mehsullar[element.MehsulId].AlisQiymeti,
                         UmumiMebleg = element.UmumiMebleg
                     });
+                }
 
+                await _unitOfWork.Satislar.ElaveEtAsync(satis);
+                await _unitOfWork.EmeliyyatiTesdiqleAsync(); // Satış ID-sini əldə etmək üçün
+
+                // Satış ID-si məlum olduqdan sonra stok hərəkətlərini qeydə al.
+                foreach (SatisSebetiElementiDto element in satisDto.SebetElementleri)
+                {
                     // Stok hərəkətini qeydə al (Çıxış)
                     EmeliyyatNeticesi<int> stokNeticesi = await _stokHareketiManager.StokHareketiQeydeAlAsync(
                         StokHareketTipi.Cixis,

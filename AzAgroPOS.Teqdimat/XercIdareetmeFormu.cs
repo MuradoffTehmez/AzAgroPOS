@@ -17,6 +17,8 @@ public partial class XercIdareetmeFormu : BazaForm, IXercView
     {
         InitializeComponent();
         StilVerDataGridView(dgvXercler);
+        dgvXercler.AutoGenerateColumns = false;
+        btnXercYenile.Visible = false;
         dgvXercler.DataSource = _xercBindingList;
         dgvXercler.DataBindingComplete += (_, __) => ConfigureDataGridViewStyles();
     }
@@ -89,7 +91,8 @@ public partial class XercIdareetmeFormu : BazaForm, IXercView
         txtSenedNomresi.Clear();
         txtQeyd.Clear();
         SecilmisXercId = null;
-        btnXercElaveEt.Text = "Əlavə Et";
+        dgvXercler.ClearSelection();
+        btnXercElaveEt.Text = "YARAT";
         btnXercYenile.Enabled = false;
         btnXercSil.Enabled = false;
     }
@@ -110,7 +113,7 @@ public partial class XercIdareetmeFormu : BazaForm, IXercView
         txtSenedNomresi.Text = xerc.SenedNomresi ?? string.Empty;
         txtQeyd.Text = xerc.Qeyd ?? string.Empty;
         SecilmisXercId = xerc.Id;
-        btnXercElaveEt.Text = "Yenilə";
+        btnXercElaveEt.Text = "YADDA SAXLA";
         btnXercYenile.Enabled = true;
         btnXercSil.Enabled = true;
     }

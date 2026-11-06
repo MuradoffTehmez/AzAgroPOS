@@ -14,7 +14,11 @@ internal static class DemoDataSeeder
     {
         if (await db.Kateqoriyalar.AnyAsync(k => k.Ad == $"{Prefix} Ərzaq"))
         {
-            Console.WriteLine("TEST-UI nümunələri artıq mövcuddur; ikinci dəfə əlavə edilmədi.");
+            await using var repairTransaction = await db.Database.BeginTransactionAsync();
+            int repaired = await EnsureDemoExpenseCashMovementsAsync(db);
+            int stockSigns = await RepairDemoStockMovementSignsAsync(db);
+            await repairTransaction.CommitAsync();
+            Console.WriteLine($"TEST-UI nümunələri mövcuddur; təkrar əlavə edilmədi. Kassa uzlaşması: {repaired}, stok işarəsi: {stockSigns}.");
             return;
         }
 
@@ -193,7 +197,7 @@ internal static class DemoDataSeeder
             db.StokHareketleri.Add(new StokHareketi
             {
                 MehsulId = product.Id, HareketTipi = StokHareketTipi.Cixis,
-                SenedNovu = SenedNovu.Satis, SenedId = sale.Id, Miqdar = -quantity,
+                SenedNovu = SenedNovu.Satis, SenedId = sale.Id, Miqdar = quantity,
                 AlisQiymeti = product.AlisQiymeti, SatisQiymeti = product.PerakendeSatisQiymeti,
                 Tarix = saleDate, Qeyd = $"{Prefix} satış #{sale.Id}", IstifadeciId = admin.Id
             });
@@ -316,7 +320,73 @@ internal static class DemoDataSeeder
         };
         db.MusteriBonuslari.Add(bonus);
         await db.SaveChangesAsync();
+        await EnsureDemoExpenseCashMovementsAsync(db);
         await transaction.CommitAsync();
         Console.WriteLine("TEST-UI nümunələri əlaqələri ilə əlavə edildi.");
+    }
+
+    private static async Task<int> EnsureDemoExpenseCashMovementsAsync(AzAgroPOSDbContext db)
+    {
+        // Əvvəlki nümunələrdə xərc və ödənilmiş maaş kassa çıxışı olmadan yazılmışdı.
+        var paidPayrolls = await db.EmekHaqqilari
+            .Where(p => p.Qeyd != null && p.Qeyd.StartsWith(Prefix) &&
+                        p.Status == EmekHaqqiStatusu.Odenilmis)
+            .ToListAsync();
+        foreach (EmekHaqqi payroll in paidPayrolls)
+        {
+            string documentNumber = $"{Prefix}-EH-{payroll.Id:000}";
+            if (await db.Xercler.AnyAsync(x => x.SenedNomresi == documentNumber)) continue;
+            db.Xercler.Add(new Xerc
+            {
+                Novu = XercNovu.EmekHaqqi,
+                Ad = $"{Prefix} ödənilmiş əmək haqqı #{payroll.Id}",
+                Mebleg = payroll.YekunEmekHaqqi,
+                Tarix = payroll.OdenisTarixi ?? payroll.HesablanmaTarixi,
+                SenedNomresi = documentNumber,
+                Qeyd = $"{Prefix} maaş kassa uzlaşması",
+                IstifadeciId = payroll.IstifadeciId
+            });
+        }
+        await db.SaveChangesAsync();
+
+        var demoExpenses = await db.Xercler
+            .Where(x => x.SenedNomresi != null &&
+                        (x.SenedNomresi.StartsWith($"{Prefix}-XR-") ||
+                         x.SenedNomresi.StartsWith($"{Prefix}-EH-")))
+            .ToListAsync();
+        int added = 0;
+        foreach (Xerc expense in demoExpenses)
+        {
+            bool exists = await db.KassaHareketleri.AnyAsync(k =>
+                k.EmeliyyatNovu == EmeliyyatNovu.Xerc && k.EmeliyyatId == expense.Id);
+            if (exists) continue;
+            db.KassaHareketleri.Add(new KassaHareketi
+            {
+                HareketNovu = KassaHareketiNovu.Cixis,
+                EmeliyyatNovu = EmeliyyatNovu.Xerc,
+                EmeliyyatId = expense.Id,
+                OdenisMetodu = OdenisMetodu.Nağd,
+                Mebleg = expense.Mebleg,
+                Tarix = expense.Tarix,
+                Qeyd = $"{Prefix} xərc kassa uzlaşması",
+                IstifadeciId = expense.IstifadeciId
+            });
+            added++;
+        }
+        await db.SaveChangesAsync();
+        return added;
+    }
+
+    private static async Task<int> RepairDemoStockMovementSignsAsync(AzAgroPOSDbContext db)
+    {
+        // Çıxışlar müsbət miqdar kimi saxlanır; qalıq hesablaması onları çıxır.
+        var movements = await db.StokHareketleri
+            .Where(m => m.HareketTipi == StokHareketTipi.Cixis && m.Miqdar < 0 &&
+                        m.Qeyd != null && m.Qeyd.StartsWith(Prefix))
+            .ToListAsync();
+        foreach (StokHareketi movement in movements)
+            movement.Miqdar = Math.Abs(movement.Miqdar);
+        await db.SaveChangesAsync();
+        return movements.Count;
     }
 }

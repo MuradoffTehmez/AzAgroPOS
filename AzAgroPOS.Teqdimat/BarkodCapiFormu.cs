@@ -12,6 +12,15 @@ public partial class BarkodCapiFormu : BazaForm, IBarkodCapiView
 {
     private readonly BarkodCapiPresenter _presenter;
     private BindingList<BarkodEtiketDto> _capSiyahisiBindingList;
+    private readonly Label _bosCapSiyahisi = new()
+    {
+        Text = "Çap siyahısı boşdur\nSoldan məhsul seçib siyahıya əlavə edin.",
+        ForeColor = Color.FromArgb(91, 108, 96),
+        BackColor = Color.White,
+        Font = new Font("Segoe UI", 12F),
+        TextAlign = ContentAlignment.MiddleCenter,
+        Size = new Size(410, 90)
+    };
 
     public BarkodCapiFormu(BarkodCapiManager barkodCapiManager, MehsulManager mehsulManager)
     {
@@ -31,6 +40,25 @@ public partial class BarkodCapiFormu : BazaForm, IBarkodCapiView
         dgvCapSiyahisi.Columns.Add(new DataGridViewTextBoxColumn { Name = "CapEdilecekSay", DataPropertyName = "CapEdilecekSay", HeaderText = "Çap Sayı" });
         
         dgvCapSiyahisi.DataSource = _capSiyahisiBindingList;
+        splitContainer1.Panel2.Controls.Add(_bosCapSiyahisi);
+        splitContainer1.Panel2.Resize += (_, _) => BosSiyahiYerlesdir();
+        _capSiyahisiBindingList.ListChanged += (_, _) => BosSiyahiYenile();
+        BosSiyahiYerlesdir();
+        BosSiyahiYenile();
+        Load += (_, _) => AxtarisIstek?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void BosSiyahiYerlesdir()
+    {
+        _bosCapSiyahisi.Left = Math.Max(12, (splitContainer1.Panel2.ClientSize.Width - _bosCapSiyahisi.Width) / 2);
+        _bosCapSiyahisi.Top = Math.Max(90, (splitContainer1.Panel2.ClientSize.Height - _bosCapSiyahisi.Height) / 2);
+    }
+
+    private void BosSiyahiYenile()
+    {
+        _bosCapSiyahisi.Visible = _capSiyahisiBindingList.Count == 0;
+        btnCapiBaslat.Enabled = !_bosCapSiyahisi.Visible;
+        if (_bosCapSiyahisi.Visible) _bosCapSiyahisi.BringToFront();
     }
 
     public string AxtarisMetni => txtAxtar.Text;
