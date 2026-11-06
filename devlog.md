@@ -1,0 +1,104 @@
+# AzAgroPOS Inkisaf Jurnali
+
+Bu fayl layihenin inkisaf prosesini izlemek ucun istifade olunur.
+
+- [2026-07-29 09:00] fix: SatisFormu-da endirim hesablamasinda yuvarlaqlasma xetasi duzeldildi
+- [2026-07-29 10:07] refactor: BazaForm.cs-de baglanti stringini konfiqurasiyadan oxu
+- [2026-07-29 11:14] feat: MehsulIdareetmeFormu-na barkod ile axtar funksiyasi elave edildi
+- [2026-07-29 12:21] fix: KassaFormu-da novbe baglananda kassa qaligi sifirlanmir — duzeldildi
+- [2026-07-30 13:28] style: LoginFormu-da duzme olculeri ve fontlar standartlasdirildi
+- [2026-07-30 14:35] chore: AzAgroPOS.Teqdimat.csproj-da NuGet paketleri yenilendi
+- [2026-07-30 15:42] feat: AnbarFormu-na minimum stok xebardarligi elave edildi
+- [2026-07-31 16:49] fix: TedarukcuOdemeFormu-da valyuta formatlamasi locale-a uygunlasdirildi
+- [2026-07-31 17:56] refactor: SatisManager-de tekrarlanan validasiya kodlari ayri metoda cixarildi
+- [2026-07-31 18:03] docs: README-ye baslangic konfigurasiya addimları elave edildi
+- [2026-08-01 09:31] feat: QaytarmaFormu-na qaytarma sebebi sahesi elave edildi
+- [2026-08-01 19:10] fix: EmekHaqqiFormu-da iscinin emek haqqi tarixce siralama xetasi
+- [2026-08-01 20:17] test: SatisManager.YeniSatis() ucun unit test elave edildi
+- [2026-08-01 21:24] refactor: IsciIdareetmeFormu-da DataGridView sutunlarini BindingList-e kecir
+- [2026-08-02 10:38] feat: BonusIdareetmeFormu-na bonus tarixcesi filtri elave edildi
+- [2026-08-02 11:45] fix: MusteriIdareetmeFormu-da telefon nomresi validasiyasi duzeldildi
+- [2026-08-02 12:52] chore: .gitignore-a bin/obj ve appsettings.Production.json elave edildi
+- [2026-08-03 13:59] feat: NisyeIdareetmeFormu-na odenis tarixine gore siralama elave edildi
+- [2026-08-03 14:06] fix: AlisSifarisFormu-da sifaris statusu guncelleme race condition
+- [2026-08-03 15:13] refactor: StokHareketi yaradilmasini ayri servis sinifina kocur
+- [2026-08-04 16:20] feat: XercIdareetmeFormu-na xerc kateqoriyasi filtri elave edildi
+- [2026-08-04 17:27] fix: HesabatFormu-da tarix araliginda son gun daxil edilmir — duzeldildi
+- [2026-08-04 18:34] style: AnaMenuFormu-da sidebar hover effektleri duzeldildi
+- [2026-08-04 19:41] test: StokHareketiManager ucun stok artimi ve azalma testleri
+- [2026-08-05 09:02] feat: KonfiqurasiyaFormu-na printer secimi elave edildi
+- [2026-08-05 20:48] fix: QebzFormu-da uzun mehsul adlarinin kesilmesi problemi
+- [2026-08-05 21:55] refactor: Tedarukcu varligi ucun soft-delete mexanizmi elave edildi
+- [2026-08-06 10:09] docs: ProjectStatistics.md yenilendi — cari modul sayi elave edildi
+- [2026-08-06 11:16] feat: BarkodCapiFormu-na toplu barkod cap funksiyasi elave edildi
+- [2026-08-06 12:23] fix: IsciIzniFormu-da icaze gunlerinin duzgun hesablanmasi
+- [2026-08-07 13:30] chore: solution faylinda test layihesinin referanslari yenilendi
+- [2026-08-07 14:37] feat: SatisFormu-na musteriye sms bildiris gondermek funksiyasi
+- [2026-08-07 15:44] fix: NovbeIdareetmesiFormu-da novbe baslama vaxtinin UTC cevrimi
+- [2026-08-07 16:51] refactor: DTO siniflarini ayri namespace-e kocur (AzAgroPOS.Mentiq.DTOs)
+- [2026-08-08 17:58] feat: AnbarQaliqHesabatFormu-na Excel-e ixrac duymesin elave et
+- [2026-08-08 18:05] fix: EhtiyatHissesiFormu-da seriyanomresi dublikat yoxlamasi
+- [2026-08-08 19:12] test: QaytarmaManager-de qaytarma limitini asmaq testi
+- [2026-08-09 09:33] style: IsciIzniFormu-da calendar kontrolunun rengleri duzeldildi
+- [2026-08-09 20:19] feat: MehsulSatisHesabatFormu-na qrafik goruntuleme elave edildi
+- [2026-08-09 21:26] fix: Program.cs-de exception handling middleware siralama xetasi
+- [2026-08-10 10:40] refactor: KassaHareketi enum deyerlerini sabit sinifa kocur
+- [2026-08-10 11:47] docs: Documentation qovluguna API endpoint siyahisi elave edildi
+- [2026-08-10 12:54] feat: ZHesabatArxivFormu-na Z-hesabat PDF export funksiyasi
+- [2026-08-10 13:01] fix: AlisSenedFormu-da toplam meblegin yuvarlaqlasdirma ferqi
+- [2026-08-11 14:08] chore: test-neticeleri.xml formatini JUnit standartina kecir
+- [2026-08-11 15:15] feat: LoginFormu-na 'meni xatirla' checkbox-u elave edildi
+- [2026-08-11 16:22] fix: BazaIdareetmeFormu-da migration skriptlerinin siralama xetasi
+- [2026-08-12 17:29] refactor: Istifadeci entity-sine son giris tarixi sahesi elave edildi
+- [2026-08-12 18:36] test: EmekHaqqiManager hesablama metodlari ucun unit testler
+- [2026-08-12 19:43] feat: TemirIdareetmeFormu-na temir merhelesi izleme paneli
+- [2026-08-13 09:04] fix: SatisDetali entity-sinde endirim faizinin menfi olmasi yoxlamasi
+- [2026-08-13 10:11] style: TedarukcuIdareetmeFormu-da DataGridView zebrasiralama
+- [2026-08-13 20:50] feat: MusteriIdareetmeFormu-na musteri bonus tarixcesi tab-i
+- [2026-08-13 21:57] fix: Konfiqurasiya.cs-de defolt deyerlerin null yoxlamasi
+- [2026-08-14 11:18] refactor: AnaMenuFormu-da menu duymelerini dinamik yaratma
+- [2026-08-14 12:25] docs: sql scrip qovluguna indeks yaratma skripti elave edildi
+- [2026-08-14 13:32] feat: IstifadeciIdareetmeFormu-na rol bazli icaze idareetmesi
+- [2026-08-15 14:39] fix: Satis entity-sinde OdemeUsulu enum parse xetasi duzeldildi
+- [2026-08-15 15:46] test: NisyeManager odenis plani hesablama testleri
+- [2026-08-15 16:53] chore: appsettings.json-da ConnectionString placeholder-i yenilendi
+- [2026-08-16 17:00] feat: KassaFormu-na gun sonu hesabat xulasesi paneli
+- [2026-08-16 18:07] fix: Mehsul entity-sinde stok miqdarinin negatif olmamasi constrainti
+- [2026-08-16 19:14] refactor: EmeliyyatJurnali-na IP adres ve istifadeci agenti elave et
+- [2026-08-16 20:21] style: QaytarmaFormu-da status reng kodlamasini yenile
+- [2026-08-17 09:35] feat: AnbarFormu-na anbar transferi (anbardan-anbara) funksiyasi
+- [2026-08-17 10:42] fix: BonusQeydi entity-sinde bonus faizinin 0-100 arasi validasiyasi
+- [2026-08-17 21:28] test: BarkodCapiFormu ucun cap formatlamasi unit testleri
+- [2026-08-18 11:49] docs: README-ye ekran goruntuleri bolmesi elave edildi
+- [2026-08-18 12:56] feat: SatisFormu-na split odeme (naqd + kart) desteklenmesi
+- [2026-08-18 13:03] fix: Brend entity-sinde ad unikalligi yoxlamasi elave edildi
+- [2026-08-19 14:10] refactor: Exceptions qovlugundaki xeta siniflarini yeniden adlandir
+- [2026-08-19 15:17] chore: DatabaseTestApp layihesini solution-dan cixar
+- [2026-08-19 16:24] feat: EmekHaqqiFormu-na emek haqqi hesabat cixarisi (PDF)
+- [2026-08-19 17:31] fix: IsciPerformans entity-sinde qiymetlendirme tarixinin future olmamasi
+- [2026-08-20 18:38] style: HesabatFormu-da chart reng palitrasini yenile
+- [2026-08-20 19:45] test: TedarukcuOdeme hesablama ve valyuta cevrimi testleri
+- [2026-08-20 20:52] feat: NovbeIdareetmesiFormu-na novbe deyisiklikleri tarixi
+- [2026-08-21 09:06] fix: Kateqoriya entity-sinde sonsuz parent-child dongusu yoxlamasi
+- [2026-08-21 10:13] refactor: Servisler qovlugundaki DI registration-i ayri extension-a kocur
+- [2026-08-21 21:59] docs: Documentation-a verilenbazasi ER diaqrami elave edildi
+- [2026-08-22 11:20] feat: XercIdareetmeFormu-na aylik xerc budcesi limiti funksiyasi
+- [2026-08-22 12:27] fix: OdenisMetodu entity-sinde aktiv/deaktiv status kecidi
+- [2026-08-22 13:34] test: LoginFormu ucun ugursuz giris cehdleri ve kilid testi
+- [2026-08-22 14:41] chore: PasswordHasher layihesindeki koddakı hash algoritmi guclendirmesi
+- [2026-08-23 15:48] feat: TedarukcuIdareetmeFormu-na tedarukcu qiymetlendirme sistemi
+- [2026-08-23 16:55] fix: IstifadeciSessiyasi-da sessiya vaxtasiminin duzgun hesablanmasi
+- [2026-08-23 17:02] refactor: Yardimcilar siniflarini partial class-lara bol
+- [2026-08-24 18:09] style: KonfiqurasiyaFormu-da tab naviqasiya animasiyasi elave et
+- [2026-08-24 19:16] feat: SatisFormu-na musteri axtarisi ve avtomatik tamamlama
+- [2026-08-24 20:23] fix: Novbe entity-sinde novbe muddetinin mentiqi yoxlamasi
+- [2026-08-25 09:37] test: AnbarFormu stok hesabat filtrleme testleri
+- [2026-08-25 10:44] docs: CHANGELOG.md faylini yarad ve son deyisiklikleri elave et
+- [2026-08-25 11:51] feat: MinimumStokMehsullariFormu-na avtomatik sifaris yaratma
+- [2026-08-25 21:30] fix: NisyeHereketi-de gecikme faizinin duzgun hesablanmasi
+- [2026-08-26 12:58] refactor: Kontekst/AppDbContext-de lazy loading-i deaktiv et
+- [2026-08-26 13:05] chore: GitHub Actions CI workflow ucun yaml faylini yenile
+- [2026-08-26 14:12] feat: AlisSifarisFormu-na tedarukcuye e-poct gondermek funksiyasi
+- [2026-08-27 15:19] fix: Qaytarma entity-sinde geri odeme mebleginin satis-dan cox olmamasi
+- [2026-08-27 16:26] style: BazaIdareetmeFormu-da progressbar ve yukleme animasiyasi
+- [2026-08-27 17:33] test: Musteri bonus hesablama ve hediyye karti testleri
