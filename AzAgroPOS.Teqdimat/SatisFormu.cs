@@ -18,6 +18,15 @@ namespace AzAgroPOS.Teqdimat
         private ISatisPresenter _presenter;
         private readonly IServiceProvider _serviceProvider;
         private readonly IDialogXidmeti _dialogXidmeti;
+        private BindingList<SatisSebetiElementiDto>? _cartItemsSource;
+        private readonly Label _emptyCartLabel = new()
+        {
+            Text = "Səbət hələ boşdur\nSoldan məhsul seçin və ya barkodu oxudun.\nF7 ilə məhsulu səbətə əlavə edin.",
+            Font = new Font("Segoe UI", 12F),
+            ForeColor = Color.FromArgb(103, 117, 106), BackColor = Color.White,
+            TextAlign = ContentAlignment.MiddleCenter,
+            Size = new Size(420, 100)
+        };
 
         public SatisFormu(IServiceProvider serviceProvider)
         {
@@ -31,6 +40,10 @@ namespace AzAgroPOS.Teqdimat
             ConfigureDataGridViewStyles();
             AddCartActionButtons();
             ConfigureCartColumnWidths();
+            pnlCartSection.Controls.Add(_emptyCartLabel);
+            pnlCartSection.Resize += (_, _) => PositionEmptyCartLabel();
+            PositionEmptyCartLabel();
+            _emptyCartLabel.BringToFront();
             ConfigureKeyboardShortcutHints();
 
             StatusMesajiGostericisi.Initialize(toolStripStatusLabel1);
@@ -197,7 +210,11 @@ namespace AzAgroPOS.Teqdimat
                 stokCol.SortMode = DataGridViewColumnSortMode.Automatic;
                 dgvAxtarisNeticeleri.Columns.Add(stokCol);
             }
-            
+            dgvAxtarisNeticeleri.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvAxtarisNeticeleri.Columns["Ad"].FillWeight = 70;
+            dgvAxtarisNeticeleri.Columns["StokKodu"].FillWeight = 30;
+            dgvAxtarisNeticeleri.Columns["Ad"].MinimumWidth = 140;
+            dgvAxtarisNeticeleri.Columns["StokKodu"].MinimumWidth = 90;
             dgvAxtarisNeticeleri.DataSource = new System.ComponentModel.BindingList<MehsulDto>(mehsullar);
         }
 
@@ -215,7 +232,26 @@ namespace AzAgroPOS.Teqdimat
                 ConfigureSebetColumns();
             }
 
+            if (_cartItemsSource != null)
+                _cartItemsSource.ListChanged -= CartItems_ListChanged;
+            _cartItemsSource = sebet;
+            _cartItemsSource.ListChanged += CartItems_ListChanged;
             dgvSebet.DataSource = sebet;
+            UpdateEmptyCartLabel();
+        }
+
+        private void CartItems_ListChanged(object? sender, ListChangedEventArgs e) => UpdateEmptyCartLabel();
+
+        private void UpdateEmptyCartLabel()
+        {
+            _emptyCartLabel.Visible = _cartItemsSource?.Count == 0;
+            if (_emptyCartLabel.Visible) _emptyCartLabel.BringToFront();
+        }
+
+        private void PositionEmptyCartLabel()
+        {
+            _emptyCartLabel.Left = Math.Max(20, (pnlCartSection.ClientSize.Width - _emptyCartLabel.Width) / 2);
+            _emptyCartLabel.Top = Math.Max(80, (dgvSebet.Bottom - _emptyCartLabel.Height) / 2);
         }
 
         /// <summary>
@@ -777,27 +813,40 @@ namespace AzAgroPOS.Teqdimat
 
         private void ConfigureCartColumnWidths()
         {
-            // Fill rejimi dar pəncərədə başlıqları və dəyərləri kəsirdi.
-            dgvSebet.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+            // Dizayn sütunları artıq mövcuddur; DataSource onların təkrarını yaratmamalıdır.
+            dgvSebet.AutoGenerateColumns = false;
+            if (!dgvSebet.Columns.Contains("colSebetEndirim"))
+            {
+                var endirim = new DataGridViewTextBoxColumn
+                {
+                    Name = "colSebetEndirim", DataPropertyName = "EndirimMeblegi",
+                    HeaderText = "Endirim", FillWeight = 14,
+                    MinimumWidth = 80, ReadOnly = true,
+                    DefaultCellStyle = new DataGridViewCellStyle { Format = "N2", Alignment = DataGridViewContentAlignment.MiddleRight }
+                };
+                dgvSebet.Columns.Add(endirim);
+                endirim.DisplayIndex = colSebetUmumiMebleg.DisplayIndex;
+            }
+            dgvSebet.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvSebet.AllowUserToResizeColumns = true;
             dgvSebet.ScrollBars = ScrollBars.Both;
-            colSebetMehsulAdi.Width = 220;
-            colSebetMiqdar.Width = 85;
-            colSebetQiymet.Width = 110;
-            colSebetUmumiMebleg.Width = 115;
+            colSebetMehsulAdi.FillWeight = 38;
+            colSebetMiqdar.FillWeight = 12;
+            colSebetQiymet.FillWeight = 17;
+            colSebetUmumiMebleg.FillWeight = 19;
+            colSebetMehsulAdi.MinimumWidth = 180;
+            colSebetMiqdar.MinimumWidth = 72;
+            colSebetQiymet.MinimumWidth = 85;
+            colSebetUmumiMebleg.MinimumWidth = 85;
+            dgvSebet.Columns["artir_col"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            dgvSebet.Columns["azalt_col"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
             dgvSebet.Columns["artir_col"].Width = 45;
             dgvSebet.Columns["azalt_col"].Width = 45;
             dgvSebet.Columns["artir_col"].HeaderText = "+";
             dgvSebet.Columns["azalt_col"].HeaderText = "−";
 
-            dgvAxtarisNeticeleri.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
             dgvAxtarisNeticeleri.AllowUserToResizeColumns = true;
             dgvAxtarisNeticeleri.ScrollBars = ScrollBars.Both;
-            foreach (DataGridViewColumn column in dgvAxtarisNeticeleri.Columns)
-            {
-                if (column.Visible)
-                    column.Width = column.DataPropertyName == "Ad" ? 200 : 110;
-            }
         }
 
         #region Auto-complete Setup

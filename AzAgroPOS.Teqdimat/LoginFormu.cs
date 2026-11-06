@@ -14,6 +14,7 @@ namespace AzAgroPOS.Teqdimat
         private bool _girişEdilir = false;
         private System.Windows.Forms.Timer? _loadingTimer;
         private int _loadingDots = 0;
+        private readonly Panel _brandPanel = new();
 
         // CAPS LOCK detection
         [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
@@ -30,10 +31,12 @@ namespace AzAgroPOS.Teqdimat
         public LoginFormu()
         {
             InitializeComponent();
+            InitializeBrandPanel();
 
             // Versiya nömrəsini göstər
             Version? version = Assembly.GetExecutingAssembly().GetName().Version;
-            lblVersion.Text = $"v{version?.Major}.{version?.Minor}.{version?.Build}";
+            lblVersion.Text = $"AzAgroPOS  •  v{version?.Major}.{version?.Minor}.{version?.Build}";
+            lblCopyright.Text = $"© {DateTime.Today.Year} AzAgroPOS";
 
             // Hadisələri qoş
             txtParol.KeyUp += TxtParol_KeyUp;
@@ -58,6 +61,47 @@ namespace AzAgroPOS.Teqdimat
             _loadingTimer.Tick += LoadingTimer_Tick;
         }
 
+        private void InitializeBrandPanel()
+        {
+            _brandPanel.Name = "brandPanel";
+            _brandPanel.BackColor = Color.FromArgb(28, 105, 54);
+            _brandPanel.Paint += (s, e) =>
+            {
+                using LinearGradientBrush brush = new(_brandPanel.ClientRectangle,
+                    Color.FromArgb(21, 92, 47), Color.FromArgb(45, 133, 65),
+                    LinearGradientMode.ForwardDiagonal);
+                e.Graphics.FillRectangle(brush, _brandPanel.ClientRectangle);
+                using Pen line = new(Color.FromArgb(65, 255, 255, 255), 1);
+                e.Graphics.DrawLine(line, 48, 332, Math.Max(48, _brandPanel.Width - 48), 332);
+            };
+
+            Label heading = new()
+            {
+                Text = "AzAgroPOS", Font = new Font("Segoe UI", 31F, FontStyle.Bold),
+                ForeColor = Color.White, BackColor = Color.Transparent,
+                Location = new Point(46, 166), Size = new Size(340, 68)
+            };
+            Label subtitle = new()
+            {
+                Text = "Satış və mağaza idarəetməsi\nbir yerdə.",
+                Font = new Font("Segoe UI", 17F, FontStyle.Regular),
+                ForeColor = Color.FromArgb(224, 244, 226), BackColor = Color.Transparent,
+                Location = new Point(49, 246), Size = new Size(330, 70)
+            };
+            Label features = new()
+            {
+                Text = "SATIŞ   •   ANBAR   •   HESABATLAR",
+                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+                ForeColor = Color.FromArgb(217, 240, 220), BackColor = Color.Transparent,
+                Location = new Point(49, 355), Size = new Size(330, 32)
+            };
+            _brandPanel.Controls.Add(heading);
+            _brandPanel.Controls.Add(subtitle);
+            _brandPanel.Controls.Add(features);
+            pnlMain.Controls.Add(_brandPanel);
+            _brandPanel.BringToFront();
+        }
+
         private void LoginFormu_Load(object? sender, EventArgs e)
         {
             // Kontrolların rənglərini MaterialSkin-dən sonra yenidən təyin et
@@ -75,22 +119,20 @@ namespace AzAgroPOS.Teqdimat
 
         private void RengleriBerpaEt()
         {
-            // Ana panel - mavi gradient background
-            pnlMain.BackColor = Color.FromArgb(25, 118, 210);
+            pnlMain.BackColor = Color.FromArgb(246, 249, 246);
 
             // Login kartı - ağ
             pnlLoginCard.BackColor = Color.White;
 
             // Shadow panel - yarı şəffaf
-            pnlCardShadow.BackColor = Color.FromArgb(40, 0, 0, 0);
+            pnlCardShadow.BackColor = Color.FromArgb(226, 233, 226);
 
-            // Logo konteyneri - mavi
-            pnlLogoContainer.BackColor = Color.FromArgb(25, 118, 210);
+            pnlLogoContainer.BackColor = Color.White;
             picLogo.BackColor = Color.Transparent;
 
             // Başlıqlar
             lblXosGeldin.BackColor = Color.White;
-            lblXosGeldin.ForeColor = Color.FromArgb(25, 118, 210);
+            lblXosGeldin.ForeColor = Color.FromArgb(36, 111, 55);
             lblXosGeldin.Font = new Font("Segoe UI", 13F, FontStyle.Regular);
 
             lblBasliq.BackColor = Color.White;
@@ -121,19 +163,19 @@ namespace AzAgroPOS.Teqdimat
             chkMeniXatirla.BackColor = Color.White;
 
             // Loading panel
-            pnlLoading.BackColor = Color.FromArgb(25, 118, 210);
-            lblLoading.BackColor = Color.FromArgb(25, 118, 210);
+            pnlLoading.BackColor = Color.FromArgb(39, 120, 57);
+            lblLoading.BackColor = Color.FromArgb(39, 120, 57);
             lblLoading.ForeColor = Color.White;
             lblLoading.Font = new Font("Segoe UI Semibold", 11F, FontStyle.Bold);
             picLoading.BackColor = Color.Transparent;
 
             // Version və Copyright
             lblVersion.BackColor = Color.Transparent;
-            lblVersion.ForeColor = Color.FromArgb(200, 255, 255, 255);
+            lblVersion.ForeColor = Color.FromArgb(224, 244, 226);
             lblVersion.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
 
             lblCopyright.BackColor = Color.Transparent;
-            lblCopyright.ForeColor = Color.FromArgb(200, 255, 255, 255);
+            lblCopyright.ForeColor = Color.FromArgb(96, 112, 99);
             lblCopyright.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
 
             // Panelləri yenidən çək
@@ -152,15 +194,24 @@ namespace AzAgroPOS.Teqdimat
                     return;
                 }
 
-                int x = (pnlMain.ClientSize.Width - pnlLoginCard.Width) / 2;
-                int y = ((pnlMain.ClientSize.Height - pnlLoginCard.Height) / 2) - 20;
-                pnlLoginCard.Location = new Point(Math.Max(0, x), Math.Max(30, y));
+                int brandWidth = pnlMain.ClientSize.Width >= 820 ? Math.Min(420, pnlMain.ClientSize.Width * 42 / 100) : 0;
+                _brandPanel.Visible = brandWidth > 0;
+                _brandPanel.SetBounds(0, 0, brandWidth, pnlMain.ClientSize.Height);
+                int rightWidth = pnlMain.ClientSize.Width - brandWidth;
+                int x = brandWidth + (rightWidth - pnlLoginCard.Width) / 2;
+                int y = (pnlMain.ClientSize.Height - pnlLoginCard.Height) / 2;
+                pnlLoginCard.Location = new Point(Math.Max(0, x), Math.Max(12, y));
 
                 // Shadow paneli də hərəkət etdir
                 if (pnlCardShadow != null)
                 {
-                    pnlCardShadow.Location = new Point(Math.Max(5, x + 5), Math.Max(38, y + 8));
+                    pnlCardShadow.Location = new Point(Math.Max(5, x + 5), Math.Max(17, y + 6));
                 }
+                lblVersion.Location = new Point(18, pnlMain.ClientSize.Height - 27);
+                lblCopyright.Location = new Point(pnlMain.ClientSize.Width - lblCopyright.Width - 18,
+                    pnlMain.ClientSize.Height - 27);
+                lblVersion.BringToFront();
+                lblCopyright.BringToFront();
             }
         }
 
@@ -172,11 +223,11 @@ namespace AzAgroPOS.Teqdimat
 
         private void PnlMain_Paint(object? sender, PaintEventArgs e)
         {
-            // Gradient background çək
+            // Sakit fon; giriş elementləri kart üzərində oxunaqlı qalır.
             using LinearGradientBrush brush = new(
                 pnlMain.ClientRectangle,
-                Color.FromArgb(25, 118, 210),  // Mavi
-                Color.FromArgb(21, 101, 192),  // Daha tünd mavi
+                Color.FromArgb(246, 249, 246),
+                Color.FromArgb(232, 241, 233),
                 LinearGradientMode.ForwardDiagonal);
             e.Graphics.FillRectangle(brush, pnlMain.ClientRectangle);
         }
@@ -203,7 +254,7 @@ namespace AzAgroPOS.Teqdimat
         {
             // Dairəvi logo konteyneri (Region olmadan, yalnız vizual)
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-            using SolidBrush brush = new(Color.FromArgb(25, 118, 210));
+            using SolidBrush brush = new(Color.FromArgb(39, 120, 57));
             e.Graphics.FillEllipse(brush, 0, 0, pnlLogoContainer.Width - 1, pnlLogoContainer.Height - 1);
         }
 

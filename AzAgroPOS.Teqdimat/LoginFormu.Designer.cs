@@ -370,7 +370,7 @@ namespace AzAgroPOS.Teqdimat
             AcceptButton = btnDaxilOl;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(810, 1050);
+            ClientSize = new Size(1020, 690);
             Controls.Add(pnlMain);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;

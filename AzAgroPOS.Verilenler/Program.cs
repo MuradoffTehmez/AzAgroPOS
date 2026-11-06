@@ -10,11 +10,10 @@ class Program
         IConfiguration configuration = ConnectionStringResolver.BuildConfiguration(Directory.GetCurrentDirectory());
 
         string connectionString = ConnectionStringResolver.Resolve(configuration);
-        Console.WriteLine($"Connection String: {connectionString}");
-
         if (!await CanOpenConnectionAsync(connectionString))
         {
             Console.WriteLine("Database connection failed. Update appsettings.json or set AZAGROPOS__CONNECTIONSTRING.");
+            Environment.ExitCode = 1;
             return;
         }
 
@@ -43,11 +42,17 @@ class Program
             {
                 Console.WriteLine("No pending migrations found.");
             }
+
+            if (args.Contains("--seed-demo", StringComparer.OrdinalIgnoreCase))
+            {
+                await DemoDataSeeder.SeedAsync(context);
+            }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error while applying migrations: {ex.Message}");
+            Console.WriteLine($"Database operation failed: {ex.Message}");
             Console.WriteLine(ex.StackTrace);
+            Environment.ExitCode = 1;
         }
     }
 
