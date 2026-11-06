@@ -21,6 +21,15 @@ public class AnbarQaliqHesabatPresenter
         _view.HesabatiGosterIstek += async (s, e) => await AnbarQaliqHesabatiniGoster();
     }
 
+    public async Task KateqoriyalariYukleAsync()
+    {
+        var netice = await _hesabatManager.AnbarQaliqKateqoriyalariGetirAsync();
+        if (netice.UgurluDur)
+            _view.KateqoriyalariYukle(netice.Data);
+        else
+            _view.MesajGoster(netice.Mesaj);
+    }
+
     private async Task AnbarQaliqHesabatiniGoster()
     {
         if (!int.TryParse(_view.LimitSay, out int limit))
@@ -29,7 +38,7 @@ public class AnbarQaliqHesabatPresenter
             return;
         }
 
-        EmeliyyatNeticesi<List<AnbarQaliqDetayDto>> netice = await _hesabatManager.AnbarQaliqHesabatiGetirAsync(limit);
+        EmeliyyatNeticesi<List<AnbarQaliqDetayDto>> netice = await _hesabatManager.AnbarQaliqHesabatiGetirAsync(limit, _view.KateqoriyaFilter, _view.YalnizTukenenleri);
 
         if (netice.UgurluDur)
         {

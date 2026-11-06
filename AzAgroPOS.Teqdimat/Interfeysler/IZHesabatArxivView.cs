@@ -12,6 +12,7 @@ public interface IZHesabatArxivView
 
     event EventHandler FormYuklendi;
     event EventHandler HesabatGosterIstek;
+    event EventHandler HesabatSecimDeyisdi;
     event EventHandler HesabatCapIstek;
     event EventHandler TarixFiltrDeyisdi;
 

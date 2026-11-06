@@ -10,6 +10,7 @@ public class MehsulUzreSatisDetayDto
     public string MehsulAdi { get; set; } = string.Empty;
     public decimal CemiSatilanMiqdar { get; set; }
     public decimal CemiMebleg { get; set; }
+    public decimal OrtalamaQiymet => CemiSatilanMiqdar == 0 ? 0 : CemiMebleg / CemiSatilanMiqdar;
 
     // Cədvəldə daha səliqəli görünsün deyə formatlanmış xüsusiyyət
     public string CemiMeblegStr => $"{CemiMebleg:N2} AZN";

@@ -13,6 +13,7 @@ public class ZHesabatArxivPresenter
     private readonly IZHesabatArxivView _view;
     private readonly HesabatManager _hesabatManager;
     private readonly NovbeManager _novbeManager;
+    private List<BaglanmisNovbeDto> _butunNovbeler = new();
 
     public ZHesabatArxivPresenter(IZHesabatArxivView view, HesabatManager hesabatManager)
     {
@@ -21,6 +22,8 @@ public class ZHesabatArxivPresenter
 
         _view.FormYuklendi += async (s, e) => await FormuYukle();
         _view.HesabatGosterIstek += async (s, e) => await ZHesabatiGoster();
+        _view.HesabatSecimDeyisdi += async (s, e) => await DetallariYukle();
+        _view.TarixFiltrDeyisdi += (s, e) => Filtrle();
     }
 
     private async Task FormuYukle()
@@ -28,12 +31,31 @@ public class ZHesabatArxivPresenter
         EmeliyyatNeticesi<List<BaglanmisNovbeDto>> netice = await _hesabatManager.BaglanmisNovbeleriGetirAsync();
         if (netice.UgurluDur)
         {
-            _view.NovbeleriGoster(netice.Data);
+            _butunNovbeler = netice.Data;
+            Filtrle();
         }
         else
         {
             _view.MesajGoster(netice.Mesaj);
         }
+    }
+
+    private void Filtrle()
+    {
+        List<BaglanmisNovbeDto> novbeler = _butunNovbeler
+            .Where(n => n.BaglanmaTarixi >= _view.BaslangicTarixi && n.BaglanmaTarixi <= _view.BitisTarixi)
+            .ToList();
+        _view.NovbeleriGoster(novbeler);
+        _view.XulaseGoster(novbeler.Count, novbeler.Sum(n => n.CemiSatis),
+            novbeler.Sum(n => n.NagdSatis), novbeler.Sum(n => n.KartSatis));
+    }
+
+    private async Task DetallariYukle()
+    {
+        if (!_view.SecilmisNovbeId.HasValue) return;
+        EmeliyyatNeticesi<ZHesabatDto> netice = await _hesabatManager.ZHesabatTekrarGetirAsync(_view.SecilmisNovbeId.Value);
+        if (netice.UgurluDur)
+            _view.HesabatDetallariGoster(netice.Data);
     }
 
     private async Task ZHesabatiGoster()

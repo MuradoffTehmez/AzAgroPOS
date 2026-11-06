@@ -44,6 +44,7 @@ public partial class ZHesabatArxivFormu : BazaForm, IZHesabatArxivView
 
     public event EventHandler? FormYuklendi;
     public event EventHandler? HesabatGosterIstek;
+    public event EventHandler? HesabatSecimDeyisdi;
     public event EventHandler? HesabatCapIstek;
     public event EventHandler? TarixFiltrDeyisdi;
 
@@ -207,7 +208,7 @@ public partial class ZHesabatArxivFormu : BazaForm, IZHesabatArxivView
         // Seçilmiş sətir dəyişəndə avtomatik hesabat detallarını yüklə
         if (dgvNovbeler.CurrentRow != null)
         {
-            HesabatGosterIstek?.Invoke(this, EventArgs.Empty);
+            HesabatSecimDeyisdi?.Invoke(this, EventArgs.Empty);
         }
     }
 

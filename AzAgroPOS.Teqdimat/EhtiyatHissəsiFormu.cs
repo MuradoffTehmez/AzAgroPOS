@@ -9,6 +9,7 @@ namespace AzAgroPOS.Teqdimat
     public partial class EhtiyatHissəsiFormu : Form, IEhtiyatHissəsiView
     {
         private readonly MehsulManager _mehsulManager;
+        private List<MehsulDto> _butunMehsullar = new();
 
         public System.ComponentModel.BindingList<EhtiyatHissəsiDto> EhtiyatHissələri { get; }
 
@@ -19,6 +20,11 @@ namespace AzAgroPOS.Teqdimat
             EhtiyatHissələri = new System.ComponentModel.BindingList<EhtiyatHissəsiDto>();
             StilVerDataGridView(dgvMehsullar);
             StilVerDataGridView(dgvSeçilmişMehsullar);
+            dgvMehsullar.AutoGenerateColumns = false;
+            dgvMehsullar.Columns.Add(new DataGridViewTextBoxColumn { Name = "Ad", DataPropertyName = "Ad", HeaderText = "Məhsul" });
+            dgvMehsullar.Columns.Add(new DataGridViewTextBoxColumn { Name = "StokKodu", DataPropertyName = "StokKodu", HeaderText = "Stok kodu" });
+            dgvMehsullar.Columns.Add(new DataGridViewTextBoxColumn { Name = "MovcudSay", DataPropertyName = "MovcudSay", HeaderText = "Qalıq" });
+            dgvMehsullar.Columns.Add(new DataGridViewTextBoxColumn { Name = "AlisQiymeti", DataPropertyName = "AlisQiymeti", HeaderText = "Alış qiyməti", DefaultCellStyle = new DataGridViewCellStyle { Format = "N2" } });
         }
 
         // IEhtiyatHissəsiView interface implementasiyası
@@ -62,32 +68,24 @@ namespace AzAgroPOS.Teqdimat
             EmeliyyatNeticesi<IEnumerable<MehsulDto>> netice = await _mehsulManager.ButunMehsullariGetirAsync();
             if (netice.UgurluDur)
             {
-                dgvMehsullar.DataSource = netice.Data;
-                if (dgvMehsullar.Columns.Count > 0)
-                {
-                    dgvMehsullar.Columns["Id"].Visible = false;
-                    dgvMehsullar.Columns["Ad"].HeaderText = "Məhsul Adı";
-                    dgvMehsullar.Columns["StokKodu"].HeaderText = "Stok Kodu";
-                    dgvMehsullar.Columns["AlisQiymeti"].HeaderText = "Alış Qiyməti";
-                    dgvMehsullar.Columns["PerakendeSatisQiymeti"].HeaderText = "Pərakəndə Qiyməti";
-                    dgvMehsullar.Columns["TopluSatisQiymeti"].HeaderText = "Toplu Qiymət";
-                    dgvMehsullar.Columns["MovcudSay"].HeaderText = "Mövcud Say";
-                    dgvMehsullar.Columns["MinimumStokSayi"].HeaderText = "Min. Stok";
-                }
+                _butunMehsullar = netice.Data.ToList();
+                MehsullariFiltrle();
             }
         }
 
         private void txtAxtar_TextChanged(object sender, EventArgs e)
         {
-            if (dgvMehsullar.DataSource is List<MehsulDto> mehsullar)
-            {
-                string axtarışMətni = txtAxtar.Text.ToLower();
-                List<MehsulDto> filtrlenmisMehsullar = mehsullar.Where(m =>
-                    m.Ad.ToLower().Contains(axtarışMətni) ||
-                    m.StokKodu.ToLower().Contains(axtarışMətni)).ToList();
+            MehsullariFiltrle();
+        }
 
-                dgvMehsullar.DataSource = filtrlenmisMehsullar;
-            }
+        private void MehsullariFiltrle()
+        {
+            string axtaris = txtAxtar.Text.Trim();
+            dgvMehsullar.DataSource = _butunMehsullar
+                .Where(m => m.Ad.Contains(axtaris, StringComparison.CurrentCultureIgnoreCase)
+                    || (m.StokKodu?.Contains(axtaris, StringComparison.OrdinalIgnoreCase) ?? false)
+                    || (m.Barkod?.Contains(axtaris, StringComparison.OrdinalIgnoreCase) ?? false))
+                .ToList();
         }
 
         private void btnElaveEt_Click(object sender, EventArgs e)

@@ -19,6 +19,7 @@ public partial class XercIdareetmeFormu : BazaForm, IXercView
         StilVerDataGridView(dgvXercler);
         dgvXercler.AutoGenerateColumns = false;
         btnXercYenile.Visible = false;
+        SutunlariQur();
         dgvXercler.DataSource = _xercBindingList;
         dgvXercler.DataBindingComplete += (_, __) => ConfigureDataGridViewStyles();
     }
@@ -52,7 +53,10 @@ public partial class XercIdareetmeFormu : BazaForm, IXercView
         }
 
         ConfigureDataGridViewStyles();
+    }
 
+    private void SutunlariQur()
+    {
         if (dgvXercler.Columns.Count == 0)
         {
             dgvXercler.AutoGenerateColumns = false;

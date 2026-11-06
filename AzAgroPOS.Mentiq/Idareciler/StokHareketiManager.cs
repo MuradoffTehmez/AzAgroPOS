@@ -449,10 +449,18 @@ public class StokHareketiManager
                 hereketler = await _stokHareketiRepo.ButununuGetirAsync();
             }
 
-            // Entity-ləri DTO-ya çevir
-            List<StokHareketiDto> dtolar = hereketler
+            List<StokHareketi> sonHereketler = hereketler
                 .OrderByDescending(h => h.Tarix)
+                .ThenByDescending(h => h.Id)
                 .Take(limit)
+                .ToList();
+            List<int> mehsulIds = sonHereketler.Select(h => h.MehsulId).Distinct().ToList();
+            Dictionary<int, decimal> qaliqlar = (await _unitOfWork.Mehsullar
+                    .AxtarAsync(m => mehsulIds.Contains(m.Id)))
+                .ToDictionary(m => m.Id, m => (decimal)m.MovcudSay);
+
+            // Son qalıqdan geriyə doğru hərəkətlərin əvvəlki və sonrakı qalıqlarını tap.
+            List<StokHareketiDto> dtolar = sonHereketler
                 .Select(h => new DTOs.StokHareketiDto
                 {
                     Id = h.Id,
@@ -462,14 +470,17 @@ public class StokHareketiManager
                     MehsulId = h.MehsulId,
                     MehsulAdi = h.Mehsul != null ? h.Mehsul.Ad : "N/A",
                     Qeyd = h.Qeyd ?? "",
-                    // Köhnə stok, dəyişiklik və yeni stoku hesablamaq üçün
-                    // Bu məlumatlar entity-də yoxdur, ona görə 0 qoyuruq
-                    // Real hesabat üçün bu məlumatları ayrıca hesablamaq lazımdır
-                    KohneStok = 0,
                     DeyisiklikMiqdari = h.HareketTipi == StokHareketTipi.Daxilolma ? h.Miqdar : -h.Miqdar,
-                    YeniStok = 0
                 })
                 .ToList();
+            foreach (StokHareketiDto hereket in dtolar)
+            {
+                if (!qaliqlar.TryGetValue(hereket.MehsulId, out decimal yeniStok))
+                    continue;
+                hereket.YeniStok = yeniStok;
+                hereket.KohneStok = yeniStok - hereket.DeyisiklikMiqdari;
+                qaliqlar[hereket.MehsulId] = hereket.KohneStok;
+            }
 
             Logger.MelumatYaz($"Stok hərəkətləri DTO formatında əldə edildi. Say: {dtolar.Count}");
             return EmeliyyatNeticesi<List<DTOs.StokHareketiDto>>.Ugurlu(dtolar);

@@ -19,6 +19,7 @@ public partial class AnbarQaliqHesabatFormu : BazaForm, IAnbarQaliqHesabatView
         StilVerDataGridView(dgvHesabat);
 
         _presenter = new AnbarQaliqHesabatPresenter(this, hesabatManager);
+        Shown += async (_, _) => await _presenter.KateqoriyalariYukleAsync();
 
         // Event handler-ları qoş
         btnGoster.Click += BtnGoster_Click;
@@ -72,8 +73,9 @@ public partial class AnbarQaliqHesabatFormu : BazaForm, IAnbarQaliqHesabatView
             
             dgvHesabat.Columns.Add(new DataGridViewTextBoxColumn { Name = "StokKodu", DataPropertyName = "StokKodu", HeaderText = "Stok Kodu" });
             dgvHesabat.Columns.Add(new DataGridViewTextBoxColumn { Name = "MehsulAdi", DataPropertyName = "MehsulAdi", HeaderText = "Məhsul Adı" });
+            dgvHesabat.Columns.Add(new DataGridViewTextBoxColumn { Name = "KateqoriyaAdi", DataPropertyName = "KateqoriyaAdi", HeaderText = "Kateqoriya" });
             
-            var qtyCol = new DataGridViewTextBoxColumn { Name = "MovcudMiqdar", DataPropertyName = "MovcudMiqdar", HeaderText = "Mövcud Miqdar" };
+            var qtyCol = new DataGridViewTextBoxColumn { Name = "MovcudSay", DataPropertyName = "MovcudSay", HeaderText = "Mövcud Miqdar" };
             qtyCol.DefaultCellStyle.Format = "N2";
             dgvHesabat.Columns.Add(qtyCol);
             
@@ -91,6 +93,10 @@ public partial class AnbarQaliqHesabatFormu : BazaForm, IAnbarQaliqHesabatView
         }
 
         dgvHesabat.DataSource = new System.ComponentModel.BindingList<AnbarQaliqDetayDto>(hesabat);
+        XulaseGoster(hesabat.Count,
+            hesabat.Sum(m => Math.Max(0, m.MovcudSay) * m.AlisQiymeti),
+            hesabat.Count(m => m.MovcudSay > 0 && m.MovcudSay <= m.MinimumSay),
+            hesabat.Count(m => m.MovcudSay <= 0));
 
         lblMesaj.Visible = false;
         dgvHesabat.Visible = true;

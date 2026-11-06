@@ -21,6 +21,11 @@ public partial class IstifadeciIdareetmeFormu : BazaForm, IIstifadeciView
         _icazeManager = icazeManager;
         _presenter = new IstifadeciPresenter(this, istifadeciManager);
         StilVerDataGridView(dgvIstifadeciler);
+        dgvIstifadeciler.CellClick += (_, e) =>
+        {
+            if (e.RowIndex >= 0)
+                dgvIstifadeciler_SelectionChanged(dgvIstifadeciler, EventArgs.Empty);
+        };
         Button icazeButton = new()
         {
             Text = "ROLLAR VƏ İCAZƏLƏR",

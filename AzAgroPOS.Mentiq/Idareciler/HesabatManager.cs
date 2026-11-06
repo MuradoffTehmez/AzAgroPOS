@@ -139,24 +139,28 @@ public class HesabatManager
     /// Anbarda miqdarı göstərilən limitdən az və ya bərabər olan məhsulları tapır.
     /// </summary>
     /// <param name="limitSay">Anbar qalığı üçün maksimum limit.</param>
-    public async Task<EmeliyyatNeticesi<List<AnbarQaliqDetayDto>>> AnbarQaliqHesabatiGetirAsync(int limitSay)
+    public async Task<EmeliyyatNeticesi<List<AnbarQaliqDetayDto>>> AnbarQaliqHesabatiGetirAsync(int limitSay, string kateqoriyaAdi = "", bool yalnizTukenenleri = false)
     {
         Logger.MelumatYaz($"Anbar qalıq hesabatı üçün limit: {limitSay}");
         try
         {
             IEnumerable<Mehsul> mehsullar = await _unitOfWork.Mehsullar.AxtarAsync(m => m.MovcudSay <= limitSay);
-
-            if (!mehsullar.Any())
-            {
-                return EmeliyyatNeticesi<List<AnbarQaliqDetayDto>>.Ugursuz($"Anbarda sayı {limitSay}-dən az olan məhsul tapılmadı.");
-            }
+            var kateqoriyalar = (await _unitOfWork.Kateqoriyalar.ButununuGetirAsync())
+                .ToDictionary(k => k.Id, k => k.Ad);
 
             List<AnbarQaliqDetayDto> hesabat = mehsullar
+                .Where(m => !yalnizTukenenleri || m.MovcudSay <= 0)
+                .Where(m => string.IsNullOrEmpty(kateqoriyaAdi) ||
+                    (m.KateqoriyaId.HasValue && kateqoriyalar.TryGetValue(m.KateqoriyaId.Value, out var ad) && ad == kateqoriyaAdi))
                 .Select(m => new AnbarQaliqDetayDto
                 {
                     StokKodu = m.StokKodu,
                     MehsulAdi = m.Ad,
-                    MovcudSay = m.MovcudSay
+                    KateqoriyaAdi = m.KateqoriyaId.HasValue && kateqoriyalar.TryGetValue(m.KateqoriyaId.Value, out var ad) ? ad : string.Empty,
+                    MovcudSay = m.MovcudSay,
+                    MinimumSay = m.MinimumStok,
+                    AlisQiymeti = m.AlisQiymeti,
+                    SatisQiymeti = m.PerakendeSatisQiymeti
                 })
                 .OrderBy(r => r.MovcudSay)
                 .ToList();
@@ -169,6 +173,24 @@ public class HesabatManager
             return EmeliyyatNeticesi<List<AnbarQaliqDetayDto>>.Ugursuz($"Hesabat hazırlanarkən xəta baş verdi: {ex.Message}+ {ex.StackTrace}");
         }
     }
+    public async Task<EmeliyyatNeticesi<List<string>>> AnbarQaliqKateqoriyalariGetirAsync()
+    {
+        try
+        {
+            var kateqoriyalar = await _unitOfWork.Kateqoriyalar.ButununuGetirAsync();
+            return EmeliyyatNeticesi<List<string>>.Ugurlu(kateqoriyalar
+                .Where(k => k.Aktivdir)
+                .Select(k => k.Ad)
+                .Distinct()
+                .OrderBy(ad => ad)
+                .ToList());
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Anbar hesabatı kateqoriyaları gətirilərkən xəta baş verdi: ");
+            return EmeliyyatNeticesi<List<string>>.Ugursuz(ex.Message);
+        }
+    }
     /// <summary>
     /// Bütün bağlanmış növbələrin siyahısını gətirir.
     /// </summary>
@@ -177,7 +199,7 @@ public class HesabatManager
         Logger.MelumatYaz("Bağlanmış növbələr gətirilir.");
         try
         {
-            IEnumerable<Novbe> novbeler = await _unitOfWork.Novbeler.AxtarAsync(n => n.Status == NovbeStatusu.Bagli);
+            List<Novbe> novbeler = (await _unitOfWork.Novbeler.AxtarAsync(n => n.Status == NovbeStatusu.Bagli)).ToList();
 
             List<int> isciIds = novbeler.Select(n => n.IsciId).Distinct().ToList();
             Dictionary<int, string> isciler = (await _unitOfWork.Istifadeciler.AxtarAsync(i => isciIds.Contains(i.Id)))
@@ -188,12 +210,21 @@ public class HesabatManager
                 return EmeliyyatNeticesi<List<BaglanmisNovbeDto>>.Ugursuz("Heç bir bağlanmış növbə tapılmadı.");
             }
 
+            List<int> novbeIds = novbeler.Select(n => n.Id).ToList();
+            List<Satis> satislar = (await _unitOfWork.Satislar.AxtarAsync(s => novbeIds.Contains(s.NovbeId))).ToList();
+            Dictionary<int, List<Satis>> satislarNovbeyeGore = satislar
+                .GroupBy(s => s.NovbeId)
+                .ToDictionary(g => g.Key, g => g.ToList());
+
             List<BaglanmisNovbeDto> dtoSiyahisi = novbeler
                 .Select(n => new BaglanmisNovbeDto
                 {
                     NovbeId = n.Id,
                     KassirAdi = isciler.ContainsKey(n.IsciId) ? isciler[n.IsciId] : "Naməlum",
-                    BaglanmaTarixi = n.BaglanmaTarixi.GetValueOrDefault()
+                    AcilmaTarixi = n.AcilmaTarixi,
+                    BaglanmaTarixi = n.BaglanmaTarixi.GetValueOrDefault(),
+                    NagdSatis = satislarNovbeyeGore.GetValueOrDefault(n.Id)?.Where(s => s.OdenisMetodu == OdenisMetodu.Nağd).Sum(s => s.UmumiMebleg) ?? 0,
+                    KartSatis = satislarNovbeyeGore.GetValueOrDefault(n.Id)?.Where(s => s.OdenisMetodu == OdenisMetodu.Kart).Sum(s => s.UmumiMebleg) ?? 0
                 })
                 .OrderByDescending(n => n.BaglanmaTarixi)
                 .ToList();
