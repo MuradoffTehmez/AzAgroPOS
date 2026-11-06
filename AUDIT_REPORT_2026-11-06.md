@@ -18,6 +18,8 @@
 | Əvvəlki borc | İlkin tarix və yaradan şəxs yox idi, icazə yalnız ekranda yoxlanırdı | Tarix, qeyd və istifadəçi yazılır; menecerdə admin/rol icazəsi yoxlanır |
 | Göstəricilər | Dashboardda üç sahə `N/A`, sorğu xətası bəzi sahələrdə `0` idi | Aylıq satış, təmir və tədarükçü borcu hesablanır; sorğu xətası ayrıca göstərilir |
 | Ana menyu | Uzun sol düymə siyahısı məzmunu daraldırdı | Qruplu `MenuStrip` quruldu; aktiv səhifə və səlahiyyət vəziyyəti sinxronlaşdırıldı |
+| Menyu örtüşməsi | `MenuStrip` ilə tab məzmunu eyni `Dock` sahəsində qalırdı | Menyu və tablar ayrı yerləşmə sətirlərinə keçirildi; keçiddə qısa açılma effekti əlavə edildi |
+| Yeni müştərinin yenilənməsi | Sahələr təmizlənsə də saxlanma cədvəlin `CurrentRow` ID-sini götürürdü | Yeni/redaktə ID-si ayrıldı, yeni müştəri satış dialoqundan yaradıldıqda avtomatik seçilir |
 
 Əlavə olaraq rol icazələrini dəyişmək üçün admin ekranı, istifadəçi adının redaktəsi, sessiya müddəti və giriş loqu, nisyə ödənişinin Z hesabatında ayrıca göstərilməsi, anbar cədvəli sütunları və qəbzdə faktiki yekun məbləğ düzəldildi.
 

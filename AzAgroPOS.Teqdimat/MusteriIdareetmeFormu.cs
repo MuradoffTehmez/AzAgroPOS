@@ -53,14 +53,14 @@ namespace AzAgroPOS.Teqdimat
             toolTip1.SetToolTip(txtUnvan, "Müştərinin ünvanını daxil edin");
             toolTip1.SetToolTip(txtKreditLimiti, "Müştərinin kredit limitini daxil edin (0 = Limitsiz)");
             toolTip1.SetToolTip(txtAxtaris, "Müştərilər arasında axtarış edin");
-            toolTip1.SetToolTip(btnYeni, "Yeni müştəri əlavə edin və ya formanı təmizləyin");
+            toolTip1.SetToolTip(btnYeni, "Yeni müştəri yaratmaq üçün redaktə rejimindən çıxın");
             toolTip1.SetToolTip(btnYaddaSaxla, "Müştəri məlumatlarını yadda saxlayın");
             toolTip1.SetToolTip(btnSil, "Seçilmiş müştəriyi silin");
         }
 
         #region IMusteriView Implementasiyası
 
-        public int SecilmisMusteriId => dgvMusteriler.CurrentRow?.DataBoundItem is MusteriDto musteri ? musteri.Id : 0;
+        public int SecilmisMusteriId => SecilenMusteriId;
 
         public string MusteriId { get; set; } = "";
         public string TamAd { get => txtTamAd.Text; set => txtTamAd.Text = value; }
@@ -113,17 +113,32 @@ namespace AzAgroPOS.Teqdimat
             }
 
             dgvMusteriler.DataSource = new System.ComponentModel.BindingList<MusteriDto>(musteriler);
+            SecilenMusteriId = 0;
+            dgvMusteriler.ClearSelection();
             dgvMusteriler.SelectionChanged += dgvMusteriler_SelectionChanged;
         }
 
         public void FormuTemizle()
         {
+            SecilenMusteriId = 0;
+            dgvMusteriler.SelectionChanged -= dgvMusteriler_SelectionChanged;
+            dgvMusteriler.ClearSelection();
+            dgvMusteriler.SelectionChanged += dgvMusteriler_SelectionChanged;
             txtTamAd.Clear();
             txtTelefon.Clear();
             txtUnvan.Clear();
             txtKreditLimiti.Text = "0";
-            dgvMusteriler.ClearSelection();
+            btnYaddaSaxla.Text = "ƏLAVƏ ET";
             txtTamAd.Focus();
+        }
+
+        public bool YeniYaradilanMusteriniSec(int musteriId)
+        {
+            if (!Modal) return false;
+            SecilenMusteriId = musteriId;
+            DialogResult = DialogResult.OK;
+            Close();
+            return true;
         }
 
         public void MesajGoster(string mesaj, string basliq, MessageBoxIcon ikon)
@@ -279,10 +294,10 @@ namespace AzAgroPOS.Teqdimat
 
         private void dgvMusteriler_SelectionChanged(object sender, EventArgs e)
         {
+            SecilenMusteriId = dgvMusteriler.SelectedRows.Count > 0 &&
+                dgvMusteriler.CurrentRow?.DataBoundItem is MusteriDto musteri ? musteri.Id : 0;
+            btnYaddaSaxla.Text = SecilenMusteriId > 0 ? "YENİLƏ" : "ƏLAVƏ ET";
             MusteriSecildi?.Invoke(sender, e);
-
-            // Update selected customer ID when selection changes
-            SecilenMusteriId = dgvMusteriler.CurrentRow?.DataBoundItem is MusteriDto musteri ? musteri.Id : 0;
         }
 
         private void btnYeni_Click(object sender, EventArgs e)

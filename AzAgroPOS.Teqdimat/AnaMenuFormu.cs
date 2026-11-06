@@ -21,6 +21,11 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
     private readonly MenuStrip _mainMenu = new();
     private readonly ToolStripLabel _menuUserLabel = new();
     private readonly ToolStripMenuItem _customerMenuItem = new("Müştərilər");
+    private readonly TableLayoutPanel _workspaceLayout = new();
+    private readonly Panel _tabHost = new();
+    private readonly Panel _navigationCover = new();
+    private readonly System.Windows.Forms.Timer _navigationTimer = new() { Interval = 16 };
+    private DateTime _navigationStarted;
     private readonly Dictionary<TabPage, AsyncServiceScope> _tabScopes = new();
     private readonly SemaphoreSlim _dashboardKilidi = new(1, 1);
     private readonly SessiyaGirisFiltiri _girisFiltiri = new();
@@ -45,6 +50,8 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
         {
             _sessiyaTimer.Stop();
             _sessiyaTimer.Dispose();
+            _navigationTimer.Stop();
+            _navigationTimer.Dispose();
             Application.RemoveMessageFilter(_girisFiltiri);
         };
 
@@ -151,10 +158,59 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
         _menuUserLabel.ForeColor = Color.FromArgb(42, 62, 48);
         _menuUserLabel.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
         _mainMenu.Items.Add(_menuUserLabel);
+        // Menyu və tablar eyni Dock sahəsini paylaşanda forma başlığı örtülürdü.
+        // Ayrı sətirlər məzmunun həmişə menyunun altında başlamasını təmin edir.
+        Controls.Remove(mdiTabControl);
+        _workspaceLayout.Dock = DockStyle.Fill;
+        _workspaceLayout.Margin = Padding.Empty;
+        _workspaceLayout.Padding = Padding.Empty;
+        _workspaceLayout.ColumnCount = 1;
+        _workspaceLayout.RowCount = 2;
+        _workspaceLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
+        _workspaceLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 44));
+        _workspaceLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+
+        _tabHost.Dock = DockStyle.Fill;
+        _tabHost.Margin = Padding.Empty;
+        _tabHost.Controls.Add(mdiTabControl);
+        _navigationCover.BackColor = Color.FromArgb(247, 250, 247);
+        _navigationCover.Visible = false;
+        _navigationCover.Enabled = false;
+        _tabHost.Controls.Add(_navigationCover);
+        _navigationTimer.Tick += NavigationTimer_Tick;
+
+        _workspaceLayout.Controls.Add(_mainMenu, 0, 0);
+        _workspaceLayout.Controls.Add(_tabHost, 0, 1);
         MainMenuStrip = _mainMenu;
-        Controls.Add(_mainMenu);
-        _mainMenu.BringToFront();
+        Controls.Add(_workspaceLayout);
+        _workspaceLayout.BringToFront();
         ResumeLayout(true);
+    }
+
+    private void StartNavigationTransition()
+    {
+        if (_tabHost.ClientSize.Width <= 0 || mdiTabControl.SelectedTab == null) return;
+        _navigationTimer.Stop();
+        _navigationStarted = DateTime.UtcNow;
+        _navigationCover.SetBounds(0, 0, _tabHost.ClientSize.Width, _tabHost.ClientSize.Height);
+        _navigationCover.Visible = true;
+        _navigationCover.BringToFront();
+        _navigationTimer.Start();
+    }
+
+    private void NavigationTimer_Tick(object? sender, EventArgs e)
+    {
+        double progress = Math.Min(1, (DateTime.UtcNow - _navigationStarted).TotalMilliseconds / 180);
+        if (progress >= 1 || IsDisposed)
+        {
+            _navigationTimer.Stop();
+            _navigationCover.Visible = false;
+            return;
+        }
+
+        // Qısa soldan sağa açılma effekti; forma daxilində animasiya gedir.
+        int left = (int)Math.Round(_tabHost.ClientSize.Width * progress);
+        _navigationCover.SetBounds(left, 0, Math.Max(0, _tabHost.ClientSize.Width - left), _tabHost.ClientSize.Height);
     }
 
     private ToolStripMenuItem AddMenuGroup(string title)
@@ -287,6 +343,11 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
             SatisPresenter satisPresenter = new(satisFormu, satisManager, mehsulManager, musteriManager, konfiqurasiyaManager);
             satisFormu.InitializePresenter(satisPresenter);
         }
+        else if (form is MusteriIdareetmeFormu musteriFormu)
+        {
+            MusteriManager musteriManager = serviceProvider.GetRequiredService<MusteriManager>();
+            musteriFormu.InitializePresenter(new MusteriPresenter(musteriFormu, musteriManager));
+        }
         // Initialize presenter for TemirIdareetmeFormu
         else if (form is TemirIdareetmeFormu temirFormu)
         {
@@ -366,6 +427,7 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
     private void mdiTabControl_SelectedIndexChanged(object sender, EventArgs e)
     {
         UpdateActiveButtonHighlight();
+        StartNavigationTransition();
     }
     #endregion
 

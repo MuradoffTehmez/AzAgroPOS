@@ -22,6 +22,7 @@ namespace AzAgroPOS.Teqdimat.Interfeysler
 
         void MusterileriGoster(List<MusteriDto> musteriler);
         void FormuTemizle();
+        bool YeniYaradilanMusteriniSec(int musteriId);
         void MesajGoster(string mesaj, string basliq, MessageBoxIcon ikon);
         void SehifeMelumatlariGoster(int cariSehife, int umumiSehife, int umumiQeyd, bool evvelkiVar, bool novbetiVar);
         Task EmeliyyatIcraEtAsync(Func<Task> emeliyyat, string mesaj);

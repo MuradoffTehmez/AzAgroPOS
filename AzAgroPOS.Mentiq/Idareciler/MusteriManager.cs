@@ -29,12 +29,12 @@ namespace AzAgroPOS.Mentiq.Idareciler
             return EmeliyyatNeticesi<List<MusteriDto>>.Ugurlu(dtolar);
         }
 
-        public async Task<EmeliyyatNeticesi> MusteriYaratAsync(MusteriDto dto)
+        public async Task<EmeliyyatNeticesi<int>> MusteriYaratAsync(MusteriDto dto)
         {
             Musteri? movcudMusteri = (await _unitOfWork.Musteriler.AxtarAsync(m => m.TelefonNomresi == dto.TelefonNomresi)).FirstOrDefault();
             if (movcudMusteri != null)
             {
-                return EmeliyyatNeticesi.Ugursuz("Bu telefon nömrəsi ilə müştəri artıq mövcuddur.");
+                return EmeliyyatNeticesi<int>.Ugursuz("Bu telefon nömrəsi ilə müştəri artıq mövcuddur.");
             }
 
             Musteri musteri = new()
@@ -47,7 +47,7 @@ namespace AzAgroPOS.Mentiq.Idareciler
             };
             await _unitOfWork.Musteriler.ElaveEtAsync(musteri);
             await _unitOfWork.EmeliyyatiTesdiqleAsync();
-            return EmeliyyatNeticesi.Ugurlu();
+            return EmeliyyatNeticesi<int>.Ugurlu(musteri.Id);
         }
 
         public async Task<EmeliyyatNeticesi> MusteriYenileAsync(MusteriDto dto)

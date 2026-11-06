@@ -59,7 +59,8 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                             m.TelefonNomresi.Contains(axtarisLower));
                     }
 
-                    _view.MusterileriGoster(musteriler.ToList());
+                    _musteriCache = musteriler.ToList();
+                    _view.MusterileriGoster(_musteriCache);
                     _view.SehifeMelumatlariGoster(
                         sehifelenmis.CariSehife,
                         sehifelenmis.UmumiSehifeSayi,
@@ -67,6 +68,10 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                         sehifelenmis.EvvelkiSehifeVar,
                         sehifelenmis.NovbetiSehifeVar
                     );
+                }
+                else
+                {
+                    _view.MesajGoster(netice.Mesaj, "Xəta", MessageBoxIcon.Error);
                 }
             }
             else
@@ -131,6 +136,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 
         private async Task YaddaSaxla()
         {
+            int modalSecimId = 0;
             await _view.EmeliyyatIcraEtAsync(async () =>
             {
                 // Clear previous validation errors
@@ -169,9 +175,26 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                     KreditLimiti = decimal.TryParse(_view.KreditLimiti, out decimal limit) ? limit : 0
                 };
 
-                EmeliyyatNeticesi netice = musteriDto.Id > 0 ? await _musteriManager.MusteriYenileAsync(musteriDto) : await _musteriManager.MusteriYaratAsync(musteriDto);
+                bool yeniMusteri = musteriDto.Id == 0;
+                int yaradilanId = 0;
+                EmeliyyatNeticesi netice;
+                if (yeniMusteri)
+                {
+                    EmeliyyatNeticesi<int> yaratma = await _musteriManager.MusteriYaratAsync(musteriDto);
+                    netice = yaratma;
+                    if (yaratma.UgurluDur) yaradilanId = yaratma.Data;
+                }
+                else
+                {
+                    netice = await _musteriManager.MusteriYenileAsync(musteriDto);
+                }
                 if (netice.UgurluDur)
                 {
+                    if (yeniMusteri && yaradilanId > 0)
+                    {
+                        modalSecimId = yaradilanId;
+                        return;
+                    }
                     _view.MesajGoster("Əməliyyat uğurla tamamlandı.", "Uğurlu", MessageBoxIcon.Information);
                     await FormuYukle();
                 }
@@ -180,6 +203,12 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                     _view.MesajGoster(netice.Mesaj, "Xəta", MessageBoxIcon.Error);
                 }
             }, "Müştəri yadda saxlanılır...");
+
+            if (modalSecimId > 0 && !_view.YeniYaradilanMusteriniSec(modalSecimId))
+            {
+                _view.MesajGoster("Müştəri əlavə edildi.", "Uğurlu", MessageBoxIcon.Information);
+                await FormuYukle();
+            }
         }
 
         /// <summary>

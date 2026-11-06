@@ -53,15 +53,17 @@ public class MusteriManagerTests
         _mockMusteriRepo.Setup(x => x.AxtarAsync(It.IsAny<Expression<Func<Musteri, bool>>>(), It.IsAny<Expression<Func<Musteri, object>>[]>()))
             .ReturnsAsync(new List<Musteri>());
         _mockMusteriRepo.Setup(x => x.ElaveEtAsync(It.IsAny<Musteri>()))
+            .Callback<Musteri>(musteri => musteri.Id = 42)
             .Returns(Task.CompletedTask);
         _mockUnitOfWork.Setup(x => x.EmeliyyatiTesdiqleAsync())
             .ReturnsAsync(1);
 
         // Act
-        EmeliyyatNeticesi result = await _musteriManager.MusteriYaratAsync(dto);
+        EmeliyyatNeticesi<int> result = await _musteriManager.MusteriYaratAsync(dto);
 
         // Assert
         result.UgurluDur.Should().BeTrue();
+        result.Data.Should().Be(42);
         _mockMusteriRepo.Verify(x => x.ElaveEtAsync(It.IsAny<Musteri>()), Times.Once);
         _mockUnitOfWork.Verify(x => x.EmeliyyatiTesdiqleAsync(), Times.Once);
     }
