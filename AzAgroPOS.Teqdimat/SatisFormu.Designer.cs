@@ -874,11 +874,11 @@
             cmbMusteriler.Hint = "Müştəri Seçin";
             cmbMusteriler.IntegralHeight = false;
             cmbMusteriler.ItemHeight = 43;
-            cmbMusteriler.Location = new Point(842, 0);
+            cmbMusteriler.Location = new Point(782, 0);
             cmbMusteriler.MaxDropDownItems = 5;
             cmbMusteriler.MouseState = MaterialSkin.MouseState.OUT;
             cmbMusteriler.Name = "cmbMusteriler";
-            cmbMusteriler.Size = new Size(380, 49);
+            cmbMusteriler.Size = new Size(440, 49);
             cmbMusteriler.StartIndex = 0;
             cmbMusteriler.TabIndex = 3;
             // 
@@ -942,7 +942,6 @@
             // 
             toolStripStatusLabel1.Name = "toolStripStatusLabel1";
             toolStripStatusLabel1.Size = new Size(60, 20);
-            toolStripStatusLabel1.Text = "";
             // 
             // errorProvider1
             // 
