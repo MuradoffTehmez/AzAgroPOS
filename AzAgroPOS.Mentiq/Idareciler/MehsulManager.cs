@@ -183,6 +183,9 @@ public class MehsulManager
                 Logger.XəbərdarlıqYaz("Məhsul tapılmadı");
                 return EmeliyyatNeticesi.Ugursuz("Məhsul tapılmadı.");
             }
+            if ((mehsulDto.OlcuVahidi == OlcuVahidi.Ədəd || mehsulDto.OlcuVahidi == OlcuVahidi.Paket) &&
+                movcudMehsul.MovcudSay != decimal.Truncate(movcudMehsul.MovcudSay))
+                return EmeliyyatNeticesi.Ugursuz("Kəsrli qalığı olan məhsulu ədəd və ya paket vahidinə dəyişmək olmaz.");
 
             // Stok kodunun başqa məhsulda istifadə olunmadığını yoxlayaq
             Mehsul? eyniKodluBasqaMehsul = (await _unitOfWork.Mehsullar.AxtarAsync(m => m.StokKodu == mehsulDto.StokKodu && m.Id != mehsulDto.Id)).FirstOrDefault();

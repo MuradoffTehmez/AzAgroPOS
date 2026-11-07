@@ -87,7 +87,7 @@ namespace AzAgroPOS.Teqdimat
             for (int i = 0; i < _secilmisQebz.SatilanMehsullar.Count; i++)
             {
                 SatisSebetiElementiDto mehsul = _secilmisQebz.SatilanMehsullar[i];
-                melumatlar[$"{i + 1}. {mehsul.MehsulAdi}"] = $"{mehsul.Miqdar:N0} × {mehsul.VahidinQiymeti:N2} = {mehsul.UmumiMebleg:N2} AZN";
+                melumatlar[$"{i + 1}. {mehsul.MehsulAdi}"] = $"{mehsul.Miqdar:0.###} × {mehsul.VahidinQiymeti:N2} = {mehsul.UmumiMebleg:N2} AZN";
             }
             if (_secilmisQebz.SatilanMehsullar.Count == 0)
                 melumatlar["Məhsullar"] = "Bu satışda məhsul sətirləri tapılmadı. Çap dayandırıldı.";

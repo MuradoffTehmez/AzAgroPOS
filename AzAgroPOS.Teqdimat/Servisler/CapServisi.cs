@@ -280,7 +280,7 @@ public class CapServisi
                 new RectangleF(posName, y, colName - 5, 16), _wrapFormat);
 
             // Miqdar
-            g.DrawString(mehsul.Miqdar.ToString("N0"), _smallFont, Brushes.Black, posQty, y);
+            g.DrawString(mehsul.Miqdar.ToString("0.###"), _smallFont, Brushes.Black, posQty, y);
 
             // Vahidin qiymeti
             g.DrawString(mehsul.VahidinQiymeti.ToString("N2"), _smallFont, Brushes.Black, posPrice, y);
@@ -311,7 +311,7 @@ public class CapServisi
         float valueWidth = width * 0.35f;
 
         // Ara cem (subtotal)
-        decimal araCem = _qebzMelumatlari!.SatilanMehsullar.Sum(m => m.VahidinQiymeti * m.Miqdar);
+        decimal araCem = _qebzMelumatlari!.SatilanMehsullar.Sum(m => decimal.Round(m.VahidinQiymeti * m.Miqdar, 2, MidpointRounding.AwayFromZero));
         g.DrawString("Ara Cem:", _normalFont, Brushes.Black, labelX, y);
         g.DrawString($"{araCem:N2} AZN", _normalFont, Brushes.Black,
             new RectangleF(x, y, width, 18), _rightFormat);
