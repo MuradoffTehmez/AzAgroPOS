@@ -22,15 +22,15 @@ namespace AzAgroPOS.Verilenler.Realizasialar
         /// diqqət: Daxilolmalar (+) və çıxışlar (-) toplanaraq qalıq tapılır.
         /// qeyd: Bu metod yalnız aktiv (silinməmiş) hərəkətləri nəzərə alır.
         /// </summary>
-        public async Task<int> MehsulQaliginHesabla(int mehsulId)
+        public async Task<decimal> MehsulQaliginHesabla(int mehsulId)
         {
-            int daxilolmalar = await _dbSet
+            decimal daxilolmalar = await _dbSet
                 .Where(sh => sh.MehsulId == mehsulId &&
                             sh.HareketTipi == StokHareketTipi.Daxilolma &&
                             !sh.Silinib)
                 .SumAsync(sh => sh.Miqdar);
 
-            int cixislar = await _dbSet
+            decimal cixislar = await _dbSet
                 .Where(sh => sh.MehsulId == mehsulId &&
                             sh.HareketTipi == StokHareketTipi.Cixis &&
                             !sh.Silinib)
@@ -92,7 +92,7 @@ namespace AzAgroPOS.Verilenler.Realizasialar
         /// diqqət: Bu əməliyyat resource-intensive olduğundan ehtiyatla istifadə edilməlidir.
         /// qeyd: Nəticə Dictionary<MehsulId, Qaliq> formatında qaytarılır.
         /// </summary>
-        public async Task<Dictionary<int, int>> ButunMehsulQaliqlariniHesabla()
+        public async Task<Dictionary<int, decimal>> ButunMehsulQaliqlariniHesabla()
         {
             var daxilolmalar = await _dbSet
                 .Where(sh => sh.HareketTipi == StokHareketTipi.Daxilolma && !sh.Silinib)
@@ -106,7 +106,7 @@ namespace AzAgroPOS.Verilenler.Realizasialar
                 .Select(g => new { MehsulId = g.Key, Miqdar = g.Sum(sh => sh.Miqdar) })
                 .ToListAsync();
 
-            Dictionary<int, int> qaliqlar = new();
+            Dictionary<int, decimal> qaliqlar = new();
 
             // Daxilolmaları əlavə et
             foreach (var item in daxilolmalar)

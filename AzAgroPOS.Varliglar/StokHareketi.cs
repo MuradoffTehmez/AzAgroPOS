@@ -49,7 +49,7 @@ public class StokHareketi : BazaVarligi
     /// diqqət: Bu sahə, nə qədər məhsulun daxil olduğunu və ya çıxdığını göstərir.
     /// qeyd: Həmişə müsbət rəqəm olmalıdır. Mənfi olması, HareketTipi ilə müəyyən edilir.
     /// </summary>
-    public int Miqdar { get; set; }
+    public decimal Miqdar { get; set; }
 
     /// <summary>
     /// Məhsulun vahid alış qiyməti (daxilolma üçün)

@@ -30,10 +30,25 @@ namespace AzAgroPOS.Mentiq.Idareciler
             return EmeliyyatNeticesi<List<MusteriDto>>.Ugurlu(dtolar);
         }
 
+        public async Task<EmeliyyatNeticesi<MusteriDto>> MusteriGetirAsync(int id)
+        {
+            Musteri? musteri = await _unitOfWork.Musteriler.GetirAsync(id);
+            if (musteri == null)
+                return EmeliyyatNeticesi<MusteriDto>.Ugursuz("Müştəri tapılmadı.");
+            return EmeliyyatNeticesi<MusteriDto>.Ugurlu(new MusteriDto
+            {
+                Id = musteri.Id,
+                TamAd = musteri.TamAd,
+                TelefonNomresi = musteri.TelefonNomresi,
+                Unvan = musteri.Unvan,
+                UmumiBorc = musteri.UmumiBorc,
+                KreditLimiti = musteri.KreditLimiti
+            });
+        }
+
         public async Task<EmeliyyatNeticesi<int>> MusteriYaratAsync(MusteriDto dto)
         {
-            if (IcazeYoxlayici.Instance.AktivIstifadeci != null &&
-                !IcazeYoxlayici.Instance.IcazeVarmi(SistemIcazeleri.MusteriElaveEt))
+            if (!IcazeYoxlayici.Instance.IcazeVarmi(SistemIcazeleri.MusteriElaveEt))
                 return EmeliyyatNeticesi<int>.Ugursuz("Müştəri əlavə etməyə icazəniz yoxdur.");
             Musteri? movcudMusteri = (await _unitOfWork.Musteriler.AxtarAsync(m => m.TelefonNomresi == dto.TelefonNomresi)).FirstOrDefault();
             if (movcudMusteri != null)
@@ -56,8 +71,7 @@ namespace AzAgroPOS.Mentiq.Idareciler
 
         public async Task<EmeliyyatNeticesi> MusteriYenileAsync(MusteriDto dto)
         {
-            if (IcazeYoxlayici.Instance.AktivIstifadeci != null &&
-                !IcazeYoxlayici.Instance.IcazeVarmi(SistemIcazeleri.MusteriDeyis))
+            if (!IcazeYoxlayici.Instance.IcazeVarmi(SistemIcazeleri.MusteriDeyis))
                 return EmeliyyatNeticesi.Ugursuz("Müştəri məlumatını dəyişməyə icazəniz yoxdur.");
             Musteri musteri = await _unitOfWork.Musteriler.GetirAsync(dto.Id);
             if (musteri == null)
@@ -77,8 +91,7 @@ namespace AzAgroPOS.Mentiq.Idareciler
 
         public async Task<EmeliyyatNeticesi> MusteriSilAsync(int id)
         {
-            if (IcazeYoxlayici.Instance.AktivIstifadeci != null &&
-                !IcazeYoxlayici.Instance.IcazeVarmi(SistemIcazeleri.MusteriSil))
+            if (!IcazeYoxlayici.Instance.IcazeVarmi(SistemIcazeleri.MusteriSil))
                 return EmeliyyatNeticesi.Ugursuz("Müştərini silməyə icazəniz yoxdur.");
             Musteri musteri = await _unitOfWork.Musteriler.GetirAsync(id);
             if (musteri == null)

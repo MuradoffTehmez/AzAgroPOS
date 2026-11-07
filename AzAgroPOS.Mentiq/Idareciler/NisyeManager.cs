@@ -158,6 +158,11 @@ public class NisyeManager
                 Novbe? novbe = await _unitOfWork.Novbeler.GetirAsync(novbeId);
                 if (novbe == null || novbe.Status != NovbeStatusu.Aciq)
                     return EmeliyyatNeticesi.Ugursuz("Borc ödənişi üçün açıq növbə tələb olunur.");
+                Istifadeci? aktivIstifadeci = IcazeYoxlayici.Instance.AktivIstifadeci;
+                if (aktivIstifadeci == null || novbe.IsciId != aktivIstifadeci.Id ||
+                    istifadeciId != aktivIstifadeci.Id ||
+                    !IcazeYoxlayici.Instance.IcazeVarmi(SistemIcazeleri.NisyeOdemeQebulEt))
+                    return EmeliyyatNeticesi.Ugursuz("Bu növbədə borc ödənişi qəbul etməyə icazəniz yoxdur.");
 
                 Musteri? musteri = await _unitOfWork.Musteriler.GetirAsync(musteriId);
                 if (musteri == null)

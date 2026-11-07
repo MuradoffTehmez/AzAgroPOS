@@ -89,7 +89,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             int? aktivNovbeId = Yardimcilar.AktivSessiya.AktivNovbeId;
 
             // Qaytarma məhsullarını formatlayaq (SatisSebetiElementiDto-dan uyğun formata)
-            List<(int MehsulId, int, decimal VahidinQiymeti)> qaytarilanMehsullar = secilmisMehsullar.Select(m => (m.MehsulId, (int)m.Miqdar, m.VahidinQiymeti)).ToList();
+            List<(int MehsulId, decimal Miqdar, decimal VahidinQiymeti)> qaytarilanMehsullar = secilmisMehsullar.Select(m => (m.MehsulId, m.Miqdar, m.VahidinQiymeti)).ToList();
 
             // Seçilmiş məhsulları qaytarmaq
             EmeliyyatNeticesi<int> netice = await _qaytarmaManager.QaytarmaYaratAsync(satisId, qaytarilanMehsullar, sebeb, kassirId, aktivNovbeId);

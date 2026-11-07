@@ -8,5 +8,5 @@ namespace AzAgroPOS.Verilenler.Interfeysler;
 /// </summary>
 public interface IQaytarmaRepozitori : IRepozitori<Qaytarma>
 {
-    // Qaytarma ilə əlaqəli xüsusi əməliyyatlar burada əlavə edilə bilər
+    Task QaytarmaDetaliElaveEtAsync(QaytarmaDetali detali);
 }

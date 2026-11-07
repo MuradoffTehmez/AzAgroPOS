@@ -35,7 +35,7 @@ internal static class SaleDetailRepair
 
             foreach (var group in movements.GroupBy(m => new { m.MehsulId, m.SatisQiymeti, m.AlisQiymeti }))
             {
-                int quantity = group.Sum(m => Math.Abs(m.Miqdar));
+                decimal quantity = group.Sum(m => Math.Abs(m.Miqdar));
                 db.SatisDetallari.Add(new SatisDetali
                 {
                     SatisId = sale.Id,

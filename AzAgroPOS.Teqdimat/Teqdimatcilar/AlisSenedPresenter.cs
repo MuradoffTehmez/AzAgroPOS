@@ -4,6 +4,7 @@ using AzAgroPOS.Mentiq.DTOs;
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Teqdimat.Interfeysler;
+using AzAgroPOS.Varliglar;
 
 namespace AzAgroPOS.Teqdimat.Teqdimatcilar;
 /// <summary>
@@ -75,6 +76,7 @@ public class AlisSenedPresenter
             TedarukcuId = _view.TedarukcuId,
             TehvilTarixi = _view.TehvilTarixi,
             UmumiMebleg = _view.UmumiMebleg,
+            SenedSetirleri = _view.SenedSetirleri,
             Qeydler = _view.Qeydler
         };
 
@@ -109,6 +111,8 @@ public class AlisSenedPresenter
             TedarukcuId = _view.TedarukcuId,
             TehvilTarixi = _view.TehvilTarixi,
             UmumiMebleg = _view.UmumiMebleg,
+            SenedSetirleri = _view.SenedSetirleri,
+            Status = AlisSenedStatusu.Tesdiqlendi,
             Qeydler = _view.Qeydler
         };
 
@@ -139,7 +143,7 @@ public class AlisSenedPresenter
 
         if (netice.UgurluDur)
         {
-            _view.MesajGoster("Alış sənədi uğurla silindi.");
+            _view.MesajGoster("Alış sənədi ləğv edildi və stok hərəkəti geri çevrildi.");
             await FormuYukle();
             _view.FormuTemizle();
         }

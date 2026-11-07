@@ -1,11 +1,13 @@
 ﻿// Fayl: AzAgroPOS.Mentiq/Uslublar/EmeliyyatNeticesi.cs
+using AzAgroPOS.Varliglar;
+
 namespace AzAgroPOS.Mentiq.Uslublar;
 
 /// <summary>
 /// Məntiq qatındakı əməliyyatların nəticəsini təmsil edir.
 /// Data qaytarmayan əməliyyatlar üçün istifadə olunur (məsələn, Silmə).
 /// </summary>
-public class EmeliyyatNeticesi
+public class EmeliyyatNeticesi : ITransactionOutcome
 {
     /// <summary>
     /// uğurlu əməliyyatın olub olmadığını göstərir.
@@ -13,6 +15,7 @@ public class EmeliyyatNeticesi
     /// qeyd: Əgər əməliyyat uğursuz olarsa, Mesaj sahəsi istifadə olunur ki, müvafiq xətanı və ya məlumatı göstərsin.
     /// </summary>
     public bool UgurluDur { get; protected set; }
+    bool ITransactionOutcome.UgurluDur => UgurluDur;
     /// <summary>
     /// müvafiq əməliyyatın uğursuz olması halında istifadə olunan mesaj.
     /// diqqət: Bu sahə əməliyyatın uğursuz olması halında istifadə olunur və əməliyyatın səbəbini göstərir.

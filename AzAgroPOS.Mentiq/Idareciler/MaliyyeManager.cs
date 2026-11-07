@@ -53,6 +53,10 @@ public class MaliyyeManager
                 return EmeliyyatNeticesi<int>.Ugursuz("Xərc adı boş ola bilməz.");
             }
 
+            return await _unitOfWork.ExecuteInTransactionAsync(async () =>
+            {
+            Novbe? aktivNovbe = istifadeciId.HasValue
+                ? await _unitOfWork.Novbeler.AktivNovbeniGetirAsync(istifadeciId.Value) : null;
             // Yeni xərc qeydiyyatı yarat
             Xerc xerc = new()
             {
@@ -74,6 +78,8 @@ public class MaliyyeManager
                 HareketNovu = KassaHareketiNovu.Cixis,
                 EmeliyyatNovu = EmeliyyatNovu.Xerc,
                 EmeliyyatId = xerc.Id, // Xərc ID-si
+                NovbeId = aktivNovbe?.Id,
+                OdenisMetodu = OdenisMetodu.Nağd,
                 Mebleg = mebleg,
                 Tarix = tarix,
                 Qeyd = $"Xərc: {ad}",
@@ -85,6 +91,7 @@ public class MaliyyeManager
 
             Logger.MelumatYaz($"Xərc uğurla qeydə alındı: ID={xerc.Id}");
             return EmeliyyatNeticesi<int>.Ugurlu(xerc.Id);
+            });
         }
         catch (Exception ex)
         {
@@ -132,9 +139,14 @@ public class MaliyyeManager
                 Logger.XəbərdarlıqYaz("Xərc tapılmadı");
                 return EmeliyyatNeticesi.Ugursuz("Xərc tapılmadı.");
             }
+            if (await XercBagliNovbeyeAiddirAsync(xercId))
+                return EmeliyyatNeticesi.Ugursuz("Bağlı növbənin xərcini dəyişmək olmaz.");
 
+            return await _unitOfWork.ExecuteInTransactionAsync(async () =>
+            {
             // Kassa hərəkətlərini tap və sil (xərcə aid olanı)
             IEnumerable<KassaHareketi> kassaHareketleri = await _unitOfWork.KassaHareketleri.AxtarAsync(k => k.EmeliyyatId == xercId && k.EmeliyyatNovu == EmeliyyatNovu.Xerc);
+            int? novbeId = kassaHareketleri.FirstOrDefault()?.NovbeId;
             foreach (KassaHareketi hareket in kassaHareketleri)
             {
                 _unitOfWork.KassaHareketleri.Sil(hareket);
@@ -157,6 +169,8 @@ public class MaliyyeManager
                 HareketNovu = KassaHareketiNovu.Cixis,
                 EmeliyyatNovu = EmeliyyatNovu.Xerc,
                 EmeliyyatId = movcudXerc.Id,
+                NovbeId = novbeId,
+                OdenisMetodu = OdenisMetodu.Nağd,
                 Mebleg = mebleg,
                 Tarix = tarix,
                 Qeyd = $"Xərc: {ad}",
@@ -168,6 +182,7 @@ public class MaliyyeManager
 
             Logger.MelumatYaz($"Xərc uğurla yeniləndi: ID={xercId}");
             return EmeliyyatNeticesi.Ugurlu();
+            });
         }
         catch (Exception ex)
         {
@@ -194,7 +209,11 @@ public class MaliyyeManager
                 Logger.XəbərdarlıqYaz("Xərc tapılmadı");
                 return EmeliyyatNeticesi.Ugursuz("Xərc tapılmadı.");
             }
+            if (await XercBagliNovbeyeAiddirAsync(xercId))
+                return EmeliyyatNeticesi.Ugursuz("Bağlı növbənin xərcini silmək olmaz.");
 
+            return await _unitOfWork.ExecuteInTransactionAsync(async () =>
+            {
             // Əlaqəli kassa hərəkətlərini tap və sil
             IEnumerable<KassaHareketi> kassaHareketleri = await _unitOfWork.KassaHareketleri.AxtarAsync(k => k.EmeliyyatId == xercId && k.EmeliyyatNovu == EmeliyyatNovu.Xerc);
             foreach (KassaHareketi hareket in kassaHareketleri)
@@ -208,12 +227,25 @@ public class MaliyyeManager
 
             Logger.MelumatYaz($"Xərc uğurla silindi: ID={xercId}");
             return EmeliyyatNeticesi.Ugurlu();
+            });
         }
         catch (Exception ex)
         {
             Logger.XetaYaz(ex, "Xərc silinməsi zamanı xəta baş verdi");
             return EmeliyyatNeticesi.Ugursuz($"Xərc silinməsi zamanı xəta: {ex.Message}");
         }
+    }
+
+    private async Task<bool> XercBagliNovbeyeAiddirAsync(int xercId)
+    {
+        IEnumerable<KassaHareketi> hereketler = await _unitOfWork.KassaHareketleri.AxtarAsync(k =>
+            k.EmeliyyatNovu == EmeliyyatNovu.Xerc && k.EmeliyyatId == xercId && k.NovbeId.HasValue);
+        foreach (KassaHareketi hereket in hereketler)
+        {
+            Novbe? novbe = await _unitOfWork.Novbeler.GetirAsync(hereket.NovbeId!.Value);
+            if (novbe?.Status == NovbeStatusu.Bagli) return true;
+        }
+        return false;
     }
 
     /// <summary>
@@ -450,7 +482,9 @@ public class MaliyyeManager
         int? emeliyyatId,
         decimal mebleg,
         string? qeyd = null,
-        int? istifadeciId = null)
+        int? istifadeciId = null,
+        int? novbeId = null,
+        OdenisMetodu? odenisMetodu = null)
     {
         Logger.MelumatYaz($"Kassa hərəkəti əlavə olunur: Növ={hareketNovu}, Əməliyyat={emeliyyatNovu}, Məbləğ={mebleg}");
 
@@ -468,6 +502,8 @@ public class MaliyyeManager
                 HareketNovu = hareketNovu,
                 EmeliyyatNovu = emeliyyatNovu,
                 EmeliyyatId = emeliyyatId,
+                NovbeId = novbeId,
+                OdenisMetodu = odenisMetodu,
                 Mebleg = Math.Abs(mebleg), // Həmişə müsbət saxlayırıq, istiqamət HareketNovu ilə müəyyən olunur
                 Tarix = DateTime.Now,
                 Qeyd = qeyd,

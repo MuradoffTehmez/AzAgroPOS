@@ -639,7 +639,7 @@ namespace AzAgroPOS.Teqdimat
                 Font = new Font("Segoe UI", 11, FontStyle.Bold)
             };
             Label sayYazisi = new() { Text = "Əlavə edilən say", Location = new Point(20, 77), AutoSize = true };
-            NumericUpDown say = new() { Location = new Point(20, 98), Size = new Size(390, 28), Minimum = 1, Maximum = 1000000, Value = 1 };
+            NumericUpDown say = new() { Location = new Point(20, 98), Size = new Size(390, 28), Minimum = 0.001m, Maximum = 1000000, Value = 1, DecimalPlaces = 3, Increment = 0.001m };
             Label qeydYazisi = new() { Text = "Qeyd / səbəb", Location = new Point(20, 136), AutoSize = true };
             TextBox qeyd = new() { Location = new Point(20, 156), Size = new Size(260, 27), PlaceholderText = "Məsələn, yeni mal qəbulu" };
             Button tesdiq = new() { Text = "ANBARA ƏLAVƏ ET", Location = new Point(288, 153), Size = new Size(122, 34), BackColor = Color.FromArgb(46, 125, 50), ForeColor = Color.White, FlatStyle = FlatStyle.Flat };
@@ -650,7 +650,7 @@ namespace AzAgroPOS.Teqdimat
             try
             {
                 AnbarManager anbar = _serviceProvider.GetRequiredService<AnbarManager>();
-                EmeliyyatNeticesi<int> netice = await anbar.AnbardakiStokuArtirAsync(mehsulId, (int)say.Value, qeyd.Text.Trim());
+                EmeliyyatNeticesi<decimal> netice = await anbar.AnbardakiStokuArtirAsync(mehsulId, say.Value, qeyd.Text.Trim());
                 if (!netice.UgurluDur)
                 {
                     _dialogXidmeti.XetaGoster(netice.Mesaj, "Stok artırılmadı");

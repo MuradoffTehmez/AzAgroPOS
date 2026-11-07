@@ -17,7 +17,7 @@ namespace AzAgroPOS.Verilenler.Interfeysler
         /// </summary>
         /// <param name="mehsulId">Məhsulun ID-si</param>
         /// <returns>Məhsulun cari anbar qalığı</returns>
-        Task<int> MehsulQaliginHesabla(int mehsulId);
+        Task<decimal> MehsulQaliginHesabla(int mehsulId);
 
         /// <summary>
         /// Məhsulun bütün stok hərəkətlərini tarix aralığında gətirir
@@ -46,7 +46,7 @@ namespace AzAgroPOS.Verilenler.Interfeysler
         /// qeyd: Performance baxımından yalnız lazım olduqda istifadə edilməlidir.
         /// </summary>
         /// <returns>Məhsul ID-si və qalığı cütləri</returns>
-        Task<Dictionary<int, int>> ButunMehsulQaliqlariniHesabla();
+        Task<Dictionary<int, decimal>> ButunMehsulQaliqlariniHesabla();
 
         /// <summary>
         /// Tarix aralığında bütün stok hərəkətlərini gətirir

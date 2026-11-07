@@ -117,6 +117,9 @@ public class AzAgroPOSDbContext : DbContext
         modelBuilder.Entity<Mehsul>().Property(m => m.TopdanSatisQiymeti).HasColumnType("decimal(18, 2)");
         modelBuilder.Entity<Mehsul>().Property(m => m.TekEdedSatisQiymeti).HasColumnType("decimal(18, 2)");
         modelBuilder.Entity<Mehsul>().Property(m => m.AlisQiymeti).HasColumnType("decimal(18, 2)");
+        modelBuilder.Entity<Mehsul>().Property(m => m.MovcudSay).HasColumnType("decimal(18, 3)");
+        modelBuilder.Entity<Mehsul>().Property(m => m.MinimumStok).HasColumnType("decimal(18, 3)");
+        modelBuilder.Entity<StokHareketi>().Property(sh => sh.Miqdar).HasColumnType("decimal(18, 3)");
         modelBuilder.Entity<Mehsul>().Property(m => m.RowVersion).IsRowVersion();
         modelBuilder.Entity<Satis>().Property(s => s.UmumiMebleg).HasColumnType("decimal(18, 2)");
         modelBuilder.Entity<SatisDetali>().Property(sd => sd.Qiymet).HasColumnType("decimal(18, 2)");

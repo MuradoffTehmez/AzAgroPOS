@@ -44,7 +44,7 @@ public class StokHareketiManager
         SenedNovu senedNovu,
         int? senedId,
         int mehsulId,
-        int miqdar,
+        decimal miqdar,
         decimal alisQiymeti,
         decimal satisQiymeti,
         string? qeyd = null,
@@ -93,6 +93,8 @@ public class StokHareketiManager
             if (hareketTipi == StokHareketTipi.Daxilolma)
             {
                 mehsul.MovcudSay += miqdar;
+                if (senedNovu == SenedNovu.Alis)
+                    mehsul.AlisQiymeti = alisQiymeti;
             }
             else if (hareketTipi == StokHareketTipi.Cixis)
             {
@@ -118,21 +120,21 @@ public class StokHareketiManager
     /// diqqət: Bu metod, məhsulun bütün stok hərəkətlərini təhlil edərək qalığı hesablayır.
     /// qeyd: Qalıq = Daxilolmalar - Çıxışlar
     /// </summary>
-    public async Task<EmeliyyatNeticesi<int>> MehsulQaliginGetirAsync(int mehsulId)
+    public async Task<EmeliyyatNeticesi<decimal>> MehsulQaliginGetirAsync(int mehsulId)
     {
         Logger.MelumatYaz($"Məhsul qalığı hesablanır: MəhsulId={mehsulId}");
 
         try
         {
-            int qaliq = await _stokHareketiRepo.MehsulQaliginHesabla(mehsulId);
+            decimal qaliq = await _stokHareketiRepo.MehsulQaliginHesabla(mehsulId);
 
             Logger.MelumatYaz($"Məhsul qalığı hesablandı: Qalıq={qaliq}");
-            return EmeliyyatNeticesi<int>.Ugurlu(qaliq);
+            return EmeliyyatNeticesi<decimal>.Ugurlu(qaliq);
         }
         catch (Exception ex)
         {
             Logger.XetaYaz(ex, "Məhsul qalığı hesablanarkən xəta baş verdi");
-            return EmeliyyatNeticesi<int>.Ugursuz($"Qalıq hesablanarkən xəta: {ex.Message}");
+            return EmeliyyatNeticesi<decimal>.Ugursuz($"Qalıq hesablanarkən xəta: {ex.Message}");
         }
     }
 
@@ -192,21 +194,21 @@ public class StokHareketiManager
     /// diqqət: Bu əməliyyat resource-intensive olduğundan ehtiyatla istifadə edilməlidir.
     /// qeyd: Anbar qalıq hesabatı üçün istifadə olunur.
     /// </summary>
-    public async Task<EmeliyyatNeticesi<Dictionary<int, int>>> ButunMehsulQaliqlariniGetirAsync()
+    public async Task<EmeliyyatNeticesi<Dictionary<int, decimal>>> ButunMehsulQaliqlariniGetirAsync()
     {
         Logger.MelumatYaz("Bütün məhsul qalıqları hesablanır");
 
         try
         {
-            Dictionary<int, int> qaliqlar = await _stokHareketiRepo.ButunMehsulQaliqlariniHesabla();
+            Dictionary<int, decimal> qaliqlar = await _stokHareketiRepo.ButunMehsulQaliqlariniHesabla();
 
             Logger.MelumatYaz($"Bütün məhsul qalıqları hesablandı: Say={qaliqlar.Count}");
-            return EmeliyyatNeticesi<Dictionary<int, int>>.Ugurlu(qaliqlar);
+            return EmeliyyatNeticesi<Dictionary<int, decimal>>.Ugurlu(qaliqlar);
         }
         catch (Exception ex)
         {
             Logger.XetaYaz(ex, "Bütün məhsul qalıqları hesablanarkən xəta baş verdi");
-            return EmeliyyatNeticesi<Dictionary<int, int>>.Ugursuz($"Qalıqlar hesablanarkən xəta: {ex.Message}");
+            return EmeliyyatNeticesi<Dictionary<int, decimal>>.Ugursuz($"Qalıqlar hesablanarkən xəta: {ex.Message}");
         }
     }
 
@@ -222,7 +224,7 @@ public class StokHareketiManager
     /// <returns>Əməliyyat nəticəsi</returns>
     public async Task<EmeliyyatNeticesi<int>> InventarizasiyaDuzelisinYaradAsync(
         int mehsulId,
-        int fizikiQaliq,
+        decimal fizikiQaliq,
         string? qeyd,
         int? istifadeciId)
     {
@@ -231,10 +233,10 @@ public class StokHareketiManager
         try
         {
             // Sistem qalığını hesabla
-            int sistemQaliqi = await _stokHareketiRepo.MehsulQaliginHesabla(mehsulId);
+            decimal sistemQaliqi = await _stokHareketiRepo.MehsulQaliginHesabla(mehsulId);
 
             // Fərqi hesabla
-            int ferq = fizikiQaliq - sistemQaliqi;
+            decimal ferq = fizikiQaliq - sistemQaliqi;
 
             if (ferq == 0)
             {
@@ -244,7 +246,7 @@ public class StokHareketiManager
 
             // Fərqə görə hərəkət tipi müəyyən et
             StokHareketTipi hareketTipi = ferq > 0 ? StokHareketTipi.Daxilolma : StokHareketTipi.Cixis;
-            int miqdar = Math.Abs(ferq);
+            decimal miqdar = Math.Abs(ferq);
             SenedNovu senedNovu = ferq > 0 ? SenedNovu.DuzeltmeArtirim : SenedNovu.DuzeltmeAzalma;
 
             string qeydMetni = $"İnventarizasiya düzəlişi. Sistem: {sistemQaliqi}, Fiziki: {fizikiQaliq}, Fərq: {ferq}";

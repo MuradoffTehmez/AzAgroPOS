@@ -37,7 +37,8 @@ public partial class TedarukcuOdemeFormu : BazaForm, ITedarukcuOdemeView
 
         // Status enum-unu ComboBox-a yükləyirik
         cmbStatus.DataSource = Enum.GetValues(typeof(OdemeStatusu));
-        cmbStatus.SelectedIndex = 0;
+        cmbStatus.SelectedItem = OdemeStatusu.Tesdiqlendi;
+        cmbStatus.Enabled = false;
     }
 
     #region ITedarukcuOdemeView Implementation
@@ -64,7 +65,7 @@ public partial class TedarukcuOdemeFormu : BazaForm, ITedarukcuOdemeView
 
     public int? AlisSenedId
     {
-        get => cmbAlisSened.SelectedValue != null ? (int?)cmbAlisSened.SelectedValue : null;
+        get => cmbAlisSened.SelectedValue is int id && id > 0 ? id : null;
         set => cmbAlisSened.SelectedValue = value;
     }
 
@@ -79,6 +80,7 @@ public partial class TedarukcuOdemeFormu : BazaForm, ITedarukcuOdemeView
         get => numMebleg.Value;
         set => numMebleg.Value = value;
     }
+    public OdemeUsulu OdemeUsulu => cmbOdemeUsulu.SelectedItem is OdemeUsulu usul ? usul : OdemeUsulu.Naqd;
 
     public string? Qeydler
     {
@@ -143,7 +145,7 @@ public partial class TedarukcuOdemeFormu : BazaForm, ITedarukcuOdemeView
         dtpOdemeTarixi.Value = DateTime.Now;
         numMebleg.Value = 0;
         cmbOdemeUsulu.SelectedIndex = 0;
-        cmbStatus.SelectedIndex = 0;
+        cmbStatus.SelectedItem = OdemeStatusu.Tesdiqlendi;
         txtQeydler.Clear();
         txtBankMelumatlari.Clear();
     }

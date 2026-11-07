@@ -17,12 +17,9 @@ namespace AzAgroPOS.Mentiq.Idareciler;
 public class NovbeManager
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly MaliyyeManager _maliyyeManager;
-
     public NovbeManager(IUnitOfWork unitOfWork, MaliyyeManager maliyyeManager)
     {
         _unitOfWork = unitOfWork;
-        _maliyyeManager = maliyyeManager;
     }
 
     /// <summary>
@@ -107,31 +104,37 @@ public class NovbeManager
         IEnumerable<Satis> novbeSatislar = await _unitOfWork.Satislar.AxtarAsync(s => s.NovbeId == novbeId);
         decimal nagdSatislar = novbeSatislar.Where(s => s.OdenisMetodu == OdenisMetodu.Nağd).Sum(s => s.UmumiMebleg);
         decimal kartSatislar = novbeSatislar.Where(s => s.OdenisMetodu == OdenisMetodu.Kart).Sum(s => s.UmumiMebleg);
-        IEnumerable<KassaHareketi> borcOdenisleri = await _unitOfWork.KassaHareketleri.AxtarAsync(
-            k => k.NovbeId == novbeId && k.EmeliyyatNovu == EmeliyyatNovu.Odenis &&
-                 k.HareketNovu == KassaHareketiNovu.Daxilolma);
+        decimal nisyeSatislar = novbeSatislar.Where(s => s.OdenisMetodu == OdenisMetodu.Nisyə).Sum(s => s.UmumiMebleg);
+        // Köhnə açıq növbələrdə satışlar hələ jurnala yazılmamış ola bilər.
+        List<KassaHareketi> hereketler = (await _unitOfWork.KassaHareketleri
+            .AxtarAsync(k => k.NovbeId == novbeId)).ToList();
+        foreach (Satis satis in novbeSatislar.Where(s => s.OdenisMetodu is OdenisMetodu.Nağd or OdenisMetodu.Kart))
+        {
+            if (hereketler.Any(k => k.EmeliyyatNovu == EmeliyyatNovu.Satis && k.EmeliyyatId == satis.Id)) continue;
+            KassaHareketi hereket = new()
+            {
+                HareketNovu = KassaHareketiNovu.Daxilolma,
+                EmeliyyatNovu = EmeliyyatNovu.Satis,
+                EmeliyyatId = satis.Id,
+                NovbeId = novbeId,
+                OdenisMetodu = satis.OdenisMetodu,
+                Mebleg = satis.UmumiMebleg,
+                Tarix = satis.Tarix,
+                Qeyd = $"Satış #{satis.Id}",
+                IstifadeciId = novbe.IsciId
+            };
+            await _unitOfWork.KassaHareketleri.ElaveEtAsync(hereket);
+            hereketler.Add(hereket);
+        }
+        IEnumerable<KassaHareketi> borcOdenisleri = hereketler.Where(
+            k => k.EmeliyyatNovu == EmeliyyatNovu.Odenis && k.HareketNovu == KassaHareketiNovu.Daxilolma);
         decimal nagdBorcOdenisleri = borcOdenisleri.Where(k => k.OdenisMetodu == OdenisMetodu.Nağd).Sum(k => k.Mebleg);
         decimal kartBorcOdenisleri = borcOdenisleri.Where(k => k.OdenisMetodu == OdenisMetodu.Kart).Sum(k => k.Mebleg);
 
-        // Kassa hərəkətini qeydə al - növbə gəliri
-        if (nagdSatislar > 0)
-        {
-            EmeliyyatNeticesi<int> kassaGeliriNetice = await _maliyyeManager.KassaGeliriElaveEtAsync(
-                nagdSatislar,
-                novbeId,
-                $"Növbə #{novbeId} nağd satış gəliri",
-                novbe.IsciId
-            );
-
-            if (!kassaGeliriNetice.UgurluDur)
-            {
-                Logger.XəbərdarlıqYaz($"Kassa gəliri qeydə alınarkən xəta: {kassaGeliriNetice.Mesaj}");
-                throw new InvalidOperationException(kassaGeliriNetice.Mesaj);
-            }
-        }
-
         novbe.BaglanmaTarixi = DateTime.Now;
-        novbe.GozlenilenMebleg = novbe.BaslangicMebleg + nagdSatislar + nagdBorcOdenisleri;
+        novbe.GozlenilenMebleg = novbe.BaslangicMebleg
+            + hereketler.Where(k => k.OdenisMetodu == OdenisMetodu.Nağd && k.HareketNovu == KassaHareketiNovu.Daxilolma).Sum(k => k.Mebleg)
+            - hereketler.Where(k => (k.OdenisMetodu == OdenisMetodu.Nağd || k.OdenisMetodu == null) && k.HareketNovu == KassaHareketiNovu.Cixis).Sum(k => k.Mebleg);
         novbe.FaktikiMebleg = sayimAparilib ? faktikiMebleg : novbe.GozlenilenMebleg;
         novbe.SayimAparilib = sayimAparilib;
         novbe.Status = NovbeStatusu.Bagli;
@@ -148,8 +151,13 @@ public class NovbeManager
             SatisSayi = novbeSatislar.Count(),
             NagdSatislar = nagdSatislar,
             KartSatislar = kartSatislar,
+            NisyeSatislar = nisyeSatislar,
             NagdBorcOdenisleri = nagdBorcOdenisleri,
             KartBorcOdenisleri = kartBorcOdenisleri,
+            NagdQaytarmalar = hereketler.Where(k => k.EmeliyyatNovu == EmeliyyatNovu.Qaytarma && k.OdenisMetodu == OdenisMetodu.Nağd).Sum(k => k.Mebleg),
+            KartQaytarmalar = hereketler.Where(k => k.EmeliyyatNovu == EmeliyyatNovu.Qaytarma && k.OdenisMetodu == OdenisMetodu.Kart).Sum(k => k.Mebleg),
+            NagdXercler = hereketler.Where(k => k.EmeliyyatNovu == EmeliyyatNovu.Xerc && k.HareketNovu == KassaHareketiNovu.Cixis).Sum(k => k.Mebleg),
+            TedarukcuOdemeleri = hereketler.Where(k => k.EmeliyyatNovu == EmeliyyatNovu.Odenis && k.HareketNovu == KassaHareketiNovu.Cixis).Sum(k => k.Mebleg),
             GozlenilenMebleg = novbe.GozlenilenMebleg,
             FaktikiMebleg = novbe.FaktikiMebleg,
             SayimAparilib = novbe.SayimAparilib

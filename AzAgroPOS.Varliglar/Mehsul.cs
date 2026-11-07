@@ -12,7 +12,7 @@ namespace AzAgroPOS.Varliglar
         public decimal PerakendeSatisQiymeti { get; set; }
         public decimal TopdanSatisQiymeti { get; set; }
         public decimal TekEdedSatisQiymeti { get; set; }
-        public int MovcudSay { get; set; }
+        public decimal MovcudSay { get; set; }
         public byte[] RowVersion { get; set; } = Array.Empty<byte>();
         public bool Aktivdir { get; set; } = true;
 
@@ -26,7 +26,7 @@ namespace AzAgroPOS.Varliglar
         public int? TedarukcuId { get; set; }
         public Tedarukcu? Tedarukcu { get; set; }
 
-        public int MinimumStok { get; set; } = 0;
+        public decimal MinimumStok { get; set; } = 0;
 
         public string? SekilYolu { get; set; }
     }

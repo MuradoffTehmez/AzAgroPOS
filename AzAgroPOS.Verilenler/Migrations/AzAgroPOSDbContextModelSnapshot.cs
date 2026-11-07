@@ -1275,11 +1275,11 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.Property<int?>("KateqoriyaId")
                         .HasColumnType("int");
 
-                    b.Property<int>("MinimumStok")
-                        .HasColumnType("int");
+                    b.Property<decimal>("MinimumStok")
+                        .HasColumnType("decimal(18, 3)");
 
-                    b.Property<int>("MovcudSay")
-                        .HasColumnType("int");
+                    b.Property<decimal>("MovcudSay")
+                        .HasColumnType("decimal(18, 3)");
 
                     b.Property<int>("OlcuVahidi")
                         .HasColumnType("int");
@@ -1354,8 +1354,8 @@ namespace AzAgroPOS.Verilenler.Migrations
                             Aktivdir = true,
                             AlisQiymeti = 0.50m,
                             Barkod = "869000000001",
-                            MinimumStok = 0,
-                            MovcudSay = 100,
+                            MinimumStok = 0m,
+                            MovcudSay = 100m,
                             OlcuVahidi = 1,
                             PerakendeSatisQiymeti = 0.70m,
                             RowVersion = new byte[0],
@@ -1372,8 +1372,8 @@ namespace AzAgroPOS.Verilenler.Migrations
                             Aktivdir = true,
                             AlisQiymeti = 2.00m,
                             Barkod = "869000000002",
-                            MinimumStok = 0,
-                            MovcudSay = 50,
+                            MinimumStok = 0m,
+                            MovcudSay = 50m,
                             OlcuVahidi = 3,
                             PerakendeSatisQiymeti = 2.50m,
                             RowVersion = new byte[0],
@@ -1390,8 +1390,8 @@ namespace AzAgroPOS.Verilenler.Migrations
                             Aktivdir = true,
                             AlisQiymeti = 2.80m,
                             Barkod = "869000000003",
-                            MinimumStok = 0,
-                            MovcudSay = 200,
+                            MinimumStok = 0m,
+                            MovcudSay = 200m,
                             OlcuVahidi = 5,
                             PerakendeSatisQiymeti = 3.20m,
                             RowVersion = new byte[0],
@@ -2021,8 +2021,8 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.Property<int>("MehsulId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Miqdar")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Miqdar")
+                        .HasColumnType("decimal(18, 3)");
 
                     b.Property<string>("Qeyd")
                         .HasColumnType("nvarchar(max)");

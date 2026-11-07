@@ -73,10 +73,12 @@ public class MehsulManager
     /// Mövcud olmayan yeni bir məhsul yaradır.
     /// Validasiya və unikal stok kodu yoxlamaları ilə birlikdə.
     /// 
-    /// Diqqət: Alış qiyməti sıfır olaraq təyin edilir, çünki bu modul üçün təyin ediləcək.
+    /// Alış və satış qiymətləri məhsulun ilk qeydindən saxlanır.
     /// </summary>
     public async Task<EmeliyyatNeticesi<int>> MehsulYaratAsync(MehsulDto yeniMehsulDto)
     {
+        if (!IcazeYoxlayici.Instance.IcazeVarmi(SistemIcazeleri.MehsulElaveEt))
+            return EmeliyyatNeticesi<int>.Ugursuz("Məhsul əlavə etməyə icazəniz yoxdur.");
         Logger.MelumatYaz("Yeni məhsul yaratma əməliyyatı başlayır");
         try
         {
@@ -165,6 +167,8 @@ public class MehsulManager
     /// </summary>
     public async Task<EmeliyyatNeticesi> MehsulYenileAsync(MehsulDto mehsulDto)
     {
+        if (!IcazeYoxlayici.Instance.IcazeVarmi(SistemIcazeleri.MehsulDeyis))
+            return EmeliyyatNeticesi.Ugursuz("Məhsul dəyişməyə icazəniz yoxdur.");
         Logger.MelumatYaz($"Məhsul yeniləmə əməliyyatı başlayır. ID: {mehsulDto.Id}");
         try
         {
@@ -226,6 +230,13 @@ public class MehsulManager
             return "Qiymətlər mənfi ola bilməz.";
         if (mehsul.MinimumStok < 0)
             return "Minimum stok mənfi ola bilməz.";
+        if (mehsul.MinimumStok != decimal.Round(mehsul.MinimumStok, 3) ||
+            mehsul.MovcudSay != decimal.Round(mehsul.MovcudSay, 3))
+            return "Stok miqdarı ən çox üç onluq dəqiqlikdə olmalıdır.";
+        if ((mehsul.OlcuVahidi == OlcuVahidi.Ədəd || mehsul.OlcuVahidi == OlcuVahidi.Paket) &&
+            (mehsul.MinimumStok != decimal.Truncate(mehsul.MinimumStok) ||
+             mehsul.MovcudSay != decimal.Truncate(mehsul.MovcudSay)))
+            return "Ədəd və paket məhsulunun miqdarı tam ədəd olmalıdır.";
         return null;
     }
 
@@ -237,6 +248,8 @@ public class MehsulManager
     /// </summary>
     public async Task<EmeliyyatNeticesi> MehsulSilAsync(int id)
     {
+        if (!IcazeYoxlayici.Instance.IcazeVarmi(SistemIcazeleri.MehsulSil))
+            return EmeliyyatNeticesi.Ugursuz("Məhsul silməyə icazəniz yoxdur.");
         Logger.MelumatYaz($"Məhsul silmə əməliyyatı başlayır. ID: {id}");
         try
         {

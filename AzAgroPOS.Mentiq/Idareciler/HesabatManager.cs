@@ -320,6 +320,7 @@ public class HesabatManager
             }
 
             IEnumerable<Satis> novbeSatislar = await _unitOfWork.Satislar.AxtarAsync(s => s.NovbeId == novbeId);
+            List<KassaHareketi> hereketler = (await _unitOfWork.KassaHareketleri.AxtarAsync(k => k.NovbeId == novbeId)).ToList();
             Istifadeci isci = await _unitOfWork.Istifadeciler.GetirAsync(novbe.IsciId);
 
             ZHesabatDto hesabat = new()
@@ -331,6 +332,13 @@ public class HesabatManager
                 SatisSayi = novbeSatislar.Count(),
                 NagdSatislar = novbeSatislar.Where(s => s.OdenisMetodu == OdenisMetodu.Nağd).Sum(s => s.UmumiMebleg),
                 KartSatislar = novbeSatislar.Where(s => s.OdenisMetodu == OdenisMetodu.Kart).Sum(s => s.UmumiMebleg),
+                NisyeSatislar = novbeSatislar.Where(s => s.OdenisMetodu == OdenisMetodu.Nisyə).Sum(s => s.UmumiMebleg),
+                NagdBorcOdenisleri = hereketler.Where(k => k.EmeliyyatNovu == EmeliyyatNovu.Odenis && k.HareketNovu == KassaHareketiNovu.Daxilolma && k.OdenisMetodu == OdenisMetodu.Nağd).Sum(k => k.Mebleg),
+                KartBorcOdenisleri = hereketler.Where(k => k.EmeliyyatNovu == EmeliyyatNovu.Odenis && k.HareketNovu == KassaHareketiNovu.Daxilolma && k.OdenisMetodu == OdenisMetodu.Kart).Sum(k => k.Mebleg),
+                NagdQaytarmalar = hereketler.Where(k => k.EmeliyyatNovu == EmeliyyatNovu.Qaytarma && k.OdenisMetodu == OdenisMetodu.Nağd).Sum(k => k.Mebleg),
+                KartQaytarmalar = hereketler.Where(k => k.EmeliyyatNovu == EmeliyyatNovu.Qaytarma && k.OdenisMetodu == OdenisMetodu.Kart).Sum(k => k.Mebleg),
+                NagdXercler = hereketler.Where(k => k.EmeliyyatNovu == EmeliyyatNovu.Xerc && k.HareketNovu == KassaHareketiNovu.Cixis).Sum(k => k.Mebleg),
+                TedarukcuOdemeleri = hereketler.Where(k => k.EmeliyyatNovu == EmeliyyatNovu.Odenis && k.HareketNovu == KassaHareketiNovu.Cixis).Sum(k => k.Mebleg),
                 GozlenilenMebleg = novbe.GozlenilenMebleg,
                 FaktikiMebleg = novbe.FaktikiMebleg,
                 SayimAparilib = novbe.SayimAparilib

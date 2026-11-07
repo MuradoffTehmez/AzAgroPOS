@@ -1,6 +1,7 @@
 // Fayl: AzAgroPOS.Teqdimat/Interfeysler/ITedarukcuOdemeView.cs
 
 using AzAgroPOS.Mentiq.DTOs;
+using AzAgroPOS.Varliglar;
 
 namespace AzAgroPOS.Teqdimat.Interfeysler;
 /// <summary>
@@ -16,6 +17,7 @@ public interface ITedarukcuOdemeView
     int? AlisSenedId { get; set; }
     DateTime OdemeTarixi { get; set; }
     decimal Mebleg { get; set; }
+    OdemeUsulu OdemeUsulu { get; }
     string? Qeydler { get; set; }
     string? BankMelumatlari { get; set; }
 

@@ -74,6 +74,7 @@ public class TedarukcuOdemePresenter
             AlisSenedId = _view.AlisSenedId,
             OdemeTarixi = _view.OdemeTarixi,
             Mebleg = _view.Mebleg,
+            OdemeUsulu = _view.OdemeUsulu,
             Qeydler = _view.Qeydler,
             BankMelumatlari = _view.BankMelumatlari
         };
@@ -110,6 +111,7 @@ public class TedarukcuOdemePresenter
             AlisSenedId = _view.AlisSenedId,
             OdemeTarixi = _view.OdemeTarixi,
             Mebleg = _view.Mebleg,
+            OdemeUsulu = _view.OdemeUsulu,
             Qeydler = _view.Qeydler,
             BankMelumatlari = _view.BankMelumatlari
         };

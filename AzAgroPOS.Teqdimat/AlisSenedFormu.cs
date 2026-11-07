@@ -73,6 +73,7 @@ namespace AzAgroPOS.Teqdimat
             get => _senedSetirleri.Sum(s => s.CemiMebleg);
             set { } // Hesablanır
         }
+        public List<AlisSenedSetiriDto> SenedSetirleri => _senedSetirleri.ToList();
 
         public string? Qeydler
         {

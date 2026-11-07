@@ -199,6 +199,11 @@ namespace AzAgroPOS.Teqdimat
             cmbMusteriler.DrawItem += CmbMusteriler_DrawItem;
         }
 
+        public void MusteriSec(int? musteriId)
+        {
+            cmbMusteriler.SelectedValue = musteriId ?? 0;
+        }
+
         public void AxtarisNeticeleriniGoster(List<MehsulDto> mehsullar)
         {
             if (dgvAxtarisNeticeleri.Columns.Count == 0)
@@ -637,11 +642,11 @@ namespace AzAgroPOS.Teqdimat
             GozleyenSatisiAcIstek?.Invoke(this, EventArgs.Empty);
         }
 
-        private void contextMenuStripGozleyenler_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        private async void contextMenuStripGozleyenler_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             if (e.ClickedItem?.Tag is GozleyenSatis secilmisSatis)
             {
-                _presenter.GozleyenSatisiSec(secilmisSatis);
+                await _presenter.GozleyenSatisiSec(secilmisSatis);
             }
         }
         private void btnIndirim_Click(object sender, EventArgs e)

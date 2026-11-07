@@ -4,7 +4,7 @@ namespace AzAgroPOS.Teqdimat.Interfeysler
 {
     public interface ISatisPresenter
     {
-        void GozleyenSatisiSec(GozleyenSatis satis);
+        Task GozleyenSatisiSec(GozleyenSatis satis);
         System.Threading.Tasks.Task<bool> MehsulSilAsync(int mehsulId);
 
         /// <summary>

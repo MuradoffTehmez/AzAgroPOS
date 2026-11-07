@@ -14,4 +14,9 @@ public class QaytarmaRepozitori : Repozitori<Qaytarma>, IQaytarmaRepozitori
     {
         // burda əlavə konfiqurasiyalar edilə bilər
     }
+
+    public async Task QaytarmaDetaliElaveEtAsync(QaytarmaDetali detali)
+    {
+        await _kontekst.QaytarmaDetallari.AddAsync(detali);
+    }
 }

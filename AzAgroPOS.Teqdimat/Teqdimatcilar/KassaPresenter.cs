@@ -137,11 +137,13 @@ public class KassaPresenter
             if (butunHareketlerNetice.UgurluDur && butunHareketlerNetice.Data != null)
             {
                 decimal gelirlerCem = butunHareketlerNetice.Data
-                    .Where(k => k.HareketNovu == KassaHareketiNovu.Daxilolma)
+                    .Where(k => k.HareketNovu == KassaHareketiNovu.Daxilolma &&
+                        (k.OdenisMetodu == null || k.OdenisMetodu == OdenisMetodu.Nağd))
                     .Sum(k => k.Mebleg);
 
                 decimal xerclerCem = butunHareketlerNetice.Data
-                    .Where(k => k.HareketNovu == KassaHareketiNovu.Cixis)
+                    .Where(k => k.HareketNovu == KassaHareketiNovu.Cixis &&
+                        (k.OdenisMetodu == null || k.OdenisMetodu == OdenisMetodu.Nağd))
                     .Sum(k => k.Mebleg);
 
                 balans = gelirlerCem - xerclerCem;

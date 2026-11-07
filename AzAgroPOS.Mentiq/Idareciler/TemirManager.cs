@@ -264,8 +264,8 @@ public class TemirManager
                     }
 
                     // Stokda kifayət qədər məhsul olub-olmadığını yoxla
-                    EmeliyyatNeticesi<int> qaliqNetice = await _stokHareketiManager.MehsulQaliginGetirAsync(hisse.MehsulId);
-                    if (!qaliqNetice.UgurluDur || qaliqNetice.Data < (int)hisse.Miqdar)
+                    EmeliyyatNeticesi<decimal> qaliqNetice = await _stokHareketiManager.MehsulQaliginGetirAsync(hisse.MehsulId);
+                    if (!qaliqNetice.UgurluDur || qaliqNetice.Data < hisse.Miqdar)
                     {
                         return EmeliyyatNeticesi.Ugursuz(
                             $"Stokda kifayət qədər '{hisse.MehsulAdi}' yoxdur. " +
@@ -278,7 +278,7 @@ public class TemirManager
                         SenedNovu.Temir,
                         temirId,
                         hisse.MehsulId,
-                        (int)hisse.Miqdar,
+                        hisse.Miqdar,
                         0, // alisQiymeti - təmir üçün 0
                         hisse.Qiymet, // satisQiymeti - ehtiyat hissəsinin qiyməti
                         $"Təmir #{temirId} - {sifaris.CihazAdi} - {sifaris.MusteriAdi}",

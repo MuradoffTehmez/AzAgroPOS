@@ -125,7 +125,7 @@ public partial class AnbarFormu : BazaForm, IAnbarView
     {
         decimal cost = products.Sum(p => Math.Max(0, p.MovcudSay) * p.AlisQiymeti);
         decimal retail = products.Sum(p => Math.Max(0, p.MovcudSay) * p.PerakendeSatisQiymeti);
-        int deficit = products.Sum(p => Math.Max(0, -p.MovcudSay));
+        decimal deficit = products.Sum(p => Math.Max(0, -p.MovcudSay));
         _inventoryCostLabel.Text = $"Anbar dəyəri (alış): {cost:N2} AZN";
         _inventoryRetailLabel.Text = $"Satış qiyməti ilə: {retail:N2} AZN";
         _negativeStockLabel.Text = $"Mənfi qalıq: {deficit} vahid";

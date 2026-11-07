@@ -349,10 +349,16 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                     return false;
                 }
             }
-            if (!int.TryParse(_view.MinimumStok, out int minimum) || minimum < 0 ||
-                (yeniMehsuldur && (!int.TryParse(_view.MovcudSay, out int say) || say < 0)))
+            if (!decimal.TryParse(_view.MinimumStok, out decimal minimum) || minimum < 0 || minimum != decimal.Round(minimum, 3) ||
+                (yeniMehsuldur && (!decimal.TryParse(_view.MovcudSay, out decimal say) || say < 0 || say != decimal.Round(say, 3))))
             {
-                _view.MesajGoster("Stok saylarını mənfi olmayan tam ədəd kimi daxil edin.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                _view.MesajGoster("Stok miqdarını mənfi olmayan, ən çox üç onluq rəqəmlə daxil edin.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+            if ((_view.SecilmisOlcuVahidi == OlcuVahidi.Ədəd || _view.SecilmisOlcuVahidi == OlcuVahidi.Paket) &&
+                (minimum != decimal.Truncate(minimum) || (yeniMehsuldur && ParseDecimal(_view.MovcudSay) != decimal.Truncate(ParseDecimal(_view.MovcudSay)))))
+            {
+                _view.MesajGoster("Ədəd və paket üçün miqdar tam ədəd olmalıdır.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
             return true;
@@ -370,8 +376,8 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                 TopdanSatisQiymeti = ParseDecimal(_view.TopdanSatisQiymeti),
                 TekEdedSatisQiymeti = ParseDecimal(_view.TekEdedSatisQiymeti),
                 AlisQiymeti = ParseDecimal(_view.AlisQiymeti),
-                MovcudSay = ParseInt(_view.MovcudSay),
-                MinimumStok = ParseInt(_view.MinimumStok),
+                MovcudSay = ParseDecimal(_view.MovcudSay),
+                MinimumStok = ParseDecimal(_view.MinimumStok),
                 OlcuVahidi = _view.SecilmisOlcuVahidi,
                 KateqoriyaId = _view.SecilmisKateqoriyaId,
                 BrendId = _view.SecilmisBrendId,

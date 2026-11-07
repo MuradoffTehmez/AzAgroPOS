@@ -126,8 +126,13 @@ public class NovbePresenter
             sb.AppendLine($"Başlanğıc Məbləğ: {h.BaslangicMebleg:N2} AZN");
             sb.AppendLine($"Nağd Satışlar: {h.NagdSatislar:N2} AZN");
             sb.AppendLine($"Kart Satışları: {h.KartSatislar:N2} AZN");
+            sb.AppendLine($"Nisyə satışları: {h.NisyeSatislar:N2} AZN");
             sb.AppendLine($"Nağd Borc Ödənişləri: {h.NagdBorcOdenisleri:N2} AZN");
             sb.AppendLine($"Kart Borc Ödənişləri: {h.KartBorcOdenisleri:N2} AZN");
+            sb.AppendLine($"Nağd qaytarmalar: -{h.NagdQaytarmalar:N2} AZN");
+            sb.AppendLine($"Kart qaytarmaları: -{h.KartQaytarmalar:N2} AZN");
+            sb.AppendLine($"Kassa xərcləri: -{h.NagdXercler:N2} AZN");
+            sb.AppendLine($"Tədarükçü ödənişləri: -{h.TedarukcuOdemeleri:N2} AZN");
             sb.AppendLine($"CƏMİ SATIŞ: {h.CemiSatislar:N2} AZN");
             sb.AppendLine("---------------------------------");
             sb.AppendLine($"Gözlənilən Məbləğ: {h.GozlenilenMebleg:N2} AZN");

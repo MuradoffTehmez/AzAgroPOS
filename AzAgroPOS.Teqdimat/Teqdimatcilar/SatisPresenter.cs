@@ -8,6 +8,7 @@ using AzAgroPOS.Teqdimat.Yardimcilar;
 using AzAgroPOS.Varliglar;
 using System.ComponentModel;
 using System.Globalization;
+using System.Text.Json;
 
 namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 {
@@ -34,9 +35,10 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             _musteriManager = musteriManager;
             _konfiqurasiyaManager = konfiqurasiyaManager;
             _aktivSebet = new BindingList<SatisSebetiElementiDto>();
-            _gozleyenSebetler = new List<GozleyenSatis>();
+            _gozleyenSebetler = GozleyenSebetleriOxu();
 
             _view.SebeteMehsullariGoster(_aktivSebet);
+            _view.GozleyenSatislarSayiniGuncelle(_gozleyenSebetler.Count);
             AbuneOl();
         }
 
@@ -120,10 +122,17 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                 }
 
                 // Miqdar yoxlaması və təyin edilməsi
-                if (!decimal.TryParse(_view.SecilmisMehsulMiqdari, out decimal miqdar) || miqdar <= 0)
+                if (!decimal.TryParse(_view.SecilmisMehsulMiqdari, out decimal miqdar) || miqdar <= 0 ||
+                    miqdar != decimal.Round(miqdar, 3))
                 {
-                    miqdar = 1;
-                    System.Diagnostics.Debug.WriteLine($"Miqdar təyin edilməyib, default: {miqdar}");
+                    _view.StatusMesajiGoster("Miqdarı müsbət və ən çox üç onluq dəqiqlikdə daxil edin.", StatusMesajiNovu.Xeta);
+                    return;
+                }
+                if ((secilmisMehsul.OlcuVahidi == OlcuVahidi.Ədəd || secilmisMehsul.OlcuVahidi == OlcuVahidi.Paket) &&
+                    miqdar != decimal.Truncate(miqdar))
+                {
+                    _view.StatusMesajiGoster("Ədəd və paket məhsulu üçün tam ədəd miqdar daxil edin.", StatusMesajiNovu.Xeta);
+                    return;
                 }
 
                 // Miqdar məntiq yoxlaması
@@ -284,7 +293,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                 return;
             }
 
-            decimal umumiMebleg = _aktivSebet.Sum(e => e.VahidinQiymeti * e.Miqdar);
+            decimal umumiMebleg = _aktivSebet.Sum(e => decimal.Round(e.VahidinQiymeti * e.Miqdar, 2, MidpointRounding.AwayFromZero));
             decimal appliedDiscount = 0;
 
             // Faiz limitini yoxla
@@ -307,6 +316,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                 }
 
                 // Mövcud item endirimləri saxlanılır, cart level endirim əlavə olunur
+                appliedDiscount = decimal.Round(appliedDiscount, 2, MidpointRounding.AwayFromZero);
                 _cartLevelEndirimMeblegi = appliedDiscount;
             }
             else if (endirimParam.Scope == EndirimScope.SelectedItem)
@@ -318,7 +328,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                     return;
                 }
 
-                decimal itemTotalBeforeDiscount = secilmisSebetElementi.VahidinQiymeti * secilmisSebetElementi.Miqdar;
+                decimal itemTotalBeforeDiscount = decimal.Round(secilmisSebetElementi.VahidinQiymeti * secilmisSebetElementi.Miqdar, 2, MidpointRounding.AwayFromZero);
 
                 if (endirimParam.Type == EndirimType.Percentage)
                 {
@@ -330,6 +340,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                 }
 
                 // Item level endirim - cart level endirimlə birləşir
+                appliedDiscount = decimal.Round(appliedDiscount, 2, MidpointRounding.AwayFromZero);
                 secilmisSebetElementi.EndirimMeblegi = appliedDiscount;
             }
 
@@ -360,13 +371,24 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                 return;
             }
 
-            string ad = $"Satış {DateTime.Now:HH:mm:ss}";
-            _gozleyenSebetler.Add(new GozleyenSatis(ad, _aktivSebet.ToList()));
+            string ad = $"Satış {DateTime.Now:dd.MM HH:mm:ss}";
+            GozleyenSatis gozleyen = new(ad, _aktivSebet.ToList())
+            {
+                MusteriId = _view.SecilmisMusteriId,
+                SebetEndirimi = _cartLevelEndirimMeblegi
+            };
+            _gozleyenSebetler.Add(gozleyen);
+            if (!GozleyenSebetleriYaz())
+            {
+                _gozleyenSebetler.Remove(gozleyen);
+                _view.StatusMesajiGoster("Gözlədilən satış saxlanmadı; səbət açıq qaldı.", StatusMesajiNovu.Xeta);
+                return;
+            }
             _view.GozleyenSatislarSayiniGuncelle(_gozleyenSebetler.Count);
             FormuTamSifirla();
         }
 
-        public void GozleyenSatisiSec(GozleyenSatis satis)
+        public async Task GozleyenSatisiSec(GozleyenSatis satis)
         {
             if (_aktivSebet.Any())
             {
@@ -376,11 +398,71 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                     return;
                 }
             }
-            _aktivSebet = new BindingList<SatisSebetiElementiDto>(satis.Sebet);
+            MusteriDto? musteri = null;
+            if (satis.MusteriId.HasValue)
+            {
+                EmeliyyatNeticesi<MusteriDto> netice = await _musteriManager.MusteriGetirAsync(satis.MusteriId.Value);
+                if (!netice.UgurluDur || netice.Data == null)
+                {
+                    _view.StatusMesajiGoster("Gözlədilən satışın müştərisi tapılmadı.", StatusMesajiNovu.Xeta);
+                    return;
+                }
+                musteri = netice.Data;
+            }
             _gozleyenSebetler.Remove(satis);
+            if (!GozleyenSebetleriYaz())
+            {
+                _gozleyenSebetler.Add(satis);
+                _view.StatusMesajiGoster("Gözlədilən satışın saxlanması alınmadı.", StatusMesajiNovu.Xeta);
+                return;
+            }
+            _aktivSebet = new BindingList<SatisSebetiElementiDto>(satis.Sebet);
+            _cartLevelEndirimMeblegi = satis.SebetEndirimi;
             _view.GozleyenSatislarSayiniGuncelle(_gozleyenSebetler.Count);
             _view.SebeteMehsullariGoster(_aktivSebet);
+            if (musteri != null) _view.MusteriSiyahisiniGoster(new List<MusteriDto> { musteri });
+            _view.MusteriSec(satis.MusteriId);
             GosterisleriYenile();
+        }
+
+        private static string GozleyenSebetYolu()
+        {
+            string qovluq = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "AzAgroPOS");
+            Directory.CreateDirectory(qovluq);
+            return Path.Combine(qovluq, $"GozleyenSatislar-{AktivSessiya.AktivIstifadeci?.Id ?? 0}.json");
+        }
+
+        private static List<GozleyenSatis> GozleyenSebetleriOxu()
+        {
+            try
+            {
+                string yol = GozleyenSebetYolu();
+                return File.Exists(yol)
+                    ? JsonSerializer.Deserialize<List<GozleyenSatis>>(File.ReadAllText(yol)) ?? new()
+                    : new();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Gözlədilən satışlar oxunmadı: {ex}");
+                return new();
+            }
+        }
+
+        private bool GozleyenSebetleriYaz()
+        {
+            try
+            {
+                string yol = GozleyenSebetYolu();
+                string muveqqetiYol = yol + ".tmp";
+                File.WriteAllText(muveqqetiYol, JsonSerializer.Serialize(_gozleyenSebetler));
+                File.Move(muveqqetiYol, yol, true);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Gözlədilən satışlar saxlanmadı: {ex}");
+                return false;
+            }
         }
 
         private async Task SatisiTesdiqle(OdenisMetodu odenisMetodu)
@@ -419,14 +501,13 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             // Nisyə satış üçün müştəri borc limitini yoxla
             if (odenisMetodu == OdenisMetodu.Nisyə && musteriId.HasValue)
             {
-                EmeliyyatNeticesi<List<MusteriDto>> musteriSiyahisi = await _musteriManager.ButunMusterileriGetirAsync();
-                if (musteriSiyahisi.UgurluDur && musteriSiyahisi.Data != null)
+                EmeliyyatNeticesi<MusteriDto> musteriNeticesi = await _musteriManager.MusteriGetirAsync(musteriId.Value);
+                if (musteriNeticesi.UgurluDur && musteriNeticesi.Data != null)
                 {
-                    MusteriDto? musteri = musteriSiyahisi.Data.FirstOrDefault(m => m.Id == musteriId.Value);
+                    MusteriDto? musteri = musteriNeticesi.Data;
                     if (musteri != null)
                     {
-                        decimal yekunMebleg = _aktivSebet.Sum(e => e.VahidinQiymeti * e.Miqdar)
-                                             - _aktivSebet.Sum(e => e.EndirimMeblegi) - _cartLevelEndirimMeblegi;
+                        decimal yekunMebleg = _aktivSebet.Sum(e => e.UmumiMebleg) - _cartLevelEndirimMeblegi;
                         decimal yeniBorc = musteri.UmumiBorc + yekunMebleg;
 
                         if (musteri.KreditLimiti > 0 && yeniBorc > musteri.KreditLimiti)
@@ -449,7 +530,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             SynchronizationContext? uiContext = SynchronizationContext.Current;
             await _view.EmeliyyatIcraEtAsync(async () =>
             {
-                decimal umumiMebleg = _aktivSebet.Sum(e => e.VahidinQiymeti * e.Miqdar); // Total before any discount
+                decimal umumiMebleg = _aktivSebet.Sum(e => decimal.Round(e.VahidinQiymeti * e.Miqdar, 2, MidpointRounding.AwayFromZero)); // Total before any discount
                 decimal totalItemDiscount = _aktivSebet.Sum(e => e.EndirimMeblegi); // Total discount from items
                 decimal totalDiscount = totalItemDiscount + _cartLevelEndirimMeblegi;
                 decimal yekunMebleg = umumiMebleg - totalDiscount;
@@ -542,7 +623,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 
         private void GosterisleriYenile()
         {
-            decimal umumiMebleg = _aktivSebet.Sum(e => e.VahidinQiymeti * e.Miqdar); // Total before any discount
+            decimal umumiMebleg = _aktivSebet.Sum(e => decimal.Round(e.VahidinQiymeti * e.Miqdar, 2, MidpointRounding.AwayFromZero)); // Total before any discount
             decimal totalItemDiscount = _aktivSebet.Sum(e => e.EndirimMeblegi); // Total discount from items
             decimal yekunMebleg = umumiMebleg - totalItemDiscount - _cartLevelEndirimMeblegi;
             _view.UmumiMebligiGoster(umumiMebleg, totalItemDiscount + _cartLevelEndirimMeblegi, yekunMebleg);

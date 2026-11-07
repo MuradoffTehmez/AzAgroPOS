@@ -15,7 +15,7 @@
         public decimal EndirimliQiymet => VahidinQiymeti - (EndirimMeblegi / (Miqdar > 0 ? Miqdar : 1)); // Price after discount per unit
 
         // Total amount for the item after discount
-        public decimal UmumiMebleg => (VahidinQiymeti * Miqdar) - EndirimMeblegi;
+        public decimal UmumiMebleg => decimal.Round((VahidinQiymeti * Miqdar) - EndirimMeblegi, 2, MidpointRounding.AwayFromZero);
 
         public string QiymetNövü { get; set; } = "Pərakəndə";
     }

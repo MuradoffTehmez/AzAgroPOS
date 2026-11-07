@@ -69,22 +69,29 @@ public class AnbarManager
     /// <param name="mehsulId">Sayı artırılacaq məhsulun ID-si.</param>
     /// <param name="elaveOlunanSay">Anbara əlavə edilən yeni miqdar.</param>
     /// <returns>Əməliyyatın nəticəsi.</returns>
-    public async Task<EmeliyyatNeticesi<int>> AnbardakiStokuArtirAsync(
-        int mehsulId, int elaveOlunanSay, string? qeyd = null, SenedNovu? senedNovu = null)
+    public async Task<EmeliyyatNeticesi<decimal>> AnbardakiStokuArtirAsync(
+        int mehsulId, decimal elaveOlunanSay, string? qeyd = null, SenedNovu? senedNovu = null)
     {
+        if (!IcazeYoxlayici.Instance.IcazeVarmi(SistemIcazeleri.MehsulDeyis))
+            return EmeliyyatNeticesi<decimal>.Ugursuz("Anbar qalığını dəyişməyə icazəniz yoxdur.");
         Logger.MelumatYaz($"AnbardakiStokuArtirAsync çağırıldı. Məhsul ID: {mehsulId}, Əlavə olunan say: {elaveOlunanSay}");
         try
         {
             if (elaveOlunanSay == 0)
             {
-                return EmeliyyatNeticesi<int>.Ugursuz("Dəyişiklik miqdarı sıfır ola bilməz.");
+                return EmeliyyatNeticesi<decimal>.Ugursuz("Dəyişiklik miqdarı sıfır ola bilməz.");
             }
+            if (elaveOlunanSay != decimal.Round(elaveOlunanSay, 3))
+                return EmeliyyatNeticesi<decimal>.Ugursuz("Stok miqdarı ən çox üç onluq dəqiqlikdə olmalıdır.");
 
             Mehsul mehsul = await _unitOfWork.Mehsullar.GetirAsync(mehsulId);
             if (mehsul == null)
             {
-                return EmeliyyatNeticesi<int>.Ugursuz("Məhsul tapılmadı.");
+                return EmeliyyatNeticesi<decimal>.Ugursuz("Məhsul tapılmadı.");
             }
+            if ((mehsul.OlcuVahidi == OlcuVahidi.Ədəd || mehsul.OlcuVahidi == OlcuVahidi.Paket) &&
+                elaveOlunanSay != decimal.Truncate(elaveOlunanSay))
+                return EmeliyyatNeticesi<decimal>.Ugursuz("Ədəd və paket məhsulunun stok dəyişməsi tam ədəd olmalıdır.");
 
             mehsul.MovcudSay += elaveOlunanSay;
             _unitOfWork.Mehsullar.Yenile(mehsul);
@@ -101,12 +108,12 @@ public class AnbarManager
             });
             await _unitOfWork.EmeliyyatiTesdiqleAsync();
 
-            return EmeliyyatNeticesi<int>.Ugurlu(mehsul.MovcudSay);
+            return EmeliyyatNeticesi<decimal>.Ugurlu(mehsul.MovcudSay);
         }
         catch (Exception ex)
         {
             Logger.XetaYaz(ex, "Anbardakı stoku artırarkən xəta baş verdi: ");
-            return EmeliyyatNeticesi<int>.Ugursuz($"Anbardakı stoku artırarkən xəta baş verdi: {ex.Message} + {ex.StackTrace}");
+            return EmeliyyatNeticesi<decimal>.Ugursuz($"Anbardakı stoku artırarkən xəta baş verdi: {ex.Message} + {ex.StackTrace}");
         }
 
     }

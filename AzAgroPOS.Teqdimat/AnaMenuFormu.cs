@@ -38,6 +38,9 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
     private readonly Label _cardSalesValue = new();
     private readonly Label _creditSalesValue = new();
     private readonly Label _stockValue = new();
+    private readonly Label _negativeStockValue = new();
+    private readonly Label _grossMarginValue = new();
+    private readonly Label _returnsValue = new();
     private DateTime _sonSessiyaYenilemesi = DateTime.Now;
 
     // IAnaMenuView interface implementasiyası
@@ -350,6 +353,9 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
                 (CreateMetricCard("Nisyə satışları", _creditSalesValue), _creditSalesValue.Parent!.Controls.OfType<Label>().First(l => l != _creditSalesValue), _creditSalesValue),
                 (monthlySalesCard, lblMonthlySales, lblMonthlySalesValue),
                 (CreateMetricCard("Mövcud stokun alış dəyəri", _stockValue), _stockValue.Parent!.Controls.OfType<Label>().First(l => l != _stockValue), _stockValue),
+                (CreateMetricCard("Mənfi stoklu məhsullar", _negativeStockValue), _negativeStockValue.Parent!.Controls.OfType<Label>().First(l => l != _negativeStockValue), _negativeStockValue),
+                (CreateMetricCard("Bugünkü satış mənfəəti", _grossMarginValue), _grossMarginValue.Parent!.Controls.OfType<Label>().First(l => l != _grossMarginValue), _grossMarginValue),
+                (CreateMetricCard("Bugünkü qaytarmalar", _returnsValue), _returnsValue.Parent!.Controls.OfType<Label>().First(l => l != _returnsValue), _returnsValue),
                 (totalDebtCard, lblTotalDebt, lblTotalDebtValue),
                 (debtorCustomersCard, lblDebtorCustomers, lblDebtorCustomersValue),
                 (lowStockProductsCard, lblLowStockProducts, lblLowStockProductsValue)
@@ -365,7 +371,7 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
             title.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
             value.AutoSize = false;
             value.SetBounds(16, 47, 220, 54);
-            value.Font = new Font("Segoe UI", 17F, FontStyle.Bold);
+            value.Font = new Font("Segoe UI", value == _negativeStockValue || value == _grossMarginValue ? 13F : 17F, FontStyle.Bold);
             cards.Controls.Add(card);
         }
         cards.Resize += (_, _) =>
@@ -704,14 +710,35 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
 
         try
         {
+            var xulase = await provider.GetRequiredService<HesabatManager>()
+                .SatisKassaXulasesiGetirAsync(DateTime.Today, DateTime.Today);
+            _grossMarginValue.Text = xulase.UgurluDur && xulase.Data != null
+                ? xulase.Data.MayaDeyeriTamdir ? $"{xulase.Data.UmumiQazanc:N2} AZN" : "Maya natamamdır"
+                : "Xəta";
+            _returnsValue.Text = xulase.UgurluDur && xulase.Data != null
+                ? $"{xulase.Data.QaytarmaMeblegi:N2} AZN" : "Xəta";
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine(ex);
+            _grossMarginValue.Text = "Xəta";
+            _returnsValue.Text = "Xəta";
+        }
+
+        try
+        {
             var mehsullar = await provider.GetRequiredService<MehsulManager>().ButunMehsullariGetirAsync();
             _stockValue.Text = mehsullar.UgurluDur && mehsullar.Data != null
                 ? $"{mehsullar.Data.Sum(m => Math.Max(0, m.MovcudSay) * m.AlisQiymeti):N2} AZN" : "Xəta";
+            _negativeStockValue.Text = mehsullar.UgurluDur && mehsullar.Data != null
+                ? $"{mehsullar.Data.Count(m => m.MovcudSay < 0)} məhsul / {mehsullar.Data.Where(m => m.MovcudSay < 0).Sum(m => -m.MovcudSay)} vahid"
+                : "Xəta";
         }
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine(ex);
             _stockValue.Text = "Xəta";
+            _negativeStockValue.Text = "Xəta";
         }
 
         // Borclu müştəri sayını və ümumi borcu hesablayırıq

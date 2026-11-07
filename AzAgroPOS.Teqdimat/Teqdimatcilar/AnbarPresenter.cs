@@ -249,9 +249,9 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                 _view.EmeliyyatDuymeleriniAktivet(false);
 
                 // Stoku artır
-                EmeliyyatNeticesi<int> netice = await _anbarManager.AnbardakiStokuArtirAsync(
+                EmeliyyatNeticesi<decimal> netice = await _anbarManager.AnbardakiStokuArtirAsync(
                     _view.SecilmisMehsulId.Value,
-                    (int)Math.Round(say));
+                    say);
 
                 _view.YuklemeGizle();
                 _view.EmeliyyatDuymeleriniAktivet(true);
@@ -360,9 +360,9 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                 _view.EmeliyyatDuymeleriniAktivet(false);
 
                 // Stoku azalt (mənfi say göndəririk)
-                EmeliyyatNeticesi<int> netice = await _anbarManager.AnbardakiStokuArtirAsync(
+                EmeliyyatNeticesi<decimal> netice = await _anbarManager.AnbardakiStokuArtirAsync(
                     _view.SecilmisMehsulId.Value,
-                    -(int)Math.Round(say),
+                    -say,
                     _view.Qeyd);
 
                 _view.YuklemeGizle();
@@ -471,9 +471,9 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                 }
 
                 // Stoku düzəlt
-                EmeliyyatNeticesi<int> netice = await _anbarManager.AnbardakiStokuArtirAsync(
+                EmeliyyatNeticesi<decimal> netice = await _anbarManager.AnbardakiStokuArtirAsync(
                     _view.SecilmisMehsulId.Value,
-                    (int)Math.Round(ferq),
+                    ferq,
                     _view.Qeyd,
                     SenedNovu.Inventarizasiya);
 

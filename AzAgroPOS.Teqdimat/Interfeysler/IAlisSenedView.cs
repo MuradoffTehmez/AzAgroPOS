@@ -15,6 +15,7 @@ public interface IAlisSenedView
     int TedarukcuId { get; set; }
     DateTime TehvilTarixi { get; set; }
     decimal UmumiMebleg { get; set; }
+    List<AlisSenedSetiriDto> SenedSetirleri { get; }
     string? Qeydler { get; set; }
 
     // View metodları

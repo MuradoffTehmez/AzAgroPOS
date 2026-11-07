@@ -45,6 +45,7 @@ namespace AzAgroPOS.Teqdimat.Interfeysler
         void SebeteMehsullariGoster(BindingList<SatisSebetiElementiDto> sebet);
         void UmumiMebligiGoster(decimal umumiMebleg, decimal endirim, decimal yekunMebleg);
         void MusteriSiyahisiniGoster(List<MusteriDto> musteriler);
+        void MusteriSec(int? musteriId);
         void GozleyenSatislarMenyusunuGoster(List<GozleyenSatis> gozleyenSatislar);
         void FormuTamSifirla();
         DialogResult MesajGoster(string mesaj, string basliq, MessageBoxButtons düymələr, MessageBoxIcon ikon);

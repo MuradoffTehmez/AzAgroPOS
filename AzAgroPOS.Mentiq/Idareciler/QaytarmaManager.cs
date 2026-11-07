@@ -46,11 +46,13 @@ public class QaytarmaManager
     /// <returns>Əməliyyat nəticəsi və yaradılan qaytarma ID-si</returns>
     public async Task<EmeliyyatNeticesi<int>> QaytarmaYaratAsync(
         int satisId,
-        List<(int MehsulId, int Miqdar, decimal VahidinQiymeti)> qaytarilanMehsullar,
+        List<(int MehsulId, decimal Miqdar, decimal VahidinQiymeti)> qaytarilanMehsullar,
         string sebeb,
         int kassirId,
         int? aktivNovbeId = null)
     {
+        if (!IcazeYoxlayici.Instance.IcazeVarmi(SistemIcazeleri.QaytarmaYarat))
+            return EmeliyyatNeticesi<int>.Ugursuz("Qaytarma yaratmağa icazəniz yoxdur.");
         Logger.MelumatYaz($"Qaytarma əməliyyatı başlayır: SatışId={satisId}");
 
         try
@@ -79,11 +81,11 @@ public class QaytarmaManager
             }
 
             // 3. Qaytarılan məhsulların satışda olub-olmadığını yoxla
-            if (qaytarilanMehsullar.Any(m => m.Miqdar <= 0) ||
+            if (qaytarilanMehsullar.Any(m => m.Miqdar <= 0 || m.Miqdar != decimal.Round(m.Miqdar, 3)) ||
                 qaytarilanMehsullar.GroupBy(m => m.MehsulId).Any(g => g.Count() > 1))
                 return EmeliyyatNeticesi<int>.Ugursuz("Qaytarılan məhsulların miqdarı müsbət və hər məhsul tək olmalıdır.");
 
-            foreach ((int mehsulId, int miqdar, decimal _) in qaytarilanMehsullar)
+            foreach ((int mehsulId, decimal miqdar, decimal _) in qaytarilanMehsullar)
             {
                 SatisDetali? satisDetali = satis.SatisDetallari.FirstOrDefault(sd => sd.MehsulId == mehsulId);
                 if (satisDetali == null)
@@ -109,7 +111,7 @@ public class QaytarmaManager
                 .Select(m => (m.MehsulId, m.Miqdar,
                     satis.SatisDetallari.First(sd => sd.MehsulId == m.MehsulId).Qiymet))
                 .ToList();
-            decimal umumiMebleg = qaytarilanMehsullar.Sum(m => m.Miqdar * m.VahidinQiymeti);
+            decimal umumiMebleg = qaytarilanMehsullar.Sum(m => decimal.Round(m.Miqdar * m.VahidinQiymeti, 2, MidpointRounding.AwayFromZero));
 
             // 5. Qaytarma qeydini yarat
             Qaytarma qaytarma = new()
@@ -125,7 +127,7 @@ public class QaytarmaManager
             await _unitOfWork.EmeliyyatiTesdiqleAsync(); // ID əldə etmək üçün
 
             // 6. Qaytarma detallarını və stok hərəkətlərini qeydə al
-            foreach ((int mehsulId, int miqdar, decimal vahidinQiymeti) in qaytarilanMehsullar)
+            foreach ((int mehsulId, decimal miqdar, decimal vahidinQiymeti) in qaytarilanMehsullar)
             {
                 // Qaytarma detalı
                 QaytarmaDetali detali = new()
@@ -134,9 +136,9 @@ public class QaytarmaManager
                     MehsulId = mehsulId,
                     Miqdar = miqdar,
                     Qiymet = vahidinQiymeti,
-                    UmumiMebleg = miqdar * vahidinQiymeti
+                    UmumiMebleg = decimal.Round(miqdar * vahidinQiymeti, 2, MidpointRounding.AwayFromZero)
                 };
-                qaytarma.QaytarmaDetallari.Add(detali);
+                await _unitOfWork.Qaytarmalar.QaytarmaDetaliElaveEtAsync(detali);
 
                 // Stok hərəkəti (Daxilolma - məhsul anbara qaytarılır)
                 EmeliyyatNeticesi<int> stokNeticesi = await _stokHareketiManager.StokHareketiQeydeAlAsync(
@@ -156,6 +158,7 @@ public class QaytarmaManager
                     Logger.XəbərdarlıqYaz($"Stok hərəkəti qeydə alınarkən xəta: {stokNeticesi.Mesaj}");
                     throw new InvalidOperationException($"Stok hərəkəti qeydə alınarkən xəta: {stokNeticesi.Mesaj}");
                 }
+                await _unitOfWork.EmeliyyatiTesdiqleAsync();
             }
 
             // 7. Nisyə hesabını düzəlt (əgər satış nisyə idisə)
@@ -193,7 +196,6 @@ public class QaytarmaManager
                     // Ödəniş metoduna görə növbə məbləğini azalt
                     if (satis.OdenisMetodu == OdenisMetodu.Nağd)
                     {
-                        novbe.FaktikiMebleg -= umumiMebleg;
                         Logger.MelumatYaz($"Növbə nağd pulu azaldıldı: {umumiMebleg}");
 
                         // Maliyyə jurnalına giriş qeydi əlavə et (nağd qaytarma)
@@ -205,7 +207,9 @@ public class QaytarmaManager
                                 emeliyyatId: qaytarma.Id,
                                 mebleg: -umumiMebleg,  // Mənfi, çünki pulu geri qaytarırıq
                                 qeyd: $"Qaytarma ödənişinin geri qaytarılması (Nağd): {sebeb}, Satış ID={satisId}",
-                                istifadeciId: kassirId
+                                istifadeciId: kassirId,
+                                novbeId: aktivNovbeId,
+                                odenisMetodu: OdenisMetodu.Nağd
                             );
 
                             if (!kassaHareketiNetice.UgurluDur)
@@ -223,7 +227,6 @@ public class QaytarmaManager
                     {
                         // Kart ödənişləri üçün ayrı-ayrı field olsa düzəliş edilməlidir
                         // Hazırda fərz edirik ki, FaktikiMebleg həm nağd, həm də kart üçündür
-                        novbe.FaktikiMebleg -= umumiMebleg;
                         Logger.MelumatYaz($"Növbə kart məbləği azaldıldı: {umumiMebleg}");
 
                         // Maliyyə jurnalına giriş qeydi əlavə et (kart qaytarma)
@@ -235,7 +238,9 @@ public class QaytarmaManager
                                 emeliyyatId: qaytarma.Id,
                                 mebleg: -umumiMebleg,  // Mənfi, çünki pulu geri qaytarırıq
                                 qeyd: $"Qaytarma ödənişinin geri qaytarılması (Kart): {sebeb}, Satış ID={satisId}",
-                                istifadeciId: kassirId
+                                istifadeciId: kassirId,
+                                novbeId: aktivNovbeId,
+                                odenisMetodu: OdenisMetodu.Kart
                             );
 
                             if (!kassaHareketiNetice.UgurluDur)
@@ -251,7 +256,6 @@ public class QaytarmaManager
                     }
                     // Nisyə ödənişləri növbəni təsir etmir
 
-                    _unitOfWork.Novbeler.Yenile(novbe);
                 }
             }
 

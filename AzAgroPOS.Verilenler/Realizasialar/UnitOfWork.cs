@@ -469,6 +469,12 @@ public class UnitOfWork : IUnitOfWork
             try
             {
                 T result = await operation();
+                if (result is ITransactionOutcome outcome && !outcome.UgurluDur)
+                {
+                    await tranzaksiya.RollbackAsync();
+                    _kontekst.ChangeTracker.Clear();
+                    return result;
+                }
                 await tranzaksiya.CommitAsync();
                 return result;
             }

@@ -14,7 +14,7 @@ namespace AzAgroPOS.Mentiq.DTOs
         public string PerakendeSatisQiymetiStr => $"{PerakendeSatisQiymeti:N2} AZN";
         public decimal TopdanSatisQiymeti { get; set; }
         public decimal TekEdedSatisQiymeti { get; set; }
-        public int MovcudSay { get; set; }
+        public decimal MovcudSay { get; set; }
         public bool Aktivdir { get; set; }
         public OlcuVahidi OlcuVahidi { get; set; }
         public decimal AnbarMiqdari { get; set; }
@@ -32,7 +32,7 @@ namespace AzAgroPOS.Mentiq.DTOs
         public int? TedarukcuId { get; set; }
         public string? TedarukcuAdi { get; set; }
 
-        public int MinimumStok { get; set; } = 0;
+        public decimal MinimumStok { get; set; } = 0;
 
         public string? SekilYolu { get; set; }
     }

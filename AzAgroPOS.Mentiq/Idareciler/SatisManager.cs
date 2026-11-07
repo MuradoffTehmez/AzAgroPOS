@@ -47,12 +47,17 @@ public class SatisManager
             if (aktivNovbe == null || aktivNovbe.Status != NovbeStatusu.Aciq)
                 return EmeliyyatNeticesi<Satis>.Ugursuz("Aktiv növbə tapılmadı.");
             Istifadeci? aktivIstifadeci = IcazeYoxlayici.Instance.AktivIstifadeci;
-            if (aktivIstifadeci != null && (aktivNovbe.IsciId != aktivIstifadeci.Id ||
+            if (aktivIstifadeci == null || (aktivNovbe.IsciId != aktivIstifadeci.Id ||
                 !IcazeYoxlayici.Instance.IcazeVarmi(SistemIcazeleri.SatisYarat)))
                 return EmeliyyatNeticesi<Satis>.Ugursuz("Bu növbədə satış etməyə icazəniz yoxdur.");
-            if (aktivIstifadeci != null && !IcazeYoxlayici.Instance.IcazeVarmi(SistemIcazeleri.SatisaEndirimVer) &&
+            if (!IcazeYoxlayici.Instance.IcazeVarmi(SistemIcazeleri.SatisaEndirimVer) &&
                 (satisDto.Endirim > 0 || satisDto.SebetElementleri.Any(e => e.EndirimMeblegi > 0)))
                 return EmeliyyatNeticesi<Satis>.Ugursuz("Endirim verməyə icazəniz yoxdur.");
+            if (satisDto.OdenisMetodu == OdenisMetodu.Nisyə &&
+                !IcazeYoxlayici.Instance.IcazeVarmi(SistemIcazeleri.NisyeVer))
+                return EmeliyyatNeticesi<Satis>.Ugursuz("Nisyə satış üçün icazəniz yoxdur.");
+            if (satisDto.Endirim < 0 || satisDto.Endirim != decimal.Round(satisDto.Endirim, 2))
+                return EmeliyyatNeticesi<Satis>.Ugursuz("Endirim mənfi ola bilməz.");
 
             decimal yekunMebleg = satisDto.SebetElementleri.Sum(e => e.UmumiMebleg) - satisDto.Endirim;
             if (yekunMebleg <= 0 || decimal.Round(yekunMebleg, 2) != yekunMebleg)
@@ -67,14 +72,25 @@ public class SatisManager
 
             foreach (SatisSebetiElementiDto element in satisDto.SebetElementleri)
             {
-                if (element.Miqdar <= 0 || element.Miqdar != decimal.Truncate(element.Miqdar))
+                if (element.Miqdar <= 0 || element.Miqdar != decimal.Round(element.Miqdar, 3))
                 {
-                    return EmeliyyatNeticesi<Satis>.Ugursuz("Stok vahidi tam ədəd saxlanır; satış miqdarı müsbət tam ədəd olmalıdır.");
+                    return EmeliyyatNeticesi<Satis>.Ugursuz("Satış miqdarı müsbət və ən çox üç onluq dəqiqlikdə olmalıdır.");
                 }
                 if (!mehsullar.ContainsKey(element.MehsulId))
                 {
                     return EmeliyyatNeticesi<Satis>.Ugursuz($"'{element.MehsulAdi}' məhsulu tapılmadı.");
                 }
+                Mehsul mehsul = mehsullar[element.MehsulId];
+                if ((mehsul.OlcuVahidi == OlcuVahidi.Ədəd || mehsul.OlcuVahidi == OlcuVahidi.Paket) &&
+                    element.Miqdar != decimal.Truncate(element.Miqdar))
+                    return EmeliyyatNeticesi<Satis>.Ugursuz($"'{mehsul.Ad}' üçün yalnız tam ədəd miqdar qəbul edilir.");
+                if (!mehsul.Aktivdir || element.VahidinQiymeti <= 0 || element.EndirimMeblegi < 0 ||
+                    element.EndirimMeblegi != decimal.Round(element.EndirimMeblegi, 2) ||
+                    element.EndirimMeblegi > element.VahidinQiymeti * element.Miqdar)
+                    return EmeliyyatNeticesi<Satis>.Ugursuz($"'{mehsul.Ad}' məhsulunun qiyməti və ya endirimi düzgün deyil.");
+                if (!IcazeYoxlayici.Instance.IcazeVarmi(SistemIcazeleri.SatisaEndirimVer) &&
+                    element.VahidinQiymeti != mehsul.PerakendeSatisQiymeti)
+                    return EmeliyyatNeticesi<Satis>.Ugursuz($"'{mehsul.Ad}' məhsulunun satış qiymətini dəyişməyə icazəniz yoxdur.");
             }
 
             // ExecuteInTransactionAsync — SqlServerRetryingExecutionStrategy ilə uyğun tranzaksiya
@@ -126,7 +142,7 @@ public class SatisManager
                         SenedNovu.Satis,
                         satis.Id,
                         element.MehsulId,
-                        (int)element.Miqdar,
+                        element.Miqdar,
                         mehsullar[element.MehsulId].AlisQiymeti,
                         element.VahidinQiymeti,
                         $"Satış: ID={satis.Id}",
@@ -138,6 +154,7 @@ public class SatisManager
                         Logger.XəbərdarlıqYaz($"Stok hərəkəti qeydə alınarkən xəta: {stokNeticesi.Mesaj}");
                         throw new InvalidOperationException($"Stok hərəkəti qeydə alınarkən xəta: {stokNeticesi.Mesaj}");
                     }
+                    await _unitOfWork.EmeliyyatiTesdiqleAsync();
                 }
 
                 // Əgər nisyədirsə, borcu qeydə al
@@ -149,6 +166,22 @@ public class SatisManager
                         Logger.XetaYaz(new Exception(nisyeNetice.Mesaj), "Nisyə qeydiyatı zamanı xəta");
                         throw new InvalidOperationException($"Nisyə qeydiyatı zamanı xəta: {nisyeNetice.Mesaj}");
                     }
+                }
+
+                if (satis.OdenisMetodu is OdenisMetodu.Nağd or OdenisMetodu.Kart)
+                {
+                    await _unitOfWork.KassaHareketleri.ElaveEtAsync(new KassaHareketi
+                    {
+                        HareketNovu = KassaHareketiNovu.Daxilolma,
+                        EmeliyyatNovu = EmeliyyatNovu.Satis,
+                        EmeliyyatId = satis.Id,
+                        NovbeId = satis.NovbeId,
+                        OdenisMetodu = satis.OdenisMetodu,
+                        Mebleg = satis.UmumiMebleg,
+                        Tarix = satis.Tarix,
+                        Qeyd = $"Satış #{satis.Id}",
+                        IstifadeciId = aktivNovbe.IsciId
+                    });
                 }
 
                 // Vacib: Bütün dəyişiklikləri təsdiqlə
@@ -247,8 +280,8 @@ public class SatisManager
     {
         Logger.MelumatYaz("Qaytarma əməliyyatı başlayır");
         if (qaytarilanMehsullar == null || qaytarilanMehsullar.Count == 0 ||
-            qaytarilanMehsullar.Any(e => e.Miqdar <= 0 || e.Miqdar != decimal.Truncate(e.Miqdar)))
-            return EmeliyyatNeticesi<bool>.Ugursuz("Qaytarma miqdarı müsbət tam ədəd olmalıdır.");
+            qaytarilanMehsullar.Any(e => e.Miqdar <= 0 || e.Miqdar != decimal.Round(e.Miqdar, 3)))
+            return EmeliyyatNeticesi<bool>.Ugursuz("Qaytarma miqdarı müsbət və ən çox üç onluq dəqiqlikdə olmalıdır.");
         try
         {
             // Əsas satışı tap
@@ -294,7 +327,7 @@ public class SatisManager
                         SenedNovu.Qaytarma,
                         qaytarma.Id,
                         element.MehsulId,
-                        (int)element.Miqdar,
+                        element.Miqdar,
                         element.VahidinQiymeti,
                         element.VahidinQiymeti,
                         $"Qaytarma: ID={qaytarma.Id}, Səbəb: {sebeb}",

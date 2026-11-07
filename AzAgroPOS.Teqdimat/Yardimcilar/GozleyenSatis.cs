@@ -7,6 +7,15 @@ namespace AzAgroPOS.Teqdimat.Yardimcilar
     {
         public string Ad { get; set; }
         public List<SatisSebetiElementiDto> Sebet { get; set; }
+        public int? MusteriId { get; set; }
+        public decimal SebetEndirimi { get; set; }
+        public DateTime YaradilmaTarixi { get; set; } = DateTime.Now;
+
+        public GozleyenSatis()
+        {
+            Ad = string.Empty;
+            Sebet = new List<SatisSebetiElementiDto>();
+        }
 
         public GozleyenSatis(string ad, List<SatisSebetiElementiDto> sebet)
         {

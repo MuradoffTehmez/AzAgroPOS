@@ -320,6 +320,8 @@ public class AlisManager
     /// </summary>
     public async Task<EmeliyyatNeticesi<int>> AlisSifarisYaratAsync(AlisSifarisDto dto)
     {
+        if (!IcazeYoxlayici.Instance.IcazeVarmi(SistemIcazeleri.AlisSenediYarat))
+            return EmeliyyatNeticesi<int>.Ugursuz("Alış sifarişi yaratmağa icazəniz yoxdur.");
         Logger.MelumatYaz("AlisSifarisYaratAsync metodu çağırıldı.");
         try
         {
@@ -334,6 +336,15 @@ public class AlisManager
                 return EmeliyyatNeticesi<int>.Ugursuz("Tədarükçü seçilməlidir.");
             }
 
+            if (dto.SifarisSetirleri == null || dto.SifarisSetirleri.Count == 0 ||
+                dto.SifarisSetirleri.Any(s => s.MehsulId <= 0 || s.Miqdar <= 0 || s.BirVahidQiymet < 0 ||
+                    s.CemiMebleg != decimal.Round(s.Miqdar * s.BirVahidQiymet, 2, MidpointRounding.AwayFromZero)))
+                return EmeliyyatNeticesi<int>.Ugursuz("Sifariş sətirləri və məbləğləri düzgün deyil.");
+            if (dto.UmumiMebleg != dto.SifarisSetirleri.Sum(s => s.CemiMebleg))
+                return EmeliyyatNeticesi<int>.Ugursuz("Sifariş yekunu sətirlərin cəminə uyğun deyil.");
+
+            return await _unitOfWork.ExecuteInTransactionAsync(async () =>
+            {
             // Yeni alış sifarişi obyekti yaradırıq
             AlisSifaris yeniSifaris = new()
             {
@@ -369,6 +380,7 @@ public class AlisManager
             await _unitOfWork.EmeliyyatiTesdiqleAsync();
 
             return EmeliyyatNeticesi<int>.Ugurlu(yeniSifaris.Id);
+            });
         }
         catch (Exception ex)
         {
@@ -382,6 +394,8 @@ public class AlisManager
     /// </summary>
     public async Task<EmeliyyatNeticesi> AlisSifarisYenileAsync(AlisSifarisDto dto)
     {
+        if (!IcazeYoxlayici.Instance.IcazeVarmi(SistemIcazeleri.AlisSenediDeyis))
+            return EmeliyyatNeticesi.Ugursuz("Alış sifarişini dəyişməyə icazəniz yoxdur.");
         Logger.MelumatYaz($"AlisSifarisYenileAsync metodu çağırıldı. ID: {dto.Id}");
         try
         {
@@ -430,6 +444,8 @@ public class AlisManager
     /// </summary>
     public async Task<EmeliyyatNeticesi> AlisSifarisSilAsync(int id)
     {
+        if (!IcazeYoxlayici.Instance.IcazeVarmi(SistemIcazeleri.AlisSenediSil))
+            return EmeliyyatNeticesi.Ugursuz("Alış sifarişini silməyə icazəniz yoxdur.");
         Logger.MelumatYaz($"AlisSifarisSilAsync metodu çağırıldı. ID: {id}");
         try
         {
@@ -457,6 +473,8 @@ public class AlisManager
     /// </summary>
     public async Task<EmeliyyatNeticesi> AlisSifarisiniTesdiqleAsync(int id)
     {
+        if (!IcazeYoxlayici.Instance.IcazeVarmi(SistemIcazeleri.AlisSenediDeyis))
+            return EmeliyyatNeticesi.Ugursuz("Alış sifarişini təsdiqləməyə icazəniz yoxdur.");
         Logger.MelumatYaz($"AlisSifarisiniTesdiqleAsync metodu çağırıldı. ID: {id}");
         try
         {
@@ -500,6 +518,12 @@ public class AlisManager
         {
             IEnumerable<AlisSened> senetler = await _unitOfWork.AlisSenetleri.ButununuGetirAsync();
             IEnumerable<Tedarukcu> tedarukculer = await _unitOfWork.Tedarukculer.ButununuGetirAsync();
+            List<int> senedIdleri = senetler.Select(s => s.Id).ToList();
+            List<AlisSenedSetiri> butunSetirler = (await _unitOfWork.AlisSenedSetirleri
+                .AxtarAsync(s => senedIdleri.Contains(s.AlisSenedId))).ToList();
+            List<int> mehsulIdleri = butunSetirler.Select(s => s.MehsulId).Distinct().ToList();
+            Dictionary<int, string> mehsulAdlari = (await _unitOfWork.Mehsullar
+                .AxtarAsync(m => mehsulIdleri.Contains(m.Id))).ToDictionary(m => m.Id, m => m.Ad);
 
             List<AlisSenedDto> dtolar = senetler.Select(s => new AlisSenedDto
             {
@@ -511,7 +535,19 @@ public class AlisManager
                 TehvilTarixi = s.TehvilTarixi,
                 UmumiMebleg = s.UmumiMebleg,
                 Status = s.Status,
-                Qeydler = s.Qeydler
+                Qeydler = s.Qeydler,
+                SenedSetirleri = butunSetirler.Where(setir => setir.AlisSenedId == s.Id)
+                    .Select(setir => new AlisSenedSetiriDto
+                    {
+                        Id = setir.Id,
+                        AlisSenedId = setir.AlisSenedId,
+                        MehsulId = setir.MehsulId,
+                        MehsulAdi = mehsulAdlari.GetValueOrDefault(setir.MehsulId, "Naməlum"),
+                        Miqdar = setir.Miqdar,
+                        BirVahidQiymet = setir.BirVahidQiymet,
+                        CemiMebleg = setir.CemiMebleg,
+                        AlisSifarisSetiriId = setir.AlisSifarisSetiriId
+                    }).ToList()
             }).ToList();
 
             return EmeliyyatNeticesi<List<AlisSenedDto>>.Ugurlu(dtolar);
@@ -528,6 +564,8 @@ public class AlisManager
     /// </summary>
     public async Task<EmeliyyatNeticesi<int>> AlisSenedYaratAsync(AlisSenedDto dto)
     {
+        if (!IcazeYoxlayici.Instance.IcazeVarmi(SistemIcazeleri.AlisSenediYarat))
+            return EmeliyyatNeticesi<int>.Ugursuz("Alış sənədi yaratmağa icazəniz yoxdur.");
         Logger.MelumatYaz("AlisSenedYaratAsync metodu çağırıldı.");
         try
         {
@@ -542,8 +580,21 @@ public class AlisManager
                 return EmeliyyatNeticesi<int>.Ugursuz("Tədarükçü seçilməlidir.");
             }
 
-            if (dto.SenedSetirleri.Count == 0 || dto.SenedSetirleri.Any(s => s.Miqdar <= 0 || s.Miqdar != decimal.Truncate(s.Miqdar)))
-                return EmeliyyatNeticesi<int>.Ugursuz("Alış sənədində müsbət tam ədəd miqdarlı məhsul olmalıdır.");
+            if (dto.SenedSetirleri.Count == 0 || dto.SenedSetirleri.Any(s => s.Miqdar <= 0 || s.Miqdar != decimal.Round(s.Miqdar, 3)))
+                return EmeliyyatNeticesi<int>.Ugursuz("Alış sənədində müsbət və ən çox üç onluq dəqiqlikdə miqdar olmalıdır.");
+            var alinanMehsulIdleri = dto.SenedSetirleri.Select(s => s.MehsulId).Distinct().ToList();
+            var alinanMehsullar = (await _unitOfWork.Mehsullar.AxtarAsync(m => alinanMehsulIdleri.Contains(m.Id)))
+                .ToDictionary(m => m.Id);
+            if (alinanMehsullar.Count != alinanMehsulIdleri.Count || dto.SenedSetirleri.Any(s =>
+                (alinanMehsullar[s.MehsulId].OlcuVahidi == OlcuVahidi.Ədəd || alinanMehsullar[s.MehsulId].OlcuVahidi == OlcuVahidi.Paket) &&
+                s.Miqdar != decimal.Truncate(s.Miqdar)))
+                return EmeliyyatNeticesi<int>.Ugursuz("Məhsul tapılmadı və ya ədəd/paket miqdarı kəsrlidir.");
+            if (dto.SenedSetirleri.Any(s => s.MehsulId <= 0 || s.BirVahidQiymet < 0 ||
+                s.CemiMebleg != decimal.Round(s.Miqdar * s.BirVahidQiymet, 2, MidpointRounding.AwayFromZero)) ||
+                dto.UmumiMebleg != dto.SenedSetirleri.Sum(s => s.CemiMebleg))
+                return EmeliyyatNeticesi<int>.Ugursuz("Alış sənədinin məbləği sətirlərin cəminə uyğun deyil.");
+            if (dto.Status == AlisSenedStatusu.LegvEdildi)
+                return EmeliyyatNeticesi<int>.Ugursuz("Ləğv edilmiş sənədlə stok artırıla bilməz.");
 
             return await _unitOfWork.ExecuteInTransactionAsync(async () =>
             {
@@ -555,7 +606,7 @@ public class AlisManager
                 TedarukcuId = dto.TedarukcuId,
                 TehvilTarixi = dto.TehvilTarixi,
                 UmumiMebleg = dto.UmumiMebleg,
-                Status = dto.Status,
+                Status = AlisSenedStatusu.Tesdiqlendi,
                 Qeydler = dto.Qeydler
             };
 
@@ -577,21 +628,13 @@ public class AlisManager
 
                 await _unitOfWork.AlisSenedSetirleri.ElaveEtAsync(setir);
 
-                // Məhsulun alış qiymətini yeniləyirik
-                Mehsul mehsul = await _unitOfWork.Mehsullar.GetirAsync(setirDto.MehsulId);
-                if (mehsul != null)
-                {
-                    mehsul.AlisQiymeti = setirDto.BirVahidQiymet;
-                    _unitOfWork.Mehsullar.Yenile(mehsul);
-                }
-
                 // Stok hərəkətini qeydə alırıq (Daxilolma)
                 EmeliyyatNeticesi<int> stokNeticesi = await _stokHareketiManager.StokHareketiQeydeAlAsync(
                     StokHareketTipi.Daxilolma,
                     SenedNovu.Alis,
                     yeniSened.Id,
                     setirDto.MehsulId,
-                    (int)setirDto.Miqdar,
+                    setirDto.Miqdar,
                     setirDto.BirVahidQiymet, // Alış qiyməti
                     setirDto.BirVahidQiymet, // Satış qiyməti (alımda təyin olunmur, ona görə eyni qoyuruq)
                     $"Alış sənədi: {dto.SenedNomresi}",
@@ -603,6 +646,7 @@ public class AlisManager
                     Logger.XəbərdarlıqYaz($"Stok hərəkəti qeydə alınarkən xəta: {stokNeticesi.Mesaj}");
                     throw new InvalidOperationException($"Stok hərəkəti qeydə alınarkən xəta: {stokNeticesi.Mesaj}");
                 }
+                await _unitOfWork.EmeliyyatiTesdiqleAsync();
             }
 
             await _unitOfWork.EmeliyyatiTesdiqleAsync();
@@ -622,6 +666,8 @@ public class AlisManager
     /// </summary>
     public async Task<EmeliyyatNeticesi> AlisSenedYenileAsync(AlisSenedDto dto)
     {
+        if (!IcazeYoxlayici.Instance.IcazeVarmi(SistemIcazeleri.AlisSenediDeyis))
+            return EmeliyyatNeticesi.Ugursuz("Alış sənədini dəyişməyə icazəniz yoxdur.");
         Logger.MelumatYaz($"AlisSenedYenileAsync metodu çağırıldı. ID: {dto.Id}");
         try
         {
@@ -643,13 +689,25 @@ public class AlisManager
                 return EmeliyyatNeticesi.Ugursuz("Yenilənmək üçün alış sənədi tapılmadı.");
             }
 
+            if (movcudSened.Status != AlisSenedStatusu.Tesdiqlendi ||
+                dto.TedarukcuId != movcudSened.TedarukcuId ||
+                dto.UmumiMebleg != movcudSened.UmumiMebleg ||
+                dto.Status != movcudSened.Status)
+                return EmeliyyatNeticesi.Ugursuz("Təsdiqlənmiş alışın tədarükçüsü, məbləği və statusu dəyişdirilə bilməz. Səhv qəbulu ləğv edib yenisini yaradın.");
+            if (dto.SenedSetirleri.Count > 0)
+            {
+                List<AlisSenedSetiri> setirler = (await _unitOfWork.AlisSenedSetirleri
+                    .AxtarAsync(s => s.AlisSenedId == dto.Id)).ToList();
+                if (dto.SenedSetirleri.Count != setirler.Count || dto.SenedSetirleri.Any(s =>
+                    !setirler.Any(k => k.Id == s.Id && k.MehsulId == s.MehsulId &&
+                        k.Miqdar == s.Miqdar && k.BirVahidQiymet == s.BirVahidQiymet)))
+                    return EmeliyyatNeticesi.Ugursuz("Təsdiqlənmiş alışın məhsul sətirləri dəyişdirilə bilməz. Səhv qəbulu ləğv edib yenisini yaradın.");
+            }
+
             // Məlumatları yeniləyirik
             movcudSened.SenedNomresi = dto.SenedNomresi;
             movcudSened.YaradilmaTarixi = dto.YaradilmaTarixi;
-            movcudSened.TedarukcuId = dto.TedarukcuId;
             movcudSened.TehvilTarixi = dto.TehvilTarixi;
-            movcudSened.UmumiMebleg = dto.UmumiMebleg;
-            movcudSened.Status = dto.Status;
             movcudSened.Qeydler = dto.Qeydler;
 
             _unitOfWork.AlisSenetleri.Yenile(movcudSened);
@@ -669,6 +727,8 @@ public class AlisManager
     /// </summary>
     public async Task<EmeliyyatNeticesi> AlisSenedSilAsync(int id)
     {
+        if (!IcazeYoxlayici.Instance.IcazeVarmi(SistemIcazeleri.AlisSenediSil))
+            return EmeliyyatNeticesi.Ugursuz("Alış sənədini ləğv etməyə icazəniz yoxdur.");
         Logger.MelumatYaz($"AlisSenedSilAsync metodu çağırıldı. ID: {id}");
         try
         {
@@ -678,11 +738,36 @@ public class AlisManager
             {
                 return EmeliyyatNeticesi.Ugursuz("Silinəcək alış sənədi tapılmadı.");
             }
+            if (movcudSened.Status == AlisSenedStatusu.LegvEdildi)
+                return EmeliyyatNeticesi.Ugursuz("Alış sənədi artıq ləğv edilib.");
+            if ((await _unitOfWork.TedarukcuOdemeleri.AxtarAsync(o =>
+                o.AlisSenedId == id && o.Status != OdemeStatusu.LegvEdildi)).Any())
+                return EmeliyyatNeticesi.Ugursuz("Ödənişi olan alış sənədini ləğv etmək olmaz.");
+            decimal tedarukcuOdenisleri = (await _unitOfWork.TedarukcuOdemeleri.AxtarAsync(o =>
+                o.TedarukcuId == movcudSened.TedarukcuId && o.Status != OdemeStatusu.LegvEdildi)).Sum(o => o.Mebleg);
+            decimal digerSenetler = (await _unitOfWork.AlisSenetleri.AxtarAsync(s =>
+                s.TedarukcuId == movcudSened.TedarukcuId && s.Id != id && s.Status != AlisSenedStatusu.LegvEdildi))
+                .Sum(s => s.UmumiMebleg);
+            if (tedarukcuOdenisleri > digerSenetler)
+                return EmeliyyatNeticesi.Ugursuz("Bu sənəd ləğv edilərsə tədarükçü ödənişləri alış borcunu keçəcək.");
 
-            _unitOfWork.AlisSenetleri.Sil(movcudSened);
-            await _unitOfWork.EmeliyyatiTesdiqleAsync();
-
-            return EmeliyyatNeticesi.Ugurlu();
+            return await _unitOfWork.ExecuteInTransactionAsync(async () =>
+            {
+                List<AlisSenedSetiri> setirler = (await _unitOfWork.AlisSenedSetirleri
+                    .AxtarAsync(s => s.AlisSenedId == id)).ToList();
+                foreach (AlisSenedSetiri setir in setirler)
+                {
+                    EmeliyyatNeticesi<int> hereket = await _stokHareketiManager.StokHareketiQeydeAlAsync(
+                        StokHareketTipi.Cixis, SenedNovu.Alis, id, setir.MehsulId,
+                        setir.Miqdar, setir.BirVahidQiymet, setir.BirVahidQiymet,
+                        $"Alış sənədi #{id} ləğv edildi", null);
+                    if (!hereket.UgurluDur) throw new InvalidOperationException(hereket.Mesaj);
+                }
+                movcudSened.Status = AlisSenedStatusu.LegvEdildi;
+                _unitOfWork.AlisSenetleri.Yenile(movcudSened);
+                await _unitOfWork.EmeliyyatiTesdiqleAsync();
+                return EmeliyyatNeticesi.Ugurlu();
+            });
         }
         catch (Exception ex)
         {
@@ -738,6 +823,8 @@ public class AlisManager
     /// </summary>
     public async Task<EmeliyyatNeticesi<int>> TedarukcuOdemeYaratAsync(TedarukcuOdemeDto dto)
     {
+        if (!IcazeYoxlayici.Instance.IcazeVarmi(SistemIcazeleri.AlisSenediDeyis))
+            return EmeliyyatNeticesi<int>.Ugursuz("Tədarükçü ödənişi yaratmağa icazəniz yoxdur.");
         Logger.MelumatYaz("TedarukcuOdemeYaratAsync metodu çağırıldı.");
         try
         {
@@ -757,6 +844,18 @@ public class AlisManager
                 return EmeliyyatNeticesi<int>.Ugursuz("Ödəniş məbləği müsbət olmalıdır.");
             }
 
+            return await _unitOfWork.ExecuteInTransactionAsync(async () =>
+            {
+            List<AlisSened> senetler = (await _unitOfWork.AlisSenetleri
+                .AxtarAsync(s => s.TedarukcuId == dto.TedarukcuId && s.Status != AlisSenedStatusu.LegvEdildi)).ToList();
+            if (dto.AlisSenedId.HasValue && !senetler.Any(s => s.Id == dto.AlisSenedId.Value))
+                return EmeliyyatNeticesi<int>.Ugursuz("Seçilmiş alış sənədi bu tədarükçüyə aid deyil.");
+            decimal odenilen = (await _unitOfWork.TedarukcuOdemeleri
+                .AxtarAsync(o => o.TedarukcuId == dto.TedarukcuId && o.Status != OdemeStatusu.LegvEdildi))
+                .Sum(o => o.Mebleg);
+            if (dto.Mebleg > senetler.Sum(s => s.UmumiMebleg) - odenilen)
+                return EmeliyyatNeticesi<int>.Ugursuz("Ödəniş tədarükçünün qalan borcunu keçir.");
+
             // Yeni tədarükçü ödənişi obyekti yaradırıq
             TedarukcuOdeme yeniOdeme = new()
             {
@@ -767,7 +866,7 @@ public class AlisManager
                 OdemeTarixi = dto.OdemeTarixi,
                 Mebleg = dto.Mebleg,
                 OdemeUsulu = dto.OdemeUsulu,
-                Status = dto.Status,
+                Status = OdemeStatusu.Tesdiqlendi,
                 Qeydler = dto.Qeydler,
                 BankMelumatlari = dto.BankMelumatlari
             };
@@ -775,7 +874,28 @@ public class AlisManager
             await _unitOfWork.TedarukcuOdemeleri.ElaveEtAsync(yeniOdeme);
             await _unitOfWork.EmeliyyatiTesdiqleAsync();
 
+            if (dto.OdemeUsulu == OdemeUsulu.Naqd)
+            {
+                int? istifadeciId = IcazeYoxlayici.Instance.AktivIstifadeci?.Id;
+                Novbe? novbe = istifadeciId.HasValue
+                    ? await _unitOfWork.Novbeler.AktivNovbeniGetirAsync(istifadeciId.Value) : null;
+                await _unitOfWork.KassaHareketleri.ElaveEtAsync(new KassaHareketi
+                {
+                    HareketNovu = KassaHareketiNovu.Cixis,
+                    EmeliyyatNovu = EmeliyyatNovu.Odenis,
+                    EmeliyyatId = yeniOdeme.Id,
+                    NovbeId = novbe?.Id,
+                    OdenisMetodu = OdenisMetodu.Nağd,
+                    Mebleg = dto.Mebleg,
+                    Tarix = dto.OdemeTarixi,
+                    Qeyd = $"Tədarükçü ödənişi #{yeniOdeme.Id}",
+                    IstifadeciId = istifadeciId
+                });
+                await _unitOfWork.EmeliyyatiTesdiqleAsync();
+            }
+
             return EmeliyyatNeticesi<int>.Ugurlu(yeniOdeme.Id);
+            });
         }
         catch (Exception ex)
         {
@@ -789,6 +909,8 @@ public class AlisManager
     /// </summary>
     public async Task<EmeliyyatNeticesi> TedarukcuOdemeYenileAsync(TedarukcuOdemeDto dto)
     {
+        if (!IcazeYoxlayici.Instance.IcazeVarmi(SistemIcazeleri.AlisSenediDeyis))
+            return EmeliyyatNeticesi.Ugursuz("Tədarükçü ödənişini dəyişməyə icazəniz yoxdur.");
         Logger.MelumatYaz($"TedarukcuOdemeYenileAsync metodu çağırıldı. ID: {dto.Id}");
         try
         {
@@ -814,16 +936,17 @@ public class AlisManager
             {
                 return EmeliyyatNeticesi.Ugursuz("Yenilənmək üçün tədarükçü ödənişi tapılmadı.");
             }
+            if (movcudOdeme.Status == OdemeStatusu.LegvEdildi ||
+                dto.TedarukcuId != movcudOdeme.TedarukcuId ||
+                dto.AlisSenedId != movcudOdeme.AlisSenedId ||
+                dto.Mebleg != movcudOdeme.Mebleg ||
+                dto.OdemeUsulu != movcudOdeme.OdemeUsulu)
+                return EmeliyyatNeticesi.Ugursuz("Təsdiqlənmiş ödənişin məbləği və əlaqələri dəyişdirilə bilməz. Ödənişi ləğv edib yenisini yaradın.");
 
             // Məlumatları yeniləyirik
             movcudOdeme.OdemeNomresi = dto.OdemeNomresi;
             movcudOdeme.YaradilmaTarixi = dto.YaradilmaTarixi;
-            movcudOdeme.TedarukcuId = dto.TedarukcuId;
-            movcudOdeme.AlisSenedId = dto.AlisSenedId;
             movcudOdeme.OdemeTarixi = dto.OdemeTarixi;
-            movcudOdeme.Mebleg = dto.Mebleg;
-            movcudOdeme.OdemeUsulu = dto.OdemeUsulu;
-            movcudOdeme.Status = dto.Status;
             movcudOdeme.Qeydler = dto.Qeydler;
             movcudOdeme.BankMelumatlari = dto.BankMelumatlari;
 
@@ -844,6 +967,8 @@ public class AlisManager
     /// </summary>
     public async Task<EmeliyyatNeticesi> TedarukcuOdemeSilAsync(int id)
     {
+        if (!IcazeYoxlayici.Instance.IcazeVarmi(SistemIcazeleri.AlisSenediSil))
+            return EmeliyyatNeticesi.Ugursuz("Tədarükçü ödənişini ləğv etməyə icazəniz yoxdur.");
         Logger.MelumatYaz($"TedarukcuOdemeSilAsync metodu çağırıldı. ID: {id}");
         try
         {
@@ -853,11 +978,28 @@ public class AlisManager
             {
                 return EmeliyyatNeticesi.Ugursuz("Silinəcək tədarükçü ödənişi tapılmadı.");
             }
+            if (movcudOdeme.Status == OdemeStatusu.LegvEdildi)
+                return EmeliyyatNeticesi.Ugursuz("Ödəniş artıq ləğv edilib.");
 
-            _unitOfWork.TedarukcuOdemeleri.Sil(movcudOdeme);
-            await _unitOfWork.EmeliyyatiTesdiqleAsync();
+            List<KassaHareketi> odemeHereketleri = (await _unitOfWork.KassaHareketleri.AxtarAsync(k =>
+                k.EmeliyyatNovu == EmeliyyatNovu.Odenis && k.EmeliyyatId == id &&
+                k.Qeyd != null && k.Qeyd.StartsWith("Tədarükçü ödənişi"))).ToList();
+            foreach (KassaHareketi hereket in odemeHereketleri.Where(k => k.NovbeId.HasValue))
+            {
+                Novbe? novbe = await _unitOfWork.Novbeler.GetirAsync(hereket.NovbeId!.Value);
+                if (novbe?.Status == NovbeStatusu.Bagli)
+                    return EmeliyyatNeticesi.Ugursuz("Bağlı növbənin ödənişini silmək olmaz; ayrıca düzəliş əməliyyatı aparılmalıdır.");
+            }
 
-            return EmeliyyatNeticesi.Ugurlu();
+            return await _unitOfWork.ExecuteInTransactionAsync(async () =>
+            {
+                foreach (KassaHareketi hereket in odemeHereketleri)
+                    _unitOfWork.KassaHareketleri.Sil(hereket);
+                movcudOdeme.Status = OdemeStatusu.LegvEdildi;
+                _unitOfWork.TedarukcuOdemeleri.Yenile(movcudOdeme);
+                await _unitOfWork.EmeliyyatiTesdiqleAsync();
+                return EmeliyyatNeticesi.Ugurlu();
+            });
         }
         catch (Exception ex)
         {
