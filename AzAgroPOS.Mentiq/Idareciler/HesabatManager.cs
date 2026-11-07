@@ -42,16 +42,49 @@ public class HesabatManager
             List<Satis> satislar = await _unitOfWork.Satislar
                 .TarixAraligindaDetallarlaGetirAsync(baslangic.Date, bitis.Date.AddDays(1));
             List<SatisDetali> detallar = satislar.SelectMany(s => s.SatisDetallari).ToList();
+            List<Qaytarma> qaytarmalar = (await _unitOfWork.Qaytarmalar.AxtarAsync(
+                q => q.Tarix >= baslangic.Date && q.Tarix < bitis.Date.AddDays(1),
+                q => q.QaytarmaDetallari, q => q.Satis)).ToList();
+            decimal qaytarilanMiqdar = qaytarmalar.SelectMany(q => q.QaytarmaDetallari).Sum(d => d.Miqdar);
+            decimal qaytarilanMaya = 0;
+            bool mayaTamdir = detallar.All(d => d.AlisQiymeti.HasValue);
+            Dictionary<int, Satis?> qaytarilanSatislar = new();
+            foreach (Qaytarma qaytarma in qaytarmalar)
+            {
+                if (qaytarma.UmumiMebleg != 0 && qaytarma.QaytarmaDetallari.Count == 0)
+                    mayaTamdir = false;
+                if (!qaytarilanSatislar.TryGetValue(qaytarma.SatisId, out Satis? esasSatis))
+                {
+                    esasSatis = await _unitOfWork.Satislar.SatisDetallariIleBirlikdeGetirAsync(qaytarma.SatisId);
+                    qaytarilanSatislar[qaytarma.SatisId] = esasSatis;
+                }
+                foreach (QaytarmaDetali qaytarmaDetali in qaytarma.QaytarmaDetallari)
+                {
+                    List<SatisDetali> esasSetirler = esasSatis?.SatisDetallari
+                        .Where(d => d.MehsulId == qaytarmaDetali.MehsulId).ToList() ?? [];
+                    decimal satisMiqdari = esasSetirler.Sum(d => d.Miqdar);
+                    if (satisMiqdari <= 0 || esasSetirler.Any(d => !d.AlisQiymeti.HasValue))
+                    {
+                        mayaTamdir = false;
+                        continue;
+                    }
+                    decimal ortaAlisQiymeti = esasSetirler.Sum(d => d.Miqdar * d.AlisQiymeti!.Value) / satisMiqdari;
+                    qaytarilanMaya += qaytarmaDetali.Miqdar * ortaAlisQiymeti;
+                }
+            }
+            decimal QaytarmaCemi(OdenisMetodu metod) => qaytarmalar
+                .Where(q => q.Satis?.OdenisMetodu == metod).Sum(q => q.UmumiMebleg);
             SatisKassaXulaseDto xulase = new()
             {
-                SatilanMiqdar = detallar.Sum(d => d.Miqdar),
-                SatisDeyeri = satislar.Sum(s => s.UmumiMebleg),
+                SatilanMiqdar = detallar.Sum(d => d.Miqdar) - qaytarilanMiqdar,
+                SatisDeyeri = satislar.Sum(s => s.UmumiMebleg) - qaytarmalar.Sum(q => q.UmumiMebleg),
                 AlisDeyeri = detallar.Where(d => d.AlisQiymeti.HasValue)
-                    .Sum(d => d.Miqdar * d.AlisQiymeti!.Value),
-                MayaDeyeriTamdir = detallar.All(d => d.AlisQiymeti.HasValue),
-                NagdSatis = satislar.Where(s => s.OdenisMetodu == OdenisMetodu.Nağd).Sum(s => s.UmumiMebleg),
-                KartSatis = satislar.Where(s => s.OdenisMetodu == OdenisMetodu.Kart).Sum(s => s.UmumiMebleg),
-                NisyeSatis = satislar.Where(s => s.OdenisMetodu == OdenisMetodu.Nisyə).Sum(s => s.UmumiMebleg)
+                    .Sum(d => d.Miqdar * d.AlisQiymeti!.Value) - qaytarilanMaya,
+                MayaDeyeriTamdir = mayaTamdir,
+                NagdSatis = satislar.Where(s => s.OdenisMetodu == OdenisMetodu.Nağd).Sum(s => s.UmumiMebleg) - QaytarmaCemi(OdenisMetodu.Nağd),
+                KartSatis = satislar.Where(s => s.OdenisMetodu == OdenisMetodu.Kart).Sum(s => s.UmumiMebleg) - QaytarmaCemi(OdenisMetodu.Kart),
+                NisyeSatis = satislar.Where(s => s.OdenisMetodu == OdenisMetodu.Nisyə).Sum(s => s.UmumiMebleg) - QaytarmaCemi(OdenisMetodu.Nisyə),
+                QaytarmaMeblegi = qaytarmalar.Sum(q => q.UmumiMebleg)
             };
             return EmeliyyatNeticesi<SatisKassaXulaseDto>.Ugurlu(xulase);
         }

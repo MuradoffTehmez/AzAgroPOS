@@ -27,6 +27,7 @@ public partial class KassaFormu : BazaForm
     private readonly Label _lblNisyeSatis = new();
     private readonly Label _lblBorcOdenisi = new();
     private readonly Label _lblTerminalCemi = new();
+    private readonly Label _lblQaytarma = new();
 
     public KassaFormu(MaliyyeManager maliyyeManager, HesabatManager hesabatManager)
     {
@@ -57,7 +58,7 @@ public partial class KassaFormu : BazaForm
         _lblKassaCixis.Font = new Font("Segoe UI Semibold", 14F, FontStyle.Bold);
         _lblKassaCixis.BackColor = Color.White;
         groupXulase.Controls.Add(_lblKassaCixis);
-        _lblXulaseIzahi.Text = "Satış göstəriciləri brütdür. Nisyə kassaya daxil deyil. Pul axını kassa hərəkətlərindən hesablanır.";
+        _lblXulaseIzahi.Text = "Satışdan qaytarmalar çıxılıb. Nisyə kassaya daxil deyil. Dövr axınına açıq növbə satışı daxildir; jurnal qalığına hələ daxil deyil.";
         _lblXulaseIzahi.Location = new Point(32, 352);
         _lblXulaseIzahi.Size = new Size(620, 55);
         _lblXulaseIzahi.ForeColor = Color.FromArgb(91, 108, 96);
@@ -66,12 +67,12 @@ public partial class KassaFormu : BazaForm
         groupXulase.Controls.Add(_lblXulaseIzahi);
         Label[] satisGostericileri = [_lblSatilanMiqdar, _lblSatisDeyeri, _lblAlisDeyeri,
             _lblBrutMenfeet, _lblNagdSatis, _lblKartSatis, _lblNisyeSatis,
-            _lblBorcOdenisi, _lblTerminalCemi];
+            _lblBorcOdenisi, _lblTerminalCemi, _lblQaytarma];
         for (int i = 0; i < satisGostericileri.Length; i++)
         {
             Label label = satisGostericileri[i];
-            label.Location = new Point(690, 35 + i * 52);
-            label.Size = new Size(600, 42);
+            label.Location = new Point(690, 35 + i * 46);
+            label.Size = new Size(600, 38);
             label.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
             label.BackColor = Color.White;
             label.ForeColor = Color.FromArgb(29, 75, 40);
@@ -86,6 +87,7 @@ public partial class KassaFormu : BazaForm
         _lblNisyeSatis.Text = "Nisyə satış: —";
         _lblBorcOdenisi.Text = "Borc ödənişi: —";
         _lblTerminalCemi.Text = "Terminal daxilolması: —";
+        _lblQaytarma.Text = "Qaytarma: —";
         Button gunlukKassa = new()
         {
             Text = "BU GÜN",
@@ -525,16 +527,17 @@ public partial class KassaFormu : BazaForm
             }
             SatisKassaXulaseDto satis = satisNetice.Data;
             _lblSatilanMiqdar.Text = $"Satılan miqdar: {satis.SatilanMiqdar:N0}";
-            _lblSatisDeyeri.Text = $"Satış dəyəri (brüt): {satis.SatisDeyeri:N2} AZN";
+            _lblSatisDeyeri.Text = $"Satış dəyəri (xalis): {satis.SatisDeyeri:N2} AZN";
             _lblAlisDeyeri.Text = satis.MayaDeyeriTamdir
                 ? $"Satılan malların alış dəyəri: {satis.AlisDeyeri:N2} AZN"
                 : "Alış dəyəri: bəzi satışlarda məlum deyil";
             _lblBrutMenfeet.Text = satis.MayaDeyeriTamdir
                 ? $"Brüt mənfəət: {satis.UmumiQazanc:N2} AZN"
                 : "Brüt mənfəət: hesablana bilmir";
-            _lblNagdSatis.Text = $"Nağd satış (brüt): {satis.NagdSatis:N2} AZN";
-            _lblKartSatis.Text = $"Terminal satışı (brüt): {satis.KartSatis:N2} AZN";
-            _lblNisyeSatis.Text = $"Nisyə satış (brüt): {satis.NisyeSatis:N2} AZN";
+            _lblNagdSatis.Text = $"Nağd satış (xalis): {satis.NagdSatis:N2} AZN";
+            _lblKartSatis.Text = $"Terminal satışı (xalis): {satis.KartSatis:N2} AZN";
+            _lblNisyeSatis.Text = $"Nisyə satış (xalis): {satis.NisyeSatis:N2} AZN";
+            _lblQaytarma.Text = $"Qaytarma məbləği: {satis.QaytarmaMeblegi:N2} AZN";
 
             // Nağd kassa hərəkətlərini hesabla; kart ödənişi fiziki kassaya daxil deyil.
             EmeliyyatNeticesi<List<KassaHareketi>> kassaHareketleriNetice = await _maliyyeManager.KassaHareketleriniGetirAsync(baslangic, bitis);
@@ -549,16 +552,27 @@ public partial class KassaFormu : BazaForm
                                 k.HareketNovu == KassaHareketiNovu.Daxilolma &&
                                 k.OdenisMetodu == OdenisMetodu.Kart)
                     .Sum(k => k.Mebleg);
-                _lblTerminalCemi.Text = $"Terminal daxilolması (brüt): {satis.KartSatis + kartBorcOdenisi:N2} AZN";
-                decimal gelirler = kassaHareketleriNetice.Data
-                    .Where(k => k.HareketNovu == KassaHareketiNovu.Daxilolma && k.OdenisMetodu != OdenisMetodu.Kart)
+                _lblTerminalCemi.Text = $"Terminal daxilolması (xalis): {satis.KartSatis + kartBorcOdenisi:N2} AZN";
+                decimal nagdBorcOdenisi = kassaHareketleriNetice.Data
+                    .Where(k => k.EmeliyyatNovu == EmeliyyatNovu.Odenis &&
+                                k.HareketNovu == KassaHareketiNovu.Daxilolma &&
+                                k.OdenisMetodu == OdenisMetodu.Nağd)
                     .Sum(k => k.Mebleg);
-
+                decimal digerNagdGelir = kassaHareketleriNetice.Data
+                    .Where(k => k.EmeliyyatNovu == EmeliyyatNovu.Gelir && k.NovbeId == null &&
+                                k.HareketNovu == KassaHareketiNovu.Daxilolma &&
+                                k.OdenisMetodu != OdenisMetodu.Kart)
+                    .Sum(k => k.Mebleg);
+                // Növbə bağlanarkən yaranan gəlir qeydi eyni nağd satışın ikinci qeydi sayılmır.
+                decimal gelirler = satis.NagdSatis + nagdBorcOdenisi + digerNagdGelir;
+                // Qaytarma artıq xalis satışdan çıxılıb; onu ikinci dəfə çıxmırıq.
                 decimal cixislar = kassaHareketleriNetice.Data
-                    .Where(k => k.HareketNovu == KassaHareketiNovu.Cixis && k.OdenisMetodu != OdenisMetodu.Kart)
+                    .Where(k => k.HareketNovu == KassaHareketiNovu.Cixis &&
+                                k.EmeliyyatNovu != EmeliyyatNovu.Qaytarma &&
+                                k.OdenisMetodu != OdenisMetodu.Kart)
                     .Sum(k => k.Mebleg);
-                lblUmumiGelir.Text = $"Kassaya daxilolma: {gelirler:N2} AZN";
-                _lblKassaCixis.Text = $"Kassadan çıxış: {cixislar:N2} AZN";
+                lblUmumiGelir.Text = $"Nağd satış və daxilolma: {gelirler:N2} AZN";
+                _lblKassaCixis.Text = $"Digər nağd çıxış: {cixislar:N2} AZN";
                 decimal axin = gelirler - cixislar;
                 lblMenfeetZerere.Text = axin >= 0
                     ? $"Dövr üzrə kassa axını: +{axin:N2} AZN"
@@ -586,7 +600,7 @@ public partial class KassaFormu : BazaForm
                     .Sum(k => k.Mebleg);
 
                 decimal balans = gelirlerCem - xerclerCem;
-                lblCariBalans.Text = $"Bütün dövrlər üzrə nağd kassa qalığı: {balans:N2} AZN";
+                lblCariBalans.Text = $"Jurnal üzrə nağd qalıq: {balans:N2} AZN";
                 lblCariBalans.ForeColor = balans >= 0
                     ? System.Drawing.Color.Green
                     : System.Drawing.Color.Red;
