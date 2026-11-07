@@ -23,6 +23,7 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
     private readonly ToolStripMenuItem _customerMenuItem = new("Müştərilər");
     private readonly ToolStripMenuItem _homeMenuItem = new("Ana səhifə");
     private TabPage? _dashboardTab;
+    private readonly HashSet<TabPage> _closingTabs = new();
     private readonly TableLayoutPanel _workspaceLayout = new();
     private readonly Panel _tabHost = new();
     private readonly Panel _navigationCover = new();
@@ -395,6 +396,7 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
 
             TabPage yeniSehife = new(yeniForm.Text) { Tag = yeniForm, Padding = Padding.Empty };
             yeniSehife.Controls.Add(yeniForm);
+            yeniForm.FormClosed += async (_, _) => await CloseTabAsync(yeniSehife, formAlreadyClosed: true);
             mdiTabControl.TabPages.Add(yeniSehife);
             mdiTabControl.SelectedTab = yeniSehife;
 
@@ -493,19 +495,24 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
         OpenDashboard();
     }
 
-    private async Task CloseTabAsync(TabPage tab)
+    private async Task CloseTabAsync(TabPage tab, bool formAlreadyClosed = false)
     {
-        if (tab == _dashboardTab) return;
-        if (tab.Controls.Count > 0 && tab.Controls[0] is Form form)
+        if (tab == _dashboardTab || !_closingTabs.Add(tab)) return;
+        try
         {
-            form.Close();
+            bool wasSelected = mdiTabControl.SelectedTab == tab;
+            if (!formAlreadyClosed && tab.Controls.Count > 0 && tab.Controls[0] is Form form && !form.IsDisposed)
+                form.Close();
+            mdiTabControl.TabPages.Remove(tab);
+            if (wasSelected) OpenDashboard();
+            if (_tabScopes.Remove(tab, out AsyncServiceScope scope))
+                await scope.DisposeAsync();
+            tab.Dispose();
         }
-        mdiTabControl.TabPages.Remove(tab);
-        if (_tabScopes.Remove(tab, out AsyncServiceScope scope))
+        finally
         {
-            await scope.DisposeAsync();
+            _closingTabs.Remove(tab);
         }
-        tab.Dispose();
     }
 
     private void mdiTabControl_SelectedIndexChanged(object sender, EventArgs e)
