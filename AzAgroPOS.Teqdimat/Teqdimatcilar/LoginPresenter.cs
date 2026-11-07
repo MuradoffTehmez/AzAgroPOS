@@ -71,8 +71,14 @@ public class LoginPresenter : IDisposable
                 await AzAgroPOS.Mentiq.Yardimcilar.IcazeYoxlayici.Instance.AktivIstifadeciniTeyinEtAsync(istifadeci);
             }
 
-            // İstifadəçinin açıq növbəsini yoxla və yüklə
+            // Hər girişdə istifadəçinin mövcud növbəsini davam etdir və ya avtomatik aç.
             await AciqNovbeniYukle(netice.Data.Id);
+
+            if (!AktivSessiya.AktivNovbeId.HasValue)
+            {
+                _view.MesajGoster("Növbə avtomatik açıla bilmədi. Verilənlər bazası bağlantısını yoxlayın.");
+                return;
+            }
 
             _view.UgurluDaxilOlundu = true;
             _view.FormuBagla();
@@ -107,9 +113,10 @@ public class LoginPresenter : IDisposable
             }
             else
             {
-                // Açıq növbə yoxdursa, null təyin et
-                AktivSessiya.AktivNovbeId = null;
-                System.Diagnostics.Debug.WriteLine("[LoginPresenter] Açıq növbə tapılmadı");
+                EmeliyyatNeticesi<Novbe> netice = await novbeManager.NovbeAcAsync(istifadeciId, 0);
+                AktivSessiya.AktivNovbeId = netice.UgurluDur ? netice.Data?.Id : null;
+                if (!netice.UgurluDur)
+                    System.Diagnostics.Debug.WriteLine($"[LoginPresenter] Növbə açıla bilmədi: {netice.Mesaj}");
             }
         }
         catch (Exception ex)

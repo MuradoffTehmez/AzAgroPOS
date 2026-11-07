@@ -85,6 +85,17 @@ public class NovbeManager
     /// <returns></returns>
     public async Task<EmeliyyatNeticesi<ZHesabatDto>> NovbeBaglaAsync(int novbeId, decimal faktikiMebleg)
     {
+        Istifadeci? istifadeci = IcazeYoxlayici.Instance.AktivIstifadeci;
+        if (istifadeci != null && istifadeci.RolId != 1)
+            return EmeliyyatNeticesi<ZHesabatDto>.Ugursuz("Növbəni əl ilə yalnız administrator bağlaya bilər.");
+        return await NovbeBaglaDaxiliAsync(novbeId, faktikiMebleg, true);
+    }
+
+    public async Task<EmeliyyatNeticesi<ZHesabatDto>> NovbeAvtomatikBaglaAsync(int novbeId)
+        => await NovbeBaglaDaxiliAsync(novbeId, 0, false);
+
+    private async Task<EmeliyyatNeticesi<ZHesabatDto>> NovbeBaglaDaxiliAsync(int novbeId, decimal faktikiMebleg, bool sayimAparilib)
+    {
         return await _unitOfWork.ExecuteInTransactionAsync(async () =>
         {
         Novbe novbe = await _unitOfWork.Novbeler.GetirAsync(novbeId);
@@ -120,8 +131,9 @@ public class NovbeManager
         }
 
         novbe.BaglanmaTarixi = DateTime.Now;
-        novbe.FaktikiMebleg = faktikiMebleg;
         novbe.GozlenilenMebleg = novbe.BaslangicMebleg + nagdSatislar + nagdBorcOdenisleri;
+        novbe.FaktikiMebleg = sayimAparilib ? faktikiMebleg : novbe.GozlenilenMebleg;
+        novbe.SayimAparilib = sayimAparilib;
         novbe.Status = NovbeStatusu.Bagli;
         _unitOfWork.Novbeler.Yenile(novbe);
         await _unitOfWork.EmeliyyatiTesdiqleAsync();
@@ -139,7 +151,8 @@ public class NovbeManager
             NagdBorcOdenisleri = nagdBorcOdenisleri,
             KartBorcOdenisleri = kartBorcOdenisleri,
             GozlenilenMebleg = novbe.GozlenilenMebleg,
-            FaktikiMebleg = novbe.FaktikiMebleg
+            FaktikiMebleg = novbe.FaktikiMebleg,
+            SayimAparilib = novbe.SayimAparilib
         };
         return EmeliyyatNeticesi<ZHesabatDto>.Ugurlu(hesabat);
         });

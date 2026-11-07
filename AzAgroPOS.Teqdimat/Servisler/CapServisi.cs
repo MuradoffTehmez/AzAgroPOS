@@ -68,10 +68,11 @@ public class CapServisi
     /// </summary>
     /// <param name="data">Satis qebzi melumatlari</param>
     /// <param name="printerName">Printer adi (bos olarsa default printer istifade olunur)</param>
-    public void CekiCapEt(SatisQebzDto data, string printerName = "")
+    public void CekiCapEt(SatisQebzDto data, string printerName = "", bool xetaMesajiGoster = true)
     {
         if (data == null)
         {
+            if (!xetaMesajiGoster) throw new ArgumentNullException(nameof(data));
             MessageBox.Show("Cap ucun melumat yoxdur.", "Xeta", MessageBoxButtons.OK, MessageBoxIcon.Error);
             return;
         }
@@ -99,10 +100,12 @@ public class CapServisi
         }
         catch (InvalidPrinterException)
         {
+            if (!xetaMesajiGoster) throw;
             MessageBox.Show("Secilen printer tapilmadi: " + printerName, "Cap Xetasi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
         catch (Exception ex)
         {
+            if (!xetaMesajiGoster) throw;
             MessageBox.Show($"Cap zamani xeta bas verdi: {ex.Message}", "Cap Xetasi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
@@ -348,6 +351,20 @@ public class CapServisi
         // Odenis metodu
         g.DrawString($"Ödəniş: {_qebzMelumatlari.OdenisMetodu}", _normalFont, Brushes.Black, x, y);
         y += 18;
+
+        if (_qebzMelumatlari.OdenisMetodu == AzAgroPOS.Varliglar.OdenisMetodu.Nisyə)
+        {
+            g.DrawString($"Müştəri: {_qebzMelumatlari.MusteriAdi ?? "Naməlum"}", _normalFont, Brushes.Black,
+                new RectangleF(x, y, width, 34));
+            y += 34;
+            g.DrawString($"Bu satışın borcu: {_qebzMelumatlari.BuSatisBorcu ?? yekunMebleg:N2} AZN", _normalFont, Brushes.Black, x, y);
+            y += 18;
+            if (_qebzMelumatlari.UmumiBorc.HasValue)
+            {
+                g.DrawString($"Ümumi borc: {_qebzMelumatlari.UmumiBorc.Value:N2} AZN", _normalFont, Brushes.Black, x, y);
+                y += 18;
+            }
+        }
 
         // EDV qeydi
         if (_edvDerecesi > 0)

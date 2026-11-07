@@ -12,6 +12,8 @@ public class YuklemeGostergeci
     private Panel _yuklemePaneli;
     private Label _yuklemeEtiketi;
     private ProgressBar _yuklemeCubugu;
+    private readonly Dictionary<Control, bool> _evvelkiVeziyyet = new();
+    private bool _aktivdir;
 
     public YuklemeGostergeci(Form form)
     {
@@ -27,6 +29,8 @@ public class YuklemeGostergeci
     /// <param name="mesaj">İstifadəçiyə göstəriləcək mesaj</param>
     public void Baslat(string mesaj = "Yüklənir...")
     {
+        if (_aktivdir) return;
+        _aktivdir = true;
         // Yükləmə panelini konfiqurasiya et
         _yuklemePaneli.BackColor = System.Drawing.Color.FromArgb(100, 0, 0, 0); // Yarı şəffaf arxa fon
         _yuklemePaneli.Dock = DockStyle.Fill;
@@ -61,6 +65,7 @@ public class YuklemeGostergeci
         {
             if (control != _yuklemePaneli)
             {
+                _evvelkiVeziyyet[control] = control.Enabled;
                 control.Enabled = false;
             }
         }
@@ -71,14 +76,14 @@ public class YuklemeGostergeci
     /// </summary>
     public void Dayandir()
     {
-        // Formdakı digər kontrollerləri yenidən aktiv et
-        foreach (Control control in _form.Controls)
+        if (!_aktivdir) return;
+        _aktivdir = false;
+        // Əvvəl qapalı olan icazəsiz kontrollerlər qapalı qalmalıdır.
+        foreach ((Control control, bool enabled) in _evvelkiVeziyyet)
         {
-            if (control != _yuklemePaneli)
-            {
-                control.Enabled = true;
-            }
+            if (!control.IsDisposed) control.Enabled = enabled;
         }
+        _evvelkiVeziyyet.Clear();
 
         // Yükləmə panelini sil
         _yuklemePaneli.Parent?.Controls.Remove(_yuklemePaneli);

@@ -43,6 +43,17 @@ public class SatisManager
                 return EmeliyyatNeticesi<Satis>.Ugursuz("Nisyə satış üçün müştəri seçilməlidir.");
             }
 
+            Novbe? aktivNovbe = await _unitOfWork.Novbeler.GetirAsync(satisDto.NovbeId);
+            if (aktivNovbe == null || aktivNovbe.Status != NovbeStatusu.Aciq)
+                return EmeliyyatNeticesi<Satis>.Ugursuz("Aktiv növbə tapılmadı.");
+            Istifadeci? aktivIstifadeci = IcazeYoxlayici.Instance.AktivIstifadeci;
+            if (aktivIstifadeci != null && (aktivNovbe.IsciId != aktivIstifadeci.Id ||
+                !IcazeYoxlayici.Instance.IcazeVarmi(SistemIcazeleri.SatisYarat)))
+                return EmeliyyatNeticesi<Satis>.Ugursuz("Bu növbədə satış etməyə icazəniz yoxdur.");
+            if (aktivIstifadeci != null && !IcazeYoxlayici.Instance.IcazeVarmi(SistemIcazeleri.SatisaEndirimVer) &&
+                (satisDto.Endirim > 0 || satisDto.SebetElementleri.Any(e => e.EndirimMeblegi > 0)))
+                return EmeliyyatNeticesi<Satis>.Ugursuz("Endirim verməyə icazəniz yoxdur.");
+
             decimal yekunMebleg = satisDto.SebetElementleri.Sum(e => e.UmumiMebleg) - satisDto.Endirim;
             if (yekunMebleg <= 0 || decimal.Round(yekunMebleg, 2) != yekunMebleg)
             {
@@ -69,9 +80,10 @@ public class SatisManager
             // ExecuteInTransactionAsync — SqlServerRetryingExecutionStrategy ilə uyğun tranzaksiya
             return await _unitOfWork.ExecuteInTransactionAsync(async () =>
             {
+                Musteri? borclu = null;
                 if (satisDto.OdenisMetodu == OdenisMetodu.Nisyə)
                 {
-                    Musteri? borclu = await _unitOfWork.Musteriler.GetirAsync(satisDto.MusteriId!.Value);
+                    borclu = await _unitOfWork.Musteriler.GetirAsync(satisDto.MusteriId!.Value);
                     if (borclu == null || (borclu.KreditLimiti > 0 && borclu.UmumiBorc + yekunMebleg > borclu.KreditLimiti))
                     {
                         return EmeliyyatNeticesi<Satis>.Ugursuz("Müştəri tapılmadı və ya fərdi kredit limiti aşıldı.");
@@ -83,7 +95,9 @@ public class SatisManager
                     OdenisMetodu = satisDto.OdenisMetodu,
                     UmumiMebleg = yekunMebleg,
                     NovbeId = satisDto.NovbeId,
-                    MusteriId = satisDto.MusteriId
+                    MusteriId = satisDto.MusteriId,
+                    MusteriAdiQebz = borclu?.TamAd,
+                    BorcSonra = borclu?.UmumiBorc + yekunMebleg
                 };
 
                 // Auditli SaveChanges ChangeTracker-i təmizləyir. Detallar satışla
@@ -210,6 +224,9 @@ public class SatisManager
                 OdenisMetodu = satis.OdenisMetodu,
                 YekunMebleg = satis.UmumiMebleg,
                 KassirAdi = kassir?.TamAd ?? "Naməlum kassir",
+                MusteriAdi = satis.MusteriAdiQebz ?? satis.Musteri?.TamAd,
+                BuSatisBorcu = satis.OdenisMetodu == OdenisMetodu.Nisyə ? satis.UmumiMebleg : null,
+                UmumiBorc = satis.BorcSonra,
                 SatilanMehsullar = sebetElementleri
             };
 

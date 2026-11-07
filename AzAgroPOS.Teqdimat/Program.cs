@@ -132,7 +132,32 @@ namespace AzAgroPOS.Teqdimat
             if (dialogResult == DialogResult.OK && loginFormu.UgurluDaxilOlundu)
             {
                 AnaMenuFormu anaMenuFormu = ServiceProvider.GetRequiredService<AnaMenuFormu>();
-                Application.Run(anaMenuFormu);
+                try
+                {
+                    Application.Run(anaMenuFormu);
+                }
+                finally
+                {
+                    // Pəncərə bağlanandan sonra DB əməliyyatı UI axınını dondurmur.
+                    int? novbeId = Yardimcilar.AktivSessiya.AktivNovbeId;
+                    if (novbeId.HasValue)
+                    {
+                        try
+                        {
+                            using IServiceScope scope = ServiceProvider.CreateScope();
+                            NovbeManager manager = scope.ServiceProvider.GetRequiredService<NovbeManager>();
+                            var netice = manager.NovbeAvtomatikBaglaAsync(novbeId.Value).GetAwaiter().GetResult();
+                            if (!netice.UgurluDur)
+                                AzAgroPOS.Mentiq.Yardimcilar.Logger.XəbərdarlıqYaz($"Növbə avtomatik bağlanmadı: {netice.Mesaj}");
+                            else
+                                Yardimcilar.AktivSessiya.AktivNovbeId = null;
+                        }
+                        catch (Exception ex)
+                        {
+                            AzAgroPOS.Mentiq.Yardimcilar.Logger.XetaYaz(ex, "Növbə avtomatik bağlanarkən xəta");
+                        }
+                    }
+                }
             }
         }
 

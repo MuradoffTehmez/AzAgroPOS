@@ -23,12 +23,22 @@ public class UnitOfWork : IUnitOfWork
     /// </summary>
     private readonly AzAgroPOSDbContext _kontekst;
     private IDbContextTransaction? _cariTranzaksiya;
+    private static int _sessiyaIstifadeciId = 1;
+    private int _aktivIstifadeciId;
 
     /// <summary>
     /// Hazırda sistemdə aktiv olan istifadəçinin ID-si
     /// Audit jurnalı qeydləri üçün istifadə olunur
     /// </summary>
-    public int AktivIstifadeciId { get; set; } = 1; // Default admin user
+    public int AktivIstifadeciId
+    {
+        get => _aktivIstifadeciId;
+        set
+        {
+            _aktivIstifadeciId = value;
+            _kontekst.SetCurrentUser(value);
+        }
+    }
 
     /// <summary>
     /// Aktiv istifadəçi ID-sini təyin edir
@@ -37,8 +47,8 @@ public class UnitOfWork : IUnitOfWork
     /// <param name="istifadeciId">Aktiv istifadəçinin ID-si</param>
     public void AktivIstifadeciniTeyinEt(int istifadeciId)
     {
+        Volatile.Write(ref _sessiyaIstifadeciId, istifadeciId);
         AktivIstifadeciId = istifadeciId;
-        _kontekst.SetCurrentUser(istifadeciId); // Audit sahələri üçün
     }
 
     // Repozitorilərin instansiyaları
@@ -249,6 +259,7 @@ public class UnitOfWork : IUnitOfWork
     public UnitOfWork(AzAgroPOSDbContext kontekst)
     {
         _kontekst = kontekst;
+        AktivIstifadeciId = Volatile.Read(ref _sessiyaIstifadeciId);
 
         // Repozitoriləri yaradırıq
         Mehsullar = new MehsulRepozitori(_kontekst);

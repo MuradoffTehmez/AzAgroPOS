@@ -19,6 +19,9 @@ public class Novbe : BazaVarligi
 
     public decimal FaktikiMebleg { get; set; }
 
+    // Avtomatik bağlananda kassadakı pul sayılmır; fərq hesabatda göstərilməməlidir.
+    public bool SayimAparilib { get; set; }
+
     public NovbeStatusu Status { get; set; }
 
     public ICollection<Satis> Satislar { get; set; } = new List<Satis>();

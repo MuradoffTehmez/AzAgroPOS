@@ -131,8 +131,8 @@ public class NovbePresenter
             sb.AppendLine($"CƏMİ SATIŞ: {h.CemiSatislar:N2} AZN");
             sb.AppendLine("---------------------------------");
             sb.AppendLine($"Gözlənilən Məbləğ: {h.GozlenilenMebleg:N2} AZN");
-            sb.AppendLine($"Faktiki Məbləğ: {h.FaktikiMebleg:N2} AZN");
-            sb.AppendLine($"FƏRQ: {h.Ferq:N2} AZN");
+            sb.AppendLine(h.SayimAparilib ? $"Faktiki Məbləğ: {h.FaktikiMebleg:N2} AZN" : "Faktiki məbləğ: sayılmayıb");
+            if (h.SayimAparilib) sb.AppendLine($"FƏRQ: {h.Ferq:N2} AZN");
             _view.HesabatGoster(sb.ToString());
         }
     }

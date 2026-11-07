@@ -18,13 +18,13 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
         private readonly MehsulManager _mehsulManager;
         private readonly MusteriManager _musteriManager;
         private readonly KonfiqurasiyaManager _konfiqurasiyaManager;
-        private readonly CapServisi _capServisi;
 
         private BindingList<SatisSebetiElementiDto> _aktivSebet;
         private readonly List<GozleyenSatis> _gozleyenSebetler;
         //Store individual item discounts and calculate cart discount dynamically
         //For simplicity, we'll keep a simple cart-level discount for now, but prepare for item-level.
         private decimal _cartLevelEndirimMeblegi = 0;
+        private int _satisDavamEdir;
 
         public SatisPresenter(ISatisView view, SatisManager satisManager, MehsulManager mehsulManager, MusteriManager musteriManager, KonfiqurasiyaManager konfiqurasiyaManager)
         {
@@ -33,7 +33,6 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             _mehsulManager = mehsulManager;
             _musteriManager = musteriManager;
             _konfiqurasiyaManager = konfiqurasiyaManager;
-            _capServisi = new CapServisi();
             _aktivSebet = new BindingList<SatisSebetiElementiDto>();
             _gozleyenSebetler = new List<GozleyenSatis>();
 
@@ -273,6 +272,12 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 
         private void IndirimEt(EndirimParametrləriDto endirimParam)
         {
+            if (!AzAgroPOS.Mentiq.Yardimcilar.IcazeYoxlayici.Instance
+                .IcazeVarmi(AzAgroPOS.Mentiq.Yardimcilar.SistemIcazeleri.SatisaEndirimVer))
+            {
+                _view.StatusMesajiGoster("Endirim verməyə icazəniz yoxdur.", StatusMesajiNovu.Xeta);
+                return;
+            }
             if (!_aktivSebet.Any())
             {
                 _view.StatusMesajiGoster("Səbət boşdur. Endirim tətbiq etmək mümkün deyil.", StatusMesajiNovu.Xeta);
@@ -380,6 +385,13 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 
         private async Task SatisiTesdiqle(OdenisMetodu odenisMetodu)
         {
+            if (Interlocked.Exchange(ref _satisDavamEdir, 1) != 0) return;
+            try { await SatisiTesdiqleDaxili(odenisMetodu); }
+            finally { Interlocked.Exchange(ref _satisDavamEdir, 0); }
+        }
+
+        private async Task SatisiTesdiqleDaxili(OdenisMetodu odenisMetodu)
+        {
             System.Diagnostics.Debug.WriteLine($"[SatisPresenter] Satış təsdiqi başladı. AktivNovbeId: {AktivSessiya.AktivNovbeId}");
 
             if (!AktivSessiya.AktivNovbeId.HasValue)
@@ -433,6 +445,8 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                 }
             }
 
+            Action? capIsi = null;
+            SynchronizationContext? uiContext = SynchronizationContext.Current;
             await _view.EmeliyyatIcraEtAsync(async () =>
             {
                 decimal umumiMebleg = _aktivSebet.Sum(e => e.VahidinQiymeti * e.Miqdar); // Total before any discount
@@ -465,6 +479,9 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                             KassirAdi = AktivSessiya.AktivIstifadeci?.TamAd ?? "Kassir",
                             OdenisMetodu = odenisMetodu,
                             YekunMebleg = netice.Data.UmumiMebleg,
+                            MusteriAdi = netice.Data.MusteriAdiQebz,
+                            BuSatisBorcu = odenisMetodu == OdenisMetodu.Nisyə ? netice.Data.UmumiMebleg : null,
+                            UmumiBorc = netice.Data.BorcSonra,
                             SatilanMehsullar = _aktivSebet.Select(e => new SatisSebetiElementiDto
                             {
                                 MehsulId = e.MehsulId,
@@ -481,12 +498,13 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                         string edv = await _konfiqurasiyaManager.GetirAsync(KonfiqurasiyaSabitleri.Acarlar.VergiEdvDerecesi, KonfiqurasiyaSabitleri.VarsayilanDeyerler.VergiEdvDerecesi);
                         string avtoCap = await _konfiqurasiyaManager.GetirAsync(KonfiqurasiyaSabitleri.Acarlar.DavranisQebzCap, KonfiqurasiyaSabitleri.VarsayilanDeyerler.DavranisQebzCap);
                         string printer = await _konfiqurasiyaManager.GetirAsync(KonfiqurasiyaSabitleri.Acarlar.PrinterQebz);
-                        _capServisi.MagazaMelumatlariTeyinEt(sirketAdi, unvan, voen);
+                        CapServisi capServisi = new();
+                        capServisi.MagazaMelumatlariTeyinEt(sirketAdi, unvan, voen);
                         if (decimal.TryParse(edv, NumberStyles.Number, CultureInfo.CurrentCulture, out decimal edvDerecesi))
-                            _capServisi.EdvDerecesiTeyinEt(edvDerecesi);
-                        _capServisi.EndirimTeyinEt(_cartLevelEndirimMeblegi);
+                            capServisi.EdvDerecesiTeyinEt(edvDerecesi);
+                        capServisi.EndirimTeyinEt(_cartLevelEndirimMeblegi);
                         if (!bool.TryParse(avtoCap, out bool capAktivdir) || capAktivdir)
-                            _capServisi.CekiCapEt(qebz, printer);
+                            capIsi = () => capServisi.CekiCapEt(qebz, printer, xetaMesajiGoster: false);
                     }
                     catch (Exception ex)
                     {
@@ -502,6 +520,24 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                     _view.MesajGoster(netice.Mesaj, "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }, "Satış təsdiq edilir...");
+
+            // Printer sürücüsü uzun çəkə bilər; satışı artıq saxlamış UI axınını bloklamırıq.
+            if (capIsi != null)
+            {
+                Action capEmeliyyati = capIsi;
+                Thread capThread = new(() =>
+                {
+                    try { capEmeliyyati(); }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Qəbz çapı: {ex}");
+                        uiContext?.Post(_ => _view.StatusMesajiGoster(
+                            $"Satış saxlandı, lakin qəbz çap olunmadı: {ex.Message}", StatusMesajiNovu.Xeta), null);
+                    }
+                }) { IsBackground = true, Name = "AzAgroPOS-QebzCap" };
+                capThread.SetApartmentState(ApartmentState.STA);
+                capThread.Start();
+            }
         }
 
         private void GosterisleriYenile()

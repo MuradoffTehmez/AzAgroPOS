@@ -1605,6 +1605,9 @@ namespace AzAgroPOS.Verilenler.Migrations
                     b.Property<int>("IsciId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("SayimAparilib")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("Silinib")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
@@ -1875,11 +1878,17 @@ namespace AzAgroPOS.Verilenler.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<decimal?>("BorcSonra")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<int?>("DeyisdirenIstifadeciId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("DeyisdirilmeTarixi")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("MusteriAdiQebz")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("MusteriId")
                         .HasColumnType("int");

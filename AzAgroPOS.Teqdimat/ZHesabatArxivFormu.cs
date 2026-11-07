@@ -104,10 +104,10 @@ public partial class ZHesabatArxivFormu : BazaForm, IZHesabatArxivView
         lblBaslangicMeblegDeyer.Text = $"{hesabat.BaslangicMebleg:N2} ₼";
         lblSatisSayiDeyer.Text = hesabat.SatisSayi.ToString();
         lblGozlenilenMeblegDeyer.Text = $"{hesabat.GozlenilenMebleg:N2} ₼";
-        lblFaktikiMeblegDeyer.Text = $"{hesabat.FaktikiMebleg:N2} ₼";
+        lblFaktikiMeblegDeyer.Text = hesabat.SayimAparilib ? $"{hesabat.FaktikiMebleg:N2} ₼" : "Sayılmayıb";
 
         // Fərq rəngini müəyyənləşdir
-        lblFerqDeyer.Text = $"{hesabat.Ferq:N2} ₼";
+        lblFerqDeyer.Text = hesabat.SayimAparilib ? $"{hesabat.Ferq:N2} ₼" : "—";
         if (hesabat.Ferq < 0)
         {
             lblFerqDeyer.ForeColor = Color.FromArgb(244, 67, 54); // Qırmızı - çatışmazlıq
@@ -257,8 +257,8 @@ public partial class ZHesabatArxivFormu : BazaForm, IZHesabatArxivView
             builder.AppendLine("--------------------------------");
             builder.AppendLine($"Başlanğıc:         {hesabat.BaslangicMebleg:N2} AZN");
             builder.AppendLine($"Gözlənilən:        {hesabat.GozlenilenMebleg:N2} AZN");
-            builder.AppendLine($"Faktiki:           {hesabat.FaktikiMebleg:N2} AZN");
-            builder.AppendLine($"Fərq:              {hesabat.Ferq:N2} AZN");
+            builder.AppendLine(hesabat.SayimAparilib ? $"Faktiki:           {hesabat.FaktikiMebleg:N2} AZN" : "Faktiki:           sayılmayıb");
+            if (hesabat.SayimAparilib) builder.AppendLine($"Fərq:              {hesabat.Ferq:N2} AZN");
             builder.AppendLine();
 
             builder.AppendLine("================================");

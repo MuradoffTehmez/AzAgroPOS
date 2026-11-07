@@ -269,7 +269,8 @@ public class HesabatManager
                 NagdSatislar = novbeSatislar.Where(s => s.OdenisMetodu == OdenisMetodu.Nağd).Sum(s => s.UmumiMebleg),
                 KartSatislar = novbeSatislar.Where(s => s.OdenisMetodu == OdenisMetodu.Kart).Sum(s => s.UmumiMebleg),
                 GozlenilenMebleg = novbe.GozlenilenMebleg,
-                FaktikiMebleg = novbe.FaktikiMebleg
+                FaktikiMebleg = novbe.FaktikiMebleg,
+                SayimAparilib = novbe.SayimAparilib
             };
 
             return EmeliyyatNeticesi<ZHesabatDto>.Ugurlu(hesabat);

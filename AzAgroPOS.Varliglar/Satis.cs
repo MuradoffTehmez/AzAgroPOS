@@ -31,6 +31,8 @@ public class Satis : BazaVarligi
     /// qeyd: Müştəri ID-si, satışın baş verdiyi zaman müştərinin sistemdə qeydiyyatdan keçmiş unikal identifikatorudur.
     /// </summary>
     public int? MusteriId { get; set; }
+    public string? MusteriAdiQebz { get; set; }
+    public decimal? BorcSonra { get; set; }
     /// <summary>
     /// Musteri, satışın aid olduğu müştəri haqqında məlumatları saxlayır.
     /// diqqət: Bu müştəri, satışın baş verdiyi zaman mövcud olan müştəridir.

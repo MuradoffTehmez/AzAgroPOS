@@ -33,6 +33,11 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
     private readonly SemaphoreSlim _dashboardKilidi = new(1, 1);
     private readonly SessiyaGirisFiltiri _girisFiltiri = new();
     private readonly System.Windows.Forms.Timer _sessiyaTimer = new() { Interval = 60_000 };
+    private readonly Label _dailyCountValue = new();
+    private readonly Label _cashSalesValue = new();
+    private readonly Label _cardSalesValue = new();
+    private readonly Label _creditSalesValue = new();
+    private readonly Label _stockValue = new();
     private DateTime _sonSessiyaYenilemesi = DateTime.Now;
 
     // IAnaMenuView interface implementasiyası
@@ -310,6 +315,7 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
 
     private void CreateDashboardTab()
     {
+        bool kassir = AktivSessiya.AktivIstifadeci?.RolAdi == "Kassir";
         var surface = new Panel { Dock = DockStyle.Fill, BackColor = Color.FromArgb(247, 250, 247) };
         var heading = new Label
         {
@@ -318,7 +324,8 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
             Padding = new Padding(24, 22, 16, 0),
             Font = new Font("Segoe UI", 21F, FontStyle.Bold),
             ForeColor = Color.FromArgb(31, 84, 43),
-            Text = "Ana səhifə\nMağazanın cari göstəriciləri"
+            Text = kassir ? "Satış masası\nNövbəniz avtomatik açılıb. Satış menyusundan işə başlayın."
+                : "Ana səhifə\nMağazanın cari göstəriciləri"
         };
         var cards = new FlowLayoutPanel
         {
@@ -328,15 +335,27 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
             Padding = new Padding(18, 12, 18, 18),
             BackColor = surface.BackColor
         };
-        foreach (var (card, title, value) in new[]
+        var dashboardCards = new List<(Control card, Label title, Label value)>
         {
-            (dailySalesCard, lblDailySales, lblDailySalesValue),
-            (activeShiftCard, lblActiveShift, lblActiveShiftValue),
-            (monthlySalesCard, lblMonthlySales, lblMonthlySalesValue),
-            (totalDebtCard, lblTotalDebt, lblTotalDebtValue),
-            (debtorCustomersCard, lblDebtorCustomers, lblDebtorCustomersValue),
-            (lowStockProductsCard, lblLowStockProducts, lblLowStockProductsValue)
-        })
+            (activeShiftCard, lblActiveShift, lblActiveShiftValue)
+        };
+        if (!kassir)
+        {
+            dashboardCards.Insert(0, (dailySalesCard, lblDailySales, lblDailySalesValue));
+            dashboardCards.AddRange(new (Control, Label, Label)[]
+            {
+                (CreateMetricCard("Bugünkü satış sayı", _dailyCountValue), _dailyCountValue.Parent!.Controls.OfType<Label>().First(l => l != _dailyCountValue), _dailyCountValue),
+                (CreateMetricCard("Nağd satış", _cashSalesValue), _cashSalesValue.Parent!.Controls.OfType<Label>().First(l => l != _cashSalesValue), _cashSalesValue),
+                (CreateMetricCard("Kart satışları", _cardSalesValue), _cardSalesValue.Parent!.Controls.OfType<Label>().First(l => l != _cardSalesValue), _cardSalesValue),
+                (CreateMetricCard("Nisyə satışları", _creditSalesValue), _creditSalesValue.Parent!.Controls.OfType<Label>().First(l => l != _creditSalesValue), _creditSalesValue),
+                (monthlySalesCard, lblMonthlySales, lblMonthlySalesValue),
+                (CreateMetricCard("Mövcud stokun alış dəyəri", _stockValue), _stockValue.Parent!.Controls.OfType<Label>().First(l => l != _stockValue), _stockValue),
+                (totalDebtCard, lblTotalDebt, lblTotalDebtValue),
+                (debtorCustomersCard, lblDebtorCustomers, lblDebtorCustomersValue),
+                (lowStockProductsCard, lblLowStockProducts, lblLowStockProductsValue)
+            });
+        }
+        foreach (var (card, title, value) in dashboardCards)
         {
             dashboardPanel.Controls.Remove(card);
             card.Margin = new Padding(7);
@@ -368,6 +387,16 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
         mdiTabControl.SelectedTab = _dashboardTab;
     }
 
+    private static Panel CreateMetricCard(string title, Label value)
+    {
+        Panel panel = new() { BackColor = Color.White, Width = 260, Height = 112 };
+        panel.Controls.Add(new Label { Text = title, ForeColor = Color.FromArgb(48, 68, 54) });
+        value.Text = "Yüklənir...";
+        value.ForeColor = Color.FromArgb(31, 84, 43);
+        panel.Controls.Add(value);
+        return panel;
+    }
+
     private void OpenDashboard()
     {
         if (_dashboardTab != null && mdiTabControl.TabPages.Contains(_dashboardTab))
@@ -376,6 +405,7 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
 
     public void UsaqFormuAc<T>() where T : Form
     {
+        if (AktivSessiya.AktivIstifadeci?.RolAdi == "Kassir" && typeof(T) != typeof(SatisFormu)) return;
         TabPage? mövcudSehife = mdiTabControl.TabPages.OfType<TabPage>().FirstOrDefault(p => p.Tag is T);
 
         if (mövcudSehife != null)
@@ -617,6 +647,7 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
     {
         await using AsyncServiceScope scope = ServiceProvider.CreateAsyncScope();
         IServiceProvider provider = scope.ServiceProvider;
+        if (AktivSessiya.AktivIstifadeci?.RolAdi != "Kassir")
         try
         {
             // Günlük satış məbləğini hesablayırıq
@@ -625,6 +656,10 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
             if (gunlukHesabat.UgurluDur && lblDailySalesValue != null)
             {
                 lblDailySalesValue.Text = $"{gunlukHesabat.Data.UmumiDovriyye:N2} AZN";
+                _dailyCountValue.Text = gunlukHesabat.Data.CemiSatisSayi.ToString();
+                _cashSalesValue.Text = $"{gunlukHesabat.Data.NagdSatisCemi:N2} AZN";
+                _cardSalesValue.Text = $"{gunlukHesabat.Data.KartSatisCemi:N2} AZN";
+                _creditSalesValue.Text = $"{gunlukHesabat.Data.NisyeSatisCemi:N2} AZN";
             }
             else if (lblDailySalesValue != null)
             {
@@ -663,6 +698,20 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
             {
                 lblActiveShiftValue.Text = "Xəta";
             }
+        }
+
+        if (AktivSessiya.AktivIstifadeci?.RolAdi == "Kassir") return;
+
+        try
+        {
+            var mehsullar = await provider.GetRequiredService<MehsulManager>().ButunMehsullariGetirAsync();
+            _stockValue.Text = mehsullar.UgurluDur && mehsullar.Data != null
+                ? $"{mehsullar.Data.Sum(m => Math.Max(0, m.MovcudSay) * m.AlisQiymeti):N2} AZN" : "Xəta";
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine(ex);
+            _stockValue.Text = "Xəta";
         }
 
         // Borclu müştəri sayını və ümumi borcu hesablayırıq
@@ -800,7 +849,8 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
         else if (istifadeci.RolAdi == "Kassir")
         {
             panelColor = Color.FromArgb(243, 156, 18); // Narıncı/Sarı
-            btnIstifadeciIdareetme.Enabled = false;
+            foreach (MaterialButton button in _menuItems.Keys)
+                button.Enabled = button == btnYeniSatis;
         }
         else
         {
@@ -817,11 +867,16 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
         pnlUserInfo.BackColor = panelColor;
         picUserIcon.Image = CreateInitialsAvatar(istifadeci.TamAd, panelColor);
 
-        btnYeniSatis.Enabled = AktivSessiya.AktivNovbeId.HasValue;
+        btnYeniSatis.Enabled = AktivSessiya.AktivNovbeId.HasValue && (istifadeci.RolAdi is "Admin" or "Kassir");
         btnKonfiqurasiya.Enabled = istifadeci.RolAdi == "Admin";
-        _customerMenuItem.Enabled = istifadeci.RolAdi is "Admin" or "Kassir";
+        _customerMenuItem.Enabled = istifadeci.RolAdi == "Admin";
         foreach ((MaterialButton button, ToolStripMenuItem item) in _menuItems)
             item.Enabled = button.Enabled;
+        foreach (ToolStripMenuItem group in _mainMenu.Items.OfType<ToolStripMenuItem>())
+        {
+            if (group == _homeMenuItem) continue;
+            group.Visible = group.DropDownItems.OfType<ToolStripMenuItem>().Any(item => item.Enabled);
+        }
     }
 
     public void MesajGoster(string mesaj, string basliq, MessageBoxButtons düymələr, MessageBoxIcon ikon)
@@ -834,6 +889,7 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
     // Operational Functions
     private void btnNovbeIdareetme_Click(object sender, EventArgs e)
     {
+        if (AktivSessiya.AktivIstifadeci?.RolAdi != "Admin") return;
         using (NovbeIdareetmesiFormu form = ServiceProvider.GetRequiredService<NovbeIdareetmesiFormu>())
         {
             form.ShowDialog();
@@ -843,6 +899,7 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
 
     private void btnYeniSatis_Click(object sender, EventArgs e)
     {
+        if (AktivSessiya.AktivIstifadeci?.RolAdi is not ("Admin" or "Kassir")) return;
         // Növbə açılmayıbsa istifadəçiyə növbə açmaq təklif edirik
         if (!AktivSessiya.AktivNovbeId.HasValue)
         {
@@ -1002,8 +1059,8 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
 
     private void AnaMenuFormu_FormClosing(object sender, FormClosingEventArgs e)
     {
-        // Tətbiqi düzgün şəkildə bağlayırıq
-        Application.Exit();
+        // Bu forma Application.Run-un əsas formasıdır. Bağlandıqda Run bitir və
+        // Program.finally cari növbəni bağlayır; təkrar Application.Exit çağırılmır.
     }
 
     private void lblActiveShiftValue_Click(object sender, EventArgs e)

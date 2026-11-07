@@ -49,8 +49,9 @@ public class ZHesabatDto
     /// Faktiki məbləğ (hesabatın bağlanması zamanı kassada faktiki olaraq olan məbləğ).
     /// </summary>
     public decimal FaktikiMebleg { get; set; }
+    public bool SayimAparilib { get; set; }
     /// <summary>
     /// Fərq (gözlənilən və faktiki məbləğ arasındakı fərq).
     /// </summary>
-    public decimal Ferq => FaktikiMebleg - GozlenilenMebleg;
+    public decimal Ferq => SayimAparilib ? FaktikiMebleg - GozlenilenMebleg : 0;
 }

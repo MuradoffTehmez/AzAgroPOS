@@ -23,6 +23,7 @@ public class SatisRepozitori : Repozitori<AzAgroPOS.Varliglar.Satis>, ISatisRepo
     {
         return await _kontekst.Set<Satis>()
             .AsNoTracking()
+            .Include(s => s.Musteri)
             .Include(s => s.SatisDetallari)
                 .ThenInclude(d => d.Mehsul)
             .FirstOrDefaultAsync(s => s.Id == satisId);

@@ -31,6 +31,8 @@ namespace AzAgroPOS.Teqdimat
         public SatisFormu(IServiceProvider serviceProvider)
         {
             InitializeComponent();
+            btnIndirim.Enabled = AzAgroPOS.Mentiq.Yardimcilar.IcazeYoxlayici.Instance
+                .IcazeVarmi(AzAgroPOS.Mentiq.Yardimcilar.SistemIcazeleri.SatisaEndirimVer);
             toolStripStatusLabel1.Text = string.Empty;
             KeyPreview = true; // Klaviatura hadisələrini forma səviyyəsində qəbul etmək üçün istifade olunur
             _serviceProvider = serviceProvider;
@@ -193,6 +195,7 @@ namespace AzAgroPOS.Teqdimat
             // Add event handler for conditional formatting
             cmbMusteriler.DrawMode = DrawMode.OwnerDrawFixed;
             cmbMusteriler.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbMusteriler.DrawItem -= CmbMusteriler_DrawItem;
             cmbMusteriler.DrawItem += CmbMusteriler_DrawItem;
         }
 
@@ -653,20 +656,67 @@ namespace AzAgroPOS.Teqdimat
         {
             Yardimcilar.ExportHelper.ShowExportDialog(dgvSebet, "sebet");
         }
-        private void btnYeniMusteri_Click(object sender, EventArgs e)
+        private async void btnYeniMusteri_Click(object sender, EventArgs e)
         {
-            MusteriIdareetmeFormu musteriFormu = _serviceProvider.GetRequiredService<MusteriIdareetmeFormu>();
+            if (Yardimcilar.AktivSessiya.AktivIstifadeci?.RolAdi == "Kassir")
+            {
+                using Form form = new()
+                {
+                    Text = "Yeni müştəri",
+                    Width = 420, Height = 290,
+                    StartPosition = FormStartPosition.CenterParent,
+                    FormBorderStyle = FormBorderStyle.FixedDialog,
+                    MaximizeBox = false, MinimizeBox = false
+                };
+                Label adEtiket = new() { Text = "Müştərinin adı", Left = 22, Top = 22, Width = 360 };
+                TextBox ad = new() { Left = 22, Top = 47, Width = 360 };
+                Label telefonEtiket = new() { Text = "Telefon nömrəsi", Left = 22, Top = 84, Width = 360 };
+                TextBox telefon = new() { Left = 22, Top = 109, Width = 360 };
+                Label unvanEtiket = new() { Text = "Ünvan (istəyə bağlı)", Left = 22, Top = 146, Width = 360 };
+                TextBox unvan = new() { Left = 22, Top = 171, Width = 360 };
+                Button yaddaSaxla = new() { Text = "Müştərini əlavə et", Left = 222, Top = 212, Width = 160, Height = 32 };
+                yaddaSaxla.Click += (_, _) => form.DialogResult = DialogResult.OK;
+                form.Controls.AddRange([adEtiket, ad, telefonEtiket, telefon, unvanEtiket, unvan, yaddaSaxla]);
+                form.AcceptButton = yaddaSaxla;
+                while (form.ShowDialog(this) == DialogResult.OK)
+                {
+                    if (string.IsNullOrWhiteSpace(ad.Text) || string.IsNullOrWhiteSpace(telefon.Text))
+                    {
+                        MessageBox.Show("Ad və telefon nömrəsi tələb olunur.", "Yeni müştəri", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        continue;
+                    }
+                    var netice = await _serviceProvider.GetRequiredService<MusteriManager>().MusteriYaratAsync(new MusteriDto
+                    {
+                        TamAd = ad.Text.Trim(), TelefonNomresi = telefon.Text.Trim(), Unvan = unvan.Text.Trim()
+                    });
+                    if (!netice.UgurluDur)
+                    {
+                        MessageBox.Show(netice.Mesaj, "Yeni müştəri", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        continue;
+                    }
+                    var musteriler = await _serviceProvider.GetRequiredService<MusteriManager>().ButunMusterileriGetirAsync();
+                    if (musteriler.UgurluDur && musteriler.Data != null)
+                    {
+                        MusteriSiyahisiniGoster(musteriler.Data);
+                        cmbMusteriler.SelectedValue = netice.Data;
+                    }
+                    break;
+                }
+                return;
+            }
+            using MusteriIdareetmeFormu musteriFormu = _serviceProvider.GetRequiredService<MusteriIdareetmeFormu>();
             MusteriManager musteriManager = _serviceProvider.GetRequiredService<MusteriManager>();
             MusteriPresenter musteriPresenter = new(musteriFormu, musteriManager);
             musteriFormu.InitializePresenter(musteriPresenter);
 
             if (musteriFormu.ShowDialog() == DialogResult.OK)
             {
-                MusteriSiyahisiniYenileIstek?.Invoke(this, EventArgs.Empty);
-
-                if (musteriFormu.SecilenMusteriId > 0)
+                var musteriler = await musteriManager.ButunMusterileriGetirAsync();
+                if (musteriler.UgurluDur && musteriler.Data != null)
                 {
-                    cmbMusteriler.SelectedValue = musteriFormu.SecilenMusteriId;
+                    MusteriSiyahisiniGoster(musteriler.Data);
+                    if (musteriFormu.SecilenMusteriId > 0)
+                        cmbMusteriler.SelectedValue = musteriFormu.SecilenMusteriId;
                 }
             }
             else

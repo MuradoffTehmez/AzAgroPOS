@@ -85,7 +85,7 @@ public class ZHesabatArxivPresenter
             sb.AppendLine("---------------------------------");
             sb.AppendLine($"Gözlənilən Məbləğ: {h.GozlenilenMebleg:N2} AZN");
             sb.AppendLine($"Faktiki Məbləğ: {h.FaktikiMebleg:N2} AZN");
-            sb.AppendLine($"FƏRQ: {h.Ferq:N2} AZN");
+            sb.AppendLine(h.SayimAparilib ? $"FƏRQ: {h.Ferq:N2} AZN" : "Faktiki məbləğ sayılmayıb");
 
             _view.HesabatiGoster(sb.ToString());
         }

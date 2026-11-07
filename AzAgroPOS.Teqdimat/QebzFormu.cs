@@ -92,6 +92,14 @@ namespace AzAgroPOS.Teqdimat
             if (_secilmisQebz.SatilanMehsullar.Count == 0)
                 melumatlar["Məhsullar"] = "Bu satışda məhsul sətirləri tapılmadı. Çap dayandırıldı.";
             melumatlar["Yekun"] = $"{_secilmisQebz.YekunMebleg ?? _secilmisQebz.CemiMebleg:N2} AZN";
+            if (_secilmisQebz.OdenisMetodu == AzAgroPOS.Varliglar.OdenisMetodu.Nisyə)
+            {
+                melumatlar["Nisyə müştərisi"] = _secilmisQebz.MusteriAdi ?? "Ad saxlanmayıb";
+                melumatlar["Bu satışın borcu"] = $"{_secilmisQebz.BuSatisBorcu ?? 0:N2} AZN";
+                melumatlar["Satışdan sonra ümumi borc"] = _secilmisQebz.UmumiBorc.HasValue
+                    ? $"{_secilmisQebz.UmumiBorc.Value:N2} AZN"
+                    : "Köhnə satış üçün məlumat yoxdur";
+            }
             QebzMelumatlariniGoster("Satış qəbzi", melumatlar);
             btnCapEt.Enabled = _secilmisQebz.SatilanMehsullar.Count > 0;
         }

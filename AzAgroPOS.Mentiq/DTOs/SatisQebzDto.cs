@@ -22,6 +22,9 @@ public class SatisQebzDto
     public string KassirAdi { get; set; } = string.Empty;
     public OdenisMetodu OdenisMetodu { get; set; } = OdenisMetodu.Nağd;
     public decimal? YekunMebleg { get; set; }
+    public string? MusteriAdi { get; set; }
+    public decimal? BuSatisBorcu { get; set; }
+    public decimal? UmumiBorc { get; set; }
     /// <summary>
     /// Satılan məhsulların siyahısı (satış zamanı satılan məhsul elementləri).
     /// </summary>
