@@ -420,7 +420,8 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             _cartLevelEndirimMeblegi = satis.SebetEndirimi;
             _view.GozleyenSatislarSayiniGuncelle(_gozleyenSebetler.Count);
             _view.SebeteMehsullariGoster(_aktivSebet);
-            if (musteri != null) _view.MusteriSiyahisiniGoster(new List<MusteriDto> { musteri });
+            // Seçilmiş müştərini bərpa edərkən siyahıdakı digər müştəriləri itirmə.
+            await MusterileriYukle();
             _view.MusteriSec(satis.MusteriId);
             GosterisleriYenile();
         }
