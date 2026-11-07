@@ -14,14 +14,25 @@ namespace AzAgroPOS.Teqdimat;
 public partial class KassaFormu : BazaForm
 {
     private readonly MaliyyeManager _maliyyeManager;
+    private readonly HesabatManager _hesabatManager;
     private int _seciliXercId = 0;
     private readonly Label _lblKassaCixis = new();
     private readonly Label _lblXulaseIzahi = new();
+    private readonly Label _lblSatilanMiqdar = new();
+    private readonly Label _lblSatisDeyeri = new();
+    private readonly Label _lblAlisDeyeri = new();
+    private readonly Label _lblBrutMenfeet = new();
+    private readonly Label _lblNagdSatis = new();
+    private readonly Label _lblKartSatis = new();
+    private readonly Label _lblNisyeSatis = new();
+    private readonly Label _lblBorcOdenisi = new();
+    private readonly Label _lblTerminalCemi = new();
 
-    public KassaFormu(MaliyyeManager maliyyeManager)
+    public KassaFormu(MaliyyeManager maliyyeManager, HesabatManager hesabatManager)
     {
         InitializeComponent();
         _maliyyeManager = maliyyeManager ?? throw new ArgumentNullException(nameof(maliyyeManager));
+        _hesabatManager = hesabatManager ?? throw new ArgumentNullException(nameof(hesabatManager));
 
         dgvKassaHareketleri.BackgroundColor = Color.White;
         dgvKassaHareketleri.BorderStyle = BorderStyle.None;
@@ -39,20 +50,58 @@ public partial class KassaFormu : BazaForm
         }
         lblUmumiGelir.Location = new Point(32, 45);
         lblUmumiXerc.Location = new Point(32, 155);
-        lblMenfeetZerere.Location = new Point(570, 155);
+        lblMenfeetZerere.Location = new Point(32, 210);
         lblCariBalans.Location = new Point(32, 265);
-        _lblKassaCixis.Location = new Point(570, 45);
+        _lblKassaCixis.Location = new Point(32, 100);
         _lblKassaCixis.AutoSize = true;
         _lblKassaCixis.Font = new Font("Segoe UI Semibold", 14F, FontStyle.Bold);
         _lblKassaCixis.BackColor = Color.White;
         groupXulase.Controls.Add(_lblKassaCixis);
-        _lblXulaseIzahi.Text = "Qeydiyyat xərci ilə faktiki kassa çıxışı fərqli göstəricilərdir. Pul axını kassaya daxilolma − kassadan çıxışdır.";
-        _lblXulaseIzahi.Location = new Point(32, 355);
-        _lblXulaseIzahi.Size = new Size(1100, 45);
+        _lblXulaseIzahi.Text = "Satış göstəriciləri brütdür. Nisyə kassaya daxil deyil. Pul axını kassa hərəkətlərindən hesablanır.";
+        _lblXulaseIzahi.Location = new Point(32, 352);
+        _lblXulaseIzahi.Size = new Size(620, 55);
         _lblXulaseIzahi.ForeColor = Color.FromArgb(91, 108, 96);
         _lblXulaseIzahi.BackColor = Color.White;
         _lblXulaseIzahi.Font = new Font("Segoe UI", 10F);
         groupXulase.Controls.Add(_lblXulaseIzahi);
+        Label[] satisGostericileri = [_lblSatilanMiqdar, _lblSatisDeyeri, _lblAlisDeyeri,
+            _lblBrutMenfeet, _lblNagdSatis, _lblKartSatis, _lblNisyeSatis,
+            _lblBorcOdenisi, _lblTerminalCemi];
+        for (int i = 0; i < satisGostericileri.Length; i++)
+        {
+            Label label = satisGostericileri[i];
+            label.Location = new Point(690, 35 + i * 52);
+            label.Size = new Size(600, 42);
+            label.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
+            label.BackColor = Color.White;
+            label.ForeColor = Color.FromArgb(29, 75, 40);
+            groupXulase.Controls.Add(label);
+        }
+        _lblSatilanMiqdar.Text = "Satılan miqdar: —";
+        _lblSatisDeyeri.Text = "Satış dəyəri: —";
+        _lblAlisDeyeri.Text = "Satılan malların alış dəyəri: —";
+        _lblBrutMenfeet.Text = "Brüt mənfəət: —";
+        _lblNagdSatis.Text = "Nağd satış: —";
+        _lblKartSatis.Text = "Terminal satışı: —";
+        _lblNisyeSatis.Text = "Nisyə satış: —";
+        _lblBorcOdenisi.Text = "Borc ödənişi: —";
+        _lblTerminalCemi.Text = "Terminal daxilolması: —";
+        Button gunlukKassa = new()
+        {
+            Text = "BU GÜN",
+            Location = new Point(735, 18),
+            Size = new Size(105, 32),
+            BackColor = Color.FromArgb(46, 125, 50),
+            ForeColor = Color.White,
+            FlatStyle = FlatStyle.Flat
+        };
+        gunlukKassa.Click += async (_, _) =>
+        {
+            dtpXesabatBaslangic.Value = DateTime.Today;
+            dtpXesabatBitis.Value = DateTime.Today;
+            await MaliyyeXulasesiniYukle();
+        };
+        groupHesabatFiltre.Controls.Add(gunlukKassa);
 
         // Form yüklənəndə məlumatları yüklə
         Load += KassaFormu_Load;
@@ -460,11 +509,47 @@ public partial class KassaFormu : BazaForm
         {
             DateTime baslangic = dtpXesabatBaslangic.Value.Date;
             DateTime bitis = dtpXesabatBitis.Value.Date;
+            if (baslangic > bitis)
+            {
+                MessageBox.Show("Başlanğıc tarixi bitiş tarixindən sonra ola bilməz.", "Tarix aralığı",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            EmeliyyatNeticesi<SatisKassaXulaseDto> satisNetice =
+                await _hesabatManager.SatisKassaXulasesiGetirAsync(baslangic, bitis);
+            if (!satisNetice.UgurluDur || satisNetice.Data == null)
+            {
+                MessageBox.Show(satisNetice.Mesaj, "Satış xülasəsi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            SatisKassaXulaseDto satis = satisNetice.Data;
+            _lblSatilanMiqdar.Text = $"Satılan miqdar: {satis.SatilanMiqdar:N0}";
+            _lblSatisDeyeri.Text = $"Satış dəyəri (brüt): {satis.SatisDeyeri:N2} AZN";
+            _lblAlisDeyeri.Text = satis.MayaDeyeriTamdir
+                ? $"Satılan malların alış dəyəri: {satis.AlisDeyeri:N2} AZN"
+                : "Alış dəyəri: bəzi satışlarda məlum deyil";
+            _lblBrutMenfeet.Text = satis.MayaDeyeriTamdir
+                ? $"Brüt mənfəət: {satis.UmumiQazanc:N2} AZN"
+                : "Brüt mənfəət: hesablana bilmir";
+            _lblNagdSatis.Text = $"Nağd satış (brüt): {satis.NagdSatis:N2} AZN";
+            _lblKartSatis.Text = $"Terminal satışı (brüt): {satis.KartSatis:N2} AZN";
+            _lblNisyeSatis.Text = $"Nisyə satış (brüt): {satis.NisyeSatis:N2} AZN";
 
             // Nağd kassa hərəkətlərini hesabla; kart ödənişi fiziki kassaya daxil deyil.
             EmeliyyatNeticesi<List<KassaHareketi>> kassaHareketleriNetice = await _maliyyeManager.KassaHareketleriniGetirAsync(baslangic, bitis);
             if (kassaHareketleriNetice.UgurluDur && kassaHareketleriNetice.Data != null)
             {
+                decimal borcOdenisi = kassaHareketleriNetice.Data
+                    .Where(k => k.EmeliyyatNovu == EmeliyyatNovu.Odenis && k.HareketNovu == KassaHareketiNovu.Daxilolma)
+                    .Sum(k => k.Mebleg);
+                _lblBorcOdenisi.Text = $"Borc ödənişi (nağd + kart): {borcOdenisi:N2} AZN";
+                decimal kartBorcOdenisi = kassaHareketleriNetice.Data
+                    .Where(k => k.EmeliyyatNovu == EmeliyyatNovu.Odenis &&
+                                k.HareketNovu == KassaHareketiNovu.Daxilolma &&
+                                k.OdenisMetodu == OdenisMetodu.Kart)
+                    .Sum(k => k.Mebleg);
+                _lblTerminalCemi.Text = $"Terminal daxilolması (brüt): {satis.KartSatis + kartBorcOdenisi:N2} AZN";
                 decimal gelirler = kassaHareketleriNetice.Data
                     .Where(k => k.HareketNovu == KassaHareketiNovu.Daxilolma && k.OdenisMetodu != OdenisMetodu.Kart)
                     .Sum(k => k.Mebleg);

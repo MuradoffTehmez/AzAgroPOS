@@ -12,6 +12,10 @@ public partial class AnbarQaliqHesabatFormu : BazaForm, IAnbarQaliqHesabatView
 {
     private readonly AnbarQaliqHesabatPresenter _presenter;
     private List<AnbarQaliqDetayDto>? _cariHesabat;
+    private readonly Label _lblUmumiMiqdar = new();
+    private readonly Label _lblSatisDeyeri = new();
+    private readonly Label _lblPotensialFerq = new();
+    private readonly Label _lblMenfiQaliq = new();
 
     public AnbarQaliqHesabatFormu(HesabatManager hesabatManager)
     {
@@ -19,11 +23,50 @@ public partial class AnbarQaliqHesabatFormu : BazaForm, IAnbarQaliqHesabatView
         StilVerDataGridView(dgvHesabat);
 
         _presenter = new AnbarQaliqHesabatPresenter(this, hesabatManager);
-        Shown += async (_, _) => await _presenter.KateqoriyalariYukleAsync();
+        Shown += async (_, _) =>
+        {
+            await _presenter.KateqoriyalariYukleAsync();
+            txtLimit.Text = int.MaxValue.ToString();
+            BtnGoster_Click(this, EventArgs.Empty);
+        };
 
         // Event handler-ları qoş
         btnGoster.Click += BtnGoster_Click;
         btnExcelIxrac.Click += BtnExcelIxrac_Click;
+        Button butunAnbar = new()
+        {
+            Text = "BÜTÜN ANBAR",
+            Location = new Point(920, 17),
+            Size = new Size(155, 38),
+            BackColor = Color.FromArgb(46, 125, 50),
+            ForeColor = Color.White,
+            FlatStyle = FlatStyle.Flat
+        };
+        butunAnbar.Click += (_, _) =>
+        {
+            txtLimit.Text = int.MaxValue.ToString();
+            chkYalnizTukenenleri.Checked = false;
+            cmbKateqoriya.SelectedIndex = 0;
+            BtnGoster_Click(butunAnbar, EventArgs.Empty);
+        };
+        pnlFiltr.Controls.Add(butunAnbar);
+        pnlXulase.Height = 172;
+        SummaryCard(_lblUmumiMiqdar, "MÖVCUD ÜMUMİ MİQDAR", 18);
+        SummaryCard(_lblSatisDeyeri, "POTENSİAL SATIŞ DƏYƏRİ", 308);
+        SummaryCard(_lblPotensialFerq, "POTENSİAL BRÜT FƏRQ", 598);
+        SummaryCard(_lblMenfiQaliq, "MƏNFİ STOK AÇIĞI", 888);
+    }
+
+    private void SummaryCard(Label value, string title, int left)
+    {
+        Panel card = new() { Location = new Point(left, 89), Size = new Size(270, 70), BackColor = Color.White };
+        Label heading = new() { Text = title, Location = new Point(12, 8), Size = new Size(245, 23), ForeColor = Color.FromArgb(70, 85, 79), Font = new Font("Segoe UI", 9, FontStyle.Bold) };
+        value.Location = new Point(12, 31);
+        value.Size = new Size(245, 32);
+        value.Font = new Font("Segoe UI", 15, FontStyle.Bold);
+        value.ForeColor = Color.FromArgb(31, 86, 43);
+        card.Controls.AddRange([heading, value]);
+        pnlXulase.Controls.Add(card);
     }
 
     #region IAnbarQaliqHesabatView Properties
@@ -61,7 +104,12 @@ public partial class AnbarQaliqHesabatFormu : BazaForm, IAnbarQaliqHesabatView
             lblMesaj.ForeColor = Color.FromArgb(255, 152, 0);
             lblMesaj.Visible = true;
             dgvHesabat.Visible = false;
-            pnlXulase.Visible = false;
+            XulaseGoster(0, 0, 0, 0);
+            _lblUmumiMiqdar.Text = "0";
+            _lblSatisDeyeri.Text = "0,00 ₼";
+            _lblPotensialFerq.Text = "0,00 ₼";
+            _lblMenfiQaliq.Text = "0";
+            pnlXulase.Visible = true;
             btnExcelIxrac.Enabled = false;
             YuklemeGizle();
             return;
@@ -97,6 +145,14 @@ public partial class AnbarQaliqHesabatFormu : BazaForm, IAnbarQaliqHesabatView
             hesabat.Sum(m => Math.Max(0, m.MovcudSay) * m.AlisQiymeti),
             hesabat.Count(m => m.MovcudSay > 0 && m.MovcudSay <= m.MinimumSay),
             hesabat.Count(m => m.MovcudSay <= 0));
+        decimal alisDeyeri = hesabat.Sum(m => Math.Max(0, m.MovcudSay) * m.AlisQiymeti);
+        decimal satisDeyeri = hesabat.Sum(m => Math.Max(0, m.MovcudSay) * m.SatisQiymeti);
+        _lblUmumiMiqdar.Text = hesabat.Sum(m => Math.Max(0, m.MovcudSay)).ToString("N0");
+        _lblSatisDeyeri.Text = $"{satisDeyeri:N2} ₼";
+        _lblPotensialFerq.Text = $"{satisDeyeri - alisDeyeri:N2} ₼";
+        _lblMenfiQaliq.Text = hesabat.Where(m => m.MovcudSay < 0).Sum(m => -m.MovcudSay).ToString("N0");
+        lblMehsulSayiBasliq.Text = "GÖSTƏRİLƏN MƏHSUL NÖVÜ";
+        lblUmumiDegerBasliq.Text = "GÖSTƏRİLƏN ALIŞ DƏYƏRİ";
 
         lblMesaj.Visible = false;
         dgvHesabat.Visible = true;

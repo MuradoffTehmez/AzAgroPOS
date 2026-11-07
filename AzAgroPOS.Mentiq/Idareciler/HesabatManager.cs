@@ -32,6 +32,36 @@ public class HesabatManager
         _maliyyeManager = maliyyeManager;
     }
 
+    public async Task<EmeliyyatNeticesi<SatisKassaXulaseDto>> SatisKassaXulasesiGetirAsync(DateTime baslangic, DateTime bitis)
+    {
+        if (baslangic.Date > bitis.Date)
+            return EmeliyyatNeticesi<SatisKassaXulaseDto>.Ugursuz("Başlanğıc tarixi bitiş tarixindən sonra ola bilməz.");
+
+        try
+        {
+            List<Satis> satislar = await _unitOfWork.Satislar
+                .TarixAraligindaDetallarlaGetirAsync(baslangic.Date, bitis.Date.AddDays(1));
+            List<SatisDetali> detallar = satislar.SelectMany(s => s.SatisDetallari).ToList();
+            SatisKassaXulaseDto xulase = new()
+            {
+                SatilanMiqdar = detallar.Sum(d => d.Miqdar),
+                SatisDeyeri = satislar.Sum(s => s.UmumiMebleg),
+                AlisDeyeri = detallar.Where(d => d.AlisQiymeti.HasValue)
+                    .Sum(d => d.Miqdar * d.AlisQiymeti!.Value),
+                MayaDeyeriTamdir = detallar.All(d => d.AlisQiymeti.HasValue),
+                NagdSatis = satislar.Where(s => s.OdenisMetodu == OdenisMetodu.Nağd).Sum(s => s.UmumiMebleg),
+                KartSatis = satislar.Where(s => s.OdenisMetodu == OdenisMetodu.Kart).Sum(s => s.UmumiMebleg),
+                NisyeSatis = satislar.Where(s => s.OdenisMetodu == OdenisMetodu.Nisyə).Sum(s => s.UmumiMebleg)
+            };
+            return EmeliyyatNeticesi<SatisKassaXulaseDto>.Ugurlu(xulase);
+        }
+        catch (Exception ex)
+        {
+            Logger.XetaYaz(ex, "Satış və kassa xülasəsi hesablanarkən xəta baş verdi");
+            return EmeliyyatNeticesi<SatisKassaXulaseDto>.Ugursuz($"Satış xülasəsi alınmadı: {ex.Message}");
+        }
+    }
+
     /// <summary>
     /// Verilmiş tarix üçün günlük satış hesabatını hazırlayır.
     /// </summary>
