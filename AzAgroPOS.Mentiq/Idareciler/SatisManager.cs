@@ -72,7 +72,7 @@ public class SatisManager
                 if (satisDto.OdenisMetodu == OdenisMetodu.Nisyə)
                 {
                     Musteri? borclu = await _unitOfWork.Musteriler.GetirAsync(satisDto.MusteriId!.Value);
-                    if (borclu == null || borclu.UmumiBorc + yekunMebleg > borclu.KreditLimiti)
+                    if (borclu == null || (borclu.KreditLimiti > 0 && borclu.UmumiBorc + yekunMebleg > borclu.KreditLimiti))
                     {
                         return EmeliyyatNeticesi<Satis>.Ugursuz("Müştəri tapılmadı və ya fərdi kredit limiti aşıldı.");
                     }

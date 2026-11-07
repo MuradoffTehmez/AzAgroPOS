@@ -21,6 +21,8 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
     private readonly MenuStrip _mainMenu = new();
     private readonly ToolStripLabel _menuUserLabel = new();
     private readonly ToolStripMenuItem _customerMenuItem = new("Müştərilər");
+    private readonly ToolStripMenuItem _homeMenuItem = new("Ana səhifə");
+    private TabPage? _dashboardTab;
     private readonly TableLayoutPanel _workspaceLayout = new();
     private readonly Panel _tabHost = new();
     private readonly Panel _navigationCover = new();
@@ -110,6 +112,11 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
         _mainMenu.BackColor = Color.FromArgb(247, 250, 247);
         _mainMenu.ForeColor = Color.FromArgb(31, 84, 43);
         _mainMenu.RenderMode = ToolStripRenderMode.Professional;
+
+        _homeMenuItem.ForeColor = Color.FromArgb(31, 84, 43);
+        _homeMenuItem.Padding = new Padding(10, 4, 10, 4);
+        _homeMenuItem.Click += (_, _) => OpenDashboard();
+        _mainMenu.Items.Add(_homeMenuItem);
 
         ToolStripMenuItem satis = AddMenuGroup("Satış");
         AddMenuAction(satis, "Yeni satış", btnYeniSatis, btnYeniSatis_Click);
@@ -241,6 +248,7 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
     {
         IcazeleriYoxla();
         mdiTabControl.TabPages.Clear();
+        CreateDashboardTab();
         UpdateActiveButtonHighlight();
 
         // Dashboard məlumatlarını yükləyirik
@@ -299,6 +307,72 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
 
     #region Tab İdarəetməsi
 
+    private void CreateDashboardTab()
+    {
+        var surface = new Panel { Dock = DockStyle.Fill, BackColor = Color.FromArgb(247, 250, 247) };
+        var heading = new Label
+        {
+            Dock = DockStyle.Top,
+            Height = 100,
+            Padding = new Padding(24, 22, 16, 0),
+            Font = new Font("Segoe UI", 21F, FontStyle.Bold),
+            ForeColor = Color.FromArgb(31, 84, 43),
+            Text = "Ana səhifə\nMağazanın cari göstəriciləri"
+        };
+        var cards = new FlowLayoutPanel
+        {
+            Dock = DockStyle.Fill,
+            AutoScroll = true,
+            WrapContents = true,
+            Padding = new Padding(18, 12, 18, 18),
+            BackColor = surface.BackColor
+        };
+        foreach (var (card, title, value) in new[]
+        {
+            (dailySalesCard, lblDailySales, lblDailySalesValue),
+            (activeShiftCard, lblActiveShift, lblActiveShiftValue),
+            (monthlySalesCard, lblMonthlySales, lblMonthlySalesValue),
+            (totalDebtCard, lblTotalDebt, lblTotalDebtValue),
+            (debtorCustomersCard, lblDebtorCustomers, lblDebtorCustomersValue),
+            (lowStockProductsCard, lblLowStockProducts, lblLowStockProductsValue)
+        })
+        {
+            dashboardPanel.Controls.Remove(card);
+            card.Margin = new Padding(7);
+            card.Height = 112;
+            title.AutoSize = false;
+            title.SetBounds(16, 13, 220, 25);
+            title.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+            value.AutoSize = false;
+            value.SetBounds(16, 47, 220, 54);
+            value.Font = new Font("Segoe UI", 17F, FontStyle.Bold);
+            cards.Controls.Add(card);
+        }
+        cards.Resize += (_, _) =>
+        {
+            int columns = cards.ClientSize.Width >= 900 ? 3 : cards.ClientSize.Width >= 600 ? 2 : 1;
+            int width = Math.Max(220, (cards.ClientSize.Width - cards.Padding.Horizontal - columns * 14 - 18) / columns);
+            foreach (Control card in cards.Controls)
+            {
+                card.Width = width;
+                foreach (Control label in card.Controls)
+                    label.Width = width - 32;
+            }
+        };
+        surface.Controls.Add(cards);
+        surface.Controls.Add(heading);
+        _dashboardTab = new TabPage("Ana səhifə") { Padding = Padding.Empty };
+        _dashboardTab.Controls.Add(surface);
+        mdiTabControl.TabPages.Add(_dashboardTab);
+        mdiTabControl.SelectedTab = _dashboardTab;
+    }
+
+    private void OpenDashboard()
+    {
+        if (_dashboardTab != null && mdiTabControl.TabPages.Contains(_dashboardTab))
+            mdiTabControl.SelectedTab = _dashboardTab;
+    }
+
     public void UsaqFormuAc<T>() where T : Form
     {
         TabPage? mövcudSehife = mdiTabControl.TabPages.OfType<TabPage>().FirstOrDefault(p => p.Tag is T);
@@ -319,7 +393,7 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
             // Initialize presenter for forms that need it
             InitializeFormPresenter(yeniForm, scope.ServiceProvider);
 
-            TabPage yeniSehife = new(yeniForm.Text) { Tag = yeniForm };
+            TabPage yeniSehife = new(yeniForm.Text) { Tag = yeniForm, Padding = Padding.Empty };
             yeniSehife.Controls.Add(yeniForm);
             mdiTabControl.TabPages.Add(yeniSehife);
             mdiTabControl.SelectedTab = yeniSehife;
@@ -328,6 +402,14 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
             _tabScopes[yeniSehife] = scope;
 
             yeniForm.Show();
+            // MaterialSkin formaları ilk dəfə tabda göstəriləndə köhnə ölçüdə qala bilir.
+            BeginInvoke(() =>
+            {
+                if (yeniForm.IsDisposed || yeniSehife.IsDisposed) return;
+                yeniForm.Bounds = yeniSehife.ClientRectangle;
+                yeniSehife.PerformLayout();
+                yeniForm.PerformLayout();
+            });
         }
     }
 
@@ -404,14 +486,16 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
 
     private async void hamisiniBaglaToolStripMenuItem_Click(object sender, EventArgs e)
     {
-        while (mdiTabControl.TabPages.Count > 0)
+        while (mdiTabControl.TabPages.Cast<TabPage>().Any(t => t != _dashboardTab))
         {
-            await CloseTabAsync(mdiTabControl.TabPages[0]);
+            await CloseTabAsync(mdiTabControl.TabPages.Cast<TabPage>().First(t => t != _dashboardTab));
         }
+        OpenDashboard();
     }
 
     private async Task CloseTabAsync(TabPage tab)
     {
+        if (tab == _dashboardTab) return;
         if (tab.Controls.Count > 0 && tab.Controls[0] is Form form)
         {
             form.Close();
@@ -434,6 +518,7 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
     #region UI Təkmilləşdirmələri
     private void UpdateActiveButtonHighlight()
     {
+        _homeMenuItem.Checked = mdiTabControl.SelectedTab == _dashboardTab;
         foreach (ToolStripMenuItem item in _menuItems.Values)
             item.Checked = false;
         _customerMenuItem.Checked = mdiTabControl.SelectedTab?.Tag is MusteriIdareetmeFormu;

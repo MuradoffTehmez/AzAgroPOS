@@ -46,7 +46,7 @@ public class HesabatManager
 
             // Verilənlər bazasından həmin günə aid satışları müştəri məlumatları ilə birlikdə çəkirik.
             IEnumerable<Satis> satislar = await _unitOfWork.Satislar
-                .AxtarAsync(s => s.Tarix >= gununBasi && s.Tarix <= gununSonu);
+                .AxtarAsync(s => !s.Silinib && s.Tarix >= gununBasi && s.Tarix <= gununSonu);
 
             // Müştəri məlumatlarını əlavə etmək üçün ayrıca sorğu
             List<int> musteriIds = satislar.Where(s => s.MusteriId.HasValue).Select(s => s.MusteriId.Value).Distinct().ToList();
@@ -56,7 +56,10 @@ public class HesabatManager
 
             if (!satislar.Any())
             {
-                return EmeliyyatNeticesi<GunlukSatisHesabatDto>.Ugursuz("Seçilmiş tarix üçün heç bir satış tapılmadı.");
+                return EmeliyyatNeticesi<GunlukSatisHesabatDto>.Ugurlu(new GunlukSatisHesabatDto
+                {
+                    HesabatTarixi = gununBasi
+                });
             }
 
             GunlukSatisHesabatDto hesabat = new()

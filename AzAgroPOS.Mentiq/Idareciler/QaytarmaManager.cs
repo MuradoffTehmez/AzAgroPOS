@@ -55,6 +55,8 @@ public class QaytarmaManager
 
         try
         {
+            return await _unitOfWork.ExecuteInTransactionAsync(async () =>
+            {
             // 1. Validasiya
             if (qaytarilanMehsullar == null || !qaytarilanMehsullar.Any())
             {
@@ -69,7 +71,7 @@ public class QaytarmaManager
             }
 
             // 2. Əsas satışı tap və yoxla
-            Satis satis = await _unitOfWork.Satislar.GetirAsync(satisId);
+            Satis? satis = await _unitOfWork.Satislar.SatisDetallariIleBirlikdeGetirAsync(satisId);
             if (satis == null)
             {
                 Logger.XəbərdarlıqYaz($"Satış tapılmadı: ID={satisId}");
@@ -77,6 +79,10 @@ public class QaytarmaManager
             }
 
             // 3. Qaytarılan məhsulların satışda olub-olmadığını yoxla
+            if (qaytarilanMehsullar.Any(m => m.Miqdar <= 0) ||
+                qaytarilanMehsullar.GroupBy(m => m.MehsulId).Any(g => g.Count() > 1))
+                return EmeliyyatNeticesi<int>.Ugursuz("Qaytarılan məhsulların miqdarı müsbət və hər məhsul tək olmalıdır.");
+
             foreach ((int mehsulId, int miqdar, decimal _) in qaytarilanMehsullar)
             {
                 SatisDetali? satisDetali = satis.SatisDetallari.FirstOrDefault(sd => sd.MehsulId == mehsulId);
@@ -98,6 +104,11 @@ public class QaytarmaManager
             }
 
             // 4. Qaytarma məbləğini hesabla
+            // Qaytarma qiyməti UI-dən deyil, qeydə alınmış satışdan götürülür.
+            qaytarilanMehsullar = qaytarilanMehsullar
+                .Select(m => (m.MehsulId, m.Miqdar,
+                    satis.SatisDetallari.First(sd => sd.MehsulId == m.MehsulId).Qiymet))
+                .ToList();
             decimal umumiMebleg = qaytarilanMehsullar.Sum(m => m.Miqdar * m.VahidinQiymeti);
 
             // 5. Qaytarma qeydini yarat
@@ -134,7 +145,7 @@ public class QaytarmaManager
                     qaytarma.Id,
                     mehsulId,
                     miqdar,
-                    vahidinQiymeti, // Alış qiyməti
+                    satis.SatisDetallari.First(sd => sd.MehsulId == mehsulId).AlisQiymeti ?? 0m,
                     vahidinQiymeti, // Satış qiyməti
                     $"Qaytarma: ID={qaytarma.Id}, Səbəb: {sebeb}",
                     kassirId
@@ -143,7 +154,7 @@ public class QaytarmaManager
                 if (!stokNeticesi.UgurluDur)
                 {
                     Logger.XəbərdarlıqYaz($"Stok hərəkəti qeydə alınarkən xəta: {stokNeticesi.Mesaj}");
-                    return EmeliyyatNeticesi<int>.Ugursuz($"Stok hərəkəti qeydə alınarkən xəta: {stokNeticesi.Mesaj}");
+                    throw new InvalidOperationException($"Stok hərəkəti qeydə alınarkən xəta: {stokNeticesi.Mesaj}");
                 }
             }
 
@@ -199,12 +210,13 @@ public class QaytarmaManager
 
                             if (!kassaHareketiNetice.UgurluDur)
                             {
-                                Logger.XəbərdarlıqYaz($"Kassa hərəkəti qeydiyyatı zamanı xəta: {kassaHareketiNetice.Mesaj}");
+                                throw new InvalidOperationException($"Kassa hərəkəti qeydiyyatı zamanı xəta: {kassaHareketiNetice.Mesaj}");
                             }
                         }
                         catch (Exception ex)
                         {
                             Logger.XetaYaz(ex, "Kassa hərəkəti qeydiyyatı zamanı istisna baş verdi");
+                            throw;
                         }
                     }
                     else if (satis.OdenisMetodu == OdenisMetodu.Kart)
@@ -228,12 +240,13 @@ public class QaytarmaManager
 
                             if (!kassaHareketiNetice.UgurluDur)
                             {
-                                Logger.XəbərdarlıqYaz($"Kassa hərəkəti qeydiyyatı zamanı xəta: {kassaHareketiNetice.Mesaj}");
+                                throw new InvalidOperationException($"Kassa hərəkəti qeydiyyatı zamanı xəta: {kassaHareketiNetice.Mesaj}");
                             }
                         }
                         catch (Exception ex)
                         {
                             Logger.XetaYaz(ex, "Kassa hərəkəti qeydiyyatı zamanı istisna baş verdi");
+                            throw;
                         }
                     }
                     // Nisyə ödənişləri növbəni təsir etmir
@@ -247,6 +260,7 @@ public class QaytarmaManager
 
             Logger.MelumatYaz($"Qaytarma uğurla yaradıldı: ID={qaytarma.Id}, Məbləğ={umumiMebleg}");
             return EmeliyyatNeticesi<int>.Ugurlu(qaytarma.Id);
+            });
         }
         catch (Exception ex)
         {
@@ -260,7 +274,8 @@ public class QaytarmaManager
     /// </summary>
     private async Task<decimal> HesablaArtiqQaytarilanMiqdarAsync(int satisId, int mehsulId)
     {
-        IEnumerable<Qaytarma> qaytarmalar = await _unitOfWork.Qaytarmalar.AxtarAsync(q => q.SatisId == satisId && !q.Silinib);
+        IEnumerable<Qaytarma> qaytarmalar = await _unitOfWork.Qaytarmalar.AxtarAsync(
+            q => q.SatisId == satisId && !q.Silinib, q => q.QaytarmaDetallari);
 
         decimal toplam = 0;
         foreach (Qaytarma qaytarma in qaytarmalar)

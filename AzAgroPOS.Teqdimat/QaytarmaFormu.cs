@@ -11,7 +11,8 @@ namespace AzAgroPOS.Teqdimat
         {
             InitializeComponent();
             StilVerDataGridView(dgvSatisMehsullari);
-
+            // Ümumi cədvəl üslubu yalnız oxunandır; qaytarmada seçim sütunu işləməlidir.
+            dgvSatisMehsullari.ReadOnly = false;
         }
 
         public string SatisNomresi => txtSatisNomresi.Text;
@@ -22,6 +23,7 @@ namespace AzAgroPOS.Teqdimat
         {
             get
             {
+                dgvSatisMehsullari.EndEdit();
                 List<SatisSebetiElementiDto> secilmisler = new();
                 foreach (DataGridViewRow row in dgvSatisMehsullari.Rows)
                 {
@@ -62,6 +64,8 @@ namespace AzAgroPOS.Teqdimat
                 dgvSatisMehsullari.Columns.Add(sumCol);
             }
 
+            foreach (DataGridViewColumn column in dgvSatisMehsullari.Columns)
+                column.ReadOnly = column.Name != "Secim";
             dgvSatisMehsullari.DataSource = new System.ComponentModel.BindingList<SatisSebetiElementiDto>(mehsullar);
         }
 

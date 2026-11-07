@@ -417,7 +417,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                                              - _aktivSebet.Sum(e => e.EndirimMeblegi) - _cartLevelEndirimMeblegi;
                         decimal yeniBorc = musteri.UmumiBorc + yekunMebleg;
 
-                        if (yeniBorc > musteri.KreditLimiti)
+                        if (musteri.KreditLimiti > 0 && yeniBorc > musteri.KreditLimiti)
                         {
                             _view.MesajGoster(
                                 $"Müştərinin cari borcu: {musteri.UmumiBorc:N2} AZN\n" +
