@@ -107,6 +107,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                 _view.MesajGoster("Məhsul adı boş ola bilməz.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+            if (!MelumatlariYoxla(true)) return;
 
             await _view.EmeliyyatIcraEtAsync(async () =>
             {
@@ -115,9 +116,10 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 
                 if (netice.UgurluDur)
                 {
+                    _sehifeParametrleri.SehifeNomresi = 1;
+                    await MehsullariYukle();
+                    _view.FormuTemizle();
                     _view.MesajGoster("Məhsul uğurla əlavə edildi.", "Məlumat", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    await FormuYukle();
-                    FormuTemizle();
                 }
                 else
                 {
@@ -133,6 +135,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                 _view.MesajGoster("Yeniləmək üçün cədvəldən məhsul seçin.", "Xəbərdarlıq", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+            if (!MelumatlariYoxla(false)) return;
 
             await _view.EmeliyyatIcraEtAsync(async () =>
             {
@@ -141,9 +144,9 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
 
                 if (netice.UgurluDur)
                 {
+                    await MehsullariYukle();
+                    _view.FormuTemizle();
                     _view.MesajGoster("Məhsul məlumatları uğurla yeniləndi.", "Məlumat", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    await FormuYukle();
-                    FormuTemizle();
                 }
                 else
                 {
@@ -166,8 +169,8 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                 EmeliyyatNeticesi netice = await _mehsulManager.MehsulSilAsync(ParseInt(_view.MehsulId));
                 if (netice.UgurluDur)
                 {
-                    await FormuYukle();
-                    FormuTemizle();
+                    await MehsullariYukle();
+                    _view.FormuTemizle();
                 }
                 else
                 {
@@ -186,6 +189,7 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
             _view.MehsulId = string.Empty;
             _view.StokKodu = string.Empty;
             _view.Barkod = string.Empty;
+            _view.MovcudSay = "0";
             _view.MesajGoster("Məhsul kopyalandı. Zəhmət olmasa, yeni Stok Kodu və Barkod daxil edib yadda saxlayın.", "Məlumat", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
@@ -327,6 +331,31 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
         private int ParseInt(string value)
         {
             return int.TryParse(value, out int result) ? result : 0;
+        }
+
+        private bool MelumatlariYoxla(bool yeniMehsuldur)
+        {
+            if (string.IsNullOrWhiteSpace(_view.StokKodu))
+            {
+                _view.MesajGoster("Stok kodu daxil edin.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+            foreach (string qiymet in new[] { _view.AlisQiymeti, _view.PerakendeSatisQiymeti,
+                         _view.TopdanSatisQiymeti, _view.TekEdedSatisQiymeti })
+            {
+                if (!decimal.TryParse(qiymet, out decimal mebleg) || mebleg < 0 || decimal.Round(mebleg, 2) != mebleg)
+                {
+                    _view.MesajGoster("Qiymətləri mənfi olmayan, ən çox iki onluq rəqəmlə daxil edin.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
+                }
+            }
+            if (!int.TryParse(_view.MinimumStok, out int minimum) || minimum < 0 ||
+                (yeniMehsuldur && (!int.TryParse(_view.MovcudSay, out int say) || say < 0)))
+            {
+                _view.MesajGoster("Stok saylarını mənfi olmayan tam ədəd kimi daxil edin.", "Xəta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+            return true;
         }
 
         private MehsulDto ViewDanMehsulYarat()

@@ -14,10 +14,17 @@ namespace AzAgroPOS.Mentiq.Idareciler;
 public class MehsulManager
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IStokHareketiRepozitori? _stokHareketleri;
 
     public MehsulManager(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
+    }
+
+    public MehsulManager(IUnitOfWork unitOfWork, IStokHareketiRepozitori stokHareketleri)
+        : this(unitOfWork)
+    {
+        _stokHareketleri = stokHareketleri;
     }
 
     /// <summary>
@@ -86,6 +93,12 @@ public class MehsulManager
                 return EmeliyyatNeticesi<int>.Ugursuz("Stok kodu boş ola bilməz.");
             }
 
+            string? qiymetXetasi = MehsulMelumatlariniYoxla(yeniMehsulDto);
+            if (qiymetXetasi != null)
+                return EmeliyyatNeticesi<int>.Ugursuz(qiymetXetasi);
+            if (yeniMehsulDto.MovcudSay < 0)
+                return EmeliyyatNeticesi<int>.Ugursuz("Yeni məhsulun başlanğıc sayı mənfi ola bilməz.");
+
             // Stok kodunun unikal olmasını yoxlayaq
             Mehsul? movcudMehsul = (await _unitOfWork.Mehsullar.AxtarAsync(m => m.StokKodu == yeniMehsulDto.StokKodu)).FirstOrDefault();
             if (movcudMehsul != null)
@@ -94,21 +107,44 @@ public class MehsulManager
                 return EmeliyyatNeticesi<int>.Ugursuz($"'{yeniMehsulDto.StokKodu}' stok kodlu məhsul artıq mövcuddur.");
             }
 
+            if (!string.IsNullOrWhiteSpace(yeniMehsulDto.Barkod) &&
+                (await _unitOfWork.Mehsullar.AxtarAsync(m => m.Barkod == yeniMehsulDto.Barkod)).Any())
+                return EmeliyyatNeticesi<int>.Ugursuz("Bu barkod artıq başqa məhsulda istifadə olunur.");
+
             // --- Əməliyyat Hissəsi ---
             Mehsul yeniMehsul = new()
             {
-                Ad = yeniMehsulDto.Ad,
-                StokKodu = yeniMehsulDto.StokKodu,
-                Barkod = yeniMehsulDto.Barkod,
+                Ad = yeniMehsulDto.Ad.Trim(),
+                StokKodu = yeniMehsulDto.StokKodu.Trim(),
+                Barkod = yeniMehsulDto.Barkod?.Trim() ?? string.Empty,
                 PerakendeSatisQiymeti = yeniMehsulDto.PerakendeSatisQiymeti,
                 TopdanSatisQiymeti = yeniMehsulDto.TopdanSatisQiymeti,
                 TekEdedSatisQiymeti = yeniMehsulDto.TekEdedSatisQiymeti,
                 MovcudSay = yeniMehsulDto.MovcudSay,
                 AlisQiymeti = yeniMehsulDto.AlisQiymeti,
-                OlcuVahidi = yeniMehsulDto.OlcuVahidi
+                OlcuVahidi = yeniMehsulDto.OlcuVahidi,
+                MinimumStok = yeniMehsulDto.MinimumStok,
+                KateqoriyaId = yeniMehsulDto.KateqoriyaId,
+                BrendId = yeniMehsulDto.BrendId,
+                TedarukcuId = yeniMehsulDto.TedarukcuId
             };
 
             await _unitOfWork.Mehsullar.ElaveEtAsync(yeniMehsul);
+            if (yeniMehsulDto.MovcudSay > 0 && _stokHareketleri != null)
+            {
+                await _stokHareketleri.ElaveEtAsync(new StokHareketi
+                {
+                    Mehsul = yeniMehsul,
+                    HareketTipi = StokHareketTipi.Daxilolma,
+                    SenedNovu = SenedNovu.DuzeltmeArtirim,
+                    Miqdar = yeniMehsulDto.MovcudSay,
+                    AlisQiymeti = yeniMehsulDto.AlisQiymeti,
+                    SatisQiymeti = yeniMehsulDto.PerakendeSatisQiymeti,
+                    Tarix = DateTime.Now,
+                    Qeyd = "Yeni məhsulun başlanğıc qalığı",
+                    IstifadeciId = _unitOfWork.AktivIstifadeciId > 0 ? _unitOfWork.AktivIstifadeciId : null
+                });
+            }
             await _unitOfWork.EmeliyyatiTesdiqleAsync();
 
             Logger.MelumatYaz($"Yeni məhsul uğurla yaradıldı. ID: {yeniMehsul.Id}");
@@ -132,6 +168,11 @@ public class MehsulManager
         Logger.MelumatYaz($"Məhsul yeniləmə əməliyyatı başlayır. ID: {mehsulDto.Id}");
         try
         {
+            if (string.IsNullOrWhiteSpace(mehsulDto.Ad) || string.IsNullOrWhiteSpace(mehsulDto.StokKodu))
+                return EmeliyyatNeticesi.Ugursuz("Məhsul adı və stok kodu boş ola bilməz.");
+            string? qiymetXetasi = MehsulMelumatlariniYoxla(mehsulDto);
+            if (qiymetXetasi != null)
+                return EmeliyyatNeticesi.Ugursuz(qiymetXetasi);
             Mehsul movcudMehsul = await _unitOfWork.Mehsullar.GetirAsync(mehsulDto.Id);
             if (movcudMehsul == null)
             {
@@ -147,15 +188,22 @@ public class MehsulManager
                 return EmeliyyatNeticesi.Ugursuz($"'{mehsulDto.StokKodu}' stok kodu başqa məhsulda istifadə olunur.");
             }
 
-            movcudMehsul.Ad = mehsulDto.Ad;
-            movcudMehsul.StokKodu = mehsulDto.StokKodu;
-            movcudMehsul.Barkod = mehsulDto.Barkod;
+            if (!string.IsNullOrWhiteSpace(mehsulDto.Barkod) &&
+                (await _unitOfWork.Mehsullar.AxtarAsync(m => m.Barkod == mehsulDto.Barkod && m.Id != mehsulDto.Id)).Any())
+                return EmeliyyatNeticesi.Ugursuz("Bu barkod artıq başqa məhsulda istifadə olunur.");
+
+            movcudMehsul.Ad = mehsulDto.Ad.Trim();
+            movcudMehsul.StokKodu = mehsulDto.StokKodu.Trim();
+            movcudMehsul.Barkod = mehsulDto.Barkod?.Trim() ?? string.Empty;
             movcudMehsul.PerakendeSatisQiymeti = mehsulDto.PerakendeSatisQiymeti;
             movcudMehsul.TopdanSatisQiymeti = mehsulDto.TopdanSatisQiymeti;
             movcudMehsul.TekEdedSatisQiymeti = mehsulDto.TekEdedSatisQiymeti;
             movcudMehsul.AlisQiymeti = mehsulDto.AlisQiymeti;
-            movcudMehsul.MovcudSay = mehsulDto.MovcudSay;
             movcudMehsul.OlcuVahidi = mehsulDto.OlcuVahidi;
+            movcudMehsul.MinimumStok = mehsulDto.MinimumStok;
+            movcudMehsul.KateqoriyaId = mehsulDto.KateqoriyaId;
+            movcudMehsul.BrendId = mehsulDto.BrendId;
+            movcudMehsul.TedarukcuId = mehsulDto.TedarukcuId;
 
 
             _unitOfWork.Mehsullar.Yenile(movcudMehsul);
@@ -169,6 +217,16 @@ public class MehsulManager
             Logger.XetaYaz(ex, "Məhsul yeniləmə əməliyyatı zamanı istisna baş verdi");
             return EmeliyyatNeticesi.Ugursuz("Məhsul yeniləmə əməliyyatı zamanı istisna baş verdi: " + ex.Message);
         }
+    }
+
+    private static string? MehsulMelumatlariniYoxla(MehsulDto mehsul)
+    {
+        if (mehsul.AlisQiymeti < 0 || mehsul.PerakendeSatisQiymeti < 0 ||
+            mehsul.TopdanSatisQiymeti < 0 || mehsul.TekEdedSatisQiymeti < 0)
+            return "Qiymətlər mənfi ola bilməz.";
+        if (mehsul.MinimumStok < 0)
+            return "Minimum stok mənfi ola bilməz.";
+        return null;
     }
 
     /// <summary>

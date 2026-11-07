@@ -16,13 +16,15 @@ namespace AzAgroPOS.Teqdimat
         private readonly MehsulPresenter _presenter;
         private readonly IServiceProvider _serviceProvider;
         private readonly IDialogXidmeti _dialogXidmeti;
+        private readonly System.Windows.Forms.Timer _axtarisGecikmesi = new() { Interval = 300 };
+        private Button? _btnStokArtir;
 
         public MehsulIdareetmeFormu(MehsulManager mehsulManager, MehsulPresenter mehsulPresenter, IServiceProvider serviceProvider)
         {
             InitializeComponent();
             tabPage2.AutoScroll = true;
             materialCard1.Dock = DockStyle.Top;
-            materialCard1.Height = 820;
+            materialCard1.Height = 876;
             _presenter = mehsulPresenter;
             _serviceProvider = serviceProvider;
             _dialogXidmeti = new DialogXidmeti();
@@ -34,6 +36,26 @@ namespace AzAgroPOS.Teqdimat
 
             // Add conditional formatting for low stock products
             dgvMehsullar.CellFormatting += DgvMehsullar_CellFormatting;
+            _axtarisGecikmesi.Tick += (_, _) =>
+            {
+                _axtarisGecikmesi.Stop();
+                Axtaris_Istek?.Invoke(this, EventArgs.Empty);
+            };
+            _btnStokArtir = new Button
+            {
+                Text = "SEÇİLMİŞ MƏHSULUN SAYINI ARTIR",
+                Location = new Point(18, 663),
+                Size = new Size(539, 42),
+                Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right,
+                BackColor = Color.FromArgb(46, 125, 50),
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat,
+                Enabled = false
+            };
+            _btnStokArtir.FlatAppearance.BorderSize = 0;
+            _btnStokArtir.Click += StokArtir_Click;
+            materialCard1.Controls.Add(_btnStokArtir);
+            txtMevcudSay.Enabled = true;
         }
 
         // Pagination UI kontrolları (runtime-da yaradılır)
@@ -80,11 +102,11 @@ namespace AzAgroPOS.Teqdimat
             txtId.Text = mehsulId.ToString();
 
             // Seçili satırı güncelle
-            if (dgvMehsullar.DataSource is List<MehsulDto> mehsullar)
+            MehsulDto? secilmisMehsul = dgvMehsullar.Rows.Cast<DataGridViewRow>()
+                .Select(row => row.DataBoundItem as MehsulDto)
+                .FirstOrDefault(m => m?.Id == mehsulId);
+            if (secilmisMehsul != null)
             {
-                MehsulDto? secilmisMehsul = mehsullar.FirstOrDefault(m => m.Id == mehsulId);
-                if (secilmisMehsul != null)
-                {
                     // Seçili satırı seç
                     foreach (DataGridViewRow row in dgvMehsullar.Rows)
                     {
@@ -141,7 +163,8 @@ namespace AzAgroPOS.Teqdimat
                     // Buton metnini güncelle
                     btnElaveEt.Text = "Yeni Məhsul";
                     btnKopyala.Enabled = true;
-                }
+                    txtMevcudSay.ReadOnly = true;
+                    if (_btnStokArtir != null) _btnStokArtir.Enabled = true;
             }
         }
 
@@ -425,6 +448,11 @@ namespace AzAgroPOS.Teqdimat
         }
         private void btnElaveEt_Click(object sender, EventArgs e)
         {
+            if (!string.IsNullOrWhiteSpace(txtId.Text))
+            {
+                FormuTemizle();
+                return;
+            }
             MehsulElaveEt_Istek?.Invoke(this, EventArgs.Empty);
         }
 
@@ -440,8 +468,7 @@ namespace AzAgroPOS.Teqdimat
 
         private void btnTemizle_Click(object sender, EventArgs e)
         {
-            FormuTemizle_Istek?.Invoke(this, EventArgs.Empty);
-            dgvMehsullar.ClearSelection();
+            FormuTemizle();
             if (cmbOlcuVahidi.Items.Count > 0)
             {
                 cmbOlcuVahidi.SelectedIndex = 0;
@@ -464,6 +491,9 @@ namespace AzAgroPOS.Teqdimat
         private void btnKopyala_Click(object sender, EventArgs e)
         {
             Kopyala_Istek?.Invoke(this, EventArgs.Empty);
+            txtMevcudSay.ReadOnly = false;
+            if (_btnStokArtir != null) _btnStokArtir.Enabled = false;
+            btnElaveEt.Text = "Yeni Məhsulu Yadda Saxla";
         }
 
         private void btnIxracEt_Click(object sender, EventArgs e)
@@ -507,15 +537,19 @@ namespace AzAgroPOS.Teqdimat
                 CedvelSecimiDeyisdi_Istek?.Invoke(this, EventArgs.Empty);
                 btnElaveEt.Text = "Yeni Məhsul";
                 btnKopyala.Enabled = true;
+                txtMevcudSay.ReadOnly = true;
+                if (_btnStokArtir != null) _btnStokArtir.Enabled = true;
             }
             else
             {
                 btnKopyala.Enabled = false;
+                if (_btnStokArtir != null) _btnStokArtir.Enabled = false;
             }
         }
         private void txtAxtar_TextChanged(object sender, EventArgs e)
         {
-            Axtaris_Istek?.Invoke(this, EventArgs.Empty);
+            _axtarisGecikmesi.Stop();
+            _axtarisGecikmesi.Start();
         }
         #endregion
 
@@ -577,18 +611,61 @@ namespace AzAgroPOS.Teqdimat
 
         private void tsmiMehsulRedakteEt_Click(object sender, EventArgs e)
         {
-            // Edit selected product
             if (dgvMehsullar.CurrentRow?.DataBoundItem is MehsulDto mehsul)
             {
-                try
+                MehsulDuzelisEt(mehsul.Id);
+                materialTabControl1.SelectedTab = tabPage2;
+                txtAd.Focus();
+            }
+        }
+
+        private async void StokArtir_Click(object? sender, EventArgs e)
+        {
+            if (!int.TryParse(txtId.Text, out int mehsulId) || mehsulId <= 0) return;
+            using Form dialog = new()
+            {
+                Text = "Məhsul sayını artır",
+                StartPosition = FormStartPosition.CenterParent,
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                MaximizeBox = false,
+                MinimizeBox = false,
+                ClientSize = new Size(430, 235),
+                BackColor = Color.White
+            };
+            Label melumat = new()
+            {
+                Text = $"{txtAd.Text}  •  {txtStokKodu.Text}\nCari say: {txtMevcudSay.Text}",
+                Location = new Point(20, 18), Size = new Size(390, 48),
+                Font = new Font("Segoe UI", 11, FontStyle.Bold)
+            };
+            Label sayYazisi = new() { Text = "Əlavə edilən say", Location = new Point(20, 77), AutoSize = true };
+            NumericUpDown say = new() { Location = new Point(20, 98), Size = new Size(390, 28), Minimum = 1, Maximum = 1000000, Value = 1 };
+            Label qeydYazisi = new() { Text = "Qeyd / səbəb", Location = new Point(20, 136), AutoSize = true };
+            TextBox qeyd = new() { Location = new Point(20, 156), Size = new Size(260, 27), PlaceholderText = "Məsələn, yeni mal qəbulu" };
+            Button tesdiq = new() { Text = "ANBARA ƏLAVƏ ET", Location = new Point(288, 153), Size = new Size(122, 34), BackColor = Color.FromArgb(46, 125, 50), ForeColor = Color.White, FlatStyle = FlatStyle.Flat };
+            tesdiq.Click += (_, _) => { dialog.DialogResult = DialogResult.OK; dialog.Close(); };
+            dialog.Controls.AddRange([melumat, sayYazisi, say, qeydYazisi, qeyd, tesdiq]);
+            if (dialog.ShowDialog(this) != DialogResult.OK) return;
+            _btnStokArtir!.Enabled = false;
+            try
+            {
+                AnbarManager anbar = _serviceProvider.GetRequiredService<AnbarManager>();
+                EmeliyyatNeticesi<int> netice = await anbar.AnbardakiStokuArtirAsync(mehsulId, (int)say.Value, qeyd.Text.Trim());
+                if (!netice.UgurluDur)
                 {
-                    using MehsulIdareetmeFormu mehsulFormu = _serviceProvider.GetRequiredService<MehsulIdareetmeFormu>();
-                    mehsulFormu.MehsulDuzelisEt(mehsul.Id);
+                    _dialogXidmeti.XetaGoster(netice.Mesaj, "Stok artırılmadı");
+                    return;
                 }
-                catch (Exception ex)
-                {
-                    _dialogXidmeti.XetaGoster($"Məhsul redaktə edilərkən xəta baş verdi: {ex.Message}", "Xəta");
-                }
+                txtMevcudSay.Text = netice.Data.ToString();
+                Axtaris_Istek?.Invoke(this, EventArgs.Empty);
+            }
+            catch (Exception ex)
+            {
+                _dialogXidmeti.XetaGoster(ex.Message, "Stok artırılmadı");
+            }
+            finally
+            {
+                _btnStokArtir.Enabled = true;
             }
         }
 
@@ -654,6 +731,8 @@ namespace AzAgroPOS.Teqdimat
             txtTekEdedSatisQiymeti.Text = "0";
             txtAlisQiymeti.Text = "0";
             txtMevcudSay.Text = "0";
+            txtMevcudSay.ReadOnly = false;
+            if (_btnStokArtir != null) _btnStokArtir.Enabled = false;
             txtMinimumStok.Text = "0";
 
             // Reset combo boxes
