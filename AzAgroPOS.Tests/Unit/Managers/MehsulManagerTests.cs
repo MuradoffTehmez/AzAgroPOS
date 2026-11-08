@@ -113,7 +113,7 @@ public class MehsulManagerTests
         tapilmayan.Barkod = "999";
         _mockMehsulRepo.Setup(x => x.SehifelenmisGetirAsync(
                 1, 50, It.IsAny<Expression<Func<Mehsul, bool>>>(),
-                It.IsAny<Expression<Func<Mehsul, object>>[]>() ))
+                It.IsAny<Expression<Func<Mehsul, object>>[]>()))
             .ReturnsAsync((new List<Mehsul> { tapilan }, 1));
 
         var netice = await _mehsulManager.MehsullariSehifelenmisGetirAsync(

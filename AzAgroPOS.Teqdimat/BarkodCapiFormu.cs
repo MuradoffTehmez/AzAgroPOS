@@ -29,7 +29,7 @@ public partial class BarkodCapiFormu : BazaForm, IBarkodCapiView
         StilVerDataGridView(dgvAxtarisNeticeleri);
         StilVerDataGridView(dgvCapSiyahisi);
         _capSiyahisiBindingList = new BindingList<BarkodEtiketDto>();
-        
+
         dgvCapSiyahisi.AutoGenerateColumns = false;
         dgvCapSiyahisi.Columns.Add(new DataGridViewTextBoxColumn { Name = "MehsulId", DataPropertyName = "MehsulId", Visible = false });
         dgvCapSiyahisi.Columns.Add(new DataGridViewTextBoxColumn { Name = "MehsulAdi", DataPropertyName = "MehsulAdi", HeaderText = "Məhsul Adı" });
@@ -38,7 +38,7 @@ public partial class BarkodCapiFormu : BazaForm, IBarkodCapiView
         qiymetCol.DefaultCellStyle.Format = "N2";
         dgvCapSiyahisi.Columns.Add(qiymetCol);
         dgvCapSiyahisi.Columns.Add(new DataGridViewTextBoxColumn { Name = "CapEdilecekSay", DataPropertyName = "CapEdilecekSay", HeaderText = "Çap Sayı" });
-        
+
         dgvCapSiyahisi.DataSource = _capSiyahisiBindingList;
         splitContainer1.Panel2.Controls.Add(_bosCapSiyahisi);
         splitContainer1.Panel2.Resize += (_, _) => BosSiyahiYerlesdir();
@@ -77,7 +77,7 @@ public partial class BarkodCapiFormu : BazaForm, IBarkodCapiView
             dgvAxtarisNeticeleri.Columns.Add(new DataGridViewTextBoxColumn { Name = "StokKodu", DataPropertyName = "StokKodu", HeaderText = "Stok Kodu" });
             dgvAxtarisNeticeleri.Columns.Add(new DataGridViewTextBoxColumn { Name = "Barkod", DataPropertyName = "Barkod", HeaderText = "Barkod" });
         }
-        
+
         dgvAxtarisNeticeleri.DataSource = new System.ComponentModel.BindingList<MehsulDto>(mehsullar);
         dgvAxtarisNeticeleri.Visible = true;
         lblAxtarisXeta.Visible = false;

@@ -135,7 +135,7 @@ public partial class IstifadeciIdareetmeFormu : BazaForm, IIstifadeciView
         if (dgvIstifadeciler.Columns.Count == 0)
         {
             dgvIstifadeciler.AutoGenerateColumns = false;
-            
+
             dgvIstifadeciler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Id", DataPropertyName = "Id", Visible = false });
             dgvIstifadeciler.Columns.Add(new DataGridViewTextBoxColumn { Name = "RolId", DataPropertyName = "RolId", Visible = false });
             dgvIstifadeciler.Columns.Add(new DataGridViewTextBoxColumn { Name = "IstifadeciAdi", DataPropertyName = "IstifadeciAdi", HeaderText = "İstifadəçi Adı" });
@@ -223,7 +223,7 @@ public partial class IstifadeciIdareetmeFormu : BazaForm, IIstifadeciView
         {
             txtId.Text = istifadeci.Id.ToString();
             txtIstifadeciAdi.Text = istifadeci.IstifadeciAdi;
-        txtIstifadeciAdi.ReadOnly = false;
+            txtIstifadeciAdi.ReadOnly = false;
             txtTamAd.Text = istifadeci.TamAd;
             cmbRollar.SelectedValue = istifadeci.RolId;
             txtParol.Clear();

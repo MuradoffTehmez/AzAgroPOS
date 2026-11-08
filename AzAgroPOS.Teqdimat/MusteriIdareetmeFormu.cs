@@ -90,21 +90,21 @@ namespace AzAgroPOS.Teqdimat
 
                 dgvMusteriler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Id", DataPropertyName = "Id", Visible = false });
                 dgvMusteriler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Unvan", DataPropertyName = "Unvan", Visible = false });
-                
+
                 var nameCol = new DataGridViewTextBoxColumn { Name = "TamAd", DataPropertyName = "TamAd", HeaderText = "Tam Ad" };
                 nameCol.SortMode = DataGridViewColumnSortMode.Automatic;
                 dgvMusteriler.Columns.Add(nameCol);
-                
+
                 var telCol = new DataGridViewTextBoxColumn { Name = "TelefonNomresi", DataPropertyName = "TelefonNomresi", HeaderText = "Telefon" };
                 telCol.SortMode = DataGridViewColumnSortMode.Automatic;
                 dgvMusteriler.Columns.Add(telCol);
-                
+
                 var debtCol = new DataGridViewTextBoxColumn { Name = "UmumiBorc", DataPropertyName = "UmumiBorc", HeaderText = "Cari Borc" };
                 debtCol.DefaultCellStyle.Format = "N2";
                 debtCol.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 debtCol.SortMode = DataGridViewColumnSortMode.Automatic;
                 dgvMusteriler.Columns.Add(debtCol);
-                
+
                 var limitCol = new DataGridViewTextBoxColumn { Name = "KreditLimiti", DataPropertyName = "KreditLimiti", HeaderText = "Kredit Limiti" };
                 limitCol.DefaultCellStyle.Format = "N2";
                 limitCol.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;

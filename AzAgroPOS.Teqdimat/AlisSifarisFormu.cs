@@ -177,31 +177,31 @@ public partial class AlisSifarisFormu : BazaForm, IAlisSifarisView
         if (dgvSifarisler.Columns.Count > 0) return;
 
         dgvSifarisler.AutoGenerateColumns = false;
-        
+
         dgvSifarisler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Id", DataPropertyName = "Id", Visible = false });
         dgvSifarisler.Columns.Add(new DataGridViewTextBoxColumn { Name = "SifarisNomresi", DataPropertyName = "SifarisNomresi", HeaderText = "Sifariş №" });
         dgvSifarisler.Columns.Add(new DataGridViewTextBoxColumn { Name = "TedarukcuAdi", DataPropertyName = "TedarukcuAdi", HeaderText = "Tədarükçü" });
-        
+
         var dateCol1 = new DataGridViewTextBoxColumn { Name = "YaradilmaTarixi", DataPropertyName = "YaradilmaTarixi", HeaderText = "Yaradılma Tarixi" };
         dateCol1.DefaultCellStyle.Format = "dd.MM.yyyy";
         dgvSifarisler.Columns.Add(dateCol1);
-        
+
         var dateCol2 = new DataGridViewTextBoxColumn { Name = "TesdiqTarixi", DataPropertyName = "TesdiqTarixi", HeaderText = "Təsdiq Tarixi" };
         dateCol2.DefaultCellStyle.Format = "dd.MM.yyyy";
         dgvSifarisler.Columns.Add(dateCol2);
-        
+
         var dateCol3 = new DataGridViewTextBoxColumn { Name = "GozlenilenTehvilTarixi", DataPropertyName = "GozlenilenTehvilTarixi", HeaderText = "Gözlənilən Təhvil" };
         dateCol3.DefaultCellStyle.Format = "dd.MM.yyyy";
         dgvSifarisler.Columns.Add(dateCol3);
-        
+
         var dateCol4 = new DataGridViewTextBoxColumn { Name = "FaktikiTehvilTarixi", DataPropertyName = "FaktikiTehvilTarixi", HeaderText = "Faktiki Təhvil" };
         dateCol4.DefaultCellStyle.Format = "dd.MM.yyyy";
         dgvSifarisler.Columns.Add(dateCol4);
-        
+
         var meblegCol = new DataGridViewTextBoxColumn { Name = "UmumiMebleg", DataPropertyName = "UmumiMebleg", HeaderText = "Ümumi Məbləğ" };
         meblegCol.DefaultCellStyle.Format = "N2";
         dgvSifarisler.Columns.Add(meblegCol);
-        
+
         dgvSifarisler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Status", DataPropertyName = "Status", HeaderText = "Status" });
         dgvSifarisler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Qeydler", DataPropertyName = "Qeydler", HeaderText = "Qeydlər" });
 
@@ -213,24 +213,24 @@ public partial class AlisSifarisFormu : BazaForm, IAlisSifarisView
         if (dgvSetirler.Columns.Count > 0) return;
 
         dgvSetirler.AutoGenerateColumns = false;
-        
+
         dgvSetirler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Id", DataPropertyName = "Id", Visible = false });
         dgvSetirler.Columns.Add(new DataGridViewTextBoxColumn { Name = "AlisSifarisId", DataPropertyName = "AlisSifarisId", Visible = false });
         dgvSetirler.Columns.Add(new DataGridViewTextBoxColumn { Name = "MehsulId", DataPropertyName = "MehsulId", Visible = false });
         dgvSetirler.Columns.Add(new DataGridViewTextBoxColumn { Name = "MehsulAdi", DataPropertyName = "MehsulAdi", HeaderText = "Məhsul" });
-        
+
         var qtyCol = new DataGridViewTextBoxColumn { Name = "Miqdar", DataPropertyName = "Miqdar", HeaderText = "Miqdar" };
         qtyCol.DefaultCellStyle.Format = "N2";
         dgvSetirler.Columns.Add(qtyCol);
-        
+
         var priceCol = new DataGridViewTextBoxColumn { Name = "BirVahidQiymet", DataPropertyName = "BirVahidQiymet", HeaderText = "Vahid Qiymət" };
         priceCol.DefaultCellStyle.Format = "N2";
         dgvSetirler.Columns.Add(priceCol);
-        
+
         var totalCol = new DataGridViewTextBoxColumn { Name = "CemiMebleg", DataPropertyName = "CemiMebleg", HeaderText = "Cəmi" };
         totalCol.DefaultCellStyle.Format = "N2";
         dgvSetirler.Columns.Add(totalCol);
-        
+
         var tehvilCol = new DataGridViewTextBoxColumn { Name = "TehvilAlinanMiqdar", DataPropertyName = "TehvilAlinanMiqdar", HeaderText = "Təhvil Alınan" };
         tehvilCol.DefaultCellStyle.Format = "N2";
         dgvSetirler.Columns.Add(tehvilCol);

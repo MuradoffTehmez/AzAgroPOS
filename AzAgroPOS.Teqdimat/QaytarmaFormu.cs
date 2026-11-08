@@ -44,21 +44,21 @@ namespace AzAgroPOS.Teqdimat
             if (dgvSatisMehsullari.Columns.Count == 0)
             {
                 dgvSatisMehsullari.AutoGenerateColumns = false;
-                
+
                 DataGridViewCheckBoxColumn secimCol = new();
                 secimCol.Name = "Secim";
                 secimCol.HeaderText = "Seç";
                 dgvSatisMehsullari.Columns.Add(secimCol);
-                
+
                 dgvSatisMehsullari.Columns.Add(new DataGridViewTextBoxColumn { Name = "MehsulId", DataPropertyName = "MehsulId", Visible = false });
-                
+
                 dgvSatisMehsullari.Columns.Add(new DataGridViewTextBoxColumn { Name = "MehsulAdi", DataPropertyName = "MehsulAdi", HeaderText = "Məhsul Adı" });
                 dgvSatisMehsullari.Columns.Add(new DataGridViewTextBoxColumn { Name = "Miqdar", DataPropertyName = "Miqdar", HeaderText = "Miqdar" });
-                
+
                 var priceCol = new DataGridViewTextBoxColumn { Name = "VahidinQiymeti", DataPropertyName = "VahidinQiymeti", HeaderText = "Qiymət" };
                 priceCol.DefaultCellStyle.Format = "N2";
                 dgvSatisMehsullari.Columns.Add(priceCol);
-                
+
                 var sumCol = new DataGridViewTextBoxColumn { Name = "UmumiMebleg", DataPropertyName = "UmumiMebleg", HeaderText = "Cəmi Məbləğ" };
                 sumCol.DefaultCellStyle.Format = "N2";
                 dgvSatisMehsullari.Columns.Add(sumCol);

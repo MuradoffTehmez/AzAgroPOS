@@ -345,41 +345,41 @@ public class AlisManager
 
             return await _unitOfWork.ExecuteInTransactionAsync(async () =>
             {
-            // Yeni alış sifarişi obyekti yaradırıq
-            AlisSifaris yeniSifaris = new()
-            {
-                SifarisNomresi = dto.SifarisNomresi,
-                YaradilmaTarixi = dto.YaradilmaTarixi,
-                TesdiqTarixi = dto.TesdiqTarixi,
-                GozlenilenTehvilTarixi = dto.GozlenilenTehvilTarixi,
-                TedarukcuId = dto.TedarukcuId,
-                UmumiMebleg = dto.UmumiMebleg,
-                Status = dto.Status,
-                Qeydler = dto.Qeydler
-            };
-
-            await _unitOfWork.AlisSifarisleri.ElaveEtAsync(yeniSifaris);
-            await _unitOfWork.EmeliyyatiTesdiqleAsync();
-
-            // Sifariş sətirlərini yaradırıq
-            foreach (AlisSifarisSetiriDto setirDto in dto.SifarisSetirleri)
-            {
-                AlisSifarisSetiri setir = new()
+                // Yeni alış sifarişi obyekti yaradırıq
+                AlisSifaris yeniSifaris = new()
                 {
-                    AlisSifarisId = yeniSifaris.Id,
-                    MehsulId = setirDto.MehsulId,
-                    Miqdar = setirDto.Miqdar,
-                    BirVahidQiymet = setirDto.BirVahidQiymet,
-                    CemiMebleg = setirDto.CemiMebleg,
-                    TehvilAlinanMiqdar = setirDto.TehvilAlinanMiqdar
+                    SifarisNomresi = dto.SifarisNomresi,
+                    YaradilmaTarixi = dto.YaradilmaTarixi,
+                    TesdiqTarixi = dto.TesdiqTarixi,
+                    GozlenilenTehvilTarixi = dto.GozlenilenTehvilTarixi,
+                    TedarukcuId = dto.TedarukcuId,
+                    UmumiMebleg = dto.UmumiMebleg,
+                    Status = dto.Status,
+                    Qeydler = dto.Qeydler
                 };
 
-                await _unitOfWork.AlisSifarisSetirleri.ElaveEtAsync(setir);
-            }
+                await _unitOfWork.AlisSifarisleri.ElaveEtAsync(yeniSifaris);
+                await _unitOfWork.EmeliyyatiTesdiqleAsync();
 
-            await _unitOfWork.EmeliyyatiTesdiqleAsync();
+                // Sifariş sətirlərini yaradırıq
+                foreach (AlisSifarisSetiriDto setirDto in dto.SifarisSetirleri)
+                {
+                    AlisSifarisSetiri setir = new()
+                    {
+                        AlisSifarisId = yeniSifaris.Id,
+                        MehsulId = setirDto.MehsulId,
+                        Miqdar = setirDto.Miqdar,
+                        BirVahidQiymet = setirDto.BirVahidQiymet,
+                        CemiMebleg = setirDto.CemiMebleg,
+                        TehvilAlinanMiqdar = setirDto.TehvilAlinanMiqdar
+                    };
 
-            return EmeliyyatNeticesi<int>.Ugurlu(yeniSifaris.Id);
+                    await _unitOfWork.AlisSifarisSetirleri.ElaveEtAsync(setir);
+                }
+
+                await _unitOfWork.EmeliyyatiTesdiqleAsync();
+
+                return EmeliyyatNeticesi<int>.Ugurlu(yeniSifaris.Id);
             });
         }
         catch (Exception ex)
@@ -598,60 +598,60 @@ public class AlisManager
 
             return await _unitOfWork.ExecuteInTransactionAsync(async () =>
             {
-            // Yeni alış sənədi obyekti yaradırıq
-            AlisSened yeniSened = new()
-            {
-                SenedNomresi = dto.SenedNomresi,
-                YaradilmaTarixi = dto.YaradilmaTarixi,
-                TedarukcuId = dto.TedarukcuId,
-                TehvilTarixi = dto.TehvilTarixi,
-                UmumiMebleg = dto.UmumiMebleg,
-                Status = AlisSenedStatusu.Tesdiqlendi,
-                Qeydler = dto.Qeydler
-            };
-
-            await _unitOfWork.AlisSenetleri.ElaveEtAsync(yeniSened);
-            await _unitOfWork.EmeliyyatiTesdiqleAsync();
-
-            // Sənəd sətirlərini yaradırıq
-            foreach (AlisSenedSetiriDto setirDto in dto.SenedSetirleri)
-            {
-                AlisSenedSetiri setir = new()
+                // Yeni alış sənədi obyekti yaradırıq
+                AlisSened yeniSened = new()
                 {
-                    AlisSenedId = yeniSened.Id,
-                    MehsulId = setirDto.MehsulId,
-                    Miqdar = setirDto.Miqdar,
-                    BirVahidQiymet = setirDto.BirVahidQiymet,
-                    CemiMebleg = setirDto.CemiMebleg,
-                    AlisSifarisSetiriId = setirDto.AlisSifarisSetiriId
+                    SenedNomresi = dto.SenedNomresi,
+                    YaradilmaTarixi = dto.YaradilmaTarixi,
+                    TedarukcuId = dto.TedarukcuId,
+                    TehvilTarixi = dto.TehvilTarixi,
+                    UmumiMebleg = dto.UmumiMebleg,
+                    Status = AlisSenedStatusu.Tesdiqlendi,
+                    Qeydler = dto.Qeydler
                 };
 
-                await _unitOfWork.AlisSenedSetirleri.ElaveEtAsync(setir);
-
-                // Stok hərəkətini qeydə alırıq (Daxilolma)
-                EmeliyyatNeticesi<int> stokNeticesi = await _stokHareketiManager.StokHareketiQeydeAlAsync(
-                    StokHareketTipi.Daxilolma,
-                    SenedNovu.Alis,
-                    yeniSened.Id,
-                    setirDto.MehsulId,
-                    setirDto.Miqdar,
-                    setirDto.BirVahidQiymet, // Alış qiyməti
-                    setirDto.BirVahidQiymet, // Satış qiyməti (alımda təyin olunmur, ona görə eyni qoyuruq)
-                    $"Alış sənədi: {dto.SenedNomresi}",
-                    null // İstifadəçi ID-si
-                );
-
-                if (!stokNeticesi.UgurluDur)
-                {
-                    Logger.XəbərdarlıqYaz($"Stok hərəkəti qeydə alınarkən xəta: {stokNeticesi.Mesaj}");
-                    throw new InvalidOperationException($"Stok hərəkəti qeydə alınarkən xəta: {stokNeticesi.Mesaj}");
-                }
+                await _unitOfWork.AlisSenetleri.ElaveEtAsync(yeniSened);
                 await _unitOfWork.EmeliyyatiTesdiqleAsync();
-            }
 
-            await _unitOfWork.EmeliyyatiTesdiqleAsync();
+                // Sənəd sətirlərini yaradırıq
+                foreach (AlisSenedSetiriDto setirDto in dto.SenedSetirleri)
+                {
+                    AlisSenedSetiri setir = new()
+                    {
+                        AlisSenedId = yeniSened.Id,
+                        MehsulId = setirDto.MehsulId,
+                        Miqdar = setirDto.Miqdar,
+                        BirVahidQiymet = setirDto.BirVahidQiymet,
+                        CemiMebleg = setirDto.CemiMebleg,
+                        AlisSifarisSetiriId = setirDto.AlisSifarisSetiriId
+                    };
 
-            return EmeliyyatNeticesi<int>.Ugurlu(yeniSened.Id);
+                    await _unitOfWork.AlisSenedSetirleri.ElaveEtAsync(setir);
+
+                    // Stok hərəkətini qeydə alırıq (Daxilolma)
+                    EmeliyyatNeticesi<int> stokNeticesi = await _stokHareketiManager.StokHareketiQeydeAlAsync(
+                        StokHareketTipi.Daxilolma,
+                        SenedNovu.Alis,
+                        yeniSened.Id,
+                        setirDto.MehsulId,
+                        setirDto.Miqdar,
+                        setirDto.BirVahidQiymet, // Alış qiyməti
+                        setirDto.BirVahidQiymet, // Satış qiyməti (alımda təyin olunmur, ona görə eyni qoyuruq)
+                        $"Alış sənədi: {dto.SenedNomresi}",
+                        null // İstifadəçi ID-si
+                    );
+
+                    if (!stokNeticesi.UgurluDur)
+                    {
+                        Logger.XəbərdarlıqYaz($"Stok hərəkəti qeydə alınarkən xəta: {stokNeticesi.Mesaj}");
+                        throw new InvalidOperationException($"Stok hərəkəti qeydə alınarkən xəta: {stokNeticesi.Mesaj}");
+                    }
+                    await _unitOfWork.EmeliyyatiTesdiqleAsync();
+                }
+
+                await _unitOfWork.EmeliyyatiTesdiqleAsync();
+
+                return EmeliyyatNeticesi<int>.Ugurlu(yeniSened.Id);
             });
         }
         catch (Exception ex)
@@ -846,55 +846,55 @@ public class AlisManager
 
             return await _unitOfWork.ExecuteInTransactionAsync(async () =>
             {
-            List<AlisSened> senetler = (await _unitOfWork.AlisSenetleri
-                .AxtarAsync(s => s.TedarukcuId == dto.TedarukcuId && s.Status != AlisSenedStatusu.LegvEdildi)).ToList();
-            if (dto.AlisSenedId.HasValue && !senetler.Any(s => s.Id == dto.AlisSenedId.Value))
-                return EmeliyyatNeticesi<int>.Ugursuz("Seçilmiş alış sənədi bu tədarükçüyə aid deyil.");
-            decimal odenilen = (await _unitOfWork.TedarukcuOdemeleri
-                .AxtarAsync(o => o.TedarukcuId == dto.TedarukcuId && o.Status != OdemeStatusu.LegvEdildi))
-                .Sum(o => o.Mebleg);
-            if (dto.Mebleg > senetler.Sum(s => s.UmumiMebleg) - odenilen)
-                return EmeliyyatNeticesi<int>.Ugursuz("Ödəniş tədarükçünün qalan borcunu keçir.");
+                List<AlisSened> senetler = (await _unitOfWork.AlisSenetleri
+                    .AxtarAsync(s => s.TedarukcuId == dto.TedarukcuId && s.Status != AlisSenedStatusu.LegvEdildi)).ToList();
+                if (dto.AlisSenedId.HasValue && !senetler.Any(s => s.Id == dto.AlisSenedId.Value))
+                    return EmeliyyatNeticesi<int>.Ugursuz("Seçilmiş alış sənədi bu tədarükçüyə aid deyil.");
+                decimal odenilen = (await _unitOfWork.TedarukcuOdemeleri
+                    .AxtarAsync(o => o.TedarukcuId == dto.TedarukcuId && o.Status != OdemeStatusu.LegvEdildi))
+                    .Sum(o => o.Mebleg);
+                if (dto.Mebleg > senetler.Sum(s => s.UmumiMebleg) - odenilen)
+                    return EmeliyyatNeticesi<int>.Ugursuz("Ödəniş tədarükçünün qalan borcunu keçir.");
 
-            // Yeni tədarükçü ödənişi obyekti yaradırıq
-            TedarukcuOdeme yeniOdeme = new()
-            {
-                OdemeNomresi = dto.OdemeNomresi,
-                YaradilmaTarixi = dto.YaradilmaTarixi,
-                TedarukcuId = dto.TedarukcuId,
-                AlisSenedId = dto.AlisSenedId,
-                OdemeTarixi = dto.OdemeTarixi,
-                Mebleg = dto.Mebleg,
-                OdemeUsulu = dto.OdemeUsulu,
-                Status = OdemeStatusu.Tesdiqlendi,
-                Qeydler = dto.Qeydler,
-                BankMelumatlari = dto.BankMelumatlari
-            };
-
-            await _unitOfWork.TedarukcuOdemeleri.ElaveEtAsync(yeniOdeme);
-            await _unitOfWork.EmeliyyatiTesdiqleAsync();
-
-            if (dto.OdemeUsulu == OdemeUsulu.Naqd)
-            {
-                int? istifadeciId = IcazeYoxlayici.Instance.AktivIstifadeci?.Id;
-                Novbe? novbe = istifadeciId.HasValue
-                    ? await _unitOfWork.Novbeler.AktivNovbeniGetirAsync(istifadeciId.Value) : null;
-                await _unitOfWork.KassaHareketleri.ElaveEtAsync(new KassaHareketi
+                // Yeni tədarükçü ödənişi obyekti yaradırıq
+                TedarukcuOdeme yeniOdeme = new()
                 {
-                    HareketNovu = KassaHareketiNovu.Cixis,
-                    EmeliyyatNovu = EmeliyyatNovu.Odenis,
-                    EmeliyyatId = yeniOdeme.Id,
-                    NovbeId = novbe?.Id,
-                    OdenisMetodu = OdenisMetodu.Nağd,
+                    OdemeNomresi = dto.OdemeNomresi,
+                    YaradilmaTarixi = dto.YaradilmaTarixi,
+                    TedarukcuId = dto.TedarukcuId,
+                    AlisSenedId = dto.AlisSenedId,
+                    OdemeTarixi = dto.OdemeTarixi,
                     Mebleg = dto.Mebleg,
-                    Tarix = dto.OdemeTarixi,
-                    Qeyd = $"Tədarükçü ödənişi #{yeniOdeme.Id}",
-                    IstifadeciId = istifadeciId
-                });
-                await _unitOfWork.EmeliyyatiTesdiqleAsync();
-            }
+                    OdemeUsulu = dto.OdemeUsulu,
+                    Status = OdemeStatusu.Tesdiqlendi,
+                    Qeydler = dto.Qeydler,
+                    BankMelumatlari = dto.BankMelumatlari
+                };
 
-            return EmeliyyatNeticesi<int>.Ugurlu(yeniOdeme.Id);
+                await _unitOfWork.TedarukcuOdemeleri.ElaveEtAsync(yeniOdeme);
+                await _unitOfWork.EmeliyyatiTesdiqleAsync();
+
+                if (dto.OdemeUsulu == OdemeUsulu.Naqd)
+                {
+                    int? istifadeciId = IcazeYoxlayici.Instance.AktivIstifadeci?.Id;
+                    Novbe? novbe = istifadeciId.HasValue
+                        ? await _unitOfWork.Novbeler.AktivNovbeniGetirAsync(istifadeciId.Value) : null;
+                    await _unitOfWork.KassaHareketleri.ElaveEtAsync(new KassaHareketi
+                    {
+                        HareketNovu = KassaHareketiNovu.Cixis,
+                        EmeliyyatNovu = EmeliyyatNovu.Odenis,
+                        EmeliyyatId = yeniOdeme.Id,
+                        NovbeId = novbe?.Id,
+                        OdenisMetodu = OdenisMetodu.Nağd,
+                        Mebleg = dto.Mebleg,
+                        Tarix = dto.OdemeTarixi,
+                        Qeyd = $"Tədarükçü ödənişi #{yeniOdeme.Id}",
+                        IstifadeciId = istifadeciId
+                    });
+                    await _unitOfWork.EmeliyyatiTesdiqleAsync();
+                }
+
+                return EmeliyyatNeticesi<int>.Ugurlu(yeniOdeme.Id);
             });
         }
         catch (Exception ex)

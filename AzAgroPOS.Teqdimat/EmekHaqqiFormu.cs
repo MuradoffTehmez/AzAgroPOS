@@ -129,42 +129,42 @@ public partial class EmekHaqqiFormu : BazaForm
         if (dgvEmekHaqqlari.Columns.Count > 0) return;
 
         dgvEmekHaqqlari.AutoGenerateColumns = false;
-        
+
         dgvEmekHaqqlari.Columns.Add(new DataGridViewTextBoxColumn { Name = "Id", DataPropertyName = "Id", Visible = false });
         dgvEmekHaqqlari.Columns.Add(new DataGridViewTextBoxColumn { Name = "IsciId", DataPropertyName = "IsciId", Visible = false });
         dgvEmekHaqqlari.Columns.Add(new DataGridViewTextBoxColumn { Name = "IsciAdi", DataPropertyName = "IsciAdi", HeaderText = "İşçi" });
         dgvEmekHaqqlari.Columns.Add(new DataGridViewTextBoxColumn { Name = "Dovr", DataPropertyName = "Dovr", HeaderText = "Dövr" });
-        
+
         var baseSalaryCol = new DataGridViewTextBoxColumn { Name = "EsasMaas", DataPropertyName = "EsasMaas", HeaderText = "Əsas Maaş" };
         baseSalaryCol.DefaultCellStyle.Format = "N2";
         dgvEmekHaqqlari.Columns.Add(baseSalaryCol);
-        
+
         var bonusCol = new DataGridViewTextBoxColumn { Name = "Bonuslar", DataPropertyName = "Bonuslar", HeaderText = "Bonuslar" };
         bonusCol.DefaultCellStyle.Format = "N2";
         dgvEmekHaqqlari.Columns.Add(bonusCol);
-        
+
         var extraPayCol = new DataGridViewTextBoxColumn { Name = "ElaveOdenisler", DataPropertyName = "ElaveOdenisler", HeaderText = "Əlavə Ödənişlər" };
         extraPayCol.DefaultCellStyle.Format = "N2";
         dgvEmekHaqqlari.Columns.Add(extraPayCol);
-        
+
         var leaveDedCol = new DataGridViewTextBoxColumn { Name = "IcazeTutulmasi", DataPropertyName = "IcazeTutulmasi", HeaderText = "İcazə Tutulması" };
         leaveDedCol.DefaultCellStyle.Format = "N2";
         dgvEmekHaqqlari.Columns.Add(leaveDedCol);
-        
+
         var otherDedCol = new DataGridViewTextBoxColumn { Name = "DigerTutulmalar", DataPropertyName = "DigerTutulmalar", HeaderText = "Digər Tutulmalar" };
         otherDedCol.DefaultCellStyle.Format = "N2";
         dgvEmekHaqqlari.Columns.Add(otherDedCol);
-        
+
         var finalCol = new DataGridViewTextBoxColumn { Name = "YekunEmekHaqqi", DataPropertyName = "YekunEmekHaqqi", HeaderText = "Yekun" };
         finalCol.DefaultCellStyle.Format = "N2";
         dgvEmekHaqqlari.Columns.Add(finalCol);
-        
+
         dgvEmekHaqqlari.Columns.Add(new DataGridViewTextBoxColumn { Name = "Status", DataPropertyName = "Status", HeaderText = "Status" });
-        
+
         var dateCol = new DataGridViewTextBoxColumn { Name = "HesablanmaTarixi", DataPropertyName = "HesablanmaTarixi", HeaderText = "Hesablama Tarixi" };
         dateCol.DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
         dgvEmekHaqqlari.Columns.Add(dateCol);
-        
+
         dgvEmekHaqqlari.Columns.Add(new DataGridViewTextBoxColumn { Name = "OdenisTarixi", DataPropertyName = "OdenisTarixi", HeaderText = "Ödəniş Tarixi" });
         dgvEmekHaqqlari.Columns.Add(new DataGridViewTextBoxColumn { Name = "Qeyd", DataPropertyName = "Qeyd", HeaderText = "Qeyd" });
 

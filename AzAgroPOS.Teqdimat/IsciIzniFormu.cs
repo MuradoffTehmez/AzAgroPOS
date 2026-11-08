@@ -122,31 +122,31 @@ public partial class IsciIzniFormu : BazaForm
         if (dgvIzinler.Columns.Count > 0) return;
 
         dgvIzinler.AutoGenerateColumns = false;
-        
+
         dgvIzinler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Id", DataPropertyName = "Id", Visible = false });
         dgvIzinler.Columns.Add(new DataGridViewTextBoxColumn { Name = "IsciId", DataPropertyName = "IsciId", Visible = false });
         dgvIzinler.Columns.Add(new DataGridViewTextBoxColumn { Name = "TesdiqEdenIsciId", DataPropertyName = "TesdiqEdenIsciId", Visible = false });
-        
+
         dgvIzinler.Columns.Add(new DataGridViewTextBoxColumn { Name = "IsciAdi", DataPropertyName = "IsciAdi", HeaderText = "İşçi" });
         dgvIzinler.Columns.Add(new DataGridViewTextBoxColumn { Name = "IzniNovuAdi", DataPropertyName = "IzniNovuAdi", HeaderText = "İzin Növü" });
-        
+
         var baslamaCol = new DataGridViewTextBoxColumn { Name = "BaslamaTarixi", DataPropertyName = "BaslamaTarixi", HeaderText = "Başlama Tarixi" };
         baslamaCol.DefaultCellStyle.Format = "dd.MM.yyyy";
         dgvIzinler.Columns.Add(baslamaCol);
-        
+
         var bitisCol = new DataGridViewTextBoxColumn { Name = "BitisTarixi", DataPropertyName = "BitisTarixi", HeaderText = "Bitiş Tarixi" };
         bitisCol.DefaultCellStyle.Format = "dd.MM.yyyy";
         dgvIzinler.Columns.Add(bitisCol);
-        
+
         dgvIzinler.Columns.Add(new DataGridViewTextBoxColumn { Name = "IzinGunSayi", DataPropertyName = "IzinGunSayi", HeaderText = "Gün" });
         dgvIzinler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Sebeb", DataPropertyName = "Sebeb", HeaderText = "Səbəb" });
         dgvIzinler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Status", DataPropertyName = "Status", HeaderText = "Status" });
         dgvIzinler.Columns.Add(new DataGridViewTextBoxColumn { Name = "TesdiqEdenIsciAdi", DataPropertyName = "TesdiqEdenIsciAdi", HeaderText = "Təsdiqləyən" });
-        
+
         var tesdiqCol = new DataGridViewTextBoxColumn { Name = "TesdiqTarixi", DataPropertyName = "TesdiqTarixi", HeaderText = "Təsdiq Tarixi" };
         tesdiqCol.DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
         dgvIzinler.Columns.Add(tesdiqCol);
-        
+
         dgvIzinler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Qeydler", DataPropertyName = "Qeydler", HeaderText = "Qeydlər" });
 
         dgvIzinler.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;

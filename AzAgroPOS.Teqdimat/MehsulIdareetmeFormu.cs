@@ -107,64 +107,64 @@ namespace AzAgroPOS.Teqdimat
                 .FirstOrDefault(m => m?.Id == mehsulId);
             if (secilmisMehsul != null)
             {
-                    // Seçili satırı seç
-                    foreach (DataGridViewRow row in dgvMehsullar.Rows)
+                // Seçili satırı seç
+                foreach (DataGridViewRow row in dgvMehsullar.Rows)
+                {
+                    if (row.DataBoundItem is MehsulDto mehsul && mehsul.Id == mehsulId)
                     {
-                        if (row.DataBoundItem is MehsulDto mehsul && mehsul.Id == mehsulId)
-                        {
-                            dgvMehsullar.ClearSelection();
-                            row.Selected = true;
-                            dgvMehsullar.FirstDisplayedScrollingRowIndex = row.Index;
-                            break;
-                        }
+                        dgvMehsullar.ClearSelection();
+                        row.Selected = true;
+                        dgvMehsullar.FirstDisplayedScrollingRowIndex = row.Index;
+                        break;
                     }
+                }
 
-                    // Form alanlarını doldur
-                    txtAd.Text = secilmisMehsul.Ad;
-                    txtStokKodu.Text = secilmisMehsul.StokKodu;
-                    txtBarkod.Text = secilmisMehsul.Barkod;
-                    txtPerakendeSatisQiymeti.Text = secilmisMehsul.PerakendeSatisQiymeti.ToString("F2");
-                    txtTopdanSatisQiymeti.Text = secilmisMehsul.TopdanSatisQiymeti.ToString("F2");
-                    txtTekEdedSatisQiymeti.Text = secilmisMehsul.TekEdedSatisQiymeti.ToString("F2");
-                    txtAlisQiymeti.Text = secilmisMehsul.AlisQiymeti.ToString("F2");
-                    txtMevcudSay.Text = secilmisMehsul.MovcudSay.ToString();
-                    txtMinimumStok.Text = secilmisMehsul.MinimumStok.ToString();
+                // Form alanlarını doldur
+                txtAd.Text = secilmisMehsul.Ad;
+                txtStokKodu.Text = secilmisMehsul.StokKodu;
+                txtBarkod.Text = secilmisMehsul.Barkod;
+                txtPerakendeSatisQiymeti.Text = secilmisMehsul.PerakendeSatisQiymeti.ToString("F2");
+                txtTopdanSatisQiymeti.Text = secilmisMehsul.TopdanSatisQiymeti.ToString("F2");
+                txtTekEdedSatisQiymeti.Text = secilmisMehsul.TekEdedSatisQiymeti.ToString("F2");
+                txtAlisQiymeti.Text = secilmisMehsul.AlisQiymeti.ToString("F2");
+                txtMevcudSay.Text = secilmisMehsul.MovcudSay.ToString();
+                txtMinimumStok.Text = secilmisMehsul.MinimumStok.ToString();
 
-                    // ComboBox seçimlerini ayarla
-                    cmbOlcuVahidi.SelectedItem = secilmisMehsul.OlcuVahidi;
+                // ComboBox seçimlerini ayarla
+                cmbOlcuVahidi.SelectedItem = secilmisMehsul.OlcuVahidi;
 
-                    if (secilmisMehsul.KateqoriyaId.HasValue)
-                    {
-                        cmbKateqoriya.SelectedValue = secilmisMehsul.KateqoriyaId.Value;
-                    }
-                    else
-                    {
-                        cmbKateqoriya.SelectedIndex = -1;
-                    }
+                if (secilmisMehsul.KateqoriyaId.HasValue)
+                {
+                    cmbKateqoriya.SelectedValue = secilmisMehsul.KateqoriyaId.Value;
+                }
+                else
+                {
+                    cmbKateqoriya.SelectedIndex = -1;
+                }
 
-                    if (secilmisMehsul.BrendId.HasValue)
-                    {
-                        cmbBrend.SelectedValue = secilmisMehsul.BrendId.Value;
-                    }
-                    else
-                    {
-                        cmbBrend.SelectedIndex = -1;
-                    }
+                if (secilmisMehsul.BrendId.HasValue)
+                {
+                    cmbBrend.SelectedValue = secilmisMehsul.BrendId.Value;
+                }
+                else
+                {
+                    cmbBrend.SelectedIndex = -1;
+                }
 
-                    if (secilmisMehsul.TedarukcuId.HasValue)
-                    {
-                        cmbTedarukcu.SelectedValue = secilmisMehsul.TedarukcuId.Value;
-                    }
-                    else
-                    {
-                        cmbTedarukcu.SelectedIndex = -1;
-                    }
+                if (secilmisMehsul.TedarukcuId.HasValue)
+                {
+                    cmbTedarukcu.SelectedValue = secilmisMehsul.TedarukcuId.Value;
+                }
+                else
+                {
+                    cmbTedarukcu.SelectedIndex = -1;
+                }
 
-                    // Buton metnini güncelle
-                    btnElaveEt.Text = "Yeni Məhsul";
-                    btnKopyala.Enabled = true;
-                    txtMevcudSay.ReadOnly = true;
-                    if (_btnStokArtir != null) _btnStokArtir.Enabled = true;
+                // Buton metnini güncelle
+                btnElaveEt.Text = "Yeni Məhsul";
+                btnKopyala.Enabled = true;
+                txtMevcudSay.ReadOnly = true;
+                if (_btnStokArtir != null) _btnStokArtir.Enabled = true;
             }
         }
 
@@ -212,11 +212,11 @@ namespace AzAgroPOS.Teqdimat
                 dgvMehsullar.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
                 dgvMehsullar.AllowUserToResizeColumns = true;
                 dgvMehsullar.ScrollBars = ScrollBars.Both;
-                
+
                 var adCol = new DataGridViewTextBoxColumn { Name = "Ad", DataPropertyName = "Ad", HeaderText = "Məhsulun Adı", Width = 220 };
                 adCol.SortMode = DataGridViewColumnSortMode.Automatic;
                 dgvMehsullar.Columns.Add(adCol);
-                
+
                 var stokCol = new DataGridViewTextBoxColumn { Name = "StokKodu", DataPropertyName = "StokKodu", HeaderText = "Stok Kodu", Width = 120 };
                 stokCol.SortMode = DataGridViewColumnSortMode.Automatic;
                 dgvMehsullar.Columns.Add(stokCol);
@@ -226,17 +226,17 @@ namespace AzAgroPOS.Teqdimat
                 alisCol.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 alisCol.SortMode = DataGridViewColumnSortMode.Automatic;
                 dgvMehsullar.Columns.Add(alisCol);
-                
+
                 var priceCol = new DataGridViewTextBoxColumn { Name = "PerakendeSatisQiymetiStr", DataPropertyName = "PerakendeSatisQiymetiStr", HeaderText = "Pərakəndə Qiymət", Width = 155 };
                 priceCol.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 priceCol.SortMode = DataGridViewColumnSortMode.Automatic;
                 dgvMehsullar.Columns.Add(priceCol);
-                
+
                 var qtyCol = new DataGridViewTextBoxColumn { Name = "MovcudSay", DataPropertyName = "MovcudSay", HeaderText = "Mövcud Say", Width = 120 };
                 qtyCol.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 qtyCol.SortMode = DataGridViewColumnSortMode.Automatic;
                 dgvMehsullar.Columns.Add(qtyCol);
-                
+
                 var unitCol = new DataGridViewTextBoxColumn { Name = "OlcuVahidiStr", DataPropertyName = "OlcuVahidiStr", HeaderText = "Ölçü Vahidi", Width = 120 };
                 unitCol.SortMode = DataGridViewColumnSortMode.Automatic;
                 dgvMehsullar.Columns.Add(unitCol);
@@ -635,7 +635,8 @@ namespace AzAgroPOS.Teqdimat
             Label melumat = new()
             {
                 Text = $"{txtAd.Text}  •  {txtStokKodu.Text}\nCari say: {txtMevcudSay.Text}",
-                Location = new Point(20, 18), Size = new Size(390, 48),
+                Location = new Point(20, 18),
+                Size = new Size(390, 48),
                 Font = new Font("Segoe UI", 11, FontStyle.Bold)
             };
             Label sayYazisi = new() { Text = "Əlavə edilən say", Location = new Point(20, 77), AutoSize = true };

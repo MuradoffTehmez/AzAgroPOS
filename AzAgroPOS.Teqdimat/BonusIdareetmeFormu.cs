@@ -92,26 +92,26 @@ namespace AzAgroPOS.Teqdimat
                 dgvButunBonuslar.AutoGenerateColumns = false;
                 dgvButunBonuslar.Columns.Add(new DataGridViewTextBoxColumn { Name = "Id", DataPropertyName = "Id", Visible = false });
                 dgvButunBonuslar.Columns.Add(new DataGridViewTextBoxColumn { Name = "MusteriId", DataPropertyName = "MusteriId", HeaderText = "Müştəri ID", Width = 100 });
-                
+
                 // Musteri.TamAd göstərmək üçün əlavə xassəyə ehtiyac var, lakin hələlik Musteri.TamAd binding-i cədvəldə çətindir
                 // Əgər Musteri.TamAd yoxdursa, id-ni göstərir. (AutoGenerate-də naviqasiya xassəsi işləmir)
                 dgvButunBonuslar.Columns.Add(new DataGridViewTextBoxColumn { Name = "MusteriAdi", DataPropertyName = "MusteriAdi", HeaderText = "Müştəri", Width = 200 });
-                
+
                 var totalCol = new DataGridViewTextBoxColumn { Name = "ToplamBal", DataPropertyName = "ToplamBal", HeaderText = "Toplam Bal", Width = 120 };
                 totalCol.DefaultCellStyle.Format = "N2";
                 dgvButunBonuslar.Columns.Add(totalCol);
-                
+
                 var usedCol = new DataGridViewTextBoxColumn { Name = "IstifadeEdilmisBal", DataPropertyName = "IstifadeEdilmisBal", HeaderText = "İstifadə Edilmiş", Width = 140 };
                 usedCol.DefaultCellStyle.Format = "N2";
                 dgvButunBonuslar.Columns.Add(usedCol);
-                
+
                 var currentCol = new DataGridViewTextBoxColumn { Name = "MovcudBal", DataPropertyName = "MovcudBal", HeaderText = "Mövcud Bal", Width = 130 };
                 currentCol.DefaultCellStyle.Format = "N2";
                 currentCol.DefaultCellStyle.Font = new Font(dgvButunBonuslar.Font, FontStyle.Bold);
                 dgvButunBonuslar.Columns.Add(currentCol);
-                
+
                 dgvButunBonuslar.Columns.Add(new DataGridViewTextBoxColumn { Name = "Seviyye", DataPropertyName = "Seviyye", HeaderText = "Səviyyə", Width = 100 });
-                
+
                 var dateCol = new DataGridViewTextBoxColumn { Name = "SonBalQazanmaTarixi", DataPropertyName = "SonBalQazanmaTarixi", HeaderText = "Son Qazanma", Width = 120 };
                 dateCol.DefaultCellStyle.Format = "dd.MM.yyyy";
                 dgvButunBonuslar.Columns.Add(dateCol);
@@ -123,18 +123,18 @@ namespace AzAgroPOS.Teqdimat
                 dgvBonusTarixcesi.AutoGenerateColumns = false;
                 dgvBonusTarixcesi.Columns.Add(new DataGridViewTextBoxColumn { Name = "Id", DataPropertyName = "Id", Visible = false });
                 dgvBonusTarixcesi.Columns.Add(new DataGridViewTextBoxColumn { Name = "MusteriBonusId", DataPropertyName = "MusteriBonusId", Visible = false });
-                
+
                 dgvBonusTarixcesi.Columns.Add(new DataGridViewTextBoxColumn { Name = "EmeliyyatNovu", DataPropertyName = "EmeliyyatNovu", HeaderText = "Əməliyyat Növü", Width = 130 });
-                
+
                 var amountCol = new DataGridViewTextBoxColumn { Name = "BalMiqdari", DataPropertyName = "BalMiqdari", HeaderText = "Bal Miqdarı", Width = 120 };
                 amountCol.DefaultCellStyle.Format = "N2";
                 amountCol.DefaultCellStyle.Font = new Font(dgvBonusTarixcesi.Font, FontStyle.Bold);
                 dgvBonusTarixcesi.Columns.Add(amountCol);
-                
+
                 var opDateCol = new DataGridViewTextBoxColumn { Name = "EmeliyyatTarixi", DataPropertyName = "EmeliyyatTarixi", HeaderText = "Tarix", Width = 140 };
                 opDateCol.DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
                 dgvBonusTarixcesi.Columns.Add(opDateCol);
-                
+
                 dgvBonusTarixcesi.Columns.Add(new DataGridViewTextBoxColumn { Name = "Aciklama", DataPropertyName = "Aciklama", HeaderText = "Açıqlama", Width = 250 });
                 dgvBonusTarixcesi.Columns.Add(new DataGridViewTextBoxColumn { Name = "SatisId", DataPropertyName = "SatisId", HeaderText = "Satış ID", Width = 100 });
             }

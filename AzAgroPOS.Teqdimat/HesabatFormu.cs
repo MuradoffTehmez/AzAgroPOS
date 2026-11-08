@@ -130,23 +130,23 @@ public partial class HesabatFormu : BazaForm, IHesabatView
         if (dgvSatislar.Columns.Count > 0) return;
 
         dgvSatislar.AutoGenerateColumns = false;
-        
+
         dgvSatislar.Columns.Add(new DataGridViewTextBoxColumn { Name = "SatisId", DataPropertyName = "SatisId", HeaderText = "Satis No" });
-        
+
         var dateCol = new DataGridViewTextBoxColumn { Name = "SatisVaxti", DataPropertyName = "SatisVaxti", HeaderText = "Satis Vaxti" };
         dateCol.DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
         dgvSatislar.Columns.Add(dateCol);
-        
+
         var sumCol = new DataGridViewTextBoxColumn { Name = "CemiMebleg", DataPropertyName = "CemiMebleg", HeaderText = "Cemi Mebleg" };
         sumCol.DefaultCellStyle.Format = "N2";
         dgvSatislar.Columns.Add(sumCol);
-        
+
         dgvSatislar.Columns.Add(new DataGridViewTextBoxColumn { Name = "OdenisTipi", DataPropertyName = "OdenisMetodu", HeaderText = "Odenis Tipi" });
         dgvSatislar.Columns.Add(new DataGridViewTextBoxColumn { Name = "MusteriAdi", DataPropertyName = "MusteriAdi", HeaderText = "Musteri Adi" });
         dgvSatislar.Columns.Add(new DataGridViewTextBoxColumn { Name = "IstifadeciAdi", DataPropertyName = "IstifadeciAdi", HeaderText = "Istifadeci Adi" });
     }
 
-    
+
     public void XetaMesajiGoster(string mesaj)
     {
         if (InvokeRequired)
@@ -168,12 +168,12 @@ public partial class HesabatFormu : BazaForm, IHesabatView
         pnlXulase.Visible = false;
         dgvSatislar.Visible = false;
         lblMesaj.Visible = false;
-        
+
         if (dgvSatislar.DataSource is System.ComponentModel.BindingList<GunlukSatisDetayDto> currentList)
         {
             currentList.Clear();
         }
-        
+
         btnExcelIxrac.Enabled = false;
         _cariHesabat = null;
     }

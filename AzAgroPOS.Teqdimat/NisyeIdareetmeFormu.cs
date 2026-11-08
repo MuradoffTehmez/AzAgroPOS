@@ -98,17 +98,17 @@ public partial class NisyeIdareetmeFormu : BazaForm, INisyeView
         if (dgvMusteriler.Columns.Count == 0)
         {
             dgvMusteriler.AutoGenerateColumns = false;
-            
+
             dgvMusteriler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Id", DataPropertyName = "Id", Visible = false });
             dgvMusteriler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Unvan", DataPropertyName = "Unvan", Visible = false });
             dgvMusteriler.Columns.Add(new DataGridViewTextBoxColumn { Name = "TamAd", DataPropertyName = "TamAd", HeaderText = "Tam Ad", Width = 240 });
             dgvMusteriler.Columns.Add(new DataGridViewTextBoxColumn { Name = "TelefonNomresi", DataPropertyName = "TelefonNomresi", HeaderText = "Telefon", Width = 150 });
-            
+
             var debtCol = new DataGridViewTextBoxColumn { Name = "UmumiBorc", DataPropertyName = "UmumiBorc", HeaderText = "Ümumi Borc" };
             debtCol.DefaultCellStyle.Format = "N2";
             debtCol.Width = 140;
             dgvMusteriler.Columns.Add(debtCol);
-            
+
             var limitCol = new DataGridViewTextBoxColumn { Name = "KreditLimiti", DataPropertyName = "KreditLimiti", HeaderText = "Kredit Limiti" };
             limitCol.DefaultCellStyle.Format = "N2";
             limitCol.Width = 140;
@@ -139,15 +139,15 @@ public partial class NisyeIdareetmeFormu : BazaForm, INisyeView
         if (dgvNisyeHereketleri.Columns.Count == 0)
         {
             dgvNisyeHereketleri.AutoGenerateColumns = false;
-            
+
             var dateCol = new DataGridViewTextBoxColumn { Name = "Tarix", DataPropertyName = "Tarix", HeaderText = "Tarix", Width = 155 };
             dateCol.DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
             dgvNisyeHereketleri.Columns.Add(dateCol);
-            
+
             var sumCol = new DataGridViewTextBoxColumn { Name = "Mebleg", DataPropertyName = "Mebleg", HeaderText = "Məbləğ", Width = 120 };
             sumCol.DefaultCellStyle.Format = "N2";
             dgvNisyeHereketleri.Columns.Add(sumCol);
-            
+
             dgvNisyeHereketleri.Columns.Add(new DataGridViewTextBoxColumn { Name = "EmeliyyatNovu", DataPropertyName = "EmeliyyatNovu", HeaderText = "Növü", Width = 145 });
             dgvNisyeHereketleri.Columns.Add(new DataGridViewTextBoxColumn { Name = "Qeyd", DataPropertyName = "Qeyd", HeaderText = "Qeyd", Width = 420 });
         }
@@ -299,8 +299,11 @@ public partial class NisyeIdareetmeFormu : BazaForm, INisyeView
         Label lblMebleg = new() { Text = "Əvvəlki borc (AZN)", Location = new Point(20, 18), AutoSize = true };
         NumericUpDown mebleg = new()
         {
-            Location = new Point(20, 45), Size = new Size(380, 30),
-            DecimalPlaces = 2, Minimum = 0.01m, Maximum = 999999999m,
+            Location = new Point(20, 45),
+            Size = new Size(380, 30),
+            DecimalPlaces = 2,
+            Minimum = 0.01m,
+            Maximum = 999999999m,
             ThousandsSeparator = true
         };
         Label lblQeyd = new() { Text = "Qeyd / borcun mənbəyi", Location = new Point(20, 90), AutoSize = true };

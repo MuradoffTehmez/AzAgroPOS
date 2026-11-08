@@ -2,8 +2,8 @@
 using AzAgroPOS.Mentiq.Idareciler;
 using AzAgroPOS.Mentiq.Uslublar;
 using AzAgroPOS.Teqdimat.Interfeysler;
-using AzAgroPOS.Teqdimat.Servisler;
 using AzAgroPOS.Teqdimat.Sabitler;
+using AzAgroPOS.Teqdimat.Servisler;
 using AzAgroPOS.Teqdimat.Yardimcilar;
 using AzAgroPOS.Varliglar;
 using System.ComponentModel;
@@ -616,7 +616,8 @@ namespace AzAgroPOS.Teqdimat.Teqdimatcilar
                         uiContext?.Post(_ => _view.StatusMesajiGoster(
                             $"Satış saxlandı, lakin qəbz çap olunmadı: {ex.Message}", StatusMesajiNovu.Xeta), null);
                     }
-                }) { IsBackground = true, Name = "AzAgroPOS-QebzCap" };
+                })
+                { IsBackground = true, Name = "AzAgroPOS-QebzCap" };
                 capThread.SetApartmentState(ApartmentState.STA);
                 capThread.Start();
             }

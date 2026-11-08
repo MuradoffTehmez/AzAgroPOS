@@ -654,32 +654,32 @@ public partial class AnaMenuFormu : BazaForm, IAnaMenuView
         await using AsyncServiceScope scope = ServiceProvider.CreateAsyncScope();
         IServiceProvider provider = scope.ServiceProvider;
         if (AktivSessiya.AktivIstifadeci?.RolAdi != "Kassir")
-        try
-        {
-            // Günlük satış məbləğini hesablayırıq
-            HesabatManager hesabatManager = provider.GetRequiredService<HesabatManager>();
-            EmeliyyatNeticesi<GunlukSatisHesabatDto> gunlukHesabat = await hesabatManager.GunlukSatisHesabatiGetirAsync(DateTime.Today);
-            if (gunlukHesabat.UgurluDur && lblDailySalesValue != null)
+            try
             {
-                lblDailySalesValue.Text = $"{gunlukHesabat.Data.UmumiDovriyye:N2} AZN";
-                _dailyCountValue.Text = gunlukHesabat.Data.CemiSatisSayi.ToString();
-                _cashSalesValue.Text = $"{gunlukHesabat.Data.NagdSatisCemi:N2} AZN";
-                _cardSalesValue.Text = $"{gunlukHesabat.Data.KartSatisCemi:N2} AZN";
-                _creditSalesValue.Text = $"{gunlukHesabat.Data.NisyeSatisCemi:N2} AZN";
+                // Günlük satış məbləğini hesablayırıq
+                HesabatManager hesabatManager = provider.GetRequiredService<HesabatManager>();
+                EmeliyyatNeticesi<GunlukSatisHesabatDto> gunlukHesabat = await hesabatManager.GunlukSatisHesabatiGetirAsync(DateTime.Today);
+                if (gunlukHesabat.UgurluDur && lblDailySalesValue != null)
+                {
+                    lblDailySalesValue.Text = $"{gunlukHesabat.Data.UmumiDovriyye:N2} AZN";
+                    _dailyCountValue.Text = gunlukHesabat.Data.CemiSatisSayi.ToString();
+                    _cashSalesValue.Text = $"{gunlukHesabat.Data.NagdSatisCemi:N2} AZN";
+                    _cardSalesValue.Text = $"{gunlukHesabat.Data.KartSatisCemi:N2} AZN";
+                    _creditSalesValue.Text = $"{gunlukHesabat.Data.NisyeSatisCemi:N2} AZN";
+                }
+                else if (lblDailySalesValue != null)
+                {
+                    lblDailySalesValue.Text = "Xəta";
+                }
             }
-            else if (lblDailySalesValue != null)
+            catch (Exception ex)
             {
-                lblDailySalesValue.Text = "Xəta";
+                System.Diagnostics.Debug.WriteLine(ex);
+                if (lblDailySalesValue != null)
+                {
+                    lblDailySalesValue.Text = "Xəta";
+                }
             }
-        }
-        catch (Exception ex)
-        {
-            System.Diagnostics.Debug.WriteLine(ex);
-            if (lblDailySalesValue != null)
-            {
-                lblDailySalesValue.Text = "Xəta";
-            }
-        }
 
         // Aktiv növbə məlumatlarını göstəririk
         try

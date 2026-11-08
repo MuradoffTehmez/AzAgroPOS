@@ -23,7 +23,8 @@ namespace AzAgroPOS.Teqdimat
         {
             Text = "Səbət hələ boşdur\nSoldan məhsul seçin və ya barkodu oxudun.\nF7 ilə məhsulu səbətə əlavə edin.",
             Font = new Font("Segoe UI", 12F),
-            ForeColor = Color.FromArgb(103, 117, 106), BackColor = Color.White,
+            ForeColor = Color.FromArgb(103, 117, 106),
+            BackColor = Color.White,
             TextAlign = ContentAlignment.MiddleCenter,
             Size = new Size(420, 100)
         };
@@ -209,11 +210,11 @@ namespace AzAgroPOS.Teqdimat
             if (dgvAxtarisNeticeleri.Columns.Count == 0)
             {
                 dgvAxtarisNeticeleri.AutoGenerateColumns = false;
-                
+
                 var adCol = new DataGridViewTextBoxColumn { Name = "Ad", DataPropertyName = "Ad", HeaderText = "Məhsul Adı" };
                 adCol.SortMode = DataGridViewColumnSortMode.Automatic;
                 dgvAxtarisNeticeleri.Columns.Add(adCol);
-                
+
                 var stokCol = new DataGridViewTextBoxColumn { Name = "StokKodu", DataPropertyName = "StokKodu", HeaderText = "Stok Kodu" };
                 stokCol.SortMode = DataGridViewColumnSortMode.Automatic;
                 dgvAxtarisNeticeleri.Columns.Add(stokCol);
@@ -668,10 +669,12 @@ namespace AzAgroPOS.Teqdimat
                 using Form form = new()
                 {
                     Text = "Yeni müştəri",
-                    Width = 420, Height = 290,
+                    Width = 420,
+                    Height = 290,
                     StartPosition = FormStartPosition.CenterParent,
                     FormBorderStyle = FormBorderStyle.FixedDialog,
-                    MaximizeBox = false, MinimizeBox = false
+                    MaximizeBox = false,
+                    MinimizeBox = false
                 };
                 Label adEtiket = new() { Text = "Müştərinin adı", Left = 22, Top = 22, Width = 360 };
                 TextBox ad = new() { Left = 22, Top = 47, Width = 360 };
@@ -692,7 +695,9 @@ namespace AzAgroPOS.Teqdimat
                     }
                     var netice = await _serviceProvider.GetRequiredService<MusteriManager>().MusteriYaratAsync(new MusteriDto
                     {
-                        TamAd = ad.Text.Trim(), TelefonNomresi = telefon.Text.Trim(), Unvan = unvan.Text.Trim()
+                        TamAd = ad.Text.Trim(),
+                        TelefonNomresi = telefon.Text.Trim(),
+                        Unvan = unvan.Text.Trim()
                     });
                     if (!netice.UgurluDur)
                     {
@@ -874,9 +879,12 @@ namespace AzAgroPOS.Teqdimat
             {
                 var endirim = new DataGridViewTextBoxColumn
                 {
-                    Name = "colSebetEndirim", DataPropertyName = "EndirimMeblegi",
-                    HeaderText = "Endirim", FillWeight = 14,
-                    MinimumWidth = 80, ReadOnly = true,
+                    Name = "colSebetEndirim",
+                    DataPropertyName = "EndirimMeblegi",
+                    HeaderText = "Endirim",
+                    FillWeight = 14,
+                    MinimumWidth = 80,
+                    ReadOnly = true,
                     DefaultCellStyle = new DataGridViewCellStyle { Format = "N2", Alignment = DataGridViewContentAlignment.MiddleRight }
                 };
                 dgvSebet.Columns.Add(endirim);

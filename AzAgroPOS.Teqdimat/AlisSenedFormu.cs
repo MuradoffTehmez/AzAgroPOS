@@ -115,22 +115,22 @@ namespace AzAgroPOS.Teqdimat
                 dgvSenetler.AutoGenerateColumns = false;
                 dgvSenetler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Id", DataPropertyName = "Id", Visible = false });
                 dgvSenetler.Columns.Add(new DataGridViewTextBoxColumn { Name = "SenedNomresi", DataPropertyName = "SenedNomresi", HeaderText = "Sənəd №" });
-                
+
                 var dateCol = new DataGridViewTextBoxColumn { Name = "YaradilmaTarixi", DataPropertyName = "YaradilmaTarixi", HeaderText = "Yaradılma Tarixi" };
                 dateCol.DefaultCellStyle.Format = "dd.MM.yyyy";
                 dgvSenetler.Columns.Add(dateCol);
-                
+
                 dgvSenetler.Columns.Add(new DataGridViewTextBoxColumn { Name = "TedarukcuAdi", DataPropertyName = "TedarukcuAdi", HeaderText = "Tədarükçü" });
-                
+
                 var dateCol2 = new DataGridViewTextBoxColumn { Name = "TehvilTarixi", DataPropertyName = "TehvilTarixi", HeaderText = "Təhvil Tarixi" };
                 dateCol2.DefaultCellStyle.Format = "dd.MM.yyyy";
                 dgvSenetler.Columns.Add(dateCol2);
-                
+
                 var sumCol = new DataGridViewTextBoxColumn { Name = "UmumiMebleg", DataPropertyName = "UmumiMebleg", HeaderText = "Ümumi Məbləğ" };
                 sumCol.DefaultCellStyle.Format = "N2";
                 sumCol.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 dgvSenetler.Columns.Add(sumCol);
-                
+
                 dgvSenetler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Status", DataPropertyName = "Status", HeaderText = "Status" });
                 dgvSenetler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Qeydler", DataPropertyName = "Qeydler", HeaderText = "Qeydlər" });
             }
@@ -158,17 +158,17 @@ namespace AzAgroPOS.Teqdimat
                 dgvSenedSetirleri.Columns.Add(new DataGridViewTextBoxColumn { Name = "AlisSifarisSetiriId", DataPropertyName = "AlisSifarisSetiriId", Visible = false });
                 dgvSenedSetirleri.Columns.Add(new DataGridViewTextBoxColumn { Name = "AlisSifarisSetiriNomresi", DataPropertyName = "AlisSifarisSetiriNomresi", Visible = false });
                 dgvSenedSetirleri.Columns.Add(new DataGridViewTextBoxColumn { Name = "MehsulAdi", DataPropertyName = "MehsulAdi", HeaderText = "Məhsul" });
-                
+
                 var qtyCol = new DataGridViewTextBoxColumn { Name = "Miqdar", DataPropertyName = "Miqdar", HeaderText = "Miqdar" };
                 qtyCol.DefaultCellStyle.Format = "N2";
                 qtyCol.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 dgvSenedSetirleri.Columns.Add(qtyCol);
-                
+
                 var priceCol = new DataGridViewTextBoxColumn { Name = "BirVahidQiymet", DataPropertyName = "BirVahidQiymet", HeaderText = "Vahid Qiyməti" };
                 priceCol.DefaultCellStyle.Format = "N2";
                 priceCol.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 dgvSenedSetirleri.Columns.Add(priceCol);
-                
+
                 var sumCol = new DataGridViewTextBoxColumn { Name = "CemiMebleg", DataPropertyName = "CemiMebleg", HeaderText = "Cəmi Məbləğ" };
                 sumCol.DefaultCellStyle.Format = "N2";
                 sumCol.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;

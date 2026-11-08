@@ -63,33 +63,47 @@ internal static class DemoDataSeeder
         };
         var products = catalog.Select((item, index) => new Mehsul
         {
-            Ad = $"{Prefix} {item.Name}", StokKodu = $"TUI-{index + 1:000}",
-            Barkod = $"289000009{index + 1:000}", AlisQiymeti = item.Cost,
+            Ad = $"{Prefix} {item.Name}",
+            StokKodu = $"TUI-{index + 1:000}",
+            Barkod = $"289000009{index + 1:000}",
+            AlisQiymeti = item.Cost,
             PerakendeSatisQiymeti = item.Price,
             TopdanSatisQiymeti = Math.Round(item.Price * 0.9m, 2),
-            TekEdedSatisQiymeti = item.Price, MovcudSay = item.Stock,
-            MinimumStok = item.Min, OlcuVahidi = OlcuVahidi.Ədəd,
-            KateqoriyaId = categories[item.Category].Id, BrendId = brands[item.Brand].Id,
-            TedarukcuId = suppliers[index % suppliers.Length].Id, Aktivdir = true
+            TekEdedSatisQiymeti = item.Price,
+            MovcudSay = item.Stock,
+            MinimumStok = item.Min,
+            OlcuVahidi = OlcuVahidi.Ədəd,
+            KateqoriyaId = categories[item.Category].Id,
+            BrendId = brands[item.Brand].Id,
+            TedarukcuId = suppliers[index % suppliers.Length].Id,
+            Aktivdir = true
         }).ToArray();
         db.Mehsullar.AddRange(products);
 
         var customers = Enumerable.Range(1, 8).Select(index => new Musteri
         {
-            TamAd = $"{Prefix} Müştəri {index:00}", TelefonNomresi = $"+994500009{index:000}",
+            TamAd = $"{Prefix} Müştəri {index:00}",
+            TelefonNomresi = $"+994500009{index:000}",
             Unvan = index % 2 == 0 ? "Bakı, Nizami rayonu" : "Bakı, Yasamal rayonu",
-            KreditLimiti = index % 3 == 0 ? 300m : 750m, UmumiBorc = 0
+            KreditLimiti = index % 3 == 0 ? 300m : 750m,
+            UmumiBorc = 0
         }).ToArray();
         db.Musteriler.AddRange(customers);
 
         var workers = Enumerable.Range(1, 3).Select(index => new Isci
         {
-            TamAd = $"{Prefix} İşçi {index:00}", DogumTarixi = today.AddYears(-24 - index),
-            TelefonNomresi = $"+994500008{index:000}", Unvan = "Bakı, nümunə ünvan",
-            Email = $"test-ui-worker{index}@example.invalid", IseBaslamaTarixi = today.AddMonths(-index * 3),
-            Maas = 600m + index * 80m, Vezife = index == 1 ? "Kassir" : "Satış məsləhətçisi",
-            Departament = "Mağaza", Status = IsciStatusu.Aktiv,
-            SvsNo = $"990000{index:000}", QeydiyyatUnvani = "Bakı, nümunə ünvan",
+            TamAd = $"{Prefix} İşçi {index:00}",
+            DogumTarixi = today.AddYears(-24 - index),
+            TelefonNomresi = $"+994500008{index:000}",
+            Unvan = "Bakı, nümunə ünvan",
+            Email = $"test-ui-worker{index}@example.invalid",
+            IseBaslamaTarixi = today.AddMonths(-index * 3),
+            Maas = 600m + index * 80m,
+            Vezife = index == 1 ? "Kassir" : "Satış məsləhətçisi",
+            Departament = "Mağaza",
+            Status = IsciStatusu.Aktiv,
+            SvsNo = $"990000{index:000}",
+            QeydiyyatUnvani = "Bakı, nümunə ünvan",
             BankMəlumatları = $"TEST-UI hesab {index}"
         }).ToArray();
         db.Isciler.AddRange(workers);
@@ -97,10 +111,15 @@ internal static class DemoDataSeeder
 
         db.StokHareketleri.AddRange(products.Select((p, index) => new StokHareketi
         {
-            MehsulId = p.Id, HareketTipi = StokHareketTipi.Daxilolma,
-            SenedNovu = SenedNovu.Inventarizasiya, Miqdar = catalog[index].Stock,
-            AlisQiymeti = p.AlisQiymeti, SatisQiymeti = p.PerakendeSatisQiymeti,
-            Tarix = today.AddDays(-12), Qeyd = $"{Prefix} başlanğıc stok", IstifadeciId = admin.Id
+            MehsulId = p.Id,
+            HareketTipi = StokHareketTipi.Daxilolma,
+            SenedNovu = SenedNovu.Inventarizasiya,
+            Miqdar = catalog[index].Stock,
+            AlisQiymeti = p.AlisQiymeti,
+            SatisQiymeti = p.PerakendeSatisQiymeti,
+            Tarix = today.AddDays(-12),
+            Qeyd = $"{Prefix} başlanğıc stok",
+            IstifadeciId = admin.Id
         }));
 
         var orders = Enumerable.Range(0, 4).Select(index => new AlisSifaris
@@ -124,21 +143,29 @@ internal static class DemoDataSeeder
 
         var invoice = new AlisSened
         {
-            SenedNomresi = $"{Prefix}-SN-001", TedarukcuId = suppliers[1].Id,
-            TehvilTarixi = today.AddDays(-4), Status = AlisSenedStatusu.Tesdiqlendi,
-            Qeydler = $"{Prefix} tam qəbul", UmumiMebleg = orders[1].UmumiMebleg,
+            SenedNomresi = $"{Prefix}-SN-001",
+            TedarukcuId = suppliers[1].Id,
+            TehvilTarixi = today.AddDays(-4),
+            Status = AlisSenedStatusu.Tesdiqlendi,
+            Qeydler = $"{Prefix} tam qəbul",
+            UmumiMebleg = orders[1].UmumiMebleg,
             SenedSetirleri = orders[1].SifarisSetirleri.Select(line => new AlisSenedSetiri
             {
-                MehsulId = line.MehsulId, AlisSifarisSetiriId = line.Id,
-                Miqdar = line.Miqdar, BirVahidQiymet = line.BirVahidQiymet,
+                MehsulId = line.MehsulId,
+                AlisSifarisSetiriId = line.Id,
+                Miqdar = line.Miqdar,
+                BirVahidQiymet = line.BirVahidQiymet,
                 CemiMebleg = line.CemiMebleg
             }).ToList()
         };
         var draftInvoice = new AlisSened
         {
-            SenedNomresi = $"{Prefix}-SN-002", TedarukcuId = suppliers[0].Id,
-            TehvilTarixi = today, Status = AlisSenedStatusu.Yaradildi,
-            Qeydler = $"{Prefix} təsdiq gözləyir", UmumiMebleg = 15.50m,
+            SenedNomresi = $"{Prefix}-SN-002",
+            TedarukcuId = suppliers[0].Id,
+            TehvilTarixi = today,
+            Status = AlisSenedStatusu.Yaradildi,
+            Qeydler = $"{Prefix} təsdiq gözləyir",
+            UmumiMebleg = 15.50m,
             SenedSetirleri = new List<AlisSenedSetiri>
             {
                 new() { MehsulId = products[2].Id, Miqdar = 10, BirVahidQiymet = 1.55m, CemiMebleg = 15.50m }
@@ -153,10 +180,16 @@ internal static class DemoDataSeeder
             product.MovcudSay += (int)line.Miqdar;
             db.StokHareketleri.Add(new StokHareketi
             {
-                MehsulId = product.Id, HareketTipi = StokHareketTipi.Daxilolma,
-                SenedNovu = SenedNovu.Alis, SenedId = invoice.Id, Miqdar = (int)line.Miqdar,
-                AlisQiymeti = line.BirVahidQiymet, SatisQiymeti = product.PerakendeSatisQiymeti,
-                Tarix = invoice.TehvilTarixi, Qeyd = $"{Prefix} alış qəbulu", IstifadeciId = admin.Id
+                MehsulId = product.Id,
+                HareketTipi = StokHareketTipi.Daxilolma,
+                SenedNovu = SenedNovu.Alis,
+                SenedId = invoice.Id,
+                Miqdar = (int)line.Miqdar,
+                AlisQiymeti = line.BirVahidQiymet,
+                SatisQiymeti = product.PerakendeSatisQiymeti,
+                Tarix = invoice.TehvilTarixi,
+                Qeyd = $"{Prefix} alış qəbulu",
+                IstifadeciId = admin.Id
             });
         }
         db.TedarukcuOdemeleri.AddRange(
@@ -165,9 +198,13 @@ internal static class DemoDataSeeder
 
         var shift = new Novbe
         {
-            IsciId = admin.Id, AcilmaTarixi = today.AddDays(-1).AddHours(9),
-            BaglanmaTarixi = today.AddDays(-1).AddHours(21), BaslangicMebleg = 100m,
-            GozlenilenMebleg = 100m, FaktikiMebleg = 100m, Status = NovbeStatusu.Bagli
+            IsciId = admin.Id,
+            AcilmaTarixi = today.AddDays(-1).AddHours(9),
+            BaglanmaTarixi = today.AddDays(-1).AddHours(21),
+            BaslangicMebleg = 100m,
+            GozlenilenMebleg = 100m,
+            FaktikiMebleg = 100m,
+            Status = NovbeStatusu.Bagli
         };
         db.Novbeler.Add(shift);
         await db.SaveChangesAsync();
@@ -184,8 +221,11 @@ internal static class DemoDataSeeder
             DateTime saleDate = today.AddDays(-1).AddHours(10 + index);
             var sale = new Satis
             {
-                Tarix = saleDate, NovbeId = shift.Id, MusteriId = customer?.Id,
-                OdenisMetodu = method, UmumiMebleg = total,
+                Tarix = saleDate,
+                NovbeId = shift.Id,
+                MusteriId = customer?.Id,
+                OdenisMetodu = method,
+                UmumiMebleg = total,
                 SatisDetallari = new List<SatisDetali>
                 {
                     new() { MehsulId = product.Id, Miqdar = quantity, Qiymet = product.PerakendeSatisQiymeti, AlisQiymeti = product.AlisQiymeti, UmumiMebleg = total }
@@ -196,10 +236,16 @@ internal static class DemoDataSeeder
             product.MovcudSay -= quantity;
             db.StokHareketleri.Add(new StokHareketi
             {
-                MehsulId = product.Id, HareketTipi = StokHareketTipi.Cixis,
-                SenedNovu = SenedNovu.Satis, SenedId = sale.Id, Miqdar = quantity,
-                AlisQiymeti = product.AlisQiymeti, SatisQiymeti = product.PerakendeSatisQiymeti,
-                Tarix = saleDate, Qeyd = $"{Prefix} satış #{sale.Id}", IstifadeciId = admin.Id
+                MehsulId = product.Id,
+                HareketTipi = StokHareketTipi.Cixis,
+                SenedNovu = SenedNovu.Satis,
+                SenedId = sale.Id,
+                Miqdar = quantity,
+                AlisQiymeti = product.AlisQiymeti,
+                SatisQiymeti = product.PerakendeSatisQiymeti,
+                Tarix = saleDate,
+                Qeyd = $"{Prefix} satış #{sale.Id}",
+                IstifadeciId = admin.Id
             });
             if (method == OdenisMetodu.Nağd) cashSales += total;
             if (method == OdenisMetodu.Nisyə && customer != null)
@@ -207,8 +253,11 @@ internal static class DemoDataSeeder
                 customer.UmumiBorc += total;
                 db.NisyeHereketleri.Add(new NisyeHereketi
                 {
-                    MusteriId = customer.Id, SatisId = sale.Id, Tarix = saleDate,
-                    EmeliyyatNovu = EmeliyyatNovu.Satis, Mebleg = total,
+                    MusteriId = customer.Id,
+                    SatisId = sale.Id,
+                    Tarix = saleDate,
+                    EmeliyyatNovu = EmeliyyatNovu.Satis,
+                    Mebleg = total,
                     Qeyd = $"{Prefix} nisyə satış"
                 });
             }
@@ -219,14 +268,20 @@ internal static class DemoDataSeeder
         debtor.UmumiBorc += 120m;
         db.NisyeHereketleri.Add(new NisyeHereketi
         {
-            MusteriId = debtor.Id, Tarix = today.AddDays(-30), EmeliyyatNovu = EmeliyyatNovu.IlkinBorc,
-            Mebleg = 120m, Qeyd = $"{Prefix} əvvəlki borc nümunəsi"
+            MusteriId = debtor.Id,
+            Tarix = today.AddDays(-30),
+            EmeliyyatNovu = EmeliyyatNovu.IlkinBorc,
+            Mebleg = 120m,
+            Qeyd = $"{Prefix} əvvəlki borc nümunəsi"
         });
         debtor.UmumiBorc -= 35m;
         db.NisyeHereketleri.Add(new NisyeHereketi
         {
-            MusteriId = debtor.Id, Tarix = today.AddDays(-1).AddHours(18), EmeliyyatNovu = EmeliyyatNovu.Odenis,
-            Mebleg = 35m, Qeyd = $"{Prefix} nağd borc ödənişi"
+            MusteriId = debtor.Id,
+            Tarix = today.AddDays(-1).AddHours(18),
+            EmeliyyatNovu = EmeliyyatNovu.Odenis,
+            Mebleg = 35m,
+            Qeyd = $"{Prefix} nağd borc ödənişi"
         });
         db.KassaHareketleri.AddRange(
             new KassaHareketi { HareketNovu = KassaHareketiNovu.Daxilolma, EmeliyyatNovu = EmeliyyatNovu.Gelir, NovbeId = shift.Id, OdenisMetodu = OdenisMetodu.Nağd, Mebleg = cashSales, Tarix = today.AddDays(-1).AddHours(21), Qeyd = $"{Prefix} nağd satış cəmi", IstifadeciId = admin.Id },
@@ -238,8 +293,11 @@ internal static class DemoDataSeeder
         SatisDetali returnedDetail = await db.SatisDetallari.FirstAsync(d => d.SatisId == returnedSale.Id);
         var returned = new Qaytarma
         {
-            SatisId = returnedSale.Id, KassirId = admin.Id, Tarix = today.AddDays(-1).AddHours(19),
-            UmumiMebleg = returnedDetail.Qiymet, Sebeb = $"{Prefix} qablaşdırma zədəsi",
+            SatisId = returnedSale.Id,
+            KassirId = admin.Id,
+            Tarix = today.AddDays(-1).AddHours(19),
+            UmumiMebleg = returnedDetail.Qiymet,
+            Sebeb = $"{Prefix} qablaşdırma zədəsi",
             QaytarmaDetallari = new List<QaytarmaDetali>
             {
                 new() { MehsulId = returnedDetail.MehsulId, Miqdar = 1, Qiymet = returnedDetail.Qiymet, UmumiMebleg = returnedDetail.Qiymet }
@@ -250,50 +308,74 @@ internal static class DemoDataSeeder
         returnedProduct.MovcudSay += 1;
         db.StokHareketleri.Add(new StokHareketi
         {
-            MehsulId = returnedProduct.Id, HareketTipi = StokHareketTipi.Daxilolma,
-            SenedNovu = SenedNovu.Qaytarma, Miqdar = 1, AlisQiymeti = returnedProduct.AlisQiymeti,
-            SatisQiymeti = returnedDetail.Qiymet, Tarix = returned.Tarix,
-            Qeyd = $"{Prefix} satış qaytarma", IstifadeciId = admin.Id
+            MehsulId = returnedProduct.Id,
+            HareketTipi = StokHareketTipi.Daxilolma,
+            SenedNovu = SenedNovu.Qaytarma,
+            Miqdar = 1,
+            AlisQiymeti = returnedProduct.AlisQiymeti,
+            SatisQiymeti = returnedDetail.Qiymet,
+            Tarix = returned.Tarix,
+            Qeyd = $"{Prefix} satış qaytarma",
+            IstifadeciId = admin.Id
         });
         db.KassaHareketleri.Add(new KassaHareketi
         {
-            HareketNovu = KassaHareketiNovu.Cixis, EmeliyyatNovu = EmeliyyatNovu.Qaytarma,
-            Mebleg = returned.UmumiMebleg, Tarix = returned.Tarix, NovbeId = shift.Id,
-            OdenisMetodu = OdenisMetodu.Nağd, Qeyd = $"{Prefix} qaytarma", IstifadeciId = admin.Id
+            HareketNovu = KassaHareketiNovu.Cixis,
+            EmeliyyatNovu = EmeliyyatNovu.Qaytarma,
+            Mebleg = returned.UmumiMebleg,
+            Tarix = returned.Tarix,
+            NovbeId = shift.Id,
+            OdenisMetodu = OdenisMetodu.Nağd,
+            Qeyd = $"{Prefix} qaytarma",
+            IstifadeciId = admin.Id
         });
         shift.GozlenilenMebleg -= returned.UmumiMebleg;
         shift.FaktikiMebleg = shift.GozlenilenMebleg;
 
         db.TemirSifarisleri.AddRange(Enumerable.Range(0, 4).Select(index => new Temir
         {
-            MusteriAdi = customers[index].TamAd, MusteriTelefonu = customers[index].TelefonNomresi,
+            MusteriAdi = customers[index].TamAd,
+            MusteriTelefonu = customers[index].TelefonNomresi,
             CihazAdi = index % 2 == 0 ? "Barkod skaneri" : "Qəbz printeri",
             SeriyaNomresi = $"{Prefix}-SR-{index + 1:000}",
             ProblemTesviri = index % 2 == 0 ? "Oxuma xətası" : "Kağız çəkmir",
             QebulTarixi = today.AddDays(-4 + index),
             TamamlanmaTarixi = index == 3 ? today : null,
             Status = index switch { 0 => TemirStatusu.Gözləmədə, 1 => TemirStatusu.Təmirdə, 2 => TemirStatusu.Hazırdır, _ => TemirStatusu.TəhvilVerildi },
-            TemirXerci = 10m + index * 5m, ServisHaqqi = 15m,
-            YekunMebleg = 25m + index * 5m, IsciId = admin.Id, ZemanetMuddeti = 30
+            TemirXerci = 10m + index * 5m,
+            ServisHaqqi = 15m,
+            YekunMebleg = 25m + index * 5m,
+            IsciId = admin.Id,
+            ZemanetMuddeti = 30
         }));
 
         db.IsciPerformanslari.AddRange(workers.Select((worker, index) => new IsciPerformans
         {
-            IsciId = worker.Id, Tarix = today.AddDays(-index), QeydDovru = today.ToString("yyyy-MM"),
-            Qiymet = 4 + index % 2, Qeydler = $"{Prefix} aylıq qiymətləndirmə",
-            Emsallar = "Satış, xidmət, davamiyyət", Teklifler = "Məhsul təlimi"
+            IsciId = worker.Id,
+            Tarix = today.AddDays(-index),
+            QeydDovru = today.ToString("yyyy-MM"),
+            Qiymet = 4 + index % 2,
+            Qeydler = $"{Prefix} aylıq qiymətləndirmə",
+            Emsallar = "Satış, xidmət, davamiyyət",
+            Teklifler = "Məhsul təlimi"
         }));
         db.IsciIznleri.AddRange(
             new IsciIzni { IsciId = workers[0].Id, IzinNovu = IzinNovu.Mezuniyyet, BaslamaTarixi = today.AddDays(5), BitmeTarixi = today.AddDays(8), IzinGunu = 4, Sebeb = $"{Prefix} planlı məzuniyyət", Status = IzinStatusu.Gozlemede, Qeydler = "Ekran nümunəsi" },
             new IsciIzni { IsciId = workers[1].Id, IzinNovu = IzinNovu.Tehsil, BaslamaTarixi = today.AddDays(-5), BitmeTarixi = today.AddDays(-3), IzinGunu = 3, Sebeb = $"{Prefix} təlim", Status = IzinStatusu.Tesdiqlenib, TesdiqEdenIsciId = workers[0].Id, TesdiqTarixi = today.AddDays(-7), Qeydler = "Təsdiqli nümunə" });
         db.EmekHaqqilari.AddRange(workers.Select((worker, index) => new EmekHaqqi
         {
-            IsciId = worker.Id, Dovr = today.AddMonths(-1).ToString("yyyy-MM"),
-            HesablanmaTarixi = today.AddDays(-3), EsasMaas = worker.Maas, Bonuslar = 40m + 10m * index,
-            ElaveOdenisler = 0, IcazeTutulmasi = 0, DigerTutulmalar = 0,
+            IsciId = worker.Id,
+            Dovr = today.AddMonths(-1).ToString("yyyy-MM"),
+            HesablanmaTarixi = today.AddDays(-3),
+            EsasMaas = worker.Maas,
+            Bonuslar = 40m + 10m * index,
+            ElaveOdenisler = 0,
+            IcazeTutulmasi = 0,
+            DigerTutulmalar = 0,
             Status = index == 0 ? EmekHaqqiStatusu.Odenilmis : EmekHaqqiStatusu.Hesablanmis,
             OdenisTarixi = index == 0 ? today.AddDays(-1) : null,
-            IstifadeciId = admin.Id, Qeyd = $"{Prefix} əmək haqqı nümunəsi"
+            IstifadeciId = admin.Id,
+            Qeyd = $"{Prefix} əmək haqqı nümunəsi"
         }));
         db.Xercler.AddRange(new[]
         {
@@ -302,15 +384,22 @@ internal static class DemoDataSeeder
             (XercNovu.OfisAvadanliqi, "Kağız rulonları", 18m)
         }.Select((item, index) => new Xerc
         {
-            Novu = item.Item1, Ad = $"{Prefix} {item.Item2}", Mebleg = item.Item3,
-            Tarix = today.AddDays(-index), SenedNomresi = $"{Prefix}-XR-{index + 1:000}",
-            Qeyd = $"{Prefix} xərc", IstifadeciId = admin.Id
+            Novu = item.Item1,
+            Ad = $"{Prefix} {item.Item2}",
+            Mebleg = item.Item3,
+            Tarix = today.AddDays(-index),
+            SenedNomresi = $"{Prefix}-XR-{index + 1:000}",
+            Qeyd = $"{Prefix} xərc",
+            IstifadeciId = admin.Id
         }));
 
         var bonus = new MusteriBonus
         {
-            MusteriId = customers[1].Id, ToplamBal = 12m, IstifadeEdilmisBal = 2m,
-            SonBalQazanmaTarixi = today.AddDays(-1), SonBalIstifadeTarixi = today,
+            MusteriId = customers[1].Id,
+            ToplamBal = 12m,
+            IstifadeEdilmisBal = 2m,
+            SonBalQazanmaTarixi = today.AddDays(-1),
+            SonBalIstifadeTarixi = today,
             Seviyye = MusteriSeviyyesi.Gumus,
             BonusQeydleri = new List<BonusQeydi>
             {

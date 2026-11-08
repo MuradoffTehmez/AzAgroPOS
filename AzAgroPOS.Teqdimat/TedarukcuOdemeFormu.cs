@@ -165,27 +165,27 @@ public partial class TedarukcuOdemeFormu : BazaForm, ITedarukcuOdemeView
         if (dgvOdemeler.Columns.Count > 0) return;
 
         dgvOdemeler.AutoGenerateColumns = false;
-        
+
         dgvOdemeler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Id", DataPropertyName = "Id", Visible = false });
         dgvOdemeler.Columns.Add(new DataGridViewTextBoxColumn { Name = "TedarukcuId", DataPropertyName = "TedarukcuId", Visible = false });
         dgvOdemeler.Columns.Add(new DataGridViewTextBoxColumn { Name = "AlisSenedId", DataPropertyName = "AlisSenedId", Visible = false });
-        
+
         dgvOdemeler.Columns.Add(new DataGridViewTextBoxColumn { Name = "OdemeNomresi", DataPropertyName = "OdemeNomresi", HeaderText = "Ödəniş №" });
         dgvOdemeler.Columns.Add(new DataGridViewTextBoxColumn { Name = "TedarukcuAdi", DataPropertyName = "TedarukcuAdi", HeaderText = "Tədarükçü" });
         dgvOdemeler.Columns.Add(new DataGridViewTextBoxColumn { Name = "AlisSenedNomresi", DataPropertyName = "AlisSenedNomresi", HeaderText = "Alış Sənədi" });
-        
+
         var createDateCol = new DataGridViewTextBoxColumn { Name = "YaradilmaTarixi", DataPropertyName = "YaradilmaTarixi", HeaderText = "Yaradılma Tarixi" };
         createDateCol.DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
         dgvOdemeler.Columns.Add(createDateCol);
-        
+
         var dateCol = new DataGridViewTextBoxColumn { Name = "OdemeTarixi", DataPropertyName = "OdemeTarixi", HeaderText = "Ödəniş Tarixi" };
         dateCol.DefaultCellStyle.Format = "dd.MM.yyyy";
         dgvOdemeler.Columns.Add(dateCol);
-        
+
         var sumCol = new DataGridViewTextBoxColumn { Name = "Mebleg", DataPropertyName = "Mebleg", HeaderText = "Məbləğ" };
         sumCol.DefaultCellStyle.Format = "N2";
         dgvOdemeler.Columns.Add(sumCol);
-        
+
         dgvOdemeler.Columns.Add(new DataGridViewTextBoxColumn { Name = "OdemeUsulu", DataPropertyName = "OdemeUsulu", HeaderText = "Ödəniş Üsulu" });
         dgvOdemeler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Status", DataPropertyName = "Status", HeaderText = "Status" });
         dgvOdemeler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Qeydler", DataPropertyName = "Qeydler", HeaderText = "Qeydlər" });

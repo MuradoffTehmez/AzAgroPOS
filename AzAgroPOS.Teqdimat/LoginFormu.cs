@@ -77,23 +77,30 @@ namespace AzAgroPOS.Teqdimat
 
             Label heading = new()
             {
-                Text = "AzAgroPOS", Font = new Font("Segoe UI", 31F, FontStyle.Bold),
-                ForeColor = Color.White, BackColor = Color.Transparent,
-                Location = new Point(46, 166), Size = new Size(340, 68)
+                Text = "AzAgroPOS",
+                Font = new Font("Segoe UI", 31F, FontStyle.Bold),
+                ForeColor = Color.White,
+                BackColor = Color.Transparent,
+                Location = new Point(46, 166),
+                Size = new Size(340, 68)
             };
             Label subtitle = new()
             {
                 Text = "Satış və mağaza idarəetməsi\nbir yerdə.",
                 Font = new Font("Segoe UI", 17F, FontStyle.Regular),
-                ForeColor = Color.FromArgb(224, 244, 226), BackColor = Color.Transparent,
-                Location = new Point(49, 246), Size = new Size(330, 70)
+                ForeColor = Color.FromArgb(224, 244, 226),
+                BackColor = Color.Transparent,
+                Location = new Point(49, 246),
+                Size = new Size(330, 70)
             };
             Label features = new()
             {
                 Text = "SATIŞ   •   ANBAR   •   HESABATLAR",
                 Font = new Font("Segoe UI", 9F, FontStyle.Bold),
-                ForeColor = Color.FromArgb(217, 240, 220), BackColor = Color.Transparent,
-                Location = new Point(49, 355), Size = new Size(330, 32)
+                ForeColor = Color.FromArgb(217, 240, 220),
+                BackColor = Color.Transparent,
+                Location = new Point(49, 355),
+                Size = new Size(330, 32)
             };
             _brandPanel.Controls.Add(heading);
             _brandPanel.Controls.Add(subtitle);

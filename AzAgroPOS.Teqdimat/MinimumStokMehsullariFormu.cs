@@ -26,11 +26,11 @@ public partial class MinimumStokMehsullariFormu : BazaForm, IMinimumStokMehsulla
     public void MinimumStokMehsullariniGoster(List<MehsulDto> mehsullar)
     {
         dgvMinimumStokMehsullari.SelectionChanged -= dgvMinimumStokMehsullari_SelectionChanged;
-        
+
         if (dgvMinimumStokMehsullari.Columns.Count == 0)
         {
             dgvMinimumStokMehsullari.AutoGenerateColumns = false;
-            
+
             dgvMinimumStokMehsullari.Columns.Add(new DataGridViewTextBoxColumn { Name = "Id", DataPropertyName = "Id", Visible = false });
             dgvMinimumStokMehsullari.Columns.Add(new DataGridViewTextBoxColumn { Name = "Ad", DataPropertyName = "Ad", HeaderText = "Məhsulun Adı" });
             dgvMinimumStokMehsullari.Columns.Add(new DataGridViewTextBoxColumn { Name = "StokKodu", DataPropertyName = "StokKodu", HeaderText = "Stok Kodu" });

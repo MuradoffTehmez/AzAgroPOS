@@ -166,15 +166,15 @@ namespace AzAgroPOS.Teqdimat
                 dgvSeçilmişMehsullar.AutoGenerateColumns = false;
                 dgvSeçilmişMehsullar.Columns.Add(new DataGridViewTextBoxColumn { Name = "MehsulId", DataPropertyName = "MehsulId", Visible = false });
                 dgvSeçilmişMehsullar.Columns.Add(new DataGridViewTextBoxColumn { Name = "MehsulAdi", DataPropertyName = "MehsulAdi", HeaderText = "Məhsul Adı" });
-                
+
                 var qtyCol = new DataGridViewTextBoxColumn { Name = "Miqdar", DataPropertyName = "Miqdar", HeaderText = "Miqdar" };
                 qtyCol.DefaultCellStyle.Format = "N2";
                 dgvSeçilmişMehsullar.Columns.Add(qtyCol);
-                
+
                 var priceCol = new DataGridViewTextBoxColumn { Name = "Qiymet", DataPropertyName = "Qiymet", HeaderText = "Qiymət" };
                 priceCol.DefaultCellStyle.Format = "N2";
                 dgvSeçilmişMehsullar.Columns.Add(priceCol);
-                
+
                 var sumCol = new DataGridViewTextBoxColumn { Name = "UmumiMebleg", DataPropertyName = "UmumiMebleg", HeaderText = "Ümumi Məbləğ" };
                 sumCol.DefaultCellStyle.Format = "N2";
                 dgvSeçilmişMehsullar.Columns.Add(sumCol);
@@ -212,11 +212,11 @@ namespace AzAgroPOS.Teqdimat
                 dgvMehsullar.Columns.Add(new DataGridViewTextBoxColumn { Name = "Ad", DataPropertyName = "Ad", HeaderText = "Ad" });
                 dgvMehsullar.Columns.Add(new DataGridViewTextBoxColumn { Name = "StokKodu", DataPropertyName = "StokKodu", HeaderText = "Stok Kodu" });
                 dgvMehsullar.Columns.Add(new DataGridViewTextBoxColumn { Name = "Barkod", DataPropertyName = "Barkod", HeaderText = "Barkod" });
-                
+
                 var qtyCol = new DataGridViewTextBoxColumn { Name = "MovcudSay", DataPropertyName = "MovcudSay", HeaderText = "Say" };
                 qtyCol.DefaultCellStyle.Format = "N2";
                 dgvMehsullar.Columns.Add(qtyCol);
-                
+
                 var priceCol = new DataGridViewTextBoxColumn { Name = "PerakendeSatisQiymeti", DataPropertyName = "PerakendeSatisQiymeti", HeaderText = "Qiymət" };
                 priceCol.DefaultCellStyle.Format = "N2";
                 dgvMehsullar.Columns.Add(priceCol);
@@ -231,20 +231,20 @@ namespace AzAgroPOS.Teqdimat
                 dgvSeçilmişMehsullar.AutoGenerateColumns = false;
                 dgvSeçilmişMehsullar.Columns.Add(new DataGridViewTextBoxColumn { Name = "MehsulId", DataPropertyName = "MehsulId", Visible = false });
                 dgvSeçilmişMehsullar.Columns.Add(new DataGridViewTextBoxColumn { Name = "MehsulAdi", DataPropertyName = "MehsulAdi", HeaderText = "Məhsul Adı" });
-                
+
                 var qtyCol = new DataGridViewTextBoxColumn { Name = "Miqdar", DataPropertyName = "Miqdar", HeaderText = "Miqdar" };
                 qtyCol.DefaultCellStyle.Format = "N2";
                 dgvSeçilmişMehsullar.Columns.Add(qtyCol);
-                
+
                 var priceCol = new DataGridViewTextBoxColumn { Name = "Qiymet", DataPropertyName = "Qiymet", HeaderText = "Qiymət" };
                 priceCol.DefaultCellStyle.Format = "N2";
                 dgvSeçilmişMehsullar.Columns.Add(priceCol);
-                
+
                 var sumCol = new DataGridViewTextBoxColumn { Name = "UmumiMebleg", DataPropertyName = "UmumiMebleg", HeaderText = "Ümumi Məbləğ" };
                 sumCol.DefaultCellStyle.Format = "N2";
                 dgvSeçilmişMehsullar.Columns.Add(sumCol);
             }
-            
+
             dgvSeçilmişMehsullar.DataSource = new System.ComponentModel.BindingList<EhtiyatHissəsiDto>(ehtiyatHissələri);
         }
 

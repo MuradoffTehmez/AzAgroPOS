@@ -55,42 +55,42 @@ public class MaliyyeManager
 
             return await _unitOfWork.ExecuteInTransactionAsync(async () =>
             {
-            Novbe? aktivNovbe = istifadeciId.HasValue
-                ? await _unitOfWork.Novbeler.AktivNovbeniGetirAsync(istifadeciId.Value) : null;
-            // Yeni xərc qeydiyyatı yarat
-            Xerc xerc = new()
-            {
-                Novu = novu,
-                Ad = ad,
-                Mebleg = mebleg,
-                Tarix = tarix,
-                SenedNomresi = senedNomresi,
-                Qeyd = qeyd,
-                IstifadeciId = istifadeciId
-            };
+                Novbe? aktivNovbe = istifadeciId.HasValue
+                    ? await _unitOfWork.Novbeler.AktivNovbeniGetirAsync(istifadeciId.Value) : null;
+                // Yeni xərc qeydiyyatı yarat
+                Xerc xerc = new()
+                {
+                    Novu = novu,
+                    Ad = ad,
+                    Mebleg = mebleg,
+                    Tarix = tarix,
+                    SenedNomresi = senedNomresi,
+                    Qeyd = qeyd,
+                    IstifadeciId = istifadeciId
+                };
 
-            await _unitOfWork.Xercler.ElaveEtAsync(xerc);
-            await _unitOfWork.EmeliyyatiTesdiqleAsync(); // Xərc ID-sini əldə etmək üçün
+                await _unitOfWork.Xercler.ElaveEtAsync(xerc);
+                await _unitOfWork.EmeliyyatiTesdiqleAsync(); // Xərc ID-sini əldə etmək üçün
 
-            // Kassa hərəkəti yarat (xərc - çıxış)
-            KassaHareketi kassaHareketi = new()
-            {
-                HareketNovu = KassaHareketiNovu.Cixis,
-                EmeliyyatNovu = EmeliyyatNovu.Xerc,
-                EmeliyyatId = xerc.Id, // Xərc ID-si
-                NovbeId = aktivNovbe?.Id,
-                OdenisMetodu = OdenisMetodu.Nağd,
-                Mebleg = mebleg,
-                Tarix = tarix,
-                Qeyd = $"Xərc: {ad}",
-                IstifadeciId = istifadeciId
-            };
+                // Kassa hərəkəti yarat (xərc - çıxış)
+                KassaHareketi kassaHareketi = new()
+                {
+                    HareketNovu = KassaHareketiNovu.Cixis,
+                    EmeliyyatNovu = EmeliyyatNovu.Xerc,
+                    EmeliyyatId = xerc.Id, // Xərc ID-si
+                    NovbeId = aktivNovbe?.Id,
+                    OdenisMetodu = OdenisMetodu.Nağd,
+                    Mebleg = mebleg,
+                    Tarix = tarix,
+                    Qeyd = $"Xərc: {ad}",
+                    IstifadeciId = istifadeciId
+                };
 
-            await _unitOfWork.KassaHareketleri.ElaveEtAsync(kassaHareketi);
-            await _unitOfWork.EmeliyyatiTesdiqleAsync();
+                await _unitOfWork.KassaHareketleri.ElaveEtAsync(kassaHareketi);
+                await _unitOfWork.EmeliyyatiTesdiqleAsync();
 
-            Logger.MelumatYaz($"Xərc uğurla qeydə alındı: ID={xerc.Id}");
-            return EmeliyyatNeticesi<int>.Ugurlu(xerc.Id);
+                Logger.MelumatYaz($"Xərc uğurla qeydə alındı: ID={xerc.Id}");
+                return EmeliyyatNeticesi<int>.Ugurlu(xerc.Id);
             });
         }
         catch (Exception ex)
@@ -144,44 +144,44 @@ public class MaliyyeManager
 
             return await _unitOfWork.ExecuteInTransactionAsync(async () =>
             {
-            // Kassa hərəkətlərini tap və sil (xərcə aid olanı)
-            IEnumerable<KassaHareketi> kassaHareketleri = await _unitOfWork.KassaHareketleri.AxtarAsync(k => k.EmeliyyatId == xercId && k.EmeliyyatNovu == EmeliyyatNovu.Xerc);
-            int? novbeId = kassaHareketleri.FirstOrDefault()?.NovbeId;
-            foreach (KassaHareketi hareket in kassaHareketleri)
-            {
-                _unitOfWork.KassaHareketleri.Sil(hareket);
-            }
+                // Kassa hərəkətlərini tap və sil (xərcə aid olanı)
+                IEnumerable<KassaHareketi> kassaHareketleri = await _unitOfWork.KassaHareketleri.AxtarAsync(k => k.EmeliyyatId == xercId && k.EmeliyyatNovu == EmeliyyatNovu.Xerc);
+                int? novbeId = kassaHareketleri.FirstOrDefault()?.NovbeId;
+                foreach (KassaHareketi hareket in kassaHareketleri)
+                {
+                    _unitOfWork.KassaHareketleri.Sil(hareket);
+                }
 
-            // Xərc məlumatlarını yenilə
-            movcudXerc.Novu = novu;
-            movcudXerc.Ad = ad;
-            movcudXerc.Mebleg = mebleg;
-            movcudXerc.Tarix = tarix;
-            movcudXerc.SenedNomresi = senedNomresi;
-            movcudXerc.Qeyd = qeyd;
-            movcudXerc.IstifadeciId = istifadeciId;
+                // Xərc məlumatlarını yenilə
+                movcudXerc.Novu = novu;
+                movcudXerc.Ad = ad;
+                movcudXerc.Mebleg = mebleg;
+                movcudXerc.Tarix = tarix;
+                movcudXerc.SenedNomresi = senedNomresi;
+                movcudXerc.Qeyd = qeyd;
+                movcudXerc.IstifadeciId = istifadeciId;
 
-            _unitOfWork.Xercler.Yenile(movcudXerc);
+                _unitOfWork.Xercler.Yenile(movcudXerc);
 
-            // Yeni kassa hərəkəti yarat
-            KassaHareketi yeniKassaHareketi = new()
-            {
-                HareketNovu = KassaHareketiNovu.Cixis,
-                EmeliyyatNovu = EmeliyyatNovu.Xerc,
-                EmeliyyatId = movcudXerc.Id,
-                NovbeId = novbeId,
-                OdenisMetodu = OdenisMetodu.Nağd,
-                Mebleg = mebleg,
-                Tarix = tarix,
-                Qeyd = $"Xərc: {ad}",
-                IstifadeciId = istifadeciId
-            };
+                // Yeni kassa hərəkəti yarat
+                KassaHareketi yeniKassaHareketi = new()
+                {
+                    HareketNovu = KassaHareketiNovu.Cixis,
+                    EmeliyyatNovu = EmeliyyatNovu.Xerc,
+                    EmeliyyatId = movcudXerc.Id,
+                    NovbeId = novbeId,
+                    OdenisMetodu = OdenisMetodu.Nağd,
+                    Mebleg = mebleg,
+                    Tarix = tarix,
+                    Qeyd = $"Xərc: {ad}",
+                    IstifadeciId = istifadeciId
+                };
 
-            await _unitOfWork.KassaHareketleri.ElaveEtAsync(yeniKassaHareketi);
-            await _unitOfWork.EmeliyyatiTesdiqleAsync();
+                await _unitOfWork.KassaHareketleri.ElaveEtAsync(yeniKassaHareketi);
+                await _unitOfWork.EmeliyyatiTesdiqleAsync();
 
-            Logger.MelumatYaz($"Xərc uğurla yeniləndi: ID={xercId}");
-            return EmeliyyatNeticesi.Ugurlu();
+                Logger.MelumatYaz($"Xərc uğurla yeniləndi: ID={xercId}");
+                return EmeliyyatNeticesi.Ugurlu();
             });
         }
         catch (Exception ex)
@@ -214,19 +214,19 @@ public class MaliyyeManager
 
             return await _unitOfWork.ExecuteInTransactionAsync(async () =>
             {
-            // Əlaqəli kassa hərəkətlərini tap və sil
-            IEnumerable<KassaHareketi> kassaHareketleri = await _unitOfWork.KassaHareketleri.AxtarAsync(k => k.EmeliyyatId == xercId && k.EmeliyyatNovu == EmeliyyatNovu.Xerc);
-            foreach (KassaHareketi hareket in kassaHareketleri)
-            {
-                _unitOfWork.KassaHareketleri.Sil(hareket);
-            }
+                // Əlaqəli kassa hərəkətlərini tap və sil
+                IEnumerable<KassaHareketi> kassaHareketleri = await _unitOfWork.KassaHareketleri.AxtarAsync(k => k.EmeliyyatId == xercId && k.EmeliyyatNovu == EmeliyyatNovu.Xerc);
+                foreach (KassaHareketi hareket in kassaHareketleri)
+                {
+                    _unitOfWork.KassaHareketleri.Sil(hareket);
+                }
 
-            // Xərc qeydiyyatını sil
-            _unitOfWork.Xercler.Sil(xerc);
-            await _unitOfWork.EmeliyyatiTesdiqleAsync();
+                // Xərc qeydiyyatını sil
+                _unitOfWork.Xercler.Sil(xerc);
+                await _unitOfWork.EmeliyyatiTesdiqleAsync();
 
-            Logger.MelumatYaz($"Xərc uğurla silindi: ID={xercId}");
-            return EmeliyyatNeticesi.Ugurlu();
+                Logger.MelumatYaz($"Xərc uğurla silindi: ID={xercId}");
+                return EmeliyyatNeticesi.Ugurlu();
             });
         }
         catch (Exception ex)

@@ -118,23 +118,23 @@ public partial class AnbarQaliqHesabatFormu : BazaForm, IAnbarQaliqHesabatView
         if (dgvHesabat.Columns.Count == 0)
         {
             dgvHesabat.AutoGenerateColumns = false;
-            
+
             dgvHesabat.Columns.Add(new DataGridViewTextBoxColumn { Name = "StokKodu", DataPropertyName = "StokKodu", HeaderText = "Stok Kodu" });
             dgvHesabat.Columns.Add(new DataGridViewTextBoxColumn { Name = "MehsulAdi", DataPropertyName = "MehsulAdi", HeaderText = "Məhsul Adı" });
             dgvHesabat.Columns.Add(new DataGridViewTextBoxColumn { Name = "KateqoriyaAdi", DataPropertyName = "KateqoriyaAdi", HeaderText = "Kateqoriya" });
-            
+
             var qtyCol = new DataGridViewTextBoxColumn { Name = "MovcudSay", DataPropertyName = "MovcudSay", HeaderText = "Mövcud Miqdar" };
             qtyCol.DefaultCellStyle.Format = "N2";
             dgvHesabat.Columns.Add(qtyCol);
-            
+
             var minCol = new DataGridViewTextBoxColumn { Name = "MinimumSay", DataPropertyName = "MinimumSay", HeaderText = "Min. Say" };
             minCol.DefaultCellStyle.Format = "N2";
             dgvHesabat.Columns.Add(minCol);
-            
+
             var buyCol = new DataGridViewTextBoxColumn { Name = "AlisQiymeti", DataPropertyName = "AlisQiymeti", HeaderText = "Alış Qiyməti" };
             buyCol.DefaultCellStyle.Format = "N2";
             dgvHesabat.Columns.Add(buyCol);
-            
+
             var sellCol = new DataGridViewTextBoxColumn { Name = "SatisQiymeti", DataPropertyName = "SatisQiymeti", HeaderText = "Satış Qiyməti" };
             sellCol.DefaultCellStyle.Format = "N2";
             dgvHesabat.Columns.Add(sellCol);

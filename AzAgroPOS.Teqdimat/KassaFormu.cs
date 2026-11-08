@@ -180,18 +180,18 @@ public partial class KassaFormu : BazaForm
 
         dgvXercler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Id", DataPropertyName = "Id", Visible = false });
         dgvXercler.Columns.Add(new DataGridViewTextBoxColumn { Name = "IstifadeciId", DataPropertyName = "IstifadeciId", Visible = false });
-        
+
         dgvXercler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Novu", DataPropertyName = "Novu", HeaderText = "Növ" });
         dgvXercler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Ad", DataPropertyName = "Ad", HeaderText = "Ad" });
-        
+
         var sumCol = new DataGridViewTextBoxColumn { Name = "Mebleg", DataPropertyName = "Mebleg", HeaderText = "Məbləğ" };
         sumCol.DefaultCellStyle.Format = "N2";
         dgvXercler.Columns.Add(sumCol);
-        
+
         var dateCol = new DataGridViewTextBoxColumn { Name = "Tarix", DataPropertyName = "Tarix", HeaderText = "Tarix" };
         dateCol.DefaultCellStyle.Format = "dd.MM.yyyy";
         dgvXercler.Columns.Add(dateCol);
-        
+
         dgvXercler.Columns.Add(new DataGridViewTextBoxColumn { Name = "SenedNomresi", DataPropertyName = "SenedNomresi", HeaderText = "Sənəd №" });
         dgvXercler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Qeyd", DataPropertyName = "Qeyd", HeaderText = "Qeyd" });
         dgvXercler.Columns.Add(new DataGridViewTextBoxColumn { Name = "IstifadeciAdi", DataPropertyName = "IstifadeciAdi", HeaderText = "İstifadəçi" });
@@ -458,23 +458,23 @@ public partial class KassaFormu : BazaForm
         if (dgvKassaHareketleri.Columns.Count > 0) return;
 
         dgvKassaHareketleri.AutoGenerateColumns = false;
-        
+
         dgvKassaHareketleri.Columns.Add(new DataGridViewTextBoxColumn { Name = "Id", DataPropertyName = "Id", Visible = false });
         dgvKassaHareketleri.Columns.Add(new DataGridViewTextBoxColumn { Name = "EmeliyyatId", DataPropertyName = "EmeliyyatId", Visible = false });
         dgvKassaHareketleri.Columns.Add(new DataGridViewTextBoxColumn { Name = "IstifadeciId", DataPropertyName = "IstifadeciId", Visible = false });
-        
+
         dgvKassaHareketleri.Columns.Add(new DataGridViewTextBoxColumn { Name = "HareketNovu", DataPropertyName = "HareketNovu", HeaderText = "Hərəkət Növü" });
         dgvKassaHareketleri.Columns.Add(new DataGridViewTextBoxColumn { Name = "EmeliyyatNovu", DataPropertyName = "EmeliyyatNovu", HeaderText = "Əməliyyat" });
         dgvKassaHareketleri.Columns.Add(new DataGridViewTextBoxColumn { Name = "OdenisMetodu", DataPropertyName = "OdenisMetodu", HeaderText = "Ödəniş üsulu" });
-        
+
         var sumCol = new DataGridViewTextBoxColumn { Name = "Mebleg", DataPropertyName = "Mebleg", HeaderText = "Məbləğ" };
         sumCol.DefaultCellStyle.Format = "N2";
         dgvKassaHareketleri.Columns.Add(sumCol);
-        
+
         var dateCol = new DataGridViewTextBoxColumn { Name = "Tarix", DataPropertyName = "Tarix", HeaderText = "Tarix" };
         dateCol.DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
         dgvKassaHareketleri.Columns.Add(dateCol);
-        
+
         dgvKassaHareketleri.Columns.Add(new DataGridViewTextBoxColumn { Name = "Qeyd", DataPropertyName = "Qeyd", HeaderText = "Qeyd" });
 
         // Hərəkət növünə görə rəng

@@ -62,19 +62,19 @@ public partial class ZHesabatArxivFormu : BazaForm, IZHesabatArxivView
         if (dgvNovbeler.Columns.Count == 0)
         {
             dgvNovbeler.AutoGenerateColumns = false;
-            
+
             dgvNovbeler.Columns.Add(new DataGridViewTextBoxColumn { Name = "NovbeId", DataPropertyName = "NovbeId", HeaderText = "Növbə №" });
-            
+
             var openDateCol = new DataGridViewTextBoxColumn { Name = "AcilmaTarixi", DataPropertyName = "AcilmaTarixi", HeaderText = "Açılma Tarixi" };
             openDateCol.DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
             dgvNovbeler.Columns.Add(openDateCol);
-            
+
             var closeDateCol = new DataGridViewTextBoxColumn { Name = "BaglanmaTarixi", DataPropertyName = "BaglanmaTarixi", HeaderText = "Bağlanma Tarixi" };
             closeDateCol.DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
             dgvNovbeler.Columns.Add(closeDateCol);
-            
+
             dgvNovbeler.Columns.Add(new DataGridViewTextBoxColumn { Name = "KassirAdi", DataPropertyName = "KassirAdi", HeaderText = "Kassir" });
-            
+
             var sumCol = new DataGridViewTextBoxColumn { Name = "CemiSatis", DataPropertyName = "CemiSatis", HeaderText = "Cəmi Satış" };
             sumCol.DefaultCellStyle.Format = "N2";
             dgvNovbeler.Columns.Add(sumCol);

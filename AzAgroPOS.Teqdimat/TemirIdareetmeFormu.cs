@@ -88,23 +88,23 @@ namespace AzAgroPOS.Teqdimat
         public void SifarisleriGoster(List<TemirDto> sifarisler)
         {
             dgvSifarisler.SelectionChanged -= dgvSifarisler_SelectionChanged;
-            
+
             if (dgvSifarisler.Columns.Count == 0)
             {
                 dgvSifarisler.AutoGenerateColumns = false;
-                
+
                 dgvSifarisler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Id", DataPropertyName = "Id", Visible = false });
                 dgvSifarisler.Columns.Add(new DataGridViewTextBoxColumn { Name = "MusteriAdi", DataPropertyName = "MusteriAdi", HeaderText = "Müştəri Adı" });
                 dgvSifarisler.Columns.Add(new DataGridViewTextBoxColumn { Name = "MusteriTelefonu", DataPropertyName = "MusteriTelefonu", HeaderText = "Telefon" });
                 dgvSifarisler.Columns.Add(new DataGridViewTextBoxColumn { Name = "CihazAdi", DataPropertyName = "CihazAdi", HeaderText = "Cihaz Adı" });
                 dgvSifarisler.Columns.Add(new DataGridViewTextBoxColumn { Name = "ProblemTesviri", DataPropertyName = "ProblemTesviri", HeaderText = "Problem Təsviri" });
-                
+
                 var dateCol = new DataGridViewTextBoxColumn { Name = "QebulTarixi", DataPropertyName = "QebulTarixi", HeaderText = "Qəbul Tarixi" };
                 dateCol.DefaultCellStyle.Format = "dd.MM.yyyy";
                 dgvSifarisler.Columns.Add(dateCol);
-                
+
                 dgvSifarisler.Columns.Add(new DataGridViewTextBoxColumn { Name = "Status", DataPropertyName = "Status", HeaderText = "Status" });
-                
+
                 var sumCol = new DataGridViewTextBoxColumn { Name = "YekunMebleg", DataPropertyName = "YekunMebleg", HeaderText = "Yekun Məbləğ" };
                 sumCol.DefaultCellStyle.Format = "N2";
                 dgvSifarisler.Columns.Add(sumCol);
